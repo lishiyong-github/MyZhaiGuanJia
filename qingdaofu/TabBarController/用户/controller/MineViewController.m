@@ -22,7 +22,6 @@
 #import "MySettingsViewController.h"  //设置
 
 #import "LoginView.h"
-
 @interface MineViewController ()
 
 @property (nonatomic,assign) BOOL didSetupConstraits;
@@ -77,6 +76,7 @@
             myOrderVC.hidesBottomBarWhenPushed = YES;
             
             switch (buttonTag) {
+                
                 case 10:{//我的发布
                     NSLog(@"全部");
                     myReleaseVC.rFlagString = @"all";
@@ -196,7 +196,7 @@
 {
     NSString *completeString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kIsCompleteString];
     NSDictionary *params = @{@"token" : [self getValidateToken]};
-    [self requestDataPostWithString:completeString params:params successBlock:^(AFHTTPRequestOperation *operation, id responseObject){
+    [self requestDataPostWithString:completeString params:params successBlock:^(id responseObject){
         BaseModel *completeModel = [BaseModel objectWithKeyValues:responseObject];
         
         self.loginView.authenDic = responseObject;
@@ -204,7 +204,7 @@
         
         self.authenString = completeModel.code;
         
-    } andFailBlock:^{
+    } andFailBlock:^(NSError *error){
         
     }];
 }

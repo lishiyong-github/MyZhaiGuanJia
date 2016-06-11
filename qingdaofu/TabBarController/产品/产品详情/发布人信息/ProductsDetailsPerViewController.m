@@ -56,8 +56,8 @@
 - (UITableView *)productsDetailPerTableView
 {
     if (!_productsDetailPerTableView) {
-        _productsDetailPerTableView = [UITableView newAutoLayoutView];
-        _productsDetailPerTableView.translatesAutoresizingMaskIntoConstraints = YES;
+//        _productsDetailPerTableView = [UITableView newAutoLayoutView];
+        _productsDetailPerTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _productsDetailPerTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _productsDetailPerTableView.delegate = self;
         _productsDetailPerTableView.dataSource = self;

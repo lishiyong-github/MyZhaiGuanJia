@@ -64,8 +64,8 @@
 - (UITableView *)publishingTableView
 {
     if (!_publishingTableView) {
-        _publishingTableView = [UITableView newAutoLayoutView];
-        _publishingTableView.translatesAutoresizingMaskIntoConstraints = YES;
+//        _publishingTableView = [UITableView newAutoLayoutView];
+        _publishingTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _publishingTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _publishingTableView.delegate = self;
         _publishingTableView.dataSource = self;
@@ -88,7 +88,7 @@
             NSDictionary *params = @{@"id" : weakself.idString,
                                      @"category" : weakself.categaryString,
                                      @"status" : @"终止"};
-            [weakself requestDataPostWithString:endString params:params successBlock:^(AFHTTPRequestOperation *operation, id responseObject){
+            [weakself requestDataPostWithString:endString params:params successBlock:^(id responseObject){
                 BaseModel *endModel = [BaseModel objectWithKeyValues:responseObject];
                 [weakself showHint:endModel.msg];
                 
@@ -97,7 +97,7 @@
                     [btn setTitle:@"已终止" forState:0];
                 }
                 
-            } andFailBlock:^{
+            } andFailBlock:^(NSError *error){
                 
             }];
             
@@ -336,12 +336,12 @@
                              @"id" : self.idString,
                              @"category" : self.categaryString
                              };
-    [self requestDataPostWithString:detailString params:params successBlock:^(AFHTTPRequestOperation *operation, id responseObject){
+    [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
         [self.publishingDataArray addObject:response];
         [self.publishingTableView reloadData];
         
-    } andFailBlock:^{
+    } andFailBlock:^(NSError *error){
         
     }];
 }

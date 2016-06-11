@@ -6,10 +6,13 @@
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
-#import "BaseViewController.h"
+#import "NetworkViewController.h"
 
-@interface MyScheduleViewController : BaseViewController
+@interface MyScheduleViewController : NetworkViewController
 
 @property (nonatomic,strong) NSString *scheduleFlagString;
+
+@property (nonatomic,strong) NSString *idString;
+@property (nonatomic,strong) NSString *categoryString;
 
 @end

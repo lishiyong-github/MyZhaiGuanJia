@@ -364,13 +364,13 @@
 {
     NSString *comString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kIsCompleteString];
     NSDictionary *params = @{@"token" : [self getValidateToken]};
-    [self requestDataPostWithString:comString params:params successBlock:^(AFHTTPRequestOperation *operation, id responseObject){
+    [self requestDataPostWithString:comString params:params successBlock:^( id responseObject){
         CompleteResponse *response = [CompleteResponse objectWithKeyValues:responseObject];
         
         [self.completeDataArray addObject:response.certification];
         [self.completeTableView reloadData];
         
-    } andFailBlock:^{
+    } andFailBlock:^(NSError *error){
         
     }];
 }

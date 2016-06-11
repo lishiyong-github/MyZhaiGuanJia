@@ -41,8 +41,8 @@
 - (UITableView *)receiveTableView
 {
     if (!_receiveTableView) {
-        _receiveTableView = [UITableView newAutoLayoutView];
-        _receiveTableView.translatesAutoresizingMaskIntoConstraints = YES;
+//        _receiveTableView = [UITableView newAutoLayoutView];
+        _receiveTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _receiveTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _receiveTableView.delegate = self;
         _receiveTableView.dataSource = self;

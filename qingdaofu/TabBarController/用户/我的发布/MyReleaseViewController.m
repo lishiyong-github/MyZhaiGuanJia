@@ -130,8 +130,8 @@
 - (UITableView *)myReleaseTableView
 {
     if (!_myReleaseTableView) {
-        _myReleaseTableView = [UITableView newAutoLayoutView];
-        _myReleaseTableView.translatesAutoresizingMaskIntoConstraints = YES;
+//        _myReleaseTableView = [UITableView newAutoLayoutView];
+        _myReleaseTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _myReleaseTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _myReleaseTableView.delegate = self;
         _myReleaseTableView.dataSource = self;

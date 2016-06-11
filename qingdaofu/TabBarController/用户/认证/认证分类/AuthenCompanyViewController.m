@@ -65,8 +65,8 @@
 - (UITableView *)companyAuTableView
 {
     if (!_companyAuTableView) {
-        _companyAuTableView = [UITableView newAutoLayoutView];
-        _companyAuTableView.translatesAutoresizingMaskIntoConstraints = YES;
+//        _companyAuTableView = [UITableView newAutoLayoutView];
+        _companyAuTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _companyAuTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _companyAuTableView.delegate = self;
         _companyAuTableView.dataSource = self;
@@ -100,7 +100,7 @@
                                      @"token" : [weakself getValidateToken]
                                      };
             
-            [weakself requestDataPostWithString:companyAuString params:params successBlock:^(AFHTTPRequestOperation *operation, id responseObject){
+            [weakself requestDataPostWithString:companyAuString params:params successBlock:^(id responseObject){
                 BaseModel *uModel = [BaseModel objectWithKeyValues:responseObject];
                 [weakself showHint:uModel.msg];
                 
@@ -114,7 +114,7 @@
                     [companyNav pushViewController:completeVC animated:NO];
                 }
                 
-            } andFailBlock:^{
+            } andFailBlock:^(NSError *error){
                 
             }];
             

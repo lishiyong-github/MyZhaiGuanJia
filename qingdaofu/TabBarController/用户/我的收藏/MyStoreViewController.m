@@ -142,7 +142,7 @@
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"page" : page
                              };
-    [self requestDataPostWithString:storeString params:params successBlock:^(AFHTTPRequestOperation *operation, id responseObject){
+    [self requestDataPostWithString:storeString params:params successBlock:^(id responseObject){
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
         NSLog(@" ?????????? %@",dic);
         
@@ -154,7 +154,7 @@
         
         [self.myStoreTableView reloadData];
         
-    } andFailBlock:^{
+    } andFailBlock:^(NSError *error){
         
     }];
 }
@@ -167,14 +167,14 @@
                              @"category" : deleteModel.category,
                              @"token" : [self getValidateToken]
                              };
-    [self requestDataPostWithString:deleteString params:params successBlock:^(AFHTTPRequestOperation *operation, id responseObject){
+    [self requestDataPostWithString:deleteString params:params successBlock:^(id responseObject){
         BaseModel *deleteModel = [BaseModel objectWithKeyValues:responseObject];
         [self showHint:deleteModel.msg];
         if ([deleteModel.code isEqualToString:@"0000"]) {
             [self.storeDataList removeObjectAtIndex:indexRow];
             [self.myStoreTableView reloadData];
         }
-    } andFailBlock:^{
+    } andFailBlock:^(NSError *error){
         
     }];
     

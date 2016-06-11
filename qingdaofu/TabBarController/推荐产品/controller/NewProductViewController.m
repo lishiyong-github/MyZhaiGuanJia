@@ -78,8 +78,8 @@
 - (UITableView *)mainTableView
 {
     if (!_mainTableView) {
-        _mainTableView = [UITableView newAutoLayoutView];
-        _mainTableView.translatesAutoresizingMaskIntoConstraints = YES;
+//        _mainTableView = [UITableView newAutoLayoutView];
+        _mainTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _mainTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _mainTableView.backgroundColor = kBackColor;
         _mainTableView.delegate = self;

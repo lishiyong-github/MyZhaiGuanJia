@@ -49,8 +49,8 @@
 - (UITableView *)mySettingTableView
 {
     if (!_mySettingTableView) {
-        _mySettingTableView = [UITableView newAutoLayoutView];
-        _mySettingTableView.translatesAutoresizingMaskIntoConstraints = YES;
+//        _mySettingTableView = [UITableView newAutoLayoutView];
+        _mySettingTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _mySettingTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _mySettingTableView.delegate = self;
         _mySettingTableView.dataSource = self;
@@ -172,7 +172,7 @@
         
         NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:@"token"];
         NSDictionary *params = @{@"token" : token};
-        [self requestDataPostWithString:exitString params:params successBlock:^(AFHTTPRequestOperation *operation, id responseObject){
+        [self requestDataPostWithString:exitString params:params successBlock:^(id responseObject){
             
             NSDictionary *duu = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
             NSLog(@"duu is %@",duu);
@@ -187,7 +187,7 @@
                 [self.navigationController popViewControllerAnimated:YES];
             }
             
-        } andFailBlock:^{
+        } andFailBlock:^(NSError *error){
             
         }];
     }

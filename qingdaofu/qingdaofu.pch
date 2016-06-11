@@ -130,6 +130,8 @@
 
 //我的接单 我的发布
 #define kMyOrdersString   @"apply/index"    //我的接单
+#define kMyscheduleString @"public/speedo"  //填写进度
+
 #define kMyReleaseString  @"apply/released"   //我的发布
 #define kMyReleaseDetailString @"public/wxreleaseinformationwidget"  //我的发布详情
 

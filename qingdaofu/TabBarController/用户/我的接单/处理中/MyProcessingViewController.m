@@ -60,8 +60,8 @@
 - (UITableView *)myProcessingTableView
 {
     if (!_myProcessingTableView) {
-        _myProcessingTableView = [UITableView newAutoLayoutView];
-        _myProcessingTableView.translatesAutoresizingMaskIntoConstraints = YES;
+//        _myProcessingTableView = [UITableView newAutoLayoutView];
+        _myProcessingTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _myProcessingTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _myProcessingTableView.delegate = self;
         _myProcessingTableView.dataSource = self;

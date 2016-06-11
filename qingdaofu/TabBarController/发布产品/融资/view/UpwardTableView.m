@@ -44,6 +44,14 @@
     return _upwardDataList;
 }
 
+- (NSLayoutConstraint *)heightTableConstraints
+{
+    if (!_heightTableConstraints) {
+        _heightTableConstraints = [self autoSetDimension:ALDimensionHeight toSize:0];
+    }
+    return _heightTableConstraints;
+}
+
 #pragma mark - delegate and datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {

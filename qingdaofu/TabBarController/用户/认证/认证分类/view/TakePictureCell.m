@@ -18,12 +18,10 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-//        [self.contentView addSubview:self.pictureButton1];
-//        [self.contentView addSubview:self.pictureButton2];
         
         [self.contentView addSubview:self.pictureCollection];
         
-//        [self.contentView setNeedsUpdateConstraints];
+        [self setNeedsUpdateConstraints];
     }
     return self;
 }
@@ -31,80 +29,64 @@
 - (void)updateConstraints
 {
     if (!self.didSetupConstraints) {
-        
-//        [self.pictureButton1 autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kBigPadding];
-//        [self.pictureButton1 autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
-//        [self.pictureButton1 autoSetDimensionsToSize:CGSizeMake(50, 50)];
-//
-//        [self.pictureButton2 autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kBigPadding];
-//        [self.pictureButton2 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.pictureButton1 withOffset:kBigPadding];
-//        [self.pictureButton2 autoSetDimensionsToSize:CGSizeMake(50, 50)];
-        
-//        [self.pictureCollection autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+       [self.pictureCollection autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
         
         self.didSetupConstraints = YES;
     }
     [super updateConstraints];
 }
 
-- (UIButton *)pictureButton1
-{
-    if (!_pictureButton1) {
-        _pictureButton1 = [UIButton newAutoLayoutView];
-        _pictureButton1.layer.cornerRadius = corner;
-    }
-    return _pictureButton1;
-}
-//
-//- (UIButton *)pictureButton2
-//{
-//    if (!_pictureButton2) {
-//        _pictureButton2 = [UIButton newAutoLayoutView];
-//        _pictureButton2.layer.cornerRadius = corner;
-//    }
-//    return _pictureButton2;
-//}
-
 - (UICollectionView *)pictureCollection
 {
     if (!_pictureCollection) {
-//        _pictureCollection = [UICollectionView newAutoLayoutView];
-//        _pictureCollection.translatesAutoresizingMaskIntoConstraints = YES;
-        UICollectionViewLayout *layout = [[UICollectionViewLayout alloc] init];
-        _pictureCollection = [[PictureCollectionView alloc ] initWithFrame:CGRectMake(0, 0, kScreenWidth, 80) collectionViewLayout:layout];
+                
+        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+        layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+        _pictureCollection = [[UICollectionView alloc ] initWithFrame:CGRectMake(0, 0, kScreenWidth, 80) collectionViewLayout:layout];
+        _pictureCollection.translatesAutoresizingMaskIntoConstraints = NO;
         _pictureCollection.delegate = self;
         _pictureCollection.dataSource = self;
-        [_pictureCollection registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"picture"];
-        [_pictureCollection registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:@"take" withReuseIdentifier:@"picture"];
+        [_pictureCollection registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"UICollectionViewCell"];
+        [_pictureCollection registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"picture"];
+        [_pictureCollection setBackgroundColor:[UIColor whiteColor]];
     }
     return _pictureCollection;
 }
 
+- (NSMutableArray *)collectionDataList
+{
+    if (!_collectionDataList) {
+        _collectionDataList = [NSMutableArray arrayWithArray:@[[UIImage imageNamed:@"btn_camera"],[UIImage imageNamed:@"btn_camera"]]];
 
-//- (void)setPictureDataArray:(NSMutableArray *)pictureDataArray
-//{
-//    NSMutableArray *array = [[NSMutableArray alloc] initWithObjects:@"",@"", nil];
-//    _pictureDataArray = array;
-//}
+    }
+    return _collectionDataList;
+}
+
+- (void)reloadData
+{
+    [self.pictureCollection reloadData];
+}
 
 #pragma mark - collectionView deleagte datasource DelegateFlowLayout
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return 2;
+//    return 2;
 //    return self.pictureDataArray.count;
+    return self.collectionDataList.count;
 }
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *identifier = @"picture";
-    UICollectionViewCell *collection = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
+    static NSString *identifier = @"UICollectionViewCell";
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     
-    if (!collection) {
-        collection = [[UICollectionViewCell alloc] init];
+    if (!cell) {
+        cell = [[UICollectionViewCell alloc] init];
     }
     
-    collection.backgroundColor = kYellowColor;
+//    cell.contentView.backgroundColor = kYellowColor;
+    cell.contentView.backgroundColor = [UIColor colorWithPatternImage:self.collectionDataList[indexPath.item]];
     
-    return collection;
+    return cell;
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
@@ -122,23 +104,13 @@
     UIEdgeInsets itemInserts = UIEdgeInsetsMake(kBigPadding, kBigPadding, kBigPadding, kBigPadding);
     return itemInserts;
 }
-//- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
-//{
-//
-//}
-//- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
-//{
-//
-//}
-//- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
-//{
-//
-//}
-//- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
-//{
-//
-//}
 
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.didSelectedItem) {
+        self.didSelectedItem(indexPath.item);
+    }
+}
 
 - (void)awakeFromNib {
     // Initialization code

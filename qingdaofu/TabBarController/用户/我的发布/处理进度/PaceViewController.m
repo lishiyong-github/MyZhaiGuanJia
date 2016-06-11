@@ -42,7 +42,7 @@
 {
     if (!_paceTableView) {
         _paceTableView = [UITableView newAutoLayoutView];
-        _paceTableView.translatesAutoresizingMaskIntoConstraints = YES;
+        _paceTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _paceTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _paceTableView.delegate = self;
         _paceTableView.dataSource = self;

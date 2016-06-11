@@ -59,8 +59,7 @@
 - (UITableView *)myEndingTableView
 {
     if (!_myEndingTableView) {
-        _myEndingTableView = [UITableView newAutoLayoutView];
-        _myEndingTableView.translatesAutoresizingMaskIntoConstraints = YES;
+        _myEndingTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _myEndingTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _myEndingTableView.delegate = self;
         _myEndingTableView.dataSource = self;

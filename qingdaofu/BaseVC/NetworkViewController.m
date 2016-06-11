@@ -41,7 +41,7 @@
 }
  */
 
-- (void)requestDataPostWithString:(NSString *)string params:(NSDictionary *)params successBlock:(void (^)())successBlock andFailBlock:(void (^)())failBlock
+- (void)requestDataPostWithString:(NSString *)string params:(NSDictionary *)params successBlock:(void (^)(id responseObject))successBlock andFailBlock:(void (^)(NSError *error))failBlock
 {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -50,14 +50,22 @@
     [manager POST:string parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         if (successBlock) {
-            successBlock(operation,responseObject);
+            successBlock(responseObject);
         }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (failBlock) {
-            failBlock(operation,error);
+            failBlock(error);
         }
     }];
+    
+//    [manager POST:string parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+//        
+//    } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//        
+//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//        
+//    }];
 }
 
 - (void)didReceiveMemoryWarning {

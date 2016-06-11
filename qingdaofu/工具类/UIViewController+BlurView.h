@@ -9,5 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface UIViewController (BlurView)
+@property (nonatomic,strong) UIView *blurView;
+
+- (void)showBlurWith:(NSArray *)array andTitle:(NSString *)title finishBlock:(void(^)(NSString *text))finishBlock;
+- (void)showBlurInView:(UIView *)view;
 
 @end

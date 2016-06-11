@@ -51,8 +51,8 @@
 - (UITableView *)suggestTableView
 {
     if (!_suggestTableView) {
-        _suggestTableView = [UITableView newAutoLayoutView];
-        _suggestTableView.translatesAutoresizingMaskIntoConstraints = YES;
+//        _suggestTableView = [UITableView newAutoLayoutView];
+        _suggestTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _suggestTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _suggestTableView.backgroundColor = kBackColor;
         _suggestTableView.delegate = self;
@@ -78,14 +78,14 @@
                                      @"opinion" : @"有事找有事找",
                                      @"token" : [weakself getValidateToken]
                                      };
-            [weakself requestDataPostWithString:suggestionString params:params successBlock:^(AFHTTPRequestOperation *operation, id responseObject){
+            [weakself requestDataPostWithString:suggestionString params:params successBlock:^(id responseObject){
                 BaseModel *suggestModel = [BaseModel objectWithKeyValues:responseObject];
                 [weakself showHint:suggestModel.msg];
                 if ([suggestModel.code isEqualToString:@"0000"]) {
                     [weakself.navigationController popViewControllerAnimated:YES];
                 }
                 
-            } andFailBlock:^{
+            } andFailBlock:^(NSError *error){
                 
             }];
             

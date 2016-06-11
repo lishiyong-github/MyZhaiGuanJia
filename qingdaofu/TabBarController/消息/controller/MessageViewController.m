@@ -48,8 +48,8 @@
 - (UITableView *)messageTableView
 {
     if (!_messageTableView) {
-        _messageTableView = [UITableView newAutoLayoutView];
-        _messageTableView.translatesAutoresizingMaskIntoConstraints = YES;
+//        _messageTableView = [UITableView newAutoLayoutView];
+        _messageTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _messageTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _messageTableView.delegate = self;
         _messageTableView.dataSource = self;

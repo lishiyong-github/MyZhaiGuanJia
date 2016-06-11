@@ -42,8 +42,8 @@
 - (UITableView *)newsListTableView
 {
     if (!_newsListTableView) {
-        _newsListTableView = [UITableView newAutoLayoutView];
-        _newsListTableView.translatesAutoresizingMaskIntoConstraints = YES;
+//        _newsListTableView = [UITableView newAutoLayoutView];
+        _newsListTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _newsListTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _newsListTableView.delegate = self;
         _newsListTableView.dataSource = self;

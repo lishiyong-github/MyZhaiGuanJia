@@ -87,8 +87,8 @@
 - (UITableView *)applyDetailTableView
 {
     if (!_applyDetailTableView) {
-        _applyDetailTableView = [UITableView newAutoLayoutView];
-        _applyDetailTableView.translatesAutoresizingMaskIntoConstraints = YES;
+//        _applyDetailTableView = [UITableView newAutoLayoutView];
+        _applyDetailTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _applyDetailTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _applyDetailTableView.delegate = self;
         _applyDetailTableView.dataSource = self;

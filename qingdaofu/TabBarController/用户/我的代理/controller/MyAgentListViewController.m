@@ -130,7 +130,7 @@
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"page" : page
                              };
-    [self requestDataPostWithString:agentListString params:params successBlock:^(AFHTTPRequestOperation *operation, id responseObject){
+    [self requestDataPostWithString:agentListString params:params successBlock:^(id responseObject){
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
         NSLog( @"######## %@",dic);
         
@@ -140,7 +140,7 @@
 //            [self.agentDataList addObject:userModel];
 //        }
         
-    } andFailBlock:^{
+    } andFailBlock:^(NSError *error){
         
     }];
 }

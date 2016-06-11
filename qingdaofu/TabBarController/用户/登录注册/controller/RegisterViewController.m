@@ -174,7 +174,7 @@
     NSString *codeString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kLoginGetCodeString];
     NSDictionary *params = @{@"mobile" : @"13162521916"};
     
-    [self requestDataPostWithString:codeString params:params successBlock:^(AFHTTPRequestOperation *operation, id responseObject){//成功
+    [self requestDataPostWithString:codeString params:params successBlock:^(id responseObject){//成功
         
         BaseModel *codeModel = [BaseModel objectWithKeyValues:responseObject];
         [self showHint:codeModel.msg];
@@ -196,7 +196,7 @@
         }
         
         
-    } andFailBlock:^{//失败
+    } andFailBlock:^(NSError *error){
         
     }];
 }
@@ -208,7 +208,7 @@
                              @"password" : @"123456",
                              @"validatecode" : @"0312"
                              };
-    [self requestDataPostWithString:registerString params:params successBlock:^(AFHTTPRequestOperation *operation, id responseObject){
+    [self requestDataPostWithString:registerString params:params successBlock:^( id responseObject){
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
         NSLog(@"dic is %@",dic);
@@ -222,7 +222,7 @@
             [self.navigationController popViewControllerAnimated:YES];
         }
         
-    } andFailBlock:^{
+    } andFailBlock:^(NSError *error){
         
     }];
 }

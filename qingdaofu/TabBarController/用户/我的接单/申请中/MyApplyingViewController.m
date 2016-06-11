@@ -49,8 +49,8 @@
 - (UITableView *)myApplyingTableView
 {
     if (!_myApplyingTableView) {
-        _myApplyingTableView = [UITableView newAutoLayoutView];
-        _myApplyingTableView.translatesAutoresizingMaskIntoConstraints = YES;
+//        _myApplyingTableView = [UITableView newAutoLayoutView];
+        _myApplyingTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _myApplyingTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _myApplyingTableView.delegate = self;
         _myApplyingTableView.dataSource = self;

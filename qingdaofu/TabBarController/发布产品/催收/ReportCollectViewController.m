@@ -66,8 +66,8 @@
 - (UITableView *)repSuitTableView
 {
     if (!_repSuitTableView) {
-        _repSuitTableView = [UITableView newAutoLayoutView];
-        _repSuitTableView.translatesAutoresizingMaskIntoConstraints = YES;
+//        _repSuitTableView = [UITableView newAutoLayoutView];
+        _repSuitTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _repSuitTableView = [[UITableView alloc ] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _repSuitTableView.backgroundColor = kBackColor;
         _repSuitTableView.delegate = self;
@@ -255,7 +255,7 @@
                              @"token" : [self getValidateToken]
                              };
     
-    [self requestDataPostWithString:reFinanceString params:params successBlock:^(AFHTTPRequestOperation *operation, id responseObject){
+    [self requestDataPostWithString:reFinanceString params:params successBlock:^(id responseObject){
         
         BaseModel *model = [BaseModel objectWithKeyValues:responseObject];
         
@@ -277,7 +277,7 @@
             }
         }
         
-    } andFailBlock:^{
+    } andFailBlock:^(NSError *error){
         
     }];
 

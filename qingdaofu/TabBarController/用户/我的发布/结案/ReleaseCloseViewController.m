@@ -76,8 +76,8 @@
 - (UITableView *)ReleaseCloseTableView
 {
     if (!_ReleaseCloseTableView) {
-        _ReleaseCloseTableView = [UITableView newAutoLayoutView];
-        _ReleaseCloseTableView.translatesAutoresizingMaskIntoConstraints = YES;
+//        _ReleaseCloseTableView = [UITableView newAutoLayoutView];
+        _ReleaseCloseTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _ReleaseCloseTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _ReleaseCloseTableView.delegate = self;
         _ReleaseCloseTableView.dataSource = self;
@@ -417,7 +417,7 @@
                              @"id" : self.idString,
                              @"category" : self.categaryString
                              };
-    [self requestDataPostWithString:releaseString params:params successBlock:^(AFHTTPRequestOperation *operation, id responseObject){
+    [self requestDataPostWithString:releaseString params:params successBlock:^(id responseObject){
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
         NSLog(@"+++++ %@",dic);
@@ -426,7 +426,7 @@
         [self.releaseArray addObject:response];
         [self.ReleaseCloseTableView reloadData];
         
-    } andFailBlock:^{
+    } andFailBlock:^(NSError *error){
         
     }];
 }

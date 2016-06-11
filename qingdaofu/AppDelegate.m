@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-
+#import "MBResourceManager.h"
 #import "MainViewController.h"
 
 @interface AppDelegate ()  
@@ -25,6 +25,11 @@
     MainViewController *mainVC = [[MainViewController alloc] init];
     UINavigationController *mainNav = [[UINavigationController alloc] initWithRootViewController:mainVC];
     self.window.rootViewController = mainNav;
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        [[MBResourceManager sharedInstance]removeUnusedResource];
+    });
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), )
 
     return YES;
 }

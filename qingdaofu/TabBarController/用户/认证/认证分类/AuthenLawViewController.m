@@ -63,8 +63,8 @@
 - (UITableView *)lawAuTableView
 {
     if (!_lawAuTableView) {
-        _lawAuTableView = [UITableView newAutoLayoutView];
-        _lawAuTableView.translatesAutoresizingMaskIntoConstraints = YES;
+//        _lawAuTableView = [UITableView newAutoLayoutView];
+        _lawAuTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _lawAuTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _lawAuTableView.delegate = self;
         _lawAuTableView.dataSource = self;
@@ -96,7 +96,7 @@
                                      @"token" : [weakself getValidateToken]
                                      };
             
-            [weakself requestDataPostWithString:lawAuString params:params successBlock:^(AFHTTPRequestOperation *operation, id responseObject){
+            [weakself requestDataPostWithString:lawAuString params:params successBlock:^(id responseObject){
                 BaseModel *updateModel = [BaseModel objectWithKeyValues:responseObject];
                 [weakself showHint:updateModel.msg];
                 
@@ -110,7 +110,7 @@
                     [lawNav pushViewController:completeVC animated:NO];
                 }
                 
-            } andFailBlock:^{
+            } andFailBlock:^(NSError *error){
                 
             }];
         }];

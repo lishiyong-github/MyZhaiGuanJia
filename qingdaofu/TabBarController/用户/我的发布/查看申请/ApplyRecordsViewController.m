@@ -133,12 +133,12 @@
                              @"categary" : self.categaryStr,
                              @"page" : page
                              };
-    [self requestDataPostWithString:listString params:params successBlock:^(AFHTTPRequestOperation *operation, id responseObject){
+    [self requestDataPostWithString:listString params:params successBlock:^(id responseObject){
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
         NSLog(@">>>>>>>> %@",dic);
         
         
-    } andFailBlock:^{
+    } andFailBlock:^(id responseObject){
         
     }];
 }

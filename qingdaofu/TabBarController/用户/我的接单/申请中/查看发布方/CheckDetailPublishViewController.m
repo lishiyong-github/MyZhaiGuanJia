@@ -87,8 +87,8 @@
 - (UITableView *)checkDetailTableView
 {
     if (!_checkDetailTableView) {
-        _checkDetailTableView = [UITableView newAutoLayoutView];
-        _checkDetailTableView.translatesAutoresizingMaskIntoConstraints = YES;
+//        _checkDetailTableView = [UITableView newAutoLayoutView];
+        _checkDetailTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _checkDetailTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _checkDetailTableView.delegate = self;
         _checkDetailTableView.dataSource = self;

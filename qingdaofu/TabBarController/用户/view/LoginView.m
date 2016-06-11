@@ -43,8 +43,8 @@
 - (UITableView *)loginTableView
 {
     if (!_loginTableView) {
-        _loginTableView = [UITableView newAutoLayoutView];
-        _loginTableView.translatesAutoresizingMaskIntoConstraints = YES;
+//        _loginTableView = [UITableView newAutoLayoutView];
+        _loginTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _loginTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _loginTableView.delegate = self;
         _loginTableView.dataSource = self;

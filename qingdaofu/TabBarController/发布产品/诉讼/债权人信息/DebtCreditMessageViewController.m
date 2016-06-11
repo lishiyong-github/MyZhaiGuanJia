@@ -53,8 +53,8 @@
 - (UITableView *)debtCreditTableView
 {
     if (!_debtCreditTableView) {
-        _debtCreditTableView = [UITableView newAutoLayoutView];
-        _debtCreditTableView.translatesAutoresizingMaskIntoConstraints = YES;
+//        _debtCreditTableView = [UITableView newAutoLayoutView];
+        _debtCreditTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _debtCreditTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _debtCreditTableView.delegate = self;
         _debtCreditTableView.dataSource = self;

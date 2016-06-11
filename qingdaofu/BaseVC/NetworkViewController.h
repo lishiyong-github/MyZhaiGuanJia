@@ -16,8 +16,8 @@
 /*
 -(void)requestDataGetWithString:(NSString *)string params:(NSDictionary *)params successBlock:(void(^)())successBlock andFailBlock:(void(^)())failBlock;
 */
--(void)requestDataPostWithString:(NSString *)string params:(NSDictionary *)params successBlock:(void(^)())successBlock andFailBlock:(void(^)())failBlock;
-
+-(void)requestDataPostWithString:(NSString *)string params:(NSDictionary *)params successBlock:(void(^)(id responseObject))successBlock andFailBlock:(void(^)(NSError *error))failBlock;
+//NSError *error
 //-(void)showMBProgressHUDText:(NSString *)text;
 
 @end

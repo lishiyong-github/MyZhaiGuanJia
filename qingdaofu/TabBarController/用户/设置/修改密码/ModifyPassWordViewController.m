@@ -126,7 +126,7 @@
                              @"new_password" : @"123456"
                              };
     
-    [self requestDataPostWithString:modifyString params:params successBlock:^(AFHTTPRequestOperation *operation, id responseObject){
+    [self requestDataPostWithString:modifyString params:params successBlock:^(id responseObject){
         
         BaseModel *modifyModel = [BaseModel objectWithKeyValues:responseObject];
         [self showHint:modifyModel.msg];
@@ -134,7 +134,7 @@
             [self.navigationController popViewControllerAnimated:YES];
         }
         
-    } andFailBlock:^{
+    } andFailBlock:^(NSError *error){
         
     }];
 }

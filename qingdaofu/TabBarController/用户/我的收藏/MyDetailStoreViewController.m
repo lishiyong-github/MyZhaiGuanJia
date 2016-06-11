@@ -60,8 +60,8 @@
 - (UITableView *)detailStoreTableView
 {
     if (!_detailStoreTableView) {
-        _detailStoreTableView = [UITableView newAutoLayoutView];
-        _detailStoreTableView.translatesAutoresizingMaskIntoConstraints = YES;
+//        _detailStoreTableView = [UITableView newAutoLayoutView];
+        _detailStoreTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _detailStoreTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _detailStoreTableView.delegate = self;
         _detailStoreTableView.dataSource = self;
@@ -244,7 +244,7 @@
                              @"id" : self.idString,
                              @"category" : self.categoryString
                              };
-    [self requestDataPostWithString:detailString params:params successBlock:^(AFHTTPRequestOperation *operation, id responseObject){
+    [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
         PublishingResponse *respModel = [PublishingResponse objectWithKeyValues:responseObject];
         
         self.navigationItem.title = respModel.product.codeString;
@@ -253,7 +253,7 @@
         
         [self.detailStoreTableView reloadData];
         
-    } andFailBlock:^{
+    } andFailBlock:^(NSError *error){
         
     }];
 }

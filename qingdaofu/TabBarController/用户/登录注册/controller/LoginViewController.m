@@ -142,7 +142,7 @@
     //18221496879 123456 (xiaolou)
     //13162521916 123456
 
-    [self requestDataPostWithString:loginString params:params successBlock:^(AFHTTPRequestOperation *operation, id responseObject){
+    [self requestDataPostWithString:loginString params:params successBlock:^( id responseObject){
                 
         BaseModel *loginModel = [BaseModel objectWithKeyValues:responseObject];
         
@@ -154,7 +154,7 @@
             [self.navigationController popViewControllerAnimated:YES];
         }
         
-    } andFailBlock:^{
+    } andFailBlock:^(NSError *error){
         
     }];
 }

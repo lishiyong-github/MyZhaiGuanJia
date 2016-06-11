@@ -105,8 +105,8 @@
                   symbolName = "-[ProductsDetailsProViewController leftTableView]"
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/zhixiang/ZhaiGuanjia/qingdaofu/TabBarController/%E4%BA%A7%E5%93%81/%E4%BA%A7%E5%93%81%E8%AF%A6%E6%83%85/%E4%BA%A7%E5%93%81%E4%BF%A1%E6%81%AF/ProductsDetailsProViewController.m"
-                  timestampString = "487307560.102794"
+                  urlString = "file:///Users/zhixiang/Documents/iOS_%E7%B1%B3%E6%9C%88%E8%99%B9/ZhaiGuanJia/qingdaofu/TabBarController/%E4%BA%A7%E5%93%81/%E4%BA%A7%E5%93%81%E8%AF%A6%E6%83%85/%E4%BA%A7%E5%93%81%E4%BF%A1%E6%81%AF/ProductsDetailsProViewController.m"
+                  timestampString = "487346363.689304"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "162"
@@ -120,8 +120,8 @@
                   symbolName = "-[ProductsDetailsProViewController leftTableView]"
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/zhixiang/ZhaiGuanjia/qingdaofu/TabBarController/%E4%BA%A7%E5%93%81/%E4%BA%A7%E5%93%81%E8%AF%A6%E6%83%85/%E4%BA%A7%E5%93%81%E4%BF%A1%E6%81%AF/ProductsDetailsProViewController.m"
-                  timestampString = "487307560.103196"
+                  urlString = "file:///Users/zhixiang/Documents/iOS_%E7%B1%B3%E6%9C%88%E8%99%B9/ZhaiGuanJia/qingdaofu/TabBarController/%E4%BA%A7%E5%93%81/%E4%BA%A7%E5%93%81%E8%AF%A6%E6%83%85/%E4%BA%A7%E5%93%81%E4%BF%A1%E6%81%AF/ProductsDetailsProViewController.m"
+                  timestampString = "487346363.689705"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "162"
@@ -265,8 +265,8 @@
                   symbolName = "__44-[AuthenLawViewController lawAuCommitButton]_block_invoke"
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/zhixiang/ZhaiGuanjia/qingdaofu/TabBarController/%E7%94%A8%E6%88%B7/%E8%AE%A4%E8%AF%81/%E8%AE%A4%E8%AF%81%E5%88%86%E7%B1%BB/AuthenLawViewController.m"
-                  timestampString = "487307560.10707"
+                  urlString = "file:///Users/zhixiang/Documents/iOS_%E7%B1%B3%E6%9C%88%E8%99%B9/ZhaiGuanJia/qingdaofu/TabBarController/%E7%94%A8%E6%88%B7/%E8%AE%A4%E8%AF%81/%E8%AE%A4%E8%AF%81%E5%88%86%E7%B1%BB/AuthenLawViewController.m"
+                  timestampString = "487346363.693307"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "99"
@@ -280,13 +280,13 @@
                   symbolName = "__44-[AuthenLawViewController lawAuCommitButton]_block_invoke_2"
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/zhixiang/ZhaiGuanjia/qingdaofu/TabBarController/%E7%94%A8%E6%88%B7/%E8%AE%A4%E8%AF%81/%E8%AE%A4%E8%AF%81%E5%88%86%E7%B1%BB/AuthenLawViewController.m"
-                  timestampString = "487307560.107749"
+                  urlString = "file:///Users/zhixiang/Documents/iOS_%E7%B1%B3%E6%9C%88%E8%99%B9/ZhaiGuanJia/qingdaofu/TabBarController/%E7%94%A8%E6%88%B7/%E8%AE%A4%E8%AF%81/%E8%AE%A4%E8%AF%81%E5%88%86%E7%B1%BB/AuthenLawViewController.m"
+                  timestampString = "487346363.693723"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "99"
                   endingLineNumber = "99"
-                  offsetFromSymbolStart = "85">
+                  offsetFromSymbolStart = "51">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -305,163 +305,6 @@
             endingLineNumber = "101"
             landmarkName = "-lawAuCommitButton"
             landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "qingdaofu/BaseVC/NetworkViewController.m"
-            timestampString = "487256324.34242"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "50"
-            endingLineNumber = "50"
-            landmarkName = "-requestDataPostWithString:params:successBlock:andFailBlock:"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[NetworkViewController requestDataPostWithString:params:successBlock:andFailBlock:]"
-                  moduleName = "qingdaofu"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/zhixiang/ZhaiGuanjia/qingdaofu/BaseVC/NetworkViewController.m"
-                  timestampString = "487307560.108823"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "50"
-                  endingLineNumber = "50"
-                  offsetFromSymbolStart = "394">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__84-[NetworkViewController requestDataPostWithString:params:successBlock:andFailBlock:]_block_invoke"
-                  moduleName = "qingdaofu"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/zhixiang/ZhaiGuanjia/qingdaofu/BaseVC/NetworkViewController.m"
-                  timestampString = "487307560.109286"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "50"
-                  endingLineNumber = "50"
-                  offsetFromSymbolStart = "73">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "qingdaofu/BaseVC/NetworkViewController.m"
-            timestampString = "487256325.40095"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "52"
-            endingLineNumber = "52"
-            landmarkName = "-requestDataPostWithString:params:successBlock:andFailBlock:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "qingdaofu/BaseVC/NetworkViewController.m"
-            timestampString = "487256366.85238"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "56"
-            endingLineNumber = "56"
-            landmarkName = "-requestDataPostWithString:params:successBlock:andFailBlock:"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[NetworkViewController requestDataPostWithString:params:successBlock:andFailBlock:]"
-                  moduleName = "qingdaofu"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/zhixiang/ZhaiGuanjia/qingdaofu/BaseVC/NetworkViewController.m"
-                  timestampString = "487307560.110111"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "56"
-                  endingLineNumber = "56"
-                  offsetFromSymbolStart = "506">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__84-[NetworkViewController requestDataPostWithString:params:successBlock:andFailBlock:]_block_invoke"
-                  moduleName = "qingdaofu"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/zhixiang/ZhaiGuanjia/qingdaofu/BaseVC/NetworkViewController.m"
-                  timestampString = "487307560.110452"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "56"
-                  endingLineNumber = "56"
-                  offsetFromSymbolStart = "131">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__copy_helper_block_"
-                  moduleName = "qingdaofu"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/zhixiang/ZhaiGuanjia/qingdaofu/BaseVC/NetworkViewController.m"
-                  timestampString = "487307560.110792"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "0"
-                  endingLineNumber = "0"
-                  offsetFromSymbolStart = "23">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__destroy_helper_block_"
-                  moduleName = "qingdaofu"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/zhixiang/ZhaiGuanjia/qingdaofu/BaseVC/NetworkViewController.m"
-                  timestampString = "487307560.11122"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "0"
-                  endingLineNumber = "0"
-                  offsetFromSymbolStart = "14">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__84-[NetworkViewController requestDataPostWithString:params:successBlock:andFailBlock:]_block_invoke11"
-                  moduleName = "qingdaofu"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/zhixiang/ZhaiGuanjia/qingdaofu/BaseVC/NetworkViewController.m"
-                  timestampString = "487307560.111571"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "56"
-                  endingLineNumber = "56"
-                  offsetFromSymbolStart = "73">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -502,12 +345,204 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "qingdaofu/TabBarController/&#x7528;&#x6237;/controller/MineViewController.m"
-            timestampString = "487257205.507024"
+            filePath = "qingdaofu/TabBarController/&#x7528;&#x6237;/&#x6211;&#x7684;&#x63a5;&#x5355;/&#x7ec8;&#x6b62;/&#x586b;&#x5199;&#x8fdb;&#x5ea6;/MyScheduleViewController.m"
+            timestampString = "487346170.768767"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "149"
-            endingLineNumber = "149"
+            startingLineNumber = "225"
+            endingLineNumber = "225"
+            landmarkName = "-writeMySchedule"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "qingdaofu/TabBarController/&#x7528;&#x6237;/&#x8ba4;&#x8bc1;/&#x8ba4;&#x8bc1;&#x5206;&#x7c7b;/view/TakePictureCell.m"
+            timestampString = "487329802.952883"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "79"
+            endingLineNumber = "79"
+            landmarkName = "-collectionView:cellForItemAtIndexPath:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "qingdaofu/TabBarController/&#x7528;&#x6237;/&#x8ba4;&#x8bc1;/&#x8ba4;&#x8bc1;&#x5206;&#x7c7b;/view/TakePictureCell.m"
+            timestampString = "487329212.848296"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
+            landmarkName = "-collectionDataList"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "qingdaofu/TabBarController/&#x7528;&#x6237;/&#x8ba4;&#x8bc1;/&#x8ba4;&#x8bc1;&#x5206;&#x7c7b;/AuthenPersonViewController.m"
+            timestampString = "487330000.441894"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "154"
+            endingLineNumber = "154"
+            landmarkName = "-tableView:cellForRowAtIndexPath:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "qingdaofu/TabBarController/&#x7528;&#x6237;/&#x8ba4;&#x8bc1;/&#x8ba4;&#x8bc1;&#x5206;&#x7c7b;/AuthenPersonViewController.m"
+            timestampString = "487330000.441894"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "156"
+            endingLineNumber = "156"
+            landmarkName = "-tableView:cellForRowAtIndexPath:"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[AuthenPersonViewController tableView:cellForRowAtIndexPath:]"
+                  moduleName = "qingdaofu"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/zhixiang/Documents/iOS_%E7%B1%B3%E6%9C%88%E8%99%B9/ZhaiGuanJia/qingdaofu/TabBarController/%E7%94%A8%E6%88%B7/%E8%AE%A4%E8%AF%81/%E8%AE%A4%E8%AF%81%E5%88%86%E7%B1%BB/AuthenPersonViewController.m"
+                  timestampString = "487346363.696773"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "156"
+                  endingLineNumber = "156"
+                  offsetFromSymbolStart = "402">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__62-[AuthenPersonViewController tableView:cellForRowAtIndexPath:]_block_invoke"
+                  moduleName = "qingdaofu"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/zhixiang/Documents/iOS_%E7%B1%B3%E6%9C%88%E8%99%B9/ZhaiGuanJia/qingdaofu/TabBarController/%E7%94%A8%E6%88%B7/%E8%AE%A4%E8%AF%81/%E8%AE%A4%E8%AF%81%E5%88%86%E7%B1%BB/AuthenPersonViewController.m"
+                  timestampString = "487346363.697141"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "156"
+                  endingLineNumber = "156"
+                  offsetFromSymbolStart = "27">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "qingdaofu/TabBarController/&#x7528;&#x6237;/&#x8ba4;&#x8bc1;/&#x8ba4;&#x8bc1;&#x5206;&#x7c7b;/view/TakePictureCell.m"
+            timestampString = "487329802.952883"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "71"
+            endingLineNumber = "71"
+            landmarkName = "-collectionView:numberOfItemsInSection:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "qingdaofu/TabBarController/&#x7528;&#x6237;/&#x8ba4;&#x8bc1;/&#x8ba4;&#x8bc1;&#x5206;&#x7c7b;/view/TakePictureCell.m"
+            timestampString = "487329802.952883"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "77"
+            endingLineNumber = "77"
+            landmarkName = "-collectionView:cellForItemAtIndexPath:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "qingdaofu/TabBarController/&#x7528;&#x6237;/&#x8ba4;&#x8bc1;/&#x8ba4;&#x8bc1;&#x5206;&#x7c7b;/view/TakePictureCell.m"
+            timestampString = "487329802.952883"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "92"
+            endingLineNumber = "92"
+            landmarkName = "-numberOfSectionsInCollectionView:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "qingdaofu/TabBarController/&#x7528;&#x6237;/&#x8ba4;&#x8bc1;/&#x8ba4;&#x8bc1;&#x5206;&#x7c7b;/view/TakePictureCell.m"
+            timestampString = "487329802.952883"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "87"
+            endingLineNumber = "87"
+            landmarkName = "-collectionView:cellForItemAtIndexPath:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "qingdaofu/TabBarController/&#x7528;&#x6237;/&#x8ba4;&#x8bc1;/&#x8ba4;&#x8bc1;&#x5206;&#x7c7b;/view/TakePictureCell.m"
+            timestampString = "487329590.784871"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "17"
+            endingLineNumber = "17"
+            landmarkName = "-initWithStyle:reuseIdentifier:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "qingdaofu/TabBarController/&#x7528;&#x6237;/controller/MineViewController.m"
+            timestampString = "487345932.543858"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "150"
+            endingLineNumber = "150"
             landmarkName = "-loginView"
             landmarkType = "5">
          </BreakpointContent>
@@ -518,45 +553,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "qingdaofu/TabBarController/&#x7528;&#x6237;/&#x6211;&#x7684;&#x63a5;&#x5355;/MyOrderViewController.m"
-            timestampString = "487307557.092854"
+            filePath = "qingdaofu/TabBarController/&#x7528;&#x6237;/controller/MineViewController.m"
+            timestampString = "487345932.543858"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "316"
-            endingLineNumber = "316"
-            landmarkName = "-getOrderListWithPage:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "qingdaofu/TabBarController/&#x7528;&#x6237;/&#x6211;&#x7684;&#x63a5;&#x5355;/MyOrderViewController.m"
-            timestampString = "487307567.294648"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "43"
-            endingLineNumber = "43"
-            landmarkName = "-viewDidLoad"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "qingdaofu/TabBarController/&#x7528;&#x6237;/&#x6211;&#x7684;&#x63a5;&#x5355;/MyOrderViewController.m"
-            timestampString = "487307570.435917"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "315"
-            endingLineNumber = "315"
-            landmarkName = "-getOrderListWithPage:"
+            startingLineNumber = "149"
+            endingLineNumber = "149"
+            landmarkName = "-loginView"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

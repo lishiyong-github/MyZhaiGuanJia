@@ -131,7 +131,7 @@
     NSString *codeString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kLoginGetCodeString];
     NSDictionary *params = @{@"mobile" : @"13162521916"};
     
-    [self requestDataPostWithString:codeString params:params successBlock:^(AFHTTPRequestOperation *operation, id responseObject){//成功
+    [self requestDataPostWithString:codeString params:params successBlock:^(id responseObject){//成功
         
         BaseModel *codeModel = [BaseModel objectWithKeyValues:responseObject];
         [self showHint:codeModel.msg];
@@ -151,7 +151,7 @@
                 return @"获取验证码";
             }];
         }
-    } andFailBlock:^{//失败
+    } andFailBlock:^(NSError *error){
         
     }];
 }
@@ -162,7 +162,7 @@
     NSDictionary *params = @{@"mobile" : @"13162521916",
                              @"validatecode" : @"1835",
                              @"new_password" : @"123456"};
-    [self requestDataPostWithString:forgetString params:params successBlock:^(AFHTTPRequestOperation *operation, id responseObject){
+    [self requestDataPostWithString:forgetString params:params successBlock:^(id responseObject){
         BaseModel *forgetModel = [BaseModel objectWithKeyValues:responseObject];
         [self showHint:forgetModel.msg];
         
@@ -170,7 +170,7 @@
             [self.navigationController popViewControllerAnimated:YES];
         }
         
-    } andFailBlock:^{
+    } andFailBlock:^(NSError *error){
         
     }];
 }

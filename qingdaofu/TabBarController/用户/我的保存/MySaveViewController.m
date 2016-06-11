@@ -149,7 +149,7 @@
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"page" : page
                              };
-    [self requestDataPostWithString:mySaveString params:params successBlock:^(AFHTTPRequestOperation *operation, id responseObject){
+    [self requestDataPostWithString:mySaveString params:params successBlock:^(id responseObject){
         
 //        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
 //        NSLog(@"dic is %@",dic);
@@ -161,7 +161,7 @@
         }
         
         [self.mySavetableView reloadData];
-    } andFailBlock:^{
+    } andFailBlock:^(NSError *error){
         
     }];
 }
@@ -175,7 +175,7 @@
                              @"token" : [self getValidateToken]
                              };
     
-    [self requestDataPostWithString:deleteSaveString params:params successBlock:^(AFHTTPRequestOperation *operation, id responseObject){
+    [self requestDataPostWithString:deleteSaveString params:params successBlock:^(id responseObject){
         BaseModel *model = [BaseModel objectWithKeyValues:responseObject];
         [self showHint:model.msg];
         if ([model.code isEqualToString:@"0000"]) {
@@ -183,7 +183,7 @@
             [self.mySavetableView reloadData];
         }
         
-    } andFailBlock:^{
+    } andFailBlock:^(NSError *error){
         
     }];
     

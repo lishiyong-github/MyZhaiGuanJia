@@ -67,8 +67,8 @@
 - (UITableView *)releaseEndTableView
 {
     if (!_releaseEndTableView) {
-        _releaseEndTableView = [UITableView newAutoLayoutView];
-        _releaseEndTableView.translatesAutoresizingMaskIntoConstraints = YES;
+//        _releaseEndTableView = [UITableView newAutoLayoutView];
+        _releaseEndTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _releaseEndTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _releaseEndTableView.delegate = self;
         _releaseEndTableView.dataSource = self;
@@ -356,12 +356,12 @@
                              @"id" : self.idString,
                              @"category" : self.categaryString
                              };
-    [self requestDataPostWithString:releaseString params:params successBlock:^(AFHTTPRequestOperation *operation, id responseObject){
+    [self requestDataPostWithString:releaseString params:params successBlock:^(id responseObject){
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
         [self.endArray addObject:response];
         [self.releaseEndTableView reloadData];
         
-    } andFailBlock:^{
+    } andFailBlock:^(NSError *error){
         
     }];
 }

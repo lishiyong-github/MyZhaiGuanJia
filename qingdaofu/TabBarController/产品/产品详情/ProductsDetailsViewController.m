@@ -98,11 +98,11 @@
                                      @"category" : rightModel.category,
                                      @"token" : [weakself getValidateToken]
                                      };
-            [weakself requestDataPostWithString:rightString params:params successBlock:^(AFHTTPRequestOperation *operation, id responseObject){
+            [weakself requestDataPostWithString:rightString params:params successBlock:^(id responseObject){
                 BaseModel *rightModel = [BaseModel objectWithKeyValues:responseObject];
                 [weakself showHint:rightModel.msg];
                 
-            } andFailBlock:^{
+            } andFailBlock:^(NSError *error){
                 
             }];
         }];
@@ -128,8 +128,8 @@
 - (UITableView *)productsDetailsTableView
 {
     if (!_productsDetailsTableView) {
-        _productsDetailsTableView = [UITableView newAutoLayoutView];
-        _productsDetailsTableView.translatesAutoresizingMaskIntoConstraints = YES;
+//        _productsDetailsTableView = [UITableView newAutoLayoutView];
+        _productsDetailsTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _productsDetailsTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _productsDetailsTableView.delegate = self;
         _productsDetailsTableView.dataSource = self;
@@ -376,7 +376,7 @@
                              @"id" : self.idString,
                              @"category" : self.categoryString
                              };
-    [self requestDataPostWithString:detailString params:params successBlock:^(AFHTTPRequestOperation *operation, id responseObject){
+    [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
         PublishingResponse *respModel = [PublishingResponse objectWithKeyValues:responseObject];
         
         self.navigationItem.title = respModel.product.codeString;
@@ -385,7 +385,7 @@
         
         [self.productsDetailsTableView reloadData];
         
-    } andFailBlock:^{
+    } andFailBlock:^(NSError *error){
         
     }];
 }

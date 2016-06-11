@@ -55,6 +55,12 @@
 		A154B8F21CE1B71D00884CA4 /* back@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A154B8EE1CE1B71D00884CA4 /* back@3x.png */; };
 		A154B8F51CE1C14100884CA4 /* ReportSuitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A154B8F41CE1C14100884CA4 /* ReportSuitViewController.m */; };
 		A154B8FC1CE1C57000884CA4 /* SuitBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = A154B8FB1CE1C57000884CA4 /* SuitBaseView.m */; };
+		A159F9441D0BEE5E00A6A024 /* MBResourceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A159F93C1D0BEE5E00A6A024 /* MBResourceManager.m */; };
+		A159F9451D0BEE5E00A6A024 /* StandardPaths.m in Sources */ = {isa = PBXBuildFile; fileRef = A159F93E1D0BEE5E00A6A024 /* StandardPaths.m */; };
+		A159F9461D0BEE5E00A6A024 /* UIViewController+MutipleImageChoice.m in Sources */ = {isa = PBXBuildFile; fileRef = A159F9401D0BEE5E00A6A024 /* UIViewController+MutipleImageChoice.m */; };
+		A159F9471D0BEE5E00A6A024 /* ZYQAssetPicker.Bundle in Resources */ = {isa = PBXBuildFile; fileRef = A159F9411D0BEE5E00A6A024 /* ZYQAssetPicker.Bundle */; };
+		A159F9481D0BEE5E00A6A024 /* ZYQAssetPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = A159F9431D0BEE5E00A6A024 /* ZYQAssetPickerController.m */; };
+		A159F94B1D0C497300A6A024 /* UIViewController+BlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = A159F94A1D0C497300A6A024 /* UIViewController+BlurView.m */; };
 		A1602E741CED8D320053F850 /* CompleteCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1602E731CED8D320053F850 /* CompleteCell.m */; };
 		A1602E771CEDA9F50053F850 /* CompletePhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = A1602E761CEDA9F50053F850 /* CompletePhotoView.m */; };
 		A1602E7A1CEDAF790053F850 /* BidMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1602E791CEDAF790053F850 /* BidMessageCell.m */; };
@@ -185,7 +191,6 @@
 		A17F7BE91CE578EB00E882A3 /* JKCountDownButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A17F7BE81CE578EB00E882A3 /* JKCountDownButton.m */; };
 		A17F7BF51CE5C52700E882A3 /* NewPublishCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A17F7BF41CE5C52700E882A3 /* NewPublishCell.m */; };
 		A17F7BFC1CE5DDDA00E882A3 /* ApplyRecordsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A17F7BFB1CE5DDDA00E882A3 /* ApplyRecordsViewController.m */; };
-		A186DBA21CF8157800DD0549 /* PictureCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = A186DBA11CF8157800DD0549 /* PictureCollectionView.m */; };
 		A18B26481CEAA699005526C5 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A18B26471CEAA699005526C5 /* MainViewController.m */; };
 		A18C675C1CD06C2E00C7B070 /* UIButton+Block.m in Sources */ = {isa = PBXBuildFile; fileRef = A18C675B1CD06C2E00C7B070 /* UIButton+Block.m */; };
 		A18C675F1CD087C500C7B070 /* UIView+Fram.m in Sources */ = {isa = PBXBuildFile; fileRef = A18C675E1CD087C500C7B070 /* UIView+Fram.m */; };
@@ -477,6 +482,17 @@
 		A154B8F41CE1C14100884CA4 /* ReportSuitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportSuitViewController.m; sourceTree = "<group>"; };
 		A154B8FA1CE1C57000884CA4 /* SuitBaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuitBaseView.h; sourceTree = "<group>"; };
 		A154B8FB1CE1C57000884CA4 /* SuitBaseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SuitBaseView.m; sourceTree = "<group>"; };
+		A159F93B1D0BEE5E00A6A024 /* MBResourceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBResourceManager.h; sourceTree = "<group>"; };
+		A159F93C1D0BEE5E00A6A024 /* MBResourceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBResourceManager.m; sourceTree = "<group>"; };
+		A159F93D1D0BEE5E00A6A024 /* StandardPaths.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StandardPaths.h; sourceTree = "<group>"; };
+		A159F93E1D0BEE5E00A6A024 /* StandardPaths.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StandardPaths.m; sourceTree = "<group>"; };
+		A159F93F1D0BEE5E00A6A024 /* UIViewController+MutipleImageChoice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+MutipleImageChoice.h"; sourceTree = "<group>"; };
+		A159F9401D0BEE5E00A6A024 /* UIViewController+MutipleImageChoice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+MutipleImageChoice.m"; sourceTree = "<group>"; };
+		A159F9411D0BEE5E00A6A024 /* ZYQAssetPicker.Bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ZYQAssetPicker.Bundle; sourceTree = "<group>"; };
+		A159F9421D0BEE5E00A6A024 /* ZYQAssetPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZYQAssetPickerController.h; sourceTree = "<group>"; };
+		A159F9431D0BEE5E00A6A024 /* ZYQAssetPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZYQAssetPickerController.m; sourceTree = "<group>"; };
+		A159F9491D0C497300A6A024 /* UIViewController+BlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+BlurView.h"; sourceTree = "<group>"; };
+		A159F94A1D0C497300A6A024 /* UIViewController+BlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+BlurView.m"; sourceTree = "<group>"; };
 		A1602E721CED8D310053F850 /* CompleteCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompleteCell.h; sourceTree = "<group>"; };
 		A1602E731CED8D320053F850 /* CompleteCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompleteCell.m; sourceTree = "<group>"; };
 		A1602E751CEDA9F50053F850 /* CompletePhotoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompletePhotoView.h; sourceTree = "<group>"; };
@@ -679,8 +695,6 @@
 		A17F7BF41CE5C52700E882A3 /* NewPublishCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewPublishCell.m; sourceTree = "<group>"; };
 		A17F7BFA1CE5DDDA00E882A3 /* ApplyRecordsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplyRecordsViewController.h; sourceTree = "<group>"; };
 		A17F7BFB1CE5DDDA00E882A3 /* ApplyRecordsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplyRecordsViewController.m; sourceTree = "<group>"; };
-		A186DBA01CF8157800DD0549 /* PictureCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PictureCollectionView.h; sourceTree = "<group>"; };
-		A186DBA11CF8157800DD0549 /* PictureCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PictureCollectionView.m; sourceTree = "<group>"; };
 		A18B26461CEAA699005526C5 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		A18B26471CEAA699005526C5 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		A18C675A1CD06C2E00C7B070 /* UIButton+Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+Block.h"; sourceTree = "<group>"; };
@@ -1123,6 +1137,22 @@
 				A1FB26561CF2B41B00B66608 /* ReportSuccessCell.m */,
 			);
 			path = view;
+			sourceTree = "<group>";
+		};
+		A159F93A1D0BEE5E00A6A024 /* MutipleChoiceImage */ = {
+			isa = PBXGroup;
+			children = (
+				A159F93B1D0BEE5E00A6A024 /* MBResourceManager.h */,
+				A159F93C1D0BEE5E00A6A024 /* MBResourceManager.m */,
+				A159F93D1D0BEE5E00A6A024 /* StandardPaths.h */,
+				A159F93E1D0BEE5E00A6A024 /* StandardPaths.m */,
+				A159F93F1D0BEE5E00A6A024 /* UIViewController+MutipleImageChoice.h */,
+				A159F9401D0BEE5E00A6A024 /* UIViewController+MutipleImageChoice.m */,
+				A159F9411D0BEE5E00A6A024 /* ZYQAssetPicker.Bundle */,
+				A159F9421D0BEE5E00A6A024 /* ZYQAssetPickerController.h */,
+				A159F9431D0BEE5E00A6A024 /* ZYQAssetPickerController.m */,
+			);
+			path = MutipleChoiceImage;
 			sourceTree = "<group>";
 		};
 		A16856731CE951D0006A0887 /* view */ = {
@@ -1979,13 +2009,13 @@
 			isa = PBXGroup;
 			children = (
 				A17691271CD99758004289DD /* 结案 */,
-				A176911C1CD983E8004289DD /* 终止 */,
 				A17691181CD981FC004289DD /* 处理中 */,
+				A176911C1CD983E8004289DD /* 终止 */,
 				A17EE39B1CD8AF2100ECC631 /* 申请中 */,
-				A17EE3921CD8983900ECC631 /* MyOrderViewController.h */,
-				A17EE3931CD8983900ECC631 /* MyOrderViewController.m */,
 				A17691401CD9DA0A004289DD /* AnotherHomeCell.h */,
 				A17691411CD9DA0A004289DD /* AnotherHomeCell.m */,
+				A17EE3921CD8983900ECC631 /* MyOrderViewController.h */,
+				A17EE3931CD8983900ECC631 /* MyOrderViewController.m */,
 			);
 			path = "我的接单";
 			sourceTree = "<group>";
@@ -2049,8 +2079,6 @@
 				A17964D41CD2EAB100B6AD47 /* AuthenBaseView.m */,
 				A16BA1471CEC4E2B00A7010C /* TakePictureCell.h */,
 				A16BA1481CEC4E2B00A7010C /* TakePictureCell.m */,
-				A186DBA01CF8157800DD0549 /* PictureCollectionView.h */,
-				A186DBA11CF8157800DD0549 /* PictureCollectionView.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -2199,6 +2227,8 @@
 				A1ECB66E1CED6CA70017EA10 /* PlaceHolderTextView.m */,
 				A14C17571D07A78E003826F8 /* NSDate+FormatterTime.h */,
 				A14C17581D07A78E003826F8 /* NSDate+FormatterTime.m */,
+				A159F9491D0C497300A6A024 /* UIViewController+BlurView.h */,
+				A159F94A1D0C497300A6A024 /* UIViewController+BlurView.m */,
 			);
 			path = "工具类";
 			sourceTree = "<group>";
@@ -2206,6 +2236,7 @@
 		A1A017311C5B677200027134 /* 第三方 */ = {
 			isa = PBXGroup;
 			children = (
+				A159F93A1D0BEE5E00A6A024 /* MutipleChoiceImage */,
 				A1770E211CFEA2C1003579E1 /* StarView */,
 				A17F7BE61CE578EB00E882A3 /* JKCountDownButton */,
 				A19B8E181CCF42E300F8EBF2 /* PureLayout */,
@@ -2624,6 +2655,7 @@
 				A1718DE81CFD6B840007DA6F /* list_icon_agent@3x.png in Resources */,
 				A1718DD91CFD38E70007DA6F /* stop@3x.png in Resources */,
 				A1770E3F1CFEE98C003579E1 /* banner@3x.png in Resources */,
+				A159F9471D0BEE5E00A6A024 /* ZYQAssetPicker.Bundle in Resources */,
 				A1A016B21C5A0C0300027134 /* LaunchScreen.storyboard in Resources */,
 				A16BA1501CEC746D00A7010C /* nav_more@2x.png in Resources */,
 				A154B8D91CE1912800884CA4 /* open@2x.png in Resources */,
@@ -2757,6 +2789,7 @@
 				A1A34C081CE30A4C00AD454A /* ReportSuitCell.m in Sources */,
 				A14C17641D080049003826F8 /* ProDetailCell.m in Sources */,
 				A1A017561C5B696A00027134 /* NSObject+MJKeyValue.m in Sources */,
+				A159F9461D0BEE5E00A6A024 /* UIViewController+MutipleImageChoice.m in Sources */,
 				A1A34C0B1CE30AE900AD454A /* ReportSuitSeCell.m in Sources */,
 				A10D7B8B1CEB246700422D7D /* DebtCreditMessageViewController.m in Sources */,
 				A17691461CD9E42A004289DD /* AdditionalEvaluateViewController.m in Sources */,
@@ -2800,6 +2833,7 @@
 				A154B8F51CE1C14100884CA4 /* ReportSuitViewController.m in Sources */,
 				A1A34C051CE2FE7500AD454A /* UserButton.m in Sources */,
 				A16856AC1CE9CBA5006A0887 /* ProDetailHeadFootView.m in Sources */,
+				A159F9451D0BEE5E00A6A024 /* StandardPaths.m in Sources */,
 				A1770E161CFE6AA3003579E1 /* CompleteLawCell.m in Sources */,
 				A19B8E531CCF533B00F8EBF2 /* ProductsViewController.m in Sources */,
 				A1982B361CFFD730001770A7 /* CompanyWebSiteViewController.m in Sources */,
@@ -2889,6 +2923,7 @@
 				A1A0172A1C5B422700027134 /* NetworkViewController.m in Sources */,
 				A18F141C1CF6EAA800B14318 /* ProPickerView.m in Sources */,
 				A1A97E571CDC671000EDE320 /* SystemMessagesViewController.m in Sources */,
+				A159F9481D0BEE5E00A6A024 /* ZYQAssetPickerController.m in Sources */,
 				A1A017351C5B67D400027134 /* MBProgressHUD.m in Sources */,
 				A19985191CE02BFC0055A572 /* ModifyView.m in Sources */,
 				A1A017571C5B696A00027134 /* NSObject+MJProperty.m in Sources */,
@@ -2912,6 +2947,7 @@
 				9CEA216B1CE2140C002C5BA7 /* UIButton+Addition.m in Sources */,
 				A16856801CE99358006A0887 /* ProductsDetailsProViewController.m in Sources */,
 				A14C17681D0AE577003826F8 /* UserModel.m in Sources */,
+				A159F94B1D0C497300A6A024 /* UIViewController+BlurView.m in Sources */,
 				A10D7B7E1CEAFB7A00422D7D /* AgentCell.m in Sources */,
 				A16BA13D1CEBF57E00A7010C /* DebtCell.m in Sources */,
 				A18C675F1CD087C500C7B070 /* UIView+Fram.m in Sources */,
@@ -2929,7 +2965,7 @@
 				A1A017551C5B696A00027134 /* NSObject+MJCoding.m in Sources */,
 				A16BA1541CEC757900A7010C /* AllProView.m in Sources */,
 				A1A34C3D1CE32CF700AD454A /* LoginCell.m in Sources */,
-				A186DBA21CF8157800DD0549 /* PictureCollectionView.m in Sources */,
+				A159F9441D0BEE5E00A6A024 /* MBResourceManager.m in Sources */,
 				A1A97E4E1CDC66D600EDE320 /* PublishMessagesViewController.m in Sources */,
 				A17EE37F1CD84DDF00ECC631 /* DetailBaseView.m in Sources */,
 				A17691351CD9C1D1004289DD /* DelayRequestViewController.m in Sources */,

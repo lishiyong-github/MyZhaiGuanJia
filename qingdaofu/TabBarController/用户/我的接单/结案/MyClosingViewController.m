@@ -64,8 +64,8 @@
 - (UITableView *)myClosingTableView
 {
     if (!_myClosingTableView) {
-        _myClosingTableView = [UITableView newAutoLayoutView];
-        _myClosingTableView.translatesAutoresizingMaskIntoConstraints = YES;
+//        _myClosingTableView = [UITableView newAutoLayoutView];
+        _myClosingTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _myClosingTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _myClosingTableView.delegate = self;
         _myClosingTableView.dataSource = self;

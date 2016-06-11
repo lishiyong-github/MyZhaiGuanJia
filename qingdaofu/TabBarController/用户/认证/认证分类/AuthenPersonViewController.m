@@ -21,10 +21,7 @@
 @property (nonatomic,strong) BaseCommitButton *personAuCommitButton;
 @property (nonatomic,strong) UIAlertController *alertController;
 
-@property (nonatomic,strong) NSString *pictureString;
-@property (nonatomic,strong) UIImage *pictureImage1;
-@property (nonatomic,strong) UIImage *pictureImage2;
-
+@property (nonatomic,assign) NSInteger *pictureInt;
 
 @end
 
@@ -34,9 +31,6 @@
     [super viewDidLoad];
     self.navigationItem.title = @"认证个人";
     self.navigationItem.leftBarButtonItem = self.leftItem;
-    
-    self.pictureImage1 = [UIImage imageNamed:@"btn_camera"];
-    self.pictureImage2  = [UIImage imageNamed:@"btn_camera"];
     
     [self setupForDismissKeyboard];
     
@@ -63,8 +57,7 @@
 - (UITableView *)personAuTableView
 {
     if (!_personAuTableView) {
-        _personAuTableView = [UITableView newAutoLayoutView];
-        _personAuTableView.translatesAutoresizingMaskIntoConstraints = YES;
+        _personAuTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _personAuTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _personAuTableView.delegate = self;
         _personAuTableView.dataSource = self;
@@ -89,12 +82,12 @@
                                      @"cardno" : @"420621199109095462",   //证件号
                                      @"mobile" : @"13162521916",
                                      @"email" : @"",    //邮箱
-                                     @"casedesc" : @"",  //案例
+                                     @"casedesc" : @"个人案例个人案例个人案例",  //案例
                                      @"type" : @"add",
                                      @"token" : [weakself getValidateToken]
                                      };
             
-            [weakself requestDataPostWithString:personAuString params:params successBlock:^(AFHTTPRequestOperation *operation, id responseObject){
+            [weakself requestDataPostWithString:personAuString params:params successBlock:^(id responseObject){
 
                 BaseModel *personModel = [BaseModel objectWithKeyValues:responseObject];
                 
@@ -110,7 +103,7 @@
                     [personNav pushViewController:completeVC animated:NO];
                 }
                 
-            } andFailBlock:^{
+            } andFailBlock:^(NSError *error){
                 
             }];
             
@@ -160,21 +153,10 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        cell.backgroundColor = kRedColor;
-        
-//        [cell.pictureButton1 setImage:self.pictureImage1 forState:0];
-//        [cell.pictureButton1 addTarget:self action:@selector(showAlertViewController) forControlEvents:UIControlEventTouchUpInside];
-//        QDFWeakSelf;
-//        [cell.pictureButton1 addAction:^(UIButton *btn) {
-//            self.pictureString = @"picture1";
-//            [weakself showAlertViewController];
-//        }];
-        
-//        [cell.pictureButton2 setImage:self.pictureImage2 forState:0];
-//        [cell.pictureButton2 addAction:^(UIButton *btn) {
-//            self.pictureString = @"picture2";
-//            [weakself showAlertViewController];
-//        }];
+        [cell setDidSelectedItem:^(NSInteger itemTag) {
+            [self presentViewController:self.alertController animated:YES completion:nil];
+            _pictureInt = itemTag;
+        }];
         
         return cell;
         
@@ -366,13 +348,9 @@
     
     UIImage *savedImage = [[UIImage alloc] initWithContentsOfFile:fullPath];
     
-    if ([self.pictureString isEqualToString:@"picture1"]) {
-        self.pictureImage1 = savedImage;
-    }else{
-        self.pictureImage2 = savedImage;
-    }
-    
-    [self.personAuTableView reloadData];
+    TakePictureCell *cell = [self.personAuTableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+    [cell.collectionDataList replaceObjectAtIndex:(NSUInteger)_pictureInt withObject:savedImage];
+    [cell reloadData];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker

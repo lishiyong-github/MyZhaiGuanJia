@@ -7,12 +7,12 @@
 //
 
 #import "ReportFinanceViewController.h"
+
 #import "ReportFiSucViewController.h"   //发布成功
 #import "MySaveViewController.h"
 
 #import "AgentCell.h"
 #import "EditDebtAddressCell.h"
-
 #import "ReportFootView.h"
 #import "EvaTopSwitchView.h"
 
@@ -71,8 +71,7 @@
 - (UITableView *)reportFinanceTableView
 {
     if (!_reportFinanceTableView) {
-        _reportFinanceTableView = [UITableView newAutoLayoutView];
-        _reportFinanceTableView.translatesAutoresizingMaskIntoConstraints = YES;
+        _reportFinanceTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _reportFinanceTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _reportFinanceTableView.delegate = self;
         _reportFinanceTableView.dataSource = self;
@@ -345,7 +344,7 @@
                              @"token" : [self getValidateToken]
                              };
     
-    [self requestDataPostWithString:reFinanceString params:params successBlock:^(AFHTTPRequestOperation *operation, id responseObject){
+    [self requestDataPostWithString:reFinanceString params:params successBlock:^(id responseObject){
         
         BaseModel *model = [BaseModel objectWithKeyValues:responseObject];
         [self showHint:model.msg];
@@ -366,7 +365,7 @@
             }
         }
         
-    } andFailBlock:^{
+    } andFailBlock:^(NSError *error){
         
     }];
 }

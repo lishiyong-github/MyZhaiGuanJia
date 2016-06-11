@@ -64,8 +64,8 @@
 - (UITableView *)repCoTableView
 {
     if (!_repCoTableView) {
-        _repCoTableView = [UITableView newAutoLayoutView];
-        _repCoTableView.translatesAutoresizingMaskIntoConstraints = YES;
+//        _repCoTableView = [UITableView newAutoLayoutView];
+        _repCoTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _repCoTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _repCoTableView.backgroundColor = kBackColor;
         _repCoTableView.delegate = self;
@@ -254,7 +254,7 @@
                              @"token" : [self getValidateToken]
                              };
     
-    [self requestDataPostWithString:reFinanceString params:params successBlock:^(AFHTTPRequestOperation *operation, id responseObject){
+    [self requestDataPostWithString:reFinanceString params:params successBlock:^(id responseObject){
         
         BaseModel *suitModel = [BaseModel objectWithKeyValues:responseObject];
         
@@ -277,7 +277,7 @@
             
             
         }
-    } andFailBlock:^{
+    } andFailBlock:^(NSError *error){
         
     }];
     

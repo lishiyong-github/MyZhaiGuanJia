@@ -92,34 +92,38 @@
         QDFWeakSelf;
         [_orderHeadView setDidSelectedSeg:^(NSInteger segTag) {
             switch (segTag) {
-                case 111:{
+                case 111:{//全部
                     weakself.status = @"01";
                     weakself.progresStatus = @"1234";
-                    [weakself.myOrderTableView reloadData];
+                    [weakself getOrderListWithPage:@"0"];
                 }
                     break;
-                case 112:{
+                case 112:{//申请中
+                    weakself.orderHeadView.leftsConstraints.constant = kScreenWidth/5;
                     weakself.status = @"0";
                     weakself.progresStatus = @"1";
-                    [weakself.myOrderTableView reloadData];
+                    [weakself getOrderListWithPage:@"0"];
                 }
                     break;
-                case 113:{
+                case 113:{//处理中
+                    weakself.orderHeadView.leftsConstraints.constant = kScreenWidth/5*2;
                     weakself.status = @"1";
                     weakself.progresStatus = @"2";
-                    [weakself.myOrderTableView reloadData];
+                    [weakself getOrderListWithPage:@"0"];
                 }
                     break;
-                case 114:{
+                case 114:{//终止
+                    weakself.orderHeadView.leftsConstraints.constant = kScreenWidth/5*3;
                     weakself.status = @"1";
                     weakself.progresStatus = @"3";
-                    [weakself.myOrderTableView reloadData];
+                    [weakself getOrderListWithPage:@"0"];
                 }
                     break;
-                case 115:{
+                case 115:{//结案
+                    weakself.orderHeadView.leftsConstraints.constant = kScreenWidth/5*4;
                     weakself.status = @"1";
                     weakself.progresStatus = @"4";
-                    [weakself.myOrderTableView reloadData];
+                    [weakself getOrderListWithPage:@"0"];
                 }
                     break;
                 default:
@@ -133,8 +137,8 @@
 - (UITableView *)myOrderTableView
 {
     if (!_myOrderTableView) {
-        _myOrderTableView = [UITableView newAutoLayoutView];
-        _myOrderTableView.translatesAutoresizingMaskIntoConstraints = YES;
+//        _myOrderTableView = [UITableView newAutoLayoutView];
+        _myOrderTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _myOrderTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _myOrderTableView.delegate = self;
         _myOrderTableView.dataSource = self;
@@ -160,28 +164,11 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-//    if ([self.progresStatus isEqualToString:@"1"]){//申请中
-//        return 2;
-//    }else if ([self.progresStatus isEqualToString:@"2"]){//处理中
-//        return 1;
-//    }else if ([self.progresStatus isEqualToString:@"3"]){//终止
-//        return 3;
-//    }else if ([self.progresStatus isEqualToString:@"4"]){//结案
-//        return 1;
-//    }
-//    return 6; //全部
-    
     return  self.myOrderDataList.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    if ([self.progresStatus isEqualToString:@"1"] || [self.progresStatus isEqualToString:@"3"]) {
-//        return 156;
-//    }else if ([self.progresStatus isEqualToString:@"2"] || [self.progresStatus isEqualToString:@"4"]){
-//        return 200;
-//    }
-//    return 200;
     RowsModel *orderModel = self.myOrderDataList[indexPath.section];
     
     if (([orderModel.progress_status intValue] == 1) || [orderModel.progress_status intValue] == 3) {
@@ -268,6 +255,7 @@
         }
         cell.rateView.label2.text = @"债权类型";
     }
+    
     /*typeLabel*/
     if ([rowModel.progress_status integerValue]  == 0) {
         cell.typeLabel.text = @"待发布";
@@ -285,124 +273,44 @@
     cell.moneyView.label1.text = rowModel.money;
     cell.moneyView.label2.text = @"借款本金(万元)";
     
-    if ([rowModel.progress_status intValue] == 3) {
+    if (([rowModel.progress_status intValue] == 1) || ([rowModel.progress_status intValue] == 3)) {//申请中，终止
         [cell.firstButton setHidden:YES];
         [cell.secondButton setHidden:YES];
         [cell.thirdButton setHidden:YES];
-    }else{
+    }else if ([rowModel.progress_status intValue] == 2){//处理中（距离单子处理还剩一周，显示截至日期）
         [cell.firstButton setHidden:NO];
         [cell.secondButton setHidden:NO];
         [cell.thirdButton setHidden:NO];
-        //            [cell.firstButton setTitle:@"您有新的申请记录" forState:0];
-        [cell.secondButton setTitle:@"补充信息" forState:0];
-        [cell.thirdButton setTitle:@"查看申请" forState:0];
-        
-        QDFWeakSelf;
-        [cell.secondButton addAction:^(UIButton *btn) {
-        }];
-        [cell.thirdButton addAction:^(UIButton *btn) {
-            ApplyRecordsViewController *applyRecordsVC = [[ApplyRecordsViewController alloc] init];
-            applyRecordsVC.idStr = rowModel.idString;
-            applyRecordsVC.categaryStr = rowModel.category;
-            [self.navigationController pushViewController:applyRecordsVC animated:YES];
-        }];
-    }
-    
-    return cell;
-    
-    /*
-    if ([self.progresStatus isEqualToString:@"1"]){//申请中
-        identifier = @"orderList1";
-        AnotherHomeCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if (!cell) {
-            cell = [[AnotherHomeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.typeLabel.text = @"申请中";
-        cell.typeLabel.textColor = kBlueColor;
-        
-        [cell.secondButton setHidden:YES];
-        [cell.thirdButton setHidden:YES];
-        
-        return cell;
-        
-    }else if ([self.progresStatus isEqualToString:@"2"]){
-        identifier = @"orderList2";
-        AnotherHomeCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if (!cell) {
-            cell = [[AnotherHomeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.typeLabel.text = @"处理中";
-        cell.typeLabel.textColor = kBlueColor;
-        
-        [cell.firstButton setTitle:@"截止日期：2016-09-09" forState:0];
-        [cell.secondButton setHidden:YES];
+        [cell.firstButton setTitle:@"截止日期：2016-06-11" forState:0];
+        [cell.secondButton setTitle:@"申请延期" forState:0];
         [cell.thirdButton setTitle:@"填写进度" forState:0];
         
         QDFWeakSelf;
-        [cell.thirdButton addAction:^(UIButton *btn) {//填写进度
-            MyScheduleViewController *myScheduleVC = [[MyScheduleViewController alloc] init];
-            [weakself.navigationController pushViewController:myScheduleVC animated:YES];
+        [cell.secondButton addAction:^(UIButton *btn) {
             
         }];
-        return cell;
         
-    }else if ([self.progresStatus isEqualToString:@"3"]){
-        identifier = @"orderList3";
-        AnotherHomeCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if (!cell) {
-            cell = [[AnotherHomeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.typeLabel.text = @"已终止";
-        cell.typeLabel.textColor = kRedColor;
-        
-        [cell.secondButton setHidden:YES];
-        [cell.thirdButton setHidden:YES];
-        
-        return cell;
-    }else if ([self.progresStatus isEqualToString:@"4"]){
-        
-        identifier = @"orderList4";
-        
-        AnotherHomeCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if (!cell) {
-            cell = [[AnotherHomeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        [cell.secondButton setHidden:YES];
-        [cell.thirdButton setTitle:@"去评价" forState:0];
-        QDFWeakSelf;
         [cell.thirdButton addAction:^(UIButton *btn) {
-            AdditionalEvaluateViewController *additionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
-            [weakself.navigationController pushViewController:additionalEvaluateVC animated:YES];
+            MyScheduleViewController *myScheduleVC = [[MyScheduleViewController alloc] init];
+            myScheduleVC.idString = rowModel.idString;
+            myScheduleVC.categoryString = rowModel.category;
+            [self.navigationController pushViewController:myScheduleVC animated:YES];
         }];
         
-        return cell;
+    }else {//结案
+        [cell.firstButton setHidden:YES];
+        [cell.secondButton setHidden:YES];
+        [cell.thirdButton setHidden:NO];
+        [cell.thirdButton setTitle:@"去评价" forState:0];
+        
+        QDFWeakSelf;
+        [cell.thirdButton addAction:^(UIButton *btn) {
+            AdditionalEvaluateViewController *addtionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
+            [weakself.navigationController pushViewController:addtionalEvaluateVC animated:YES];
+        }];
     }
-    
-    identifier = @"orderList0";    //全部
-    AnotherHomeCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    if (!cell) {
-        cell = [[AnotherHomeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-    }
-    
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    cell.typeLabel.text = @"全部";
-    cell.typeLabel.textColor = kBlueColor;
-    
-    [cell.firstButton setTitle:@"截止日期：2016-05-06" forState:0];
-    [cell.secondButton setHidden:YES];
-    [cell.thirdButton setTitle:@"填写进度" forState:0];
     
     return cell;
-     */
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -452,9 +360,9 @@
                              };
     [self headerRefreshWithPage:@"1" urlString:myOrderString Parameter:params successBlock:^(AFHTTPRequestOperation *operation, id responseObject){
         
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSLog(@"dic is %@",dic);
-        
+//        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+//        NSLog(@"dic is %@",dic);
+        [self.myOrderDataList removeAllObjects];
         ReleaseResponse *responceModel = [ReleaseResponse objectWithKeyValues:responseObject];
         
         for (RowsModel *orderModel in responceModel.rows) {

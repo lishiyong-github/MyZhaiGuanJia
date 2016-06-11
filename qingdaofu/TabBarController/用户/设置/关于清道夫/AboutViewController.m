@@ -111,6 +111,7 @@
         _aboutCommitButton = [UIButton newAutoLayoutView];
         _aboutCommitButton.backgroundColor = kBackColor;
         _aboutCommitButton.titleLabel.numberOfLines = 0;
+        _aboutCommitButton.titleLabel.textAlignment = NSTextAlignmentCenter;
         NSString *aString1  = @"官方网站";
         NSString *aString2 = @"Copyright©2015-2016 直向资产管理有限公司　沪ICP备15055061号-1";
         //@"Copyright©2015-2016 直向资产管理有限公司　沪ICP备15055061号-1";

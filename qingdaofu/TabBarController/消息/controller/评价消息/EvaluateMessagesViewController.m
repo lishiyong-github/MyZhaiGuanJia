@@ -88,8 +88,8 @@
 - (UITableView *)evaluateTableView
 {
     if (!_evaluateTableView) {
-        _evaluateTableView = [UITableView newAutoLayoutView];
-        _evaluateTableView.translatesAutoresizingMaskIntoConstraints = YES;
+//        _evaluateTableView = [UITableView newAutoLayoutView];
+        _evaluateTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _evaluateTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _evaluateTableView.delegate = self;
         _evaluateTableView.dataSource = self;

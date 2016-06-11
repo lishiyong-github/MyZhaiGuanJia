@@ -377,13 +377,13 @@
                              @"id" : self.idString,
                              @"category" : self.categaryString
                              };
-    [self requestDataPostWithString:detailString params:params successBlock:^(AFHTTPRequestOperation *operation, id responseObject){
+    [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
         
         [self.dealingDataList addObject:response];
         [self.dealingTableView reloadData];
         
-    } andFailBlock:^{
+    } andFailBlock:^(NSError *error){
         
     }];
 }
