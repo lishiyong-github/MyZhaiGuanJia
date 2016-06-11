@@ -1,0 +1,165 @@
+//
+//  qingdaofu.pch
+//  qingdaofu
+//
+//  Created by zhixiang on 16/1/29.
+//  Copyright © 2016年 zhixiang. All rights reserved.
+//
+
+#ifndef qingdaofu_pch
+#define qingdaofu_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#endif /* qingdaofu_pch */
+
+
+
+#import <Availability.h>
+
+#ifndef __IPHONE_4_0
+#warning "This project uses features only available in iOS SDK 4.0 and later."
+#endif
+
+#ifdef __OBJC__
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import "PureLayout.h"
+#import "UIView+Fram.h"  
+#import "UIButton+Block.h"
+#import "NSString+Fram.h"
+#import "UIViewController+DismissKeyboard.h"
+#import "UIButton+Addition.h"
+#import "UIView+UITextColor.h"
+#import "UIViewController+HUD.h"
+#import "MJExtension.h"
+#import "BaseModel.h"
+#import "NSDate+FormatterTime.h"
+
+
+
+#define kScreenWidth [UIScreen mainScreen].bounds.size.width
+#define kScreenHeight [UIScreen mainScreen].bounds.size.height
+#define kNavHeight 64
+#define kTabBarHeight 49
+#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
+
+#define UIColorFromRGB1(rgbValue,alphaValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:alphaValue]
+
+
+//文字颜色
+#define kBlueColor UIColorFromRGB(0x0065b3)  //主色调
+#define kBlackColor UIColorFromRGB(0x333333)  //黑色
+#define kGrayColor UIColorFromRGB(0x666666)  //灰色
+#define kLightGrayColor UIColorFromRGB(0x999999)//浅灰色
+#define kYellowColor UIColorFromRGB(0xff871f)  //黄色
+#define kRedColor UIColorFromRGB(0xff5959)  //红色
+#define kDarkGrayColor UIColorFromRGB(0x37485b) //深灰色
+
+//背景色
+#define kNavColor UIColorFromRGB(0xffffff)  //导航栏颜色1
+#define kNavColor1 UIColorFromRGB(0x42566d) //导航栏颜色2（产品详情界面）
+#define kCellSelectedColor UIColorFromRGB(0xeef3f6)  //单元格选中颜色
+#define kSelectedColor UIColorFromRGB(0xc6d3dc)  //按钮不可点击颜色
+
+#define kTabBarColor UIColorFromRGB1(0xf9f9f9,0.95)  //tabBar颜色
+#define kBackColor UIColorFromRGB(0xf2f3f7)  //背景色
+#define kSeparateColor UIColorFromRGB(0xdddddd)  //分割线颜色
+
+//文字大小
+#define kNavFont [UIFont systemFontOfSize:18]  //标题
+#define kBigFont [UIFont systemFontOfSize:15]    //正文
+#define kFirstFont [UIFont systemFontOfSize:14]  //内容大一点
+#define kSecondFont [UIFont systemFontOfSize:12] //内容小一点
+#define kTabBarFont [UIFont systemFontOfSize:10]  //tabBar文字大小
+
+#define kAttributeFont1 [UIFont fontWithName:@"" size:12];
+#define kAttributeFont2 [UIFont fontWithName:@"" size:15];
+
+
+#define corner 2
+#define kLineWidth 0.5
+
+//边距
+#define kBigPadding 15    //较大间距
+#define kSmallPadding 10  //较小间距
+#define kCellHeight 44    //一般单元格高度
+
+//使用block代替button点击事件
+#define QDFWeakWithNameAndObject(_obj, _name) __weak typeof(_obj) weak##_name = _obj
+/**
+ Define a weak for a given object.
+ */
+#define QDFWeak(_obj) QDFWeakWithNameAndObject(_obj, _obj)
+/**
+ Define a weak self.
+ */
+#define QDFWeakSelf QDFWeak(self)
+
+
+/**
+ Application Programming Interface（API）
+ */
+
+#define kQDFUrlString @"http://www.zcb2016.com/wap/"
+#define kQDFTestUrlString @"http://testq.zcb2016.com/wap/"
+//@"http://192.168.20.149/wap/"
+
+//post
+/*
+ 登录注册
+ */
+#define kLoginGetCodeString  @"user/smscode"    //获取手机验证码1
+#define kRegisterString     @"user/registery"   //注册1
+#define kLoginString    @"user/login"    //登录1
+#define kExitString    @"user/logout"     //退出1
+#define kModifyPasswordString  @"user/modifypassword"  //修改密码1
+#define kResetPasswordString  @"user/resetpassword"     //重置密码
+
+/*发布产品*/
+#define kPublishFinanceString @"publish/financing"  //发布融资
+#define kPublishCollection    @"publish/creditorcollection"  //发布催收
+#define kPublishSuit          @"publish/creditorcollection"  //发布诉讼
+
+/*修改发布*/
+#define k
+
+#define kIsLoginString  @"common/islogin"   //检验token与认证类型
+#define kSuggestionString @"public/opinion"    //意见反馈1
+
+//我的接单 我的发布
+#define kMyOrdersString   @"apply/index"    //我的接单
+#define kMyReleaseString  @"apply/released"   //我的发布
+#define kMyReleaseDetailString @"public/wxreleaseinformationwidget"  //我的发布详情
+
+#define kRequestApplyString @"capital/Shoucang"   //立即申请
+#define kMyRecordsString  @"apply/ordertaking"   //申请记录
+
+
+#define kAuthenString @"certification/add"   //认证
+#define kIsCompleteString  @"certification/view"  //是否认证
+#define kChangeAuthenString @""
+
+#define kProductsListString @"capital/mysave"    //产品列表
+#define kProductsRecommendListString  @"capital/recommendlist"   //推荐产品列表
+#define kProdutsDetailString @"capital/view"    //产品详情
+#define kEndProductsString   @"public/wxclosedswidget"   //发布中的产品可结案
+
+
+#define kMySaveString @"list/mysave"    //我的保存
+#define kMyStoreString @"apply/myshoucang"  //我的收藏
+#define kRequestStoreString @"capital/shoucang"   //申请收藏
+#define kDeleteStoreString @"public/deletes"   //删除收藏
+#define kDeleteSaveString  @"public/deleteproduct"  //删除保存
+#define kMyAgentString @"certification/agentlist"   //我的代理
+#define kMyAgentDetailString @"certification/agentexhibition"  //代理详情
+
+#endif
+
+
+
+
+
+
+

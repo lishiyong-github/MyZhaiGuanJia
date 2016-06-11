@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "CA090B769515E8B37050D4A6D17510E3BFBF7D3E",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "CA090B769515E8B37050D4A6D17510E3BFBF7D3E" : 0,
+    "CB59FAC7F8674F96EC7DCCE38597A7D2C5975878" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "88844EF2-A4CD-41DC-A806-6D60D3647781",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "CA090B769515E8B37050D4A6D17510E3BFBF7D3E" : "ZhaiGuanjia\/",
+    "CB59FAC7F8674F96EC7DCCE38597A7D2C5975878" : ""
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "qingdaofu",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "qingdaofu.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/lishiyong-github\/ZhaiGuanjia.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "CA090B769515E8B37050D4A6D17510E3BFBF7D3E"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/lishiyong-github\/MyZhaiGuanJia.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "CB59FAC7F8674F96EC7DCCE38597A7D2C5975878"
+    }
+  ]
+}

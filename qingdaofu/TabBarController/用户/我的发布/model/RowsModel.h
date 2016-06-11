@@ -1,0 +1,36 @@
+//
+//  RowsModel.h
+//  qingdaofu
+//
+//  Created by zhixiang on 16/6/7.
+//  Copyright © 2016年 zhixiang. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface RowsModel : NSObject
+@property (nonatomic,copy) NSString *agencycommission;   //代理费用
+@property (nonatomic,copy) NSString *agencycommissiontype; //代理费用类型：1为固定费用(万)  2为风险费率(%)
+@property (nonatomic,copy) NSString *app_id;  //接单方申请的状态：0为申请中（接单方刚发起申请）。1为申请成功（发布方已同意接单方的申请）。2为收藏（接单方将数据收藏但为申请）。
+@property (nonatomic,copy) NSString *applyclose;  //状态：3为终止。4为结案
+@property (nonatomic,copy) NSString *applyclosefrom;   //发起申请人的uid
+@property (nonatomic,copy) NSString *category;   //类型：1为融资。2为催收。3为诉讼。
+@property (nonatomic,copy) NSString *city_id;   //城市ID
+@property (nonatomic,copy) NSString *codeString;  //产品编号
+@property (nonatomic,copy) NSString *create_time;  //认证时间
+@property (nonatomic,copy) NSString *district_id;  //区域ID
+@property (nonatomic,copy) NSString *idString;    //对应产品表的ID
+@property (nonatomic,copy) NSString *loan_type;    //债权类型：1为房产抵押。2为应收账款。3为机动车抵押。4为无抵押
+@property (nonatomic,copy) NSString *modify_time;  //收藏时间
+@property (nonatomic,copy) NSString *money;     //产品金额
+@property (nonatomic,copy) NSString *pid;   //申请人的uid
+@property (nonatomic,copy) NSString *product_id;  //申请状态表对应产品表的ID
+@property (nonatomic,copy) NSString *progress_status;   //进展状态：0为待发布（保存未发布的）。 1为发布中（已发布的）。2为处理中（有人已接单发布方也已同意）。3为终止（只用发布方可以终止）。4为结案（双方都可以申请，一方申请一方同意）
+@property (nonatomic,copy) NSString *province_id;  //省份ID
+@property (nonatomic,copy) NSString *rate;   //利率
+@property (nonatomic,copy) NSString *rate_cat;  //利率类型：1为天。2为月
+@property (nonatomic,copy) NSString *rebate;   //返点
+@property (nonatomic,copy) NSString *seatmortgage;  //抵押物所在地
+@property (nonatomic,copy) NSString *uidString;  //申请人的uid
+
+@end

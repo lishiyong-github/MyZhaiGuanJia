@@ -1,0 +1,384 @@
+//
+//  MyReleaseViewController.m
+//  qingdaofu
+//
+//  Created by zhixiang on 16/5/4.
+//  Copyright © 2016年 zhixiang. All rights reserved.
+//
+
+#import "MyReleaseViewController.h"
+
+#import "MyPublishingViewController.h"   //发布中
+#import "MyDealingViewController.h"   //处理中
+#import "ReleaseEndViewController.h"   //终止
+#import "ReleaseCloseViewController.h"  //结案
+
+#import "AdditionMessageViewController.h"  //补充信息
+#import "ApplyRecordsViewController.h"     //查看申请
+#import "PaceViewController.h"          //查看进度
+#import "AdditionalEvaluateViewController.h"  //去评价
+
+#import "AnotherHomeCell.h"
+#import "AllProSegView.h"
+
+#import "ReleaseResponse.h"
+#import "RowsModel.h"
+
+@interface MyReleaseViewController ()<UITableViewDataSource,UITableViewDelegate>
+
+@property (nonatomic,assign) BOOL didSetupConstraints;
+@property (nonatomic,strong) AllProSegView *releaseProView;
+@property (nonatomic,strong) UITableView *myReleaseTableView;
+
+@property (nonatomic,strong) NSMutableArray *releaseDataArray;
+@property (nonatomic,strong) NSMutableArray *releaseDataArray1;
+@property (nonatomic,strong) NSMutableArray *releaseDataArray2;
+@property (nonatomic,strong) NSMutableArray *releaseDataArray3;
+@property (nonatomic,strong) NSMutableArray *releaseDataArray4;
+
+@end
+
+@implementation MyReleaseViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.navigationItem.title = @"所有产品";
+    self.navigationItem.leftBarButtonItem = self.leftItem;
+
+    [self.view addSubview:self.releaseProView];
+    [self.view addSubview:self.myReleaseTableView];
+    [self.view setNeedsUpdateConstraints];
+    
+    [self getMyReleaseListWithPage:@"0"];
+}
+
+- (void)updateViewConstraints
+{
+    if (!self.didSetupConstraints) {
+        
+        [self.releaseProView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(0, 0, 0, 0) excludingEdge:ALEdgeBottom];
+        [self.releaseProView autoSetDimension:ALDimensionHeight toSize:40];
+        
+        [self.myReleaseTableView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.releaseProView withOffset:kBigPadding];
+        [self.myReleaseTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(0, 0, 0, 0) excludingEdge:ALEdgeTop];
+        
+        self.didSetupConstraints = YES;
+    }
+    [super updateViewConstraints];
+}
+
+- (AllProSegView *)releaseProView
+{
+    if (!_releaseProView) {
+        _releaseProView = [AllProSegView newAutoLayoutView];
+        _releaseProView.backgroundColor = kNavColor;
+        [_releaseProView.allButton setTitle:@"全部" forState:0];
+        [_releaseProView.ingButton setTitle:@"已发布" forState:0];
+        [_releaseProView.dealButton setTitle:@"处理中" forState:0];
+        [_releaseProView.endButton setTitle:@"终止" forState:0];
+        [_releaseProView.closeButton setTitle:@"结案" forState:0];
+        
+        if ([self.progreStatus isEqualToString:@"1"]){
+            _releaseProView.leftsConstraints.constant = kScreenWidth/5;
+        }else if ([self.progreStatus isEqualToString:@"2"]){
+            _releaseProView.leftsConstraints.constant = kScreenWidth/5*2;
+        }else if ([self.progreStatus isEqualToString:@"3"]){
+            _releaseProView.leftsConstraints.constant = kScreenWidth/5*3;
+        }else if([self.progreStatus isEqualToString:@"4"]){
+            _releaseProView.leftsConstraints.constant = kScreenWidth/5*4;
+        }else{
+            _releaseProView.leftsConstraints.constant = 0;
+        }
+        
+        QDFWeakSelf;
+        [_releaseProView setDidSelectedSeg:^(NSInteger segTag) {
+            switch (segTag) {
+                    
+                case 111:{
+                    weakself.progreStatus = @"0";
+                    [weakself getMyReleaseListWithPage:@"0"];
+                }
+                    break;
+                case 112:{
+                    weakself.progreStatus = @"1";
+                    [weakself getMyReleaseListWithPage:@"0"];
+                }
+                    break;
+                case 113:{
+                    weakself.progreStatus = @"2";
+                    [weakself getMyReleaseListWithPage:@"0"];
+                }
+                    break;
+                case 114:{
+                    weakself.progreStatus = @"3";
+                    [weakself getMyReleaseListWithPage:@"0"];
+                }
+                    break;
+                case 115:{
+                    weakself.progreStatus = @"4";
+                    [weakself getMyReleaseListWithPage:@"0"];
+                }
+                    break;
+                default:
+                    break;
+            }
+        }];
+    }
+    return _releaseProView;
+}
+
+- (UITableView *)myReleaseTableView
+{
+    if (!_myReleaseTableView) {
+        _myReleaseTableView = [UITableView newAutoLayoutView];
+        _myReleaseTableView.translatesAutoresizingMaskIntoConstraints = YES;
+        _myReleaseTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
+        _myReleaseTableView.delegate = self;
+        _myReleaseTableView.dataSource = self;
+        _myReleaseTableView.backgroundColor = kBackColor;
+        _myReleaseTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
+    }
+    return _myReleaseTableView;
+}
+
+- (NSMutableArray *)releaseDataArray
+{
+    if (!_releaseDataArray) {
+        _releaseDataArray = [NSMutableArray array];
+    }
+    return _releaseDataArray;
+}
+
+#pragma mark - 
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 1;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return self.releaseDataArray.count;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    RowsModel *rModel = self.releaseDataArray[indexPath.section];
+    if ([rModel.progress_status intValue] == 3) {
+        return 156;
+    }
+    return 200;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *identifier;
+    identifier = @"myRelease0";
+        AnotherHomeCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell) {
+            cell = [[AnotherHomeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.typeLabel.textColor = kBlueColor;
+    
+        RowsModel *rowModel = self.releaseDataArray[indexPath.section];
+
+        cell.nameLabel.text = rowModel.codeString;
+        /*typeImageView
+         nameLabel*/
+        //融资－－借款本金（万元），返点（％），借款利率（月，天）
+        //催收－－借款本金（万元），代理费用，债权类型
+        //诉讼－－借款本金（万元），代理费用（或风险费率  具体看用户自己选择），债权类型
+        if ([rowModel.category intValue] == 1) {//融资
+            cell.typeImageView.image = [UIImage imageNamed:@"list_financing"];
+            if ([rowModel.progress_status intValue] > 2) {
+                cell.typeImageView.image = [UIImage imageNamed:@"list_financing_nor"];
+            }
+            
+            cell.pointView.label1.text = rowModel.rebate;
+            cell.pointView.label2.text = @"返点(%)";
+            cell.rateView.label1.text = rowModel.rate;
+            if ([rowModel.rate_cat integerValue] == 1) {
+                cell.rateView.label2.text = @"借款利率(天)";
+            }else{
+                cell.rateView.label2.text = @"借款利率(月)";
+            }
+            
+        }else if ([rowModel.category intValue] == 2){//催收
+            cell.typeImageView.image = [UIImage imageNamed:@"list_collection"];
+            if ([rowModel.progress_status intValue] > 2) {
+                cell.typeImageView.image = [UIImage imageNamed:@"list_collection_nor"];
+            }
+            
+            cell.pointView.label1.text = rowModel.agencycommission;
+            cell.pointView.label2.text = @"代理费用(万元)";
+            if ([rowModel.loan_type isEqualToString:@"1"]) {
+                cell.rateView.label1.text = @"房产抵押";
+            }else if ([rowModel.loan_type isEqualToString:@"2"]){
+                cell.rateView.label1.text = @"应收账款";
+            }else if ([rowModel.loan_type isEqualToString:@"3"]){
+                cell.rateView.label1.text = @"机动车抵押";
+            }else if([rowModel.loan_type isEqualToString:@"4"]){
+                cell.rateView.label1.text = @"无抵押";
+            }
+            cell.rateView.label2.text = @"债权类型";
+        }else if ([rowModel.category intValue] == 3){//诉讼
+            cell.typeImageView.image = [UIImage imageNamed:@"list_litigation"];
+            if ([rowModel.progress_status intValue] > 2) {
+                cell.typeImageView.image = [UIImage imageNamed:@"list_litigation_nor"];
+            }
+            
+            cell.pointView.label1.text = rowModel.agencycommission;
+            if ([rowModel.agencycommissiontype isEqualToString:@"1"]) {
+                cell.pointView.label2.text = @"固定费用(万)";
+            }else{
+                cell.pointView.label2.text = @"风险费率(%)";
+            }
+
+            if ([rowModel.loan_type isEqualToString:@"1"]) {
+                cell.rateView.label1.text = @"房产抵押";
+            }else if ([rowModel.loan_type isEqualToString:@"2"]){
+                cell.rateView.label1.text = @"应收账款";
+            }else if ([rowModel.loan_type isEqualToString:@"3"]){
+                cell.rateView.label1.text = @"机动车抵押";
+            }else if([rowModel.loan_type isEqualToString:@"4"]){
+                cell.rateView.label1.text = @"无抵押";
+            }
+            cell.rateView.label2.text = @"债权类型";
+        }
+        /*typeLabel*/
+        if ([rowModel.progress_status integerValue]  == 0) {
+            cell.typeLabel.text = @"待发布";
+        }else if ([rowModel.progress_status integerValue]  == 1){
+            cell.typeLabel.text = @"发布中";
+        }else if ([rowModel.progress_status integerValue]  == 2){
+            cell.typeLabel.text = @"处理中";
+        }else if ([rowModel.progress_status integerValue]  == 3){
+            cell.typeLabel.text = @"终止";
+        }else if([rowModel.progress_status integerValue]  == 4){
+            cell.typeLabel.text = @"已结案";
+        }
+        
+        cell.addressLabel.text = rowModel.seatmortgage;
+        cell.moneyView.label1.text = rowModel.money;
+        cell.moneyView.label2.text = @"借款本金(万元)";
+        
+        if ([rowModel.progress_status intValue] == 3) {
+            [cell.firstButton setHidden:YES];
+            [cell.secondButton setHidden:YES];
+            [cell.thirdButton setHidden:YES];
+        }else{
+            [cell.firstButton setHidden:NO];
+            [cell.secondButton setHidden:NO];
+            [cell.thirdButton setHidden:NO];
+//            [cell.firstButton setTitle:@"您有新的申请记录" forState:0];
+            [cell.secondButton setTitle:@"补充信息" forState:0];
+            [cell.thirdButton setTitle:@"查看申请" forState:0];
+            
+            QDFWeakSelf;
+            [cell.secondButton addAction:^(UIButton *btn) {
+            }];
+            [cell.thirdButton addAction:^(UIButton *btn) {
+                ApplyRecordsViewController *applyRecordsVC = [[ApplyRecordsViewController alloc] init];
+                applyRecordsVC.idStr = rowModel.idString;
+                applyRecordsVC.categaryStr = rowModel.category;
+                [self.navigationController pushViewController:applyRecordsVC animated:YES];
+            }];
+        }
+    
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (section>0) {
+        
+        return kBigPadding;
+    }
+    return 0.1f;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 0.1f;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    RowsModel *sModel = self.releaseDataArray[indexPath.section];
+    if ([sModel.progress_status isEqualToString:@"1"]) {
+            MyPublishingViewController *myPublishingVC = [[MyPublishingViewController alloc] init];
+            
+            myPublishingVC.idString = sModel.idString;
+            myPublishingVC.categaryString = sModel.category;
+            [self.navigationController pushViewController:myPublishingVC animated:YES];
+        }else if ([sModel.progress_status isEqualToString:@"2"]){
+            MyDealingViewController *myDealingVC = [[MyDealingViewController alloc] init];
+            myDealingVC.idString = sModel.idString;
+            myDealingVC.categaryString = sModel.category;
+            [self.navigationController pushViewController:myDealingVC animated:YES];
+
+        }else if ([sModel.progress_status isEqualToString:@"3"]){
+            ReleaseEndViewController *releaseEndVC = [[ReleaseEndViewController alloc] init];
+            releaseEndVC.idString = sModel.idString;
+            releaseEndVC.categaryString = sModel.category;
+            [self.navigationController pushViewController:releaseEndVC animated:YES];
+        }else if ([sModel.progress_status isEqualToString:@"4"]){
+            ReleaseCloseViewController *releaseCloseVC = [[ReleaseCloseViewController alloc] init];
+            releaseCloseVC.idString = sModel.idString;
+            releaseCloseVC.categaryString = sModel.category;
+            [self.navigationController pushViewController:releaseCloseVC animated:YES];
+        }
+}
+
+#pragma mark - method
+- (void)getMyReleaseListWithPage:(NSString *)page
+{
+    NSString *myReleaseString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseString];
+    NSDictionary *params = @{@"token" : [self getValidateToken],
+                             @"progress_status" : self.progreStatus,
+                             @"limit" : @"30"
+                             };
+    [self headerRefreshWithPage:page urlString:myReleaseString Parameter:params successBlock:^(AFHTTPRequestOperation *operation, id responseObject){
+        
+        [self.releaseDataArray removeAllObjects];
+        ReleaseResponse *releaseModel = [ReleaseResponse objectWithKeyValues:responseObject];
+        
+        for (RowsModel *rowsModel in releaseModel.rows) {
+            [self.releaseDataArray addObject:rowsModel];
+        }
+        
+        [self.myReleaseTableView reloadData];
+        
+    } andfailedBlock:^{
+        
+    }];
+}
+
+- (void)goToCheckApplyRecordsOrAdditionMessage:(NSString *)string
+{
+    if ([string isEqualToString:@"records"]) {//申请记录
+        ApplyRecordsViewController *applyRecordsVC = [[ApplyRecordsViewController alloc] init];
+        [self.navigationController pushViewController:applyRecordsVC animated:YES];
+    }else{//补充信息
+        AdditionMessageViewController *additionMessageVC = [[AdditionMessageViewController alloc] init];
+        [self.navigationController pushViewController:additionMessageVC animated:YES];
+    }
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+@end
