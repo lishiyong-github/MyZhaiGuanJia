@@ -52,6 +52,7 @@
     [self.view addSubview:self.mainTableView];
     [self.view setNeedsUpdateConstraints];
     [self getRecommendProductslistWithPage:@"0"];
+    
 }
 
 - (UIButton *)titleView
@@ -78,7 +79,6 @@
 - (UITableView *)mainTableView
 {
     if (!_mainTableView) {
-//        _mainTableView = [UITableView newAutoLayoutView];
         _mainTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _mainTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _mainTableView.backgroundColor = kBackColor;
@@ -87,6 +87,7 @@
         _mainTableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 110)];
         [_mainTableView.tableHeaderView addSubview:self.mainHeaderScrollView];
         [_mainTableView addSubview:self.pageControl];
+        [_mainTableView addFooterWithTarget:self action:@selector(recommendFooterRefresh)];
     }
     return _mainTableView;
 }
@@ -323,7 +324,7 @@
     NSString *recommendString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductsRecommendListString];
     NSDictionary *params = @{@"page" : page};
     
-    [self footerRefreshWithUrlString:recommendString Parameter:params successBlock:^(AFHTTPRequestOperation *operation, id responseObject){
+    [self footerRefreshWithUrlString:recommendString Parameter:params successBlock:^(id responseObject){
         NewProductModel *model = [NewProductModel objectWithKeyValues:responseObject];
         for (NewProductListModel *listModel in model.result) {
             [self.productsDataListArray addObject:listModel];
@@ -331,9 +332,20 @@
                 
         [self.mainTableView reloadData];
         
-    } andfailedBlock:^{
+    } andfailedBlock:^(NSError *error){
         
     }];
+}
+
+int financialPage = 1;
+- (void)recommendFooterRefresh
+{
+    financialPage += 1;
+    NSString *page = [NSString stringWithFormat:@"%d",financialPage];
+    [self getRecommendProductslistWithPage:page];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.mainTableView footerEndRefreshing];
+    });
 }
 
 - (void)didReceiveMemoryWarning {

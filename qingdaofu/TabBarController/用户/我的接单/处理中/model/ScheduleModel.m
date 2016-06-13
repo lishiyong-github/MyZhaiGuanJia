@@ -10,4 +10,11 @@
 
 @implementation ScheduleModel
 
++ (NSDictionary *)replacedKeyFromPropertyName
+{
+    return @{@"idString" : @"id",
+             @"caseString" : @"case"
+             };
+}
+
 @end

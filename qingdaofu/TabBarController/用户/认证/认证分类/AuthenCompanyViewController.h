@@ -8,6 +8,7 @@
 
 #import "NetworkViewController.h"
 #import "CompleteResponse.h"
+#import "CertificationModel.h"
 
 
 @interface AuthenCompanyViewController : NetworkViewController

@@ -76,12 +76,22 @@
     return _getCodebutton;
 }
 
-- (void)textFieldDidEndEditing:(UITextField *)textField
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-    if (self.finishEditing) {
-        self.finishEditing(_loginTextField.text);
-    }
+    [textField endEditing:YES];
+    
+    return YES;
 }
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+     NSString *text = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    if (self.finishEditing) {
+        self.finishEditing(text);
+    }
+    return YES;
+}
+
 
 - (void)awakeFromNib {
     // Initialization code

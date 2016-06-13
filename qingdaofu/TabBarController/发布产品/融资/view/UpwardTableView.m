@@ -23,7 +23,7 @@
         self.dataSource = self;
         self.separatorColor = kSeparateColor;
         self.backgroundColor = kBackColor;
-        self.scrollEnabled = NO;
+//        self.scrollEnabled = NO;
         
         if ([self respondsToSelector:@selector(setSeparatorInset:)]) {
             [self setSeparatorInset:UIEdgeInsetsZero];
@@ -39,7 +39,6 @@
 {
     if (!_upwardDataList) {
         _upwardDataList = [NSArray array];
-        _upwardDataList = [NSArray arrayWithObjects:@"111",@"222", nil];
     }
     return _upwardDataList;
 }
@@ -86,11 +85,13 @@
         QDFWeakSelf;
         [cell.cancelButton addAction:^(UIButton *btn) {
             if (weakself.didSelectedButton) {
-                weakself.didSelectedButton(90);
+                weakself.didSelectedButton(99);
             }
         }];
     }else{
         cell.backgroundColor = kNavColor;
+        [cell.cancelButton setTitleColor:kBlackColor forState:0];
+        [cell.oneButton setHidden:YES];
         [cell.cancelButton setTitle:self.upwardDataList[indexPath.row-1] forState:0];
     }
     
@@ -101,7 +102,7 @@
 {
     if (indexPath.row > 0) {
         if (self.didSelectedRow) {
-            self.didSelectedRow(self.upwardDataList[indexPath.row-1]);
+            self.didSelectedRow(self.upwardDataList[indexPath.row-1],indexPath.row);
         }
     }
 }

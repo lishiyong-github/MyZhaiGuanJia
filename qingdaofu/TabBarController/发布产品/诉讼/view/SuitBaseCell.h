@@ -10,4 +10,10 @@
 
 @interface SuitBaseCell : UITableViewCell
 
+@property (nonatomic,strong) UILabel *label;
+@property (nonatomic,strong) UISegmentedControl *segment;
+
+@property (nonatomic,assign) BOOL didSetupConstraints;
+@property (nonatomic,strong) void (^didSelectedSeg)(NSInteger seg);
+
 @end

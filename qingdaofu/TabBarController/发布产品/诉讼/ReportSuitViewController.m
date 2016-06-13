@@ -15,21 +15,26 @@
 
 #import "ReportFootView.h"
 #import "EvaTopSwitchView.h"
+#import "UIViewController+BlurView.h"
 
-#import "ReportSuitCell.h"
-#import "ReportSuitSeCell.h"
+#import "AgentCell.h"
+#import "EditDebtAddressCell.h"
+#import "SuitBaseCell.h"
 
 @interface ReportSuitViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
-@property (nonatomic,strong) UITableView *repCoTableView;
+@property (nonatomic,strong) UITableView *suitTableView;
 
 @property (nonatomic,strong) ReportFootView *repSuitFootButton;
 @property (nonatomic,strong) EvaTopSwitchView *repSuitSwitchView;
 
-@property (nonatomic,strong) NSMutableArray *suitDataList;
-@property (nonatomic,strong) NSString *suitString;
+@property (nonatomic,strong) NSMutableArray *suitDataList;  //收起展开
+@property (nonatomic,strong) NSMutableArray *sTextArray;
+@property (nonatomic,strong) NSMutableArray *sHolderArray;
 
+@property (nonatomic,strong) NSMutableDictionary *suitDataDictionary;  //参数
+@property (nonatomic,strong) NSString *rowString;    //债权类型
 @end
 
 @implementation ReportSuitViewController
@@ -41,7 +46,9 @@
     
     [self setupForDismissKeyboard];
     
-    [self.view addSubview:self.repCoTableView];
+    self.rowString = @"6";
+    
+    [self.view addSubview:self.suitTableView];
     [self.view addSubview:self.repSuitSwitchView];
     [self.view setNeedsUpdateConstraints];
 }
@@ -50,8 +57,8 @@
 {
     if (!self.didSetupConstraints) {
         
-        [self.repCoTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
-        [self.repCoTableView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kTabBarHeight];
+        [self.suitTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
+        [self.suitTableView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kTabBarHeight];
         
         [self.repSuitSwitchView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
         [self.repSuitSwitchView autoSetDimension:ALDimensionHeight toSize:kTabBarHeight];
@@ -61,20 +68,19 @@
     [super updateViewConstraints];
 }
 
-- (UITableView *)repCoTableView
+- (UITableView *)suitTableView
 {
-    if (!_repCoTableView) {
-//        _repCoTableView = [UITableView newAutoLayoutView];
-        _repCoTableView.translatesAutoresizingMaskIntoConstraints = NO;
-        _repCoTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
-        _repCoTableView.backgroundColor = kBackColor;
-        _repCoTableView.delegate = self;
-        _repCoTableView.dataSource = self;
-        _repCoTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 90)];
-        [_repCoTableView.tableFooterView addSubview:self.repSuitFootButton];
-        _repCoTableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kSmallPadding)];
+    if (!_suitTableView) {
+        _suitTableView.translatesAutoresizingMaskIntoConstraints = NO;
+        _suitTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
+        _suitTableView.backgroundColor = kBackColor;
+        _suitTableView.delegate = self;
+        _suitTableView.dataSource = self;
+        _suitTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 90)];
+        [_suitTableView.tableFooterView addSubview:self.repSuitFootButton];
+        _suitTableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kSmallPadding)];
     }
-    return _repCoTableView;
+    return _suitTableView;
 }
 
 - (EvaTopSwitchView *)repSuitSwitchView
@@ -95,12 +101,10 @@
         
         QDFWeakSelf;
         [_repSuitSwitchView.getbutton addAction:^(UIButton *btn) {//保存
-            weakself.suitString = @"0";
-            [weakself reportSuitAction];
+            [weakself reportSuitActionWithTypeString:@"0"];
         }];
         [_repSuitSwitchView.sendButton addAction:^(UIButton *btn) {
-            weakself.suitString = @"1";
-            [weakself reportSuitAction];
+            [weakself reportSuitActionWithTypeString:@"1"];
             
         }];
     }
@@ -125,6 +129,32 @@
     return _suitDataList;
 }
 
+- (NSMutableDictionary *)suitDataDictionary
+{
+    if (!_suitDataDictionary) {
+        _suitDataDictionary = [NSMutableDictionary dictionary];
+    }
+    return _suitDataDictionary;
+}
+
+- (NSMutableArray *)sTextArray
+{
+    if (!_sTextArray) {
+        NSArray *sTextArray1 = @[@"",@"借款本金",@"代理费用",@"",@"抵押物地址",@""];
+        _sTextArray = [NSMutableArray arrayWithArray:sTextArray1];
+    }
+    return _sTextArray;
+}
+
+- (NSMutableArray *)sHolderArray
+{
+    if (!_sHolderArray) {
+        NSArray *sHolderArray1 = @[@"",@"填写借款本金",@"填写代理费用",@"",@"填写抵押物地址",@""];
+        _sHolderArray = [NSMutableArray arrayWithArray:sHolderArray1];
+    }
+    return _sHolderArray;
+}
+
 #pragma mark - tableView delegate and datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -133,58 +163,197 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    if (section == 0) {
+        
+        return [self.rowString intValue];
+    }
+
+    return 13;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0) {
-        return 5*kCellHeight+5*kLineWidth+62;
+    if ((indexPath.section == 0) && (indexPath.row == 5)) {
+        return 62;
+    }else if ((indexPath.section == 1) && (indexPath.row == 9)){
+        return 62;
     }
-    return kCellHeight*13+kLineWidth*13+62;
+    return kCellHeight;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier;
-    if (indexPath.section == 0) {
+    if (indexPath.section == 0) {//债权类型
+        if (indexPath.row == 3) {
+            identifier = @"suitSect03";
+            SuitBaseCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[SuitBaseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.label.text = @"债权类型";
+            
+            [cell setDidSelectedSeg:^(NSInteger selectedTag) {
+                
+                NSString *number;
+                
+                if (selectedTag == 0) {//房产抵押
+                    self.rowString = @"6";
+                    [self.sTextArray replaceObjectAtIndex:4 withObject:@"抵押物地址"];
+                    [self.sHolderArray replaceObjectAtIndex:4 withObject:@"选择抵押物地址"];
+                    number = @"1";
+                }else if (selectedTag == 1){//机动车
+                    self.rowString = @"5";
+                    [self.sTextArray replaceObjectAtIndex:4 withObject:@"机动车品牌"];
+                    [self.sHolderArray replaceObjectAtIndex:4 withObject:@"选择机动车品牌"];
+                    number = @"2";
+                }else if (selectedTag == 2){//应收帐款
+                    self.rowString = @"5";
+                    [self.sTextArray replaceObjectAtIndex:4 withObject:@"应收帐款"];
+                    [self.sHolderArray replaceObjectAtIndex:4 withObject:@"应收帐款"];
+                    number = @"3";
+                }else{//无抵押
+                    self.rowString = @"5";
+                    [self.sTextArray replaceObjectAtIndex:4 withObject:@"无抵押"];
+                    [self.sHolderArray replaceObjectAtIndex:4 withObject:@"无抵押"];
+                    number = @"4";
+                }
+                
+                [self.suitDataDictionary setValue:number forKey:@"loan_type"];
+                
+                [self.suitTableView reloadData];
+            }];
+            
+            
+            return cell;
+        }else if (indexPath.row == 5){//具体
+            identifier = @"suitSect05";
+            EditDebtAddressCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[EditDebtAddressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            cell.leftTextViewConstraints.constant = 100;
+            cell.ediTextView.placeholder = @"详细地址";
+            
+            [cell setDidEndEditing:^(NSString *text) {
+                [self.suitDataDictionary setValue:text forKey:@"seatmortgage"];
+            }];
+            
+            return cell;
+        }
+        //section=0其他
         identifier = @"suitSect0";
-        ReportSuitCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        
+        AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         if (!cell) {
-            cell = [[ReportSuitCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.leftdAgentContraints.constant = 105;
+        cell.agentButton.tag = 7*indexPath.section + indexPath.row;
+        
+        cell.agentLabel.text = self.sTextArray[indexPath.row];
+        cell.agentTextField.placeholder = self.sHolderArray[indexPath.row];
+        
+        if (indexPath.row == 0) {//基本信息
+            NSMutableAttributedString *dddd = [cell.agentLabel setAttributeString:@"|  基本信息" withColor:kBlueColor andSecond:@"(必填)" withColor:kBlackColor withFont:12];
+            [cell.agentLabel setAttributedText:dddd];
+            [cell.agentTextField setHidden:YES];
+            [cell.agentButton setHidden:YES];
+        }else if (indexPath.row == 1){//借款本金
+            [cell.agentButton setTitle:@"万元" forState:0];
+            [cell setDidEndEditing:^(NSString *text) {
+                [self.suitDataDictionary setValue:text forKey:@"money"];
+            }];
+            
+        }else if (indexPath.row == 2){//代理费用
+            [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            [cell.agentButton setTitle:@"请选择" forState:0];
+            [cell setDidEndEditing:^(NSString *text) {
+                [self.suitDataDictionary setValue:text forKey:@"agencycommission"];
+            }];
+            [cell.agentButton addTarget:self action:@selector(showTitleOfUpwardView:) forControlEvents:UIControlEventTouchUpInside];
+        }else if (indexPath.row == 4){//抵押物地址
+            [cell setDidEndEditing:^(NSString *text) {
+                [self.suitDataDictionary setValue:text forKey:@"mortorage_community"];
+            }];
+        }
+        
         return cell;
     }
+    //section=1
+    if (indexPath.row == 9) {//合同履行地
+        identifier = @"suitSect19";
+        
+        EditDebtAddressCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell) {
+            cell = [[EditDebtAddressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.leftTextViewConstraints.constant = 100;
+        cell.ediLabel.text = @"合同履行地";
+        cell.ediTextView.placeholder = @"填写合同履行地";
+        
+        [cell setDidEndEditing:^(NSString *text) {
+            [self.suitDataDictionary setValue:text forKey:@"performancecontract"];
+        }];
+        return cell;
+    }
+    
     identifier = @"suitSect1";
     
-    ReportSuitSeCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
-        cell = [[ReportSuitSeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.leftdAgentContraints.constant = 105;
+    cell.agentButton.tag = 7*indexPath.section + indexPath.row;
     
-    QDFWeakSelf;
-    [cell setDidSelectedIndex:^(NSInteger row) {
-        switch (row) {
-            case 80:{//债权文件
-                UploadFilesViewController *uploadFilesVC = [[UploadFilesViewController alloc] init];
-                [weakself.navigationController pushViewController:uploadFilesVC animated:YES];
-            }
-                break;
-            case 81:{//债权人信息
-                DebtCreditMessageViewController *debtCreditVc = [[DebtCreditMessageViewController alloc] init];
-                [weakself.navigationController pushViewController:debtCreditVc animated:YES];
-            }
-                break;
-            case 82:{//债务人信息
-                
-            }
-                break;
-            default:
-                break;
-        }
-    }];
+    NSArray *sTextArray = @[@"|  补充信息(选填)",@"借款利率(%)",@"借款期限",@"还款方式",@"债务人主体",@"委托事项",@"委托代理期限(月)",@"已付本金",@"已付利息",@"",@"债权文件",@"债权人信息",@"债务人信息"];
+    NSArray *suitHolderArray = @[@"",@"能够给到融资方的利息",@"输入借款期限",@"",@"",@"",@"",@"填写已付本金",@"填写已付利息",@"",@"",@"",@"",@""];
+    NSArray *suitActArray = @[@"",@"请选择",@"请选择",@"请选择",@"请选择",@"请选择",@"请选择",@"元",@"元",@"",@"上传",@"完善",@"完善"];
+    
+    cell.agentLabel.text = sTextArray[indexPath.row];
+    cell.agentTextField.placeholder = suitHolderArray[indexPath.row];
+    [cell.agentButton setTitle:suitActArray[indexPath.row] forState:0];
+   
+    if (indexPath.row == 0) {
+        NSMutableAttributedString *ffff = [cell.agentLabel setAttributeString:@"|  补充信息" withColor:kBlueColor andSecond:@"(选填)" withColor:kBlackColor withFont:12];
+        [cell.agentLabel setAttributedText:ffff];
+        [cell.agentTextField setHidden:YES];
+        [cell.agentButton setHidden:YES];
+    }else if (indexPath.row == 1){//借款利率
+        [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        [cell setDidEndEditing:^(NSString *text) {
+            [self.suitDataDictionary setValue:text forKey:@"rate"];
+        }];
+        [cell.agentButton addTarget:self action:@selector(showTitleOfUpwardView:) forControlEvents:UIControlEventTouchUpInside];
+    }else if (indexPath.row == 2){//借款期限
+        [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        [cell setDidEndEditing:^(NSString *text) {
+            [self.suitDataDictionary setValue:text forKey:@"term"];
+        }];
+        [cell.agentButton addTarget:self action:@selector(showTitleOfUpwardView:) forControlEvents:UIControlEventTouchUpInside];
+    }else if ((indexPath.row > 2) && (indexPath.row < 7)){
+        [cell.agentTextField setHidden:YES];
+        [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        [cell.agentButton addTarget:self action:@selector(showTitleOfUpwardView:) forControlEvents:UIControlEventTouchUpInside];
+    }else if (indexPath.row == 7){//已付本金
+        [cell setDidEndEditing:^(NSString *text) {
+            [self.suitDataDictionary setValue:text forKey:@"paidmoney"];
+        }];
+    }else if (indexPath.row == 8){//已付利息
+        [cell setDidEndEditing:^(NSString *text) {
+            [self.suitDataDictionary setValue:text forKey:@"interestpaid"];
+        }];
+    }else if(indexPath.row > 9){
+        [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        [cell.agentButton addTarget:self action:@selector(showTitleOfUpwardView:) forControlEvents:UIControlEventTouchUpInside];
+    }
     
     return cell;
 }
@@ -212,42 +381,203 @@
     if (btn.selected) {
         [self.suitDataList insertObject:@"大喊大叫" atIndex:1];
         NSIndexSet *set = [[NSIndexSet alloc] initWithIndex:1];
-        [self.repCoTableView insertSections:set withRowAnimation:UITableViewRowAnimationFade];
+        [self.suitTableView insertSections:set withRowAnimation:UITableViewRowAnimationFade];
     }else{
         [self.suitDataList removeObjectAtIndex:1];
         NSIndexSet *set = [[NSIndexSet alloc] initWithIndex:1];
-        [self.repCoTableView deleteSections:set withRowAnimation:UITableViewRowAnimationFade];
+        [self.suitTableView deleteSections:set withRowAnimation:UITableViewRowAnimationFade];
     }
-    [self.repCoTableView reloadData];
+    [self.suitTableView reloadData];
+}
+
+- (void)showTitleOfUpwardView:(UIButton *)btn
+{
+    NSArray *arr2 = @[@"固定费用(万)",@"代理费率(%)"];
+    NSArray *arr8 = @[@"天",@"月"];
+    NSArray *arr10 = @[@"一次性到期还本付息",@"按月付息，到期还本"];
+    NSArray *arr11 = @[@"自然人",@"法人",@"其他"];
+    NSArray *arr12 = @[@"代理诉讼",@"代理仲裁",@"代理执行"];
+    NSArray *arr13 = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10",@"11",@"12"];
+    
+    switch (btn.tag) {
+        case 2:{//代理费用
+            
+            [self showBlurInView:self.view withArray:arr2 andTitle:@"选择代理费用类型" finishBlock:^(NSString *text, NSInteger row) {
+                [btn setTitle:text forState:0];
+                
+                NSString *value = [NSString stringWithFormat:@"%d",row];
+                [self.suitDataDictionary setValue:value forKey:@"agencycommissiontype"];
+            }];
+        }
+            break;
+        case 8:{//借款利率
+            [self showBlurInView:self.view withArray:arr8 andTitle:@"选择借款利率类型" finishBlock:^(NSString *text,NSInteger row) {
+                [btn setTitle:text forState:0];
+                NSString *value = [NSString stringWithFormat:@"%d",row];
+                [self.suitDataDictionary setValue:value forKey:@"rate_cat"];
+                UIButton *elseBtn = [self.suitTableView viewWithTag:9];
+                [elseBtn setTitle:text forState:0];
+                
+            }];
+        }
+            break;
+        case 9:{//借款期限
+            [self showBlurInView:self.view withArray:arr8 andTitle:@"选择借款期限类型" finishBlock:^(NSString *text,NSInteger row) {
+                [btn setTitle:text forState:0];
+                
+                NSString *value = [NSString stringWithFormat:@"%d",row];
+                [self.suitDataDictionary setValue:value forKey:@"term"];
+                
+                UIButton *elseBtn = [self.suitTableView viewWithTag:8];
+                [elseBtn setTitle:text forState:0];
+            }];
+        }
+            break;
+        case 10:{//还款方式
+            [self showBlurInView:self.view withArray:arr10 andTitle:@"选择还款方式" finishBlock:^(NSString *text,NSInteger row) {
+                [btn setTitle:text forState:0];
+                
+                NSString *value = [NSString stringWithFormat:@"%d",row];
+                [self.suitDataDictionary setValue:value forKey:@"repaymethod"];
+            }];
+        }
+            break;
+        case 11:{//债务人主体
+            [self showBlurInView:self.view withArray:arr11 andTitle:@"选择债务人主体" finishBlock:^(NSString *text,NSInteger row) {
+                [btn setTitle:text forState:0];
+                
+                NSString *value = [NSString stringWithFormat:@"%d",row];
+                [self.suitDataDictionary setValue:value forKey:@"obligor"];
+            }];
+        }
+            break;
+        case 12:{//委托事项
+            [self showBlurInView:self.view withArray:arr12 andTitle:@"选择委托事项" finishBlock:^(NSString *text,NSInteger row) {
+                [btn setTitle:text forState:0];
+                
+                NSString *value = [NSString stringWithFormat:@"%d",row];
+                [self.suitDataDictionary setValue:value forKey:@"commitment"];
+            }];
+        }
+            break;
+        case 13:{//委托代理期限
+            [self showBlurInView:self.view withArray:arr13 andTitle:@"选择委托代理期限" finishBlock:^(NSString *text,NSInteger row) {
+                [btn setTitle:text forState:0];
+                
+                NSString *value = [NSString stringWithFormat:@"%d",row];
+                [self.suitDataDictionary setValue:value forKey:@"commissionperiod"];
+                
+            }];
+        }
+            break;
+        default:
+            break;
+    }
 }
 
 #pragma mark - method
-- (void)reportSuitAction
+- (void)reportSuitActionWithTypeString:(NSString *)typeString
 {
     NSString *reFinanceString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPublishCollection];
+    
+    /* 参数 */
+    NSString *moneyStr = @"";
+    NSString *agencycommissionStr = @"";
+    NSString *agencycommissiontypeStr = @"";
+    NSString *loan_typeStr = @"";
+    NSString *mortorage_communityStr = @"";
+    NSString *seatmortgageStr = @"";
+    NSString *rateStr = @"";
+    NSString *rate_catStr = @"";
+    NSString *termStr = @"";
+    NSString *repaymethodStr = @"";
+    NSString *obligorStr = @"";
+    NSString *commitmentStr = @"";
+    NSString *commissionperiodStr = @"";
+    NSString *paidmoneyStr = @"";
+    NSString *interestpaidStr = @"";
+    NSString *performancecontractStr = @"";
+    //债权人文件，债务人文件，债务人信息
+    
+    if (self.suitDataDictionary[@"money"]) {
+        moneyStr = self.suitDataDictionary[@"money"];
+    }
+    
+    if (self.suitDataDictionary[@"agencycommission"]) {
+        agencycommissionStr = self.suitDataDictionary[@"agencycommission"];
+    }
+    
+    if (self.suitDataDictionary[@"agencycommissiontype"]) {
+        agencycommissiontypeStr = self.suitDataDictionary[@"agencycommissiontype"];
+    }
+    
+    if (self.suitDataDictionary[@"loan_type"]) {
+        loan_typeStr = self.suitDataDictionary[@"loan_type"];
+    }
+    
+    if (self.suitDataDictionary[@"mortorage_community"]) {
+        mortorage_communityStr = self.suitDataDictionary[@"mortorage_community"];
+    }
+    
+    if (self.suitDataDictionary[@"seatmortgage"]) {
+        seatmortgageStr = self.suitDataDictionary[@"seatmortgage"];
+    }
+    
+    if (self.suitDataDictionary[@"rate"]) {
+        rateStr = self.suitDataDictionary[@"rate"];
+    }
+    if (self.suitDataDictionary[@"rate_cat"]) {
+        rate_catStr = self.suitDataDictionary[@"rate_cat"];
+    }
+    
+    if (self.suitDataDictionary[@"term"]) {
+        termStr = self.suitDataDictionary[@"term"];
+    }
+    if (self.suitDataDictionary[@"repaymethod"]) {
+        repaymethodStr = self.suitDataDictionary[@"repaymethod"];
+    }
+    
+    if (self.suitDataDictionary[@"obligor"]) {
+        obligorStr = self.suitDataDictionary[@"obligor"];
+    }
+    if (self.suitDataDictionary[@"commitment"]) {
+        commitmentStr = self.suitDataDictionary[@"commitment"];
+    }
+    if (self.suitDataDictionary[@"commissionperiod"]) {
+        commissionperiodStr = self.suitDataDictionary[@"commissionperiod"];
+    }
+    if (self.suitDataDictionary[@"paidmoney"]) {
+        paidmoneyStr = self.suitDataDictionary[@"paidmoney"];
+    }
+    if (self.suitDataDictionary[@"interestpaid"]) {
+        interestpaidStr = self.suitDataDictionary[@"interestpaid"];
+    }
+    if (self.suitDataDictionary[@"performancecontract"]) {
+        performancecontractStr = self.suitDataDictionary[@"performancecontract"];
+    }
+    
     NSDictionary *params = @{@"category" : @"3",
-                             @"money" : @"888",   //融资金额，万为单位
-                             @"progress_status" : self.suitString,//1为保存 0为发布
+                             @"money" : moneyStr,   //融资金额，万为单位
+                             @"progress_status" : typeString,//1为保存 0为发布
                              @"province_id" : @"",//省份接口返回数据
                              @"city_id" : @"",//市接口返回数据
                              @"district_id" : @"",//地区接口返回数据
-                             @"agencycommissiontype" : @"2", //代理费用类型 1为天。2为月
-                             @"agencycommission" : @"9", //代理费用
-                             @"loan_type" : @"2",  //债权类型  1民间借贷  2应收账款
+                             @"agencycommissiontype" : agencycommissiontypeStr, //代理费用类型 1为固定费用。2为费率
+                             @"agencycommission" : agencycommissionStr, //代理费用
+                             @"loan_type" : loan_typeStr,  //债权类型  1民间借贷  2应收账款
                              @"mortorage_has" : @"0",//0为无 1为有(抵押物地址)
-                             @"mortorage_community" : @"华益小区",  //小区名
-                             @"seatmortgage" : @"浦东新区孙环路177弄",  //详细地址
-                             @"paymethod" : @"",  //付款方式 1=>'分期',2=>'一次性付清',
-                             @"rate" : @"23", //利率
-                             @"rate_cat" : @"1",  //利率单位 1-天  2-月
-                             @"term" : @"",  //借款周期
-                             @"repaymethod" : @"", //还款方式 1=>'一次性到期还本付息',2=>'按月付息,到期还本'
-                             @"obligor" : @"",   //借款人主体  1=>'自然人', 2=>'法人',3=>'其他(未成年,外籍等)'
-                             @"commitment" : @"",  //委托事项 1=>'65岁以下',2=>'65岁以上',
-                             @"commissionperiod" : @"",  //委托代理期限(月)  1-12
-                             @"paidmoney" : @"",  //已付本金
-                             @"interestpaid" : @"", //已付利息
-                             @"performancecontract" : @"",  //合同履行地
+                             @"mortorage_community" : mortorage_communityStr,  //小区名
+                             @"seatmortgage" : seatmortgageStr,  //详细地址
+                             @"rate" : rateStr, //利率
+                             @"rate_cat" : rate_catStr,  //利率单位 1-天  2-月
+                             @"term" : termStr,  //借款周期
+                             @"repaymethod" : repaymethodStr, //还款方式 1=>'一次性到期还本付息',2=>'按月付息,到期还本'
+                             @"obligor" : obligorStr,   //借款人主体  1=>'自然人', 2=>'法人',3=>'其他(未成年,外籍等)'
+                             @"commitment" : commitmentStr,  //委托事项 1=>'65岁以下',2=>'65岁以上',
+                             @"commissionperiod" : commissionperiodStr,  //委托代理期限(月)  1-12
+                             @"paidmoney" : paidmoneyStr,  //已付本金
+                             @"interestpaid" : interestpaidStr, //已付利息
+                             @"performancecontract" : performancecontractStr,  //合同履行地
                              @"creditorfile" : @"",  //债权人文件
                              @"creditorinfo" : @"",  //债权人信息
                              @"borrowinginfo" : @"", //债务人信息
@@ -262,7 +592,7 @@
         
         if ([suitModel.code isEqualToString:@"0000"]) {
             
-            if ([self.suitString intValue] == 0) {//保存
+            if ([typeString intValue] == 0) {//保存
                 UINavigationController *nav = self.navigationController;
                 [nav popViewControllerAnimated:NO];
                 
@@ -274,8 +604,6 @@
                 reportFiSucVC.reportType = @"诉讼";
                 [self.navigationController pushViewController:reportFiSucVC animated:YES];
             }
-            
-            
         }
     } andFailBlock:^(NSError *error){
         

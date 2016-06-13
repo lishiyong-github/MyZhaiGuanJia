@@ -6,10 +6,15 @@
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
-#import "BaseViewController.h"
+#import "NetworkViewController.h"
 
 
-@interface MyProcessingViewController : BaseViewController
+@interface MyProcessingViewController : NetworkViewController
+
+
+@property (nonatomic,strong) NSString *idString;
+@property (nonatomic,strong) NSString *categaryString;
+
 
 
 @end

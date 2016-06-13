@@ -18,6 +18,8 @@
         [self.contentView addSubview:self.caseNoTextField];
         [self.contentView addSubview:self.caseGoButton];
         
+        self.leftFieldConstraints = [self.caseNoTextField autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:60];
+        
         [self.contentView setNeedsUpdateConstraints];
     }
     return self;
@@ -30,7 +32,6 @@
         [self.caseNoButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
         [self.caseNoButton autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
         
-        [self.caseNoTextField autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:60];
         [self.caseNoTextField autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.caseNoButton];
         [self.caseNoTextField autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.caseGoButton withOffset:-kBigPadding];
         

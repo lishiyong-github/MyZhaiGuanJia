@@ -11,13 +11,15 @@
 //#import "RequestTextView.h"
 #import "PlaceHolderTextView.h"
 
-@interface EditDebtAddressCell : UITableViewCell
+@interface EditDebtAddressCell : UITableViewCell<UITextViewDelegate>
 
 @property (nonatomic,strong) UILabel *ediLabel;
 @property (nonatomic,strong) PlaceHolderTextView *ediTextView;
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) NSLayoutConstraint *leftTextViewConstraints;
-@property (nonatomic,strong) NSLayoutConstraint *textHeightConstraint;
+//@property (nonatomic,strong) NSLayoutConstraint *textHeightConstraint;
+
+@property (nonatomic,strong) void (^didEndEditing)(NSString *);
 
 @end

@@ -21,7 +21,7 @@
 @property (nonatomic,strong) BaseCommitButton *personAuCommitButton;
 @property (nonatomic,strong) UIAlertController *alertController;
 
-@property (nonatomic,assign) NSInteger *pictureInt;
+@property (nonatomic,assign) NSInteger pictureInt;
 
 @end
 
@@ -144,6 +144,8 @@
 {
     static NSString *identifier;
     
+    CertificationModel *certificationModel = self.respnseModel.certification;
+    
     if (indexPath.section == 0) {
         identifier = @"authenPer0";
         TakePictureCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -180,11 +182,11 @@
             cell.agentLabel.textColor = kBlueColor;
             cell.agentTextField.userInteractionEnabled = NO;
         }else if (indexPath.row == 1){
-            cell.agentTextField.text = self.cerModel.name;
+            cell.agentTextField.text = certificationModel.name;
         }else if (indexPath.row == 2){
-            cell.agentTextField.text = self.cerModel.cardno;
+            cell.agentTextField.text = certificationModel.cardno;
         }else if (indexPath.row == 3){
-            cell.agentTextField.text = self.cerModel.mobile;
+            cell.agentTextField.text = certificationModel.mobile;
         }
         
         return cell;
@@ -212,7 +214,7 @@
                 NSMutableAttributedString *ttt = [cell.agentLabel setAttributeString:@"|  补充信息  " withColor:kBlueColor andSecond:@"(选填)" withColor:kLightGrayColor withFont:12];
                 [cell.agentLabel setAttributedText:ttt];
             }else{
-                cell.agentTextField.text = self.cerModel.email;
+                cell.agentTextField.text = certificationModel.email;
             }
             
             return cell;
@@ -229,7 +231,7 @@
         cell.leftTextViewConstraints.constant = 95;
         cell.ediLabel.text = @"经典案例";
         cell.ediTextView.placeholder = @"关于个人在融资等方面的成功案例，有利于发布方更加青睐你";
-        cell.ediTextView.text = self.cerModel.casedesc;
+        cell.ediTextView.text = certificationModel.casedesc;
         return cell;
     }
     

@@ -8,6 +8,8 @@
 
 #import "NetworkViewController.h"
 #import "CompleteResponse.h"
+#import "CertificationModel.h"
+
 
 @interface AuthenLawViewController : NetworkViewController
 @property (nonatomic,strong) CompleteResponse *responseModel;

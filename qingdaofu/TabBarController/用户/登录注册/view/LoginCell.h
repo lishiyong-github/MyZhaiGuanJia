@@ -18,8 +18,6 @@
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) NSLayoutConstraint *topConstraint;
 
-//- (void)changePlaceholderColor:(NSString *)placeholder;
-
 @property (nonatomic,strong) void (^finishEditing)(NSString *);
 
 @end

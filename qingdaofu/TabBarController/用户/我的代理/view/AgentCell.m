@@ -21,7 +21,7 @@
         
         self.leftdAgentContraints = [self.agentTextField autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:90];
         
-        [self.contentView setNeedsUpdateConstraints];
+        [self setNeedsUpdateConstraints];
     }
     return self;
 }
@@ -60,6 +60,7 @@
         _agentTextField = [UITextField newAutoLayoutView];
         _agentTextField.textColor = kBlackColor;
         _agentTextField.font = kFirstFont;
+        _agentTextField.delegate = self;
     }
     return _agentTextField;
 }
@@ -73,6 +74,22 @@
         [_agentButton swapImage];
     }
     return _agentButton;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    if (self.didEndEditing) {
+        self.didEndEditing(textField.text);
+    }
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    NSString *title = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    if (self.didEndEditing) {
+        self.didEndEditing(title);
+    }
+    return YES;
 }
 
 - (void)awakeFromNib {

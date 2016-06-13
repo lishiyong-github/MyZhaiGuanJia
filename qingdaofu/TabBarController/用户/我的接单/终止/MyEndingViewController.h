@@ -7,8 +7,12 @@
 //
 
 
-#import "BaseViewController.h"
+#import "NetworkViewController.h"
 
-@interface MyEndingViewController : BaseViewController
+@interface MyEndingViewController : NetworkViewController
+
+@property (nonatomic,strong) NSString *idString;
+@property (nonatomic,strong) NSString *categaryString;
+
 
 @end

@@ -7,7 +7,10 @@
 //
 
 #import "NetworkViewController.h"
-
 @interface DelayRequestsViewController : NetworkViewController
+
+
+@property (nonatomic,strong) NSString *idString;
+@property (nonatomic,strong) NSString *categoryString;
 
 @end

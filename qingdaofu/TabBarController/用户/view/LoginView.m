@@ -43,7 +43,6 @@
 - (UITableView *)loginTableView
 {
     if (!_loginTableView) {
-//        _loginTableView = [UITableView newAutoLayoutView];
         _loginTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _loginTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _loginTableView.delegate = self;
@@ -241,7 +240,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
     if (self.didSelectedIndex) {
         self.didSelectedIndex(indexPath);
     }

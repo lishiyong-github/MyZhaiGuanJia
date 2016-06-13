@@ -15,5 +15,6 @@
 @property (nonatomic,strong) UIButton *caseGoButton;
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
+@property (nonatomic,strong) NSLayoutConstraint *leftFieldConstraints;
 
 @end

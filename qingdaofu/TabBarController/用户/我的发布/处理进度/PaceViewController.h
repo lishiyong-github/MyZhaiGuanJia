@@ -7,7 +7,11 @@
 //
 
 #import "BaseViewController.h"
+#import "ScheduleModel.h"
 
 @interface PaceViewController : BaseViewController
+
+@property (nonatomic,strong) ScheduleModel *model;
+@property (nonatomic,strong) NSMutableArray *scheArray;
 
 @end

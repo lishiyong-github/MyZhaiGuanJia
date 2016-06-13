@@ -130,7 +130,6 @@
 - (UITableView *)myReleaseTableView
 {
     if (!_myReleaseTableView) {
-//        _myReleaseTableView = [UITableView newAutoLayoutView];
         _myReleaseTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _myReleaseTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _myReleaseTableView.delegate = self;
@@ -282,7 +281,7 @@
                 ApplyRecordsViewController *applyRecordsVC = [[ApplyRecordsViewController alloc] init];
                 applyRecordsVC.idStr = rowModel.idString;
                 applyRecordsVC.categaryStr = rowModel.category;
-                [self.navigationController pushViewController:applyRecordsVC animated:YES];
+                [weakself.navigationController pushViewController:applyRecordsVC animated:YES];
             }];
         }
     
@@ -334,14 +333,15 @@
 #pragma mark - method
 - (void)getMyReleaseListWithPage:(NSString *)page
 {
+    [self.releaseDataArray removeAllObjects];
+    
     NSString *myReleaseString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"progress_status" : self.progreStatus,
-                             @"limit" : @"30"
+                             @"limit" : @"30",
+                             @"page" : page
                              };
-    [self headerRefreshWithPage:page urlString:myReleaseString Parameter:params successBlock:^(AFHTTPRequestOperation *operation, id responseObject){
-        
-        [self.releaseDataArray removeAllObjects];
+    [self headerRefreshWithUrlString:myReleaseString Parameter:params successBlock:^(id responseObject) {
         ReleaseResponse *releaseModel = [ReleaseResponse objectWithKeyValues:responseObject];
         
         for (RowsModel *rowsModel in releaseModel.rows) {
@@ -349,9 +349,8 @@
         }
         
         [self.myReleaseTableView reloadData];
-        
-    } andfailedBlock:^{
-        
+    } andfailedBlock:^(NSError *error) {
+        [self.myReleaseTableView reloadData];
     }];
 }
 

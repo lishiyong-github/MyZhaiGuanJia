@@ -7,10 +7,11 @@
 //
 
 #import "NetworkViewController.h"
-#import "CertificationModel.h"
 
+#import "CompleteResponse.h"
+#import "CertificationModel.h"
 @interface AuthenPersonViewController : NetworkViewController
 
-@property (nonatomic,strong) CertificationModel *cerModel;
+@property (nonatomic,strong) CompleteResponse *respnseModel;
 
 @end

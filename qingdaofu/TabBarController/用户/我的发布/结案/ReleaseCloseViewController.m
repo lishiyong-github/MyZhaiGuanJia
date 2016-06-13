@@ -76,7 +76,6 @@
 - (UITableView *)ReleaseCloseTableView
 {
     if (!_ReleaseCloseTableView) {
-//        _ReleaseCloseTableView = [UITableView newAutoLayoutView];
         _ReleaseCloseTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _ReleaseCloseTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _ReleaseCloseTableView.delegate = self;
@@ -145,145 +144,162 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier;
-    if (self.releaseArray.count > 0) {
         
-        PublishingResponse *responseModel = self.releaseArray[0];
-        PublishingModel *releaseModel = responseModel.product;
+    PublishingResponse *responseModel = self.releaseArray[0];
+    PublishingModel *releaseModel = responseModel.product;
+    
+    if (indexPath.section == 0) {
+        identifier = @"releaseClose0";
+        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         
-        if (indexPath.section == 0) {
-            identifier = @"releaseClose0";
+        if (!cell) {
+            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.backgroundColor = UIColorFromRGB(0x42566d);
+        
+        NSString *code = [NSString stringWithFormat:@"产品编号:%@",releaseModel.codeString];
+        [cell.userNameButton setTitle:code forState:0];
+        [cell.userNameButton setTitleColor:UIColorFromRGB(0xcfd4e8) forState:0];
+        
+        /*0为待发布（保存未发布的）。 1为发布中（已发布的）。
+         2为处理中（有人已接单发布方也已同意）。
+         3为终止（只用发布方可以终止）。
+         4为结案（双方都可以申请，一方申请一方同意*/
+        if ([releaseModel.progress_status intValue] == 0) {
+            [cell.userActionButton setTitle:@"待发布" forState:0];
+        }else if ([releaseModel.progress_status intValue] == 1){
+            [cell.userActionButton setTitle:@"发布中" forState:0];
+        }else if ([releaseModel.progress_status intValue] == 2){
+            [cell.userActionButton setTitle:@"处理中" forState:0];
+        }else if ([releaseModel.progress_status intValue] == 3){
+            [cell.userActionButton setTitle:@"终止" forState:0];
+        }else if ([releaseModel.progress_status intValue] == 4){
+            [cell.userActionButton setTitle:@"结案" forState:0];
+        }
+        [cell.userActionButton setTitleColor:kNavColor forState:0];
+        cell.userActionButton.titleLabel.font = kBigFont;
+        
+        return cell;
+        
+    }else if (indexPath.section == 1){
+        if (indexPath.row < 5) {
+            identifier = @"releaseClose11";
             MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
             
             if (!cell) {
                 cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.backgroundColor = UIColorFromRGB(0x42566d);
             
-            NSString *code = [NSString stringWithFormat:@"产品编号:%@",releaseModel.codeString];
-            [cell.userNameButton setTitle:code forState:0];
-            [cell.userNameButton setTitleColor:UIColorFromRGB(0xcfd4e8) forState:0];
-            
-            /*0为待发布（保存未发布的）。 1为发布中（已发布的）。
-             2为处理中（有人已接单发布方也已同意）。
-             3为终止（只用发布方可以终止）。
-             4为结案（双方都可以申请，一方申请一方同意*/
-            if ([releaseModel.progress_status intValue] == 0) {
-                [cell.userActionButton setTitle:@"待发布" forState:0];
-            }else if ([releaseModel.progress_status intValue] == 1){
-                [cell.userActionButton setTitle:@"发布中" forState:0];
-            }else if ([releaseModel.progress_status intValue] == 2){
-                [cell.userActionButton setTitle:@"处理中" forState:0];
-            }else if ([releaseModel.progress_status intValue] == 3){
-                [cell.userActionButton setTitle:@"终止" forState:0];
-            }else if ([releaseModel.progress_status intValue] == 4){
-                [cell.userActionButton setTitle:@"结案" forState:0];
+            NSString *string22;
+            NSString *string3;
+            NSString *imageString3;
+            NSString *string33;
+            NSString *string4;
+            NSString *imageString4;
+            NSString *string44;
+            if ([releaseModel.category intValue] == 1) {//融资
+                string22 = @"融资";
+                if ([releaseModel.rate_cat intValue] == 1) {
+                    string3 = @"  借款利率(天)";
+                }else if ([releaseModel.rate_cat intValue] == 2){
+                    string3 = @"  借款利率(月)";
+                }
+                imageString3 = @"conserve_interest_icon";
+                string33 = releaseModel.rate;
+                string4 = @"  返点";
+                imageString4 = @"conserve_rebate_icon";
+                string44 = releaseModel.rebate;
+            }else if ([releaseModel.category intValue] == 2){//催收
+                string22 = @"催收";
+                string3 = @"  代理费用(万)";
+                imageString3 = @"conserve_fixed_icon";
+                string33 = releaseModel.agencycommission;
+                string4 = @"  债权类型";
+                imageString4 = @"conserve_rights_icon";
+                if ([releaseModel.loan_type intValue] == 1) {
+                    string44 = @"房产抵押";
+                }else if ([releaseModel.loan_type intValue] == 2){
+                    string44 = @"应收账款";
+                }else if ([releaseModel.loan_type intValue] == 3){
+                    string44 = @"机动车抵押";
+                }else if ([releaseModel.loan_type intValue] == 4){
+                    string44 = @"无抵押";
+                }
+            }else if ([releaseModel.category intValue] == 3){//诉讼
+                string22 = @"诉讼";
+                if ([releaseModel.agencycommissiontype intValue] == 1) {
+                    string3 = @"  固定费用(万)";
+                }else if ([releaseModel.agencycommissiontype intValue] == 2){
+                    string3 = @"  风险费率(%)";
+                }
+                imageString3 = @"conserve_fixed_icon";
+                string33 = releaseModel.agencycommission;
+                string4 = @"  债权类型";
+                imageString4 = @"conserve_rights_icon";
+                if ([releaseModel.loan_type intValue] == 1) {
+                    string44 = @"房产抵押";
+                }else if ([releaseModel.loan_type intValue] == 2){
+                    string44 = @"应收账款";
+                }else if ([releaseModel.loan_type intValue] == 3){
+                    string44 = @"机动车抵押";
+                }else if ([releaseModel.loan_type intValue] == 4){
+                    string44 = @"无抵押";
+                }
             }
-            [cell.userActionButton setTitleColor:kNavColor forState:0];
-            cell.userActionButton.titleLabel.font = kBigFont;
             
+            NSArray *dataArray = @[@"|  基本信息",@"  投资类型",@"  借款本金(万)",string3,string4];
+            NSArray *imageArray = @[@"",@"conserve_investment_icon",@"conserve_loan_icon",imageString3,imageString4];
+            NSArray *detailArray = @[@"",string22,releaseModel.money,string33,string44];
+            
+            [cell.userNameButton setTitle:dataArray[indexPath.row] forState:0];
+            [cell.userNameButton setImage:[UIImage imageNamed:imageArray[indexPath.row]] forState:0];
+            [cell.userActionButton setTitle:detailArray[indexPath.row] forState:0];
+            
+            if (indexPath.row == 0) {
+                [cell.userNameButton setTitleColor:kBlueColor forState:0];
+                
+                if ([releaseModel.progress_status intValue] < 2) {
+                    [cell.userActionButton setTitle:@"编辑" forState:0];
+                    [cell.userActionButton setTitleColor:kBlueColor forState:0];
+                }
+            }
             return cell;
-            
-        }else if (indexPath.section == 1){
-            if (indexPath.row < 5) {
-                identifier = @"releaseClose11";
-                MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-                
-                if (!cell) {
-                    cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-                }
-                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                
-                NSString *string22;
-                NSString *string3;
-                NSString *imageString3;
-                NSString *string33;
-                NSString *string4;
-                NSString *imageString4;
-                NSString *string44;
-                if ([releaseModel.category intValue] == 1) {//融资
-                    string22 = @"融资";
-                    if ([releaseModel.rate_cat intValue] == 1) {
-                        string3 = @"  借款利率(天)";
-                    }else if ([releaseModel.rate_cat intValue] == 2){
-                        string3 = @"  借款利率(月)";
-                    }
-                    imageString3 = @"conserve_interest_icon";
-                    string33 = releaseModel.rate;
-                    string4 = @"  返点";
-                    imageString4 = @"conserve_rebate_icon";
-                    string44 = releaseModel.rebate;
-                }else if ([releaseModel.category intValue] == 2){//催收
-                    string22 = @"催收";
-                    string3 = @"  代理费用(万)";
-                    imageString3 = @"conserve_fixed_icon";
-                    string33 = releaseModel.agencycommission;
-                    string4 = @"  债权类型";
-                    imageString4 = @"conserve_rights_icon";
-                    if ([releaseModel.loan_type intValue] == 1) {
-                        string44 = @"房产抵押";
-                    }else if ([releaseModel.loan_type intValue] == 2){
-                        string44 = @"应收账款";
-                    }else if ([releaseModel.loan_type intValue] == 3){
-                        string44 = @"机动车抵押";
-                    }else if ([releaseModel.loan_type intValue] == 4){
-                        string44 = @"无抵押";
-                    }
-                }else if ([releaseModel.category intValue] == 3){//诉讼
-                    string22 = @"诉讼";
-                    if ([releaseModel.agencycommissiontype intValue] == 1) {
-                        string3 = @"  固定费用(万)";
-                    }else if ([releaseModel.agencycommissiontype intValue] == 2){
-                        string3 = @"  风险费率(%)";
-                    }
-                    imageString3 = @"conserve_fixed_icon";
-                    string33 = releaseModel.agencycommission;
-                    string4 = @"  债权类型";
-                    imageString4 = @"conserve_rights_icon";
-                    if ([releaseModel.loan_type intValue] == 1) {
-                        string44 = @"房产抵押";
-                    }else if ([releaseModel.loan_type intValue] == 2){
-                        string44 = @"应收账款";
-                    }else if ([releaseModel.loan_type intValue] == 3){
-                        string44 = @"机动车抵押";
-                    }else if ([releaseModel.loan_type intValue] == 4){
-                        string44 = @"无抵押";
-                    }
-                }
-                
-                NSArray *dataArray = @[@"|  基本信息",@"  投资类型",@"  借款本金(万)",string3,string4];
-                NSArray *imageArray = @[@"",@"conserve_investment_icon",@"conserve_loan_icon",imageString3,imageString4];
-                NSArray *detailArray = @[@"",string22,releaseModel.money,string33,string44];
-                
-                [cell.userNameButton setTitle:dataArray[indexPath.row] forState:0];
-                [cell.userNameButton setImage:[UIImage imageNamed:imageArray[indexPath.row]] forState:0];
-                [cell.userActionButton setTitle:detailArray[indexPath.row] forState:0];
-                
-                if (indexPath.row == 0) {
-                    [cell.userNameButton setTitleColor:kBlueColor forState:0];
-                    
-                    if ([releaseModel.progress_status intValue] < 2) {
-                        [cell.userActionButton setTitle:@"编辑" forState:0];
-                        [cell.userActionButton setTitleColor:kBlueColor forState:0];
-                    }
-                }
-                return cell;
-            }
-            identifier = @"releaseClose12";
-            BidOneCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-            
-            if (!cell) {
-                cell = [[BidOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-            }
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            [cell.oneButton setTitle:@"查看补充信息" forState:0];
-            [cell.oneButton setImage:[UIImage imageNamed:@"more"] forState:0];
-            
-            return cell;
-            
-        }else if (indexPath.section == 2){
-            identifier = @"releaseClose3";
+        }
+        identifier = @"releaseClose12";
+        BidOneCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        
+        if (!cell) {
+            cell = [[BidOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        [cell.oneButton setTitle:@"查看补充信息" forState:0];
+        [cell.oneButton setImage:[UIImage imageNamed:@"more"] forState:0];
+        
+        return cell;
+        
+    }else if (indexPath.section == 2){
+        identifier = @"releaseClose3";
+        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell) {
+            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        [cell.userNameButton setTitleColor:kBlueColor forState:0];
+        [cell.userNameButton setTitle:@"|  服务协议" forState:0];
+        [cell.userActionButton setTitle:@"点击查看" forState:0];
+        [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        cell.userActionButton.userInteractionEnabled = NO;
+        
+        return cell;
+        
+    }else if(indexPath.section == 3){
+        if (indexPath.row == 0) {
+            identifier = @"releaseClose40";
             MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
             if (!cell) {
                 cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
@@ -292,89 +308,70 @@
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             
             [cell.userNameButton setTitleColor:kBlueColor forState:0];
-            [cell.userNameButton setTitle:@"|  服务协议" forState:0];
-            [cell.userActionButton setTitle:@"点击查看" forState:0];
+            [cell.userNameButton setTitle:@"|  进度详情" forState:0];
+            
+            [cell.userActionButton setTitle:@"查看更多" forState:0];
             [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
             cell.userActionButton.userInteractionEnabled = NO;
             
             return cell;
             
-        }else if(indexPath.section == 3){
-            if (indexPath.row == 0) {
-                identifier = @"releaseClose40";
-                MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-                if (!cell) {
-                    cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-                }
-                
-                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                
-                [cell.userNameButton setTitleColor:kBlueColor forState:0];
-                [cell.userNameButton setTitle:@"|  进度详情" forState:0];
-                
-                [cell.userActionButton setTitle:@"查看更多" forState:0];
-                [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-                cell.userActionButton.userInteractionEnabled = NO;
-                
-                return cell;
-                
-            }else if (indexPath.row == 1){
-                identifier = @"releaseClose41";
-                BidMessageCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-                if (!cell) {
-                    cell = [[BidMessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-                }
-                
-                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                NSMutableAttributedString *caseTypestring = [cell.deadlineLabel setAttributeString:@"案号类型：" withColor:kBlackColor andSecond:@"二审" withColor:kLightGrayColor withFont:12];
-                [cell.deadlineLabel setAttributedText:caseTypestring];
-                
-                cell.timeLabel.text = @"2016-05-30";
-                
-                NSMutableAttributedString *caseNoString = [cell.dateLabel setAttributeString:@"案        号：" withColor:kBlackColor andSecond:@"201605120001" withColor:kLightGrayColor withFont:12];
-                [cell.dateLabel setAttributedText:caseNoString];
-                
-                NSMutableAttributedString *dealTypeString = [cell.areaLabel setAttributeString:@"处置类型：" withColor: kBlackColor andSecond:@"拍卖" withColor:kLightGrayColor withFont:12];
-                [cell.areaLabel setAttributedText:dealTypeString];
-                
-                NSMutableAttributedString *dealDeailString = [cell.addressLabel setAttributeString:@"详        情：" withColor:kBlackColor andSecond:@"详情详情" withColor:kLightGrayColor withFont:12];
-                [cell.addressLabel setAttributedText:dealDeailString];
-                
-                return cell;
+        }else if (indexPath.row == 1){
+            identifier = @"releaseClose41";
+            BidMessageCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[BidMessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
             }
-        }else{
-            if (indexPath.row == 0) {
-                identifier = @"releaseClose50";
-                MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-                if (!cell) {
-                    cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-                }
-                cell .selectionStyle = UITableViewCellSelectionStyleNone;
-                
-                [cell.userNameButton setTitle:@"|  给出的评价" forState:0];
-                [cell.userNameButton setTitleColor:kBlueColor forState:0];
-                [cell.userActionButton setTitle:@"查看更多" forState:0];
-                [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-                cell.userActionButton.userInteractionEnabled = NO;
-                
-                return cell;
-                
-            }
-                identifier = @"releaseClose51";
-                EvaluatePhotoCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-                if (!cell) {
-                    cell = [[EvaluatePhotoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-                }
-                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                
-                cell.evaNameLabel.text = @"134356656";
-                cell.evaTextLabel.text = @"很好";
-                cell.evaProImageView1.backgroundColor = kLightGrayColor;
-                cell.evaProImageView2.backgroundColor = kLightGrayColor;
-                [cell.evaProductButton setHidden:YES];
-                
-                return cell;
+            
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            NSMutableAttributedString *caseTypestring = [cell.deadlineLabel setAttributeString:@"案号类型：" withColor:kBlackColor andSecond:@"二审" withColor:kLightGrayColor withFont:12];
+            [cell.deadlineLabel setAttributedText:caseTypestring];
+            
+            cell.timeLabel.text = @"2016-05-30";
+            
+            NSMutableAttributedString *caseNoString = [cell.dateLabel setAttributeString:@"案        号：" withColor:kBlackColor andSecond:@"201605120001" withColor:kLightGrayColor withFont:12];
+            [cell.dateLabel setAttributedText:caseNoString];
+            
+            NSMutableAttributedString *dealTypeString = [cell.areaLabel setAttributeString:@"处置类型：" withColor: kBlackColor andSecond:@"拍卖" withColor:kLightGrayColor withFont:12];
+            [cell.areaLabel setAttributedText:dealTypeString];
+            
+            NSMutableAttributedString *dealDeailString = [cell.addressLabel setAttributeString:@"详        情：" withColor:kBlackColor andSecond:@"详情详情" withColor:kLightGrayColor withFont:12];
+            [cell.addressLabel setAttributedText:dealDeailString];
+            
+            return cell;
         }
+    }else{
+        if (indexPath.row == 0) {
+            identifier = @"releaseClose50";
+            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell .selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            [cell.userNameButton setTitle:@"|  给出的评价" forState:0];
+            [cell.userNameButton setTitleColor:kBlueColor forState:0];
+            [cell.userActionButton setTitle:@"查看更多" forState:0];
+            [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            cell.userActionButton.userInteractionEnabled = NO;
+            
+            return cell;
+            
+        }
+            identifier = @"releaseClose51";
+            EvaluatePhotoCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[EvaluatePhotoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            cell.evaNameLabel.text = @"134356656";
+            cell.evaTextLabel.text = @"很好";
+            cell.evaProImageView1.backgroundColor = kLightGrayColor;
+            cell.evaProImageView2.backgroundColor = kLightGrayColor;
+            [cell.evaProductButton setHidden:YES];
+            
+            return cell;
     }
     return nil;
 }
@@ -418,10 +415,6 @@
                              @"category" : self.categaryString
                              };
     [self requestDataPostWithString:releaseString params:params successBlock:^(id responseObject){
-        
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSLog(@"+++++ %@",dic);
-        
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
         [self.releaseArray addObject:response];
         [self.ReleaseCloseTableView reloadData];

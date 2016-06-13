@@ -65,7 +65,6 @@
 - (UITableView *)companyAuTableView
 {
     if (!_companyAuTableView) {
-//        _companyAuTableView = [UITableView newAutoLayoutView];
         _companyAuTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _companyAuTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _companyAuTableView.delegate = self;
@@ -163,7 +162,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier;
-    
+    CertificationModel *certificationModel = self.responseModel.certification;
     if (indexPath.section == 0) {
         identifier = @"authenPer0";
         TakePictureCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -210,6 +209,14 @@
         if (indexPath.row == 0) {
             cell.agentLabel.textColor = kBlueColor;
             cell.agentTextField.userInteractionEnabled = NO;
+        }else if (indexPath.row == 1){//公司名称
+            cell.agentTextField.text = certificationModel.name;
+        }else if (indexPath.row == 2){//营业执照号
+            cell.agentTextField.text = certificationModel.cardno;
+        }else if (indexPath.row == 3){//联系人
+            cell.agentTextField.text  = certificationModel.contact;
+        }else{//联系方式
+            cell.agentTextField.text = certificationModel.mobile;
         }
         
         return cell;
@@ -236,6 +243,12 @@
                 cell.agentTextField.userInteractionEnabled = NO;
                 NSMutableAttributedString *ttt = [cell.agentLabel setAttributeString:@"|  补充信息  " withColor:kBlueColor andSecond:@"(选填)" withColor:kLightGrayColor withFont:12];
                 [cell.agentLabel setAttributedText:ttt];
+            }else if (indexPath.row == 1){//企业邮箱
+                cell.agentTextField.text = certificationModel.email;
+            }else if (indexPath.row == 2){//经营地址
+                cell.agentTextField.text = certificationModel.address;
+            }else{//公司网站
+                cell.agentTextField.text = certificationModel.enterprisewebsite;
             }
             
             return cell;
@@ -254,6 +267,8 @@
         cell.ediLabel.text = @"经典案例";
         cell.ediTextView.placeholder = @"关于公司在融资等方面的成功案例，有利于发布方更加青睐你";
         cell.ediTextView.font = kFirstFont;
+        
+        cell.ediTextView.text = certificationModel.casedesc;
         return cell;
     }
     

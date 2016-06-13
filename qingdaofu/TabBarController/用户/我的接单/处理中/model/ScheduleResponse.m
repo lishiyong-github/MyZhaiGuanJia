@@ -10,4 +10,17 @@
 
 @implementation ScheduleResponse
 
+
++ (NSDictionary *)replacedKeyFromPropertyName
+{
+    return @{@"disposing" : @"result.disposing",
+             @"uid" : @"result.uid"
+             };
+}
+
++ (NSDictionary *)objectClassInArray
+{
+    return @{@"disposing" : @"ScheduleModel"};
+}
+
 @end

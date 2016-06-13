@@ -7,7 +7,10 @@
 //
 
 #import "BaseModel.h"
+@class DelayModel;
 
 @interface DelayResponse : BaseModel
+
+@property (nonatomic,strong) DelayModel *delay;
 
 @end

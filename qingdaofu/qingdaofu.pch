@@ -36,6 +36,7 @@
 #import "MJExtension.h"
 #import "BaseModel.h"
 #import "NSDate+FormatterTime.h"
+#import "MJRefresh.h"
 
 
 
@@ -103,8 +104,9 @@
  */
 
 #define kQDFUrlString @"http://www.zcb2016.com/wap/"
-#define kQDFTestUrlString @"http://testq.zcb2016.com/wap/"
-//@"http://192.168.20.149/wap/"
+//#define kQDFTestUrlString @"http://testq.zcb2016.com/wap/"
+#define kQDFTestUrlString @"http://192.168.20.149/wap/"
+
 
 //post
 /*
@@ -116,6 +118,7 @@
 #define kExitString    @"user/logout"     //退出1
 #define kModifyPasswordString  @"user/modifypassword"  //修改密码1
 #define kResetPasswordString  @"user/resetpassword"     //重置密码
+#define kTokenOverdue  @"common/islogin"   //token是否过期
 
 /*发布产品*/
 #define kPublishFinanceString @"publish/financing"  //发布融资
@@ -131,9 +134,12 @@
 //我的接单 我的发布
 #define kMyOrdersString   @"apply/index"    //我的接单
 #define kMyscheduleString @"public/speedo"  //填写进度
+#define kIsDelayRequestString  @"public/wxextendwidget" //是否能延期
+#define kMyDelayRequestString @"public/delayapply"   //延期申请
+#define kLookUpScheduleString @"public/wxspeedwidget"   //查看进度
 
 #define kMyReleaseString  @"apply/released"   //我的发布
-#define kMyReleaseDetailString @"public/wxreleaseinformationwidget"  //我的发布详情
+#define kMyReleaseDetailString @"public/wxreleaseinformationwidget"  //我的发布详情/我的接单详情
 
 #define kRequestApplyString @"capital/Shoucang"   //立即申请
 #define kMyRecordsString  @"apply/ordertaking"   //申请记录

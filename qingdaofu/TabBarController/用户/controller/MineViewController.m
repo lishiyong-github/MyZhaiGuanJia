@@ -22,12 +22,17 @@
 #import "MySettingsViewController.h"  //设置
 
 #import "LoginView.h"
+
+#import "CompleteResponse.h"
+#import "CertificationModel.h"
+
 @interface MineViewController ()
 
 @property (nonatomic,assign) BOOL didSetupConstraits;
 @property (nonatomic,strong) LoginView *loginView;
 
 @property (nonatomic,strong) NSString *authenString;
+@property (nonatomic,strong) NSMutableArray *authenArray;
 
 @end
 
@@ -79,60 +84,55 @@
                 
                 case 10:{//我的发布
                     NSLog(@"全部");
-                    myReleaseVC.rFlagString = @"all";
                     myReleaseVC.progreStatus = @"0";
                     [weakself.navigationController pushViewController:myReleaseVC animated:YES];
                 }
                     break;
                 case 11:{
-                    myReleaseVC.rFlagString = @"ing";
                     myReleaseVC.progreStatus = @"1";
                     [weakself.navigationController pushViewController:myReleaseVC animated:YES];
                 }
                     break;
                 case 12:{
-                    myReleaseVC.rFlagString = @"deal";
                     myReleaseVC.progreStatus = @"2";
                     [weakself.navigationController pushViewController:myReleaseVC animated:YES];
                 }
                     break;
                 case 13:{
-                    myReleaseVC.rFlagString = @"end";
                     myReleaseVC.progreStatus = @"3";
                     [weakself.navigationController pushViewController:myReleaseVC animated:YES];
                 }
                     break;
                 case 14:{
-                    myReleaseVC.rFlagString = @"close";
                     myReleaseVC.progreStatus = @"4";
                     [weakself.navigationController pushViewController:myReleaseVC animated:YES];
                 }
                     break;
-                case 20:{//我的接单
-                    myOrderVC.status = @"01";
-                    myOrderVC.progresStatus = @"1234";
+                case 20:{//我的接单(全部)
+                    myOrderVC.status = @"";
+                    myOrderVC.progresStatus = @"";
                     [weakself.navigationController pushViewController:myOrderVC animated:YES];
                 }
                     break;
-                case 21:{
+                case 21:{//申请中
                     myOrderVC.status = @"0";
                     myOrderVC.progresStatus = @"1";
                     [weakself.navigationController pushViewController:myOrderVC animated:YES];
                 }
                     break;
-                case 22:{
+                case 22:{//处理中
                     myOrderVC.status = @"1";
                     myOrderVC.progresStatus = @"2";
                     [weakself.navigationController pushViewController:myOrderVC animated:YES];
                 }
                     break;
-                case 23:{
+                case 23:{//终止
                     myOrderVC.status = @"1";
                     myOrderVC.progresStatus = @"3";
                     [weakself.navigationController pushViewController:myOrderVC animated:YES];
                 }
                     break;
-                case 24:{
+                case 24:{//结案
                     myOrderVC.status = @"1";
                     myOrderVC.progresStatus = @"4";
                     [weakself.navigationController pushViewController:myOrderVC animated:YES];
@@ -145,21 +145,32 @@
         
         [_loginView setDidSelectedIndex:^(NSIndexPath *indexPath) {
             if (indexPath.section == 0) {//认证
-                NSLog(@"认证");
-                if ([weakself getValidateToken] == nil) {
+                //1.未登录
+                if ([weakself getValidateToken]) {
                     LoginViewController *loginVC = [[LoginViewController alloc] init];
                     loginVC.hidesBottomBarWhenPushed = YES;
                     [weakself.navigationController pushViewController:loginVC animated:YES];
                 }else{
-                    if ([weakself.authenString isEqualToString:@"4001"]) {
-                        AuthentyViewController *authentyVC = [[AuthentyViewController alloc] init];
-                        authentyVC.hidesBottomBarWhenPushed = YES;
-                        [weakself.navigationController pushViewController:authentyVC animated:YES];
-                    }else{
-        
+                    CompleteResponse *response = weakself.authenArray[0];
+
+                    if ([response.certification.category intValue] == 1) {
                         CompleteViewController *completeVC = [[CompleteViewController alloc] init];
                         completeVC.hidesBottomBarWhenPushed = YES;
                         [weakself.navigationController pushViewController:completeVC animated:YES];
+                    }else if ([response.certification.category intValue] == 2){
+                        CompleteViewController *completeVC = [[CompleteViewController alloc] init];
+                        completeVC.hidesBottomBarWhenPushed = YES;
+                        completeVC.responseModel = weakself.authenArray[0];
+                        [weakself.navigationController pushViewController:completeVC animated:YES];
+                    }else if ([response.certification.category intValue] == 3){
+                        CompleteViewController *completeVC = [[CompleteViewController alloc] init];
+                        completeVC.hidesBottomBarWhenPushed = YES;
+                        completeVC.responseModel = weakself.authenArray[0];
+                        [weakself.navigationController pushViewController:completeVC animated:YES];
+                    }else{
+                        AuthentyViewController *authentyVC = [[AuthentyViewController alloc] init];
+                        authentyVC.hidesBottomBarWhenPushed = YES;
+                        [weakself.navigationController pushViewController:authentyVC animated:YES];
                     }
                 }
             }else if (indexPath.section == 3){
@@ -191,18 +202,24 @@
     return _loginView;
 }
 
+- (NSMutableArray *)authenArray
+{
+    if (!_authenArray) {
+        _authenArray = [NSMutableArray array];
+    }
+    return _authenArray;
+}
+
 #pragma mark - method
 - (void)showAuthentyOrComplete
 {
     NSString *completeString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kIsCompleteString];
     NSDictionary *params = @{@"token" : [self getValidateToken]};
     [self requestDataPostWithString:completeString params:params successBlock:^(id responseObject){
-        BaseModel *completeModel = [BaseModel objectWithKeyValues:responseObject];
+        CompleteResponse *response = [CompleteResponse objectWithKeyValues:responseObject];
         
-        self.loginView.authenDic = responseObject;
+        [self.authenArray addObject:response];
         [self.loginView.loginTableView reloadData];
-        
-        self.authenString = completeModel.code;
         
     } andFailBlock:^(NSError *error){
         

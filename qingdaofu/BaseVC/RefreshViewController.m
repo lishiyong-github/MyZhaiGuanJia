@@ -20,7 +20,7 @@
     // Do any additional setup after loading the view.
 }
 
--(void)headerRefreshWithPage:(NSString *)page urlString:(NSString *)urlString Parameter:(NSDictionary *)params successBlock:(void(^)())successBlock andfailedBlock:(void(^)())failedBlock
+-(void)headerRefreshWithPage:(NSString *)page urlString:(NSString *)urlString Parameter:(NSDictionary *)params successBlock:(void(^)(id responseObject))successBlock andfailedBlock:(void(^)(NSError *error))failedBlock
 {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -29,7 +29,24 @@
     [manager POST:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject){
         
         if (successBlock) {
-            successBlock(operation,responseObject);
+            successBlock(responseObject);
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation,NSError *error) {
+        
+    }];
+}
+
+-(void)footerRefreshWithPage:(NSString *)page urlString:(NSString *)urlString Parameter:(NSDictionary *)params successBlock:(void(^)(id responseObject))successBlock andfailedBlock:(void(^)(NSError *error))failedBlock
+{
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    
+    [manager POST:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject){
+        
+        if (successBlock) {
+            successBlock(responseObject);
         }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -37,7 +54,9 @@
     }];
 }
 
--(void)footerRefreshWithPage:(NSString *)page urlString:(NSString *)urlString Parameter:(NSDictionary *)params successBlock:(void(^)())successBlock andfailedBlock:(void(^)())failedBlock
+
+
+-(void)headerRefreshWithUrlString:(NSString *)urlString Parameter:(NSDictionary *)params successBlock:(void(^)(id responseObject))successBlock andfailedBlock:(void(^)(NSError *error))failedBlock
 {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -46,7 +65,7 @@
     [manager POST:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject){
         
         if (successBlock) {
-            successBlock(operation,responseObject);
+            successBlock(responseObject);
         }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -54,39 +73,39 @@
     }];
 }
 
-
-
--(void)headerRefreshWithUrlString:(NSString *)urlString Parameter:(NSDictionary *)params successBlock:(void(^)())successBlock andfailedBlock:(void(^)())failedBlock
+-(void)footerRefreshWithUrlString:(NSString *)urlString Parameter:(NSDictionary *)params successBlock:(void(^)(id responseObject))successBlock andfailedBlock:(void(^)(NSError *error))failedBlock
 {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     
-    [manager POST:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject){
-        
+    [manager POST:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (successBlock) {
-            successBlock(operation,responseObject);
+            successBlock(responseObject);
         }
-        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
     }];
 }
 
--(void)footerRefreshWithUrlString:(NSString *)urlString Parameter:(NSDictionary *)params successBlock:(void(^)())successBlock andfailedBlock:(void(^)())failedBlock
+
+
+- (void)requestDataPostWithString:(NSString *)string params:(NSDictionary *)params successBlock:(void (^)(id responseObject))successBlock andFailBlock:(void (^)(NSError *error))failBlock
 {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     
-    [manager POST:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject){
+    [manager POST:string parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         if (successBlock) {
-            successBlock(operation,responseObject);
+            successBlock(responseObject);
         }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        if (failBlock) {
+            failBlock(error);
+        }
     }];
 }
 

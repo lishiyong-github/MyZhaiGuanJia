@@ -16,6 +16,8 @@
 
 #import "AllProductsChooseView.h"
 
+#import "UIViewController+BlurView.h"
+
 @interface ProductsViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
@@ -185,11 +187,11 @@
         _proView = [AllProView newAutoLayoutView];
         _proView.backgroundColor = kNavColor;
         
-        QDFWeakSelf;
-        [_proView setDidSelectedRow:^(NSIndexPath *indexPath) {
-            
-            
-        }];
+//        QDFWeakSelf;
+//        [_proView setDidSelectedRow:^(NSIndexPath *indexPath) {
+//            
+//            
+//        }];
     }
     return _proView;
 }

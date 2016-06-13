@@ -18,7 +18,7 @@
 @property (nonatomic,assign) BOOL didSetupConstraints;
 
 @property (nonatomic,strong) LoginForgetView *loginFooterView;
-
+@property (nonatomic,strong) NSMutableDictionary *loginDictionary;
 @end
 
 @implementation LoginViewController
@@ -79,6 +79,14 @@
     return _loginFooterView;
 }
 
+- (NSMutableDictionary *)loginDictionary
+{
+    if (!_loginDictionary) {
+        _loginDictionary = [NSMutableDictionary dictionary];
+    }
+    return _loginDictionary;
+}
+
 #pragma mark - tableView delegate and dataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -105,15 +113,23 @@
     [attriStr addAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(0, attriStr.length)];
     [cell.loginTextField setAttributedPlaceholder:attriStr];
     
-    if (indexPath.row == 1) {
+    if (indexPath.row == 0) {//手机号
+        [cell setFinishEditing:^(NSString *text) {
+            [self.loginDictionary setValue:text forKey:@"mobile"];
+        }];
+    }else if (indexPath.row == 1) {//密码
         cell.loginTextField.secureTextEntry = YES;
         [cell.loginButton setTitle:@"显示密码" forState:0];
         [cell.loginButton setTitle:@"隐藏密码" forState:UIControlStateSelected];
+        [cell.getCodebutton setHidden:YES];
+        
+        [cell setFinishEditing:^(NSString *text) {
+            [self.loginDictionary setValue:text forKey:@"password"];
+        }];
         
         QDFWeak(cell);
         [cell.loginButton addAction:^(UIButton *btn) {
             btn.selected = !btn.selected;
-            
             if (btn.selected) {
                 weakcell.loginTextField.secureTextEntry = NO;
             }else{
@@ -135,17 +151,29 @@
 - (void)loginUser
 {
     NSString *loginString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kLoginString];
-    NSDictionary *params = @{@"mobile" : @"13162521916",
-                             @"password" : @"123456"
+    
+    NSString *mobile = @"";
+    NSString *password = @"";
+    
+    if (self.loginDictionary[@"mobile"]) {
+       mobile = self.loginDictionary[@"mobile"];
+    }
+    
+    if (self.loginDictionary[@"password"]) {
+        password = self.loginDictionary[@"password"];
+    }
+    
+    NSDictionary *params = @{@"mobile" : mobile,
+                             @"password" : password
                              };
     
     //18221496879 123456 (xiaolou)
     //13162521916 123456
+    //15000708849   123456
 
     [self requestDataPostWithString:loginString params:params successBlock:^( id responseObject){
                 
         BaseModel *loginModel = [BaseModel objectWithKeyValues:responseObject];
-        
         [self showHint:loginModel.msg];
         
         if ([loginModel.code isEqualToString:@"0000"]) {

@@ -57,11 +57,22 @@
         _ediTextView = [PlaceHolderTextView newAutoLayoutView];
         _ediTextView.textColor = kBlackColor;
         _ediTextView.font = kFirstFont;
-        
+        _ediTextView.delegate = self;
         _ediTextView.placeholder = @"请输入地址";
         _ediTextView.placeholderColor = kLightGrayColor;
     }
     return _ediTextView;
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    NSString *title = [textView.text stringByReplacingCharactersInRange:range withString:text];
+    
+    if (self.didEndEditing) {
+        self.didEndEditing(title);
+    }
+    
+    return YES;
 }
 
 - (void)awakeFromNib {

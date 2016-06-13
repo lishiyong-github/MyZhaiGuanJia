@@ -149,6 +149,9 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier;
+    
+    CertificationModel *certificationModel = self.responseModel.certification;
+    
     if (indexPath.section == 0) {
         identifier = @"authenLaw0";
         TakePictureCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -192,9 +195,28 @@
         cell.agentLabel.text = perTextArray[indexPath.row];
         cell.agentTextField.placeholder = perPlacaTextArray[indexPath.row];
         
+//        if (indexPath.row == 0) {
+//            cell.agentLabel.textColor = kBlueColor;
+//            cell.agentTextField.userInteractionEnabled = NO;
+//        }else if (indexPath.row == 1){
+//            cell.agentTextField.text = certificationModel.name;
+//        }else if (indexPath.row == 2){
+//            cell.agentTextField.text = certificationModel.cardno;
+//        }else if (indexPath.row == 3){
+//            cell.agentTextField.text = certificationModel.mobile;
+//        }
+        
         if (indexPath.row == 0) {
             cell.agentLabel.textColor = kBlueColor;
             cell.agentTextField.userInteractionEnabled = NO;
+        }else if (indexPath.row == 1){//律所名称
+            cell.agentTextField.text = certificationModel.name;
+        }else if (indexPath.row == 2){//执业证号
+            cell.agentTextField.text = certificationModel.cardno;
+        }else if (indexPath.row == 3){//联系人
+            cell.agentTextField.text = certificationModel.contact;
+        }else{//联系方式
+            cell.agentTextField.text = certificationModel.mobile;
         }
         
         return cell;
@@ -221,8 +243,9 @@
                 cell.agentTextField.userInteractionEnabled = NO;
                 NSMutableAttributedString *ttt = [cell.agentLabel setAttributeString:@"|  补充信息  " withColor:kBlueColor andSecond:@"(选填)" withColor:kLightGrayColor withFont:12];
                 [cell.agentLabel setAttributedText:ttt];
+            }else { //邮箱
+                cell.agentTextField.text = certificationModel.email;
             }
-            
             return cell;
         }
         
@@ -239,6 +262,9 @@
         cell.ediLabel.text = @"经典案例";
         cell.ediTextView.placeholder = @"关于律所在融资等方面的成功案例，有利于发布方更加青睐你";
         cell.ediTextView.font = kFirstFont;
+        
+        cell.ediTextView.text = certificationModel.casedesc;
+        
         return cell;
     }
     

@@ -7,9 +7,11 @@
 //
 
 #import "NetworkViewController.h"
+#import "CompleteResponse.h"
 
 @interface CompleteViewController : NetworkViewController
 
 @property (nonatomic,strong) NSString *authenTypeString;
+@property (nonatomic,strong) CompleteResponse *responseModel;
 
 @end

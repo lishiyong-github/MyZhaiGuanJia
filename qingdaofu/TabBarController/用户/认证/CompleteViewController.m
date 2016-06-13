@@ -40,19 +40,12 @@
 
 @implementation CompleteViewController
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [self getMessageOfComplete];
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.authenTypeString = @"person";
-    
-    if ([self.authenTypeString isEqualToString:@"person"]) {
+    if ([self.responseModel.certification.category intValue] == 1) {
         self.navigationItem.title = @"个人信息";
-    }else if ([self.authenTypeString isEqualToString:@"law"]){
+    }else if ([self.responseModel.certification.category intValue] == 2){
         self.navigationItem.title = @"律所信息";
     }else{
         self.navigationItem.title = @"公司信息";
@@ -176,20 +169,21 @@
 {
     CGSize titleSize = [string boundingRectWithSize:CGSizeMake(kScreenWidth*0.5, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:kFirstFont} context:nil].size;
     
-    if ([self.authenTypeString isEqualToString:@"person"]) {
+    if ([self.responseModel.certification.category intValue] == 1) {//个人
         if (indexPath.row == 0) {
             return kCellHeight;
         }
         return 195+titleSize.height;
         
-    }else if ([self.authenTypeString isEqualToString:@"law"]){
+    }else if ([self.responseModel.certification.category intValue] == 2){//律所
         if (indexPath.row == 0) {
             return kCellHeight;
         }
         
-        return 245+titleSize.height;
+        return 260+titleSize.height;
     }
     
+    //公司
     if (indexPath.row == 0) {
         return kCellHeight;
     }
@@ -200,7 +194,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier;
-    
     if (indexPath.row == 0) {
         identifier = @"complete0";
         MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -220,28 +213,26 @@
         
         QDFWeakSelf;
         [cell.userActionButton addAction:^(UIButton *btn) {
-            if ([weakself.authenTypeString isEqualToString:@"person"]) {
+            if ([weakself.responseModel.certification.category intValue] == 1) {
                 AuthenPersonViewController *authenPersonVC = [[AuthenPersonViewController alloc] init];
-                authenPersonVC.cerModel = self.completeDataArray[0];
+                authenPersonVC.respnseModel = self.responseModel;
                 [weakself.navigationController pushViewController:authenPersonVC animated:YES];
                 
-            }else if ([weakself.authenTypeString isEqualToString:@"law"]){
+            }else if ([weakself.responseModel.certification.category intValue] == 2){
                 AuthenLawViewController *authenLawVC = [[AuthenLawViewController alloc] init];
+                authenLawVC.responseModel = self.responseModel;
                 [weakself.navigationController pushViewController:authenLawVC animated:YES];
-            }else{
+            }else if([weakself.responseModel.certification.category intValue] == 3){
                 AuthenCompanyViewController *authenCompanyVC = [[AuthenCompanyViewController alloc] init];
+                authenCompanyVC.responseModel = self.responseModel;
                 [weakself.navigationController pushViewController:authenCompanyVC animated:YES];
             }
         }];
         return cell;
     }
+    CertificationModel *certificationModel = self.responseModel.certification;
     
-    CertificationModel *certificationModel;
-    if (self.completeDataArray.count > 0) {
-        certificationModel = self.completeDataArray[0];
-    }
-    
-    if ([self.authenTypeString isEqualToString:@"person"]) {
+    if ([self.responseModel.certification.category intValue] == 1) {
         identifier = @"complete11";
         CompleteCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         
@@ -265,7 +256,7 @@
         
         return cell;
         
-    }else if ([self.authenTypeString isEqualToString:@"law"]){
+    }else if ([self.responseModel.certification.category intValue] == 2){
         identifier = @"complete12";
         CompleteLawCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         
@@ -295,7 +286,7 @@
         
         return cell;
 
-    }else{
+    }else if([self.responseModel.certification.category intValue] == 3){
         identifier = @"complete13";
         CompleteCompanyTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         
@@ -358,21 +349,6 @@
     [remindButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:5];
     [remindButton autoSetDimensionsToSize:CGSizeMake(100, 40)];
     remindButton.backgroundColor = kBlueColor;
-}
-
-- (void)getMessageOfComplete
-{
-    NSString *comString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kIsCompleteString];
-    NSDictionary *params = @{@"token" : [self getValidateToken]};
-    [self requestDataPostWithString:comString params:params successBlock:^( id responseObject){
-        CompleteResponse *response = [CompleteResponse objectWithKeyValues:responseObject];
-        
-        [self.completeDataArray addObject:response.certification];
-        [self.completeTableView reloadData];
-        
-    } andFailBlock:^(NSError *error){
-        
-    }];
 }
 
 - (void)didReceiveMemoryWarning {

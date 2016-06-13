@@ -10,4 +10,11 @@
 
 @interface FinanCell : UITableViewCell
 
+@property (nonatomic,strong) UILabel *typeLabel;
+@property (nonatomic,strong) UIButton *typeButton;
+@property (nonatomic,strong) UILabel *rentLabel;
+@property (nonatomic,strong) UITextField *rentTextField;
+
+@property (nonatomic,assign) BOOL didSetupConstraints;
+
 @end

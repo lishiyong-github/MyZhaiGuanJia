@@ -17,6 +17,8 @@
 @property (nonatomic,strong) UITableView *modifyTableView;
 @property (nonatomic,strong) BaseCommitButton *modifyCommitButton;
 
+@property (nonatomic,strong) NSMutableDictionary *modifyDictionary;
+
 @end
 
 @implementation ModifyPassWordViewController
@@ -74,6 +76,13 @@
     return _modifyCommitButton;
 }
 
+- (NSMutableDictionary *)modifyDictionary
+{
+    if (!_modifyDictionary) {
+        _modifyDictionary = [NSMutableDictionary dictionary];
+    }
+    return _modifyDictionary;
+}
 #pragma mark - 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -98,9 +107,17 @@
     cell.leftdAgentContraints.constant = kBigPadding;
     cell.agentTextField.placeholder = mArray[indexPath.row];
     
-    if (indexPath.row == 1) {
+    if (indexPath.row == 0) {
+        [cell setDidEndEditing:^(NSString *text) {
+            [self.modifyDictionary setValue:text forKey:@"old_password"];
+        }];
+    }else if (indexPath.row == 1) {
         [cell.agentButton setTitle:@"显示密码" forState:0];
-
+        
+        [cell setDidEndEditing:^(NSString *text) {
+            [self.modifyDictionary setValue:text forKey:@"new_password"];
+        }];
+        
         QDFWeak(cell);
         [cell.agentButton addAction:^(UIButton *btn) {
             NSLog(@"显示密码");
@@ -120,10 +137,20 @@
 {
     NSString *modifyString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kModifyPasswordString];
     
-    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:@"token"];
-    NSDictionary *params = @{@"token" : token,
-                             @"old_password" : @"123456",
-                             @"new_password" : @"123456"
+    NSString *old_password = @"";
+    NSString *new_password = @"";
+    
+    if (self.modifyDictionary[@"old_password"]) {
+        old_password = self.modifyDictionary[@"old_password"];
+    }
+    
+    if (self.modifyDictionary[@"new_password"]) {
+       new_password = self.modifyDictionary[@"new_password"];
+    }
+    
+    NSDictionary *params = @{@"token" : [self getValidateToken],
+                             @"old_password" : old_password,
+                             @"new_password" : new_password
                              };
     
     [self requestDataPostWithString:modifyString params:params successBlock:^(id responseObject){

@@ -7,6 +7,7 @@
 //
 
 #import "RefreshViewController.h"
+#import "NetworkViewController.h"
 
 @interface MyOrderViewController : RefreshViewController
 

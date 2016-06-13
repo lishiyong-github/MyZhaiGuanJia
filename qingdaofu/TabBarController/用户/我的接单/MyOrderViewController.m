@@ -13,6 +13,7 @@
 #import "MyClosingViewController.h"     //结案
 
 #import "MyScheduleViewController.h"   //填写进度
+#import "DelayRequestsViewController.h"  //申请延期
 #import "AdditionalEvaluateViewController.h"  //去评价
 
 #import "AnotherHomeCell.h"
@@ -20,6 +21,9 @@
 
 #import "ReleaseResponse.h"
 #import "RowsModel.h"
+
+#import "DelayResponse.h"
+#import "DelayModel.h"
 
 @interface MyOrderViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -93,8 +97,8 @@
         [_orderHeadView setDidSelectedSeg:^(NSInteger segTag) {
             switch (segTag) {
                 case 111:{//全部
-                    weakself.status = @"01";
-                    weakself.progresStatus = @"1234";
+                    weakself.status = @"";
+                    weakself.progresStatus = @"";
                     [weakself getOrderListWithPage:@"0"];
                 }
                     break;
@@ -258,9 +262,9 @@
     
     /*typeLabel*/
     if ([rowModel.progress_status integerValue]  == 0) {
-        cell.typeLabel.text = @"待发布";
+        cell.typeLabel.text = @"待申请";
     }else if ([rowModel.progress_status integerValue]  == 1){
-        cell.typeLabel.text = @"发布中";
+        cell.typeLabel.text = @"申请中";
     }else if ([rowModel.progress_status integerValue]  == 2){
         cell.typeLabel.text = @"处理中";
     }else if ([rowModel.progress_status integerValue]  == 3){
@@ -287,7 +291,9 @@
         
         QDFWeakSelf;
         [cell.secondButton addAction:^(UIButton *btn) {
-            
+//            DelayRequestViewController *delayRequestVC = [[DelayRequestViewController alloc] init];
+//            [weakself.navigationController pushViewController:delayRequestVC animated:YES];
+            [weakself delayRequestWithID:rowModel.idString andCategary:rowModel.category];
         }];
         
         [cell.thirdButton addAction:^(UIButton *btn) {
@@ -325,19 +331,27 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    RowsModel *model = self.myOrderDataList[indexPath.section];
    if ([self.progresStatus isEqualToString:@"1"]){//申请中
        MyApplyingViewController *myApplyingVC = [[MyApplyingViewController alloc] init];
+       myApplyingVC.idString = model.idString;
+       myApplyingVC.categaryString = model.category;
        [self.navigationController pushViewController:myApplyingVC animated:YES];
     }else if ([self.progresStatus isEqualToString:@"2"]){//处理中
         MyProcessingViewController *myProcessingVC = [[MyProcessingViewController alloc] init];
+        myProcessingVC.idString = model.idString;
+        myProcessingVC.categaryString = model.category;
         [self.navigationController pushViewController:myProcessingVC animated:YES];
     }else if ([self.progresStatus isEqualToString:@"3"]){//终止
         MyEndingViewController *myEndingVC = [[MyEndingViewController alloc] init];
+        myEndingVC.idString = model.idString;
+        myEndingVC.categaryString = model.category;
         [self.navigationController pushViewController:myEndingVC animated:YES];
-        
     }else if([self.progresStatus isEqualToString:@"4"]){//结案
-            MyClosingViewController *myClosingVC = [[MyClosingViewController alloc] init];
-            [self.navigationController pushViewController:myClosingVC animated:YES];
+        MyClosingViewController *myClosingVC = [[MyClosingViewController alloc] init];
+        myClosingVC.idString = model.idString;
+        myClosingVC.categaryString = model.category;
+        [self.navigationController pushViewController:myClosingVC animated:YES];
     }
 }
 
@@ -352,17 +366,15 @@
 
 - (void)getOrderListWithPage:(NSString *)page
 {
+    [self.myOrderDataList removeAllObjects];
+    
     NSString *myOrderString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrdersString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"progress_status" : self.progresStatus,
                              @"page" : page,
                              @"status" : self.status
                              };
-    [self headerRefreshWithPage:@"1" urlString:myOrderString Parameter:params successBlock:^(AFHTTPRequestOperation *operation, id responseObject){
-        
-//        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-//        NSLog(@"dic is %@",dic);
-        [self.myOrderDataList removeAllObjects];
+    [self headerRefreshWithUrlString:myOrderString Parameter:params successBlock:^(id responseObject) {
         ReleaseResponse *responceModel = [ReleaseResponse objectWithKeyValues:responseObject];
         
         for (RowsModel *orderModel in responceModel.rows) {
@@ -370,32 +382,36 @@
         }
         
         [self.myOrderTableView reloadData];
-        
-    } andfailedBlock:^{
-        
+
+    } andfailedBlock:^(NSError *error) {
+        [self.myOrderTableView reloadData];
     }];
 }
 
-/*
-- (void)getOrderList:(NSString *)statusString  andPage:(NSString *)page
+- (void)delayRequestWithID:(NSString *)idStr andCategary:(NSString *)categaryStr
 {
-    NSString *myOrderString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrdersString];
+    NSString *deString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kIsDelayRequestString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
-                             @"progress_status" : statusString,
-                             @"page" : page
+                             @"id" : idStr,
+                             @"category" : categaryStr
                              };
-    [self headerRefreshWithPage:@"1" urlString:myOrderString Parameter:params successBlock:^(AFHTTPRequestOperation *operation, id responseObject){
+    [self requestDataPostWithString:deString params:params successBlock:^(id responseObject) {
+        DelayResponse *response = [DelayResponse objectWithKeyValues:responseObject];
+        DelayModel *delayModel = response.delay;
         
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSLog(@"dic is %@",dic);
+        if (delayModel.is_agree == nil || [delayModel.delays intValue] >= 7) {
+            DelayRequestsViewController *delayRequestsVC = [[DelayRequestsViewController alloc] init];
+            delayRequestsVC.idString = idStr;
+            delayRequestsVC.categoryString = categaryStr;
+            [self.navigationController pushViewController:delayRequestsVC animated:YES];
+        }else{
+            [self showHint:@"您已申请过延期，不能重复申请"];
+        }
         
-        
-    } andfailedBlock:^{
-        
+    } andFailBlock:^(NSError *error) {
+
     }];
 }
- 
- */
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

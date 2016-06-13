@@ -54,7 +54,7 @@
 #pragma mark - 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 7;
+    return self.scheArray.count;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -76,11 +76,26 @@
         cell = [[BidMessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.deadlineLabel.text = @"案号类型：二审";
-    cell.dateLabel.text = @"案        号：20160530";
-    cell.areaLabel.text = @"处置类型：拍卖";
-    cell.addressLabel.text = @"详        情：详情详情详情详情";
-    cell.timeLabel.text = @"2016-05-30";
+    
+
+    ScheduleModel *model = self.scheArray[indexPath.section];
+    
+    
+    NSArray *suitArray = @[@"债权人上传处置资产",@"律师接单",@"双方洽谈",@"向法院起诉(财产保全)",@"整理诉讼材料",@"法院立案",@"向当事人发出开庭传票",@"开庭前调解",@"开庭",@"判决",@"二次开庭",@"二次判决",@"移交执行局申请执行",@"执行中提供借款人的财产线索",@"调查(公告)",@"拍卖",@"流拍",@"拍卖成功",@"付费"];
+    NSArray *suitNoArray = @[@"一审",@"二审",@"再审",@"执行"];
+    NSInteger auditInt = [model.audit intValue];
+    NSInteger statusInt = [model.status intValue];
+    
+    cell.deadlineLabel.text = [NSString stringWithFormat:@"案号类型：%@",suitNoArray[auditInt]];
+    //@"案号类型：二审";
+    cell.dateLabel.text = [NSString stringWithFormat:@"案        号：%@",model.caseString];
+    //@"案        号：20160530";
+    cell.areaLabel.text = [NSString stringWithFormat:@"处置类型：%@",suitArray[statusInt]];
+    //@"处置类型：拍卖";
+    cell.addressLabel.text = [NSString stringWithFormat:@"详        情：%@",model.content];
+    //@"详        情：详情详情详情详情";
+    cell.timeLabel.text = [NSDate getYMDFormatterTime:model.create_time];
+    //@"2016-05-30";
     
         return cell;
 }

@@ -8,20 +8,16 @@
 
 #import "MyScheduleViewController.h"
 
-#import "UpwardTableView.h"
-
 #import "TextFieldCell.h"
 #import "MineUserCell.h"
 #import "CaseNoCell.h"
+
 #import "UIViewController+BlurView.h"
 
 @interface MyScheduleViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *scheduleTableView;
-
-@property (nonatomic,strong) UIView *backgroundView;
-@property (nonatomic,strong) UpwardTableView *chooseTableView;
 
 @end
 
@@ -36,14 +32,7 @@
     
     [self setupForDismissKeyboard];
     
-    self.chooseTableView.heightTableConstraints.constant = 40*3;
-    
     [self.view addSubview:self.scheduleTableView];
-//    [self.view addSubview:self.chooseTableView];
-//    [self.chooseTableView setHidden:YES];
-    [self.view addSubview:self.backgroundView];
-    [self.backgroundView setHidden:YES];
-    
     [self.view setNeedsUpdateConstraints];
 }
 
@@ -52,8 +41,6 @@
     if (!self.didSetupConstraints) {
         
         [self.scheduleTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
-//        [self.chooseTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [self.backgroundView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
         
         self.didSetupConstraints = YES;
     }
@@ -78,25 +65,6 @@
 
     }
     return _scheduleTableView;
-}
-
-- (UIView *)backgroundView
-{
-    if (!_backgroundView) {
-        _backgroundView = [UIView newAutoLayoutView];
-        _backgroundView.backgroundColor = UIColorFromRGB1(0x333333, 0.3);
-        [_backgroundView addSubview:self.chooseTableView];
-    }
-    return _backgroundView;
-}
-
-- (UpwardTableView *)chooseTableView
-{
-    if (!_chooseTableView) {
-        _chooseTableView = [UpwardTableView newAutoLayoutView];
-        _chooseTableView.backgroundColor = kRedColor;
-    }
-    return _chooseTableView;
 }
 
 #pragma mark - 
@@ -144,8 +112,28 @@
             [cell.caseGoButton setTitle:arr3[indexPath.row] forState:0];
             [cell.caseGoButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
             
-            if (indexPath.row == 1) {
+            
+            NSArray *suitArr = @[@"债权人上传处置资产",@"律师接单",@"双方洽谈",@"向法院起诉(财产保全)",@"整理诉讼材料",@"法院立案",@"向当事人发出开庭传票",@"开庭前调解",@"开庭",@"判决",@"二次开庭",@"二次判决",@"移交执行局申请执行",@"执行中提供借款人的财产线索",@"调查(公告)",@"拍卖",@"流拍",@"拍卖成功",@"付费"];
+            NSArray *suitNoArr = @[@"一审",@"二审",@"再审",@"执行"];
+            
+            QDFWeakSelf;
+            QDFWeak(cell);
+            if (indexPath.row == 0) {//案号
+                [cell.caseGoButton addAction:^(UIButton *btn) {
+                    [weakself showBlurInView:self.view withArray:suitNoArr andTitle:@"选择案号" finishBlock:^(NSString *text,NSInteger row) {
+                        [weakcell.caseGoButton setTitle:text forState:0];
+                    }];
+                }];
+                
+                
+            }else{//处置类型
                 cell.caseNoTextField.userInteractionEnabled = NO;
+                [cell.caseGoButton addAction:^(UIButton *btn) {
+                    
+                    [weakself showBlurInView:self.view withArray:suitArr andTitle:@"选择处置类型" finishBlock:^(NSString *text,NSInteger row) {
+                        [weakcell.caseGoButton setTitle:text forState:0];
+                    }];
+                }];
             }
             
             return cell;
@@ -171,7 +159,6 @@
         }
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
         [cell.caseNoButton setTitle:@"选择处置类型" forState:0];
         cell.caseNoTextField.userInteractionEnabled = NO;
         [cell.caseGoButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
@@ -179,26 +166,19 @@
         
         NSArray *financeArr = @[@"尽职调查",@"公证",@"放款",@"返点",@"其他"];
         NSArray *collectArr = @[@"电话",@"上门",@"面谈"];
-//        NSArray *suitArr = @[@"债权人上传处置资产",@"律师接单",@"双方洽谈",@"向法院起诉(财产保全)",@"整理诉讼材料",@"法院立案",@"向当事人发出开庭传票",@"开庭前调解",@"开庭",@"判决",@"二次开庭",@"二次判决",@"移交执行局申请执行",@"执行中提供借款人的财产线索",@"调查(公告)",@"拍卖",@"流拍",@"拍卖成功",@"付费"];
         
         QDFWeakSelf;
+        QDFWeak(cell);
         [cell.caseGoButton addAction:^(UIButton *btn) {
-            btn.selected = !btn.selected;
-            
             if ([weakself.categoryString intValue] == 1) {//融资
-                [weakself showBlurWith:financeArr andTitle:@"eqweqeqw" finishBlock:^(NSString *text) {
-                    NSLog(@"TEst  shash   %@",text);
-                    [cell.caseGoButton setTitle:text forState:0];
+                [weakself showBlurInView:self.view withArray:financeArr andTitle:@"选择处置类型" finishBlock:^(NSString *text,NSInteger row) {
+                    [weakcell.caseGoButton setTitle:text forState:0];
                 }];
-//                weakself.chooseTableView.heightTableConstraints.constant = (financeArr.count+1)*40;
-//                weakself.chooseTableView.upwardDataList = @[@"尽职调查",@"公证",@"放款",@"返点",@"其他"];
             }else if ([weakself.categoryString intValue] == 2){//催收
-                weakself.chooseTableView.heightTableConstraints.constant = (collectArr.count+1) * 40;
-                weakself.chooseTableView.upwardDataList = @[@"电话",@"上门",@"面谈"];
+                [weakself showBlurInView:self.view withArray:collectArr andTitle:@"选择处置类型" finishBlock:^(NSString *text,NSInteger row) {
+                    [weakcell.caseGoButton setTitle:text forState:0];
+                }];
             }
-//            weakself.chooseTableView.upwardTitleString = @"选择处置类型";
-//            [weakself.chooseTableView setHidden:NO];
-//            [weakself.chooseTableView reloadData];
         }];
         
         return cell;
@@ -225,15 +205,73 @@
 - (void)writeMySchedule
 {
     NSString *myScheduleString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyscheduleString];
-    NSDictionary *params = @{@"token" : [self getValidateToken],
-                             @"id" : self.idString,
-                             @"category" : self.categoryString
-                             };
+    /*
+     status	状态	融资：
+     ［
+     1 => '尽职调查',
+     2 => '公证',
+     3 => '抵押',
+     4 => '放款',
+     5 => '返点',
+     6 => '其他',
+     ];
+     
+     催收：[
+     1 => '电话',
+     2 => '上门',
+     3 => '面谈',
+     ];
+     
+     诉讼：[
+     1 => '债权人上传处置资产',
+     2 => '律师接单',
+     3 => '双方洽谈',
+     4 => '向法院起诉(财产保全)',
+     5 => '整理诉讼材料',
+     6 => '法院立案',
+     7 => '向当事人发出开庭传票',
+     8 => '开庭前调解',
+     9 => '开庭',
+     10 => '判决',
+     11 => '二次开庭',
+     12 => '二次判决',
+     13 => '移交执行局申请执行',
+     14 => '执行中提供借款人的财产线索',
+     15 => '调查(公告)',
+     16 => '拍卖',
+     17 => '流拍',
+     18 => '拍卖成功',
+     19 => '付费',
+     ];
+     */
+
+    NSDictionary *params;
+    if ([self.categoryString intValue] == 1) {//融资
+       params = @{@"token" : [self getValidateToken],
+                                 @"product_id" : self.idString,
+                                 @"category" : self.categoryString,
+                                  @"status" : @"1",
+                                  @"content" : @"尽职调查尽职调查尽职调查"
+                                 };
+    }else if ([self.categoryString intValue] == 2){//催收
+        params = @{@"token" : [self getValidateToken],
+                   @"product_id" : self.idString,
+                   @"category" : self.categoryString,
+                   @"status" : @"3",
+                   @"content" : @"面谈面谈面谈面谈"
+                   };
+    }else{//诉讼
+        params = @{@"token" : [self getValidateToken],
+                   @"product_id" : self.idString,
+                   @"category" : self.categoryString,
+                   @"status" : @"5",
+                   @"content" : @"整理诉讼材料整理诉讼材料整理诉讼材料",
+                   @"audit" : @"0",//诉讼的案号状态：0=>一审,1=>二审,2=>再审,3=>执行
+                   @"case" : @"111111111111"//诉讼里面的暗号
+                   };
+    }
+    
     [self requestDataPostWithString:myScheduleString params:params successBlock:^( id responseObject){
-        
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSLog(@"@@@@@@@@  %@",dic);
-        
         BaseModel *scheduleModel = [BaseModel objectWithKeyValues:responseObject];
         [self showHint:scheduleModel.msg];
         

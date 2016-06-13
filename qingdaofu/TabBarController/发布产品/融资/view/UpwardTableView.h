@@ -10,13 +10,12 @@
 
 @interface UpwardTableView : UITableView<UITableViewDataSource,UITableViewDelegate>
 
+/* 动态数据 */
 @property (nonatomic,strong) NSArray *upwardDataList;
-
-@property (nonatomic,strong) void (^didSelectedButton)(NSInteger);
-@property (nonatomic,strong) void (^didSelectedRow)(NSString *text);
-
 @property (nonatomic,strong) NSLayoutConstraint *heightTableConstraints;
-
 @property (nonatomic,strong) NSString *upwardTitleString;  //选择的类型
-@property (nonatomic,strong) NSString *upwardSelectedTitle;  //选中的类型
+
+@property (nonatomic,strong) void (^didSelectedRow)(NSString *text,NSInteger indexRow);
+@property (nonatomic,strong) void (^didSelectedButton)(NSInteger);
+
 @end
