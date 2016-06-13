@@ -9,9 +9,8 @@
 #import "EditDebtCreditMessageViewController.h"
 
 #import "AgentCell.h"
-#import "EditDebtCell.h"
 #import "EditDebtAddressCell.h"
-
+#import "TakePictureCell.h"
 @interface EditDebtCreditMessageViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
@@ -67,9 +66,8 @@
     if (indexPath.row == 2) {
         return 60;
     }else if (indexPath.row == 4){
-        return 100;
+        return 80;
     }
-    
     return kCellHeight;
 }
 
@@ -110,14 +108,12 @@
     }
     
     identifier = @"editDebt2";
-    EditDebtCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    TakePictureCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
-        cell = [[EditDebtCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        cell = [[TakePictureCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    cell.editImageButton1.button.backgroundColor = kLightGrayColor;
-    cell.editImageButton2.button.backgroundColor = kBlackColor;
     return cell;
         /*
     if (indexPath.row ==0) {

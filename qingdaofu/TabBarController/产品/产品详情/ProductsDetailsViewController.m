@@ -17,7 +17,6 @@
 #import "MineUserCell.h"
 #import "ProDetailCell.h"
 
-
 #import "PublishingResponse.h"
 #import "PublishingModel.h"
 
@@ -27,7 +26,6 @@
 @property (nonatomic,strong) UIButton *rightItemButton;
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *productsDetailsTableView;
-//@property (nonatomic,strong) ProDetailHeadView *proDetailHeaderView;
 @property (nonatomic,strong) BaseCommitButton *proDetailsCommitButton;
 
 @property (nonatomic,strong) NSMutableArray *recommendDataArray;
@@ -128,7 +126,6 @@
 - (UITableView *)productsDetailsTableView
 {
     if (!_productsDetailsTableView) {
-//        _productsDetailsTableView = [UITableView newAutoLayoutView];
         _productsDetailsTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _productsDetailsTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _productsDetailsTableView.delegate = self;
@@ -230,10 +227,13 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier = @"proDetais";
+    PublishingResponse *ewModel;
+    PublishingModel *proModel;
     if (self.recommendDataArray.count > 0) {
-        PublishingResponse *ewModel = self.recommendDataArray[0];
-        PublishingModel *proModel = ewModel.product;
-        
+        ewModel = self.recommendDataArray[0];
+        proModel = ewModel.product;
+    }
+    
         if (indexPath.section == 0) {
             ProDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
             if (!cell) {
@@ -329,8 +329,6 @@
         }
         
         return cell;
-    }
-    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -359,8 +357,6 @@
             productsDetailsProVC.yyModel = qModel;
             [self.navigationController pushViewController:productsDetailsProVC animated:YES];
         }else{
-            //        ProductsDetailsPerViewController *productsDetailsPerVC = [[ProductsDetailsPerViewController alloc] init];
-            //        [self.navigationController pushViewController:productsDetailsPerVC animated:YES];
             CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
             [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
         }

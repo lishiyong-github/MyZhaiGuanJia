@@ -10,6 +10,8 @@
 
 @interface ProdRightView : UITableView<UITableViewDelegate,UITableViewDataSource>
 
+@property (nonatomic,strong) NSMutableArray *dataList1;
+@property (nonatomic,strong) NSMutableArray *dataList2;
 @property (nonatomic,strong) void (^didSelectedRow)(NSInteger);
 
 

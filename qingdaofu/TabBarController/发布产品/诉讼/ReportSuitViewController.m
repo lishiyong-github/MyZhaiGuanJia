@@ -35,6 +35,7 @@
 
 @property (nonatomic,strong) NSMutableDictionary *suitDataDictionary;  //参数
 @property (nonatomic,strong) NSString *rowString;    //债权类型
+@property (nonatomic,strong) NSString *number;
 @end
 
 @implementation ReportSuitViewController
@@ -47,6 +48,8 @@
     [self setupForDismissKeyboard];
     
     self.rowString = @"6";
+    _number = @"1";
+    [self.suitDataDictionary setValue:_number forKey:@"loan_type"];
     
     [self.view addSubview:self.suitTableView];
     [self.view addSubview:self.repSuitSwitchView];
@@ -196,36 +199,32 @@
             
             [cell setDidSelectedSeg:^(NSInteger selectedTag) {
                 
-                NSString *number;
-                
                 if (selectedTag == 0) {//房产抵押
                     self.rowString = @"6";
                     [self.sTextArray replaceObjectAtIndex:4 withObject:@"抵押物地址"];
                     [self.sHolderArray replaceObjectAtIndex:4 withObject:@"选择抵押物地址"];
-                    number = @"1";
+                    _number = @"1";
                 }else if (selectedTag == 1){//机动车
                     self.rowString = @"5";
                     [self.sTextArray replaceObjectAtIndex:4 withObject:@"机动车品牌"];
                     [self.sHolderArray replaceObjectAtIndex:4 withObject:@"选择机动车品牌"];
-                    number = @"2";
+                    _number = @"3";
                 }else if (selectedTag == 2){//应收帐款
                     self.rowString = @"5";
-                    [self.sTextArray replaceObjectAtIndex:4 withObject:@"应收帐款"];
+                    [self.sTextArray replaceObjectAtIndex:4 withObject:@""];
                     [self.sHolderArray replaceObjectAtIndex:4 withObject:@"应收帐款"];
-                    number = @"3";
+                    _number = @"2";
                 }else{//无抵押
-                    self.rowString = @"5";
+                    self.rowString = @"4";
                     [self.sTextArray replaceObjectAtIndex:4 withObject:@"无抵押"];
                     [self.sHolderArray replaceObjectAtIndex:4 withObject:@"无抵押"];
-                    number = @"4";
+                    _number = @"4";
                 }
                 
-                [self.suitDataDictionary setValue:number forKey:@"loan_type"];
+                [self.suitDataDictionary setValue:_number forKey:@"loan_type"];
                 
                 [self.suitTableView reloadData];
             }];
-            
-            
             return cell;
         }else if (indexPath.row == 5){//具体
             identifier = @"suitSect05";
@@ -277,11 +276,19 @@
             }];
             [cell.agentButton addTarget:self action:@selector(showTitleOfUpwardView:) forControlEvents:UIControlEventTouchUpInside];
         }else if (indexPath.row == 4){//抵押物地址
+            
             [cell setDidEndEditing:^(NSString *text) {
-                [self.suitDataDictionary setValue:text forKey:@"mortorage_community"];
+                
+                if ([_number intValue] == 1) {//房产抵押
+                    [self.suitDataDictionary setValue:text forKey:@"mortorage_community"];
+                }else if ([_number intValue] == 3){//机动车抵押
+                    [self.suitDataDictionary setValue:text forKey:@"carbrand"];
+                    [self.suitDataDictionary setValue:text forKey:@"audi"];
+                }else if ([_number intValue] == 2){//应收账款
+                    [self.suitDataDictionary setValue:text forKey:@"accountr"];
+                }
             }];
         }
-        
         return cell;
     }
     //section=1
@@ -487,6 +494,10 @@
     NSString *loan_typeStr = @"";
     NSString *mortorage_communityStr = @"";
     NSString *seatmortgageStr = @"";
+    NSString *carbrandStr = @"";
+    NSString *audiStr = @"";
+    NSString *accountrStr = @"";
+    
     NSString *rateStr = @"";
     NSString *rate_catStr = @"";
     NSString *termStr = @"";
@@ -521,6 +532,18 @@
     
     if (self.suitDataDictionary[@"seatmortgage"]) {
         seatmortgageStr = self.suitDataDictionary[@"seatmortgage"];
+    }
+    
+    if (self.suitDataDictionary[@"carbrand"]) {
+        carbrandStr = self.suitDataDictionary[@"carbrand"];
+    }
+    
+    if (self.suitDataDictionary[@"audi"]) {
+        audiStr = self.suitDataDictionary[@"audi"];
+    }
+    
+    if (self.suitDataDictionary[@"accountr"]) {
+        accountrStr = self.suitDataDictionary[@"accountr"];
     }
     
     if (self.suitDataDictionary[@"rate"]) {
@@ -564,10 +587,12 @@
                              @"district_id" : @"",//地区接口返回数据
                              @"agencycommissiontype" : agencycommissiontypeStr, //代理费用类型 1为固定费用。2为费率
                              @"agencycommission" : agencycommissionStr, //代理费用
-                             @"loan_type" : loan_typeStr,  //债权类型  1民间借贷  2应收账款
-                             @"mortorage_has" : @"0",//0为无 1为有(抵押物地址)
+                             @"loan_type" : loan_typeStr,
                              @"mortorage_community" : mortorage_communityStr,  //小区名
                              @"seatmortgage" : seatmortgageStr,  //详细地址
+                             @"carbrand" : carbrandStr,
+                             @"audi" : audiStr,
+                             @"accountr" : accountrStr,
                              @"rate" : rateStr, //利率
                              @"rate_cat" : rate_catStr,  //利率单位 1-天  2-月
                              @"term" : termStr,  //借款周期

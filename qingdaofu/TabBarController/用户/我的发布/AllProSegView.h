@@ -17,6 +17,7 @@
 @property (nonatomic,strong) UIButton *closeButton;
 
 @property (nonatomic,strong) UILabel *tBlueLabel;
+@property (nonatomic,strong) UILabel *tGrayLabel;
 
 @property (nonatomic,strong) NSLayoutConstraint *leftsConstraints;
 

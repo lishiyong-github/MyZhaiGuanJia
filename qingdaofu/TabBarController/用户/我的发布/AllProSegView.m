@@ -20,6 +20,7 @@
         [self addSubview:self.endButton];
         [self addSubview:self.closeButton];
         [self addSubview:self.tBlueLabel];
+        [self addSubview:self.tGrayLabel];
         
         self.leftsConstraints = [self.tBlueLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.allButton withOffset:0];
         
@@ -50,6 +51,11 @@
         [self.tBlueLabel autoSetDimension:ALDimensionWidth toSize:kScreenWidth/5];
         [self.tBlueLabel autoSetDimension:ALDimensionHeight toSize:2];
         [self.tBlueLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:2];
+        
+        [self.tGrayLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom];
+        [self.tGrayLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft];
+        [self.tGrayLabel autoPinEdgeToSuperviewEdge:ALEdgeRight];
+        [self.tGrayLabel autoSetDimension:ALDimensionHeight toSize:0.5];
         
         self.didSetupConstraints = YES;
     }
@@ -204,6 +210,15 @@
         _tBlueLabel.backgroundColor = kBlueColor;
     }
     return _tBlueLabel;
+}
+
+- (UILabel *)tGrayLabel
+{
+    if (!_tGrayLabel) {
+        _tBlueLabel = [UILabel newAutoLayoutView];
+        _tBlueLabel.backgroundColor = kLightGrayColor;
+    }
+    return _tGrayLabel;
 }
 
 /*

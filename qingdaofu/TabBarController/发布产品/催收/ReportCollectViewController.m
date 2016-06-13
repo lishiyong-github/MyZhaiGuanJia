@@ -8,8 +8,9 @@
 
 #import "ReportCollectViewController.h"
 #import "ReportFiSucViewController.h"  //发布成功
-#import "UploadFilesViewController.h"  //债权文件
 #import "MySaveViewController.h"
+#import "UploadFilesViewController.h"  //债权文件
+#import "DebtCreditMessageViewController.h" //债权人信息
 
 #import "ReportFootView.h"
 #import "EvaTopSwitchView.h"
@@ -34,8 +35,6 @@
 
 @property (nonatomic,strong) NSMutableDictionary *coDataDictionary;  //参数
 @property (nonatomic,strong) NSString *rowString;    //债权类型
-
-
 
 @end
 
@@ -123,7 +122,6 @@
     return _repSuitFootButton;
 }
 
-
 - (NSMutableArray *)coDataList
 {
     if (!_coDataList) {
@@ -171,7 +169,7 @@
     if (section == 0) {
         return [self.rowString intValue];
     }
-    return 14;
+    return 13;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -210,16 +208,16 @@
                     self.rowString = @"5";
                     [self.coTextArray replaceObjectAtIndex:4 withObject:@"机动车品牌"];
                     [self.coHolderArray replaceObjectAtIndex:4 withObject:@"选择机动车品牌"];
-                    number = @"2";
+                    number = @"3";
                 }else if (selectedTag == 2){//应收帐款
                     self.rowString = @"5";
                     [self.coTextArray replaceObjectAtIndex:4 withObject:@"应收帐款"];
                     [self.coHolderArray replaceObjectAtIndex:4 withObject:@"应收帐款"];
-                    number = @"3";
+                    number = @"2";
                 }else{//无抵押
-                    self.rowString = @"5";
+                    self.rowString = @"4";
                     [self.coTextArray replaceObjectAtIndex:4 withObject:@"无抵押"];
-                    [self.coHolderArray replaceObjectAtIndex:4 withObject:@"无抵押"];
+                    [self.coHolderArray replaceObjectAtIndex:4 withObject:@""];
                     number = @"4";
                 }
                 
@@ -351,6 +349,8 @@
             [self.coDataDictionary setValue:text forKey:@"interestpaid"];
         }];
     }else if(indexPath.row > 9){
+        cell.agentTextField.userInteractionEnabled = NO;
+        cell.agentButton.userInteractionEnabled = NO;
         [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
         [cell.agentButton addTarget:self action:@selector(showTitleOfUpwardView:) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -372,6 +372,22 @@
     }
     
     return nil;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 1) {
+        if (indexPath.row == 10) {//债权文件
+            UploadFilesViewController *uploadFilesVC = [[UploadFilesViewController alloc] init];
+            [self.navigationController pushViewController:uploadFilesVC animated:YES];
+        }else if (indexPath.row == 11){//债权人信息
+            DebtCreditMessageViewController *debtCreditMessageVC = [[DebtCreditMessageViewController alloc] init];
+            [self.navigationController pushViewController:debtCreditMessageVC animated:YES];
+            
+        }else if (indexPath.row == 12){//债务人信息
+            
+        }
+    }
 }
 
 #pragma mark - method
@@ -456,7 +472,6 @@
                 
                 NSString *value = [NSString stringWithFormat:@"%d",row];
                 [self.coDataDictionary setValue:value forKey:@"commissionperiod"];
-                
             }];
         }
             break;

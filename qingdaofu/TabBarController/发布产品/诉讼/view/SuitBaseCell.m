@@ -30,10 +30,12 @@
         [views autoAlignViewsToAxis:ALAxisHorizontal];
         
         [self.label autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
+        [self.label autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
         
         [self.segment autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:105];
         [self.segment autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kSmallPadding];
         [self.segment autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
+        [self.segment autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.label];
         
         self.didSetupConstraints = YES;
     }

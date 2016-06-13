@@ -1239,6 +1239,13 @@
 			path = MJRefresh;
 			sourceTree = "<group>";
 		};
+		A159F9881D0EE23600A6A024 /* 债务人信息 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "债务人信息";
+			sourceTree = "<group>";
+		};
 		A16856731CE951D0006A0887 /* view */ = {
 			isa = PBXGroup;
 			children = (
@@ -1872,6 +1879,7 @@
 		A19985441CE07FD10055A572 /* 诉讼 */ = {
 			isa = PBXGroup;
 			children = (
+				A159F9881D0EE23600A6A024 /* 债务人信息 */,
 				A10D7B881CEB222A00422D7D /* 债权人信息 */,
 				A1A34C131CE313F300AD454A /* 上传文件 */,
 				A154B8F61CE1C49500884CA4 /* view */,
