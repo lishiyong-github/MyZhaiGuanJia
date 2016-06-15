@@ -75,13 +75,11 @@
     return _caseGoButton;
 }
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+- (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    NSString *text = [textField.text stringByReplacingCharactersInRange:range withString:string];
     if (self.didEndEditting) {
-        self.didEndEditting(text);
+        self.didEndEditting(textField.text);
     }
-    return YES;
 }
 
 - (void)awakeFromNib {

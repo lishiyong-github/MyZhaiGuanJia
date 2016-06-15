@@ -69,6 +69,7 @@
         QDFWeakSelf;
         [_loginFooterView setDidSelecBtn:^(NSInteger buttonTag) {
             if (buttonTag == 21) {//登录
+                [weakself.view endEditing:YES];
                 [weakself loginUser];
             }else{//忘记密码
                 ForgetPassViewController *forgetPassVC = [[ForgetPassViewController alloc] init];

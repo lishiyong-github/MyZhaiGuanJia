@@ -231,6 +231,8 @@
             
             if (indexPath.row == 0) {
                 [cell.userNameButton setTitleColor:kBlueColor forState:0];
+                [cell.userActionButton setTitle:@"编辑" forState:0];
+                [cell.userActionButton setTitleColor:kBlueColor forState:0];
             }
             return cell;
         }
@@ -245,6 +247,7 @@
     
     [cell.oneButton setTitle:@"查看补充信息" forState:0];
     [cell.oneButton setImage:[UIImage imageNamed:@"more"] forState:0];
+    cell.oneButton.userInteractionEnabled = NO;
     
     return cell;
 }
@@ -263,6 +266,8 @@
 {
     if ((indexPath.section == 1) && (indexPath.row == 5)) {//查看补充信息
         AdditionMessageViewController *additionMessage = [[AdditionMessageViewController alloc] init];
+        additionMessage.idString = self.idString;
+        additionMessage.categoryString = self.categaryString;
         [self.navigationController pushViewController:additionMessage animated:YES];
     }
 }

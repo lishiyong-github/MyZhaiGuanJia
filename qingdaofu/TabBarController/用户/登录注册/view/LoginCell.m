@@ -83,13 +83,11 @@
     return YES;
 }
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+- (void)textFieldDidEndEditing:(UITextField *)textField
 {
-     NSString *text = [textField.text stringByReplacingCharactersInRange:range withString:string];
     if (self.finishEditing) {
-        self.finishEditing(text);
+        self.finishEditing(textField.text);
     }
-    return YES;
 }
 
 

@@ -503,6 +503,7 @@
 #pragma mark - commit
 - (void)reportCollectionActionWithString:(NSString *)string
 {
+    [self.view endEditing:YES];
     NSString *reFinanceString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPublishCollection];
     
     /* 参数 */
@@ -511,6 +512,9 @@
     NSString *loan_typeStr = @"";
     NSString *mortorage_communityStr = @"";
     NSString *seatmortgageStr = @"";
+    NSString *carbrandStr = @"";   //车品牌
+    NSString *audiStr = @"";  //车系
+    NSString *accountrStr = @""; //应收帐款
     NSString *rateStr = @"";
     NSString *rate_catStr = @"";
     NSString *termStr = @"";
@@ -542,7 +546,15 @@
     if (self.coDataDictionary[@"seatmortgage"]) {
         seatmortgageStr = self.coDataDictionary[@"seatmortgage"];
     }
-    
+    if (self.coDataDictionary[@"carbrand"]) {
+        carbrandStr = self.coDataDictionary[@"carbrand"];
+    }
+    if (self.coDataDictionary[@"audi"]) {
+        audiStr = self.coDataDictionary[@"audi"];
+    }
+    if (self.coDataDictionary[@"accountr"]) {
+        accountrStr = self.coDataDictionary[@"accountr"];
+    }
     if (self.coDataDictionary[@"rate"]) {
         rateStr = self.coDataDictionary[@"rate"];
     }
@@ -576,6 +588,11 @@
         performancecontractStr = self.coDataDictionary[@"performancecontract"];
     }
     
+    [self.coDataDictionary setValue:[self getValidateToken] forKey:@"token"];
+    
+    NSDictionary *params = [NSDictionary dictionaryWithDictionary:self.coDataDictionary];
+    
+    /*
     NSDictionary *params = @{@"category" : @"3",
                              @"money" : moneyStr,   //融资金额，万为单位
                              @"progress_status" : string,//1为保存 0为发布
@@ -584,8 +601,12 @@
                              @"district_id" : @"",//地区接口返回数据
                              @"agencycommission" : agencycommissionStr, //代理费用
                              @"loan_type" : loan_typeStr,  //债权类型  1民间借贷  2应收账款
+                             @"carbrand" : carbrandStr,
+                             @"audi" : audiStr,
+                             @"accountr" : accountrStr,
                              @"mortorage_has" : @"0",//0为无 1为有(抵押物地址)
-                             @"mortorage_community" : mortorage_communityStr,  //小区名
+                             @"mortorage_community" : @"张江校区",
+                                 //mortorage_communityStr,  //小区名
                              @"seatmortgage" : seatmortgageStr,  //详细地址
                              @"rate" : rateStr, //利率
                              @"rate_cat" : rate_catStr,  //利率单位 1-天  2-月
@@ -602,6 +623,7 @@
                              @"borrowinginfo" : @"", //债务人信息
                              @"token" : [self getValidateToken]
                              };
+     */
     
     [self requestDataPostWithString:reFinanceString params:params successBlock:^(id responseObject){
         

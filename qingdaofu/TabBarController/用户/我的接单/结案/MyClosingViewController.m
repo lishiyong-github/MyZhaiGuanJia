@@ -498,6 +498,7 @@
             AllEvaluationViewController *allEvaluationVC = [[AllEvaluationViewController alloc] init];
             allEvaluationVC.idString = dealModel.idString;
             allEvaluationVC.categoryString = dealModel.category;
+            allEvaluationVC.evaTypeString = @"launchevaluation";
             [self.navigationController pushViewController:allEvaluationVC animated:YES];
         }
     }
@@ -511,7 +512,7 @@
     checkDetailPublishVC.categoryString = self.categaryString;
     checkDetailPublishVC.pidString = self.pidString;
     checkDetailPublishVC.typeString = @"发布方";
-    checkDetailPublishVC.evaTypeString = @"launchevaluation";
+    checkDetailPublishVC.evaTypeString = @"evaluate";
     [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
 }
 

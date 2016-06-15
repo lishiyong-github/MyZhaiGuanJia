@@ -76,15 +76,11 @@
     return _countLabel;
 }
 
-- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+- (void)textViewDidEndEditing:(UITextView *)textView
 {
-    NSString *title = [textView.text stringByReplacingCharactersInRange:range withString:text];
-    
     if (self.didEndEditing) {
-        self.didEndEditing(title);
+        self.didEndEditing(textView.text);
     }
-    
-    return YES;
 }
 
 - (void)awakeFromNib {

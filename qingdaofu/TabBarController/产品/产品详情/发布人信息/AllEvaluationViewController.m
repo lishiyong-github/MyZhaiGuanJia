@@ -127,7 +127,7 @@
             NSString *isHideStr = model.isHide?@"匿名":model.mobile;
             cell.evaNameLabel.text = isHideStr;
             cell.evaTimeLabel.text = [NSDate getYMDFormatterTime:model.create_time];
-            cell.evaStarImage.currentIndex = [response.creditors intValue];
+            cell.evaStarImage.currentIndex = [response.creditor intValue];
             cell.evaProImageView1.backgroundColor = kLightGrayColor;
             cell.evaProImageView2.backgroundColor = kLightGrayColor;
             if (model.content == nil || [model.content isEqualToString:@""]) {
@@ -178,10 +178,10 @@
 #pragma mark - method
 -  (void)getEvaluateDetailListsWithPage:(NSString *)page
 {
-    NSString *evaluateString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyEvaluateString];
+    NSString *evaluateString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kCheckOrderToEvaluationString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
-                             @"id" : self.idString,
-                             @"category" : self.categoryString,
+//                             @"id" : self.idString,
+//                             @"category" : self.categoryString,
                              @"pid" : self.pidString,
                              @"page" : page
                              };

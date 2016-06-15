@@ -123,7 +123,30 @@
         }
     }else{
         cell.caseNoTextField.placeholder = bArray[indexPath.row];
+        if (indexPath.row == 0) {
+            [cell setDidEndEditting:^(NSString *text) {
+                [self.addAgentDictionary setValue:text forKey:@"name"];
+            }];
+        }else if (indexPath.row == 1){
+            [cell setDidEndEditting:^(NSString *text) {
+                [self.addAgentDictionary setValue:text forKey:@"mobile"];
+            }];
+        }else if (indexPath.row == 2){
+            [cell setDidEndEditting:^(NSString *text) {
+                [self.addAgentDictionary setValue:text forKey:@"cardno"];
+            }];
+        }else if (indexPath.row == 3){
+            [cell setDidEndEditting:^(NSString *text) {
+                [self.addAgentDictionary setValue:text forKey:@"zycardno"];
+            }];
+        }else if (indexPath.row == 4){
+            [cell setDidEndEditting:^(NSString *text) {
+                [self.addAgentDictionary setValue:text forKey:@"password"];
+            }];
+        }
     }
+    
+    
     
     return cell;
 }
@@ -131,6 +154,7 @@
 #pragma mark - method
 - (void)saveAgent
 {
+    [self.view endEditing:YES];
     NSString *addAgentString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyAgentAddString];
     
     NSString *name = @"";

@@ -380,7 +380,6 @@
         self.navigationItem.title = respModel.product.codeString;
         
         [self.recommendDataArray addObject:respModel];
-        
         [self.productsDetailsTableView reloadData];
         
     } andFailBlock:^(NSError *error){

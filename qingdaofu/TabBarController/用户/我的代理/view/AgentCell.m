@@ -83,15 +83,6 @@
     }
 }
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
-    NSString *title = [textField.text stringByReplacingCharactersInRange:range withString:string];
-    if (self.didEndEditing) {
-        self.didEndEditing(title);
-    }
-    return YES;
-}
-
 - (void)awakeFromNib {
     // Initialization code
 }

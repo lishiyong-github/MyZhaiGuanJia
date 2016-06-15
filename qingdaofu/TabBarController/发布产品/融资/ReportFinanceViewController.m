@@ -134,8 +134,9 @@
 - (NSMutableArray *)finanTextArray
 {
     if (!_finanTextArray) {
-        NSArray *finanTextArray1 = @[@[@"|  基本信息",@"金额",@"返点(%)",@"借款利率(%)",@"抵押物地址",@""],@[@"|  补充信息",@"借款期限",@"抵押物类型",@"抵押物状态",@"抵押物面积",@"借款人年龄",@"权利人年龄"]];
-        _finanTextArray = [NSMutableArray arrayWithArray:finanTextArray1];
+        NSMutableArray *a1 = [NSMutableArray arrayWithArray:@[@"|  基本信息",@"金额",@"返点(%)",@"借款利率(%)",@"抵押物地址",@""]];
+        NSMutableArray *a2 = [NSMutableArray arrayWithObjects:@"|  补充信息",@"借款期限",@"抵押物类型",@"抵押物状态",@"抵押物面积",@"借款人年龄",@"权利人年龄", nil];
+        _finanTextArray = [NSMutableArray arrayWithArray:@[a1,a2]];
         
     }
     return _finanTextArray;
@@ -144,8 +145,9 @@
 - (NSMutableArray *)financeholderArray
 {
     if (!_financeholderArray) {
-        NSArray *financeholderArray1 = @[@[@"",@"填写您希望融资的金额",@"能够给到中介的返点，如没有请输入0",@"能够给到融资方的利息(%)",@"小区/写字楼/商铺等",@""],@[@"",@"输入借款期限",@"",@"",@"输入抵押物面积",@"请输入年龄，只能输入数字",@""]];
-        _financeholderArray = [NSMutableArray arrayWithArray:financeholderArray1];
+        NSMutableArray *a1 = [NSMutableArray arrayWithObjects:@"",@"填写您希望融资的金额",@"能够给到中介的返点，如没有请输入0",@"能够给到融资方的利息(%)",@"小区/写字楼/商铺等",@"", nil];  //@[@"",@"填写您希望融资的金额",@"能够给到中介的返点，如没有请输入0",@"能够给到融资方的利息(%)",@"小区/写字楼/商铺等",@""]];
+        NSMutableArray *a2 = [NSMutableArray arrayWithObjects:@"",@"输入借款期限",@"",@"",@"输入抵押物面积",@"请输入年龄，只能输入数字",@"",nil];
+        _financeholderArray = [NSMutableArray arrayWithArray:@[a1,a2]];
     }
     return _financeholderArray;
 }
@@ -153,11 +155,15 @@
 - (NSMutableArray *)finanActArray
 {
     if (!_finanActArray) {
-        NSArray *finanActArray1 = @[@[@"",@"万元",@"",@"请选择",@"",@""],@[@"",@"请选择",@"请选择",@"请选择",@"m²",@"岁",@"请选择"]];
-        _finanActArray = [NSMutableArray arrayWithArray:finanActArray1];
+        NSMutableArray *a1 = [NSMutableArray arrayWithObjects:@"",@"万元",@"",@"请选择",@"",@"", nil];  //@[@"",@"填写您希望融资的金额",@"能够给到中介的返点，如没有请输入0",@"能够给到融资方的利息(%)",@"小区/写字楼/商铺等",@""]];
+        NSMutableArray *a2 = [NSMutableArray arrayWithObjects:@"",@"请选择",@"请选择",@"请选择",@"m²",@"岁",@"请选择",nil];
+        
+        _finanActArray = [NSMutableArray arrayWithArray:@[a1,a2]];
     }
     return _finanActArray;
 }
+
+
 
 - (NSMutableDictionary *)dataDictionary
 {
@@ -178,7 +184,7 @@
     if (section == 0) {
         return 6;
     }
-    return 7;
+    return [self.finanTextArray[1] count];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -260,20 +266,29 @@
             [cell setDidEndEditing:^(NSString *text) {
                 [self.dataDictionary setValue:text forKey:@"term"];
             }];
-        }else if ((indexPath.row > 1) && (indexPath.row <4)){//抵押物类型，状态
+        }else if (indexPath.row == 2){//抵押物类型
             [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
             [cell.agentTextField setHidden:YES];
-        }else if (indexPath.row == 4){//抵押物面积
+        }else if (indexPath.row == 3){//抵押物状态
+            [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            [cell.agentTextField setHidden:YES];
+        }else if (indexPath.row == [self.finanTextArray[1] count] - 3){//抵押物面积
             [cell setDidEndEditing:^(NSString *text) {
                 [self.dataDictionary setValue:text forKey:@"mortgagearea"];
             }];
-        }else if (indexPath.row == 5){//借款人年龄
+        }else if (indexPath.row == [self.finanTextArray[1] count] - 2){//借款人年龄
             [cell setDidEndEditing:^(NSString *text) {
                 [self.dataDictionary setValue:text forKey:@"loanyear"];
             }];
-        }else if(indexPath.row == 6){//权利人年龄
+        }else if(indexPath.row == [self.finanTextArray[1] count] - 1){//权利人年龄
             [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
             [cell.agentTextField setHidden:YES];
+        }else{//租金（第四行）
+            if ([self.finanTextArray[1] count] == 8) {
+                [cell setDidEndEditing:^(NSString *text) {
+                    [self.dataDictionary setValue:text forKey:@"rentmoney"];
+                }];
+            }
         }
     }
     
@@ -350,6 +365,8 @@
                 
                 NSString *value = [NSString stringWithFormat:@"%d",row];
                 [self.dataDictionary setValue:value forKey:@"mortgagecategory"];
+            
+                
             }];
         }
             break;
@@ -359,6 +376,22 @@
                 
                 NSString *value = [NSString stringWithFormat:@"%d",row];
                 [self.dataDictionary setValue:value forKey:@"status"];
+                
+                if ([text isEqualToString:@"出租"]) {
+                    if ([self.finanTextArray[1] count] == 7) {
+                        [self.finanTextArray[1] insertObject:@"租金" atIndex:4];
+                        [self.financeholderArray[1] insertObject:@"请填写租金" atIndex:4];
+                        [self.finanActArray[1] insertObject:@"" atIndex:4];
+                        [self.reportFinanceTableView reloadData];
+                    }
+                }else{
+                    if ([self.finanTextArray[1] count] == 8) {
+                        [self.finanTextArray[1] removeObjectAtIndex:4];
+                        [self.financeholderArray[1] removeObjectAtIndex:4];
+                        [self.finanActArray[1] removeObjectAtIndex:4];
+                        [self.reportFinanceTableView reloadData];
+                    }
+                }
             }];
         }
             break;
