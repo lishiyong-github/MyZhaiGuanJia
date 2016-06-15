@@ -288,7 +288,14 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ((indexPath.section == 0) && (indexPath.row == 5)) {
+        
+        CertificationModel *cerModel;
+        if (self.certifiDataArray.count > 0) {
+            cerModel = self.certifiDataArray[0];
+        }
+
         CaseViewController *caseVC = [[CaseViewController alloc] init];
+        caseVC.caseString = cerModel.casedesc;
         [self.navigationController pushViewController:caseVC animated:YES];
     }else if ((indexPath.section == 1) && (indexPath.row == 0)) {//全部评价
         AllEvaluationViewController *allEvaluationVC = [[AllEvaluationViewController alloc] init];

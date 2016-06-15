@@ -264,11 +264,11 @@
             
             QDFWeakSelf;
             [cell.secondButton addAction:^(UIButton *btn) {
-                [weakself goToCheckApplyRecordsOrAdditionMessage:@"补充信息" withRow:indexPath.row];
+                [weakself goToCheckApplyRecordsOrAdditionMessage:@"补充信息" withRow:indexPath.section];
             }];
             
             [cell.thirdButton addAction:^(UIButton *btn) {
-                [weakself goToCheckApplyRecordsOrAdditionMessage:@"查看申请" withRow:indexPath.row];
+                [weakself goToCheckApplyRecordsOrAdditionMessage:@"查看申请" withRow:indexPath.section];
             }];
             
         }else if ([rowModel.progress_status integerValue]  == 2){
@@ -281,11 +281,11 @@
             
             QDFWeakSelf;
             [cell.secondButton addAction:^(UIButton *btn) {
-                [weakself goToCheckApplyRecordsOrAdditionMessage:@"查看进度" withRow:indexPath.row];
+                [weakself goToCheckApplyRecordsOrAdditionMessage:@"查看进度" withRow:indexPath.section];
             }];
             
             [cell.thirdButton addAction:^(UIButton *btn) {
-                [weakself goToCheckApplyRecordsOrAdditionMessage:@"联系接单方" withRow:indexPath.row];
+                [weakself goToCheckApplyRecordsOrAdditionMessage:@"联系接单方" withRow:indexPath.section];
             }];
             
         }else if ([rowModel.progress_status integerValue]  == 3){
@@ -301,7 +301,7 @@
             [cell.thirdButton setTitle:@"去评价" forState:0];
             QDFWeakSelf;
             [cell.thirdButton addAction:^(UIButton *btn) {
-                [weakself goToCheckApplyRecordsOrAdditionMessage:@"去评价" withRow:indexPath.row];
+                [weakself goToCheckApplyRecordsOrAdditionMessage:@"去评价" withRow:indexPath.section];
             }];
         }
         

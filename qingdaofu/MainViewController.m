@@ -24,7 +24,6 @@
 @interface MainViewController ()<TabBarDelegate,UIActionSheetDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
-@property (nonatomic,strong) MainView *publishShowView;
 
 @end
 
@@ -108,19 +107,6 @@
         [tabAlertController addAction:act0];
         
         [viewController presentViewController:tabAlertController animated:YES completion:nil];
-
-//        [weakself displayView];
-        
-        //        UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
-//        weakself.publishShowView = [[MainView alloc] initWithFrame:keyWindow.frame];
-//        weakself.publishShowView.backgroundColor = kBlackColor;
-//        weakself.publishShowView.alpha = 0.8;
-//        
-//        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hiddenPublishView)];
-//        [self.publishShowView addGestureRecognizer:tap];
-//
-//        [keyWindow addSubview:self.publishShowView];
-    
     }];
     
     TabBarItem *messageItem = [self tabBarItemWithFram:CGRectMake(normalButtonWidth * 2 + publishItemWidth, 0, normalButtonWidth, tabBarHeight) title:@"消息" normalImageName:@"news" selectedImageName:@"news_s" tabBarItemType:TabBarItemTypeNormal];
@@ -159,7 +145,6 @@
     
         NSLog(@"发布");
     
-    
 //    UIView *showView = [UIView newAutoLayoutView];
 //    //
 //    [showView setBackgroundColor:kBlackColor];
@@ -169,11 +154,6 @@
 //    return;
 
     
-}
-
-- (void)hiddenPublishView
-{
-    [self.publishShowView setHidden:YES];
 }
 
 - (void)displayView

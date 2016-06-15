@@ -8,12 +8,13 @@
 
 #import "AddMyAgentViewController.h"
 
-#import "AgentCell.h"
+#import "CaseNoCell.h"
 
 @interface AddMyAgentViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *addAgentTableView;
+@property (nonatomic,strong) NSMutableDictionary *addAgentDictionary;
 
 @end
 
@@ -30,32 +31,6 @@
     
     [self.view addSubview:self.addAgentTableView];
     [self.view setNeedsUpdateConstraints];
-}
-
-#pragma mark - method
-- (void)back
-{
-    UIAlertController *agentAlertController = [UIAlertController alertControllerWithTitle:@"" message:@"未保存，是否保存？" preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction *agentAct1 = [UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        NSLog(@"放弃保存");
-        [self.navigationController popViewControllerAnimated:YES];
-    }];
-    
-    UIAlertAction *agentAct2 = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        NSLog(@"保存");
-        [self.navigationController popViewControllerAnimated:YES];
-    }];
-    
-    [agentAlertController addAction:agentAct1];
-    [agentAlertController addAction:agentAct2];
-    
-    [self presentViewController:agentAlertController animated:YES completion:nil];
-}
-
-- (void)saveAgent
-{
-    
 }
 
 - (void)updateViewConstraints
@@ -83,6 +58,14 @@
     return _addAgentTableView;
 }
 
+- (NSMutableDictionary *)addAgentDictionary
+{
+    if (!_addAgentDictionary) {
+        _addAgentDictionary = [NSMutableDictionary dictionary];
+    }
+    return _addAgentDictionary;
+}
+
 #pragma mark - tableView delegate and datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -97,26 +80,120 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier = @"agent";
-    AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    CaseNoCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
-        cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        cell = [[CaseNoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.leftFieldConstraints.constant = 90;
     
     NSArray *aArray = @[@"姓名",@"联系方式",@"身份证号",@"执业证号",@"登录密码"];
     NSArray *bArray = @[@"请输入姓名",@"请输入联系方式",@"请输入身份证号",@"请输入执业证号",@"请设置代理人登录密码"];
-    NSArray *cArray = @[@"张三三",@"12344678999",@"1234578890000",@"243254354657567655432456",@"123asgsfdhgfg"];
 
-    cell.agentLabel.text = aArray[indexPath.row];
-    cell.agentTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    if ([self.agentFlagString isEqualToString:@"no"]) {
-        cell.agentTextField.placeholder = bArray[indexPath.row];
+    [cell.caseNoButton setTitle:aArray[indexPath.row] forState:0];
+    cell.caseNoTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    
+    if (self.model.username) {//有信息
+        if (indexPath.row == 0) {//姓名
+            cell.caseNoTextField.text = self.model.username;
+            [cell setDidEndEditting:^(NSString *text) {
+                [self.addAgentDictionary setValue:text forKey:@"name"];
+            }];
+        }else if (indexPath.row == 1){//联系方式
+            cell.caseNoTextField.text = self.model.mobile;
+            [cell setDidEndEditting:^(NSString *text) {
+                [self.addAgentDictionary setValue:text forKey:@"mobile"];
+            }];
+        }else if (indexPath.row == 2){ //身份证号
+            cell.caseNoTextField.text = self.model.cardno;
+            [cell setDidEndEditting:^(NSString *text) {
+                [self.addAgentDictionary setValue:text forKey:@"cardno"];
+            }];
+        }else if (indexPath.row == 3){//执业证号
+            cell.caseNoTextField.text = self.model.zycardno;
+            [cell setDidEndEditting:^(NSString *text) {
+                [self.addAgentDictionary setValue:text forKey:@"zycardno"];
+            }];
+        }else if (indexPath.row == 4){//登录密码
+            cell.caseNoTextField.text = self.model.password_hash;
+            [cell setDidEndEditting:^(NSString *text) {
+                [self.addAgentDictionary setValue:text forKey:@"password"];
+            }];
+        }
     }else{
-        cell.agentTextField.text = cArray[indexPath.row];
+        cell.caseNoTextField.placeholder = bArray[indexPath.row];
     }
     
     return cell;
+}
+
+#pragma mark - method
+- (void)saveAgent
+{
+    NSString *addAgentString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyAgentAddString];
+    
+    NSString *name = @"";
+    NSString *mobile = @"";
+    NSString *cardno = @"";
+    NSString *zycardno = @"";
+    NSString *password = @"";
+    
+    if (self.addAgentDictionary[@"name"]) {
+        name = self.addAgentDictionary[@"name"];
+    }
+    
+    if (self.addAgentDictionary[@"mobile"]) {
+        mobile = self.addAgentDictionary[@"mobile"];
+    }
+    if (self.addAgentDictionary[@"cardno"]) {
+        cardno = self.addAgentDictionary[@"cardno"];
+    }
+    if (self.addAgentDictionary[@"zycardno"]) {
+        zycardno = self.addAgentDictionary[@"zycardno"];
+    }
+    if (self.addAgentDictionary[@"password"]) {
+        password = self.addAgentDictionary[@"password"];
+    }
+
+    NSDictionary *params = @{@"token" : [self getValidateToken],
+                             @"name" : name,
+                             @"mobile" : mobile,
+                             @"cardno" : cardno,
+                             @"zycardno" : zycardno,
+                             @"password" : password
+                             };
+    [self requestDataPostWithString:addAgentString params:params successBlock:^(id responseObject) {
+        BaseModel *addModel = [BaseModel objectWithKeyValues:responseObject];
+        [self showHint:addModel.msg];
+        if ([addModel.code isEqualToString:@"0000"]) {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
+- (void)back
+{
+    UIAlertController *agentAlertController = [UIAlertController alertControllerWithTitle:@"" message:@"未保存，是否保存？" preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *agentAct1 = [UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        NSLog(@"放弃保存");
+        [self.navigationController popViewControllerAnimated:YES];
+    }];
+    
+    UIAlertAction *agentAct2 = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        NSLog(@"保存");
+
+        [self saveAgent];
+    }];
+    
+    [agentAlertController addAction:agentAct1];
+    [agentAlertController addAction:agentAct2];
+    
+    [self presentViewController:agentAlertController animated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning {

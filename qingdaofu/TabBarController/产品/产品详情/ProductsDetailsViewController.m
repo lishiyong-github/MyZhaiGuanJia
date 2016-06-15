@@ -8,8 +8,7 @@
 
 #import "ProductsDetailsViewController.h"
 #import "ProductsDetailsProViewController.h"   //产品信息
-#import "ProductsDetailsPerViewController.h"   //发布人信息
-#import "CheckDetailPublishViewController.h" //查看发布方
+#import "CheckDetailPublishViewController.h" //发布人信息
 
 #import "UIImage+Color.h"
 #import "UIButton+Addition.h"
@@ -347,8 +346,8 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if (self.recommendDataArray.count > 0) {
-    PublishingResponse *qModel = self.recommendDataArray[0];
-    
+        PublishingResponse *qModel = self.recommendDataArray[0];
+        PublishingModel *pModel = qModel.product;
     if (indexPath.section == 1) {
         if (indexPath.row == 0) {
             ProductsDetailsProViewController *productsDetailsProVC = [[ProductsDetailsProViewController alloc] init];
@@ -356,6 +355,11 @@
             [self.navigationController pushViewController:productsDetailsProVC animated:YES];
         }else{
             CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+            checkDetailPublishVC.idString = self.idString;
+            checkDetailPublishVC.categoryString = self.categoryString;
+            checkDetailPublishVC.pidString = pModel.uidInner;
+            checkDetailPublishVC.typeString = @"发布方";
+            checkDetailPublishVC.evaTypeString = @"launchevaluation";
             [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
         }
     }

@@ -12,8 +12,8 @@
 
 + (NSDictionary *)replacedKeyFromPropertyName
 {
-    return @{@"case" : @"caseString",
-             @"id" : @"idString"
+    return @{@"caseString" : @"case",
+             @"idString" : @"id"
              };
 }
 

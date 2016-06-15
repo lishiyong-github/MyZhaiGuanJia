@@ -15,4 +15,6 @@
 
 - (NSString *)getValidateToken;
 
+- (void)back;
+
 @end

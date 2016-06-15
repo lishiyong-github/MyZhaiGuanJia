@@ -6,10 +6,12 @@
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
-#import "BaseViewController.h"
+#import "NetworkViewController.h"
+#import "UserModel.h"
 
-@interface AddMyAgentViewController : BaseViewController
+@interface AddMyAgentViewController : NetworkViewController
 
 @property (nonatomic,strong) NSString *agentFlagString;
+@property (nonatomic,strong) UserModel *model;
 
 @end

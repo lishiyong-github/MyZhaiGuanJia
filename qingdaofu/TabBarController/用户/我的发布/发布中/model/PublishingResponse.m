@@ -24,7 +24,9 @@
 
 + (NSDictionary *)objectClassInArray
 {
-    return @{@"uidString" : @"uid"};
+    return @{@"uidString" : @"uid",
+             @"user" : @"UserModel"
+             };
 }
 
 @end

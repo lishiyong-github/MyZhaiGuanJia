@@ -41,10 +41,7 @@
 {
     if (!_caseWebView) {
         _caseWebView = [UIWebView newAutoLayoutView];
-        NSString *caseString = [NSString stringWithFormat:@"%@%@",@"",@""];
-        NSURL *caseUrl = [[NSURL alloc] initWithString:caseString];
-        NSURLRequest *caseRequest = [NSURLRequest requestWithURL:caseUrl];
-        [_caseWebView loadRequest:caseRequest];
+        [_caseWebView loadHTMLString:self.caseString baseURL:nil];
     }
     return _caseWebView;
 }

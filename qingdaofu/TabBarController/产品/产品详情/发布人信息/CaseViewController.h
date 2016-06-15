@@ -6,8 +6,10 @@
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
-#import "BaseViewController.h"
+#import "NetworkViewController.h"
 
-@interface CaseViewController : BaseViewController
+@interface CaseViewController : NetworkViewController
+
+@property (nonatomic,strong) NSString *caseString;
 
 @end

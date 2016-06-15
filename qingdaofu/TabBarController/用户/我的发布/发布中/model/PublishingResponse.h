@@ -22,6 +22,6 @@
 @property (nonatomic,copy) NSString *guaranteemethods;
 
 /* 代理人详情 */
-@property (nonatomic,strong) UserModel *user;
+@property (nonatomic,strong) NSMutableArray *user;
 
 @end

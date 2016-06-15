@@ -8,7 +8,7 @@
 
 #import "MyAgentViewController.h"
 
-#import "AddMyAgentViewController.h"
+#import "AddMyAgentViewController.h"  //编辑
 
 #import "MyAgentCell.h"
 #import "BaseCommitButton.h"
@@ -67,15 +67,22 @@
 {
     if (!_myAgentCommitButton) {
         _myAgentCommitButton = [BaseCommitButton newAutoLayoutView];
-        [_myAgentCommitButton setTitle:@"停用" forState:0];
+        
+        if ([self.agentModel.isstop intValue] == 0) {//正常
+            [_myAgentCommitButton setTitle:@"停用" forState:0];
+        }else if ([self.agentModel.isstop intValue] == 1){//停用
+            [_myAgentCommitButton setTitle:@"已停用" forState:0];
+            _myAgentCommitButton.backgroundColor = kSelectedColor;
+            _myAgentCommitButton.userInteractionEnabled = NO;
+        }
+        
         QDFWeakSelf;
         [_myAgentCommitButton addAction:^(UIButton *btn) {
             
             UIAlertController *agentAlertVC = [UIAlertController alertControllerWithTitle:@"" message:@"确认停用？" preferredStyle:UIAlertControllerStyleAlert];
             
             UIAlertAction *agentAct0 = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                [btn setBackgroundColor:kSelectedColor];
-                btn.userInteractionEnabled = YES;
+                [weakself stopAgent];
             }];
             
             UIAlertAction *agentAct1 = [UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleDefault handler:nil];
@@ -109,28 +116,56 @@
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    NSMutableAttributedString *str1 = [cell.agentNameLabel setAttributeString:@"姓        名：" withColor:kBlackColor andSecond:@"张三三" withColor:kLightGrayColor withFont:12];
+    NSMutableAttributedString *str1 = [cell.agentNameLabel setAttributeString:@"姓        名：" withColor:kBlackColor andSecond:self.agentModel.username withColor:kLightGrayColor withFont:12];
     [cell.agentNameLabel setAttributedText:str1];
     
-    NSMutableAttributedString *str2 = [cell.agentTelLabel setAttributeString:@"联系方式：" withColor:kBlackColor andSecond:@"12345678900" withColor:kLightGrayColor withFont:12];
+    NSMutableAttributedString *str2 = [cell.agentTelLabel setAttributeString:@"联系方式：" withColor:kBlackColor andSecond:self.agentModel.mobile withColor:kLightGrayColor withFont:12];
     [cell.agentTelLabel setAttributedText:str2];
     
-    NSMutableAttributedString *str3 = [cell.agentIDLabel setAttributeString:@"身份证号：" withColor:kBlackColor andSecond:@"123456789856432134" withColor:kLightGrayColor withFont:12];
+    NSMutableAttributedString *str3 = [cell.agentIDLabel setAttributeString:@"身份证号：" withColor:kBlackColor andSecond:self.agentModel.cardno withColor:kLightGrayColor withFont:12];
     [cell.agentIDLabel setAttributedText:str3];
     
-    NSMutableAttributedString *str4 = [cell.agentCerLabel setAttributeString:@"执业证号：" withColor:kBlackColor andSecond:@"1234455555555555555" withColor:kLightGrayColor withFont:12];
+    NSString *zycardno = self.agentModel.zycardno?self.agentModel.zycardno:@"无";
+    NSMutableAttributedString *str4 = [cell.agentCerLabel setAttributeString:@"执业证号：" withColor:kBlackColor andSecond:zycardno withColor:kLightGrayColor withFont:12];
     [cell.agentCerLabel setAttributedText:str4];
     
-    NSMutableAttributedString *str5 = [cell.agentPassLabel setAttributeString:@"登录密码：" withColor:kBlackColor andSecond:@"123ghjk" withColor:kLightGrayColor withFont:12];
+    NSMutableAttributedString *str5 = [cell.agentPassLabel setAttributeString:@"登录密码：" withColor:kBlackColor andSecond:self.agentModel.password_hash withColor:kLightGrayColor withFont:12];
     [cell.agentPassLabel setAttributedText:str5];
     
-    QDFWeakSelf;
-    [cell.agentEditButton addAction:^(UIButton *btn) {
-        AddMyAgentViewController *addMyagentVc = [[AddMyAgentViewController alloc] init];
-        [weakself.navigationController pushViewController:addMyagentVc animated:YES];
-    }];
+    
+    if ([self.agentModel.isstop intValue] == 0) {//正常
+        [cell.agentEditButton setTitle:@"编辑" forState:0];
+        QDFWeakSelf;
+        [cell.agentEditButton addAction:^(UIButton *btn) {
+            AddMyAgentViewController *addMyagentVC = [[AddMyAgentViewController alloc] init];
+            addMyagentVC.model = self.agentModel;
+            [weakself.navigationController pushViewController:addMyagentVC animated:YES];
+        }];
+    }else if ([self.agentModel.isstop intValue] == 1){//停用
+        [cell.agentEditButton setHidden:YES];
+    }
     
     return cell;
+}
+
+#pragma mark - method
+- (void)stopAgent
+{
+    NSString *stopString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyAgentStopString];
+    NSDictionary *params = @{@"id" : self.agentModel.idString,
+                             @"status" : @"0",
+                             @"token" : [self getValidateToken]
+                             };
+    [self requestDataPostWithString:stopString params:params successBlock:^(id responseObject) {
+        BaseModel *reModel = [BaseModel objectWithKeyValues:responseObject];
+        [self showHint:reModel.msg];
+        if ([reModel.code isEqualToString:@"0000"]) {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -25,6 +25,12 @@
 
 @implementation MyAgentListViewController
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    
+    [self getMyagentListWithPage:@"0"];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @"代理人列表";
@@ -34,7 +40,6 @@
 
     [self.view addSubview:self.myAgentListTableView];
     [self.view setNeedsUpdateConstraints];
-    [self getMyagentListWithPage:@"0"];
 }
 
 - (void)updateViewConstraints
@@ -72,7 +77,7 @@
 #pragma mark - tableView delegate and datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 10;
+    return self.agentDataList.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -92,14 +97,22 @@
      正常状态：kBlackColor：kBlueColor
      停用状态：kLightGrayColor:kBlackColor:kLightGrayColor
      */
-    NSMutableAttributedString *agentnameStr = [cell.userNameButton setAttributeString:@"李三三" withColor:kLightGrayColor andSecond:@"[停用]" withColor:kBlackColor withFont:15];
+    UserModel *model = self.agentDataList[indexPath.row];
+    
+    NSMutableAttributedString *agentnameStr;
+    if ([model.isstop intValue] == 0) {//正常
+        agentnameStr = [cell.userNameButton setAttributeString:model.username withColor:kBlackColor andSecond:@"" withColor:kBlackColor withFont:15];
+        [cell.userActionButton setImage:[UIImage imageNamed:@"more"] forState:0];
+        [cell.userActionButton setTitleColor:kBlueColor forState:0];
+    }else if ([model.isstop intValue] == 1){//停用
+        agentnameStr = [cell.userNameButton setAttributeString:model.username withColor:kLightGrayColor andSecond:@" [停用]" withColor:kBlackColor withFont:15];
+        [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        [cell.userActionButton setTitleColor:kLightGrayColor forState:0];
+    }
+    
     [cell.userNameButton setAttributedTitle:agentnameStr forState:0];
-    
-    [cell.userActionButton setTitle:@"123456789908" forState:0];
-    [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-    [cell.userActionButton setTitleColor:kLightGrayColor forState:0];
+    [cell.userActionButton setTitle:model.mobile forState:0];
     cell.userActionButton.titleLabel.font = kBigFont;
-    
     cell.userNameButton.userInteractionEnabled = NO;
     cell.userActionButton.userInteractionEnabled = NO;
     
@@ -110,9 +123,9 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    
-    
+    UserModel *userModel = self.agentDataList[indexPath.row];
     MyAgentViewController *myAgentVC = [[MyAgentViewController alloc] init];
+    myAgentVC.agentModel = userModel;
     [self.navigationController pushViewController:myAgentVC animated:YES];
 }
 
@@ -120,25 +133,25 @@
 - (void)goToAddAgent
 {
     AddMyAgentViewController *addMyAgentVC = [[AddMyAgentViewController alloc] init];
-    addMyAgentVC.agentFlagString = @"no";
     [self.navigationController pushViewController:addMyAgentVC animated:YES];
 }
 
 - (void)getMyagentListWithPage:(NSString *)page
 {
+    [self.agentDataList removeAllObjects];
+    
     NSString *agentListString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyAgentString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"page" : page
                              };
     [self requestDataPostWithString:agentListString params:params successBlock:^(id responseObject){
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSLog( @"######## %@",dic);
-        
         PublishingResponse *resultModel = [PublishingResponse objectWithKeyValues:responseObject];
         
-//        for (UserModel *userModel in resultModel.user) {
-//            [self.agentDataList addObject:userModel];
-//        }
+        for (UserModel *userModel in resultModel.user) {
+            [self.agentDataList addObject:userModel];
+        }
+        
+        [self.myAgentListTableView reloadData];
         
     } andFailBlock:^(NSError *error){
         

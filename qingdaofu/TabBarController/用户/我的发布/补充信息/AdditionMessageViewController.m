@@ -99,7 +99,6 @@
     PublishingModel *messageModel = resonse.product;
     
     if ([messageModel.category intValue] == 1) {//融资
-        
         NSString *rateCatStr; //借款期限类型
         NSString *term = @"无";   //借款期限
         NSString *mortgagecategory = @"无";//抵押物类型

@@ -6,8 +6,11 @@
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
-#import "BaseViewController.h"
+#import "NetworkViewController.h"
+#import "UserModel.h"
 
-@interface MyAgentViewController : BaseViewController
+@interface MyAgentViewController : NetworkViewController
+
+@property (nonatomic,strong) UserModel *agentModel;  //是否停用
 
 @end
