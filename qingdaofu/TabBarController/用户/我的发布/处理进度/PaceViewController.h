@@ -6,12 +6,15 @@
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
-#import "BaseViewController.h"
-#import "ScheduleModel.h"
+#import "RefreshViewController.h"
+//#import "ScheduleModel.h"
 
-@interface PaceViewController : BaseViewController
+@interface PaceViewController : RefreshViewController
 
-@property (nonatomic,strong) ScheduleModel *model;
-@property (nonatomic,strong) NSMutableArray *scheArray;
+//@property (nonatomic,strong) ScheduleModel *model;
+//@property (nonatomic,strong) NSMutableArray *scheArray;
+
+@property (nonatomic,strong) NSString *idString;
+@property (nonatomic,strong) NSString *categoryString;
 
 @end

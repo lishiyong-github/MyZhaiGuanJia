@@ -22,4 +22,6 @@
 
 @property (nonatomic,assign) BOOL didSetupConstarints;
 
+@property (nonatomic,strong) void (^didSelectedStar)(NSInteger);
+
 @end

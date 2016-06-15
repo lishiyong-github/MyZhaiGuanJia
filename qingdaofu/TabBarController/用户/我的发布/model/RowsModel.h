@@ -17,7 +17,7 @@
 @property (nonatomic,copy) NSString *category;   //类型：1为融资。2为催收。3为诉讼。
 @property (nonatomic,copy) NSString *city_id;   //城市ID
 @property (nonatomic,copy) NSString *codeString;  //产品编号
-@property (nonatomic,copy) NSString *create_time;  //认证时间
+@property (nonatomic,copy) NSString *create_time;  //
 @property (nonatomic,copy) NSString *district_id;  //区域ID
 @property (nonatomic,copy) NSString *idString;    //对应产品表的ID
 @property (nonatomic,copy) NSString *loan_type;    //债权类型：1为房产抵押。2为应收账款。3为机动车抵押。4为无抵押

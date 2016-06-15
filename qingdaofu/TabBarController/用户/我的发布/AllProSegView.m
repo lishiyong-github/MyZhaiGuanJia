@@ -215,8 +215,8 @@
 - (UILabel *)tGrayLabel
 {
     if (!_tGrayLabel) {
-        _tBlueLabel = [UILabel newAutoLayoutView];
-        _tBlueLabel.backgroundColor = kLightGrayColor;
+        _tGrayLabel = [UILabel newAutoLayoutView];
+        _tGrayLabel.backgroundColor = kLightGrayColor;
     }
     return _tGrayLabel;
 }

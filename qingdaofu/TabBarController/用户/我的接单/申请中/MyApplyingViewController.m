@@ -32,7 +32,7 @@
     [super viewDidLoad];
     self.navigationItem.title = @"产品详情";
     self.navigationItem.leftBarButtonItem = self.leftItem;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"查看发布方" style:UIBarButtonItemStylePlain target:self action:@selector(checkDetail)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"查看发布方" style:UIBarButtonItemStylePlain target:self action:@selector(checkDetails)];
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kBlueColor} forState:0];
     
     [self.view addSubview:self.myApplyingTableView];
@@ -231,9 +231,8 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         [cell.oneButton setTitle:@"查看补充信息" forState:0];
         [cell.oneButton setImage:[UIImage imageNamed:@"more"] forState:0];
-        
+        cell.oneButton.userInteractionEnabled = NO;
         return cell;
-        
     }
     
     identifier = @"applying2";
@@ -266,21 +265,30 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ((indexPath.section == 1) && (indexPath.row == 5)) {
+    if ((indexPath.section == 1) && (indexPath.row == 5)) {//补充信息
         AdditionMessageViewController *addtionMessageVC = [[AdditionMessageViewController alloc] init];
+        addtionMessageVC.idString = self.idString;
+        addtionMessageVC.categoryString = self.categaryString;
         [self.navigationController pushViewController:addtionMessageVC animated:YES];
     }else if (indexPath.section == 2){
         AgreementViewController *agreementVc = [[AgreementViewController alloc] init];
+        agreementVc.idString = self.idString;
+        agreementVc.categoryString = self.categaryString;
         [self.navigationController pushViewController:agreementVc animated:YES];
         
     }
 }
 
-
 #pragma mark - method
-- (void)checkDetail
+- (void)checkDetails
 {
     CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+    checkDetailPublishVC.idString = self.idString;
+    checkDetailPublishVC.categoryString = self.categaryString;
+    checkDetailPublishVC.pidString = self.pidString;
+    checkDetailPublishVC.typeString = @"发布方";
+    checkDetailPublishVC.evaTypeString = @"launchevaluation";
+    
     [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
 }
 

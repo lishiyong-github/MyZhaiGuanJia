@@ -6,11 +6,11 @@
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
-#import "BaseViewController.h"
-#import "PublishingResponse.h"
+#import "NetworkViewController.h"
 
-@interface AdditionMessageViewController : BaseViewController
+@interface AdditionMessageViewController : NetworkViewController
 
-@property (nonatomic,strong) PublishingResponse *tModel;
+@property (nonatomic,strong) NSString *idString;
+@property (nonatomic,strong) NSString *categoryString;
 
 @end

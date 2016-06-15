@@ -14,7 +14,8 @@
 @property (nonatomic,strong) UIButton *textDeailButton;
 @property (nonatomic,strong) UILabel *countLabel;
 
-//@property (nonatomic,strong) NSLayoutConstraint *leftText;
 @property (nonatomic,assign) BOOL didSetupConstraints;
+
+@property (nonatomic,strong) void (^didEndEditing)(NSString *text);
 
 @end

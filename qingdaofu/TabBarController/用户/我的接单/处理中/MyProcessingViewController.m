@@ -58,7 +58,7 @@
     
     [self getDetailMessageOfProcessing];
     [self lookUpSchedule];
-    [self delayRequestWithID:self.idString andCategary:self.categaryString];
+    [self delayRequest];
 }
 
 - (void)updateViewConstraints
@@ -319,10 +319,14 @@
             
             [cell.userNameButton setTitleColor:kBlueColor forState:0];
             [cell.userNameButton setTitle:@"|  进度详情" forState:0];
-            [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-            [cell.userActionButton setTitle:@"查看更多" forState:0];
             cell.userActionButton.userInteractionEnabled = NO;
             
+            if (self.scheduleArray.count > 0) {
+                [cell.userActionButton setTitle:@"查看更多" forState:0];
+                [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            }else{
+                [cell.userActionButton setTitle:@"无" forState:0];
+            }
             return cell;
             
         }else if (indexPath.row == 1){
@@ -340,36 +344,50 @@
             
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             
-            //案号
-            NSString *auditStr;
-            if ([scheduleModel.audit intValue] == 0) {
-                auditStr = @"一审";
-            }else if ([scheduleModel.audit intValue] == 1){
-                auditStr = @"二审";
-            }else if ([scheduleModel.audit intValue] == 2){
-                auditStr = @"再审";
+            if (self.scheduleArray.count > 0) {
+                [cell.remindImageButton setHidden:YES];
+                [cell.deadlineLabel setHidden:NO];
+                [cell.timeLabel setHidden:NO];
+                [cell.dateLabel setHidden:NO];
+                [cell.areaLabel setHidden:NO];
+                [cell.addressLabel setHidden:NO];
+                
+                //案号类型
+                NSString *auditStr;
+                if ([scheduleModel.audit intValue] == 0) {
+                    auditStr = @"一审";
+                }else if ([scheduleModel.audit intValue] == 1){
+                    auditStr = @"二审";
+                }else if ([scheduleModel.audit intValue] == 2){
+                    auditStr = @"再审";
+                }else{
+                    auditStr = @"执行";
+                }
+                NSMutableAttributedString *caseTypestring = [cell.deadlineLabel setAttributeString:@"案号类型：" withColor:kBlackColor andSecond:auditStr withColor:kLightGrayColor withFont:12];
+                [cell.deadlineLabel setAttributedText:caseTypestring];
+                
+                cell.timeLabel.text = @"2016-05-30";
+                
+                NSMutableAttributedString *caseNoString = [cell.dateLabel setAttributeString:@"案        号：" withColor:kBlackColor andSecond:scheduleModel.caseString withColor:kLightGrayColor withFont:12];
+                [cell.dateLabel setAttributedText:caseNoString];
+                
+                NSArray *suitArr = @[@"债权人上传处置资产",@"律师接单",@"双方洽谈",@"向法院起诉(财产保全)",@"整理诉讼材料",@"法院立案",@"向当事人发出开庭传票",@"开庭前调解",@"开庭",@"判决",@"二次开庭",@"二次判决",@"移交执行局申请执行",@"执行中提供借款人的财产线索",@"调查(公告)",@"拍卖",@"流拍",@"拍卖成功",@"付费"];
+                NSInteger number = [scheduleModel.status intValue];
+                NSString *dealTypeStr = suitArr[number];
+                NSMutableAttributedString *dealTypeString = [cell.areaLabel setAttributeString:@"处置类型：" withColor: kBlackColor andSecond:dealTypeStr withColor:kLightGrayColor withFont:12];
+                [cell.areaLabel setAttributedText:dealTypeString];
+                
+                NSMutableAttributedString *dealDeailString = [cell.addressLabel setAttributeString:@"详        情：" withColor:kBlackColor andSecond:scheduleModel.content withColor:kLightGrayColor withFont:12];
+                [cell.addressLabel setAttributedText:dealDeailString];
+                
             }else{
-                auditStr = @"执行";
+                [cell.remindImageButton setHidden:NO];
+                [cell.deadlineLabel setHidden:YES];
+                [cell.timeLabel setHidden:YES];
+                [cell.dateLabel setHidden:YES];
+                [cell.areaLabel setHidden:YES];
+                [cell.addressLabel setHidden:YES];
             }
-            
-            NSMutableAttributedString *caseTypestring = [cell.deadlineLabel setAttributeString:@"案号类型：" withColor:kBlackColor andSecond:auditStr withColor:kLightGrayColor withFont:12];
-            [cell.deadlineLabel setAttributedText:caseTypestring];
-            
-            cell.timeLabel.text = [NSDate getYMDFormatterTime:scheduleModel.create_time];
-            
-            NSMutableAttributedString *caseNoString = [cell.dateLabel setAttributeString:@"案        号：" withColor:kBlackColor andSecond:scheduleModel.caseString withColor:kLightGrayColor withFont:12];
-            [cell.dateLabel setAttributedText:caseNoString];
-            
-            NSArray *suitArr = @[@"债权人上传处置资产",@"律师接单",@"双方洽谈",@"向法院起诉(财产保全)",@"整理诉讼材料",@"法院立案",@"向当事人发出开庭传票",@"开庭前调解",@"开庭",@"判决",@"二次开庭",@"二次判决",@"移交执行局申请执行",@"执行中提供借款人的财产线索",@"调查(公告)",@"拍卖",@"流拍",@"拍卖成功",@"付费"];
-
-            NSInteger number = [scheduleModel.status intValue];
-            NSString *dealTypeStr = suitArr[number];
-            
-            NSMutableAttributedString *dealTypeString = [cell.areaLabel setAttributeString:@"处置类型：" withColor: kBlackColor andSecond:dealTypeStr withColor:kLightGrayColor withFont:12];
-            [cell.areaLabel setAttributedText:dealTypeString];
-            
-            NSMutableAttributedString *dealDeailString = [cell.addressLabel setAttributeString:@"详        情：" withColor:kBlackColor andSecond:scheduleModel.content withColor:kLightGrayColor withFont:12];
-            [cell.addressLabel setAttributedText:dealDeailString];
             
             return cell;
             
@@ -383,14 +401,7 @@
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             [cell.oneButton setTitle:@"填写进度" forState:0];
             [cell.oneButton setImage:[UIImage imageNamed:@"more"] forState:0];
-            
-            QDFWeakSelf;
-            [cell.oneButton addAction:^(UIButton *btn) {
-                MyScheduleViewController *myScheduleVC = [[MyScheduleViewController alloc] init];
-                myScheduleVC.idString = self.idString;
-                myScheduleVC.categoryString = self.categaryString;
-                [weakself.navigationController pushViewController:myScheduleVC animated:YES];
-            }];
+            cell.oneButton.userInteractionEnabled = NO;
             
             return cell;
         }
@@ -412,7 +423,7 @@
         delayModel = self.delayArray[0];
     }
     
-    if (delayModel.is_agree == nil || [delayModel.delays intValue] >= 7) {
+    if (delayModel.is_agree == nil) {
         [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
         [cell.userActionButton setTitle:@"立即申请" forState:0];
     }else{
@@ -446,14 +457,13 @@
         UIButton *applyButton = [UIButton newAutoLayoutView];
         applyButton.titleLabel.font = kTabBarFont;
         [applyButton setTitleColor:kGrayColor forState:0];
-//        [applyButton sizeToFit];
         
         DelayModel *delayModel;
         if (self.delayArray.count > 0) {
             delayModel = self.delayArray[0];
         }
         
-        if (delayModel.is_agree == nil || [delayModel.delays intValue] >= 7) {
+        if (delayModel.is_agree == nil) {
             //未申请
             [applyButton setImage:[UIImage imageNamed:@"conserve_tip_icon"] forState:0];
             [applyButton setTitle:@"距离案件处理结束日期还有20天，可提前7天申请延期，只可申请一次" forState:0];
@@ -478,16 +488,25 @@
     if (indexPath.section == 2) {//协议
         AgreementViewController *agreementVc = [[AgreementViewController alloc] init];
         [self.navigationController pushViewController:agreementVc animated:YES];
-    }else if ((indexPath.section == 3) && (indexPath.row == 0)) {//进度
-        PaceViewController *paceVC = [[PaceViewController alloc] init];
-        paceVC.scheArray = self.scheduleArray;
-        [self.navigationController pushViewController:paceVC animated:YES];
+    }else if (indexPath.section == 3) {
+        if (indexPath.row == 0) {//进度
+            PaceViewController *paceVC = [[PaceViewController alloc] init];
+            paceVC.idString = self.idString;
+            paceVC.categoryString = self.categaryString;
+            [self.navigationController pushViewController:paceVC animated:YES];
+            
+        }else if (indexPath.row ==2){//填写进度
+            MyScheduleViewController *myScheduleVC = [[MyScheduleViewController alloc] init];
+            myScheduleVC.idString = self.idString;
+            myScheduleVC.categoryString = self.categaryString;
+            [self.navigationController pushViewController:myScheduleVC animated:YES];
+        }
         
-    }else if (indexPath.section == 4) {
-        DelayRequestsViewController *delayRequestVC = [[DelayRequestsViewController alloc] init];
-        delayRequestVC.idString = self.idString;
-        delayRequestVC.categoryString = self.categaryString;
-        [self.navigationController pushViewController:delayRequestVC animated:YES];
+    }else if (indexPath.section == 4) {//申请延期
+//        DelayRequestsViewController *delayRequestVC = [[DelayRequestsViewController alloc] init];
+//        delayRequestVC.idString = self.idString;
+//        delayRequestVC.categoryString = self.categaryString;
+//        [self.navigationController pushViewController:delayRequestVC animated:YES];
     }
 }
 
@@ -495,6 +514,11 @@
 - (void)checkProcessingDetail
 {
     CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+    checkDetailPublishVC.idString = self.idString;
+    checkDetailPublishVC.categoryString = self.categaryString;
+    checkDetailPublishVC.pidString = self.pidString;
+    checkDetailPublishVC.typeString = @"发布方";
+    checkDetailPublishVC.evaTypeString = @"launchevaluation";
     [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
 }
 
@@ -536,12 +560,12 @@
     }];
 }
 
-- (void)delayRequestWithID:(NSString *)idStr andCategary:(NSString *)categaryStr
+- (void)delayRequest
 {
     NSString *deString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kIsDelayRequestString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
-                             @"id" : idStr,
-                             @"category" : categaryStr
+                             @"id" : self.idString,
+                             @"category" : self.categaryString
                              };
     [self requestDataPostWithString:deString params:params successBlock:^(id responseObject) {
         DelayResponse *response = [DelayResponse objectWithKeyValues:responseObject];
@@ -552,7 +576,6 @@
         
     }];
 }
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

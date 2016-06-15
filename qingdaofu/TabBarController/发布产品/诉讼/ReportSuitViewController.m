@@ -9,9 +9,12 @@
 #import "ReportSuitViewController.h"
 
 #import "ReportFiSucViewController.h"  //发布成功
+#import "MySaveViewController.h"  //我的保存
+
 #import "UploadFilesViewController.h"  //债权文件
 #import "DebtCreditMessageViewController.h"  //债权人信息
-#import "MySaveViewController.h"  //我的保存
+#import "BrandViewController.h"
+
 
 #import "ReportFootView.h"
 #import "EvaTopSwitchView.h"
@@ -277,17 +280,45 @@
             [cell.agentButton addTarget:self action:@selector(showTitleOfUpwardView:) forControlEvents:UIControlEventTouchUpInside];
         }else if (indexPath.row == 4){//抵押物地址
             
-            [cell setDidEndEditing:^(NSString *text) {
+//                if ([_number intValue] == 1) {//房产抵押
+//                    [self.suitDataDictionary setValue:text forKey:@"mortorage_community"];
+//                    weakcell.agentTextField.userInteractionEnabled = NO;
+//                    [weakcell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+//                    [weakcell.agentButton setTitle:@"请选择" forState:0];
+//                    
+//                }else if ([_number intValue] == 3){//机动车抵押
+//                    [self.suitDataDictionary setValue:text forKey:@"carbrand"];
+//                    [self.suitDataDictionary setValue:text forKey:@"audi"];
+//                    
+//                }else
+            
+            if ([_number intValue] == 1) {//抵押物地址
+                cell.agentTextField.userInteractionEnabled = NO;
+                [cell.agentButton setHidden:NO];
+                [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+                [cell.agentButton setTitle:@"请选择" forState:0];
+                [cell.agentButton addAction:^(UIButton *btn) {
+                    NSLog(@"选择小区名");
+                }];
                 
-                if ([_number intValue] == 1) {//房产抵押
-                    [self.suitDataDictionary setValue:text forKey:@"mortorage_community"];
-                }else if ([_number intValue] == 3){//机动车抵押
-                    [self.suitDataDictionary setValue:text forKey:@"carbrand"];
-                    [self.suitDataDictionary setValue:text forKey:@"audi"];
-                }else if ([_number intValue] == 2){//应收账款
+            }else if ([_number intValue] == 3){//机动车抵押
+                cell.agentTextField.userInteractionEnabled = NO;
+                [cell.agentButton setHidden:NO];
+                [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+                [cell.agentButton setTitle:@"请选择" forState:0];
+                [cell.agentButton addAction:^(UIButton *btn) {
+                    NSLog(@"选择机动车品牌");
+                    BrandViewController *brandVC = [[BrandViewController alloc] init];
+                    [self.navigationController pushViewController:brandVC animated:YES];
+                }];
+            }else if ([_number intValue] == 2) {//应收帐款
+                cell.agentTextField.userInteractionEnabled = YES;
+                [cell.agentButton setHidden:YES];
+                [cell setDidEndEditing:^(NSString *text) {
                     [self.suitDataDictionary setValue:text forKey:@"accountr"];
-                }
-            }];
+                }];
+            }
+            
         }
         return cell;
     }

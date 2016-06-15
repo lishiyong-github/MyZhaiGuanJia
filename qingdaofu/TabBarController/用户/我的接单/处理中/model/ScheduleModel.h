@@ -16,6 +16,6 @@
 @property (nonatomic,copy) NSString *create_time;
 @property (nonatomic,copy) NSString *idString;
 @property (nonatomic,copy) NSString *product_id;  //对应产品ID
-@property (nonatomic,copy) NSString *status;
+@property (nonatomic,copy) NSString *status;    //处置类型
 
 @end

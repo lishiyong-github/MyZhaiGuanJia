@@ -6,8 +6,15 @@
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
-#import "BaseViewController.h"
+#import "RefreshViewController.h"
 
-@interface CheckDetailPublishViewController : BaseViewController
+@interface CheckDetailPublishViewController : RefreshViewController
+
+@property (nonatomic,strong) NSString *typeString;  //类别（接单方或发布方）
+
+@property (nonatomic,strong) NSString *idString;
+@property (nonatomic,strong) NSString *categoryString;
+@property (nonatomic,strong) NSString *pidString;
+@property (nonatomic,strong) NSString *evaTypeString;  //评价类型（evaluate(收到的评价) ／launchevaluation(发出的评级)）
 
 @end

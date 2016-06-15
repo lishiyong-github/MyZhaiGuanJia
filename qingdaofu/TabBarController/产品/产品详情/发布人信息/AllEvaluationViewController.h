@@ -6,8 +6,14 @@
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
-#import "BaseViewController.h"
+#import "RefreshViewController.h"
 
-@interface AllEvaluationViewController : BaseViewController
+@interface AllEvaluationViewController : RefreshViewController
+
+@property (nonatomic,strong) NSString *idString;
+@property (nonatomic,strong) NSString *categoryString;
+@property (nonatomic,strong) NSString *pidString;
+
+@property (nonatomic,strong) NSString *evaTypeString;
 
 @end

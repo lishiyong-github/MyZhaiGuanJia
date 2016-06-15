@@ -19,6 +19,8 @@
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *scheduleTableView;
 
+@property (nonatomic,strong) NSMutableDictionary *scheduleDictionary;
+
 @end
 
 @implementation MyScheduleViewController
@@ -67,7 +69,15 @@
     return _scheduleTableView;
 }
 
-#pragma mark - 
+- (NSMutableDictionary *)scheduleDictionary
+{
+    if (!_scheduleDictionary) {
+        _scheduleDictionary = [NSMutableDictionary dictionary];
+    }
+    return _scheduleDictionary;
+}
+
+#pragma mark - delegate and datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if ([self.categoryString intValue] == 3) {//诉讼
@@ -112,19 +122,25 @@
             [cell.caseGoButton setTitle:arr3[indexPath.row] forState:0];
             [cell.caseGoButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
             
-            
             NSArray *suitArr = @[@"债权人上传处置资产",@"律师接单",@"双方洽谈",@"向法院起诉(财产保全)",@"整理诉讼材料",@"法院立案",@"向当事人发出开庭传票",@"开庭前调解",@"开庭",@"判决",@"二次开庭",@"二次判决",@"移交执行局申请执行",@"执行中提供借款人的财产线索",@"调查(公告)",@"拍卖",@"流拍",@"拍卖成功",@"付费"];
             NSArray *suitNoArr = @[@"一审",@"二审",@"再审",@"执行"];
             
             QDFWeakSelf;
             QDFWeak(cell);
             if (indexPath.row == 0) {//案号
-                [cell.caseGoButton addAction:^(UIButton *btn) {
-                    [weakself showBlurInView:self.view withArray:suitNoArr andTitle:@"选择案号" finishBlock:^(NSString *text,NSInteger row) {
-                        [weakcell.caseGoButton setTitle:text forState:0];
-                    }];
+                //案号
+                [cell setDidEndEditting:^(NSString *text) {
+                    [self.scheduleDictionary setValue:text forKey:@"case"];
                 }];
                 
+                //案号类型
+                [cell.caseGoButton addAction:^(UIButton *btn) {
+                    [weakself showBlurInView:self.view withArray:suitNoArr andTitle:@"选择案号类型" finishBlock:^(NSString *text,NSInteger row) {
+                        [weakcell.caseGoButton setTitle:text forState:0];
+                        NSString *auditStr = [NSString stringWithFormat:@"%d",row-1];
+                        [self.scheduleDictionary setValue:auditStr forKey:@"audit"];
+                    }];
+                }];
                 
             }else{//处置类型
                 cell.caseNoTextField.userInteractionEnabled = NO;
@@ -132,10 +148,12 @@
                     
                     [weakself showBlurInView:self.view withArray:suitArr andTitle:@"选择处置类型" finishBlock:^(NSString *text,NSInteger row) {
                         [weakcell.caseGoButton setTitle:text forState:0];
+                        
+                        NSString *statusStr = [NSString stringWithFormat:@"%d",row];
+                        [self.scheduleDictionary setValue:statusStr forKey:@"status"];
                     }];
                 }];
             }
-            
             return cell;
         }
         
@@ -173,10 +191,14 @@
             if ([weakself.categoryString intValue] == 1) {//融资
                 [weakself showBlurInView:self.view withArray:financeArr andTitle:@"选择处置类型" finishBlock:^(NSString *text,NSInteger row) {
                     [weakcell.caseGoButton setTitle:text forState:0];
+                    NSString *statusStr = [NSString stringWithFormat:@"%d",row];
+                    [self.scheduleDictionary setValue:statusStr forKey:@"status"];
                 }];
             }else if ([weakself.categoryString intValue] == 2){//催收
                 [weakself showBlurInView:self.view withArray:collectArr andTitle:@"选择处置类型" finishBlock:^(NSString *text,NSInteger row) {
                     [weakcell.caseGoButton setTitle:text forState:0];
+                    NSString *statusStr = [NSString stringWithFormat:@"%d",row];
+                    [self.scheduleDictionary setValue:statusStr forKey:@"status"];
                 }];
             }
         }];
@@ -192,6 +214,9 @@
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.textField.placeholder = @"请填写进度";
+    [cell setDidEndEditing:^(NSString *text) {
+        [self.scheduleDictionary setValue:text forKey:@"content"];
+    }];
     
     return cell;
 }
@@ -244,30 +269,50 @@
      19 => '付费',
      ];
      */
+    NSString *caseStr = @"";
+    NSString *auditStr = @"";
+    NSString *statusStr = @"";
+    NSString *contentStr = @"";
+
+    if (self.scheduleDictionary[@"case"]) {
+        caseStr = self.scheduleDictionary[@"case"];
+    }
+    
+    if (self.scheduleDictionary[@"audit"]) {
+        auditStr = self.scheduleDictionary[@"audit"];
+    }
+    
+    if (self.scheduleDictionary[@"status"]) {
+        statusStr = self.scheduleDictionary[@"status"];
+    }
+    
+    if (self.scheduleDictionary[@"content"]) {
+        contentStr = self.scheduleDictionary[@"content"];
+    }
 
     NSDictionary *params;
     if ([self.categoryString intValue] == 1) {//融资
        params = @{@"token" : [self getValidateToken],
                                  @"product_id" : self.idString,
                                  @"category" : self.categoryString,
-                                  @"status" : @"1",
-                                  @"content" : @"尽职调查尽职调查尽职调查"
+                                  @"status" : statusStr,
+                                  @"content" : contentStr
                                  };
     }else if ([self.categoryString intValue] == 2){//催收
         params = @{@"token" : [self getValidateToken],
                    @"product_id" : self.idString,
                    @"category" : self.categoryString,
-                   @"status" : @"3",
-                   @"content" : @"面谈面谈面谈面谈"
+                   @"status" : statusStr,
+                   @"content" : contentStr
                    };
     }else{//诉讼
         params = @{@"token" : [self getValidateToken],
                    @"product_id" : self.idString,
                    @"category" : self.categoryString,
-                   @"status" : @"5",
-                   @"content" : @"整理诉讼材料整理诉讼材料整理诉讼材料",
-                   @"audit" : @"0",//诉讼的案号状态：0=>一审,1=>二审,2=>再审,3=>执行
-                   @"case" : @"111111111111"//诉讼里面的暗号
+                   @"status" : statusStr,
+                   @"content" : contentStr,
+                   @"audit" : auditStr,//诉讼的案号状态：0=>一审,1=>二审,2=>再审,3=>执行
+                   @"case" : caseStr//诉讼里面的暗号
                    };
     }
     

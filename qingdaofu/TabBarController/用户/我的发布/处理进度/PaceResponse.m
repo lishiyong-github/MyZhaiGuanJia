@@ -10,4 +10,18 @@
 
 @implementation PaceResponse
 
+
++ (NSDictionary *)replacedKeyFromPropertyName
+{
+    return @{@"uid" : @"result.uid",
+             @"disposing" : @"result.disposing"
+             };
+}
+
++ (NSDictionary *)objectClassInArray
+{
+    return @{@"disposing" : @"PaceModel"};
+}
+
+
 @end

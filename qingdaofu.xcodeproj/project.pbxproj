@@ -39,6 +39,15 @@
 		A14C17611D07F692003826F8 /* list_litigation_nor@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A14C175F1D07F692003826F8 /* list_litigation_nor@3x.png */; };
 		A14C17641D080049003826F8 /* ProDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A14C17631D080049003826F8 /* ProDetailCell.m */; };
 		A14C17681D0AE577003826F8 /* UserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A14C17671D0AE577003826F8 /* UserModel.m */; };
+		A1522BE51D0F90F600135C72 /* BrandViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1522BE41D0F90F600135C72 /* BrandViewController.m */; };
+		A1522BEB1D0FB17B00135C72 /* PaceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A1522BEA1D0FB17B00135C72 /* PaceModel.m */; };
+		A1522BEE1D0FB22E00135C72 /* PaceResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A1522BED1D0FB22E00135C72 /* PaceResponse.m */; };
+		A1522BF11D0FB50100135C72 /* PaceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1522BF01D0FB50100135C72 /* PaceCell.m */; };
+		A1522BF41D0FFFE000135C72 /* kong@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1522BF21D0FFFE000135C72 /* kong@2x.png */; };
+		A1522BF51D0FFFE000135C72 /* kong@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1522BF31D0FFFE000135C72 /* kong@3x.png */; };
+		A1522BF91D1005F000135C72 /* EvaluateResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A1522BF81D1005F000135C72 /* EvaluateResponse.m */; };
+		A1522BFC1D10060400135C72 /* EvaluateModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A1522BFB1D10060400135C72 /* EvaluateModel.m */; };
+		A1522BFF1D10069F00135C72 /* LaunchEvaluateModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A1522BFE1D10069E00135C72 /* LaunchEvaluateModel.m */; };
 		A154B8D61CE18E7F00884CA4 /* ReportFootView.m in Sources */ = {isa = PBXBuildFile; fileRef = A154B8D51CE18E7F00884CA4 /* ReportFootView.m */; };
 		A154B8D91CE1912800884CA4 /* open@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A154B8D71CE1912800884CA4 /* open@2x.png */; };
 		A154B8DA1CE1912800884CA4 /* open@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A154B8D81CE1912800884CA4 /* open@3x.png */; };
@@ -214,7 +223,6 @@
 		A192B4B01CDAFAC60053FC4C /* MyScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A192B4AF1CDAFAC60053FC4C /* MyScheduleViewController.m */; };
 		A192B4B41CDB2CAF0053FC4C /* AdditionMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A192B4B31CDB2CAF0053FC4C /* AdditionMessageViewController.m */; };
 		A192B4B81CDB34030053FC4C /* PaceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A192B4B71CDB34030053FC4C /* PaceViewController.m */; };
-		A192B4BB1CDB35020053FC4C /* PaceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A192B4BA1CDB35020053FC4C /* PaceCell.m */; };
 		A192B4BF1CDB46020053FC4C /* list_more@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A192B4BD1CDB46020053FC4C /* list_more@2x.png */; };
 		A192B4C01CDB46020053FC4C /* list_more@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A192B4BE1CDB46020053FC4C /* list_more@3x.png */; };
 		A192B4C31CDB48C90053FC4C /* list_icon_collection@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A192B4C11CDB48C90053FC4C /* list_icon_collection@2x.png */; };
@@ -473,6 +481,22 @@
 		A14C17631D080049003826F8 /* ProDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProDetailCell.m; sourceTree = "<group>"; };
 		A14C17661D0AE577003826F8 /* UserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserModel.h; sourceTree = "<group>"; };
 		A14C17671D0AE577003826F8 /* UserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserModel.m; sourceTree = "<group>"; };
+		A1522BE31D0F90F600135C72 /* BrandViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrandViewController.h; sourceTree = "<group>"; };
+		A1522BE41D0F90F600135C72 /* BrandViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrandViewController.m; sourceTree = "<group>"; };
+		A1522BE91D0FB17B00135C72 /* PaceModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaceModel.h; sourceTree = "<group>"; };
+		A1522BEA1D0FB17B00135C72 /* PaceModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaceModel.m; sourceTree = "<group>"; };
+		A1522BEC1D0FB22E00135C72 /* PaceResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaceResponse.h; sourceTree = "<group>"; };
+		A1522BED1D0FB22E00135C72 /* PaceResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaceResponse.m; sourceTree = "<group>"; };
+		A1522BEF1D0FB50100135C72 /* PaceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaceCell.h; sourceTree = "<group>"; };
+		A1522BF01D0FB50100135C72 /* PaceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaceCell.m; sourceTree = "<group>"; };
+		A1522BF21D0FFFE000135C72 /* kong@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kong@2x.png"; sourceTree = "<group>"; };
+		A1522BF31D0FFFE000135C72 /* kong@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kong@3x.png"; sourceTree = "<group>"; };
+		A1522BF71D1005F000135C72 /* EvaluateResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EvaluateResponse.h; sourceTree = "<group>"; };
+		A1522BF81D1005F000135C72 /* EvaluateResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EvaluateResponse.m; sourceTree = "<group>"; };
+		A1522BFA1D10060400135C72 /* EvaluateModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EvaluateModel.h; sourceTree = "<group>"; };
+		A1522BFB1D10060400135C72 /* EvaluateModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EvaluateModel.m; sourceTree = "<group>"; };
+		A1522BFD1D10069E00135C72 /* LaunchEvaluateModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaunchEvaluateModel.h; sourceTree = "<group>"; };
+		A1522BFE1D10069E00135C72 /* LaunchEvaluateModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaunchEvaluateModel.m; sourceTree = "<group>"; };
 		A154B8D41CE18E7F00884CA4 /* ReportFootView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportFootView.h; sourceTree = "<group>"; };
 		A154B8D51CE18E7F00884CA4 /* ReportFootView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportFootView.m; sourceTree = "<group>"; };
 		A154B8D71CE1912800884CA4 /* open@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "open@2x.png"; sourceTree = "<group>"; };
@@ -752,8 +776,6 @@
 		A192B4B31CDB2CAF0053FC4C /* AdditionMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdditionMessageViewController.m; sourceTree = "<group>"; };
 		A192B4B61CDB34030053FC4C /* PaceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaceViewController.h; sourceTree = "<group>"; };
 		A192B4B71CDB34030053FC4C /* PaceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaceViewController.m; sourceTree = "<group>"; };
-		A192B4B91CDB35020053FC4C /* PaceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaceCell.h; sourceTree = "<group>"; };
-		A192B4BA1CDB35020053FC4C /* PaceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaceCell.m; sourceTree = "<group>"; };
 		A192B4BD1CDB46020053FC4C /* list_more@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list_more@2x.png"; sourceTree = "<group>"; };
 		A192B4BE1CDB46020053FC4C /* list_more@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list_more@3x.png"; sourceTree = "<group>"; };
 		A192B4C11CDB48C90053FC4C /* list_icon_collection@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list_icon_collection@2x.png"; sourceTree = "<group>"; };
@@ -1140,6 +1162,28 @@
 			path = model;
 			sourceTree = "<group>";
 		};
+		A1522BE21D0F90BD00135C72 /* 机动车品牌 */ = {
+			isa = PBXGroup;
+			children = (
+				A1522BE31D0F90F600135C72 /* BrandViewController.h */,
+				A1522BE41D0F90F600135C72 /* BrandViewController.m */,
+			);
+			path = "机动车品牌";
+			sourceTree = "<group>";
+		};
+		A1522BF61D1005C600135C72 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				A1522BF71D1005F000135C72 /* EvaluateResponse.h */,
+				A1522BF81D1005F000135C72 /* EvaluateResponse.m */,
+				A1522BFA1D10060400135C72 /* EvaluateModel.h */,
+				A1522BFB1D10060400135C72 /* EvaluateModel.m */,
+				A1522BFD1D10069E00135C72 /* LaunchEvaluateModel.h */,
+				A1522BFE1D10069E00135C72 /* LaunchEvaluateModel.m */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
 		A154B8E71CE1B45900884CA4 /* 发布成功 */ = {
 			isa = PBXGroup;
 			children = (
@@ -1454,6 +1498,7 @@
 		A17691431CD9E3D3004289DD /* 追加评价 */ = {
 			isa = PBXGroup;
 			children = (
+				A1522BF61D1005C600135C72 /* model */,
 				A17691471CD9E4C8004289DD /* view */,
 				A17691441CD9E42A004289DD /* AdditionalEvaluateViewController.h */,
 				A17691451CD9E42A004289DD /* AdditionalEvaluateViewController.m */,
@@ -1618,8 +1663,12 @@
 			children = (
 				A192B4B61CDB34030053FC4C /* PaceViewController.h */,
 				A192B4B71CDB34030053FC4C /* PaceViewController.m */,
-				A192B4B91CDB35020053FC4C /* PaceCell.h */,
-				A192B4BA1CDB35020053FC4C /* PaceCell.m */,
+				A1522BEF1D0FB50100135C72 /* PaceCell.h */,
+				A1522BF01D0FB50100135C72 /* PaceCell.m */,
+				A1522BE91D0FB17B00135C72 /* PaceModel.h */,
+				A1522BEA1D0FB17B00135C72 /* PaceModel.m */,
+				A1522BEC1D0FB22E00135C72 /* PaceResponse.h */,
+				A1522BED1D0FB22E00135C72 /* PaceResponse.m */,
 			);
 			path = "处理进度";
 			sourceTree = "<group>";
@@ -1627,6 +1676,8 @@
 		A192B4BC1CDB45EB0053FC4C /* images */ = {
 			isa = PBXGroup;
 			children = (
+				A1522BF21D0FFFE000135C72 /* kong@2x.png */,
+				A1522BF31D0FFFE000135C72 /* kong@3x.png */,
 				A16FF5A11D05935D00C50A0B /* list_label_recommen@2x.png */,
 				A16FF5A21D05935D00C50A0B /* list_label_recommen@3x.png */,
 				A16486B51D001D9400B442C1 /* phone@2x.png */,
@@ -1879,6 +1930,7 @@
 		A19985441CE07FD10055A572 /* 诉讼 */ = {
 			isa = PBXGroup;
 			children = (
+				A1522BE21D0F90BD00135C72 /* 机动车品牌 */,
 				A159F9881D0EE23600A6A024 /* 债务人信息 */,
 				A10D7B881CEB222A00422D7D /* 债权人信息 */,
 				A1A34C131CE313F300AD454A /* 上传文件 */,
@@ -2785,6 +2837,7 @@
 				A168568A1CE994C9006A0887 /* nav_collection_s@3x.png in Resources */,
 				A154B8DA1CE1912800884CA4 /* open@3x.png in Resources */,
 				A196CDF11CFBDF4000AC6C87 /* btn_financing@2x.png in Resources */,
+				A1522BF51D0FFFE000135C72 /* kong@3x.png in Resources */,
 				A145B2901CEEAE02003A93B7 /* conserve_wait_icon@3x.png in Resources */,
 				A16856881CE994C9006A0887 /* nav_back@3x.png in Resources */,
 				A1A34C2E1CE319C000AD454A /* bond_icon_warrants@3x.png in Resources */,
@@ -2833,6 +2886,7 @@
 				A1A97E7C1CDCA2CF00EDE320 /* conserve_rights_icon@2x.png in Resources */,
 				A1A97E171CDC26A200EDE320 /* publish_list_authentication@3x.png in Resources */,
 				A1718DD11CFD25D20007DA6F /* tip@3x.png in Resources */,
+				A1522BF41D0FFFE000135C72 /* kong@2x.png in Resources */,
 				A1A34C2B1CE319C000AD454A /* bond_icon_voucher@2x.png in Resources */,
 				A1718DD71CFD38E70007DA6F /* apply@3x.png in Resources */,
 				A199852C1CE07A010055A572 /* publish_star_s@2x.png in Resources */,
@@ -2885,6 +2939,7 @@
 				A14C17641D080049003826F8 /* ProDetailCell.m in Sources */,
 				A1A017561C5B696A00027134 /* NSObject+MJKeyValue.m in Sources */,
 				A159F9461D0BEE5E00A6A024 /* UIViewController+MutipleImageChoice.m in Sources */,
+				A1522BFF1D10069F00135C72 /* LaunchEvaluateModel.m in Sources */,
 				A10D7B8B1CEB246700422D7D /* DebtCreditMessageViewController.m in Sources */,
 				A17691461CD9E42A004289DD /* AdditionalEvaluateViewController.m in Sources */,
 				A1718DE11CFD56AE0007DA6F /* ReleaseCloseViewController.m in Sources */,
@@ -2895,6 +2950,7 @@
 				A1A34C161CE3148A00AD454A /* UploadFilesViewController.m in Sources */,
 				A199851D1CE0360B0055A572 /* MessageRemindViewController.m in Sources */,
 				A192B4B41CDB2CAF0053FC4C /* AdditionMessageViewController.m in Sources */,
+				A1522BF11D0FB50100135C72 /* PaceCell.m in Sources */,
 				A18F14161CF6D3C100B14318 /* CaseViewController.m in Sources */,
 				A196CE021CFC1BD400AC6C87 /* AgreementViewController.m in Sources */,
 				A16BA1401CEC11B600A7010C /* EditDebtCreditMessageViewController.m in Sources */,
@@ -2917,6 +2973,7 @@
 				A1A017901C5B8A2100027134 /* AFHTTPRequestOperationManager.m in Sources */,
 				A17634241D06B68700CD4623 /* CompleteResponse.m in Sources */,
 				A17965021CD3690D00B6AD47 /* MyStoreCell.m in Sources */,
+				A1522BE51D0F90F600135C72 /* BrandViewController.m in Sources */,
 				A1ECB66F1CED6CA70017EA10 /* PlaceHolderTextView.m in Sources */,
 				A18C67661CD08DA800C7B070 /* LoginView.m in Sources */,
 				A19B8E231CCF42E300F8EBF2 /* NSArray+PureLayout.m in Sources */,
@@ -2933,6 +2990,7 @@
 				A159F9451D0BEE5E00A6A024 /* StandardPaths.m in Sources */,
 				A1770E161CFE6AA3003579E1 /* CompleteLawCell.m in Sources */,
 				A19B8E531CCF533B00F8EBF2 /* ProductsViewController.m in Sources */,
+				A1522BF91D1005F000135C72 /* EvaluateResponse.m in Sources */,
 				A1982B361CFFD730001770A7 /* CompanyWebSiteViewController.m in Sources */,
 				A1718E0E1CFD84B60007DA6F /* AuthenCompanyViewController.m in Sources */,
 				A1A97E6D1CDC98EB00EDE320 /* MyDealingViewController.m in Sources */,
@@ -2951,6 +3009,7 @@
 				A1039F0C1C72C55400771747 /* RefreshViewController.m in Sources */,
 				A1A0178F1C5B8A2100027134 /* AFHTTPRequestOperation.m in Sources */,
 				A16486BE1D011FE900B442C1 /* MarkingViewController.m in Sources */,
+				A1522BEB1D0FB17B00135C72 /* PaceModel.m in Sources */,
 				A159F9571D0D456700A6A024 /* ScheduleModel.m in Sources */,
 				A19D29741CD2158100DAAEA7 /* AuthenPersonViewController.m in Sources */,
 				A159F9681D0D682700A6A024 /* DelayModel.m in Sources */,
@@ -3043,6 +3102,7 @@
 				A19985471CE0802A0055A572 /* ReportFinanceViewController.m in Sources */,
 				A145B2AC1CEEF579003A93B7 /* EvaluateSendCell.m in Sources */,
 				A19985231CE069630055A572 /* AllProSegView.m in Sources */,
+				A1522BFC1D10060400135C72 /* EvaluateModel.m in Sources */,
 				A1A0174E1C5B696A00027134 /* MJDictionaryCache.m in Sources */,
 				A17691171CD97E30004289DD /* MyApplyingViewController.m in Sources */,
 				A16FF58E1D05050F00C50A0B /* BaseModel.m in Sources */,
@@ -3061,6 +3121,7 @@
 				A16FF5A81D05A3E400C50A0B /* ReleaseResponse.m in Sources */,
 				A145B2A61CEEEDA6003A93B7 /* EvaluatePhotoCell.m in Sources */,
 				A1A017511C5B696A00027134 /* MJProperty.m in Sources */,
+				A1522BEE1D0FB22E00135C72 /* PaceResponse.m in Sources */,
 				A19B8E221CCF42E300F8EBF2 /* ALView+PureLayout.m in Sources */,
 				A10D7B811CEB083300422D7D /* ReportCollectViewController.m in Sources */,
 				A16856931CE9A291006A0887 /* ProductsDetailsPerViewController.m in Sources */,
@@ -3068,7 +3129,6 @@
 				A19D296D1CD208FB00DAAEA7 /* CompleteViewController.m in Sources */,
 				A17691421CD9DA0B004289DD /* AnotherHomeCell.m in Sources */,
 				A17EE3891CD86B3E00ECC631 /* AboutViewController.m in Sources */,
-				A192B4BB1CDB35020053FC4C /* PaceCell.m in Sources */,
 				A1A017551C5B696A00027134 /* NSObject+MJCoding.m in Sources */,
 				A16BA1541CEC757900A7010C /* AllProView.m in Sources */,
 				A1A34C3D1CE32CF700AD454A /* LoginCell.m in Sources */,

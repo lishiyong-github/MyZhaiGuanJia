@@ -319,7 +319,8 @@
             
             [cell.oneButton setTitle:@"查看补充信息" forState:0];
             [cell.oneButton setImage:[UIImage imageNamed:@"more"] forState:0];
-            
+            cell.oneButton.userInteractionEnabled = NO;
+
             return cell;
         }
         identifier = @"dealing23";
@@ -354,11 +355,23 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 2) {
+    PublishingResponse *resModel = self.dealingDataList[0];
+    PublishingModel *dealModel = resModel.product;
+    
+    if ((indexPath.section == 1) && (indexPath.row == 5)) {//补充信息
+        AdditionMessageViewController *additionMessageVC = [[AdditionMessageViewController alloc] init];
+        additionMessageVC.idString = dealModel.idString;
+        additionMessageVC.categoryString = dealModel.category;
+        [self.navigationController pushViewController:additionMessageVC animated:YES];
+    }else if (indexPath.section == 2) {//协议
         AgreementViewController *agreementVC = [[AgreementViewController alloc] init];
+        agreementVC.idString = dealModel.idString;
+        agreementVC.categoryString = dealModel.category;
         [self.navigationController pushViewController:agreementVC animated:YES];
     }else if (indexPath.section == 3) {//查看进度
         PaceViewController *paceVC = [[PaceViewController alloc] init];
+        paceVC.idString = dealModel.idString;
+        paceVC.categoryString = dealModel.category;
         [self.navigationController pushViewController:paceVC animated:YES];
     }
 }
@@ -366,8 +379,13 @@
 #pragma mark - method
 - (void)checkPublishUserDetail
 {
-    CheckDetailPublishViewController *checkDetailPublishVc = [[CheckDetailPublishViewController alloc] init];
-    [self.navigationController pushViewController:checkDetailPublishVc animated:YES];
+    CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+    checkDetailPublishVC.idString = self.idString;
+    checkDetailPublishVC.categoryString = self.categaryString;
+    checkDetailPublishVC.pidString = self.pidString;
+    checkDetailPublishVC.typeString = @"接单方";
+    checkDetailPublishVC.evaTypeString = @"evaluate";
+    [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
 }
 
 - (void)getDealingMessage

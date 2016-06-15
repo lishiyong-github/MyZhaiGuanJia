@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CaseNoCell : UITableViewCell
+@interface CaseNoCell : UITableViewCell<UITextFieldDelegate>
 
 @property (nonatomic,strong) UIButton *caseNoButton;
 @property (nonatomic,strong) UITextField *caseNoTextField;
@@ -16,5 +16,7 @@
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) NSLayoutConstraint *leftFieldConstraints;
+
+@property (nonatomic,strong) void (^didEndEditting)(NSString *text);
 
 @end

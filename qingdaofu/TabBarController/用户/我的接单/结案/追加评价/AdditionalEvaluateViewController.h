@@ -6,8 +6,12 @@
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
-#import "BaseViewController.h"
+#import "NetworkViewController.h"
 
-@interface AdditionalEvaluateViewController : BaseViewController
+@interface AdditionalEvaluateViewController : NetworkViewController
+
+@property (nonatomic,strong) NSString *typeString;
+@property (nonatomic,strong) NSString *idString;
+@property (nonatomic,strong) NSString *categoryString;
 
 @end

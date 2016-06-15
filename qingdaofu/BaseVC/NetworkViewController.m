@@ -52,7 +52,6 @@
         if (successBlock) {
             successBlock(responseObject);
         }
-        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (failBlock) {
             failBlock(error);

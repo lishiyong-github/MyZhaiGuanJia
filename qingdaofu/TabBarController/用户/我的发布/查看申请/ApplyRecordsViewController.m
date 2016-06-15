@@ -130,7 +130,7 @@
     NSString *listString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyRecordsString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"id" : self.idStr,
-                             @"categary" : self.categaryStr,
+                             @"category" : self.categaryStr,
                              @"page" : page
                              };
     [self requestDataPostWithString:listString params:params successBlock:^(id responseObject){

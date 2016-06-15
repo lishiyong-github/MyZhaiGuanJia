@@ -20,7 +20,9 @@
         [self.contentView addSubview:self.areaLabel];
         [self.contentView addSubview:self.addressLabel];
         
-        [self.contentView setNeedsUpdateConstraints];
+        [self.contentView addSubview:self.remindImageButton];
+        
+        [self setNeedsUpdateConstraints];
     }
     return self;
 }
@@ -44,6 +46,8 @@
         [self.addressLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
         [self.addressLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.areaLabel withOffset:kBigPadding];
         [self.addressLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
+        
+        [self.remindImageButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
         
         self.didSetupConstraints = YES;
     }
@@ -94,6 +98,15 @@
         _addressLabel.font = kBigFont;
     }
     return _addressLabel;
+}
+
+- (UIButton *)remindImageButton
+{
+    if (!_remindImageButton) {
+        _remindImageButton = [UIButton newAutoLayoutView];
+        [_remindImageButton setImage:[UIImage imageNamed:@"kong"] forState:0];
+    }
+    return _remindImageButton;
 }
 
 - (void)awakeFromNib {

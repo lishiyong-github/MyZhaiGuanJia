@@ -10,4 +10,7 @@
 
 @interface AgreementViewController : BaseViewController
 
+@property (nonatomic,strong) NSString *idString;
+@property (nonatomic,strong) NSString *categoryString;
+
 @end

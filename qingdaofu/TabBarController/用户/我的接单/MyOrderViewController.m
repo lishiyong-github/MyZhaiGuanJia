@@ -97,8 +97,8 @@
         [_orderHeadView setDidSelectedSeg:^(NSInteger segTag) {
             switch (segTag) {
                 case 111:{//全部
-                    weakself.status = @"";
-                    weakself.progresStatus = @"";
+                    weakself.status = @"-1";
+                    weakself.progresStatus = @"0";
                     [weakself getOrderListWithPage:@"0"];
                 }
                     break;
@@ -141,7 +141,6 @@
 - (UITableView *)myOrderTableView
 {
     if (!_myOrderTableView) {
-//        _myOrderTableView = [UITableView newAutoLayoutView];
         _myOrderTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _myOrderTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _myOrderTableView.delegate = self;
@@ -285,22 +284,18 @@
         [cell.firstButton setHidden:NO];
         [cell.secondButton setHidden:NO];
         [cell.thirdButton setHidden:NO];
-        [cell.firstButton setTitle:@"截止日期：2016-06-11" forState:0];
+        NSString *deadString = [NSString stringWithFormat:@"截止日期：%@",[NSDate getYMDFormatterTime:rowModel.create_time]];
+        [cell.firstButton setTitle:deadString forState:0];
         [cell.secondButton setTitle:@"申请延期" forState:0];
         [cell.thirdButton setTitle:@"填写进度" forState:0];
         
         QDFWeakSelf;
         [cell.secondButton addAction:^(UIButton *btn) {
-//            DelayRequestViewController *delayRequestVC = [[DelayRequestViewController alloc] init];
-//            [weakself.navigationController pushViewController:delayRequestVC animated:YES];
-            [weakself delayRequestWithID:rowModel.idString andCategary:rowModel.category];
+            [weakself goToWriteScheduleOrEvaluate:@"申请延期" withRow:indexPath.row];
         }];
         
         [cell.thirdButton addAction:^(UIButton *btn) {
-            MyScheduleViewController *myScheduleVC = [[MyScheduleViewController alloc] init];
-            myScheduleVC.idString = rowModel.idString;
-            myScheduleVC.categoryString = rowModel.category;
-            [self.navigationController pushViewController:myScheduleVC animated:YES];
+            [weakself goToWriteScheduleOrEvaluate:@"填写进度" withRow:indexPath.row];
         }];
         
     }else {//结案
@@ -311,8 +306,7 @@
         
         QDFWeakSelf;
         [cell.thirdButton addAction:^(UIButton *btn) {
-            AdditionalEvaluateViewController *addtionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
-            [weakself.navigationController pushViewController:addtionalEvaluateVC animated:YES];
+            [weakself goToWriteScheduleOrEvaluate:@"去评价" withRow:indexPath.row];
         }];
     }
     
@@ -336,21 +330,25 @@
        MyApplyingViewController *myApplyingVC = [[MyApplyingViewController alloc] init];
        myApplyingVC.idString = model.idString;
        myApplyingVC.categaryString = model.category;
+       myApplyingVC.pidString = model.uidString;
        [self.navigationController pushViewController:myApplyingVC animated:YES];
     }else if ([self.progresStatus isEqualToString:@"2"]){//处理中
         MyProcessingViewController *myProcessingVC = [[MyProcessingViewController alloc] init];
         myProcessingVC.idString = model.idString;
         myProcessingVC.categaryString = model.category;
+        myProcessingVC.pidString = model.uidString;
         [self.navigationController pushViewController:myProcessingVC animated:YES];
     }else if ([self.progresStatus isEqualToString:@"3"]){//终止
         MyEndingViewController *myEndingVC = [[MyEndingViewController alloc] init];
         myEndingVC.idString = model.idString;
         myEndingVC.categaryString = model.category;
+        myEndingVC.pidString = model.uidString;
         [self.navigationController pushViewController:myEndingVC animated:YES];
     }else if([self.progresStatus isEqualToString:@"4"]){//结案
         MyClosingViewController *myClosingVC = [[MyClosingViewController alloc] init];
         myClosingVC.idString = model.idString;
         myClosingVC.categaryString = model.category;
+        myClosingVC.pidString = model.uidString;
         [self.navigationController pushViewController:myClosingVC animated:YES];
     }
 }
@@ -388,6 +386,27 @@
     }];
 }
 
+- (void)goToWriteScheduleOrEvaluate:(NSString *)string withRow:(NSInteger)row
+{
+    RowsModel *model = self.myOrderDataList[row];
+    
+    if ([string isEqualToString:@"申请延期"]) {
+        [self delayRequestWithID:model.idString andCategary:model.category];
+    }else if([string isEqualToString:@"填写进度"]){
+        MyScheduleViewController *myScheduleVC = [[MyScheduleViewController alloc] init];
+        myScheduleVC.idString = model.idString;
+        myScheduleVC.categoryString = model.category;
+        [self.navigationController pushViewController:myScheduleVC animated:YES];
+    }else if ([string isEqualToString:@"去评价"]){
+        AdditionalEvaluateViewController *additionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
+        additionalEvaluateVC.idString = model.idString;
+        additionalEvaluateVC.categoryString = model.category;
+        additionalEvaluateVC.typeString = @"接单方";
+        [self.navigationController pushViewController:additionalEvaluateVC animated:YES];
+    }
+}
+
+
 - (void)delayRequestWithID:(NSString *)idStr andCategary:(NSString *)categaryStr
 {
     NSString *deString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kIsDelayRequestString];
@@ -396,10 +415,11 @@
                              @"category" : categaryStr
                              };
     [self requestDataPostWithString:deString params:params successBlock:^(id responseObject) {
+
         DelayResponse *response = [DelayResponse objectWithKeyValues:responseObject];
         DelayModel *delayModel = response.delay;
         
-        if (delayModel.is_agree == nil || [delayModel.delays intValue] >= 7) {
+        if ((delayModel.is_agree == nil) && ([delayModel.delays intValue] <= 7)) {
             DelayRequestsViewController *delayRequestsVC = [[DelayRequestsViewController alloc] init];
             delayRequestsVC.idString = idStr;
             delayRequestsVC.categoryString = categaryStr;

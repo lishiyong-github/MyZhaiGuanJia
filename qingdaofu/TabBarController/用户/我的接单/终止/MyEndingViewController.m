@@ -22,6 +22,9 @@
 #import "PublishingResponse.h"
 #import "PublishingModel.h"
 
+#import "PaceResponse.h"
+#import "PaceModel.h"
+
 @interface MyEndingViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
@@ -29,6 +32,7 @@
 @property (nonatomic,strong) BaseCommitButton *endingCommitButton;
 
 @property (nonatomic,strong) NSMutableArray *endArray;
+@property (nonatomic,strong) NSMutableArray *endPaceArray;
 
 @end
 
@@ -38,7 +42,7 @@
     [super viewDidLoad];
     self.navigationItem.title = @"产品详情";
     self.navigationItem.leftBarButtonItem = self.leftItem;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"查看发布方" style:UIBarButtonItemStylePlain target:self action:@selector(checkDetails)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"查看发布方" style:UIBarButtonItemStylePlain target:self action:@selector(checkOrderEndDetails)];
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kBlueColor} forState:0];
     
     [self.view addSubview:self.myEndingTableView];
@@ -46,6 +50,7 @@
     [self.view setNeedsUpdateConstraints];
     
     [self getDetailMessageOfEnding];
+    [self getScheduleDetails];
 }
 
 - (void)updateViewConstraints
@@ -90,6 +95,14 @@
         _endArray = [NSMutableArray array];
     }
     return _endArray;
+}
+
+- (NSMutableArray *)endPaceArray
+{
+    if (!_endPaceArray) {
+        _endPaceArray = [NSMutableArray array];
+    }
+    return _endPaceArray;
 }
 
 #pragma mark - delegate
@@ -260,6 +273,7 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         [cell.oneButton setTitle:@"查看补充信息" forState:0];
         [cell.oneButton setImage:[UIImage imageNamed:@"more"] forState:0];
+        cell.oneButton.userInteractionEnabled = NO;
         
         return cell;
         
@@ -292,9 +306,13 @@
             
             [cell.userNameButton setTitleColor:kBlueColor forState:0];
             [cell.userNameButton setTitle:@"|  进度详情" forState:0];
-            [cell.userActionButton setTitle:@"查看更多" forState:0];
-            [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
             cell.userActionButton.userInteractionEnabled = NO;
+            if (self.endPaceArray.count > 0) {
+                [cell.userActionButton setTitle:@"查看更多" forState:0];
+                [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            }else{
+                [cell.userActionButton setTitle:@"无" forState:0];
+            }
             
             return cell;
             
@@ -306,19 +324,35 @@
             }
             
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            NSMutableAttributedString *caseTypestring = [cell.deadlineLabel setAttributeString:@"案号类型：" withColor:kBlackColor andSecond:@"二审" withColor:kLightGrayColor withFont:12];
-            [cell.deadlineLabel setAttributedText:caseTypestring];
-            
-            cell.timeLabel.text = @"2016-05-30";
-            
-            NSMutableAttributedString *caseNoString = [cell.dateLabel setAttributeString:@"案        号：" withColor:kBlackColor andSecond:@"201605120001" withColor:kLightGrayColor withFont:12];
-            [cell.dateLabel setAttributedText:caseNoString];
-            
-            NSMutableAttributedString *dealTypeString = [cell.areaLabel setAttributeString:@"处置类型：" withColor: kBlackColor andSecond:@"拍卖" withColor:kLightGrayColor withFont:12];
-            [cell.areaLabel setAttributedText:dealTypeString];
-            
-            NSMutableAttributedString *dealDeailString = [cell.addressLabel setAttributeString:@"详        情：" withColor:kBlackColor andSecond:@"详情详情" withColor:kLightGrayColor withFont:12];
-            [cell.addressLabel setAttributedText:dealDeailString];
+            if (self.endPaceArray.count > 0) {
+                [cell.remindImageButton setHidden:YES];
+                [cell.deadlineLabel setHidden:NO];
+                [cell.timeLabel setHidden:NO];
+                [cell.dateLabel setHidden:NO];
+                [cell.areaLabel setHidden:NO];
+                [cell.addressLabel setHidden:NO];
+                
+                NSMutableAttributedString *caseTypestring = [cell.deadlineLabel setAttributeString:@"案号类型：" withColor:kBlackColor andSecond:@"二审" withColor:kLightGrayColor withFont:12];
+                [cell.deadlineLabel setAttributedText:caseTypestring];
+                
+                cell.timeLabel.text = @"2016-05-30";
+                
+                NSMutableAttributedString *caseNoString = [cell.dateLabel setAttributeString:@"案        号：" withColor:kBlackColor andSecond:@"201605120001" withColor:kLightGrayColor withFont:12];
+                [cell.dateLabel setAttributedText:caseNoString];
+                
+                NSMutableAttributedString *dealTypeString = [cell.areaLabel setAttributeString:@"处置类型：" withColor: kBlackColor andSecond:@"拍卖" withColor:kLightGrayColor withFont:12];
+                [cell.areaLabel setAttributedText:dealTypeString];
+                
+                NSMutableAttributedString *dealDeailString = [cell.addressLabel setAttributeString:@"详        情：" withColor:kBlackColor andSecond:@"详情详情" withColor:kLightGrayColor withFont:12];
+                [cell.addressLabel setAttributedText:dealDeailString];
+            }else{
+                [cell.remindImageButton setHidden:NO];
+                [cell.deadlineLabel setHidden:YES];
+                [cell.timeLabel setHidden:YES];
+                [cell.dateLabel setHidden:YES];
+                [cell.areaLabel setHidden:YES];
+                [cell.addressLabel setHidden:YES];
+            }
             
             return cell;
         }else{
@@ -354,16 +388,39 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 2) {
+    PublishingResponse *resModel = self.endArray[0];
+    PublishingModel *dealModel = resModel.product;
+    
+    if ((indexPath.section == 1) && (indexPath.row == 5)) {
+        AdditionMessageViewController *additionMessageVC = [[AdditionMessageViewController alloc] init];
+        additionMessageVC.idString = dealModel.idString;
+        additionMessageVC.categoryString = dealModel.category;
+        [self.navigationController pushViewController:additionMessageVC animated:YES];
+    }else if (indexPath.section == 2) {
         AgreementViewController *agreementVC = [[AgreementViewController alloc] init];
+        agreementVC.idString = dealModel.idString;
+        agreementVC.categoryString = dealModel.category;
         [self.navigationController pushViewController:agreementVC animated:YES];
+    }else if ((indexPath.section == 3) && (indexPath.row == 0)) {
+        if (self.endPaceArray.count > 0) {
+            PaceViewController *paceVC = [[PaceViewController alloc] init];
+            paceVC.idString = dealModel.idString;
+            paceVC.categoryString = dealModel.category;
+            [self.navigationController pushViewController:paceVC animated:YES];
+        }
     }
+
 }
 
 #pragma mark - method
-- (void)checkDetails
+- (void)checkOrderEndDetails
 {
     CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+    checkDetailPublishVC.idString = self.idString;
+    checkDetailPublishVC.categoryString = self.categaryString;
+    checkDetailPublishVC.pidString = self.pidString;
+    checkDetailPublishVC.typeString = @"发布方";
+    checkDetailPublishVC.evaTypeString = @"launchevaluation";
     [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
 }
 
@@ -383,6 +440,27 @@
         
     }];
 }
+
+- (void)getScheduleDetails
+{
+    NSString *scheduleString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kLookUpScheduleString];
+    NSDictionary *params = @{@"id" : self.idString,
+                             @"category" : self.categaryString,
+                             @"token" : [self getValidateToken]
+                             };
+    [self requestDataPostWithString:scheduleString params:params successBlock:^(id responseObject) {
+        
+        PaceResponse *response = [PaceResponse objectWithKeyValues:responseObject];
+        for (PaceModel *paceModel in response.disposing) {
+            [self.endPaceArray addObject:paceModel];
+        }
+        [self.myEndingTableView reloadData];
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

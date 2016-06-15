@@ -17,6 +17,9 @@
 @property (nonatomic,strong) UILabel *addressLabel;
 @property (nonatomic,strong) UILabel *timeLabel;
 
+//无内容时的提示信息
+@property (nonatomic,strong) UIButton *remindImageButton;
+
 @property (nonatomic,assign) BOOL didSetupConstraints;
 
 @end

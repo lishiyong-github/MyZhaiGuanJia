@@ -17,7 +17,7 @@
  4.end -- 终止
  5.close -- 结案
  */
-@property (nonatomic,strong) NSString *rFlagString;
+
 @property (nonatomic,strong) NSString *progreStatus;
 
 

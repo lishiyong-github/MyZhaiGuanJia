@@ -10,8 +10,6 @@
 
 @interface MyScheduleViewController : NetworkViewController
 
-@property (nonatomic,strong) NSString *scheduleFlagString;
-
 @property (nonatomic,strong) NSString *idString;
 @property (nonatomic,strong) NSString *categoryString;
 

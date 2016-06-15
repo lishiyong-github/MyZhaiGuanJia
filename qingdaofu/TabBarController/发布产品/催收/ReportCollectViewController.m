@@ -35,7 +35,7 @@
 
 @property (nonatomic,strong) NSMutableDictionary *coDataDictionary;  //参数
 @property (nonatomic,strong) NSString *rowString;    //债权类型
-
+@property (nonatomic,strong) NSString *number;
 @end
 
 @implementation ReportCollectViewController
@@ -197,31 +197,29 @@
             
             [cell setDidSelectedSeg:^(NSInteger selectedTag) {
                 
-                NSString *number;
-                
                 if (selectedTag == 0) {//房产抵押
                     self.rowString = @"6";
                     [self.coTextArray replaceObjectAtIndex:4 withObject:@"抵押物地址"];
                     [self.coHolderArray replaceObjectAtIndex:4 withObject:@"选择抵押物地址"];
-                    number = @"1";
+                    _number = @"1";
                 }else if (selectedTag == 1){//机动车
                     self.rowString = @"5";
                     [self.coTextArray replaceObjectAtIndex:4 withObject:@"机动车品牌"];
                     [self.coHolderArray replaceObjectAtIndex:4 withObject:@"选择机动车品牌"];
-                    number = @"3";
+                    _number = @"3";
                 }else if (selectedTag == 2){//应收帐款
                     self.rowString = @"5";
                     [self.coTextArray replaceObjectAtIndex:4 withObject:@"应收帐款"];
                     [self.coHolderArray replaceObjectAtIndex:4 withObject:@"应收帐款"];
-                    number = @"2";
+                    _number = @"2";
                 }else{//无抵押
                     self.rowString = @"4";
                     [self.coTextArray replaceObjectAtIndex:4 withObject:@"无抵押"];
                     [self.coHolderArray replaceObjectAtIndex:4 withObject:@""];
-                    number = @"4";
+                    _number = @"4";
                 }
                 
-                [self.coDataDictionary setValue:number forKey:@"loan_type"];
+                [self.coDataDictionary setValue:_number forKey:@"loan_type"];
                 [self.collectionTableView reloadData];
             }];
             
@@ -275,9 +273,31 @@
                 [self.coDataDictionary setValue:text forKey:@"agencycommission"];
             }];
         }else if (indexPath.row == 4){//抵押物地址
-            [cell setDidEndEditing:^(NSString *text) {
-                [self.coDataDictionary setValue:text forKey:@"mortorage_community"];
-            }];
+            
+            if ([_number intValue] == 1) {//抵押物地址
+                cell.agentTextField.userInteractionEnabled = NO;
+                [cell.agentButton setHidden:NO];
+                [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+                [cell.agentButton setTitle:@"请选择" forState:0];
+                [cell.agentButton addAction:^(UIButton *btn) {
+                    NSLog(@"选择小区名");
+                }];
+                
+            }else if ([_number intValue] == 3){//机动车抵押
+                cell.agentTextField.userInteractionEnabled = NO;
+                [cell.agentButton setHidden:NO];
+                [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+                [cell.agentButton setTitle:@"请选择" forState:0];
+                [cell.agentButton addAction:^(UIButton *btn) {
+                    NSLog(@"选择机动车品牌");
+                }];
+            }else if ([_number intValue] == 2) {//应收帐款
+                cell.agentTextField.userInteractionEnabled = YES;
+                [cell.agentButton setHidden:YES];
+                [cell setDidEndEditing:^(NSString *text) {
+                    [self.coDataDictionary setValue:text forKey:@"accountr"];
+                }];
+            }
         }
         
         return cell;

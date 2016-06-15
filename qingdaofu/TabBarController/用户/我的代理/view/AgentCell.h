@@ -18,5 +18,4 @@
 @property (nonatomic,strong) NSLayoutConstraint *leftdAgentContraints;
 @property (nonatomic,strong) void (^didEndEditing)(NSString *);
 
-
 @end

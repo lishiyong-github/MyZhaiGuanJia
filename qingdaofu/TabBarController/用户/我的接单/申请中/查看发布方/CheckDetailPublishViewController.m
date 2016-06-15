@@ -14,14 +14,25 @@
 #import "EvaluatePhotoCell.h"
 #import "BaseCommitButton.h"
 
+//详细信息
+#import "CompleteResponse.h"
+#import "CertificationModel.h"
+
+//评价
+#import "EvaluateResponse.h"
+#import "EvaluateModel.h"
+
 @interface CheckDetailPublishViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *checkDetailTableView;
 
 @property (nonatomic,strong) BaseCommitButton *publishStateButton;
-
 @property (nonatomic,strong) UIButton *rightBarBtn;
+
+@property (nonatomic,strong) NSMutableArray *certifiDataArray;
+@property (nonatomic,strong) NSMutableArray *allEvaResponse;
+@property (nonatomic,strong) NSMutableArray *allEvaDataArray;
 
 @end
 
@@ -29,13 +40,16 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = @"发布方详情";
+    self.navigationItem.title = [NSString stringWithFormat:@"%@信息",self.typeString];
     self.navigationItem.leftBarButtonItem = self.leftItem;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightBarBtn];
 
     [self.view addSubview:self.checkDetailTableView];
     [self.view addSubview:self.publishStateButton];
     [self.view setNeedsUpdateConstraints];
+    
+    [self getMessageOfOrderPeople];
+    [self getAllEvaluationListWithPage:@"0"];
 }
 
 - (void)updateViewConstraints
@@ -67,27 +81,9 @@
     return _rightBarBtn;
 }
 
-#pragma mark - method
-- (void)warnning
-{
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"" message:@"是否提醒发布方完善信息" preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction *actionOK = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        NSLog(@"确认发布方信息");
-    }];
-    
-    UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil];
-    
-    [alertController addAction:actionOK];
-    [alertController addAction:actionCancel];
-    
-    [self.navigationController presentViewController:alertController animated:YES completion:nil];
-}
-
 - (UITableView *)checkDetailTableView
 {
     if (!_checkDetailTableView) {
-//        _checkDetailTableView = [UITableView newAutoLayoutView];
         _checkDetailTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _checkDetailTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _checkDetailTableView.delegate = self;
@@ -106,6 +102,30 @@
     return _publishStateButton;
 }
 
+- (NSMutableArray *)certifiDataArray
+{
+    if (!_certifiDataArray) {
+        _certifiDataArray = [NSMutableArray array];
+    }
+    return _certifiDataArray;
+}
+
+- (NSMutableArray *)allEvaResponse
+{
+    if (!_allEvaResponse) {
+        _allEvaResponse = [NSMutableArray array];
+    }
+    return _allEvaResponse;
+}
+
+- (NSMutableArray *)allEvaDataArray
+{
+    if (!_allEvaDataArray) {
+        _allEvaDataArray = [NSMutableArray array];
+    }
+    return _allEvaDataArray;
+}
+
 #pragma mark - 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -117,7 +137,8 @@
     if (section == 0) {
         return 6;
     }
-    return 4;
+    
+    return 2;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -143,16 +164,35 @@
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
+        CertificationModel *cerModel;
+        if (self.certifiDataArray.count > 0) {
+           cerModel = self.certifiDataArray[0];
+        }
+        
         NSArray *pubArray = @[@"|  申请人信息",@"姓名",@"身份证号码",@"身份图片",@"邮箱",@"经典案例"];
-        NSArray *pubArray1 = @[@"",@"沥沥沥",@"12345566666666",@"已上传",@"24234345345@qq.com",@"查看"];
-
         [cell.userNameButton setTitle:pubArray[indexPath.row] forState:0];
-        [cell.userActionButton setTitle:pubArray1[indexPath.row] forState:0];
         
         if (indexPath.row == 0) {
             [cell.userNameButton setTitleColor:kBlueColor forState:0];
             [cell.userActionButton setImage:[UIImage imageNamed:@"publish_list_authentication"] forState:0];
+        }else if (indexPath.row == 1){
+            [cell.userActionButton setTitle:cerModel.name forState:0];
+        }else if (indexPath.row == 2){
+            [cell.userActionButton setTitle:cerModel.cardno forState:0];
+        }else if(indexPath.row == 3){
+            if ([cerModel.cardimg isEqualToString:@"undefined"]) {
+                [cell.userActionButton setTitle:@"未上传" forState:0];
+            }else{
+                [cell.userActionButton setTitle:@"已上传" forState:0];
+            }
+        }else if (indexPath.row == 4){
+            if ([cerModel.email isEqualToString:@""]) {
+                [cell.userActionButton setTitle:@"未填写" forState:0];
+            }else{
+                [cell.userActionButton setTitle:cerModel.email forState:0];
+            }
         }else if (indexPath.row == 5){
+            [cell.userActionButton setTitle:@"查看" forState:0];
             [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
         }
         return cell;
@@ -169,11 +209,20 @@
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        [cell.userNameButton setTitle:@"|  收到的评价（4.0分）" forState:0];
-        [cell.userNameButton setTitleColor:kBlueColor forState:0];
-        [cell.userActionButton setTitle:@"查看全部" forState:0];
-        [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
         cell.userActionButton.userInteractionEnabled = NO;
+        if (self.allEvaDataArray.count > 0) {
+            EvaluateResponse *evaResponse = self.allEvaResponse[0];
+            
+            NSString *creditorStr = [NSString stringWithFormat:@"|  收到的评价(%@分)",evaResponse.creditor];
+            [cell.userNameButton setTitle:creditorStr forState:0];
+            [cell.userNameButton setTitleColor:kBlueColor forState:0];
+            [cell.userActionButton setTitle:@"查看全部" forState:0];
+            [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        }else{
+            [cell.userNameButton setTitle:@"|  收到的评价" forState:0];
+            [cell.userNameButton setTitleColor:kBlueColor forState:0];
+            [cell.userActionButton setTitle:@"无" forState:0];
+        }
         
         return cell;
     }
@@ -185,12 +234,43 @@
     }
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.evaNameLabel.text = @"1234567778";
-    cell.evaStarImage.currentIndex = 2;
-    cell.evaTextLabel.text = @"很好";
-    cell.evaProImageView1.backgroundColor = kRedColor;
-    cell.evaProImageView2.backgroundColor = kRedColor;
-    [cell.evaProductButton setHidden:YES];
+    
+    EvaluateModel *evaModel;
+    if (self.allEvaDataArray.count > 0 ) {
+        [cell.remindImageButton setHidden:YES];
+        [cell.evaProductButton setHidden:YES];
+        [cell.evaNameLabel setHidden:NO];
+        [cell.evaTimeLabel setHidden:NO];
+        [cell.evaTextLabel setHidden:NO];
+        [cell.evaStarImage setHidden:NO];
+        [cell.evaProImageView1 setHidden:NO];
+        [cell.evaProImageView2 setHidden:NO];
+        
+        EvaluateResponse *evaResponse = self.allEvaResponse[0];
+        evaModel = self.allEvaDataArray[indexPath.row-1];
+        
+        NSString *isHideStr = evaModel.isHide?@"匿名":evaModel.mobile;
+        cell.evaNameLabel.text = isHideStr;
+        cell.evaStarImage.currentIndex = [evaResponse.creditor intValue];
+        cell.evaProImageView1.backgroundColor = kLightGrayColor;
+        cell.evaProImageView2.backgroundColor = kLightGrayColor;
+        if (evaModel.content == nil || [evaModel.content isEqualToString:@""]) {
+            cell.evaTextLabel.text = @"未填写评价";
+        }else{
+            cell.evaTextLabel.text = evaModel.content;
+        }
+
+    }else{
+        [cell.remindImageButton setHidden:NO];
+        [cell.evaProductButton setHidden:YES];
+        [cell.evaNameLabel setHidden:YES];
+        [cell.evaTimeLabel setHidden:YES];
+        [cell.evaTextLabel setHidden:YES];
+        [cell.evaStarImage setHidden:YES];
+        [cell.evaProImageView1 setHidden:YES];
+        [cell.evaProImageView2 setHidden:YES];
+        [cell.evaProductButton setHidden:YES];
+    }
     
     return cell;
 }
@@ -212,8 +292,89 @@
         [self.navigationController pushViewController:caseVC animated:YES];
     }else if ((indexPath.section == 1) && (indexPath.row == 0)) {//全部评价
         AllEvaluationViewController *allEvaluationVC = [[AllEvaluationViewController alloc] init];
+        allEvaluationVC.idString = self.idString;
+        allEvaluationVC.categoryString = self.categoryString;
+        allEvaluationVC.pidString = self.pidString;
+        allEvaluationVC.evaTypeString = self.evaTypeString;
         [self.navigationController pushViewController:allEvaluationVC animated:YES];
     }
+}
+
+#pragma mark - method
+- (void)warnning
+{
+    NSString *ssss = [NSString stringWithFormat:@"是否提醒%@完善信息",self.typeString];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"" message:ssss preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *actionOK = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        NSLog(@"确认发布方信息");
+        [self warnningMethod];
+    }];
+    
+    UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil];
+    
+    [alertController addAction:actionOK];
+    [alertController addAction:actionCancel];
+    
+    [self.navigationController presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)warnningMethod
+{
+    NSString *warnString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kCheckOrderToWarnning];
+    NSDictionary *params = @{@"token" : [self getValidateToken],
+                             @"id" : self.idString,
+                             @"category" : self.categoryString,
+                             @"pid" : self.pidString
+                             };
+    [self requestDataPostWithString:warnString params:params successBlock:^(id responseObject) {
+        BaseModel *warnModel = [BaseModel objectWithKeyValues:responseObject];
+        
+        [self showHint:warnModel.msg];
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
+- (void)getMessageOfOrderPeople
+{
+    NSString *yyyString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kCheckOrderPeople];
+    NSDictionary *params = @{@"category" : self.categoryString,
+                             @"id" : self.idString,
+                             @"pid" : self.pidString,
+                             @"token" : [self getValidateToken]
+                             };
+    [self requestDataPostWithString:yyyString params:params successBlock:^(id responseObject) {
+        CompleteResponse *response = [CompleteResponse objectWithKeyValues:responseObject];
+        [self.certifiDataArray addObject:response.certification];
+        
+        [self.checkDetailTableView reloadData];
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
+- (void)getAllEvaluationListWithPage:(NSString *)page
+{
+    NSString *evaluateString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kCheckOrderToEvaluationString];
+    NSDictionary *params = @{@"token" : [self getValidateToken],
+                             @"page" : page,
+                             @"pid" : self.pidString
+                             };
+    [self requestDataPostWithString:evaluateString params:params successBlock:^(id responseObject) {
+        
+        EvaluateResponse *response = [EvaluateResponse objectWithKeyValues:responseObject];
+        [self.allEvaResponse addObject:response];
+        
+        for (EvaluateModel *model in response.evaluate) {
+            [self.allEvaDataArray addObject:model];
+        }
+        [self.checkDetailTableView reloadData];
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
 }
 
 - (void)didReceiveMemoryWarning {

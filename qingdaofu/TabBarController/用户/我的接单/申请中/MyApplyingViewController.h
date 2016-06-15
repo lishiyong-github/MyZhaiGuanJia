@@ -12,6 +12,7 @@
 
 @property (nonatomic,strong) NSString *idString;
 @property (nonatomic,strong) NSString *categaryString;
+@property (nonatomic,strong) NSString *pidString;
 
 
 @end

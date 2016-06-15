@@ -25,6 +25,13 @@
 #import "PublishingResponse.h"
 #import "PublishingModel.h"
 
+//进度
+#import "PaceResponse.h"
+#import "PaceModel.h"
+
+//评价
+#import "EvaluateResponse.h"
+#import "LaunchEvaluateModel.h"
 
 @interface MyClosingViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -32,7 +39,11 @@
 @property (nonatomic,strong) UITableView *myClosingTableView;
 @property (nonatomic,strong) BaseCommitButton *closingCommitButton;
 
-@property (nonatomic,strong) NSMutableArray *closeArray;
+@property (nonatomic,strong) NSMutableArray *orderCloseArray;
+
+@property (nonatomic,strong) NSMutableArray *pacesArray;
+@property (nonatomic,strong) NSMutableArray *evaluateResponseArray;
+@property (nonatomic,strong) NSMutableArray *evaluateArray;
 
 @end
 
@@ -51,6 +62,7 @@
     
     [self getDetailMessageOfClosing];
     [self lookUpSchedule];
+    [self getOrderEvaluateDetails];
 }
 
 - (void)updateViewConstraints
@@ -95,18 +107,42 @@
     return _closingCommitButton;
 }
 
-- (NSMutableArray *)closeArray
+- (NSMutableArray *)orderCloseArray
 {
-    if (!_closeArray) {
-        _closeArray = [NSMutableArray array];
+    if (!_orderCloseArray) {
+        _orderCloseArray = [NSMutableArray array];
     }
-    return _closeArray;
+    return _orderCloseArray;
 }
+
+- (NSMutableArray *)pacesArray
+{
+    if (!_pacesArray) {
+        _pacesArray = [NSMutableArray array];
+    }
+    return _pacesArray;
+}
+- (NSMutableArray *)evaluateArray
+{
+    if (!_evaluateArray) {
+        _evaluateArray = [NSMutableArray array];
+    }
+    return _evaluateArray;
+}
+
+- (NSMutableArray *)evaluateResponseArray
+{
+    if (!_evaluateResponseArray) {
+        _evaluateResponseArray = [NSMutableArray array];
+    }
+    return _evaluateResponseArray;
+}
+
 
 #pragma mark -
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (self.closeArray.count > 0) {
+    if (self.orderCloseArray.count > 0) {
         return 5;
     }
     return 0;
@@ -114,7 +150,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (self.closeArray.count > 0) {
+    if (self.orderCloseArray.count > 0) {
         if (section == 1) {
             return 6;
         }else if (section > 2){
@@ -139,7 +175,7 @@
 {
     static NSString *identifier;
     
-    PublishingResponse *responde = self.closeArray[0];
+    PublishingResponse *responde = self.orderCloseArray[0];
     PublishingModel *closeModel = responde.product;
     
     if (indexPath.section == 0) {
@@ -268,7 +304,7 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         [cell.oneButton setTitle:@"查看补充信息" forState:0];
         [cell.oneButton setImage:[UIImage imageNamed:@"more"] forState:0];
-        
+        cell.oneButton.userInteractionEnabled = NO;
         return cell;
         
     }else if (indexPath.section == 2){
@@ -300,9 +336,14 @@
             
             [cell.userNameButton setTitleColor:kBlueColor forState:0];
             [cell.userNameButton setTitle:@"|  进度详情" forState:0];
-            [cell.userActionButton setTitle:@"查看更多" forState:0];
-            [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
             cell.userActionButton.userInteractionEnabled = NO;
+            
+            if (self.pacesArray.count > 0) {
+                [cell.userActionButton setTitle:@"查看更多" forState:0];
+                [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            }else{
+                [cell.userActionButton setTitle:@"无" forState:0];
+            }
             
             return cell;
             
@@ -314,19 +355,39 @@
             }
             
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            NSMutableAttributedString *caseTypestring = [cell.deadlineLabel setAttributeString:@"案号类型：" withColor:kBlackColor andSecond:@"二审" withColor:kLightGrayColor withFont:12];
-            [cell.deadlineLabel setAttributedText:caseTypestring];
-            
-            cell.timeLabel.text = @"2016-05-30";
-            
-            NSMutableAttributedString *caseNoString = [cell.dateLabel setAttributeString:@"案        号：" withColor:kBlackColor andSecond:@"201605120001" withColor:kLightGrayColor withFont:12];
-            [cell.dateLabel setAttributedText:caseNoString];
-            
-            NSMutableAttributedString *dealTypeString = [cell.areaLabel setAttributeString:@"处置类型：" withColor: kBlackColor andSecond:@"拍卖" withColor:kLightGrayColor withFont:12];
-            [cell.areaLabel setAttributedText:dealTypeString];
-            
-            NSMutableAttributedString *dealDeailString = [cell.addressLabel setAttributeString:@"详        情：" withColor:kBlackColor andSecond:@"详情详情" withColor:kLightGrayColor withFont:12];
-            [cell.addressLabel setAttributedText:dealDeailString];
+            if (self.pacesArray.count > 0) {
+                [cell.remindImageButton setHidden:YES];
+                [cell.deadlineLabel setHidden:NO];
+                [cell.timeLabel setHidden:NO];
+                [cell.dateLabel setHidden:NO];
+                [cell.areaLabel setHidden:NO];
+                [cell.addressLabel setHidden:NO];
+                
+                PaceModel *paceModel = self.pacesArray[0];
+                
+                NSMutableAttributedString *caseTypestring = [cell.deadlineLabel setAttributeString:@"案号类型：" withColor:kBlackColor andSecond:paceModel.audit withColor:kLightGrayColor withFont:12];
+                [cell.deadlineLabel setAttributedText:caseTypestring];
+                
+                cell.timeLabel.text = [NSDate getYMDFormatterTime:paceModel.create_time];
+                
+                NSMutableAttributedString *caseNoString = [cell.dateLabel setAttributeString:@"案        号：" withColor:kBlackColor andSecond:paceModel.caseString withColor:kLightGrayColor withFont:12];
+                [cell.dateLabel setAttributedText:caseNoString];
+                
+                NSMutableAttributedString *dealTypeString = [cell.areaLabel setAttributeString:@"处置类型：" withColor: kBlackColor andSecond:paceModel.status withColor:kLightGrayColor withFont:12];
+                [cell.areaLabel setAttributedText:dealTypeString];
+                
+                NSMutableAttributedString *dealDeailString = [cell.addressLabel setAttributeString:@"详        情：" withColor:kBlackColor andSecond:paceModel.content withColor:kLightGrayColor withFont:12];
+                [cell.addressLabel setAttributedText:dealDeailString];
+                
+            }else{
+                [cell.remindImageButton setHidden:NO];
+                [cell.deadlineLabel setHidden:YES];
+                [cell.timeLabel setHidden:YES];
+                [cell.dateLabel setHidden:YES];
+                [cell.areaLabel setHidden:YES];
+                [cell.addressLabel setHidden:YES];
+            }
+
             return cell;
         }
     }else{
@@ -340,10 +401,13 @@
             
             [cell.userNameButton setTitle:@"|  给出的评价" forState:0];
             [cell.userNameButton setTitleColor:kBlueColor forState:0];
-            
-            [cell.userActionButton setTitle:@"查看更多" forState:0];
-            [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
             cell.userActionButton.userInteractionEnabled = NO;
+            if (self.evaluateResponseArray.count > 0) {
+                [cell.userActionButton setTitle:@"查看更多" forState:0];
+                [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            }else{
+                [cell.userActionButton setTitle:@"无" forState:0];
+            }
             
             return cell;
             
@@ -355,12 +419,41 @@
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             
-            cell.evaNameLabel.text = @"12345";
-            cell.evaTimeLabel.text = @"2016-06-01";
-            cell.evaTextLabel.text = @"挺不错";
-            cell.evaProImageView1.backgroundColor = kLightGrayColor;
-            cell.evaProImageView2.backgroundColor = kLightGrayColor;
-            [cell.evaProductButton setHidden:YES];
+            if (self.evaluateArray.count > 0) {
+                EvaluateResponse *response = self.evaluateArray[0];
+                LaunchEvaluateModel *launchModel;
+                if (self.evaluateResponseArray.count > 0) {
+                    [cell.remindImageButton setHidden:YES];
+                    [cell.evaProductButton setHidden:YES];
+                    [cell.evaNameLabel setHidden: NO];
+                    [cell.evaStarImage setHidden:NO];
+                    [cell.evaTimeLabel setHidden:NO];
+                    [cell.evaTextLabel setHidden:NO];
+                    [cell.evaProImageView1 setHidden:NO];
+                    [cell.evaProImageView2 setHidden:NO];
+                    
+                    launchModel = response.launchevaluation[0];
+                    cell.evaNameLabel.text = launchModel.mobile;
+                    cell.evaStarImage.currentIndex = [response.creditor intValue];
+                    cell.evaProImageView1.backgroundColor = kLightGrayColor;
+                    cell.evaProImageView2.backgroundColor = kLightGrayColor;
+                    
+                    if (launchModel.content == nil || [launchModel.content isEqualToString:@""]) {
+                        cell.evaTextLabel.text = @"未填写评价内容";
+                    }else{
+                        cell.evaTextLabel.text = launchModel.content;
+                    }
+                }else{
+                    [cell.remindImageButton setHidden:NO];
+                    [cell.evaProductButton setHidden:YES];
+                    [cell.evaNameLabel setHidden: YES];
+                    [cell.evaStarImage setHidden:YES];
+                    [cell.evaTimeLabel setHidden:YES];
+                    [cell.evaTextLabel setHidden:YES];
+                    [cell.evaProImageView1 setHidden:YES];
+                    [cell.evaProImageView2 setHidden:YES];
+                }
+            }
             
             return cell;
         }
@@ -380,16 +473,33 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 2) {
+    PublishingResponse *resModel = self.orderCloseArray[0];
+    PublishingModel *dealModel = resModel.product;
+    
+    if ((indexPath.section == 1) && (indexPath.row == 5)) {
+        AdditionMessageViewController *additionMessageVC = [[AdditionMessageViewController alloc] init];
+        additionMessageVC.idString = dealModel.idString;
+        additionMessageVC.categoryString = dealModel.category;
+        [self.navigationController pushViewController:additionMessageVC animated:YES];
+    }else if (indexPath.section == 2) {
         AgreementViewController *agreementVC = [[AgreementViewController alloc] init];
+        agreementVC.idString = dealModel.idString;
+        agreementVC.categoryString = dealModel.category;
         [self.navigationController pushViewController:agreementVC animated:YES];
     }else if ((indexPath.section == 3) && (indexPath.row == 0)) {
-        PaceViewController *paceVC = [[PaceViewController alloc] init];
-        [self.navigationController pushViewController:paceVC animated:YES];
+        if (self.pacesArray.count > 0) {
+            PaceViewController *paceVC = [[PaceViewController alloc] init];
+            paceVC.idString = dealModel.idString;
+            paceVC.categoryString = dealModel.category;
+            [self.navigationController pushViewController:paceVC animated:YES];
+        }
     }else if ((indexPath.section == 4) && (indexPath.row == 0)){
-        NSLog(@"所有评价");
-        AllEvaluationViewController *allEvaluationVC = [[AllEvaluationViewController alloc] init];
-        [self.navigationController pushViewController:allEvaluationVC animated:YES];
+        if (self.evaluateResponseArray.count > 0) {
+            AllEvaluationViewController *allEvaluationVC = [[AllEvaluationViewController alloc] init];
+            allEvaluationVC.idString = dealModel.idString;
+            allEvaluationVC.categoryString = dealModel.category;
+            [self.navigationController pushViewController:allEvaluationVC animated:YES];
+        }
     }
 }
 
@@ -397,6 +507,11 @@
 - (void)checkClosingDetail
 {
     CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+    checkDetailPublishVC.idString = self.idString;
+    checkDetailPublishVC.categoryString = self.categaryString;
+    checkDetailPublishVC.pidString = self.pidString;
+    checkDetailPublishVC.typeString = @"发布方";
+    checkDetailPublishVC.evaTypeString = @"launchevaluation";
     [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
 }
 
@@ -409,7 +524,7 @@
                              };
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
-        [self.closeArray addObject:response];
+        [self.orderCloseArray addObject:response];
         [self.myClosingTableView reloadData];
         
     } andFailBlock:^(NSError *error){
@@ -429,6 +544,30 @@
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
         NSLog(@"!!!!!!! %@",dic);
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+    
+- (void)getOrderEvaluateDetails
+{
+    NSString *evaluateString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyEvaluateString];
+    NSDictionary *params = @{@"token" : [self getValidateToken],
+                             @"id" : self.idString,
+                             @"category" : self.categaryString
+                             };
+    [self requestDataPostWithString:evaluateString params:params successBlock:^(id responseObject) {
+        
+        EvaluateResponse *response = [EvaluateResponse objectWithKeyValues:responseObject];
+        
+        [self.evaluateArray addObject:response];
+        
+        for (LaunchEvaluateModel *launchModel in response.launchevaluation) {
+            [self.evaluateArray addObject:launchModel];
+        }
+        
+        [self.myClosingTableView reloadData];
         
     } andFailBlock:^(NSError *error) {
         

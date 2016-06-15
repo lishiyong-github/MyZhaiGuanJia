@@ -59,6 +59,7 @@
         _caseNoTextField = [UITextField newAutoLayoutView];
         _caseNoTextField.textColor = kLightGrayColor;
         _caseNoTextField.font = kFirstFont;
+        _caseNoTextField.delegate = self;
     }
     return _caseNoTextField;
 }
@@ -72,6 +73,15 @@
         _caseGoButton.titleLabel.font = kSecondFont;
     }
     return _caseGoButton;
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    NSString *text = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    if (self.didEndEditting) {
+        self.didEndEditting(text);
+    }
+    return YES;
 }
 
 - (void)awakeFromNib {

@@ -312,12 +312,18 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    PublishingResponse *response = self.publishingDataArray[0];
+    PublishingModel *model = response.product;
+    
     if ((indexPath.section == 1) && (indexPath.row == 5)) {//补充信息
         AdditionMessageViewController *additionMessageVC = [[AdditionMessageViewController alloc] init];
-        additionMessageVC.tModel = self.publishingDataArray[0];
+        additionMessageVC.idString = model.idString;
+        additionMessageVC.categoryString = model.category;
         [self.navigationController pushViewController:additionMessageVC animated:YES];
     }else if (indexPath.section == 2) {//协议
         AgreementViewController *agreementVC = [[AgreementViewController alloc] init];
+        agreementVC.idString = model.idString;
+        agreementVC.categoryString = model.category;
         [self.navigationController pushViewController:agreementVC animated:YES];
     }
 }
@@ -326,6 +332,8 @@
 - (void)showRecordList
 {
     ApplyRecordsViewController *applyRecordsVC = [[ApplyRecordsViewController alloc] init];
+    applyRecordsVC.idStr = self.idString;
+    applyRecordsVC.categaryStr = self.categaryString;
     [self.navigationController pushViewController:applyRecordsVC animated:YES];
 }
 

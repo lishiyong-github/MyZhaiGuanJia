@@ -10,4 +10,22 @@
 
 @implementation EvaluateResponse
 
++ (NSDictionary *)replacedKeyFromPropertyName
+{
+    return @{@"creditor" : @"result.creditor",
+             @"creditors" : @"result.creditors",
+             @"evalua" : @"result.evalua",
+             @"evaluate" : @"result.evaluate",
+             @"launchevaluation" : @"result.launchevaluation",
+             @"uid" : @"result.uid"
+             };
+}
+
++ (NSDictionary *)objectClassInArray
+{
+    return @{@"evaluate" : @"EvaluateModel",
+             @"launchevaluation" : @"LaunchEvaluateModel"
+             };
+}
+
 @end

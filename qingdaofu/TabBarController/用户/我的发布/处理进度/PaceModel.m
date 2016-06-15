@@ -10,4 +10,11 @@
 
 @implementation PaceModel
 
++ (NSDictionary *)replacedKeyFromPropertyName
+{
+    return @{@"case" : @"caseString",
+             @"id" : @"idString"
+             };
+}
+
 @end

@@ -30,11 +30,8 @@
 @property (nonatomic,strong) AllProSegView *releaseProView;
 @property (nonatomic,strong) UITableView *myReleaseTableView;
 
+@property (nonatomic,strong) NSMutableArray *responseDataArray;
 @property (nonatomic,strong) NSMutableArray *releaseDataArray;
-@property (nonatomic,strong) NSMutableArray *releaseDataArray1;
-@property (nonatomic,strong) NSMutableArray *releaseDataArray2;
-@property (nonatomic,strong) NSMutableArray *releaseDataArray3;
-@property (nonatomic,strong) NSMutableArray *releaseDataArray4;
 
 @end
 
@@ -56,11 +53,11 @@
 {
     if (!self.didSetupConstraints) {
         
-        [self.releaseProView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(0, 0, 0, 0) excludingEdge:ALEdgeBottom];
+        [self.releaseProView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
         [self.releaseProView autoSetDimension:ALDimensionHeight toSize:40];
         
-        [self.myReleaseTableView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.releaseProView withOffset:kBigPadding];
-        [self.myReleaseTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(0, 0, 0, 0) excludingEdge:ALEdgeTop];
+        [self.myReleaseTableView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.releaseProView];
+        [self.myReleaseTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
         
         self.didSetupConstraints = YES;
     }
@@ -138,6 +135,14 @@
         _myReleaseTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
     }
     return _myReleaseTableView;
+}
+
+- (NSMutableArray *)responseDataArray
+{
+    if (!_responseDataArray) {
+        _responseDataArray = [NSMutableArray array];
+    }
+    return _responseDataArray;
 }
 
 - (NSMutableArray *)releaseDataArray
@@ -250,51 +255,83 @@
             cell.typeLabel.text = @"待发布";
         }else if ([rowModel.progress_status integerValue]  == 1){
             cell.typeLabel.text = @"发布中";
+            [cell.firstButton setHidden:NO];
+            [cell.secondButton setHidden:NO];
+            [cell.thirdButton setHidden:NO];
+            [cell.firstButton setTitle:@"您有新的申请记录" forState:0];
+            [cell.secondButton setTitle:@"补充信息" forState:0];
+            [cell.thirdButton setTitle:@"查看申请" forState:0];
+            
+            QDFWeakSelf;
+            [cell.secondButton addAction:^(UIButton *btn) {
+                [weakself goToCheckApplyRecordsOrAdditionMessage:@"补充信息" withRow:indexPath.row];
+            }];
+            
+            [cell.thirdButton addAction:^(UIButton *btn) {
+                [weakself goToCheckApplyRecordsOrAdditionMessage:@"查看申请" withRow:indexPath.row];
+            }];
+            
         }else if ([rowModel.progress_status integerValue]  == 2){
             cell.typeLabel.text = @"处理中";
+            [cell.firstButton setHidden:YES];
+            [cell.secondButton setHidden:NO];
+            [cell.thirdButton setHidden:NO];
+            [cell.secondButton setTitle:@"查看进度" forState:0];
+            [cell.thirdButton setTitle:@"联系接单方" forState:0];
+            
+            QDFWeakSelf;
+            [cell.secondButton addAction:^(UIButton *btn) {
+                [weakself goToCheckApplyRecordsOrAdditionMessage:@"查看进度" withRow:indexPath.row];
+            }];
+            
+            [cell.thirdButton addAction:^(UIButton *btn) {
+                [weakself goToCheckApplyRecordsOrAdditionMessage:@"联系接单方" withRow:indexPath.row];
+            }];
+            
         }else if ([rowModel.progress_status integerValue]  == 3){
             cell.typeLabel.text = @"终止";
+            [cell.firstButton setHidden:YES];
+            [cell.secondButton setHidden:YES];
+            [cell.thirdButton setHidden:YES];
         }else if([rowModel.progress_status integerValue]  == 4){
             cell.typeLabel.text = @"已结案";
+            [cell.firstButton setHidden:YES];
+            [cell.secondButton setHidden:YES];
+            [cell.thirdButton setHidden:NO];
+            [cell.thirdButton setTitle:@"去评价" forState:0];
+            QDFWeakSelf;
+            [cell.thirdButton addAction:^(UIButton *btn) {
+                [weakself goToCheckApplyRecordsOrAdditionMessage:@"去评价" withRow:indexPath.row];
+            }];
         }
         
         cell.addressLabel.text = rowModel.seatmortgage;
         cell.moneyView.label1.text = rowModel.money;
         cell.moneyView.label2.text = @"借款本金(万元)";
         
-        if ([rowModel.progress_status intValue] == 3) {
-            [cell.firstButton setHidden:YES];
-            [cell.secondButton setHidden:YES];
-            [cell.thirdButton setHidden:YES];
-        }else{
-            [cell.firstButton setHidden:NO];
-            [cell.secondButton setHidden:NO];
-            [cell.thirdButton setHidden:NO];
-//            [cell.firstButton setTitle:@"您有新的申请记录" forState:0];
-            [cell.secondButton setTitle:@"补充信息" forState:0];
-            [cell.thirdButton setTitle:@"查看申请" forState:0];
-            
-            QDFWeakSelf;
-            [cell.secondButton addAction:^(UIButton *btn) {
-            }];
-            [cell.thirdButton addAction:^(UIButton *btn) {
-                ApplyRecordsViewController *applyRecordsVC = [[ApplyRecordsViewController alloc] init];
-                applyRecordsVC.idStr = rowModel.idString;
-                applyRecordsVC.categaryStr = rowModel.category;
-                [weakself.navigationController pushViewController:applyRecordsVC animated:YES];
-            }];
-        }
+//                    QDFWeakSelf;
+//            [cell.secondButton addAction:^(UIButton *btn) {
+    
+//                AdditionMessageViewController *additionMessageVC = [[AdditionMessageViewController alloc] init];
+//                additionMessageVC.categoryString = rowModel.category;
+//                additionMessageVC.tModel = self.responseDataArray[0];
+//                [weakself.navigationController pushViewController:additionMessageVC animated:YES];
+                
+//            }];
+    
+//            [cell.thirdButton addAction:^(UIButton *btn) {
+//                ApplyRecordsViewController *applyRecordsVC = [[ApplyRecordsViewController alloc] init];
+//                applyRecordsVC.idStr = rowModel.idString;
+//                applyRecordsVC.categaryStr = rowModel.category;
+//                [weakself.navigationController pushViewController:applyRecordsVC animated:YES];
+//            }];
     
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section>0) {
-        
-        return kBigPadding;
-    }
-    return 0.1f;
+    return kBigPadding;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -305,27 +342,29 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     RowsModel *sModel = self.releaseDataArray[indexPath.section];
-    if ([sModel.progress_status isEqualToString:@"1"]) {
+    if ([sModel.progress_status isEqualToString:@"1"]) {//发布中
             MyPublishingViewController *myPublishingVC = [[MyPublishingViewController alloc] init];
-            
             myPublishingVC.idString = sModel.idString;
             myPublishingVC.categaryString = sModel.category;
             [self.navigationController pushViewController:myPublishingVC animated:YES];
-        }else if ([sModel.progress_status isEqualToString:@"2"]){
+        }else if ([sModel.progress_status isEqualToString:@"2"]){//处理中
             MyDealingViewController *myDealingVC = [[MyDealingViewController alloc] init];
             myDealingVC.idString = sModel.idString;
             myDealingVC.categaryString = sModel.category;
+            myDealingVC.pidString = sModel.pid;
             [self.navigationController pushViewController:myDealingVC animated:YES];
 
-        }else if ([sModel.progress_status isEqualToString:@"3"]){
+        }else if ([sModel.progress_status isEqualToString:@"3"]){//终止
             ReleaseEndViewController *releaseEndVC = [[ReleaseEndViewController alloc] init];
             releaseEndVC.idString = sModel.idString;
             releaseEndVC.categaryString = sModel.category;
+            releaseEndVC.pidString = sModel.pid;
             [self.navigationController pushViewController:releaseEndVC animated:YES];
-        }else if ([sModel.progress_status isEqualToString:@"4"]){
+        }else if ([sModel.progress_status isEqualToString:@"4"]){//结案
             ReleaseCloseViewController *releaseCloseVC = [[ReleaseCloseViewController alloc] init];
             releaseCloseVC.idString = sModel.idString;
             releaseCloseVC.categaryString = sModel.category;
+            releaseCloseVC.pidString = sModel.pid;
             [self.navigationController pushViewController:releaseCloseVC animated:YES];
         }
 }
@@ -342,26 +381,48 @@
                              @"page" : page
                              };
     [self headerRefreshWithUrlString:myReleaseString Parameter:params successBlock:^(id responseObject) {
-        ReleaseResponse *releaseModel = [ReleaseResponse objectWithKeyValues:responseObject];
         
-        for (RowsModel *rowsModel in releaseModel.rows) {
+        ReleaseResponse *responseModel = [ReleaseResponse objectWithKeyValues:responseObject];
+        [self.responseDataArray addObject:responseModel];
+        
+        for (RowsModel *rowsModel in responseModel.rows) {
             [self.releaseDataArray addObject:rowsModel];
         }
-        
         [self.myReleaseTableView reloadData];
+        
     } andfailedBlock:^(NSError *error) {
         [self.myReleaseTableView reloadData];
     }];
 }
 
-- (void)goToCheckApplyRecordsOrAdditionMessage:(NSString *)string
+- (void)goToCheckApplyRecordsOrAdditionMessage:(NSString *)string withRow:(NSInteger)row
 {
-    if ([string isEqualToString:@"records"]) {//申请记录
-        ApplyRecordsViewController *applyRecordsVC = [[ApplyRecordsViewController alloc] init];
-        [self.navigationController pushViewController:applyRecordsVC animated:YES];
-    }else{//补充信息
-        AdditionMessageViewController *additionMessageVC = [[AdditionMessageViewController alloc] init];
-        [self.navigationController pushViewController:additionMessageVC animated:YES];
+    RowsModel *model = self.releaseDataArray[row];
+    
+   if([string isEqualToString:@"补充信息"]){
+       AdditionMessageViewController *additionMessageVC = [[AdditionMessageViewController alloc] init];
+       additionMessageVC.idString = model.idString;
+       additionMessageVC.categoryString = model.category;
+       [self.navigationController pushViewController:additionMessageVC animated:YES];
+   }else if ([string isEqualToString:@"查看申请"]){
+      ApplyRecordsViewController *applyRecordsVC = [[ApplyRecordsViewController alloc] init];
+       applyRecordsVC.idStr = model.idString;
+       applyRecordsVC.categaryStr = model.category;
+      [self.navigationController pushViewController:applyRecordsVC animated:YES];
+   }
+   else if ([string isEqualToString:@"查看进度"]){
+        PaceViewController *paceVC = [[PaceViewController alloc] init];
+       paceVC.idString = model.idString;
+       paceVC.categoryString = model.category;
+        [self.navigationController pushViewController:paceVC animated:YES];
+    }else if ([string isEqualToString:@"联系接单方"]){
+        
+    }else if ([string isEqualToString:@"去评价"]){
+        AdditionalEvaluateViewController *additionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
+        additionalEvaluateVC.typeString = @"发布方";
+        additionalEvaluateVC.idString = model.idString;
+        additionalEvaluateVC.categoryString = model.category;
+        [self.navigationController pushViewController:additionalEvaluateVC animated:YES];
     }
 }
 

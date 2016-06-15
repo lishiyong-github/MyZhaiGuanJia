@@ -42,7 +42,7 @@
         [self.typeImageView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:15];
         [self.typeImageView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:15];
         
-        [self.nameLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.typeImageView withOffset:10];
+        [self.nameLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.typeImageView withOffset:kBigPadding];
         [self.nameLabel autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.typeImageView];
         
         [self.typeLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];

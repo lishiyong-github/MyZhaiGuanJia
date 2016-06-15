@@ -48,8 +48,6 @@
     //去掉导航栏的边界黑线
 //    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
     
-//    self.navigationItem.title = @"RZ201605160001";
-    
     self.navigationController.navigationBar.translucent = NO;
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.leftItemButton];

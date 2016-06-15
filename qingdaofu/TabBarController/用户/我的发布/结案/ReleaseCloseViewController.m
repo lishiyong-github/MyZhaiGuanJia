@@ -22,12 +22,17 @@
 
 #import "BaseCommitButton.h"
 
-//#import "ReleaseResponse.h"
-//#import "RowsModel.h"
-
+//详细信息
 #import "PublishingResponse.h"
 #import "PublishingModel.h"
 
+//进度
+#import "PaceResponse.h"
+#import "PaceModel.h"
+
+//评价
+#import "EvaluateResponse.h"
+#import "LaunchEvaluateModel.h"
 
 @interface ReleaseCloseViewController ()
 
@@ -38,6 +43,9 @@
 @property (nonatomic,strong) BaseCommitButton *ReleaseCloseCommitButton;
 
 @property (nonatomic,strong) NSMutableArray *releaseArray;
+@property (nonatomic,strong) NSMutableArray *pacesArray;
+@property (nonatomic,strong) NSMutableArray *evaluateResponseArray;
+@property (nonatomic,strong) NSMutableArray *evaluateArray;
 
 @end
 
@@ -47,7 +55,7 @@
     [super viewDidLoad];
     self.navigationItem.title = @"产品详情";
     self.navigationItem.leftBarButtonItem = self.leftItem;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"查看发布方" style:UIBarButtonItemStylePlain target:self action:@selector(checkReleaseCloseDetail)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"查看接单方" style:UIBarButtonItemStylePlain target:self action:@selector(checkReleaseCloseDetail)];
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kBlueColor} forState:0];
     
     [self.view addSubview:self.ReleaseCloseTableView];
@@ -55,6 +63,8 @@
     [self.view setNeedsUpdateConstraints];
     
     [self getCloseMessages];
+    [self getPacesDetails];
+    [self getEvaluateDetails];
 }
 
 - (void)updateViewConstraints
@@ -107,6 +117,28 @@
     }
     return _releaseArray;
 }
+- (NSMutableArray *)pacesArray
+{
+    if (!_pacesArray) {
+        _pacesArray = [NSMutableArray array];
+    }
+    return _pacesArray;
+}
+- (NSMutableArray *)evaluateArray
+{
+    if (!_evaluateArray) {
+        _evaluateArray = [NSMutableArray array];
+    }
+    return _evaluateArray;
+}
+
+- (NSMutableArray *)evaluateResponseArray
+{
+    if (!_evaluateResponseArray) {
+        _evaluateResponseArray = [NSMutableArray array];
+    }
+    return _evaluateResponseArray;
+}
 
 #pragma mark -
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -144,9 +176,14 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier;
-        
-    PublishingResponse *responseModel = self.releaseArray[0];
-    PublishingModel *releaseModel = responseModel.product;
+    
+    PublishingResponse *responseModel;
+    PublishingModel *releaseModel;
+    
+    if (self.releaseArray.count > 0) {
+      responseModel = self.releaseArray[0];
+      releaseModel = responseModel.product;
+    }    
     
     if (indexPath.section == 0) {
         identifier = @"releaseClose0";
@@ -277,6 +314,7 @@
         
         [cell.oneButton setTitle:@"查看补充信息" forState:0];
         [cell.oneButton setImage:[UIImage imageNamed:@"more"] forState:0];
+        cell.oneButton.userInteractionEnabled = NO;
         
         return cell;
         
@@ -298,7 +336,7 @@
         return cell;
         
     }else if(indexPath.section == 3){
-        if (indexPath.row == 0) {
+        if (indexPath.row == 0) {//进度详情
             identifier = @"releaseClose40";
             MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
             if (!cell) {
@@ -309,10 +347,14 @@
             
             [cell.userNameButton setTitleColor:kBlueColor forState:0];
             [cell.userNameButton setTitle:@"|  进度详情" forState:0];
-            
-            [cell.userActionButton setTitle:@"查看更多" forState:0];
-            [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
             cell.userActionButton.userInteractionEnabled = NO;
+            
+            if (self.pacesArray.count > 0) {
+                [cell.userActionButton setTitle:@"查看更多" forState:0];
+                [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            }else{
+                [cell.userActionButton setTitle:@"无" forState:0];
+            }
             
             return cell;
             
@@ -322,22 +364,40 @@
             if (!cell) {
                 cell = [[BidMessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
             }
-            
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            NSMutableAttributedString *caseTypestring = [cell.deadlineLabel setAttributeString:@"案号类型：" withColor:kBlackColor andSecond:@"二审" withColor:kLightGrayColor withFont:12];
-            [cell.deadlineLabel setAttributedText:caseTypestring];
             
-            cell.timeLabel.text = @"2016-05-30";
-            
-            NSMutableAttributedString *caseNoString = [cell.dateLabel setAttributeString:@"案        号：" withColor:kBlackColor andSecond:@"201605120001" withColor:kLightGrayColor withFont:12];
-            [cell.dateLabel setAttributedText:caseNoString];
-            
-            NSMutableAttributedString *dealTypeString = [cell.areaLabel setAttributeString:@"处置类型：" withColor: kBlackColor andSecond:@"拍卖" withColor:kLightGrayColor withFont:12];
-            [cell.areaLabel setAttributedText:dealTypeString];
-            
-            NSMutableAttributedString *dealDeailString = [cell.addressLabel setAttributeString:@"详        情：" withColor:kBlackColor andSecond:@"详情详情" withColor:kLightGrayColor withFont:12];
-            [cell.addressLabel setAttributedText:dealDeailString];
-            
+            if (self.pacesArray.count > 0) {
+                [cell.remindImageButton setHidden:YES];
+                [cell.deadlineLabel setHidden:NO];
+                [cell.timeLabel setHidden:NO];
+                [cell.dateLabel setHidden:NO];
+                [cell.areaLabel setHidden:NO];
+                [cell.addressLabel setHidden:NO];
+                
+                PaceModel *paceModel = self.pacesArray[0];
+                
+                NSMutableAttributedString *caseTypestring = [cell.deadlineLabel setAttributeString:@"案号类型：" withColor:kBlackColor andSecond:paceModel.audit withColor:kLightGrayColor withFont:12];
+                [cell.deadlineLabel setAttributedText:caseTypestring];
+                
+                cell.timeLabel.text = [NSDate getYMDFormatterTime:paceModel.create_time];
+                
+                NSMutableAttributedString *caseNoString = [cell.dateLabel setAttributeString:@"案        号：" withColor:kBlackColor andSecond:paceModel.caseString withColor:kLightGrayColor withFont:12];
+                [cell.dateLabel setAttributedText:caseNoString];
+                
+                NSMutableAttributedString *dealTypeString = [cell.areaLabel setAttributeString:@"处置类型：" withColor: kBlackColor andSecond:paceModel.status withColor:kLightGrayColor withFont:12];
+                [cell.areaLabel setAttributedText:dealTypeString];
+                
+                NSMutableAttributedString *dealDeailString = [cell.addressLabel setAttributeString:@"详        情：" withColor:kBlackColor andSecond:paceModel.content withColor:kLightGrayColor withFont:12];
+                [cell.addressLabel setAttributedText:dealDeailString];
+                
+            }else{
+                [cell.remindImageButton setHidden:NO];
+                [cell.deadlineLabel setHidden:YES];
+                [cell.timeLabel setHidden:YES];
+                [cell.dateLabel setHidden:YES];
+                [cell.areaLabel setHidden:YES];
+                [cell.addressLabel setHidden:YES];
+            }
             return cell;
         }
     }else{
@@ -351,26 +411,62 @@
             
             [cell.userNameButton setTitle:@"|  给出的评价" forState:0];
             [cell.userNameButton setTitleColor:kBlueColor forState:0];
-            [cell.userActionButton setTitle:@"查看更多" forState:0];
-            [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
             cell.userActionButton.userInteractionEnabled = NO;
+            
+            if (self.evaluateResponseArray.count > 0) {
+                [cell.userActionButton setTitle:@"查看更多" forState:0];
+                [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            }else{
+                [cell.userActionButton setTitle:@"无" forState:0];
+            }
             
             return cell;
             
         }
+        //具体评级
             identifier = @"releaseClose51";
             EvaluatePhotoCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
             if (!cell) {
                 cell = [[EvaluatePhotoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            cell.evaNameLabel.text = @"134356656";
-            cell.evaTextLabel.text = @"很好";
-            cell.evaProImageView1.backgroundColor = kLightGrayColor;
-            cell.evaProImageView2.backgroundColor = kLightGrayColor;
-            [cell.evaProductButton setHidden:YES];
-            
+        
+        if (self.evaluateArray.count > 0) {
+            EvaluateResponse *response = self.evaluateArray[0];
+            LaunchEvaluateModel *launchModel;
+            if (self.evaluateResponseArray.count > 0) {
+                [cell.remindImageButton setHidden:YES];
+                [cell.evaProductButton setHidden:YES];
+                [cell.evaNameLabel setHidden: NO];
+                [cell.evaStarImage setHidden:NO];
+                [cell.evaTimeLabel setHidden:NO];
+                [cell.evaTextLabel setHidden:NO];
+                [cell.evaProImageView1 setHidden:NO];
+                [cell.evaProImageView2 setHidden:NO];
+                
+                launchModel = response.launchevaluation[0];
+                cell.evaNameLabel.text = launchModel.mobile;
+                cell.evaStarImage.currentIndex = [response.creditor intValue];
+                cell.evaProImageView1.backgroundColor = kLightGrayColor;
+                cell.evaProImageView2.backgroundColor = kLightGrayColor;
+                
+                if (launchModel.content == nil || [launchModel.content isEqualToString:@""]) {
+                    cell.evaTextLabel.text = @"未填写评价内容";
+                }else{
+                    cell.evaTextLabel.text = launchModel.content;
+                }
+            }else{
+                [cell.remindImageButton setHidden:NO];
+                [cell.evaProductButton setHidden:YES];
+                [cell.evaNameLabel setHidden: YES];
+                [cell.evaStarImage setHidden:YES];
+                [cell.evaTimeLabel setHidden:YES];
+                [cell.evaTextLabel setHidden:YES];
+                [cell.evaProImageView1 setHidden:YES];
+                [cell.evaProImageView2 setHidden:YES];
+           }
+        }
+        
             return cell;
     }
     return nil;
@@ -388,15 +484,33 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 2) {
+    PublishingResponse *resModel = self.releaseArray[0];
+    PublishingModel *dealModel = resModel.product;
+    
+    if ((indexPath.section == 1) && (indexPath.row == 5)) {
+        AdditionMessageViewController *additionMessageVC = [[AdditionMessageViewController alloc] init];
+        additionMessageVC.idString = dealModel.idString;
+        additionMessageVC.categoryString = dealModel.category;
+        [self.navigationController pushViewController:additionMessageVC animated:YES];
+    }else if (indexPath.section == 2) {
         AgreementViewController *agreementVC = [[AgreementViewController alloc] init];
+        agreementVC.idString = dealModel.idString;
+        agreementVC.categoryString = dealModel.category;
         [self.navigationController pushViewController:agreementVC animated:YES];
     }else if ((indexPath.section == 3) && (indexPath.row == 0)){
+        if (self.pacesArray.count > 0) {
         PaceViewController *paceVC = [[PaceViewController alloc] init];
+        paceVC.idString = dealModel.idString;
+        paceVC.categoryString = dealModel.category;
         [self.navigationController pushViewController:paceVC animated:YES];
+        }
     }else if ((indexPath.section == 4) && (indexPath.row == 0)){
-        AllEvaluationViewController *allEvaluationVC = [[AllEvaluationViewController alloc] init];
-        [self.navigationController pushViewController:allEvaluationVC animated:YES];
+        if (self.evaluateResponseArray.count > 0) {
+            AllEvaluationViewController *allEvaluationVC = [[AllEvaluationViewController alloc] init];
+            allEvaluationVC.idString = dealModel.idString;
+            allEvaluationVC.categoryString = dealModel.category;
+            [self.navigationController pushViewController:allEvaluationVC animated:YES];
+        }
     }
 }
 
@@ -404,6 +518,11 @@
 - (void)checkReleaseCloseDetail
 {
     CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+    checkDetailPublishVC.idString = self.idString;
+    checkDetailPublishVC.categoryString = self.categaryString;
+    checkDetailPublishVC.pidString = self.pidString;
+    checkDetailPublishVC.typeString = @"接单方";
+    checkDetailPublishVC.evaTypeString = @"evaluate";
     [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
 }
 
@@ -420,6 +539,50 @@
         [self.ReleaseCloseTableView reloadData];
         
     } andFailBlock:^(NSError *error){
+        
+    }];
+}
+
+- (void)getPacesDetails
+{
+    NSString *scheduleString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kLookUpScheduleString];
+    NSDictionary *params = @{@"id" : self.idString,
+                             @"category" : self.categaryString,
+                             @"token" : [self getValidateToken]
+                             };
+    [self requestDataPostWithString:scheduleString params:params successBlock:^(id responseObject) {
+        
+        PaceResponse *response = [PaceResponse objectWithKeyValues:responseObject];
+        for (PaceModel *paceModel in response.disposing) {
+            [self.pacesArray addObject:paceModel];
+        }
+        [self.ReleaseCloseTableView reloadData];
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
+- (void)getEvaluateDetails
+{
+    NSString *evaluateString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyEvaluateString];
+    NSDictionary *params = @{@"token" : [self getValidateToken],
+                             @"id" : self.idString,
+                             @"category" : self.categaryString
+                             };
+    [self requestDataPostWithString:evaluateString params:params successBlock:^(id responseObject) {
+        
+        EvaluateResponse *response = [EvaluateResponse objectWithKeyValues:responseObject];
+        
+        [self.evaluateArray addObject:response];
+        
+        for (LaunchEvaluateModel *launchModel in response.launchevaluation) {
+            [self.evaluateArray addObject:launchModel];
+        }
+        
+        [self.ReleaseCloseTableView reloadData];
+        
+    } andFailBlock:^(NSError *error) {
         
     }];
 }

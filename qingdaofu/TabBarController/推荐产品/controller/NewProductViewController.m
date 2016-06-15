@@ -285,7 +285,6 @@
 #pragma mark - uiscrollViewdelegate and pageControlDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    NSLog(@"offset is %f",scrollView.contentOffset.x);
     self.pageControl.currentPage = scrollView.contentOffset.x/kScreenWidth;
 }
 
@@ -298,8 +297,6 @@
 //    }else{
 //        
 //    }
-    
-    NSLog(@"currentPage is %d",[page currentPage]);
     self.mainHeaderScrollView.contentOffset = CGPointMake([page currentPage]*kScreenWidth, 0);
     
     

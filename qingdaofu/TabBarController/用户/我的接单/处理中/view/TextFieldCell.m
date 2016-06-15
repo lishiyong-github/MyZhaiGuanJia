@@ -51,6 +51,7 @@
         _textField.textColor = kBlackColor;
         [_textField setPlaceholderColor:kLightGrayColor];
         _textField.font = kBigFont;
+        _textField.delegate = self;
     }
     return _textField;
 }
@@ -73,6 +74,17 @@
         _countLabel.font = kSecondFont;
     }
     return _countLabel;
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    NSString *title = [textView.text stringByReplacingCharactersInRange:range withString:text];
+    
+    if (self.didEndEditing) {
+        self.didEndEditing(title);
+    }
+    
+    return YES;
 }
 
 - (void)awakeFromNib {

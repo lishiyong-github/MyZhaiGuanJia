@@ -22,6 +22,10 @@
 @property (nonatomic,strong) UIButton *evaProductButton;
 @property (nonatomic,strong) UIButton *evaInnnerButton;
 @property (nonatomic,strong) UIImageView *evaInnerImage;
+
+//无内容时的提示信息
+@property (nonatomic,strong) UIButton *remindImageButton;
+
 @property (nonatomic,assign) BOOL didSetupConstraints;
 
 @end

@@ -20,6 +20,7 @@
 @property (nonatomic,strong) UITableView *additionalTableView;
 
 @property (nonatomic,strong) BaseCommitButton *commitEvaButton;
+@property (nonatomic,strong) NSMutableDictionary *evaDataDictionary;
 
 @end
 
@@ -35,8 +36,6 @@
     [self.view addSubview:self.additionalTableView];
     [self.view addSubview:self.commitEvaButton];
     [self.view setNeedsUpdateConstraints];
-    
-    
 }
 
 - (void)updateViewConstraints
@@ -81,8 +80,17 @@
     if (!_commitEvaButton) {
         _commitEvaButton = [BaseCommitButton newAutoLayoutView];
         [_commitEvaButton setTitle:@"提交评价" forState:0];
+        [_commitEvaButton addTarget:self action:@selector(evaluateCommitMessages) forControlEvents:UIControlEventTouchUpInside];
     }
     return _commitEvaButton;
+}
+
+- (NSMutableDictionary *)evaDataDictionary
+{
+    if (!_evaDataDictionary) {
+        _evaDataDictionary = [NSMutableDictionary dictionary];
+    }
+    return _evaDataDictionary;
 }
 
 #pragma mark -
@@ -138,15 +146,31 @@
         if (!cell) {
             cell = [[StarCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
-        
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
-            [cell setSeparatorInset:UIEdgeInsetsZero];
+        
+        if ([self.typeString isEqualToString:@"发布方"]) {
+            cell.starLabel1.text = @"态度";
+            cell.starLabel2.text = @"专业知识";
+            cell.starLabel3.text = @"办事效率";
+        }else if ([self.typeString isEqualToString:@"接单方"]){
+            cell.starLabel1.text = @"真实性";
+            cell.starLabel2.text = @"配合度";
+            cell.starLabel3.text = @"响应度";
         }
         
-        if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
-            [cell setLayoutMargins:UIEdgeInsetsZero];
-        }
+        [cell.starView1 setMarkComplete:^(CGFloat score) {
+            NSString *scoreStr1 = [NSString stringWithFormat:@"%.f",score];
+            [self.evaDataDictionary setValue:scoreStr1 forKey:@"serviceattitude"];
+        }];
+        
+        [cell.starView2 setMarkComplete:^(CGFloat score) {
+            NSString *scoreStr2 = [NSString stringWithFormat:@"%.f",score];
+            [self.evaDataDictionary setValue:scoreStr2 forKey:@"professionalknowledge"];
+        }];
+        [cell.starView3 setMarkComplete:^(CGFloat score) {
+            NSString *scoreStr3 = [NSString stringWithFormat:@"%.f",score];
+            [self.evaDataDictionary setValue:scoreStr3 forKey:@"workefficiency"];
+        }];
         
         return cell;
         
@@ -158,25 +182,22 @@
         }
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
-            [cell setSeparatorInset:UIEdgeInsetsZero];
-        }
         
-        if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
-            [cell setLayoutMargins:UIEdgeInsetsZero];
-        }
         cell.textField.placeholder = @"请输入您的真实感受，对接单方的帮助很大奥";
         cell.textField.font = kSecondFont;
         cell.textField.delegate = self;
         cell.countLabel.text = [NSString stringWithFormat:@"%d/600",cell.textField.text.length];
+        [cell setDidEndEditing:^(NSString *text) {
+            [self.evaDataDictionary setValue:text forKey:@"content"];
+        }];
         
         return cell;
         
     }else if (indexPath.row == 3){
         identifier = @"additional3";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        TakePictureCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         if (!cell) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            cell = [[TakePictureCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -203,12 +224,17 @@
         
         [cell.userActionButton addAction:^(UIButton *btn) {
             btn.selected = !btn.selected;
+            if (btn.selected) {//0为正常评价。1为匿名评价
+                [self.evaDataDictionary setValue:@"1" forKey:@"isHide"];
+            }else{
+                [self.evaDataDictionary setValue:@"0" forKey:@"isHide"];
+            }
         }];
         
         return cell;
 }
 
-#pragma makr - textView delegate
+#pragma mark - textView delegate
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
     [self.additionalTableView reloadData];
@@ -220,6 +246,58 @@
         return NO;
     }
     return YES;
+}
+
+#pragma mark - method
+- (void)evaluateCommitMessages
+{
+    NSString *evaluateString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kEvaluateString];
+    
+    NSString *serviceattitude = @"";
+    NSString *professionalknowledge = @"";
+    NSString *workefficiency = @"";
+    NSString *content = @"";
+    NSString *isHide = @"";
+    
+    if (self.evaDataDictionary[@"serviceattitude"]) {
+        serviceattitude = self.evaDataDictionary[@"serviceattitude"];
+    }
+    
+    if (self.evaDataDictionary[@"professionalknowledge"]) {
+        professionalknowledge = self.evaDataDictionary[@"professionalknowledge"];
+    }
+    if (self.evaDataDictionary[@"workefficiency"]) {
+        workefficiency = self.evaDataDictionary[@"workefficiency"];
+    }
+    if (self.evaDataDictionary[@"content"]) {
+        content = self.evaDataDictionary[@"content"];
+    }
+    if (self.evaDataDictionary[@"isHide"]) {
+        isHide = self.evaDataDictionary[@"isHide"];
+    }
+    
+    NSDictionary *params = @{@"serviceattitude" : serviceattitude,   //发布方：态度。接单方：真实性
+                             @"professionalknowledge" : professionalknowledge,//发布方：专业知识。接单方：配合度
+                             @"workefficiency" : workefficiency,  //发布方：办事效率。接单方：响应度
+                             @"content" : content,  //评价内容
+                             @"category" : self.categoryString,
+                             @"product_id" : self.idString,
+                             @"isHide" : isHide,//0为正常评价。1为匿名评价
+                             @"picture" : @"",
+                             @"token" : [self getValidateToken],
+                             @"type" : @"0"
+                             };
+    [self requestDataPostWithString:evaluateString params:params successBlock:^(id responseObject) {
+        BaseModel *evaModel = [BaseModel objectWithKeyValues:responseObject];
+        if ([evaModel.code isEqualToString:@"0000"]) {
+            [self showHint:evaModel.msg];
+            [self.navigationController popViewControllerAnimated:YES];
+        }else{
+            [self showHint:@"提交失败"];
+        }
+    } andFailBlock:^(NSError *error) {
+        
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
