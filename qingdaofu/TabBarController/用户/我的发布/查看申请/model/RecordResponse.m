@@ -10,4 +10,9 @@
 
 @implementation RecordResponse
 
++ (NSDictionary *)objectClassInArray
+{
+    return @{@"user" : @"UserModel"};
+}
+
 @end

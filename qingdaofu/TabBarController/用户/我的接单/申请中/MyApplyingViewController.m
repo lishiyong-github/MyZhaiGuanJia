@@ -32,7 +32,11 @@
     [super viewDidLoad];
     self.navigationItem.title = @"产品详情";
     self.navigationItem.leftBarButtonItem = self.leftItem;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"查看发布方" style:UIBarButtonItemStylePlain target:self action:@selector(checkDetails)];
+    
+    if (self.pidString) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"查看发布方" style:UIBarButtonItemStylePlain target:self action:@selector(checkDetails)];
+    }
+    
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kBlueColor} forState:0];
     
     [self.view addSubview:self.myApplyingTableView];
@@ -287,7 +291,7 @@
     checkDetailPublishVC.categoryString = self.categaryString;
     checkDetailPublishVC.pidString = self.pidString;
     checkDetailPublishVC.typeString = @"发布方";
-    checkDetailPublishVC.evaTypeString = @"launchevaluation";
+    checkDetailPublishVC.evaTypeString = @"evaluate";
     
     [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
 }

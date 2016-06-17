@@ -129,7 +129,7 @@
     NSMutableAttributedString *str4 = [cell.agentCerLabel setAttributeString:@"执业证号：" withColor:kBlackColor andSecond:zycardno withColor:kLightGrayColor withFont:12];
     [cell.agentCerLabel setAttributedText:str4];
     
-    NSMutableAttributedString *str5 = [cell.agentPassLabel setAttributeString:@"登录密码：" withColor:kBlackColor andSecond:self.agentModel.password_hash withColor:kLightGrayColor withFont:12];
+    NSMutableAttributedString *str5 = [cell.agentPassLabel setAttributeString:@"登录密码：" withColor:kBlackColor andSecond:@"******" withColor:kLightGrayColor withFont:12];
     [cell.agentPassLabel setAttributedText:str5];
     
     
@@ -139,6 +139,7 @@
         [cell.agentEditButton addAction:^(UIButton *btn) {
             AddMyAgentViewController *addMyagentVC = [[AddMyAgentViewController alloc] init];
             addMyagentVC.model = self.agentModel;
+            addMyagentVC.agentFlagString = @"update";
             [weakself.navigationController pushViewController:addMyagentVC animated:YES];
         }];
     }else if ([self.agentModel.isstop intValue] == 1){//停用

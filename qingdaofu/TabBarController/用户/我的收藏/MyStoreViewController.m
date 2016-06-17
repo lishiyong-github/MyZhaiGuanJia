@@ -112,6 +112,7 @@
 - (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewRowAction *editAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"立即申请" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+        [self goToApplyWithRow:indexPath.row];
     }];
     editAction.backgroundColor = kBlueColor;
     
@@ -143,8 +144,6 @@
                              @"page" : page
                              };
     [self requestDataPostWithString:storeString params:params successBlock:^(id responseObject){
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSLog(@" ?????????? %@",dic);
         
         ReleaseResponse *responseModel = [ReleaseResponse objectWithKeyValues:responseObject];
         
@@ -159,6 +158,28 @@
     }];
 }
 
+- (void)goToApplyWithRow:(NSInteger)row
+{
+    RowsModel *appModel = self.storeDataList[row];
+    NSString *appString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductHouseString];
+    NSDictionary *params = @{@"id" : appModel.idString,
+                             @"category" : appModel.category,
+                             @"token" : [self getValidateToken]
+                             };
+    [self requestDataPostWithString:appString params:params successBlock:^(id responseObject) {
+        BaseModel *appModel = [BaseModel objectWithKeyValues:responseObject];
+        [self showHint:appModel.msg];
+        if ([appModel.code isEqualToString:@"0000"]) {
+            [self.storeDataList removeObjectAtIndex:row];
+            [self.myStoreTableView reloadData];
+        }
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
+//删除
 - (void)deleteOneStoreOfRow:(NSInteger)indexRow
 {
     RowsModel *deleteModel = self.storeDataList[indexRow];
@@ -177,7 +198,6 @@
     } andFailBlock:^(NSError *error){
         
     }];
-    
 }
 
 - (void)didReceiveMemoryWarning {

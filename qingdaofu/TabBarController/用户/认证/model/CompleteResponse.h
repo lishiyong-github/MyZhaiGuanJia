@@ -11,8 +11,6 @@
 
 @interface CompleteResponse : BaseModel
 
-//@property (nonatomic,strong) NSMutableArray *result;
-
 @property (nonatomic,strong) CertificationModel *certification;
 @property (nonatomic,copy) NSString *completionRate;
 @property (nonatomic,copy) NSString *uid;

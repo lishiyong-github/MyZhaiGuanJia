@@ -180,8 +180,8 @@
 {
     NSString *evaluateString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kCheckOrderToEvaluationString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
-//                             @"id" : self.idString,
-//                             @"category" : self.categoryString,
+                             @"id" : self.idString,
+                             @"category" : self.categoryString,
                              @"pid" : self.pidString,
                              @"page" : page
                              };

@@ -22,7 +22,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = @"添加代理";
+    
+    if ([self.agentFlagString isEqualToString:@"add"]) {
+        self.navigationItem.title = @"添加代理";
+    }else{
+        self.navigationItem.title = @"修改代理";
+    }
+    
     self.navigationItem.leftBarButtonItem = self.leftItem;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"保存" style:UIBarButtonItemStylePlain target:self action:@selector(saveAgent)];
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kBlueColor} forState:0];
@@ -89,7 +95,7 @@
     cell.leftFieldConstraints.constant = 90;
     
     NSArray *aArray = @[@"姓名",@"联系方式",@"身份证号",@"执业证号",@"登录密码"];
-    NSArray *bArray = @[@"请输入姓名",@"请输入联系方式",@"请输入身份证号",@"请输入执业证号",@"请设置代理人登录密码"];
+    NSArray *bArray = @[@"请输入姓名",@"请输入联系方式",@"请输入身份证号",@"请输入执业证号(律所必填)",@"请设置代理人登录密码"];
 
     [cell.caseNoButton setTitle:aArray[indexPath.row] forState:0];
     cell.caseNoTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
@@ -116,7 +122,7 @@
                 [self.addAgentDictionary setValue:text forKey:@"zycardno"];
             }];
         }else if (indexPath.row == 4){//登录密码
-            cell.caseNoTextField.text = self.model.password_hash;
+            cell.caseNoTextField.text = @"******";
             [cell setDidEndEditting:^(NSString *text) {
                 [self.addAgentDictionary setValue:text forKey:@"password"];
             }];
@@ -155,38 +161,24 @@
 - (void)saveAgent
 {
     [self.view endEditing:YES];
-    NSString *addAgentString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyAgentAddString];
-    
-    NSString *name = @"";
-    NSString *mobile = @"";
-    NSString *cardno = @"";
-    NSString *zycardno = @"";
-    NSString *password = @"";
-    
-    if (self.addAgentDictionary[@"name"]) {
-        name = self.addAgentDictionary[@"name"];
+    NSString *addAgentString;
+    if ([self.agentFlagString isEqualToString:@"add"]) {
+        addAgentString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyAgentAddString];
+    }else{
+        addAgentString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyAgentModifyString];
     }
     
-    if (self.addAgentDictionary[@"mobile"]) {
-        mobile = self.addAgentDictionary[@"mobile"];
-    }
-    if (self.addAgentDictionary[@"cardno"]) {
-        cardno = self.addAgentDictionary[@"cardno"];
-    }
-    if (self.addAgentDictionary[@"zycardno"]) {
-        zycardno = self.addAgentDictionary[@"zycardno"];
-    }
-    if (self.addAgentDictionary[@"password"]) {
-        password = self.addAgentDictionary[@"password"];
-    }
+    self.addAgentDictionary[@"name"] = self.addAgentDictionary[@"name"]?self.addAgentDictionary[@"name"]:self.model.username;
+    self.addAgentDictionary[@"mobile"] = self.addAgentDictionary[@"mobile"]?self.addAgentDictionary[@"mobile"]:self.model.mobile;
+    self.addAgentDictionary[@"cardno"] = self.addAgentDictionary[@"cardno"]?self.addAgentDictionary[@"cardno"]:self.model.cardno;
+    self.addAgentDictionary[@"zycardno"] = self.addAgentDictionary[@"zycardno"]?self.addAgentDictionary[@"zycardno"]:self.model.zycardno;
+    self.addAgentDictionary[@"password"] = self.addAgentDictionary[@"password"]?self.addAgentDictionary[@"password"]:self.model.password_hash;
+    
+    [self.addAgentDictionary setValue:self.model.idString forKey:@"id"];
+    [self.addAgentDictionary setValue:[self getValidateToken] forKey:@"token"];
 
-    NSDictionary *params = @{@"token" : [self getValidateToken],
-                             @"name" : name,
-                             @"mobile" : mobile,
-                             @"cardno" : cardno,
-                             @"zycardno" : zycardno,
-                             @"password" : password
-                             };
+    NSDictionary *params = self.addAgentDictionary;
+    
     [self requestDataPostWithString:addAgentString params:params successBlock:^(id responseObject) {
         BaseModel *addModel = [BaseModel objectWithKeyValues:responseObject];
         [self showHint:addModel.msg];

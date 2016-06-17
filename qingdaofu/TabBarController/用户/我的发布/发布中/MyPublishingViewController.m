@@ -24,8 +24,6 @@
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *publishingTableView;
-@property (nonatomic,strong) BaseCommitButton *publishingCommitButton;
-
 @property (nonatomic,strong) NSMutableArray *publishingDataArray;
 
 @end
@@ -40,7 +38,6 @@
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kBlueColor} forState:0];
     
     [self.view addSubview: self.publishingTableView];
-    [self.view addSubview:self.publishingCommitButton];
     [self.view setNeedsUpdateConstraints];
     
     [self getDetailMessages];
@@ -50,11 +47,7 @@
 {
     if (!self.didSetupConstraints) {
         
-        [self.publishingTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
-        [self.publishingTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.publishingCommitButton];
-        
-        [self.publishingCommitButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [self.publishingCommitButton autoSetDimension:ALDimensionHeight toSize:kTabBarHeight];
+        [self.publishingTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
         
         self.didSetupConstraints = YES;
     }
@@ -64,7 +57,6 @@
 - (UITableView *)publishingTableView
 {
     if (!_publishingTableView) {
-//        _publishingTableView = [UITableView newAutoLayoutView];
         _publishingTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _publishingTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _publishingTableView.delegate = self;
@@ -72,38 +64,6 @@
         _publishingTableView.backgroundColor = kBackColor;
     }
     return _publishingTableView;
-}
-
-- (BaseCommitButton *)publishingCommitButton
-{
-    if (!_publishingCommitButton) {
-        _publishingCommitButton = [BaseCommitButton newAutoLayoutView];
-        [_publishingCommitButton setTitle:@"终止" forState:0];
-        
-        QDFWeakSelf;
-        [_publishingCommitButton addAction:^(UIButton *btn) {
-            
-            
-            NSString *endString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kEndProductsString];
-            NSDictionary *params = @{@"id" : weakself.idString,
-                                     @"category" : weakself.categaryString,
-                                     @"status" : @"终止"};
-            [weakself requestDataPostWithString:endString params:params successBlock:^(id responseObject){
-                BaseModel *endModel = [BaseModel objectWithKeyValues:responseObject];
-                [weakself showHint:endModel.msg];
-                
-                if ([endModel.code isEqualToString:@"0000"]) {
-                    [btn setBackgroundColor:kSelectedColor];
-                    [btn setTitle:@"已终止" forState:0];
-                }
-                
-            } andFailBlock:^(NSError *error){
-                
-            }];
-            
-        }];
-    }
-    return _publishingCommitButton;
 }
 
 - (NSMutableArray *)publishingDataArray

@@ -73,7 +73,7 @@
 {
     if (self.addMessageDataArray.count > 0) {
         if ([self.categoryString intValue] == 1) {
-            return 7;
+            return 8;
         }
         return 14;
     }
@@ -100,21 +100,18 @@
     
     if ([messageModel.category intValue] == 1) {//融资
         NSString *rateCatStr; //借款期限类型
-        NSString *term = @"无";   //借款期限
+        NSString *term = messageModel.term?messageModel.term:@"无";   //借款期限
         NSString *mortgagecategory = @"无";//抵押物类型
         NSString *status = @"无";  //抵押物状态
-        NSString *mortgagearea = @"无";  //抵押物面积
-        NSString *loanyear = @"无";   //借款人年龄
+        NSString *rentmoney = messageModel.rentmoney?messageModel.rentmoney:@"无"; //租金
+        NSString *mortgagearea = messageModel.mortgagearea?messageModel.mortgagearea:@"无";  //抵押物面积
+        NSString *loanyear = messageModel.loanyear?messageModel.loanyear:@"无";   //借款人年龄
         NSString *obligeeyear = @"无";  //权利人年龄
         
         if ([messageModel.rate_cat intValue] == 1) {
             rateCatStr = @"天";
         }else if ([messageModel.rate_cat intValue] == 2){
             rateCatStr = @"月";
-        }
-        
-        if (messageModel.term) {
-            term = messageModel.term;
         }
         
         if (messageModel.mortgagecategory) {
@@ -133,13 +130,6 @@
                 status = @"出租";
             }
         }
-        
-        if (messageModel.mortgagearea) {
-            mortgagearea = messageModel.mortgagearea;
-        }
-        if (messageModel.loanyear) {
-            loanyear = messageModel.loanyear;
-        }
         if (messageModel.obligeeyear) {
             if ([messageModel.obligeeyear intValue] == 1) {
                 obligeeyear = @"65岁以上";
@@ -148,30 +138,27 @@
             }
         }
         
-        NSArray *dataList1 = @[@"借款期限",@"借款期限类型",@"抵押物类型",@"抵押物状态",@"抵押物面积",@"借款人年龄",@"权利人年龄"];
-        NSArray *dataList2 = @[term,rateCatStr,mortgagecategory,status,mortgagearea,loanyear,obligeeyear];
+        NSArray *dataList1 = @[@"借款期限",@"借款期限类型",@"抵押物类型",@"抵押物状态",@"租金",@"抵押物面积",@"借款人年龄",@"权利人年龄"];
+        NSArray *dataList2 = @[term,rateCatStr,mortgagecategory,status,rentmoney,mortgagearea,loanyear,obligeeyear];
         [cell.userNameButton setTitle:dataList1[indexPath.row] forState:0];
         [cell.userActionButton setTitle:dataList2[indexPath.row] forState:0];
         
     }else{//催收，诉讼
         
-        NSString *rate = @"无"; //借款利率
+        NSString *rate = messageModel.rate?messageModel.rate:@"无"; //借款利率
         NSString *rate_cat = @"无"; //借款期限类型
-        NSString *term = @"无";   //借款期限
+        NSString *term = messageModel.term?messageModel.term:@"无";   //借款期限
         NSString *repaymethod = @"无";//还款方式
         NSString *obligor = @"无";  //债务人主体
         NSString *commitment = @"无";  //委托事项
-        NSString *commissionperiod = @"无";   //委托代理期限
-        NSString *paidmoney = @"无";  //已付本金
-        NSString *interestpaid = @"无";  //已付利息
-        NSString *performancecontract = @"无";  //合同履行地
-        NSString *creditorfile = @"无";  //债权文件
-        NSString *creditorinfo = @"无";  //债权人信息
-        NSString *borrowinginfo = @"无";  //债务人信息
+        NSString *commissionperiod = messageModel.commissionperiod?messageModel.commissionperiod:@"无";   //委托代理期限
+        NSString *paidmoney = messageModel.paidmoney?messageModel.paidmoney:@"无";  //已付本金
+        NSString *interestpaid = messageModel.interestpaid?messageModel.interestpaid:@"无";  //已付利息
+        NSString *performancecontract = messageModel.performancecontract?messageModel.performancecontract:@"无";  //合同履行地
+        NSString *creditorfile = messageModel.creditorfile?messageModel.creditorfile:@"无";  //债权文件
+        NSString *creditorinfo = messageModel.creditorinfo?messageModel.creditorinfo:@"无";  //债权人信息
+        NSString *borrowinginfo = messageModel.borrowinginfo?messageModel.borrowinginfo:@"无";  //债务人信息
         
-        if (messageModel.rate) {
-            rate = messageModel.rate;
-        }
         if (messageModel.rate_cat) {
             if ([messageModel.rate_cat intValue] == 1) {
                 rate_cat = @"天";
@@ -179,9 +166,7 @@
                 rate_cat = @"月";
             }
         }
-        if (messageModel.term) {
-            term = messageModel.term;
-        }
+
         if (messageModel.repaymethod) {
             if ([messageModel.repaymethod intValue] == 1) {
                 repaymethod = @"一次性到期还本付息";
@@ -207,195 +192,14 @@
                 commitment = @"代理执行";
             }
         }
-        if (messageModel.commissionperiod) {
-            commissionperiod = messageModel.commissionperiod;
-        }
-        if (messageModel.paidmoney) {
-            paidmoney = messageModel.paidmoney;
-        }
-        if (messageModel.interestpaid) {
-            interestpaid = messageModel.interestpaid;
-        }
-        if (messageModel.performancecontract) {
-            performancecontract = messageModel.performancecontract;
-        }
-        if (messageModel.creditorfile) {
-            creditorfile = messageModel.creditorfile;
-        }
-        if (messageModel.creditorinfo) {
-            creditorinfo = messageModel.creditorinfo;
-        }
-        if (messageModel.borrowinginfo) {
-            borrowinginfo = messageModel.borrowinginfo;
-        }
         
         NSArray *dataList1 = @[@"借款利率(%)",@"借款利率类型",@"借款期限",@"借款期限类型",@"还款方式",@"债务人主体",@"委托事项",@"委托代理期限(月)",@"已付本金",@"已付利息",@"合同履行地",@"债权文件",@"债权人信息",@"债务人信息"];
         NSArray *dataList2 = @[rate,rate_cat,term,rate_cat,repaymethod,obligor,commitment,commissionperiod,paidmoney,interestpaid,performancecontract,creditorfile,creditorinfo,borrowinginfo];
         [cell.userNameButton setTitle:dataList1[indexPath.row] forState:0];
         [cell.userActionButton setTitle:dataList2[indexPath.row] forState:0];
     }
-
     
     return cell;
-    
-    /*
-     PublishingModel *messageModel = self.yyModel.product;
-     if ([messageModel.category intValue] == 1) {//融资
-     
-     NSString *rateCatStr; //借款期限类型
-     NSString *term = @"无";   //借款期限
-     NSString *mortgagecategory = @"无";//抵押物类型
-     NSString *status = @"无";  //抵押物状态
-     NSString *mortgagearea = @"无";  //抵押物面积
-     NSString *loanyear = @"无";   //借款人年龄
-     NSString *obligeeyear = @"无";  //权利人年龄
-     
-     if ([messageModel.rate_cat intValue] == 1) {
-     rateCatStr = @"天";
-     }else if ([messageModel.rate_cat intValue] == 2){
-     rateCatStr = @"月";
-     }
-     
-     if (messageModel.term) {
-     term = messageModel.term;
-     }
-     
-     if (messageModel.mortgagecategory) {
-     if ([messageModel.mortgagecategory intValue] == 1) {
-     mortgagecategory = @"住宅";
-     }else if ([messageModel.mortgagecategory intValue] == 2){
-     mortgagecategory = @"商户";
-     }else{
-     mortgagecategory = @"办公楼";
-     }
-     }
-     if (messageModel.status) {
-     if ([messageModel.status intValue] == 2){
-     status = @"自住";
-     }else{
-     status = @"出租";
-     }
-     }
-     
-     if (messageModel.mortgagearea) {
-     mortgagearea = messageModel.mortgagearea;
-     }
-     if (messageModel.loanyear) {
-     loanyear = messageModel.loanyear;
-     }
-     if (messageModel.obligeeyear) {
-     if ([messageModel.obligeeyear intValue] == 1) {
-     obligeeyear = @"65岁以上";
-     }else{
-     obligeeyear = @"65岁以下";
-     }
-     }
-     
-     _rightTableView.dataList1 = [NSMutableArray arrayWithArray:@[@"借款期限",@"借款期限类型",@"抵押物类型",@"抵押物状态",@"抵押物面积",@"借款人年龄",@"权利人年龄"]];
-     _rightTableView.dataList2 = [NSMutableArray arrayWithArray:@[term,rateCatStr,mortgagecategory,status,mortgagearea,loanyear,obligeeyear]];
-     
-     }else{//催收，诉讼
-     
-     NSString *rate = @"无"; //借款利率
-     NSString *rate_cat = @"无"; //借款期限类型
-     NSString *term = @"无";   //借款期限
-     NSString *repaymethod = @"无";//还款方式
-     NSString *obligor = @"无";  //债务人主体
-     NSString *commitment = @"无";  //委托事项
-     NSString *commissionperiod = @"无";   //委托代理期限
-     NSString *paidmoney = @"无";  //已付本金
-     NSString *interestpaid = @"无";  //已付利息
-     NSString *performancecontract = @"无";  //合同履行地
-     NSString *creditorfile = @"无";  //债权文件
-     NSString *creditorinfo = @"无";  //债权人信息
-     NSString *borrowinginfo = @"无";  //债务人信息
-     
-     if (messageModel.rate) {
-     rate = messageModel.rate;
-     }
-     if (messageModel.rate_cat) {
-     if ([messageModel.rate_cat intValue] == 1) {
-     rate_cat = @"天";
-     }else{
-     rate_cat = @"月";
-     }
-     }
-     if (messageModel.term) {
-     term = messageModel.term;
-     }
-     if (messageModel.repaymethod) {
-     if ([messageModel.repaymethod intValue] == 1) {
-     repaymethod = @"一次性到期还本付息";
-     }else{
-     repaymethod = @"按月付息，到期还本";
-     }
-     }
-     if (messageModel.obligor) {
-     if ([messageModel.obligor intValue] == 1) {
-     obligor = @"自然人";
-     }else if([messageModel.obligor intValue] == 2){
-     obligor = @"法人";
-     }else{
-     obligor = @"其他";
-     }
-     }
-     if (messageModel.commitment) {
-     if ([messageModel.commitment intValue] == 1) {
-     commitment = @"代理诉讼";
-     }else if([messageModel.commitment intValue] == 2){
-     commitment = @"代理仲裁";
-     }else{
-     commitment = @"代理执行";
-     }
-     }
-     if (messageModel.commissionperiod) {
-     commissionperiod = messageModel.commissionperiod;
-     }
-     if (messageModel.paidmoney) {
-     paidmoney = messageModel.paidmoney;
-     }
-     if (messageModel.interestpaid) {
-     interestpaid = messageModel.interestpaid;
-     }
-     if (messageModel.performancecontract) {
-     performancecontract = messageModel.performancecontract;
-     }
-     if (messageModel.creditorfile) {
-     creditorfile = messageModel.creditorfile;
-     }
-     if (messageModel.creditorinfo) {
-     creditorinfo = messageModel.creditorinfo;
-     }
-     if (messageModel.borrowinginfo) {
-     borrowinginfo = messageModel.borrowinginfo;
-     }
-     
-     _rightTableView.dataList1 = [NSMutableArray arrayWithArray:@[@"借款利率(%)",@"借款利率类型",@"借款期限",@"借款期限类型",@"还款方式",@"债务人主体",@"委托事项",@"委托代理期限(月)",@"已付本金",@"已付利息",@"合同履行地",@"债权文件",@"债权人信息",@"债务人信息"]];
-     _rightTableView.dataList2 = [NSMutableArray arrayWithArray:@[rate,rate_cat,term,rate_cat,repaymethod,obligor,commitment,commissionperiod,paidmoney,interestpaid,performancecontract,creditorfile,creditorinfo,borrowinginfo]];
-     }
-     
-     QDFWeakSelf;
-     [_rightTableView setDidSelectedRow:^(NSInteger row) {
-     switch (row) {
-     case 9:{//债权文件
-     DebtDocumnetsViewController *debtDocumnetsVC = [[DebtDocumnetsViewController alloc] init];
-     [weakself.navigationController pushViewController:debtDocumnetsVC animated:YES];
-     }
-     break;
-     case 10:{//债权人信息
-     
-     }
-     break;
-     case 11:{//债务人信息
-     
-     }
-     break;
-     default:
-     break;
-     }
-     
-     }];
-     */
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

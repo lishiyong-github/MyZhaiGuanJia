@@ -271,14 +271,22 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section > 0) {
-        ProductsDetailsViewController *productsDetailVC = [[ProductsDetailsViewController alloc] init];
-        productsDetailVC.hidesBottomBarWhenPushed = YES;
         
-        NewProductListModel *sModel = self.productsDataListArray[indexPath.section - 1];
-        productsDetailVC.idString = sModel.idString;
-        productsDetailVC.categoryString = sModel.category;
+        [self tokenIsValid];
         
-        [self.navigationController pushViewController:productsDetailVC animated:YES];
+        QDFWeakSelf;
+        [self setDidTokenValid:^(TokenModel *model) {
+            if ([model.code isEqualToString:@"0000"]) {//正常
+                ProductsDetailsViewController *productsDetailVC = [[ProductsDetailsViewController alloc] init];
+                productsDetailVC.hidesBottomBarWhenPushed = YES;
+                NewProductListModel *sModel = weakself.productsDataListArray[indexPath.section - 1];
+                productsDetailVC.idString = sModel.idString;
+                productsDetailVC.categoryString = sModel.category;
+                [weakself.navigationController pushViewController:productsDetailVC animated:YES];
+            }else {//token过期,或未认证（code=3001过期   code=3006未认证）
+                [weakself showHint:model.msg];
+            }
+        }];
     }
 }
 

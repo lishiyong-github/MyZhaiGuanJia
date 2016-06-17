@@ -88,6 +88,11 @@
 		A1602E771CEDA9F50053F850 /* CompletePhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = A1602E761CEDA9F50053F850 /* CompletePhotoView.m */; };
 		A1602E7A1CEDAF790053F850 /* BidMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1602E791CEDAF790053F850 /* BidMessageCell.m */; };
 		A1602E7D1CEDB3920053F850 /* BidOneCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1602E7C1CEDB3920053F850 /* BidOneCell.m */; };
+		A161754F1D1257A9001BB200 /* ApplicationStateModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A161754E1D1257A9001BB200 /* ApplicationStateModel.m */; };
+		A16175531D1291D5001BB200 /* TokenModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A16175521D1291D5001BB200 /* TokenModel.m */; };
+		A16175561D12A1CF001BB200 /* LoginTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = A16175551D12A1CF001BB200 /* LoginTableView.m */; };
+		A161755D1D138A6A001BB200 /* RecordResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A161755C1D138A6A001BB200 /* RecordResponse.m */; };
+		A161756C1D13A731001BB200 /* SkyAssociationMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = A161756B1D13A731001BB200 /* SkyAssociationMenuView.m */; };
 		A16486B11D00088B00B442C1 /* title_product_close@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A16486AD1D00088B00B442C1 /* title_product_close@2x.png */; };
 		A16486B21D00088B00B442C1 /* title_product_close@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A16486AE1D00088B00B442C1 /* title_product_close@3x.png */; };
 		A16486B31D00088B00B442C1 /* title_product_open@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A16486AF1D00088B00B442C1 /* title_product_open@2x.png */; };
@@ -245,7 +250,6 @@
 		A196CDF81CFBE54200AC6C87 /* more@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A196CDF61CFBE54200AC6C87 /* more@3x.png */; };
 		A196CDFE1CFC06DA00AC6C87 /* TextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A196CDFD1CFC06DA00AC6C87 /* TextFieldCell.m */; };
 		A196CE021CFC1BD400AC6C87 /* AgreementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A196CE011CFC1BD400AC6C87 /* AgreementViewController.m */; };
-		A196CE051CFC313000AC6C87 /* ApplyRecordsDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A196CE041CFC313000AC6C87 /* ApplyRecordsDetailViewController.m */; };
 		A1982B321CFFD5D4001770A7 /* logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1982B301CFFD5D4001770A7 /* logo@2x.png */; };
 		A1982B331CFFD5D4001770A7 /* logo@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1982B311CFFD5D4001770A7 /* logo@3x.png */; };
 		A1982B361CFFD730001770A7 /* CompanyWebSiteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1982B351CFFD730001770A7 /* CompanyWebSiteViewController.m */; };
@@ -563,6 +567,16 @@
 		A1602E791CEDAF790053F850 /* BidMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BidMessageCell.m; sourceTree = "<group>"; };
 		A1602E7B1CEDB3920053F850 /* BidOneCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BidOneCell.h; sourceTree = "<group>"; };
 		A1602E7C1CEDB3920053F850 /* BidOneCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BidOneCell.m; sourceTree = "<group>"; };
+		A161754D1D1257A9001BB200 /* ApplicationStateModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationStateModel.h; sourceTree = "<group>"; };
+		A161754E1D1257A9001BB200 /* ApplicationStateModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplicationStateModel.m; sourceTree = "<group>"; };
+		A16175511D1291D5001BB200 /* TokenModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TokenModel.h; sourceTree = "<group>"; };
+		A16175521D1291D5001BB200 /* TokenModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TokenModel.m; sourceTree = "<group>"; };
+		A16175541D12A1CF001BB200 /* LoginTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginTableView.h; sourceTree = "<group>"; };
+		A16175551D12A1CF001BB200 /* LoginTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginTableView.m; sourceTree = "<group>"; };
+		A161755B1D138A6A001BB200 /* RecordResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordResponse.h; sourceTree = "<group>"; };
+		A161755C1D138A6A001BB200 /* RecordResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordResponse.m; sourceTree = "<group>"; };
+		A161756A1D13A731001BB200 /* SkyAssociationMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkyAssociationMenuView.h; sourceTree = "<group>"; };
+		A161756B1D13A731001BB200 /* SkyAssociationMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkyAssociationMenuView.m; sourceTree = "<group>"; };
 		A16486AD1D00088B00B442C1 /* title_product_close@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "title_product_close@2x.png"; sourceTree = "<group>"; };
 		A16486AE1D00088B00B442C1 /* title_product_close@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "title_product_close@3x.png"; sourceTree = "<group>"; };
 		A16486AF1D00088B00B442C1 /* title_product_open@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "title_product_open@2x.png"; sourceTree = "<group>"; };
@@ -799,8 +813,6 @@
 		A196CDFD1CFC06DA00AC6C87 /* TextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldCell.m; sourceTree = "<group>"; };
 		A196CE001CFC1BD400AC6C87 /* AgreementViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgreementViewController.h; sourceTree = "<group>"; };
 		A196CE011CFC1BD400AC6C87 /* AgreementViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgreementViewController.m; sourceTree = "<group>"; };
-		A196CE031CFC313000AC6C87 /* ApplyRecordsDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplyRecordsDetailViewController.h; sourceTree = "<group>"; };
-		A196CE041CFC313000AC6C87 /* ApplyRecordsDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplyRecordsDetailViewController.m; sourceTree = "<group>"; };
 		A1982B301CFFD5D4001770A7 /* logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo@2x.png"; sourceTree = "<group>"; };
 		A1982B311CFFD5D4001770A7 /* logo@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo@3x.png"; sourceTree = "<group>"; };
 		A1982B341CFFD730001770A7 /* CompanyWebSiteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompanyWebSiteViewController.h; sourceTree = "<group>"; };
@@ -1287,6 +1299,42 @@
 			path = "债务人信息";
 			sourceTree = "<group>";
 		};
+		A161754C1D12578A001BB200 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				A161754D1D1257A9001BB200 /* ApplicationStateModel.h */,
+				A161754E1D1257A9001BB200 /* ApplicationStateModel.m */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		A16175501D1291BA001BB200 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				A16175511D1291D5001BB200 /* TokenModel.h */,
+				A16175521D1291D5001BB200 /* TokenModel.m */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		A16175571D1387D4001BB200 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				A161755B1D138A6A001BB200 /* RecordResponse.h */,
+				A161755C1D138A6A001BB200 /* RecordResponse.m */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		A16175691D13A70F001BB200 /* SkyAssociationMenu */ = {
+			isa = PBXGroup;
+			children = (
+				A161756A1D13A731001BB200 /* SkyAssociationMenuView.h */,
+				A161756B1D13A731001BB200 /* SkyAssociationMenuView.m */,
+			);
+			path = SkyAssociationMenu;
+			sourceTree = "<group>";
+		};
 		A16856731CE951D0006A0887 /* view */ = {
 			isa = PBXGroup;
 			children = (
@@ -1301,6 +1349,7 @@
 			children = (
 				A168567D1CE9931F006A0887 /* 发布人信息 */,
 				A168567C1CE99314006A0887 /* 产品信息 */,
+				A161754C1D12578A001BB200 /* model */,
 				A16856A61CE9BF6C006A0887 /* view */,
 				A16856791CE992C4006A0887 /* ProductsDetailsViewController.h */,
 				A168567A1CE992C4006A0887 /* ProductsDetailsViewController.m */,
@@ -1609,11 +1658,10 @@
 		A17F7BF91CE5DDB700E882A3 /* 查看申请 */ = {
 			isa = PBXGroup;
 			children = (
+				A16175571D1387D4001BB200 /* model */,
 				A16856731CE951D0006A0887 /* view */,
 				A17F7BFA1CE5DDDA00E882A3 /* ApplyRecordsViewController.h */,
 				A17F7BFB1CE5DDDA00E882A3 /* ApplyRecordsViewController.m */,
-				A196CE031CFC313000AC6C87 /* ApplyRecordsDetailViewController.h */,
-				A196CE041CFC313000AC6C87 /* ApplyRecordsDetailViewController.m */,
 			);
 			path = "查看申请";
 			sourceTree = "<group>";
@@ -1623,6 +1671,8 @@
 			children = (
 				A18C67641CD08DA800C7B070 /* LoginView.h */,
 				A18C67651CD08DA800C7B070 /* LoginView.m */,
+				A16175541D12A1CF001BB200 /* LoginTableView.h */,
+				A16175551D12A1CF001BB200 /* LoginTableView.m */,
 				A1A34C031CE2FE7500AD454A /* UserButton.h */,
 				A1A34C041CE2FE7500AD454A /* UserButton.m */,
 				A1A34BFD1CE2F63F00AD454A /* MineCell.h */,
@@ -2377,6 +2427,7 @@
 		A1A017311C5B677200027134 /* 第三方 */ = {
 			isa = PBXGroup;
 			children = (
+				A16175691D13A70F001BB200 /* SkyAssociationMenu */,
 				A159F9691D0D727A00A6A024 /* MJRefresh */,
 				A159F93A1D0BEE5E00A6A024 /* MutipleChoiceImage */,
 				A1770E211CFEA2C1003579E1 /* StarView */,
@@ -2466,6 +2517,7 @@
 		A1A34C2F1CE32A2F00AD454A /* 登录注册 */ = {
 			isa = PBXGroup;
 			children = (
+				A16175501D1291BA001BB200 /* model */,
 				A1A34C311CE32C6200AD454A /* view */,
 				A1A34C301CE32C5800AD454A /* controller */,
 			);
@@ -2941,6 +2993,7 @@
 				A1A97E6A1CDC989200EDE320 /* MyPublishingViewController.m in Sources */,
 				A16FF59A1D05570000C50A0B /* ResultModel.m in Sources */,
 				A159F9811D0D727A00A6A024 /* UIView+MJExtension.m in Sources */,
+				A161754F1D1257A9001BB200 /* ApplicationStateModel.m in Sources */,
 				A10D7B6C1CEABDCB00422D7D /* MainView.m in Sources */,
 				A1A34C161CE3148A00AD454A /* UploadFilesViewController.m in Sources */,
 				A199851D1CE0360B0055A572 /* MessageRemindViewController.m in Sources */,
@@ -3026,6 +3079,7 @@
 				A16BA1431CEC155B00A7010C /* EditDebtCell.m in Sources */,
 				A19B8E571CCF640300F8EBF2 /* MessageCell.m in Sources */,
 				A1A34C371CE32C8000AD454A /* RegisterViewController.m in Sources */,
+				A16175531D1291D5001BB200 /* TokenModel.m in Sources */,
 				A1A017501C5B696A00027134 /* MJFoundation.m in Sources */,
 				A196CDFE1CFC06DA00AC6C87 /* TextFieldCell.m in Sources */,
 				A1A017541C5B696A00027134 /* NSObject+MJClass.m in Sources */,
@@ -3034,7 +3088,6 @@
 				A159F9841D0E3D6600A6A024 /* FinanCell.m in Sources */,
 				A10D7B781CEAF73C00422D7D /* MyAgentCell.m in Sources */,
 				A17634271D06B6F500CD4623 /* CertificationModel.m in Sources */,
-				A196CE051CFC313000AC6C87 /* ApplyRecordsDetailViewController.m in Sources */,
 				A1A016A71C5A0C0300027134 /* AppDelegate.m in Sources */,
 				A10D7B7B1CEAFAFE00422D7D /* AddMyAgentViewController.m in Sources */,
 				A1FB26621CF2D47B00B66608 /* AllProductsChooseView.m in Sources */,
@@ -3044,6 +3097,7 @@
 				A1A017301C5B607300027134 /* UIImage+Color.m in Sources */,
 				A1A017911C5B8A2100027134 /* AFHTTPSessionManager.m in Sources */,
 				A17634191D065E4900CD4623 /* RowsModel.m in Sources */,
+				A161756C1D13A731001BB200 /* SkyAssociationMenuView.m in Sources */,
 				A1A016A41C5A0C0300027134 /* main.m in Sources */,
 				A19B8E501CCF532B00F8EBF2 /* NewProductViewController.m in Sources */,
 				A17F7BE91CE578EB00E882A3 /* JKCountDownButton.m in Sources */,
@@ -3057,6 +3111,7 @@
 				A17EE3911CD8796900ECC631 /* SuggestionViewController.m in Sources */,
 				A19D294E1CD1E04300DAAEA7 /* HomeCell.m in Sources */,
 				A159F9801D0D727A00A6A024 /* UIScrollView+MJRefresh.m in Sources */,
+				A16175561D12A1CF001BB200 /* LoginTableView.m in Sources */,
 				A17964D51CD2EAB100B6AD47 /* AuthenBaseView.m in Sources */,
 				A1FB26571CF2B41B00B66608 /* ReportSuccessCell.m in Sources */,
 				A176912A1CD9976D004289DD /* MyClosingViewController.m in Sources */,
@@ -3110,6 +3165,7 @@
 				A16856801CE99358006A0887 /* ProductsDetailsProViewController.m in Sources */,
 				A14C17681D0AE577003826F8 /* UserModel.m in Sources */,
 				A159F94B1D0C497300A6A024 /* UIViewController+BlurView.m in Sources */,
+				A161755D1D138A6A001BB200 /* RecordResponse.m in Sources */,
 				A10D7B7E1CEAFB7A00422D7D /* AgentCell.m in Sources */,
 				A16BA13D1CEBF57E00A7010C /* DebtCell.m in Sources */,
 				A18C675F1CD087C500C7B070 /* UIView+Fram.m in Sources */,

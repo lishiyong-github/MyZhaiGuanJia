@@ -20,7 +20,6 @@
 #import "BidMessageCell.h"
 #import "BidOneCell.h"
 
-
 #import "PublishingModel.h"
 #import "PublishingResponse.h"
 
@@ -41,7 +40,11 @@
     [super viewDidLoad];
     self.navigationItem.title = @"产品详情";
     self.navigationItem.leftBarButtonItem = self.leftItem;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"查看接单方" style:UIBarButtonItemStylePlain target:self action:@selector(checkPublishUserDetail)];
+    
+    if (self.pidString) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"查看接单方" style:UIBarButtonItemStylePlain target:self action:@selector(checkPublishUserDetail)];
+    }
+    
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kBlueColor} forState:0];
     
     [self.view addSubview: self.dealingTableView];
@@ -75,8 +78,7 @@
 - (UITableView *)dealingTableView
 {
     if (!_dealingTableView) {
-        _dealingTableView = [UITableView newAutoLayoutView];
-        _dealingTableView.translatesAutoresizingMaskIntoConstraints = NO;
+        _dealingTableView.translatesAutoresizingMaskIntoConstraints = YES;
         _dealingTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _dealingTableView.delegate = self;
         _dealingTableView.dataSource = self;
@@ -104,38 +106,29 @@
 
         QDFWeakSelf;
         [_dealFootView setDidSelectedButton:^(NSInteger tag) {
+            
+            NSString *messages;
             if (tag == 33) {//终止
-                UIAlertController *getAlertVC = [UIAlertController alertControllerWithTitle:@"" message:@"确定选择终止?" preferredStyle:UIAlertControllerStyleAlert];
-                
-                UIAlertAction *act0 = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                    [weakself.dealFootView setHidden:YES];
-                    [weakself.dealCommitButton setHidden:NO];
-                    [weakself.dealCommitButton setTitle:@"已终止" forState:0];
-                }];
-                
-                UIAlertAction *act1 = [UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleDefault handler:nil];
-                
-                [getAlertVC addAction:act0];
-                [getAlertVC addAction:act1];
-                
-                [weakself presentViewController:getAlertVC animated:YES completion:nil];
-                
-            }else{//已结案
-                UIAlertController *sendAlertVC = [UIAlertController alertControllerWithTitle:@"" message:@"确定申请结案?" preferredStyle:UIAlertControllerStyleAlert];
-                
-                UIAlertAction *acti0 = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                    [weakself.dealFootView setHidden:YES];
-                    [weakself.dealCommitButton setHidden:NO];
-                    [weakself.dealCommitButton setTitle:@"已结案" forState:0];
-                }];
-                
-                UIAlertAction *acti1 = [UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleDefault handler:nil];
-                
-                [sendAlertVC addAction:acti0];
-                [sendAlertVC addAction:acti1];
-                [weakself presentViewController:sendAlertVC animated:YES completion:nil];
-
+                messages = @"确定选择终止?";
+            }else{//申请结案
+                messages = @"确定申请结案?";
             }
+            
+            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"" message:messages preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction *act0 = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                if (tag == 33) {
+                    [weakself endProductWithStatusString:@"3"];
+                }else{
+                    [weakself endProductWithStatusString:@"4"];
+                }
+            }];
+            UIAlertAction *act1 = [UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleDefault handler:nil];
+            
+            [alertVC addAction:act0];
+            [alertVC addAction:act1];
+            [weakself presentViewController:alertVC animated:YES completion:nil];
+            
         }];
     }
     return _dealFootView;
@@ -384,7 +377,7 @@
     checkDetailPublishVC.categoryString = self.categaryString;
     checkDetailPublishVC.pidString = self.pidString;
     checkDetailPublishVC.typeString = @"接单方";
-    checkDetailPublishVC.evaTypeString = @"evaluate";
+    checkDetailPublishVC.evaTypeString = @"launchevaluation";
     [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
 }
 
@@ -402,6 +395,29 @@
         [self.dealingTableView reloadData];
         
     } andFailBlock:^(NSError *error){
+        
+    }];
+}
+
+- (void)endProductWithStatusString:(NSString *)status //status:3为终止。4为结案。
+{
+    NSString *endpString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyreleaseDealingEndString];
+    NSDictionary *params = @{@"id" : self.idString,
+                             @"category" : self.categaryString,
+                             @"status" : status,
+                             @"token" : [self getValidateToken]
+                             };
+    [self requestDataPostWithString:endpString params:params successBlock:^(id responseObject) {
+        BaseModel *sModel = [BaseModel objectWithKeyValues:responseObject];
+        [self showHint:@"成功"];
+        
+        if ([sModel.code isEqualToString:@"0000"]) {//成功
+            [self.dealFootView setHidden:YES];
+            [self.dealCommitButton setHidden:NO];
+            [self.dealCommitButton setTitle:@"已终止" forState:0];
+        }
+        
+    } andFailBlock:^(NSError *error) {
         
     }];
 }

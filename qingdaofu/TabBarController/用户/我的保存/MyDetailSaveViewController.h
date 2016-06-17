@@ -7,11 +7,13 @@
 //
 
 #import "NetworkViewController.h"
-//#import "RowsModel.h"
+#import "RowsModel.h"
 
 @interface MyDetailSaveViewController : NetworkViewController
 
 @property (nonatomic,strong) NSString *idString;
 @property (nonatomic,strong) NSString *categaryString;
+
+@property (nonatomic,strong) RowsModel *wModel;
 
 @end

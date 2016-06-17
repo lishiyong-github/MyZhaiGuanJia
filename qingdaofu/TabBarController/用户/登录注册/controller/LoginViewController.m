@@ -153,16 +153,8 @@
 {
     NSString *loginString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kLoginString];
     
-    NSString *mobile = @"";
-    NSString *password = @"";
-    
-    if (self.loginDictionary[@"mobile"]) {
-       mobile = self.loginDictionary[@"mobile"];
-    }
-    
-    if (self.loginDictionary[@"password"]) {
-        password = self.loginDictionary[@"password"];
-    }
+    NSString *mobile = self.loginDictionary[@"mobile"]?self.loginDictionary[@"mobile"]:@"";
+    NSString *password = self.loginDictionary[@"password"]?self.loginDictionary[@"password"]:@"";
     
     NSDictionary *params = @{@"mobile" : mobile,
                              @"password" : password

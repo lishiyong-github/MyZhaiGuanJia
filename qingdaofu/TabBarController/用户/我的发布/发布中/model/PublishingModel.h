@@ -55,6 +55,7 @@
 @property (nonatomic,copy) NSString *uidInner;  //发布人uid
 @property (nonatomic,copy) NSString *status;  //状态：1=>'自住',2=>'出租',
 @property (nonatomic,copy) NSString *mortgagecategory;  //抵押物类型
+@property (nonatomic,copy) NSString *rentmoney; //租金
 @property (nonatomic,copy) NSString *mortgagearea;  //面积
 @property (nonatomic,copy) NSString *loanyear;  //借款人年龄
 @property (nonatomic,copy) NSString *obligeeyear;  //权利人年龄

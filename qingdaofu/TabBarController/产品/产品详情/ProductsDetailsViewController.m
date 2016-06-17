@@ -19,6 +19,8 @@
 #import "PublishingResponse.h"
 #import "PublishingModel.h"
 
+#import "ApplicationStateModel.h"
+
 @interface ProductsDetailsViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,strong) UIButton *leftItemButton;
@@ -137,51 +139,6 @@
 {
     if (!_proDetailsCommitButton) {
         _proDetailsCommitButton = [BaseCommitButton newAutoLayoutView];
-        
-        // add call
-        UIButton *phoneButton = [UIButton newAutoLayoutView];
-        [phoneButton setImage:[UIImage imageNamed:@"phone"] forState:0];
-        phoneButton.backgroundColor = kBlueColor;
-        [phoneButton addAction:^(UIButton *btn) {
-            NSString *phoneStr = [NSString stringWithFormat:@"telprompt://%@",@"400-855-7022"];
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
-        }];
-        [_proDetailsCommitButton addSubview:phoneButton];
-        [phoneButton setHidden:YES];
-        
-        [phoneButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:_proDetailsCommitButton];
-        [phoneButton autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:_proDetailsCommitButton];
-        [phoneButton autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:_proDetailsCommitButton];
-        [phoneButton autoSetDimension:ALDimensionWidth toSize:kTabBarHeight];
-
-        NSString *isSuccess = @"未申请";
-        if ([isSuccess isEqualToString:@"未申请"]) {
-            [phoneButton setHidden:YES];
-            QDFWeakSelf;
-            [_proDetailsCommitButton setTitle:@"立即申请" forState:0];
-            [_proDetailsCommitButton addAction:^(UIButton *btn) {
-
-                [weakself showHint:@"申请中" yOffset:-(kScreenHeight-200)/2];
-                
-                [btn setBackgroundColor:kSelectedColor];
-                [btn setTitle:@"申请中" forState:0];
-                [btn setTitleColor:kBlackColor forState:0];
-                btn.userInteractionEnabled = NO;
-            }];
-
-        }else{
-            [_proDetailsCommitButton setTitleColor:kBlackColor forState:0];
-            [_proDetailsCommitButton setBackgroundColor:kSelectedColor];
-            if ([isSuccess isEqualToString:@"申请成功"]) {
-                [phoneButton setHidden:NO];
-                [_proDetailsCommitButton setTitle:@"申请成功" forState:0];
-            }else{
-                [phoneButton setHidden:YES];
-                [_proDetailsCommitButton setTitle:isSuccess forState:0];
-//                [_proDetailsCommitButton setTitleColor:kBlackColor forState:0];
-//                [_proDetailsCommitButton setBackgroundColor:kSelectedColor];
-            }
-        }
     }
     return _proDetailsCommitButton;
 }
@@ -359,7 +316,7 @@
             checkDetailPublishVC.categoryString = self.categoryString;
             checkDetailPublishVC.pidString = pModel.uidInner;
             checkDetailPublishVC.typeString = @"发布方";
-            checkDetailPublishVC.evaTypeString = @"launchevaluation";
+            checkDetailPublishVC.evaTypeString = @"evaluate";
             [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
         }
     }
@@ -375,17 +332,112 @@
                              @"category" : self.categoryString
                              };
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
+        
+        NSDictionary *dci = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        NSLog(@"$$$$$ %@",dci);
+        
         PublishingResponse *respModel = [PublishingResponse objectWithKeyValues:responseObject];
         
         self.navigationItem.title = respModel.product.codeString;
         
         [self.recommendDataArray addObject:respModel];
+        
+        if ([respModel.product.progress_status intValue] == 1) {//已申请
+            
+        }else if ([respModel.product.progress_status intValue] == 2){
+            
+//            [phoneButton setHidden:YES];
+//            [self.proDetailsCommitButton setTitle:isSuccess forState:0];
+        }
+        
+        [self applicationForOrdersStates];
+        
         [self.productsDetailsTableView reloadData];
         
     } andFailBlock:^(NSError *error){
         
     }];
 }
+
+//申请状态
+- (void)applicationForOrdersStates
+{
+    NSString *houseString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductHouseStateString];
+    NSDictionary *params = @{@"id" : self.idString,
+                             @"category" : self.categoryString,
+                             @"token" : [self getValidateToken]
+                             };
+    [self requestDataPostWithString:houseString params:params successBlock:^(id responseObject) {
+        ApplicationStateModel *stateModel = [ApplicationStateModel objectWithKeyValues:responseObject];
+        
+        PublishingResponse *rModel = self.recommendDataArray[0];
+        
+        if (([stateModel.app_id intValue] == 0) && ([rModel.product.progress_status intValue] == 5)) {//已申请
+            [self.proDetailsCommitButton setTitleColor:kBlackColor forState:0];
+            [self.proDetailsCommitButton setTitle:@"已申请" forState:0];
+            [self.proDetailsCommitButton setBackgroundColor:kSelectedColor];
+            self.proDetailsCommitButton.userInteractionEnabled = NO;
+        }else if (([stateModel.app_id intValue] == 0) && ([rModel.product.progress_status intValue] == 1)){//申请成功
+            [self.proDetailsCommitButton setTitleColor:kBlackColor forState:0];
+            [self.proDetailsCommitButton setTitle:@"申请成功" forState:0];
+            [self.proDetailsCommitButton setBackgroundColor:kSelectedColor];
+            
+            //添加电话按钮
+            UIButton *phoneButton = [UIButton newAutoLayoutView];
+            [phoneButton setImage:[UIImage imageNamed:@"phone"] forState:0];
+            phoneButton.backgroundColor = kBlueColor;
+            [phoneButton addAction:^(UIButton *btn) {
+                NSString *phoneStr = [NSString stringWithFormat:@"telprompt://%@",stateModel.mobile];
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
+            }];
+            [self.proDetailsCommitButton addSubview:phoneButton];
+    
+            [phoneButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:_proDetailsCommitButton];
+            [phoneButton autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:_proDetailsCommitButton];
+            [phoneButton autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:_proDetailsCommitButton];
+            [phoneButton autoSetDimension:ALDimensionWidth toSize:kTabBarHeight];
+            
+        }else{
+            [self.proDetailsCommitButton setTitleColor:kNavColor forState:0];
+            [self.proDetailsCommitButton setTitle:@"立即申请" forState:0];
+            [self.proDetailsCommitButton addTarget: self action:@selector(applicationCommit) forControlEvents:UIControlEventTouchUpInside];
+        }
+        
+//        if ([dModel.code isEqualToString:@"0000"]) {
+//            [sender setBackgroundColor:kSelectedColor];
+//            [sender setTitle:@"申请中" forState:0];
+//            [sender setTitleColor:kBlackColor forState:0];
+//            sender.userInteractionEnabled = NO;
+//        }
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
+//立即申请
+- (void)applicationCommit
+{
+    NSString *appString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductHouseString];
+    NSDictionary *params = @{@"id" : self.idString,
+                             @"category" : self.categoryString,
+                             @"token" : [self getValidateToken]
+                             };
+    [self requestDataPostWithString:appString params:params successBlock:^(id responseObject) {
+        BaseModel *appModel = [BaseModel objectWithKeyValues:responseObject];
+        [self showHint:appModel.msg];
+        
+        if ([appModel.code isEqualToString:@"0000"]) {
+            [self.proDetailsCommitButton setBackgroundColor:kSelectedColor];
+            [self.proDetailsCommitButton setTitleColor:kBlackColor forState:0];
+            [self.proDetailsCommitButton setTitle:@"申请中" forState:0];
+        }
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

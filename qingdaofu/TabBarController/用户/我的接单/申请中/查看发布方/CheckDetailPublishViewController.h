@@ -10,7 +10,7 @@
 
 @interface CheckDetailPublishViewController : RefreshViewController
 
-@property (nonatomic,strong) NSString *typeString;  //类别（接单方或发布方）
+@property (nonatomic,strong) NSString *typeString;  //类别（接单方或发布方或申请人）
 
 @property (nonatomic,strong) NSString *idString;
 @property (nonatomic,strong) NSString *categoryString;

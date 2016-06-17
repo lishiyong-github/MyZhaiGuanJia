@@ -22,6 +22,7 @@
 @property (nonatomic,strong) UIAlertController *alertController;
 
 @property (nonatomic,assign) NSInteger pictureInt;
+@property (nonatomic,strong) NSMutableDictionary *perDataDictionary;
 
 @end
 
@@ -72,44 +73,18 @@
     if (!_personAuCommitButton) {
         _personAuCommitButton = [BaseCommitButton newAutoLayoutView];
         [_personAuCommitButton setTitle:@"立即认证" forState:0];
-        
-        QDFWeakSelf;
-        [_personAuCommitButton addAction:^(UIButton *btn) {
-            
-            NSString *personAuString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kAuthenString];
-            NSDictionary *params = @{@"category" : @"1",
-                                     @"name" : @"米月虹",
-                                     @"cardno" : @"420621199109095462",   //证件号
-                                     @"mobile" : @"13162521916",
-                                     @"email" : @"",    //邮箱
-                                     @"casedesc" : @"个人案例个人案例个人案例",  //案例
-                                     @"type" : @"add",
-                                     @"token" : [weakself getValidateToken]
-                                     };
-            
-            [weakself requestDataPostWithString:personAuString params:params successBlock:^(id responseObject){
+        [_personAuCommitButton addTarget:self action:@selector(goToAuthenMessages) forControlEvents:UIControlEventTouchUpInside];
 
-                BaseModel *personModel = [BaseModel objectWithKeyValues:responseObject];
-                
-                [weakself showHint:personModel.msg];
-                
-                if ([personModel.code isEqualToString:@"0000"]) {
-                    UINavigationController *personNav = weakself.navigationController;
-                    [personNav popViewControllerAnimated:NO];
-                    [personNav popViewControllerAnimated:NO];
-                    
-                    CompleteViewController *completeVC = [[CompleteViewController alloc] init];
-                    completeVC.hidesBottomBarWhenPushed = YES;
-                    [personNav pushViewController:completeVC animated:NO];
-                }
-                
-            } andFailBlock:^(NSError *error){
-                
-            }];
-            
-        }];
     }
     return _personAuCommitButton;
+}
+
+- (NSMutableDictionary *)perDataDictionary
+{
+    if (!_perDataDictionary) {
+        _perDataDictionary = [NSMutableDictionary dictionary];
+    }
+    return _perDataDictionary;
 }
 
 #pragma mark - tableView delegate and datasource
@@ -183,10 +158,25 @@
             cell.agentTextField.userInteractionEnabled = NO;
         }else if (indexPath.row == 1){
             cell.agentTextField.text = certificationModel.name;
+            QDFWeak(cell);
+            [cell setDidEndEditing:^(NSString *text) {
+                weakcell.agentTextField.text = text;
+                [self.perDataDictionary setValue:text forKey:@"name"];
+            }];
         }else if (indexPath.row == 2){
             cell.agentTextField.text = certificationModel.cardno;
+            QDFWeak(cell);
+            [cell setDidEndEditing:^(NSString *text) {
+                weakcell.agentTextField.text = text;
+                [self.perDataDictionary setValue:text forKey:@"cardno"];
+            }];
         }else if (indexPath.row == 3){
             cell.agentTextField.text = certificationModel.mobile;
+            QDFWeak(cell);
+            [cell setDidEndEditing:^(NSString *text) {
+                weakcell.agentTextField.text = text;
+                [self.perDataDictionary setValue:text forKey:@"mobile"];
+            }];
         }
         
         return cell;
@@ -215,6 +205,11 @@
                 [cell.agentLabel setAttributedText:ttt];
             }else{
                 cell.agentTextField.text = certificationModel.email;
+                QDFWeak(cell);
+                [cell setDidEndEditing:^(NSString *text) {
+                    weakcell.agentTextField.text = text;
+                    [self.perDataDictionary setValue:text forKey:@"email"];
+                }];
             }
             
             return cell;
@@ -232,6 +227,13 @@
         cell.ediLabel.text = @"经典案例";
         cell.ediTextView.placeholder = @"关于个人在融资等方面的成功案例，有利于发布方更加青睐你";
         cell.ediTextView.text = certificationModel.casedesc;
+        
+        QDFWeak(cell);
+        [cell setDidEndEditing:^(NSString *text) {
+            weakcell.ediTextView.text = text;
+            [self.perDataDictionary setValue:text forKey:@"casedesc"];
+        }];
+        
         return cell;
     }
     
@@ -275,6 +277,49 @@
         return headerView;
     }
     return nil;
+}
+
+#pragma mark - commit messages
+- (void)goToAuthenMessages
+{
+    [self.view endEditing:YES];
+    NSString *personAuString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kAuthenString];
+    
+    self.perDataDictionary[@"cardimg"] = self.perDataDictionary[@"cardimg"]?self.perDataDictionary[@"cardimg"]:self.respnseModel.certification.cardimg;
+    self.perDataDictionary[@"name"] = self.perDataDictionary[@"name"]?self.perDataDictionary[@"name"]:self.respnseModel.certification.name;
+    self.perDataDictionary[@"cardno"] = self.perDataDictionary[@"cardno"]?self.perDataDictionary[@"cardno"]:self.respnseModel.certification.cardno;
+    self.perDataDictionary[@"mobile"] = self.perDataDictionary[@"mobile"]?self.perDataDictionary[@"mobile"]:self.respnseModel.certification.mobile;
+    self.perDataDictionary[@"email"] = self.perDataDictionary[@"email"]?self.perDataDictionary[@"email"]:self.respnseModel.certification.email;
+    self.perDataDictionary[@"casedesc"] = self.perDataDictionary[@"casedesc"]?self.perDataDictionary[@"casedesc"]:self.respnseModel.certification.casedesc;
+    [self.perDataDictionary setValue:@"1" forKey:@"category"];
+    [self.perDataDictionary setValue:[self getValidateToken] forKey:@"token"];
+    
+    if (self.respnseModel) {
+        [self.perDataDictionary setValue:@"update" forKey:@"type"];  //update为修改
+    }else{
+        [self.perDataDictionary setValue:@"add" forKey:@"type"];  //update为修改
+    }
+    NSDictionary *params = self.perDataDictionary;
+    
+    [self requestDataPostWithString:personAuString params:params successBlock:^(id responseObject){
+        
+        BaseModel *personModel = [BaseModel objectWithKeyValues:responseObject];
+        [self showHint:personModel.msg];
+        
+        if ([personModel.code isEqualToString:@"0000"]) {
+            UINavigationController *personNav = self.navigationController;
+            [personNav popViewControllerAnimated:NO];
+            [personNav popViewControllerAnimated:NO];
+            
+            CompleteViewController *completeVC = [[CompleteViewController alloc] init];
+            completeVC.hidesBottomBarWhenPushed = YES;
+            completeVC.categoryString = @"1";
+            [personNav pushViewController:completeVC animated:NO];
+        }
+        
+    } andFailBlock:^(NSError *error){
+        
+    }];
 }
 
 #pragma mark - alertView

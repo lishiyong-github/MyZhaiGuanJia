@@ -10,4 +10,6 @@
 
 @interface RecordResponse : BaseModel
 
+@property (nonatomic,strong) NSMutableArray *user;
+
 @end

@@ -27,7 +27,6 @@
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *checkDetailTableView;
 
-@property (nonatomic,strong) BaseCommitButton *publishStateButton;
 @property (nonatomic,strong) UIButton *rightBarBtn;
 
 @property (nonatomic,strong) NSMutableArray *certifiDataArray;
@@ -45,7 +44,6 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightBarBtn];
 
     [self.view addSubview:self.checkDetailTableView];
-    [self.view addSubview:self.publishStateButton];
     [self.view setNeedsUpdateConstraints];
     
     [self getMessageOfOrderPeople];
@@ -56,11 +54,7 @@
 {
     if (!self.didSetupConstraints) {
         
-        [self.checkDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
-        [self.checkDetailTableView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kTabBarHeight];
-        
-        [self.publishStateButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [self.publishStateButton autoSetDimension:ALDimensionHeight toSize:kTabBarHeight];
+        [self.checkDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
         
         self.didSetupConstraints = YES;
     }
@@ -91,15 +85,6 @@
         _checkDetailTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
     }
     return _checkDetailTableView;
-}
-
-- (BaseCommitButton *)publishStateButton
-{
-    if (!_publishStateButton) {
-        _publishStateButton = [BaseCommitButton newAutoLayoutView];
-        [_publishStateButton setTitle:@"申请中" forState:0];
-    }
-    return _publishStateButton;
 }
 
 - (NSMutableArray *)certifiDataArray
@@ -209,21 +194,20 @@
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
+        [cell.userNameButton setTitleColor:kBlueColor forState:0];
         cell.userActionButton.userInteractionEnabled = NO;
-        if (self.allEvaDataArray.count > 0) {
-            EvaluateResponse *evaResponse = self.allEvaResponse[0];
-            
-            NSString *creditorStr = [NSString stringWithFormat:@"|  收到的评价(%@分)",evaResponse.creditor];
+        if (self.allEvaResponse.count > 0) {
+            EvaluateResponse *response = self.allEvaResponse[0];
+            float creditor = [response.creditor floatValue];
+            NSString *creditorStr = [NSString stringWithFormat:@"|  收到的评价(%.1f分)",creditor];
             [cell.userNameButton setTitle:creditorStr forState:0];
-            [cell.userNameButton setTitleColor:kBlueColor forState:0];
-            [cell.userActionButton setTitle:@"查看全部" forState:0];
+            
+            [cell.userActionButton setTitle:@"查看更多" forState:0];
             [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
         }else{
             [cell.userNameButton setTitle:@"|  收到的评价" forState:0];
-            [cell.userNameButton setTitleColor:kBlueColor forState:0];
             [cell.userActionButton setTitle:@"无" forState:0];
         }
-        
         return cell;
     }
     identifier = @"publish11";
@@ -251,11 +235,12 @@
         
         NSString *isHideStr = evaModel.isHide?@"匿名":evaModel.mobile;
         cell.evaNameLabel.text = isHideStr;
+        cell.evaTimeLabel.text = [NSDate getYMDFormatterTime:evaModel.create_time];
         cell.evaStarImage.currentIndex = [evaResponse.creditor intValue];
         cell.evaProImageView1.backgroundColor = kLightGrayColor;
         cell.evaProImageView2.backgroundColor = kLightGrayColor;
         if (evaModel.content == nil || [evaModel.content isEqualToString:@""]) {
-            cell.evaTextLabel.text = @"未填写评价";
+            cell.evaTextLabel.text = @"未填写评价内容";
         }else{
             cell.evaTextLabel.text = evaModel.content;
         }
@@ -346,7 +331,14 @@
 
 - (void)getMessageOfOrderPeople
 {
-    NSString *yyyString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kCheckOrderPeople];
+    NSString *yyyString;
+    
+    if ([self.typeString isEqualToString:@"发布方"]) {
+        yyyString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kCheckReleasePeople];
+    }else{
+        yyyString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kCheckOrderPeople];
+    }
+    
     NSDictionary *params = @{@"category" : self.categoryString,
                              @"id" : self.idString,
                              @"pid" : self.pidString,

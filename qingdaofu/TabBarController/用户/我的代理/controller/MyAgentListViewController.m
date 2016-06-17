@@ -133,6 +133,7 @@
 - (void)goToAddAgent
 {
     AddMyAgentViewController *addMyAgentVC = [[AddMyAgentViewController alloc] init];
+    addMyAgentVC.agentFlagString = @"add";
     [self.navigationController pushViewController:addMyAgentVC animated:YES];
 }
 

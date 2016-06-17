@@ -26,4 +26,12 @@
 @property (nonatomic,copy) NSString *updated_at;   //更新时间
 @property (nonatomic,copy) NSString *zycardno;  //只有律所认证的用户添加代理人才会有资格证其他没有
 
+//申请记录字段
+@property (nonatomic,copy) NSString *app_id;
+@property (nonatomic,copy) NSString *category;
+@property (nonatomic,copy) NSString *create_time;
+@property (nonatomic,copy) NSString *product_id;
+@property (nonatomic,copy) NSString *state;
+@property (nonatomic,copy) NSString *uidInner;
+
 @end

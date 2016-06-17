@@ -66,7 +66,7 @@
 - (UITableView *)detailSaveTableView
 {
     if (!_detailSaveTableView) {
-//        _detailSaveTableView = [UITableView newAutoLayoutView];
+
         _detailSaveTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _detailSaveTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _detailSaveTableView.delegate = self;

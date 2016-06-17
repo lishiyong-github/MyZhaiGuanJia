@@ -90,20 +90,22 @@
             cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         
-        BaseModel *authenModel = [BaseModel objectWithKeyValues:self.authenDic];
-        
-        [cell.userNameButton swapImage];
-        [cell.userNameButton setTitle:authenModel.code forState:0];
-        [cell.userNameButton setImage:[UIImage imageNamed:@"publish_list_authentication"] forState:0];
-        
-        if ([authenModel.code isEqualToString:@"4001"]) {//未认证
-            [cell.userActionButton setTitle:@"未认证" forState:0];
-        }else{
-            [cell.userActionButton setTitle:@"已认证" forState:0];
-        }
-        [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
         cell.userNameButton.userInteractionEnabled = NO;
         cell.userActionButton.userInteractionEnabled = NO;
+        [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        
+        if ([self.model.code isEqualToString:@"3006"]) {//未认证
+            [cell.userNameButton setTitle:self.model.mobile forState:0];
+            [cell.userActionButton setTitle:@"未认证" forState:0];
+        }else if([self.model.code isEqualToString:@"3001"]){//未登录
+            [cell.userNameButton setTitle:@"未登录" forState:0];
+            [cell.userActionButton setTitle:@"请登录" forState:0];
+        }else{
+            [cell.userNameButton swapImage];
+            [cell.userNameButton setTitle:self.model.mobile forState:0];
+            [cell.userNameButton setImage:[UIImage imageNamed:@"publish_list_authentication"] forState:0];
+            [cell.userActionButton setTitle:@"已认证" forState:0];
+        }
         
         return cell;
         
@@ -124,52 +126,6 @@
         [cell.topNameButton setTitle:@"我的发布" forState:0];
         cell.button1.label1.text = @"已发布";
         [cell.button1.imageView1 setImage:[UIImage imageNamed:@"list_icon_publish"]];
-        
-        QDFWeakSelf;
-        [cell.topGoButton addAction:^(UIButton *btn) {
-            if (weakself.didSelectedButton) {
-                weakself.didSelectedButton(10);
-            }
-        }];
-        [cell.button1 addAction:^(UIButton *btn) {
-            if (weakself.didSelectedButton) {
-                weakself.didSelectedButton(11);
-            }
-        }];
-        [cell.button2 addAction:^(UIButton *btn) {
-            if (weakself.didSelectedButton) {
-                weakself.didSelectedButton(12);
-            }
-        }];
-        [cell.button3 addAction:^(UIButton *btn) {
-            if (weakself.didSelectedButton) {
-                weakself.didSelectedButton(13);
-            }
-        }];
-        [cell.button4 addAction:^(UIButton *btn) {
-            if (weakself.didSelectedButton) {
-                weakself.didSelectedButton(14);
-            }
-        }];
-        
-        return cell;
-
-    }else if (indexPath.section == 2){//我的接单
-        identifier = @"lSecond";
-        MineCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        
-        if (!cell) {
-            cell = [[MineCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.textLabel.font = kBigFont;
-        cell.imageView.frame = CGRectMake(0, 0, 21, 21);
-        [cell setSeparatorInset:UIEdgeInsetsMake(0, kBigPadding, 0, 0)];
-        
-        [cell.topNameButton setTitle:@"我的接单" forState:0];
-        cell.button1.label1.text = @"申请中";
-        cell.button1.imageView1.image = [UIImage imageNamed:@"list_icon_apply"];
         
         QDFWeakSelf;
         [cell.topGoButton addAction:^(UIButton *btn) {
@@ -195,6 +151,52 @@
         [cell.button4 addAction:^(UIButton *btn) {
             if (weakself.didSelectedButton) {
                 weakself.didSelectedButton(24);
+            }
+        }];
+        
+        return cell;
+
+    }else if (indexPath.section == 2){//我的接单
+        identifier = @"lSecond";
+        MineCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        
+        if (!cell) {
+            cell = [[MineCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.textLabel.font = kBigFont;
+        cell.imageView.frame = CGRectMake(0, 0, 21, 21);
+        [cell setSeparatorInset:UIEdgeInsetsMake(0, kBigPadding, 0, 0)];
+        
+        [cell.topNameButton setTitle:@"我的接单" forState:0];
+        cell.button1.label1.text = @"申请中";
+        cell.button1.imageView1.image = [UIImage imageNamed:@"list_icon_apply"];
+        
+        QDFWeakSelf;
+        [cell.topGoButton addAction:^(UIButton *btn) {
+            if (weakself.didSelectedButton) {
+                weakself.didSelectedButton(30);
+            }
+        }];
+        [cell.button1 addAction:^(UIButton *btn) {
+            if (weakself.didSelectedButton) {
+                weakself.didSelectedButton(31);
+            }
+        }];
+        [cell.button2 addAction:^(UIButton *btn) {
+            if (weakself.didSelectedButton) {
+                weakself.didSelectedButton(32);
+            }
+        }];
+        [cell.button3 addAction:^(UIButton *btn) {
+            if (weakself.didSelectedButton) {
+                weakself.didSelectedButton(33);
+            }
+        }];
+        [cell.button4 addAction:^(UIButton *btn) {
+            if (weakself.didSelectedButton) {
+                weakself.didSelectedButton(34);
             }
         }];
 
@@ -240,9 +242,17 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (self.didSelectedIndex) {
-        self.didSelectedIndex(indexPath);
+    
+    if (indexPath.section > 1) {//我的代理收藏保存设置
+        if (self.didSelectedButton) {
+            self.didSelectedButton(indexPath.section*3+indexPath.row);
+        }
+    }else if(indexPath.section == 0){//登录
+        if (self.didSelectedIndex) {
+            self.didSelectedIndex(indexPath);
+        }
     }
+    
 }
 
 /*

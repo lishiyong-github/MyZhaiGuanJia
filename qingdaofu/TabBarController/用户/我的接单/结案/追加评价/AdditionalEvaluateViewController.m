@@ -235,10 +235,10 @@
 }
 
 #pragma mark - textView delegate
-- (void)textViewDidEndEditing:(UITextView *)textView
-{
-    [self.additionalTableView reloadData];
-}
+//- (void)textViewDidEndEditing:(UITextView *)textView
+//{
+//    [self.additionalTableView reloadData];
+//}
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
@@ -251,6 +251,7 @@
 #pragma mark - method
 - (void)evaluateCommitMessages
 {
+    [self.view endEditing:YES];
     NSString *evaluateString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kEvaluateString];
     
     NSString *serviceattitude = @"";

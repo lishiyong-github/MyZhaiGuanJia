@@ -26,6 +26,8 @@
 @property (nonatomic,strong) UIImage *pictureImage1;
 @property (nonatomic,strong) UIImage *pictureImage2;
 
+@property (nonatomic,strong) NSMutableDictionary *lawDataDictionary;
+
 @end
 
 @implementation AuthenLawViewController
@@ -79,43 +81,52 @@
     if (!_lawAuCommitButton) {
         _lawAuCommitButton = [BaseCommitButton newAutoLayoutView];
         [_lawAuCommitButton setTitle:@"立即认证" forState:0];
+        [_lawAuCommitButton addTarget:self action:@selector(goToAuthenLawMessages) forControlEvents:UIControlEventTouchUpInside];
         
-        QDFWeakSelf;
-        [_lawAuCommitButton addAction:^(UIButton *btn) {
-            
-            NSString *lawAuString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kAuthenString];
-            NSDictionary *params = @{@"category" : @"2",
-                                     @"name" : @"上海律所", //律所名称
-                                     @"cardno" : @"8888888888888",   //执业证号
-                                     @"contact" : @"律所律所",    //联系人
-                                     @"mobile" : @"13052358968",  //联系方式
-                                     @"email" : @"1234678@qq.com",    //邮箱
-                                     @"casedesc" : @"",  //案例
-                                     @"cardimg" : @"",  //证件图片
-                                     @"type" : @"update",  //add=>’添加认证’。update=>’修改认证’。
-                                     @"token" : [weakself getValidateToken]
-                                     };
-            
-            [weakself requestDataPostWithString:lawAuString params:params successBlock:^(id responseObject){
-                BaseModel *updateModel = [BaseModel objectWithKeyValues:responseObject];
-                [weakself showHint:updateModel.msg];
-                
-                if ([updateModel.code intValue] == 0000) {
-                    UINavigationController *lawNav = weakself.navigationController;
-                    [lawNav popViewControllerAnimated:NO];
-                    [lawNav popViewControllerAnimated:NO];
-                    
-                    CompleteViewController *completeVC = [[CompleteViewController alloc] init];
-                    completeVC.hidesBottomBarWhenPushed = YES;
-                    [lawNav pushViewController:completeVC animated:NO];
-                }
-                
-            } andFailBlock:^(NSError *error){
-                
-            }];
-        }];
+//        QDFWeakSelf;
+//        [_lawAuCommitButton addAction:^(UIButton *btn) {
+//            
+//            NSString *lawAuString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kAuthenString];
+//            NSDictionary *params = @{@"category" : @"2",
+//                                     @"name" : @"上海律所", //律所名称
+//                                     @"cardno" : @"8888888888888",   //执业证号
+//                                     @"contact" : @"律所律所",    //联系人
+//                                     @"mobile" : @"13052358968",  //联系方式
+//                                     @"email" : @"1234678@qq.com",    //邮箱
+//                                     @"casedesc" : @"",  //案例
+//                                     @"cardimg" : @"",  //证件图片
+//                                     @"type" : @"update",  //add=>’添加认证’。update=>’修改认证’。
+//                                     @"token" : [weakself getValidateToken]
+//                                     };
+//            
+//            [weakself requestDataPostWithString:lawAuString params:params successBlock:^(id responseObject){
+//                BaseModel *updateModel = [BaseModel objectWithKeyValues:responseObject];
+//                [weakself showHint:updateModel.msg];
+//                
+//                if ([updateModel.code intValue] == 0000) {
+//                    UINavigationController *lawNav = weakself.navigationController;
+//                    [lawNav popViewControllerAnimated:NO];
+//                    [lawNav popViewControllerAnimated:NO];
+//                    
+//                    CompleteViewController *completeVC = [[CompleteViewController alloc] init];
+//                    completeVC.hidesBottomBarWhenPushed = YES;
+//                    [lawNav pushViewController:completeVC animated:NO];
+//                }
+//                
+//            } andFailBlock:^(NSError *error){
+//                
+//            }];
+//        }];
     }
     return _lawAuCommitButton;
+}
+
+- (NSMutableDictionary *)lawDataDictionary
+{
+    if (!_lawDataDictionary) {
+        _lawDataDictionary = [NSMutableDictionary dictionary];
+    }
+    return _lawDataDictionary;
 }
 
 #pragma mark - tableView delegate and datasource
@@ -211,12 +222,32 @@
             cell.agentTextField.userInteractionEnabled = NO;
         }else if (indexPath.row == 1){//律所名称
             cell.agentTextField.text = certificationModel.name;
+            QDFWeak(cell);
+            [cell setDidEndEditing:^(NSString *text) {
+                weakcell.agentTextField.text = text;
+                [self.lawDataDictionary setValue:text forKey:@"name"];
+            }];
         }else if (indexPath.row == 2){//执业证号
             cell.agentTextField.text = certificationModel.cardno;
+            QDFWeak(cell);
+            [cell setDidEndEditing:^(NSString *text) {
+                weakcell.agentTextField.text = text;
+                [self.lawDataDictionary setValue:text forKey:@"cardno"];
+            }];
         }else if (indexPath.row == 3){//联系人
             cell.agentTextField.text = certificationModel.contact;
+            QDFWeak(cell);
+            [cell setDidEndEditing:^(NSString *text) {
+                weakcell.agentTextField.text = text;
+                [self.lawDataDictionary setValue:text forKey:@"contact"];
+            }];
         }else{//联系方式
             cell.agentTextField.text = certificationModel.mobile;
+            QDFWeak(cell);
+            [cell setDidEndEditing:^(NSString *text) {
+                weakcell.agentTextField.text = text;
+                [self.lawDataDictionary setValue:text forKey:@"mobile"];
+            }];
         }
         
         return cell;
@@ -245,6 +276,11 @@
                 [cell.agentLabel setAttributedText:ttt];
             }else { //邮箱
                 cell.agentTextField.text = certificationModel.email;
+                QDFWeak(cell);
+                [cell setDidEndEditing:^(NSString *text) {
+                    weakcell.agentTextField.text = text;
+                    [self.lawDataDictionary setValue:text forKey:@"email"];
+                }];
             }
             return cell;
         }
@@ -262,9 +298,14 @@
         cell.ediLabel.text = @"经典案例";
         cell.ediTextView.placeholder = @"关于律所在融资等方面的成功案例，有利于发布方更加青睐你";
         cell.ediTextView.font = kFirstFont;
-        
         cell.ediTextView.text = certificationModel.casedesc;
         
+        QDFWeak(cell);
+        [cell setDidEndEditing:^(NSString *text) {
+            weakcell.ediTextView.text = text;
+            [self.lawDataDictionary setValue:text forKey:@"casedesc"];
+        }];
+
         return cell;
     }
     
@@ -308,6 +349,64 @@
         return headerView;
     }
     return nil;
+}
+
+#pragma mark - commit messages
+- (void)goToAuthenLawMessages
+{
+    [self.view endEditing:YES];
+    NSString *personAuString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kAuthenString];
+    
+    /*
+     @"category" : @"2",
+     @"name" : @"上海律所", //律所名称
+     @"cardno" : @"8888888888888",   //执业证号
+     @"contact" : @"律所律所",    //联系人
+     @"mobile" : @"13052358968",  //联系方式
+     @"email" : @"1234678@qq.com",    //邮箱
+     @"casedesc" : @"",  //案例
+     @"cardimg" : @"",  //证件图片
+     @"type" : @"update",  //add=>’添加认证’。update=>’修改认证’。
+     @"token" : [weakself getValidateToken]
+     */
+    
+    self.lawDataDictionary[@"cardimg"] = self.lawDataDictionary[@"cardimg"]?self.lawDataDictionary[@"cardimg"]:self.responseModel.certification.cardimg;
+    self.lawDataDictionary[@"name"] = self.lawDataDictionary[@"name"]?self.lawDataDictionary[@"name"]:self.responseModel.certification.name;
+    self.lawDataDictionary[@"cardno"] = self.lawDataDictionary[@"cardno"]?self.lawDataDictionary[@"cardno"]:self.responseModel.certification.cardno;
+    self.lawDataDictionary[@"contact"] = self.lawDataDictionary[@"contact"]?self.lawDataDictionary[@"contact"]:self.responseModel.certification.contact;
+    self.lawDataDictionary[@"mobile"] = self.lawDataDictionary[@"mobile"]?self.lawDataDictionary[@"mobile"]:self.responseModel.certification.mobile;
+    self.lawDataDictionary[@"email"] = self.lawDataDictionary[@"email"]?self.lawDataDictionary[@"email"]:self.responseModel.certification.email;
+    self.lawDataDictionary[@"casedesc"] = self.lawDataDictionary[@"casedesc"]?self.lawDataDictionary[@"casedesc"]:self.responseModel.certification.casedesc;
+    [self.lawDataDictionary setValue:@"2" forKey:@"category"];
+    [self.lawDataDictionary setValue:[self getValidateToken] forKey:@"token"];
+    
+    if (self.responseModel) {
+        [self.lawDataDictionary setValue:@"update" forKey:@"type"];  //update为修改
+    }else{
+        [self.lawDataDictionary setValue:@"add" forKey:@"type"];  //update为修改
+    }
+    
+    NSDictionary *params = self.lawDataDictionary;
+    
+    [self requestDataPostWithString:personAuString params:params successBlock:^(id responseObject){
+        
+        BaseModel *personModel = [BaseModel objectWithKeyValues:responseObject];
+        [self showHint:personModel.msg];
+        
+        if ([personModel.code isEqualToString:@"0000"]) {
+            UINavigationController *personNav = self.navigationController;
+            [personNav popViewControllerAnimated:NO];
+            [personNav popViewControllerAnimated:NO];
+            
+            CompleteViewController *completeVC = [[CompleteViewController alloc] init];
+            completeVC.hidesBottomBarWhenPushed = YES;
+            completeVC.categoryString = @"2";
+            [personNav pushViewController:completeVC animated:NO];
+        }
+        
+    } andFailBlock:^(NSError *error){
+        
+    }];
 }
 
 #pragma mark - alertView

@@ -26,9 +26,9 @@
 #import "PublishingResponse.h"
 #import "PublishingModel.h"
 
-//进度
-#import "PaceResponse.h"
-#import "PaceModel.h"
+//查看进度
+#import "ScheduleResponse.h"
+#import "ScheduleModel.h"
 
 //评价
 #import "EvaluateResponse.h"
@@ -43,7 +43,7 @@
 @property (nonatomic,strong) BaseCommitButton *ReleaseCloseCommitButton;
 
 @property (nonatomic,strong) NSMutableArray *releaseArray;
-@property (nonatomic,strong) NSMutableArray *pacesArray;
+@property (nonatomic,strong) NSMutableArray *scheduleReleaseCloArray;
 @property (nonatomic,strong) NSMutableArray *evaluateResponseArray;
 @property (nonatomic,strong) NSMutableArray *evaluateArray;
 
@@ -55,7 +55,11 @@
     [super viewDidLoad];
     self.navigationItem.title = @"产品详情";
     self.navigationItem.leftBarButtonItem = self.leftItem;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"查看接单方" style:UIBarButtonItemStylePlain target:self action:@selector(checkReleaseCloseDetail)];
+    
+    if (self.pidString) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"查看接单方" style:UIBarButtonItemStylePlain target:self action:@selector(checkReleaseCloseDetail)];
+    }
+    
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kBlueColor} forState:0];
     
     [self.view addSubview:self.ReleaseCloseTableView];
@@ -117,12 +121,12 @@
     }
     return _releaseArray;
 }
-- (NSMutableArray *)pacesArray
+- (NSMutableArray *)scheduleReleaseCloArray
 {
-    if (!_pacesArray) {
-        _pacesArray = [NSMutableArray array];
+    if (!_scheduleReleaseCloArray) {
+        _scheduleReleaseCloArray = [NSMutableArray array];
     }
-    return _pacesArray;
+    return _scheduleReleaseCloArray;
 }
 - (NSMutableArray *)evaluateArray
 {
@@ -349,7 +353,7 @@
             [cell.userNameButton setTitle:@"|  进度详情" forState:0];
             cell.userActionButton.userInteractionEnabled = NO;
             
-            if (self.pacesArray.count > 0) {
+            if (self.scheduleReleaseCloArray.count > 0) {
                 [cell.userActionButton setTitle:@"查看更多" forState:0];
                 [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
             }else{
@@ -366,7 +370,8 @@
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             
-            if (self.pacesArray.count > 0) {
+            if (self.scheduleReleaseCloArray.count > 0) {
+                ScheduleModel *scheduleModel = self.scheduleReleaseCloArray[0];
                 [cell.remindImageButton setHidden:YES];
                 [cell.deadlineLabel setHidden:NO];
                 [cell.timeLabel setHidden:NO];
@@ -374,22 +379,39 @@
                 [cell.areaLabel setHidden:NO];
                 [cell.addressLabel setHidden:NO];
                 
-                PaceModel *paceModel = self.pacesArray[0];
+                //案号类型
+                NSArray *auditArray = @[@"一审",@"二审",@"再审",@"执行"];
+                NSInteger auditInt = [scheduleModel.audit intValue];
+                NSString *auditStr = auditArray[auditInt];
                 
-                NSMutableAttributedString *caseTypestring = [cell.deadlineLabel setAttributeString:@"案号类型：" withColor:kBlackColor andSecond:paceModel.audit withColor:kLightGrayColor withFont:12];
+                NSMutableAttributedString *caseTypestring = [cell.deadlineLabel setAttributeString:@"案号类型：" withColor:kBlackColor andSecond:auditStr?auditStr:@"无" withColor:kLightGrayColor withFont:12];
                 [cell.deadlineLabel setAttributedText:caseTypestring];
                 
-                cell.timeLabel.text = [NSDate getYMDFormatterTime:paceModel.create_time];
+                cell.timeLabel.text = @"2016-05-30";
                 
-                NSMutableAttributedString *caseNoString = [cell.dateLabel setAttributeString:@"案        号：" withColor:kBlackColor andSecond:paceModel.caseString withColor:kLightGrayColor withFont:12];
+                NSMutableAttributedString *caseNoString = [cell.dateLabel setAttributeString:@"案        号：" withColor:kBlackColor andSecond:scheduleModel.caseString?scheduleModel.caseString:@"无" withColor:kLightGrayColor withFont:12];
                 [cell.dateLabel setAttributedText:caseNoString];
                 
-                NSMutableAttributedString *dealTypeString = [cell.areaLabel setAttributeString:@"处置类型：" withColor: kBlackColor andSecond:paceModel.status withColor:kLightGrayColor withFont:12];
+                NSArray *suitArr3 = @[@"债权人上传处置资产",@"律师接单",@"双方洽谈",@"向法院起诉(财产保全)",@"整理诉讼材料",@"法院立案",@"向当事人发出开庭传票",@"开庭前调解",@"开庭",@"判决",@"二次开庭",@"二次判决",@"移交执行局申请执行",@"执行中提供借款人的财产线索",@"调查(公告)",@"拍卖",@"流拍",@"拍卖成功",@"付费"];
+                NSArray *suitArray1 = @[@"尽职调查",@"公证",@"抵押",@"放款",@"返点",@"其他"];
+                NSArray *suitArray2 = @[@"电话",@"上门",@"面谈"];
+                
+                NSInteger number = [scheduleModel.status intValue];
+                NSString *dealTypeStr;
+                
+                if ([self.categaryString intValue] == 1) {
+                    dealTypeStr = suitArray1[number-1];
+                }else if ([self.categaryString intValue] == 2){
+                    dealTypeStr = suitArray2[number-1];
+                }else{
+                    dealTypeStr = suitArr3[number-1];
+                }
+                
+                NSMutableAttributedString *dealTypeString = [cell.areaLabel setAttributeString:@"处置类型：" withColor: kBlackColor andSecond:dealTypeStr withColor:kLightGrayColor withFont:12];
                 [cell.areaLabel setAttributedText:dealTypeString];
                 
-                NSMutableAttributedString *dealDeailString = [cell.addressLabel setAttributeString:@"详        情：" withColor:kBlackColor andSecond:paceModel.content withColor:kLightGrayColor withFont:12];
+                NSMutableAttributedString *dealDeailString = [cell.addressLabel setAttributeString:@"详        情：" withColor:kBlackColor andSecond:scheduleModel.content?scheduleModel.content:@"无" withColor:kLightGrayColor withFont:12];
                 [cell.addressLabel setAttributedText:dealDeailString];
-                
             }else{
                 [cell.remindImageButton setHidden:NO];
                 [cell.deadlineLabel setHidden:YES];
@@ -409,14 +431,21 @@
             }
             cell .selectionStyle = UITableViewCellSelectionStyleNone;
             
-            [cell.userNameButton setTitle:@"|  给出的评价" forState:0];
             [cell.userNameButton setTitleColor:kBlueColor forState:0];
             cell.userActionButton.userInteractionEnabled = NO;
             
+            [cell.userNameButton setTitleColor:kBlueColor forState:0];
+            cell.userActionButton.userInteractionEnabled = NO;
             if (self.evaluateResponseArray.count > 0) {
+                EvaluateResponse *response = self.evaluateResponseArray[0];
+                float creditor = [response.creditor floatValue];
+                NSString *creditorStr = [NSString stringWithFormat:@"|  收到的评价(%.1f分)",creditor];
+                [cell.userNameButton setTitle:creditorStr forState:0];
+                
                 [cell.userActionButton setTitle:@"查看更多" forState:0];
                 [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
             }else{
+                [cell.userNameButton setTitle:@"|  收到的评价" forState:0];
                 [cell.userActionButton setTitle:@"无" forState:0];
             }
             
@@ -498,7 +527,7 @@
         agreementVC.categoryString = dealModel.category;
         [self.navigationController pushViewController:agreementVC animated:YES];
     }else if ((indexPath.section == 3) && (indexPath.row == 0)){
-        if (self.pacesArray.count > 0) {
+        if (self.scheduleReleaseCloArray.count > 0) {
         PaceViewController *paceVC = [[PaceViewController alloc] init];
         paceVC.idString = dealModel.idString;
         paceVC.categoryString = dealModel.category;
@@ -509,6 +538,8 @@
             AllEvaluationViewController *allEvaluationVC = [[AllEvaluationViewController alloc] init];
             allEvaluationVC.idString = dealModel.idString;
             allEvaluationVC.categoryString = dealModel.category;
+//            allEvaluationVC.pidString = self.pidString;
+            allEvaluationVC.evaTypeString = @"evaluate";
             [self.navigationController pushViewController:allEvaluationVC animated:YES];
         }
     }
@@ -522,7 +553,7 @@
     checkDetailPublishVC.categoryString = self.categaryString;
     checkDetailPublishVC.pidString = self.pidString;
     checkDetailPublishVC.typeString = @"接单方";
-    checkDetailPublishVC.evaTypeString = @"evaluate";
+    checkDetailPublishVC.evaTypeString = @"launchevaluation";
     [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
 }
 
@@ -552,9 +583,9 @@
                              };
     [self requestDataPostWithString:scheduleString params:params successBlock:^(id responseObject) {
         
-        PaceResponse *response = [PaceResponse objectWithKeyValues:responseObject];
-        for (PaceModel *paceModel in response.disposing) {
-            [self.pacesArray addObject:paceModel];
+        ScheduleResponse *response = [ScheduleResponse objectWithKeyValues:responseObject];
+        for (ScheduleModel *model in response.disposing) {
+            [self.scheduleReleaseCloArray addObject:model];
         }
         [self.ReleaseCloseTableView reloadData];
         

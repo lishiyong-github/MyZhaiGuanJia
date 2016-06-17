@@ -83,10 +83,11 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([self.categoryString intValue] == 3) {
-        return 145;
-    }
-    return 75;
+//    if ([self.categoryString intValue] == 3) {
+//        return 145;
+//    }
+//    return 75;
+    return 145;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -102,9 +103,9 @@
     cell.backgroundColor = kNavColor;
     
     PaceModel *model = self.paceDataArray[indexPath.row];
-    NSArray *financeArray = @[@[@"尽职调查",@"公证",@"抵押",@"放款",@"返点",@"其他"],@[@"电话",@"上门",@"面谈"]];
     
     cell.timeLabel.text = [NSDate getYMDFormatterTime:model.create_time];
+    [cell.remindImageButton setHidden:YES];
     
     if ([self.categoryString intValue] == 3) {//诉讼，有案号及案号类型
         NSArray *array1 = @[@"债权人上传处置资产",@"律师接单",@"双方洽谈",@"向法院起诉(财产保全)",@"整理诉讼材料",@"法院立案",@"向当事人发出开庭传票",@"开庭前调解",@"开庭",@"判决",@"二次开庭",@"二次判决",@"移交执行局申请执行",@"执行中提供借款人的财产线索",@"调查(公告)",@"拍卖",@"流拍",@"拍卖成功",@"付费"];
@@ -122,41 +123,20 @@
         NSArray *array3 = @[@"尽职调查",@"公证",@"抵押",@"放款",@"返点",@"其他"];
         NSInteger a3 = [model.status intValue]-1;
         
-        cell.deadlineLabel.text = [NSString stringWithFormat:@"处置类型：%@",array3[a3]];
-        cell.dateLabel.text = [NSString stringWithFormat:@"详        情：%@",model.content];
+        cell.deadlineLabel.text = [NSString stringWithFormat:@"案号类型：无"];
+        cell.dateLabel.text = [NSString stringWithFormat:@"案        号：无"];
+        cell.areaLabel.text = [NSString stringWithFormat:@"处置类型：%@",array3[a3]];
+        cell.addressLabel.text = [NSString stringWithFormat:@"详        情：%@",model.content];
     }else{
         NSArray *array4 = @[@"电话",@"上门",@"面谈"];
         NSInteger a4 = [model.status intValue]-1;
-        cell.deadlineLabel.text = [NSString stringWithFormat:@"处置类型：%@",array4[a4]];
-        cell.dateLabel.text = [NSString stringWithFormat:@"详        情：%@",model.content];
+        cell.deadlineLabel.text = [NSString stringWithFormat:@"案号类型：无"];
+        cell.dateLabel.text = [NSString stringWithFormat:@"案        号：无"];
+        cell.areaLabel.text = [NSString stringWithFormat:@"处置类型：%@",array4[a4]];
+        cell.addressLabel.text = [NSString stringWithFormat:@"详        情：%@",model.content];
     }
     
     return cell;
-    /*
-    if (indexPath.row == 0) {
-        cell.dateLabel.font = kBigFont;
-        cell.stateLabel.font = kBigFont;
-        cell.messageLabel.font = kBigFont;
-        cell.dateLabel.textColor = kBlackColor;
-        cell.stateLabel.textColor = kBlackColor;
-        cell.messageLabel.textColor = kBlackColor;
-
-        cell.dateLabel.text = @"日期";
-        cell.stateLabel.text = @"状态";
-        cell.messageLabel.text = @"详情";
-    }else{
-        PaceModel *model = self.paceDataArray[indexPath.row-1];
-        NSArray *financeArray = @[@[@"尽职调查",@"公证",@"抵押",@"放款",@"返点",@"其他"],@[@"电话",@"上门",@"面谈"],@[@"债权人上传处置资产",@"律师接单",@"双方洽谈",@"向法院起诉(财产保全)",@"整理诉讼材料",@"法院立案",@"向当事人发出开庭传票",@"开庭前调解",@"开庭",@"判决",@"二次开庭",@"二次判决",@"移交执行局申请执行",@"执行中提供借款人的财产线索",@"调查(公告)",@"拍卖",@"流拍",@"拍卖成功",@"付费"]];
-        
-        cell.dateLabel.text = [NSDate getYMDFormatterTime:model.create_time];
-        cell.messageLabel.text = model.content;
-        NSInteger number1 = [model.category intValue];
-        NSInteger number2 = [model.status intValue];
-        cell.stateLabel.text = financeArray[number1][number2];
-    }
-    
-    return cell;
-    */
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section

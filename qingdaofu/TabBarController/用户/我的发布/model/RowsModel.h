@@ -31,6 +31,17 @@
 @property (nonatomic,copy) NSString *rate_cat;  //利率类型：1为天。2为月
 @property (nonatomic,copy) NSString *rebate;   //返点
 @property (nonatomic,copy) NSString *seatmortgage;  //抵押物所在地
+@property (nonatomic,copy) NSString *mortorage_community;  //小区名
 @property (nonatomic,copy) NSString *uidString;  //申请人的uid
+@property (nonatomic,copy) NSString *term;  //借款期限
+@property (nonatomic,copy) NSString *mortgagecategory; //抵押物类型
+@property (nonatomic,copy) NSString *status;  //房子状态   1=>'自住',2=>'出租',
+@property (nonatomic,copy) NSString *rentmoney;  //租金
+@property (nonatomic,copy) NSString *mortgagearea;  //抵押物面积
+@property (nonatomic,copy) NSString *loanyear;  //借款人年龄
+@property (nonatomic,copy) NSString *obligeeyear; //权利人年龄
+
+
+
 
 @end

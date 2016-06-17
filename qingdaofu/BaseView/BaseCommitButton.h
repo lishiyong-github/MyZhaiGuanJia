@@ -10,4 +10,8 @@
 
 @interface BaseCommitButton : UIButton
 
+//@property (nonatomic,strong) UIButton *phoneButton;
+
+@property (nonatomic,assign) BOOL didSetupconstraints;
+
 @end

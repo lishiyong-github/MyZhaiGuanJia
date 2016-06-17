@@ -121,11 +121,20 @@
         
         QDFWeakSelf;
         [_repFiSwitchView setDidSelectedButton:^(NSInteger tag) {
-            if (tag == 33) {// 保存
-                [weakself reportFinanceActionWithType:@"0"];
-            }else{//发布
-                [weakself reportFinanceActionWithType:@"1"];
-            }
+            
+            [weakself tokenIsValid];
+            [weakself setDidTokenValid:^(TokenModel *model) {
+                if ([model.code isEqualToString:@"0000"]) {
+                    if (tag == 33) {// 保存
+                        [weakself reportFinanceActionWithType:@"0"];
+                    }else{//发布
+                        [weakself reportFinanceActionWithType:@"1"];
+                    }
+                }else{
+                    [weakself showHint:model.msg];
+                }
+            }];
+            
         }];
     }
     return _repFiSwitchView;
@@ -413,89 +422,33 @@
 #pragma mark - method
 - (void)reportFinanceActionWithType:(NSString *)type
 {
+    [self.view endEditing:YES];
     NSString *reFinanceString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPublishFinanceString];
+    
     /* 参数 */
-    NSString *moneyStr = @"";
-    NSString *rebateStr = @"";
-    NSString *rateStr = @"";
-    NSString *rate_catStr = @"";
-    NSString *mortorage_communityStr = @"";
-    NSString *seatmortgageStr = @"";
-    NSString *termStr = @"";
-    NSString *mortgagecategoryStr = @"";
-    NSString *statusStr = @"";
-    NSString *rentmoneyStr = @"";
-    NSString *mortgageareaStr = @"";
-    NSString *loanyearStr = @"";
-    NSString *obligeeyearStr = @"";
-    if (self.dataDictionary[@"money"]) {
-        moneyStr = self.dataDictionary[@"money"];
-    }
+    self.dataDictionary[@"money"] = self.dataDictionary[@"money"]?self.dataDictionary[@"money"]:@"";//融资金额，万为单位
+    self.dataDictionary[@"rebate"] = self.dataDictionary[@"rebate"]?self.dataDictionary[@"rebate"]:@"";//返点，实数
+    self.dataDictionary[@"rate"] = self.dataDictionary[@"rate"]?self.dataDictionary[@"rate"]:@"";//利率
+    self.dataDictionary[@"rate_cat"] = self.dataDictionary[@"rate_cat"]?self.dataDictionary[@"rate_cat"]:@"";//利率单位 1-天  2-月
+    self.dataDictionary[@"mortorage_community"] = self.dataDictionary[@"mortorage_community"]?self.dataDictionary[@"mortorage_community"]:@"";//小区名
+    self.dataDictionary[@"seatmortgage"] = self.dataDictionary[@"seatmortgage"]?self.dataDictionary[@"seatmortgage"]:@"";//详细地址
+    self.dataDictionary[@"province_id"] = self.dataDictionary[@"province_id"]?self.dataDictionary[@"province_id"]:@"";
+    self.dataDictionary[@"city_id"] = self.dataDictionary[@"city_id"]?self.dataDictionary[@"city_id"]:@"";
+    self.dataDictionary[@"district_id"] = self.dataDictionary[@"district_id"]?self.dataDictionary[@"district_id"]:@"";
+    self.dataDictionary[@"term"] = self.dataDictionary[@"term"]?self.dataDictionary[@"term"]:@"";//借款期限
+    self.dataDictionary[@"mortgagecategory"] = self.dataDictionary[@"mortgagecategory"]?self.dataDictionary[@"mortgagecategory"]:@"";//抵押物类型1=>'住宅', 2=>'商户',3=>'办公楼'
+    self.dataDictionary[@"status"] = self.dataDictionary[@"status"]?self.dataDictionary[@"status"]:@"";//房子状态   1=>'自住',2=>'出租',
+    self.dataDictionary[@"rentmoney"] = self.dataDictionary[@"rentmoney"]?self.dataDictionary[@"rentmoney"]:@"";//租金
+    self.dataDictionary[@"mortgagearea"] = self.dataDictionary[@"mortgagearea"]?self.dataDictionary[@"mortgagearea"]:@"";//房子面积
+    self.dataDictionary[@"loanyear"] = self.dataDictionary[@"loanyear"]?self.dataDictionary[@"loanyear"]:@"";//借款人年龄
+    self.dataDictionary[@"obligeeyear"] = self.dataDictionary[@"obligeeyear"]?self.dataDictionary[@"obligeeyear"]:@"";//权利人年龄 1=>'65岁以下',2=>'65岁以上'
     
-    if (self.dataDictionary[@"rebate"]) {
-        rebateStr = self.dataDictionary[@"rebate"];
-    }
+    [self.dataDictionary setValue:@"1" forKey:@"category"];
+    [self.dataDictionary setValue:type forKey:@"progress_status"];//0为保存 1为发布
+    [self.dataDictionary setValue:[self getValidateToken] forKey:@"token"];
     
-    if (self.dataDictionary[@"rate"]) {
-        rateStr = self.dataDictionary[@"rate"];
-    }
-    
-    if (self.dataDictionary[@"rate_cat"]) {
-        rate_catStr = self.dataDictionary[@"rate_cat"];
-    }
-    
-    if (self.dataDictionary[@"mortorage_community"]) {
-        mortorage_communityStr = self.dataDictionary[@"mortorage_community"];
-    }
-    
-    if (self.dataDictionary[@"seatmortgage"]) {
-        seatmortgageStr = self.dataDictionary[@"seatmortgage"];
-    }
-    
-    if (self.dataDictionary[@"term"]) {
-        termStr = self.dataDictionary[@"term"];
-    }
-    if (self.dataDictionary[@"mortgagecategory"]) {
-        mortgagecategoryStr = self.dataDictionary[@"mortgagecategory"];
-    }
-    if (self.dataDictionary[@"status"]) {
-        statusStr = self.dataDictionary[@"status"];
-    }
-    if (self.dataDictionary[@"rentmoney"]) {
-        rentmoneyStr = self.dataDictionary[@"rentmoney"];
-    }
-    if (self.dataDictionary[@"mortgagearea"]) {
-        mortgageareaStr = self.dataDictionary[@"mortgagearea"];
-    }
-    if (self.dataDictionary[@"loanyear"]) {
-        loanyearStr = self.dataDictionary[@"loanyear"];
-    }
-    
-    if (self.dataDictionary[@"obligeeyear"]) {
-        obligeeyearStr = self.dataDictionary[@"obligeeyear"];
-    }
+    NSDictionary *params = self.dataDictionary;
 
-    NSDictionary *params = @{@"category" : @"1",
-                             @"money" : moneyStr,   //融资金额，万为单位
-                             @"rebate" : rebateStr,  //返点，实数
-                             @"rate" : rateStr, //利率
-                             @"rate_cat" : rate_catStr,  //利率单位 1-天  2-月
-                             @"mortorage_community" : mortorage_communityStr,  //小区名
-                             @"seatmortgage" : seatmortgageStr,  //详细地址
-                             @"progress_status" : type,//0为保存 1为发布
-                             @"province_id" : @"",//省份接口返回数据
-                             @"city_id" : @"",//市接口返回数据
-                             @"district_id" : @"",//地区接口返回数据
-                             @"term" : termStr,   //借款期限
-                             @"mortgagecategory" : mortgagecategoryStr,//抵押物类型1=>'住宅', 2=>'商户',3=>'办公楼',
-                             @"status" : statusStr, //房子状态   1=>'自住',2=>'出租',
-                             @"rentmoney" : rentmoneyStr, //租金
-                             @"mortgagearea" : mortgageareaStr,  //房子面积
-                             @"loanyear" : loanyearStr,  //借款人年龄
-                             @"obligeeyear" : obligeeyearStr,  //权利人年龄 1=>'65岁以下',2=>'65岁以上'
-                             @"token" : [self getValidateToken]
-                             };
-    
     [self requestDataPostWithString:reFinanceString params:params successBlock:^(id responseObject){
         BaseModel *model = [BaseModel objectWithKeyValues:responseObject];
         [self showHint:model.msg];

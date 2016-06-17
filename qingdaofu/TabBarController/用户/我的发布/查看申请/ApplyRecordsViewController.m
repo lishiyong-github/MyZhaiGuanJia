@@ -7,14 +7,19 @@
 //
 
 #import "ApplyRecordsViewController.h"
-#import "ApplyRecordsDetailViewController.h"   //申请人信息
+//#import "ApplyRecordsDetailViewController.h"   //申请人信息
+#import "CheckDetailPublishViewController.h"   //申请人信息
 
 #import "ApplyRecordsCell.h"
+
+#import "RecordResponse.h"
+#import "UserModel.h"
 
 @interface ApplyRecordsViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *applyRecordsTableView;
+@property (nonatomic,strong) NSMutableArray *recordsDataArray;
 
 @end
 
@@ -62,10 +67,21 @@
     return _applyRecordsTableView;
 }
 
+- (NSMutableArray *)recordsDataArray
+{
+    if (!_recordsDataArray) {
+        _recordsDataArray = [NSMutableArray array];
+    }
+    return _recordsDataArray;
+}
+
 #pragma mark - tableView deleagte and datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 4;
+    if (self.recordsDataArray.count > 0) {
+        return 1+self.recordsDataArray.count;
+    }
+    return 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -108,17 +124,26 @@
         [cell.lineLabel11 setHidden:YES];
         [cell.lineLabel12 setHidden:YES];
         
-        cell.personLabel.text = @"123456744";
-        cell.dateLabel.text = @"2016-05-16";
-        [cell.actButton setTitle:@"查看" forState:0];
-        cell.actButton.layer.borderWidth = kLineWidth;
-        cell.actButton.layer.borderColor = kBlueColor.CGColor;
-        cell.actButton.layer.cornerRadius = corner;
-        QDFWeakSelf;
-        [cell.actButton addAction:^(UIButton *btn) {
-            ApplyRecordsDetailViewController *checkDetailPublishVC = [[ApplyRecordsDetailViewController alloc] init];
-            [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];
-        }];
+        UserModel *userModel;
+        if (self.recordsDataArray.count > 0) {
+            userModel = self.recordsDataArray[indexPath.row-1];
+            cell.personLabel.text = userModel.mobile;
+            cell.dateLabel.text = [NSDate getYMDFormatterTime:userModel.create_time];
+            [cell.actButton setTitle:@"查看" forState:0];
+            cell.actButton.layer.borderWidth = kLineWidth;
+            cell.actButton.layer.borderColor = kBlueColor.CGColor;
+            cell.actButton.layer.cornerRadius = corner;
+            QDFWeakSelf;
+            [cell.actButton addAction:^(UIButton *btn) {
+                CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+                checkDetailPublishVC.typeString = @"申请人";
+                checkDetailPublishVC.idString = self.idStr;
+                checkDetailPublishVC.categoryString = self.categaryStr;
+                checkDetailPublishVC.pidString = userModel.uidInner;
+                checkDetailPublishVC.evaTypeString = @"launchevaluation";
+                [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];
+            }];
+        }
     }
     
     return cell;
@@ -134,9 +159,11 @@
                              @"page" : page
                              };
     [self requestDataPostWithString:listString params:params successBlock:^(id responseObject){
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSLog(@">>>>>>>> %@",dic);
-        
+        RecordResponse *response = [RecordResponse objectWithKeyValues:responseObject];
+        for (UserModel *model in response.user) {
+            [self.recordsDataArray addObject:model];
+        }
+        [self.applyRecordsTableView reloadData];
         
     } andFailBlock:^(id responseObject){
         

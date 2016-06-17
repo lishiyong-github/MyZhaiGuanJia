@@ -12,7 +12,9 @@
 
 + (NSDictionary *)replacedKeyFromPropertyName
 {
-    return @{@"idString" : @"id"};
+    return @{@"idString" : @"id",
+             @"uidInner" : @"uid"
+             };
 }
 
 @end

@@ -7,14 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "TokenModel.h"
 @interface LoginView : UIView
 
 @property (nonatomic,strong) void (^didSelectedIndex)(NSIndexPath*);
 @property (nonatomic,strong) void (^didSelectedButton)(NSInteger);
 
+@property (nonatomic,strong) TokenModel *model;
 @property (nonatomic,strong) UITableView *loginTableView;
-//@property (nonatomic,strong) BaseModel *authenModel;
-@property (nonatomic,strong) NSDictionary *authenDic;
 
 @end

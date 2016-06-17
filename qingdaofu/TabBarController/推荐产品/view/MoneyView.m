@@ -53,8 +53,10 @@
 {
     if (!_label1) {
         _label1 = [UILabel newAutoLayoutView];
-        _label1.font = [UIFont systemFontOfSize:24];
+        _label1.font = [UIFont systemFontOfSize:20];  //24
         _label1.textAlignment = NSTextAlignmentCenter;
+        [_label1 adjustsFontSizeToFitWidth];
+        [_label1 sizeToFit];
     }
     return _label1;
 }

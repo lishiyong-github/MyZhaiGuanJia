@@ -8,7 +8,7 @@
 
 #import "ReportCollectViewController.h"
 #import "ReportFiSucViewController.h"  //发布成功
-#import "MySaveViewController.h"
+#import "MySaveViewController.h"  //保存
 #import "UploadFilesViewController.h"  //债权文件
 #import "DebtCreditMessageViewController.h" //债权人信息
 
@@ -102,11 +102,21 @@
         [_repSuitSwitchView.sendButton setTitleColor:kBlueColor forState:0];
         
         QDFWeakSelf;
-        [_repSuitSwitchView.getbutton addAction:^(UIButton *btn) {//保存
-            [weakself reportCollectionActionWithString:@"0"];
-        }];
-        [_repSuitSwitchView.sendButton addAction:^(UIButton *btn) {//发布
-            [weakself reportCollectionActionWithString:@"1"];
+        [_repSuitSwitchView setDidSelectedButton:^(NSInteger tag) {
+            
+            [weakself tokenIsValid];
+            
+            [weakself setDidTokenValid:^(TokenModel *model) {
+                if ([model.code isEqualToString:@"0000"]) {
+                    if (tag == 33) {//保存
+                        [weakself reportCollectionActionWithString:@"0"];
+                    }else{
+                        [weakself reportCollectionActionWithString:@"1"];
+                    }
+                }else{//发布
+                    [weakself showHint:model.msg];
+                }
+            }];
         }];
     }
     return _repSuitSwitchView;
@@ -369,6 +379,7 @@
             [self.coDataDictionary setValue:text forKey:@"interestpaid"];
         }];
     }else if(indexPath.row > 9){
+        [cell.agentButton setHidden:NO];
         cell.agentTextField.userInteractionEnabled = NO;
         cell.agentButton.userInteractionEnabled = NO;
         [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
@@ -507,123 +518,31 @@
     NSString *reFinanceString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPublishCollection];
     
     /* 参数 */
-    NSString *moneyStr = @"";
-    NSString *agencycommissionStr = @"";
-    NSString *loan_typeStr = @"";
-    NSString *mortorage_communityStr = @"";
-    NSString *seatmortgageStr = @"";
-    NSString *carbrandStr = @"";   //车品牌
-    NSString *audiStr = @"";  //车系
-    NSString *accountrStr = @""; //应收帐款
-    NSString *rateStr = @"";
-    NSString *rate_catStr = @"";
-    NSString *termStr = @"";
-    NSString *repaymethodStr = @"";
-    NSString *obligorStr = @"";
-    NSString *commitmentStr = @"";
-    NSString *commissionperiodStr = @"";
-    NSString *paidmoneyStr = @"";
-    NSString *interestpaidStr = @"";
-    NSString *performancecontractStr = @"";
+    self.coDataDictionary[@"money"] = self.coDataDictionary[@"money"]?self.coDataDictionary[@"money"]:@""; //融资金额，万为单位
+    self.coDataDictionary[@"agencycommission"] = self.coDataDictionary[@"agencycommission"]?self.coDataDictionary[@"agencycommission"]:@"";
+    self.coDataDictionary[@"loan_type"] = self.coDataDictionary[@"loan_type"]?self.coDataDictionary[@"loan_type"]:@"";
+    self.coDataDictionary[@"mortorage_community"] = self.coDataDictionary[@"mortorage_community"]?self.coDataDictionary[@"mortorage_community"]:@"";
+    self.coDataDictionary[@"seatmortgage"] = self.coDataDictionary[@"seatmortgage"]?self.coDataDictionary[@"seatmortgage"]:@"";
+    self.coDataDictionary[@"carbrand"] = self.coDataDictionary[@"carbrand"]?self.coDataDictionary[@"carbrand"]:@"";   //车品牌
+    self.coDataDictionary[@"audi"] = self.coDataDictionary[@"audi"]?self.coDataDictionary[@"audi"]:@"";  //车系
+    self.coDataDictionary[@"accountr"] = self.coDataDictionary[@"accountr"]?self.coDataDictionary[@"accountr"]:@""; //应收帐款
+    self.coDataDictionary[@"rate"] = self.coDataDictionary[@"rate"]?self.coDataDictionary[@"rate"]:@"";
+    self.coDataDictionary[@"rate_cat"] = self.coDataDictionary[@"rate_cat"]?self.coDataDictionary[@"rate_cat"]:@"";
+    self.coDataDictionary[@"term"] = self.coDataDictionary[@"term"]?self.coDataDictionary[@"term"]:@"";
+    self.coDataDictionary[@"repaymethod"] = self.coDataDictionary[@"repaymethod"]?self.coDataDictionary[@"repaymethod"]:@"";
+    self.coDataDictionary[@"obligor"] = self.coDataDictionary[@"obligor"]?self.coDataDictionary[@"obligor"]:@"";
+    self.coDataDictionary[@"commitment"] = self.coDataDictionary[@"commitment"]?self.coDataDictionary[@"commitment"]:@"";
+    self.coDataDictionary[@"commissionperiod"] = self.coDataDictionary[@"commissionperiod"]?self.coDataDictionary[@"commissionperiod"]:@"";
+    self.coDataDictionary[@"paidmoney"] = self.coDataDictionary[@"paidmoney"]?self.coDataDictionary[@"paidmoney"]:@"";
+    self.coDataDictionary[@"interestpaid"] = self.coDataDictionary[@"interestpaid"]?self.coDataDictionary[@"interestpaid"]:@"";
+    self.coDataDictionary[@"performancecontract"] = self.coDataDictionary[@"performancecontract"]?self.coDataDictionary[@"performancecontract"]:@"";
     //债权人文件，债务人文件，债务人信息
     
-    if (self.coDataDictionary[@"money"]) {
-        moneyStr = self.coDataDictionary[@"money"];
-    }
-    
-    if (self.coDataDictionary[@"agencycommission"]) {
-        agencycommissionStr = self.coDataDictionary[@"agencycommission"];
-    }
-    
-    if (self.coDataDictionary[@"loan_type"]) {
-        loan_typeStr = self.coDataDictionary[@"loan_type"];
-    }
-    
-    if (self.coDataDictionary[@"mortorage_community"]) {
-        mortorage_communityStr = self.coDataDictionary[@"mortorage_community"];
-    }
-    
-    if (self.coDataDictionary[@"seatmortgage"]) {
-        seatmortgageStr = self.coDataDictionary[@"seatmortgage"];
-    }
-    if (self.coDataDictionary[@"carbrand"]) {
-        carbrandStr = self.coDataDictionary[@"carbrand"];
-    }
-    if (self.coDataDictionary[@"audi"]) {
-        audiStr = self.coDataDictionary[@"audi"];
-    }
-    if (self.coDataDictionary[@"accountr"]) {
-        accountrStr = self.coDataDictionary[@"accountr"];
-    }
-    if (self.coDataDictionary[@"rate"]) {
-        rateStr = self.coDataDictionary[@"rate"];
-    }
-    if (self.coDataDictionary[@"rate_cat"]) {
-        rate_catStr = self.coDataDictionary[@"rate_cat"];
-    }
-    
-    if (self.coDataDictionary[@"term"]) {
-        termStr = self.coDataDictionary[@"term"];
-    }
-    if (self.coDataDictionary[@"repaymethod"]) {
-        repaymethodStr = self.coDataDictionary[@"repaymethod"];
-    }
-    
-    if (self.coDataDictionary[@"obligor"]) {
-        obligorStr = self.coDataDictionary[@"obligor"];
-    }
-    if (self.coDataDictionary[@"commitment"]) {
-        commitmentStr = self.coDataDictionary[@"commitment"];
-    }
-    if (self.coDataDictionary[@"commissionperiod"]) {
-        commissionperiodStr = self.coDataDictionary[@"commissionperiod"];
-    }
-    if (self.coDataDictionary[@"paidmoney"]) {
-        paidmoneyStr = self.coDataDictionary[@"paidmoney"];
-    }
-    if (self.coDataDictionary[@"interestpaid"]) {
-        interestpaidStr = self.coDataDictionary[@"interestpaid"];
-    }
-    if (self.coDataDictionary[@"performancecontract"]) {
-        performancecontractStr = self.coDataDictionary[@"performancecontract"];
-    }
-    
+    [self.coDataDictionary setValue:@"2" forKey:@"category"];
+    [self.coDataDictionary setValue:string forKey:@"progress_status"];
     [self.coDataDictionary setValue:[self getValidateToken] forKey:@"token"];
     
-    NSDictionary *params = [NSDictionary dictionaryWithDictionary:self.coDataDictionary];
-    
-    /*
-    NSDictionary *params = @{@"category" : @"3",
-                             @"money" : moneyStr,   //融资金额，万为单位
-                             @"progress_status" : string,//1为保存 0为发布
-                             @"province_id" : @"",//省份接口返回数据
-                             @"city_id" : @"",//市接口返回数据
-                             @"district_id" : @"",//地区接口返回数据
-                             @"agencycommission" : agencycommissionStr, //代理费用
-                             @"loan_type" : loan_typeStr,  //债权类型  1民间借贷  2应收账款
-                             @"carbrand" : carbrandStr,
-                             @"audi" : audiStr,
-                             @"accountr" : accountrStr,
-                             @"mortorage_has" : @"0",//0为无 1为有(抵押物地址)
-                             @"mortorage_community" : @"张江校区",
-                                 //mortorage_communityStr,  //小区名
-                             @"seatmortgage" : seatmortgageStr,  //详细地址
-                             @"rate" : rateStr, //利率
-                             @"rate_cat" : rate_catStr,  //利率单位 1-天  2-月
-                             @"term" : termStr,  //借款周期
-                             @"repaymethod" : repaymethodStr, //还款方式 1=>'一次性到期还本付息',2=>'按月付息,到期还本'
-                             @"obligor" : obligorStr,   //借款人主体  1=>'自然人', 2=>'法人',3=>'其他(未成年,外籍等)'
-                             @"commitment" : commitmentStr,  //委托事项 1=>'65岁以下',2=>'65岁以上',
-                             @"commissionperiod" : commissionperiodStr,  //委托代理期限(月)  1-12
-                             @"paidmoney" : paidmoneyStr,  //已付本金
-                             @"interestpaid" : interestpaidStr, //已付利息
-                             @"performancecontract" : performancecontractStr,  //合同履行地
-                             @"creditorfile" : @"",  //债权人文件
-                             @"creditorinfo" : @"",  //债权人信息
-                             @"borrowinginfo" : @"", //债务人信息
-                             @"token" : [self getValidateToken]
-                             };
-     */
+    NSDictionary *params = self.coDataDictionary;
     
     [self requestDataPostWithString:reFinanceString params:params successBlock:^(id responseObject){
         

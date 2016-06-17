@@ -10,4 +10,13 @@
 
 @implementation ApplicationStateModel
 
++ (NSDictionary *)replacedKeyFromPropertyName
+{
+    return @{@"agree_time" : @"result.agree_time",
+             @"app_id" : @"result.app_id",
+             @"create_time" : @"result.create_time",
+             @"is_del" : @"result.is_del"
+             };
+}
+
 @end

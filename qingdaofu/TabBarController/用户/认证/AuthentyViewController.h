@@ -10,6 +10,4 @@
 
 @interface AuthentyViewController : BaseViewController
 
-
-
 @end

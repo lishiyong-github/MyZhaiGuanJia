@@ -10,4 +10,11 @@
 
 @interface TokenModel : BaseModel
 
+@property (nonatomic,copy) NSString *category;
+@property (nonatomic,copy) NSString *uidString;
+@property (nonatomic,copy) NSString *pid;
+@property (nonatomic,copy) NSString *mobile;
+@property (nonatomic,copy) NSString *state;
+@property (nonatomic,copy) NSString *idString;
+
 @end

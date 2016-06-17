@@ -27,6 +27,9 @@
 @property (nonatomic,strong) UIImage *pictureImage1;
 @property (nonatomic,strong) UIImage *pictureImage2;
 
+@property (nonatomic,strong) NSMutableDictionary *comDataDictionary;
+
+
 @end
 
 @implementation AuthenCompanyViewController
@@ -80,42 +83,7 @@
     if (!_companyAuCommitButton) {
         _companyAuCommitButton = [BaseCommitButton newAutoLayoutView];
         [_companyAuCommitButton setTitle:@"立即认证" forState:0];
-        
-        QDFWeakSelf;
-        [_companyAuCommitButton addAction:^(UIButton *btn) {
-            
-            NSString *companyAuString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kAuthenString];
-            NSDictionary *params = @{@"category" : @"3",
-                                     @"name" : @"米mi", //用户名
-                                     @"cardno" : @"8888888888888",   //证件号
-                                     @"email" : @"1234678@qq.com",    //邮箱
-                                     @"casedesc" : @"",  //案例
-                                     @"mobile" : @"13052358968",  //电话
-                                     @"contact" : @"",    //联系人
-                                     @"address" : @"",   //联系地址
-                                     @"enterprisewebsite" : @"",  //公司网址
-                                     @"cardimg" : @"",  //证件图片
-                                     @"type" : @"update",  //add=>’添加认证’。update=>’修改认证’。
-                                     @"token" : [weakself getValidateToken]
-                                     };
-            
-            [weakself requestDataPostWithString:companyAuString params:params successBlock:^(id responseObject){
-                BaseModel *uModel = [BaseModel objectWithKeyValues:responseObject];
-                [weakself showHint:uModel.msg];
-                
-                if ([uModel.code intValue] == 0000) {
-                    UINavigationController *companyNav = weakself.navigationController;
-                    [companyNav popViewControllerAnimated:NO];
-                    [companyNav popViewControllerAnimated:NO];
-                    
-                    CompleteViewController *completeVC = [[CompleteViewController alloc] init];
-                    completeVC.hidesBottomBarWhenPushed = YES;
-                    [companyNav pushViewController:completeVC animated:NO];
-                }
-                
-            } andFailBlock:^(NSError *error){
-                
-            }];
+        [_companyAuCommitButton addTarget:self action:@selector(goToAuthenCompanyMessages) forControlEvents:UIControlEventTouchUpInside];
             
             /*
             UINavigationController *companyNav = weakself.navigationController;
@@ -126,10 +94,18 @@
             completeVC.hidesBottomBarWhenPushed = YES;
             [companyNav pushViewController:completeVC animated:NO];
              */
-        }];
     }
     return _companyAuCommitButton;
 }
+
+- (NSMutableDictionary *)comDataDictionary
+{
+    if (!_comDataDictionary) {
+        _comDataDictionary = [NSMutableDictionary dictionary];
+    }
+    return _comDataDictionary;
+}
+
 
 #pragma mark - tableView delegate and datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -211,12 +187,32 @@
             cell.agentTextField.userInteractionEnabled = NO;
         }else if (indexPath.row == 1){//公司名称
             cell.agentTextField.text = certificationModel.name;
+            QDFWeak(cell);
+            [cell setDidEndEditing:^(NSString *text) {
+                weakcell.agentTextField.text = text;
+                [self.comDataDictionary setValue:text forKey:@"name"];
+            }];
         }else if (indexPath.row == 2){//营业执照号
             cell.agentTextField.text = certificationModel.cardno;
+            QDFWeak(cell);
+            [cell setDidEndEditing:^(NSString *text) {
+                weakcell.agentTextField.text = text;
+                [self.comDataDictionary setValue:text forKey:@"cardno"];
+            }];
         }else if (indexPath.row == 3){//联系人
             cell.agentTextField.text  = certificationModel.contact;
+            QDFWeak(cell);
+            [cell setDidEndEditing:^(NSString *text) {
+                weakcell.agentTextField.text = text;
+                [self.comDataDictionary setValue:text forKey:@"contact"];
+            }];
         }else{//联系方式
             cell.agentTextField.text = certificationModel.mobile;
+            QDFWeak(cell);
+            [cell setDidEndEditing:^(NSString *text) {
+                weakcell.agentTextField.text = text;
+                [self.comDataDictionary setValue:text forKey:@"mobile"];
+            }];
         }
         
         return cell;
@@ -245,10 +241,25 @@
                 [cell.agentLabel setAttributedText:ttt];
             }else if (indexPath.row == 1){//企业邮箱
                 cell.agentTextField.text = certificationModel.email;
+                QDFWeak(cell);
+                [cell setDidEndEditing:^(NSString *text) {
+                    weakcell.agentTextField.text = text;
+                    [self.comDataDictionary setValue:text forKey:@"email"];
+                }];
             }else if (indexPath.row == 2){//经营地址
                 cell.agentTextField.text = certificationModel.address;
+                QDFWeak(cell);
+                [cell setDidEndEditing:^(NSString *text) {
+                    weakcell.agentTextField.text = text;
+                    [self.comDataDictionary setValue:text forKey:@"address"];
+                }];
             }else{//公司网站
                 cell.agentTextField.text = certificationModel.enterprisewebsite;
+                QDFWeak(cell);
+                [cell setDidEndEditing:^(NSString *text) {
+                    weakcell.agentTextField.text = text;
+                    [self.comDataDictionary setValue:text forKey:@"enterprisewebsite"];
+                }];
             }
             
             return cell;
@@ -267,8 +278,14 @@
         cell.ediLabel.text = @"经典案例";
         cell.ediTextView.placeholder = @"关于公司在融资等方面的成功案例，有利于发布方更加青睐你";
         cell.ediTextView.font = kFirstFont;
-        
         cell.ediTextView.text = certificationModel.casedesc;
+        
+        QDFWeak(cell);
+        [cell setDidEndEditing:^(NSString *text) {
+            weakcell.ediTextView.text = text;
+            [self.comDataDictionary setValue:text forKey:@"casedesc"];
+        }];
+        
         return cell;
     }
     
@@ -314,12 +331,74 @@
     return nil;
 }
 
+#pragma mark - commit messages
+- (void)goToAuthenCompanyMessages
+{
+    [self.view endEditing:YES];
+    NSString *personAuString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kAuthenString];
+    /*
+     @"category" : @"3",
+     @"name" : @"米mi", //用户名
+     @"cardno" : @"8888888888888",   //证件号
+     @"email" : @"1234678@qq.com",    //邮箱
+     @"casedesc" : @"",  //案例
+     @"mobile" : @"13052358968",  //电话
+     @"contact" : @"",    //联系人
+     @"address" : @"",   //联系地址
+     @"enterprisewebsite" : @"",  //公司网址
+     @"cardimg" : @"",  //证件图片
+     @"type" : @"update",  //add=>’添加认证’。update=>’修改认证’。
+     @"token" : [weakself getValidateToken]
+     */
+    
+    self.comDataDictionary[@"cardimg"] = self.comDataDictionary[@"cardimg"]?self.comDataDictionary[@"cardimg"]:self.responseModel.certification.cardimg;
+    self.comDataDictionary[@"name"] = self.comDataDictionary[@"name"]?self.comDataDictionary[@"name"]:self.responseModel.certification.name;
+    self.comDataDictionary[@"cardno"] = self.comDataDictionary[@"cardno"]?self.comDataDictionary[@"cardno"]:self.responseModel.certification.cardno;
+    self.comDataDictionary[@"contact"] = self.comDataDictionary[@"contact"]?self.comDataDictionary[@"contact"]:self.responseModel.certification.contact;
+    self.comDataDictionary[@"address"] = self.comDataDictionary[@"address"]?self.comDataDictionary[@"address"]:self.responseModel.certification.address;
+    self.comDataDictionary[@"enterprisewebsite"] = self.comDataDictionary[@"enterprisewebsite"]?self.comDataDictionary[@"enterprisewebsite"]:self.responseModel.certification.enterprisewebsite;
+    self.comDataDictionary[@"mobile"] = self.comDataDictionary[@"mobile"]?self.comDataDictionary[@"mobile"]:self.responseModel.certification.mobile;
+    self.comDataDictionary[@"email"] = self.comDataDictionary[@"email"]?self.comDataDictionary[@"email"]:self.responseModel.certification.email;
+    self.comDataDictionary[@"casedesc"] = self.comDataDictionary[@"casedesc"]?self.comDataDictionary[@"casedesc"]:self.responseModel.certification.casedesc;
+    [self.comDataDictionary setValue:@"3" forKey:@"category"];
+    [self.comDataDictionary setValue:[self getValidateToken] forKey:@"token"];
+    
+    if (self.responseModel) {
+        [self.comDataDictionary setValue:@"update" forKey:@"type"];  //update为修改
+    }else{
+        [self.comDataDictionary setValue:@"add" forKey:@"type"];  //update为修改
+    }
+    
+    
+    NSDictionary *params = self.comDataDictionary;
+    
+    [self requestDataPostWithString:personAuString params:params successBlock:^(id responseObject){
+        
+        BaseModel *personModel = [BaseModel objectWithKeyValues:responseObject];
+        [self showHint:personModel.msg];
+        
+        if ([personModel.code isEqualToString:@"0000"]) {
+            UINavigationController *personNav = self.navigationController;
+            [personNav popViewControllerAnimated:NO];
+            [personNav popViewControllerAnimated:NO];
+            
+            CompleteViewController *completeVC = [[CompleteViewController alloc] init];
+            completeVC.hidesBottomBarWhenPushed = YES;
+            completeVC.categoryString = @"1";
+            [personNav pushViewController:completeVC animated:NO];
+        }
+        
+    } andFailBlock:^(NSError *error){
+        
+    }];
+}
+
+
 #pragma mark - alertView
 - (UIAlertController *)alertController
 {
     if (!_alertController) {
         _alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-        
         
         UIAlertAction *action0 = [UIAlertAction actionWithTitle:@"拍照" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             

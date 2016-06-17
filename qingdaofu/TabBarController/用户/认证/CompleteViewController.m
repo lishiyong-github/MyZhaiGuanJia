@@ -20,7 +20,6 @@
 #import "CompleteLawCell.h"
 #import "CompleteCompanyTableViewCell.h"
 
-
 #import "CompleteResponse.h"
 #import "CertificationModel.h"
 
@@ -43,9 +42,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    if ([self.responseModel.certification.category intValue] == 1) {
+    if ([self.categoryString intValue] == 1) {
         self.navigationItem.title = @"个人信息";
-    }else if ([self.responseModel.certification.category intValue] == 2){
+    }else if ([self.categoryString intValue] == 2){
         self.navigationItem.title = @"律所信息";
     }else{
         self.navigationItem.title = @"公司信息";
@@ -57,6 +56,8 @@
     [self.view addSubview:self.completeTableView];
     [self.view addSubview:self.completeCommitButton];
     [self.view setNeedsUpdateConstraints];
+    
+    [self showCompleteMessages];
 }
 
 - (void)updateViewConstraints
@@ -169,13 +170,13 @@
 {
     CGSize titleSize = [string boundingRectWithSize:CGSizeMake(kScreenWidth*0.5, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:kFirstFont} context:nil].size;
     
-    if ([self.responseModel.certification.category intValue] == 1) {//个人
+    if ([self.categoryString intValue] == 1) {//个人
         if (indexPath.row == 0) {
             return kCellHeight;
         }
         return 195+titleSize.height;
         
-    }else if ([self.responseModel.certification.category intValue] == 2){//律所
+    }else if ([self.categoryString intValue] == 2){//律所
         if (indexPath.row == 0) {
             return kCellHeight;
         }
@@ -213,26 +214,38 @@
         
         QDFWeakSelf;
         [cell.userActionButton addAction:^(UIButton *btn) {
-            if ([weakself.responseModel.certification.category intValue] == 1) {
+            
+            CompleteResponse *response;
+            if (self.completeDataArray.count > 0) {
+                response = self.completeDataArray[0];
+            }
+            
+            if ([weakself.categoryString intValue] == 1) {//个人
                 AuthenPersonViewController *authenPersonVC = [[AuthenPersonViewController alloc] init];
-                authenPersonVC.respnseModel = self.responseModel;
+                authenPersonVC.respnseModel = response;
                 [weakself.navigationController pushViewController:authenPersonVC animated:YES];
                 
-            }else if ([weakself.responseModel.certification.category intValue] == 2){
+            }else if ([weakself.categoryString intValue] == 2){//律所
                 AuthenLawViewController *authenLawVC = [[AuthenLawViewController alloc] init];
-                authenLawVC.responseModel = self.responseModel;
+                authenLawVC.responseModel = response;
                 [weakself.navigationController pushViewController:authenLawVC animated:YES];
-            }else if([weakself.responseModel.certification.category intValue] == 3){
+            }else if([weakself.categoryString intValue] == 3){//公司
                 AuthenCompanyViewController *authenCompanyVC = [[AuthenCompanyViewController alloc] init];
-                authenCompanyVC.responseModel = self.responseModel;
+                authenCompanyVC.responseModel = response;
                 [weakself.navigationController pushViewController:authenCompanyVC animated:YES];
             }
         }];
         return cell;
     }
-    CertificationModel *certificationModel = self.responseModel.certification;
     
-    if ([self.responseModel.certification.category intValue] == 1) {
+    CompleteResponse *response;
+    CertificationModel *certificationModel;
+    if (self.completeDataArray.count > 0) {
+        response = self.completeDataArray[0];
+        certificationModel = response.certification;
+    }
+    
+    if ([self.categoryString intValue] == 1) {
         identifier = @"complete11";
         CompleteCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         
@@ -256,7 +269,7 @@
         
         return cell;
         
-    }else if ([self.responseModel.certification.category intValue] == 2){
+    }else if ([self.categoryString intValue] == 2){
         identifier = @"complete12";
         CompleteLawCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         
@@ -286,7 +299,7 @@
         
         return cell;
 
-    }else if([self.responseModel.certification.category intValue] == 3){
+    }else if([self.categoryString intValue] == 3){
         identifier = @"complete13";
         CompleteCompanyTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         
@@ -338,6 +351,24 @@
 
 
 #pragma mark - method
+
+#pragma mark - method
+- (void)showCompleteMessages
+{
+    NSString *completeString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kIsCompleteString];
+    NSDictionary *params = @{@"token" : [self getValidateToken]};
+    [self requestDataPostWithString:completeString params:params successBlock:^(id responseObject){
+        CompleteResponse *response = [CompleteResponse objectWithKeyValues:responseObject];
+        
+        [self.completeDataArray addObject:response];
+        [self.completeTableView reloadData];
+        
+    } andFailBlock:^(NSError *error){
+        
+    }];
+}
+
+
 - (void)showRemindMessage:(UIBarButtonItem *)barButton
 {
 //    NSLog(@"可发布融资催收诉讼");

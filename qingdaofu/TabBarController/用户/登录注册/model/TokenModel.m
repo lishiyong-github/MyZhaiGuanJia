@@ -10,4 +10,22 @@
 
 @implementation TokenModel
 
++ (NSDictionary *)replacedKeyFromPropertyName
+{
+    return @{@"category" : @"result.category",
+             @"uidString" : @"result.uidString",
+             @"pid" : @"result.pid",
+             @"mobile" : @"result.mobile",
+             @"state" : @"result.state",
+             @"idString" : @"result.idString"
+             };
+}
+
++ (NSDictionary *)objectClassInArray
+{
+    return @{@"uidString" : @"uid",
+             @"idString" : @"id"
+             };
+}
+
 @end
