@@ -30,6 +30,7 @@
 @property (nonatomic,strong) BaseCommitButton *proDetailsCommitButton;
 
 @property (nonatomic,strong) NSMutableArray *recommendDataArray;
+@property (nonatomic,strong) NSString *typetString;
 
 @end
 
@@ -334,13 +335,8 @@
                              };
     [self requestDataPostWithString:houseString params:params successBlock:^(id responseObject) {
         
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSLog(@"++++++++ %@",dic);
-        
         ApplicationStateModel *stateModel = [ApplicationStateModel objectWithKeyValues:responseObject];
-        
         PublishingResponse *rModel = self.recommendDataArray[0];
-        
         
         if (stateModel.app_id == nil || [stateModel.app_id intValue] == 2) {
             [self.proDetailsCommitButton setTitleColor:kNavColor forState:0];
@@ -354,45 +350,24 @@
                 
                 QDFWeakSelf;
                 [_rightItemButton addAction:^(UIButton *btn) {
-                    btn.selected = !btn.selected;
                     
-                    PublishingResponse *rightResponse = weakself.recommendDataArray[0];
-                    PublishingModel *rightModel = rightResponse.product;
-                    NSString *rightString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kRequestStoreString];
-                    NSDictionary *params = @{@"id" : rightModel.idString,
-                                             @"category" : rightModel.category,
-                                             @"token" : [weakself getValidateToken]
-                                             };
-                    [weakself requestDataPostWithString:rightString params:params successBlock:^(id responseObject){
-                        BaseModel *rightModel = [BaseModel objectWithKeyValues:responseObject];
-                        [weakself showHint:rightModel.msg];
-                        
-                    } andFailBlock:^(NSError *error){
-                        
-                    }];
+                    if (weakself.typetString) {
+                        [weakself saveOrQuitSaveWithType:weakself.typetString WithButton:btn];
+                    }else{
+                        [weakself saveOrQuitSaveWithType:@"1" WithButton:btn];
+                    }
+                    
                 }];
                 
             }else{//已收藏
                 [_rightItemButton setImage:[UIImage imageNamed:@"nav_collection_s"] forState:0];
                 QDFWeakSelf;
                 [_rightItemButton addAction:^(UIButton *btn) {
-                    btn.selected = !btn.selected;
-                    //            [weakself showHint:@"收藏成功" yOffset:-(kScreenHeight-200)/2];
-                    
-                    PublishingResponse *rightResponse = weakself.recommendDataArray[0];
-                    PublishingModel *rightModel = rightResponse.product;
-                    NSString *rightString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kRequestStoreString];
-                    NSDictionary *params = @{@"id" : rightModel.idString,
-                                             @"category" : rightModel.category,
-                                             @"token" : [weakself getValidateToken]
-                                             };
-                    [weakself requestDataPostWithString:rightString params:params successBlock:^(id responseObject){
-                        BaseModel *rightModel = [BaseModel objectWithKeyValues:responseObject];
-                        [weakself showHint:rightModel.msg];
-                        
-                    } andFailBlock:^(NSError *error){
-                        
-                    }];
+                    if (weakself.typetString) {
+                        [weakself saveOrQuitSaveWithType:weakself.typetString WithButton:btn];
+                    }else{
+                        [weakself saveOrQuitSaveWithType:@"2" WithButton:btn];
+                    }
                 }];
             }
             
@@ -431,6 +406,7 @@
 //申请收藏或取消收藏
 - (void)saveOrQuitSaveWithType:(NSString *)type WithButton:(UIButton *)sender
 {
+    sender.selected = !sender.selected;
     
     PublishingResponse *rightResponse = self.recommendDataArray[0];
     PublishingModel *rightModel = rightResponse.product;
@@ -438,14 +414,14 @@
     NSString *rightString;
     NSDictionary *params;
     
-    if ([type isEqualToString:@"1"]) {//收藏
+    if ([type isEqualToString:@"1"]) {//未收藏 －－ 收藏
        rightString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kRequestStoreString];
         params = @{@"id" : rightModel.idString,
                    @"category" : rightModel.category,
                    @"token" : [self getValidateToken]
                    };
-    }else{//取消收藏
-        rightString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kDeleteStoreString];
+    }else{//收藏 －－ 取消收藏
+         rightString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kDeleteStoreString];
 
         params = @{@"product_id" : rightModel.idString,
                    @"category" : rightModel.category,
@@ -459,12 +435,13 @@
         
         if ([rightModel.code isEqualToString:@"0000"]) {
          
-            if ([type isEqualToString:@"1"]) {//收藏
-                
-            }else{//取消收藏
-                [self.rightItemButton setImage:[UIImage imageNamed:@""] forState:0];
+            if ([type isEqualToString:@"1"]) {//未收藏 －－ 收藏
+                [self.rightItemButton setImage:[UIImage imageNamed:@"nav_collection_s"] forState:0];
+                self.typetString = @"2";
+            }else{//收藏 －－ 取消收藏
+                [self.rightItemButton setImage:[UIImage imageNamed:@"nav_collection"] forState:0];
+                self.typetString = @"1";
             }
-            
         }
         
     }andFailBlock:^(NSError *error) {
