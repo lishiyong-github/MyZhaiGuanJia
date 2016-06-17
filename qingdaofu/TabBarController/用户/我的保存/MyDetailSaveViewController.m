@@ -12,7 +12,8 @@
 #import "ReportFinanceViewController.h"   //发布融资
 #import "ReportCollectViewController.h"  //发布催收
 #import "ReportSuitViewController.h"  //发布诉讼
-#import "ReportFiSucViewController.h"  //发布成功
+
+#import "MyReleaseViewController.h"   //我的发布
 
 #import "BaseCommitButton.h"
 
@@ -85,8 +86,7 @@
         
         QDFWeakSelf;
         [_saveCommitView addAction:^(UIButton *btn) {
-            ReportFiSucViewController *reportFiSucVC = [[ReportFiSucViewController alloc] init];
-            [weakself.navigationController pushViewController:reportFiSucVC animated:YES];
+            [weakself goToPublish];
         }];
     }
     return _saveCommitView;
@@ -298,8 +298,6 @@
                              @"category" : self.categaryString
                              };
     [self requestDataPostWithString:sDetailString params:params successBlock:^(id responseObject){
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSLog(@"++++++++ %@",dic);
         
         PublishingResponse *responseModel = [PublishingResponse objectWithKeyValues:responseObject];
         
@@ -309,7 +307,41 @@
     } andFailBlock:^(NSError *error){
         
     }];
+}
 
+//发布
+- (void)goToPublish
+{
+    RowsModel *pubModel;
+    if (self.saveDetailArray.count > 0) {
+        pubModel = self.saveDetailArray[0];
+    }
+    
+    NSString *reportString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMySaveString];
+    
+    NSDictionary *params = @{@"id" : pubModel.idString,
+                             @"category" : pubModel.category,
+                             @"token" : [self getValidateToken]
+                             };
+    
+    [self requestDataPostWithString:reportString params:params successBlock:^(id responseObject) {
+        BaseModel *model = [BaseModel objectWithKeyValues:responseObject];
+        
+        if ([model.code isEqualToString:@"0000"]) {
+            [self showHint:@"发布成功"];
+            
+            UINavigationController *nav = self.navigationController;
+            [nav popViewControllerAnimated:NO];
+            [nav popViewControllerAnimated:NO];
+            
+            MyReleaseViewController *myReleaseVC = [[MyReleaseViewController alloc] init];
+            myReleaseVC.progreStatus = @"1";
+            [nav pushViewController:myReleaseVC animated:NO];
+        }
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
 }
 
 - (void)didReceiveMemoryWarning {

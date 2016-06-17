@@ -53,8 +53,6 @@
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.leftItemButton];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightItemButton];
-    
     self.view.backgroundColor = kBackColor;
     
     [self.view addSubview:self.productsDetailsTableView];
@@ -81,28 +79,6 @@
 {
     if (!_rightItemButton) {
         _rightItemButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-        [_rightItemButton setImage:[UIImage imageNamed:@"nav_collection"] forState:0];
-        [_rightItemButton setImage:[UIImage imageNamed:@"nav_collection_s"] forState:UIControlStateSelected];
-        QDFWeakSelf;
-        [_rightItemButton addAction:^(UIButton *btn) {
-            btn.selected = !btn.selected;
-//            [weakself showHint:@"收藏成功" yOffset:-(kScreenHeight-200)/2];
-            
-            PublishingResponse *rightResponse = weakself.recommendDataArray[0];
-            PublishingModel *rightModel = rightResponse.product;
-            NSString *rightString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kRequestStoreString];
-            NSDictionary *params = @{@"id" : rightModel.idString,
-                                     @"category" : rightModel.category,
-                                     @"token" : [weakself getValidateToken]
-                                     };
-            [weakself requestDataPostWithString:rightString params:params successBlock:^(id responseObject){
-                BaseModel *rightModel = [BaseModel objectWithKeyValues:responseObject];
-                [weakself showHint:rightModel.msg];
-                
-            } andFailBlock:^(NSError *error){
-                
-            }];
-        }];
     }
     return _rightItemButton;
 }
@@ -333,22 +309,11 @@
                              };
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
         
-        NSDictionary *dci = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSLog(@"$$$$$ %@",dci);
-        
         PublishingResponse *respModel = [PublishingResponse objectWithKeyValues:responseObject];
         
         self.navigationItem.title = respModel.product.codeString;
         
         [self.recommendDataArray addObject:respModel];
-        
-        if ([respModel.product.progress_status intValue] == 1) {//已申请
-            
-        }else if ([respModel.product.progress_status intValue] == 2){
-            
-//            [phoneButton setHidden:YES];
-//            [self.proDetailsCommitButton setTitle:isSuccess forState:0];
-        }
         
         [self applicationForOrdersStates];
         
@@ -359,7 +324,7 @@
     }];
 }
 
-//申请状态
+//申请状态及收藏状态
 - (void)applicationForOrdersStates
 {
     NSString *houseString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductHouseStateString];
@@ -368,16 +333,75 @@
                              @"token" : [self getValidateToken]
                              };
     [self requestDataPostWithString:houseString params:params successBlock:^(id responseObject) {
+        
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        NSLog(@"++++++++ %@",dic);
+        
         ApplicationStateModel *stateModel = [ApplicationStateModel objectWithKeyValues:responseObject];
         
         PublishingResponse *rModel = self.recommendDataArray[0];
         
-        if (([stateModel.app_id intValue] == 0) && ([rModel.product.progress_status intValue] == 5)) {//已申请
+        
+        if (stateModel.app_id == nil || [stateModel.app_id intValue] == 2) {
+            [self.proDetailsCommitButton setTitleColor:kNavColor forState:0];
+            [self.proDetailsCommitButton setTitle:@"立即申请" forState:0];
+            [self.proDetailsCommitButton addTarget: self action:@selector(applicationCommit) forControlEvents:UIControlEventTouchUpInside];
+            
+            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightItemButton];
+            
+            if (stateModel.app_id == nil) {//未收藏
+                [_rightItemButton setImage:[UIImage imageNamed:@"nav_collection"] forState:0];
+                
+                QDFWeakSelf;
+                [_rightItemButton addAction:^(UIButton *btn) {
+                    btn.selected = !btn.selected;
+                    
+                    PublishingResponse *rightResponse = weakself.recommendDataArray[0];
+                    PublishingModel *rightModel = rightResponse.product;
+                    NSString *rightString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kRequestStoreString];
+                    NSDictionary *params = @{@"id" : rightModel.idString,
+                                             @"category" : rightModel.category,
+                                             @"token" : [weakself getValidateToken]
+                                             };
+                    [weakself requestDataPostWithString:rightString params:params successBlock:^(id responseObject){
+                        BaseModel *rightModel = [BaseModel objectWithKeyValues:responseObject];
+                        [weakself showHint:rightModel.msg];
+                        
+                    } andFailBlock:^(NSError *error){
+                        
+                    }];
+                }];
+                
+            }else{//已收藏
+                [_rightItemButton setImage:[UIImage imageNamed:@"nav_collection_s"] forState:0];
+                QDFWeakSelf;
+                [_rightItemButton addAction:^(UIButton *btn) {
+                    btn.selected = !btn.selected;
+                    //            [weakself showHint:@"收藏成功" yOffset:-(kScreenHeight-200)/2];
+                    
+                    PublishingResponse *rightResponse = weakself.recommendDataArray[0];
+                    PublishingModel *rightModel = rightResponse.product;
+                    NSString *rightString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kRequestStoreString];
+                    NSDictionary *params = @{@"id" : rightModel.idString,
+                                             @"category" : rightModel.category,
+                                             @"token" : [weakself getValidateToken]
+                                             };
+                    [weakself requestDataPostWithString:rightString params:params successBlock:^(id responseObject){
+                        BaseModel *rightModel = [BaseModel objectWithKeyValues:responseObject];
+                        [weakself showHint:rightModel.msg];
+                        
+                    } andFailBlock:^(NSError *error){
+                        
+                    }];
+                }];
+            }
+            
+        }else if (([stateModel.app_id intValue] == 0) && ([rModel.product.progress_status intValue] == 1)) {//已申请
             [self.proDetailsCommitButton setTitleColor:kBlackColor forState:0];
             [self.proDetailsCommitButton setTitle:@"已申请" forState:0];
             [self.proDetailsCommitButton setBackgroundColor:kSelectedColor];
             self.proDetailsCommitButton.userInteractionEnabled = NO;
-        }else if (([stateModel.app_id intValue] == 0) && ([rModel.product.progress_status intValue] == 1)){//申请成功
+        }else if (([stateModel.app_id intValue] == 1) && ([rModel.product.progress_status intValue] == 2)){//申请成功
             [self.proDetailsCommitButton setTitleColor:kBlackColor forState:0];
             [self.proDetailsCommitButton setTitle:@"申请成功" forState:0];
             [self.proDetailsCommitButton setBackgroundColor:kSelectedColor];
@@ -397,20 +421,53 @@
             [phoneButton autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:_proDetailsCommitButton];
             [phoneButton autoSetDimension:ALDimensionWidth toSize:kTabBarHeight];
             
-        }else{
-            [self.proDetailsCommitButton setTitleColor:kNavColor forState:0];
-            [self.proDetailsCommitButton setTitle:@"立即申请" forState:0];
-            [self.proDetailsCommitButton addTarget: self action:@selector(applicationCommit) forControlEvents:UIControlEventTouchUpInside];
         }
         
-//        if ([dModel.code isEqualToString:@"0000"]) {
-//            [sender setBackgroundColor:kSelectedColor];
-//            [sender setTitle:@"申请中" forState:0];
-//            [sender setTitleColor:kBlackColor forState:0];
-//            sender.userInteractionEnabled = NO;
-//        }
-        
     } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
+//申请收藏或取消收藏
+- (void)saveOrQuitSaveWithType:(NSString *)type WithButton:(UIButton *)sender
+{
+    
+    PublishingResponse *rightResponse = self.recommendDataArray[0];
+    PublishingModel *rightModel = rightResponse.product;
+    
+    NSString *rightString;
+    NSDictionary *params;
+    
+    if ([type isEqualToString:@"1"]) {//收藏
+       rightString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kRequestStoreString];
+        params = @{@"id" : rightModel.idString,
+                   @"category" : rightModel.category,
+                   @"token" : [self getValidateToken]
+                   };
+    }else{//取消收藏
+        rightString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kDeleteStoreString];
+
+        params = @{@"product_id" : rightModel.idString,
+                   @"category" : rightModel.category,
+                   @"token" : [self getValidateToken]
+                   };
+    }
+    
+    [self requestDataPostWithString:rightString params:params successBlock:^(id responseObject){
+        BaseModel *rightModel = [BaseModel objectWithKeyValues:responseObject];
+        [self showHint:rightModel.msg];
+        
+        if ([rightModel.code isEqualToString:@"0000"]) {
+         
+            if ([type isEqualToString:@"1"]) {//收藏
+                
+            }else{//取消收藏
+                [self.rightItemButton setImage:[UIImage imageNamed:@""] forState:0];
+            }
+            
+        }
+        
+    }andFailBlock:^(NSError *error) {
         
     }];
 }

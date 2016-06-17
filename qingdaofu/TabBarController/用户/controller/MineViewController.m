@@ -120,22 +120,22 @@
                             [weakself.navigationController pushViewController:myReleaseVC animated:YES];
                         }
                             break;
-                        case 21:{
+                        case 21:{//发布中
                             myReleaseVC.progreStatus = @"1";
                             [weakself.navigationController pushViewController:myReleaseVC animated:YES];
                         }
                             break;
-                        case 22:{
+                        case 22:{//处理中
                             myReleaseVC.progreStatus = @"2";
                             [weakself.navigationController pushViewController:myReleaseVC animated:YES];
                         }
                             break;
-                        case 23:{
+                        case 23:{//终止
                             myReleaseVC.progreStatus = @"3";
                             [weakself.navigationController pushViewController:myReleaseVC animated:YES];
                         }
                             break;
-                        case 24:{
+                        case 24:{//结案
                             myReleaseVC.progreStatus = @"4";
                             [weakself.navigationController pushViewController:myReleaseVC animated:YES];
                         }

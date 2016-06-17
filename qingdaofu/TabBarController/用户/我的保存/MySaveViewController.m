@@ -8,6 +8,7 @@
 
 #import "MySaveViewController.h"
 #import "MyDetailSaveViewController.h"
+#import "MyReleaseViewController.h"  //我的发布
 
 #import "MineUserCell.h"
 
@@ -114,7 +115,6 @@
 - (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewRowAction *editAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"直接发布" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
-        NSLog(@"直接发布");
         [self goToPublishWithRow:indexPath.row];
         
     }];
@@ -169,42 +169,26 @@
 - (void)goToPublishWithRow:(NSInteger)row
 {
     RowsModel *pubModel = self.mySaveDataList[row];
-    NSString *reportString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPublishFinanceString];
     
-    NSDictionary *params;
-    if ([pubModel.category intValue] == 1) {//融资
-        params = @{@"money" : pubModel.money?pubModel.money:@"",//融资金额，万为单位
-                   @"rebate" : pubModel.rebate?pubModel.rebate:@"",//返点，实数
-                   @"rate" : pubModel.rate?pubModel.rate:@"",//利率
-                   @"rate_cat" : pubModel.rate_cat?pubModel.rate_cat:@"",//利率单位 1-天  2-月
-                   @"mortorage_community" : pubModel.mortorage_community?pubModel.mortorage_community:@"",//小区名
-                   @"seatmortgage" : pubModel.seatmortgage?pubModel.seatmortgage:@"",//详细地址
-                   @"province_id" : pubModel.province_id,
-                   @"city_id" : pubModel.city_id,
-                   @"district_id" : pubModel.district_id,
-                   @"term" : pubModel.term?pubModel.term:@"",//借款期限
-                   @"mortgagecategory" : pubModel.mortgagecategory?pubModel.mortgagecategory:@"",//抵押物类型1=>'住宅', 2=>'商户',3=>'办公楼'
-                   @"status" : pubModel.status?pubModel.status:@"",//房子状态   1=>'自住',2=>'出租',
-                   @"rentmoney" : pubModel.rentmoney?pubModel.rentmoney:@"",//租金
-                   @"mortgagearea" : pubModel.mortgagearea?pubModel.mortgagearea:@"",//房子面积
-                   @"loanyear" : pubModel.loanyear?pubModel.loanyear:@"",//借款人年龄
-                   @"obligeeyear" : pubModel.obligeeyear?pubModel.obligeeyear:@"",//权利人年龄 1=>'65岁以下',2=>'65岁以上'
-                   @"category" : pubModel.category,
-                   @"progress_status" : @"1",
-                   @"token" : [self getValidateToken]
-                   };
-    }else if ([pubModel.category intValue] == 2){//催收
-        
-    }else{
-        
-    }
+    NSString *reportString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMySaveString];
+    
+    NSDictionary *params = @{@"id" : pubModel.idString,
+                             @"category" : pubModel.category,
+                             @"token" : [self getValidateToken]
+                             };
     
     [self requestDataPostWithString:reportString params:params successBlock:^(id responseObject) {
         BaseModel *model = [BaseModel objectWithKeyValues:responseObject];
-        [self showHint:model.msg];
+        
         if ([model.code isEqualToString:@"0000"]) {
-            [self.mySaveDataList removeObjectAtIndex:row];
-            [self.mySavetableView reloadData];
+            [self showHint:@"发布成功"];
+            
+            UINavigationController *nav = self.navigationController;
+            [nav popViewControllerAnimated:NO];
+            
+            MyReleaseViewController *myReleaseVC = [[MyReleaseViewController alloc] init];
+            myReleaseVC.progreStatus = @"1";
+            [nav pushViewController:myReleaseVC animated:YES];
         }
         
     } andFailBlock:^(NSError *error) {
