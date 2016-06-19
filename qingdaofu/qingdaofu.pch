@@ -48,6 +48,8 @@
 
 #define UIColorFromRGB1(rgbValue,alphaValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:alphaValue]
 
+#define KTimeStamp [NSString stringWithFormat:@"%.0f",[[NSDate new] timeIntervalSince1970] * 1000]
+
 
 //文字颜色
 #define kBlueColor UIColorFromRGB(0x0065b3)  //主色调
@@ -104,8 +106,8 @@
  */
 
 #define kQDFUrlString @"http://www.zcb2016.com/wap/"
-//#define kQDFTestUrlString @"http://testq.zcb2016.com/wap/"
-#define kQDFTestUrlString @"http://192.168.20.149/wap/"
+#define kQDFTestUrlString @"http://testq.zcb2016.com/wap/"
+//#define kQDFTestUrlString @"http://192.168.20.149/wap/"
 
 
 //post

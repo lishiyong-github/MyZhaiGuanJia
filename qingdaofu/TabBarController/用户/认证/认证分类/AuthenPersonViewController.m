@@ -14,6 +14,8 @@
 #import "AgentCell.h"
 #import "BaseCommitButton.h"
 
+#import "UIViewController+MutipleImageChoice.h"
+
 @interface AuthenPersonViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
@@ -130,9 +132,17 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
+        QDFWeakSelf;
         [cell setDidSelectedItem:^(NSInteger itemTag) {
-            [self presentViewController:self.alertController animated:YES completion:nil];
-            _pictureInt = itemTag;
+            
+            if (itemTag == 0) {
+                [weakself addImageWithMutipleChoise:YES andFinishBlock:^(NSArray *images) {
+                    [weakself.perDataDictionary setValue:images forKey:@"cardimg"];
+                }];
+            }
+            
+//            [self presentViewController:self.alertController animated:YES completion:nil];
+//            _pictureInt = itemTag;
         }];
         
         return cell;

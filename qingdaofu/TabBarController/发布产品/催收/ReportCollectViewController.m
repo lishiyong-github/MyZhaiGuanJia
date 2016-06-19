@@ -410,6 +410,12 @@
     if (indexPath.section == 1) {
         if (indexPath.row == 10) {//债权文件
             UploadFilesViewController *uploadFilesVC = [[UploadFilesViewController alloc] init];
+            
+            QDFWeakSelf;
+            [uploadFilesVC setUploadImages:^(NSDictionary *imageDic) {
+                [weakself.coDataDictionary setValue:imageDic forKey:@"credit"];
+            }];
+            
             [self.navigationController pushViewController:uploadFilesVC animated:YES];
         }else if (indexPath.row == 11){//债权人信息
             DebtCreditMessageViewController *debtCreditMessageVC = [[DebtCreditMessageViewController alloc] init];

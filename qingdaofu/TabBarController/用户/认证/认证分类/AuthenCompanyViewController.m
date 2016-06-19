@@ -15,6 +15,8 @@
 #import "AgentCell.h"
 #import "BaseCommitButton.h"
 
+#import "UIViewController+MutipleImageChoice.h"
+
 
 @interface AuthenCompanyViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
@@ -148,7 +150,15 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        cell.backgroundColor = kRedColor;
+        QDFWeakSelf;
+        [cell setDidSelectedItem:^(NSInteger itemTag) {
+            
+            if (itemTag == 0) {
+                [weakself addImageWithMutipleChoise:YES andFinishBlock:^(NSArray *images) {
+                    [weakself.comDataDictionary setValue:images forKey:@"cardimg"];
+                }];
+            }
+        }];
         
         //        [cell.pictureButton1 setImage:self.pictureImage1 forState:0];
         //        [cell.pictureButton1 addTarget:self action:@selector(showAlertViewController) forControlEvents:UIControlEventTouchUpInside];

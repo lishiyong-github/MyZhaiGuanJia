@@ -10,6 +10,7 @@
 
 #import "UIImage+Color.h"
 
+
 @interface BaseViewController ()<UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
 @property (nonatomic,strong) UIButton *leftBackBtn;
@@ -34,6 +35,12 @@
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:[UIColor whiteColor]] forBarMetrics:UIBarMetricsDefault];
         
     self.automaticallyAdjustsScrollViewInsets = NO;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    NSLog(@"=====%@=====",NSStringFromClass([self class]));
 }
 
 -(UIBarButtonItem *)leftItem

@@ -419,6 +419,15 @@
     return nil;
 }
 
+//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    if (indexPath.section == 1) {
+//        if (indexPath) {
+//            <#statements#>
+//        }
+//    }
+//}
+
 #pragma mark - method
 - (void)openAndClose:(UIButton *)btn
 {

@@ -8,10 +8,10 @@
 
 #import "CompleteViewController.h"
 
+#import "AuthentyViewController.h"//修改认证
 #import "AuthenPersonViewController.h"  //认证个人
 #import "AuthenLawViewController.h"
 #import "AuthenCompanyViewController.h"
-#import "AuthentyViewController.h"
 
 #import "MineUserCell.h"
 #import "BaseCommitButton.h"

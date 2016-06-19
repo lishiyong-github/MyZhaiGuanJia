@@ -40,9 +40,45 @@
 
 }
  */
+- (void)requestDataPostWithString:(NSString *)string params:(NSDictionary *)params andImages:(NSDictionary *)images successBlock:(void (^)(id responseObject))successBlock andFailBlock:(void (^)(NSError *error))failBlock
+{
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    [manager.requestSerializer setValue:@"text/html;charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
 
+    
+    [manager POST:string parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        if (images) {
+            for (NSString *key in [images allKeys]) {
+                NSArray *uploadImages = images[key];
+                for (id obj in uploadImages) {
+                    if ([obj isKindOfClass:[NSString class]]) {
+                        [formData appendPartWithFileData:[NSData dataWithContentsOfFile:obj] name:key fileName:KTimeStamp mimeType:@"image/png"];
+                    }else if ([obj isKindOfClass:[UIImage class]]){
+                        [formData appendPartWithFileData:UIImageJPEGRepresentation(obj, 0.7) name:key fileName:KTimeStamp mimeType:@"image/png"];
+                    }
+                }
+            }
+        }
+    } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        if (successBlock) {
+            successBlock(responseObject);
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failBlock) {
+            failBlock(error);
+        }
+    }];
+}
 - (void)requestDataPostWithString:(NSString *)string params:(NSDictionary *)params successBlock:(void (^)(id responseObject))successBlock andFailBlock:(void (^)(NSError *error))failBlock
 {
+//    [self requestDataPostWithString:string params:params andImages:nil successBlock:successBlock andFailBlock:failBlock];
+    
+    
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
@@ -57,14 +93,7 @@
             failBlock(error);
         }
     }];
-    
-//    [manager POST:string parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-//        
-//    } success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        
-//    }];
+
 }
 
 - (void)didReceiveMemoryWarning {

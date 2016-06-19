@@ -9,6 +9,7 @@
 #import "UploadFilesViewController.h"
 
 #import "UIButton+Addition.h"
+#import "UIViewController+MutipleImageChoice.h"
 
 #import "MineUserCell.h"
 
@@ -16,6 +17,7 @@
 
 @property (nonatomic,strong) UITableView *uploadTableView;
 @property (nonatomic,assign) BOOL didSetupConstraints;
+@property (nonatomic,strong) NSMutableDictionary *imagesDictionaty;
 
 @end
 
@@ -28,6 +30,14 @@
     
     [self.view addSubview:self.uploadTableView];
     [self.view setNeedsUpdateConstraints];
+}
+
+- (NSMutableDictionary *)imagesDictionaty
+{
+    if (!_imagesDictionaty) {
+        _imagesDictionaty = [NSMutableDictionary dictionary];
+    }
+    return _imagesDictionaty;
 }
 
 - (void)updateViewConstraints
@@ -91,10 +101,44 @@
     return cell;
 }
 
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    QDFWeakSelf;
+    [self addImageWithMutipleChoise:YES andFinishBlock:^(NSArray *images) {
+        switch (indexPath.row) {
+            case 0:
+                [weakself.imagesDictionaty setObject:images forKey:@"11"];
+                break;
+            case 1:
+                
+                break;
+            case 2:
+                
+                break;
+            case 3:
+                
+                break;
+            case 4:
+                
+                break;
+            case 5:
+                
+                break;
+                
+            default:
+                break;
+        }
+    }];
+}
+
+- (void)back
+{
+    [super back];
+    if (self.uploadImages) {
+        self.uploadImages(self.imagesDictionaty);
+    }
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
