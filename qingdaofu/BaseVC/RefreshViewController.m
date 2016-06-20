@@ -21,68 +21,65 @@
     // Do any additional setup after loading the view.
 }
 
--(void)headerRefreshWithPage:(NSString *)page urlString:(NSString *)urlString Parameter:(NSDictionary *)params successBlock:(void(^)(id responseObject))successBlock andfailedBlock:(void(^)(NSError *error))failedBlock
+- (void)requestDataPostWithString:(NSString *)string params:(NSDictionary *)params successBlock:(void (^)(id))successBlock andFailBlock:(void (^)(NSError *))failBlock
 {
-    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-    AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
+    [self showHudInView:self.view hint:@"正在加载"];
+    AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
+    session.responseSerializer = [AFHTTPResponseSerializer serializer];
+    session.requestSerializer = [AFHTTPRequestSerializer serializer];
     
-    NSURL *URL = [NSURL URLWithString:urlString];
-    NSURLRequest *request = [NSURLRequest requestWithURL:URL];
-    
-    NSURLSessionUploadTask *uploadTask = [manager uploadTaskWithRequest:request fromData:nil progress:^(NSProgress * _Nonnull uploadProgress) {
+    [session POST:string parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
         
-    } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
-        
-        if (error) {
-            failedBlock(error);
-        }else{
-            if (successBlock) {
-                successBlock(responseObject);
-            }
-            
-        }
-        
-    }];
-    
-    [uploadTask resume];
-    
-    
-    /*
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    
-    [manager POST:urlString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject){
-        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (successBlock) {
+            [self hideHud];
             successBlock(responseObject);
         }
-        
-    } failure:^(AFHTTPRequestOperation *operation,NSError *error) {
-        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        if (failBlock) {
+            [self hideHud];
+            failBlock(error);
+        }
     }];
-     */
+
 }
 
-- (void)footerRefreshWithUrlString:(NSString *)urlString Parameter:(NSDictionary *)params successBlock:(void (^)(id))successBlock andfailedBlock:(void (^)(NSError *))failedBlock
+-(void)headerRefreshWithUrlString:(NSString *)urlString Parameter:(NSDictionary *)params successBlock:(void(^)(id responseObject))successBlock andfailedBlock:(void(^)(NSError *error))failedBlock
 {
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
+    session.responseSerializer = [AFHTTPResponseSerializer serializer];
+    session.requestSerializer = [AFHTTPRequestSerializer serializer];
     
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-
-    [manager POST:urlString parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+    [session POST:urlString parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (successBlock) {
             successBlock(responseObject);
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        if (successBlock) {
-            successBlock(error);
+        if (failedBlock) {
+            failedBlock(error);
         }
     }];
+}
+
+-(void)footerRefreshWithUrlString:(NSString *)urlString Parameter:(NSDictionary *)params successBlock:(void(^)(id responseObject))successBlock andfailedBlock:(void(^)(NSError *error))failedBlock
+{
+    AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
+    session.responseSerializer = [AFHTTPResponseSerializer serializer];
+    session.requestSerializer = [AFHTTPRequestSerializer serializer];
     
+    [session POST:urlString parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if (successBlock) {
+            successBlock(responseObject);
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        if (failedBlock) {
+            failedBlock(error);
+        }
+    }];
 }
 
 - (void)didReceiveMemoryWarning {

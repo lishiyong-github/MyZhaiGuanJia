@@ -20,6 +20,8 @@
 @property (nonatomic,strong) BaseCommitButton *upCommitButton;
 @property (nonatomic,strong) UIButton *rightButton;
 
+@property (nonatomic,strong) NSArray *allImage;
+
 @end
 
 @implementation UploadViewController
@@ -79,6 +81,15 @@
                     TakePictureCell *cell = [weakself.upTableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
                     cell.pictureCollection.backgroundColor = kBackColor;
                     cell.collectionDataList = [NSMutableArray arrayWithArray:images];
+                    
+//                    weakself.allImage = images;
+                    NSString *str;
+                    NSMutableString *str1;
+                    for (int i=0; i<[images count]; i++) {
+                        str = [NSString stringWithFormat:@"'%@'",images[i]];
+                    }
+                    
+                    NSLog(@"str is %@",str);
                     
                     [cell reloadData];
                 }
@@ -152,6 +163,14 @@
 - (void)editImages:(NSArray *)imageArray
 {
     
+}
+
+- (void)back
+{
+    [super back];
+    if (self.uploadImages) {
+        self.uploadImages(self.allImage);
+    }
 }
 
 - (void)didReceiveMemoryWarning {

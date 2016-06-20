@@ -69,7 +69,7 @@
 {
     if (!_skyTableView) {
         _skyTableView = [SkyAssociationMenuView new];
-        _skyTableView.delegate = self;
+//        _skyTableView.delegate = self;
     }
     return _skyTableView;
 }
@@ -169,6 +169,7 @@
         
         self.idxType = @"1";
         [self.skyTableView showAsDrawDownView:self.navigationController.navigationBar];
+        
         
     } andFailBlock:^(NSError *error) {
         

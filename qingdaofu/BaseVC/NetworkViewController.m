@@ -19,26 +19,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 }
-/*
-- (void)requestDataGetWithString:(NSString *)string params:(NSDictionary *)params successBlock:(void (^)())successBlock andFailBlock:(void (^)())failBlock
-{
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
 
-   [manager GET:string parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-       if (successBlock) {
-           successBlock(operation,responseObject);
-       }
-       
-   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-       if (failBlock) {
-           failBlock(operation,error);
-       }
-   }];
-
-}
- */
 - (void)requestDataPostWithString:(NSString *)string params:(NSDictionary *)params andImages:(NSDictionary *)images successBlock:(void (^)(id responseObject))successBlock andFailBlock:(void (^)(NSError *error))failBlock
 {
     AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
@@ -47,8 +28,11 @@
     
     [session POST:string parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         if (images) {
+        
             for (NSString *key in [images allKeys]) {
+                
                 NSArray *uploadImages = images[key];
+                
                 for (id obj in uploadImages) {
                     if ([obj isKindOfClass:[NSString class]]) {
                         [formData appendPartWithFileData:[NSData dataWithContentsOfFile:obj] name:key fileName:KTimeStamp mimeType:@"image/png"];
@@ -57,6 +41,7 @@
                     }
                 }
             }
+            
         }
 
     } progress:^(NSProgress * _Nonnull uploadProgress) {
@@ -72,10 +57,10 @@
         }
     }];
 }
+
+
 - (void)requestDataPostWithString:(NSString *)string params:(NSDictionary *)params successBlock:(void (^)(id responseObject))successBlock andFailBlock:(void (^)(NSError *error))failBlock
 {
-//    [self requestDataPostWithString:string params:params andImages:nil successBlock:successBlock andFailBlock:failBlock];
-    
     AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
     session.responseSerializer = [AFHTTPResponseSerializer serializer];
     session.requestSerializer = [AFHTTPRequestSerializer serializer];

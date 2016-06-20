@@ -61,22 +61,24 @@
             cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         
-        [cell.userNameButton swapImage];
         cell.userNameButton.userInteractionEnabled = NO;
         cell.userActionButton.userInteractionEnabled = NO;
         [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
         
         if ([self.model.code isEqualToString:@"3006"]) {//未认证
+            
             [cell.userNameButton setTitle:self.model.mobile forState:0];
-            [cell.userActionButton setTitle:@"未认证" forState:0];
             [cell.userNameButton setImage:[UIImage imageNamed:@""] forState:0];
+            [cell.userActionButton setTitle:@"未认证" forState:0];
+            
         }else if([self.model.code isEqualToString:@"3001"]){//未登录
             [cell.userNameButton setTitle:@"未登录" forState:0];
-            [cell.userActionButton setTitle:@"请登录" forState:0];
             [cell.userNameButton setImage:[UIImage imageNamed:@""] forState:0];
+            [cell.userActionButton setTitle:@"请登录" forState:0];
         }else{
             [cell.userNameButton setTitle:self.model.mobile forState:0];
             [cell.userNameButton setImage:[UIImage imageNamed:@"publish_list_authentication"] forState:0];
+            [cell.userActionButton setTitle:@"已认证" forState:0];
         }
         
         return cell;

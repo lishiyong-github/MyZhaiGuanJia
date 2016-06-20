@@ -36,6 +36,7 @@
 @property (nonatomic,strong) NSMutableArray *coHolderArray;
 
 @property (nonatomic,strong) NSMutableDictionary *coDataDictionary;  //参数
+@property (nonatomic,strong) NSMutableDictionary *coImageDictionary; //图片参数
 @property (nonatomic,strong) NSString *rowString;    //债权类型
 @property (nonatomic,strong) NSString *number;
 @end
@@ -144,6 +145,14 @@
 
 
 - (NSMutableDictionary *)coDataDictionary
+{
+    if (!_coDataDictionary) {
+        _coDataDictionary = [NSMutableDictionary dictionary];
+    }
+    return _coDataDictionary;
+}
+
+- (NSMutableDictionary *)coImageDictionary
 {
     if (!_coDataDictionary) {
         _coDataDictionary = [NSMutableDictionary dictionary];
@@ -413,10 +422,10 @@
         if (indexPath.row == 10) {//债权文件
             UploadFilesViewController *uploadFilesVC = [[UploadFilesViewController alloc] init];
             
-//            QDFWeakSelf;
-//            [uploadFilesVC setUploadImages:^(NSDictionary *imageDic) {
-//                [weakself.coDataDictionary setValue:imageDic forKey:@"credit"];
-//            }];
+            QDFWeakSelf;
+            [uploadFilesVC setChooseImages:^(NSDictionary *imageDic) {
+                [weakself.coImageDictionary setObject:imageDic forKey:@"creditorfile"];
+            }];
             
             [self.navigationController pushViewController:uploadFilesVC animated:YES];
         }else if (indexPath.row == 11){//债权人信息
@@ -544,7 +553,7 @@
     self.coDataDictionary[@"paidmoney"] = self.coDataDictionary[@"paidmoney"]?self.coDataDictionary[@"paidmoney"]:@"";
     self.coDataDictionary[@"interestpaid"] = self.coDataDictionary[@"interestpaid"]?self.coDataDictionary[@"interestpaid"]:@"";
     self.coDataDictionary[@"performancecontract"] = self.coDataDictionary[@"performancecontract"]?self.coDataDictionary[@"performancecontract"]:@"";
-    //债权人文件，债务人文件，债务人信息
+    //债权人文件，债权人信息，债务人信息
     
     [self.coDataDictionary setValue:@"2" forKey:@"category"];
     [self.coDataDictionary setValue:string forKey:@"progress_status"];
@@ -552,6 +561,30 @@
     
     NSDictionary *params = self.coDataDictionary;
     
+    [self requestDataPostWithString:reFinanceString params:params andImages:self.coImageDictionary successBlock:^(id responseObject) {
+        BaseModel *suitModel = [BaseModel objectWithKeyValues:responseObject];
+        [self showHint:suitModel.msg];
+        if ([suitModel.code isEqualToString:@"0000"]) {
+            
+            if ([string intValue] == 0) {//保存
+                UINavigationController *nav = self.navigationController;
+                [nav popViewControllerAnimated:NO];
+                
+                MySaveViewController *mySaveVC = [[MySaveViewController alloc] init];
+                mySaveVC.hidesBottomBarWhenPushed = YES;
+                [nav pushViewController:mySaveVC animated:NO];
+            }else{
+                ReportFiSucViewController *reportFiSucVC = [[ReportFiSucViewController alloc] init];
+                reportFiSucVC.reportType = @"诉讼";
+                [self.navigationController pushViewController:reportFiSucVC animated:YES];
+            }
+        }
+
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+    
+    /*
     [self requestDataPostWithString:reFinanceString params:params successBlock:^(id responseObject){
         
         BaseModel *suitModel = [BaseModel objectWithKeyValues:responseObject];
@@ -574,6 +607,7 @@
     } andFailBlock:^(NSError *error){
         
     }];
+     */
 }
 
 

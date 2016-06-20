@@ -17,6 +17,4 @@
 
 -(void)footerRefreshWithUrlString:(NSString *)urlString Parameter:(NSDictionary *)params successBlock:(void(^)(id responseObject))successBlock andfailedBlock:(void(^)(NSError *error))failedBlock;
 
-
-
 @end

@@ -8,6 +8,8 @@
 
 #import "MineViewController.h"
 
+#import "MineUserCell.h"
+
 #import "LoginViewController.h"     //登录
 #import "AuthentyViewController.h"  //未认证
 #import "CompleteViewController.h"  //已认证
@@ -71,7 +73,6 @@
     }
     [super updateViewConstraints];
 }
-
 
 - (LoginTableView *)loginView
 {

@@ -95,6 +95,7 @@
         
         QDFWeakSelf;
         [_orderHeadView setDidSelectedSeg:^(NSInteger segTag) {
+//            [weakself.myOrderDataList removeAllObjects];
             switch (segTag) {
                 case 111:{//全部
                     weakself.status = @"-1";
@@ -147,6 +148,7 @@
         _myOrderTableView.dataSource = self;
         _myOrderTableView.backgroundColor = kBackColor;
         _myOrderTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
+//        [_myOrderTableView addFooterWithTarget:self action:@selector(refreshsFooter)];
     }
     return _myOrderTableView;
 }
@@ -354,26 +356,21 @@
 }
 
 #pragma mark - method
-/*
- 0为全部。
- 1为发布成功。
- 2 为处理中（已同意接单方接单）。
- 3 为终止（只有发布方能发起终止）。
- 4 为结案（是双方相互的）。
- */
-
 - (void)getOrderListWithPage:(NSString *)page
 {
-    [self.myOrderDataList removeAllObjects];
-    
     NSString *myOrderString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrdersString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"progress_status" : self.progresStatus,
                              @"page" : page,
                              @"status" : self.status
                              };
-    [self headerRefreshWithUrlString:myOrderString Parameter:params successBlock:^(id responseObject) {
+    
+    [self requestDataPostWithString:myOrderString params:params successBlock:^(id responseObject) {
         ReleaseResponse *responceModel = [ReleaseResponse objectWithKeyValues:responseObject];
+        
+        if (responceModel.rows.count == 0) {
+            [self showHint:@"没有更多了"];
+        }
         
         for (RowsModel *orderModel in responceModel.rows) {
             [self.myOrderDataList addObject:orderModel];
@@ -381,10 +378,21 @@
         
         [self.myOrderTableView reloadData];
 
-    } andfailedBlock:^(NSError *error) {
-        [self.myOrderTableView reloadData];
+    } andFailBlock:^(NSError *error) {
+         [self.myOrderTableView reloadData];
     }];
 }
+
+//int Page = 0;
+//- (void)refreshsFooter
+//{
+//    Page ++;
+//    NSString *page = [NSString stringWithFormat:@"%d",Page];
+//    [self getOrderListWithPage:page];
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        [self.myOrderTableView footerEndRefreshing];
+//    });
+//}
 
 - (void)goToWriteScheduleOrEvaluate:(NSString *)string withRow:(NSInteger)row
 {

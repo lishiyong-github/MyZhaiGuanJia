@@ -40,8 +40,10 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:kBlackColor,NSFontAttributeName:kNavFont}];
-    
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:kNavColor] forBarMetrics:UIBarMetricsDefault];
+    
+    [self.productsDataListArray removeAllObjects];
+    [self getRecommendProductslistWithPage:@"0"];
 }
 
 - (void)viewDidLoad {

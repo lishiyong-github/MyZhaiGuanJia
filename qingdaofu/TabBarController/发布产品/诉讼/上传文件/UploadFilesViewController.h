@@ -10,6 +10,6 @@
 
 @interface UploadFilesViewController : NetworkViewController
 
-@property (nonatomic,strong) void (^uploadImages)(NSDictionary *);
+@property (nonatomic,strong) void (^chooseImages)(NSDictionary *);
 
 @end

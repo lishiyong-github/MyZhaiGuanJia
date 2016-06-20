@@ -106,45 +106,35 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     UploadViewController *uploadVC = [[UploadViewController alloc] init];
-//    
-//    [self setUploadImages:^(NSDictionary *imageDic) {
-//        
-//    }];
+    uploadVC.typeUpInt = indexPath.row;
+    
+    QDFWeakSelf;
+    [uploadVC setUploadImages:^(NSString *imageArr) {
+
+        if (indexPath.row == 0) {//公证书
+            [weakself.imagesDictionaty setValue:imageArr forKey:@"imgnotarization"];
+        }else if (indexPath.row == 1){
+            [weakself.imagesDictionaty setValue:imageArr forKey:@"imgcontract"];
+        }else if (indexPath.row == 2){
+            [weakself.imagesDictionaty setValue:imageArr forKey:@"imgcreditor"];
+        }else if (indexPath.row == 3){
+            [weakself.imagesDictionaty setValue:imageArr forKey:@"imgpick"];
+        }else if (indexPath.row == 4){
+            [weakself.imagesDictionaty setValue:imageArr forKey:@"imgshouju"];
+        }else if (indexPath.row == 5){
+            [weakself.imagesDictionaty setValue:imageArr forKey:@"imgbenjin"];
+        }
+    }];
     
     [self.navigationController pushViewController:uploadVC animated:YES];
-    
-    switch (indexPath.row) {
-        case 0:{
-            
-        }
-            break;
-        case 1:
-            
-            break;
-        case 2:
-            
-            break;
-        case 3:
-            
-            break;
-        case 4:
-            
-            break;
-        case 5:
-            
-            break;
-            
-        default:
-            break;
-    }
 }
 
 #pragma mark - method
 - (void)back
 {
     [super back];
-    if (self.uploadImages) {
-        self.uploadImages(self.imagesDictionaty);
+    if (self.chooseImages) {
+        self.chooseImages(self.imagesDictionaty);
     }
 }
 

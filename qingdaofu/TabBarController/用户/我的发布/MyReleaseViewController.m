@@ -89,8 +89,10 @@
         
         QDFWeakSelf;
         [_releaseProView setDidSelectedSeg:^(NSInteger segTag) {
+            
+            [weakself.releaseDataArray removeAllObjects];
+            
             switch (segTag) {
-                    
                 case 111:{
                     weakself.progreStatus = @"0";
                     [weakself getMyReleaseListWithPage:@"0"];
@@ -133,6 +135,8 @@
         _myReleaseTableView.dataSource = self;
         _myReleaseTableView.backgroundColor = kBackColor;
         _myReleaseTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
+        
+        [_myReleaseTableView addFooterWithTarget:self action:@selector(refreshFooter)];
     }
     return _myReleaseTableView;
 }
@@ -372,27 +376,48 @@
 #pragma mark - method
 - (void)getMyReleaseListWithPage:(NSString *)page
 {
-    [self.releaseDataArray removeAllObjects];
-    
     NSString *myReleaseString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"progress_status" : self.progreStatus,
-                             @"limit" : @"30",
+                             @"limit" : @"10",
                              @"page" : page
                              };
-    [self headerRefreshWithUrlString:myReleaseString Parameter:params successBlock:^(id responseObject) {
-        
+    [self requestDataPostWithString:myReleaseString params:params successBlock:^(id responseObject) {
         ReleaseResponse *responseModel = [ReleaseResponse objectWithKeyValues:responseObject];
+        
         [self.responseDataArray addObject:responseModel];
+
+        if (responseModel.rows.count == 0) {
+            [self showHint:@"没有更多了"];
+        }
         
         for (RowsModel *rowsModel in responseModel.rows) {
             [self.releaseDataArray addObject:rowsModel];
         }
         [self.myReleaseTableView reloadData];
         
-    } andfailedBlock:^(NSError *error) {
+    } andFailBlock:^(NSError *error) {
         [self.myReleaseTableView reloadData];
     }];
+}
+
+- (void)refreshHeaderWithPage:(NSString *)page
+{
+    [self getMyReleaseListWithPage:@"0"];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.myReleaseTableView headerEndRefreshing];
+    });
+}
+
+int Page = 0;
+- (void)refreshFooter
+{
+    Page ++;
+    NSString *page = [NSString stringWithFormat:@"%d",Page];
+    [self getMyReleaseListWithPage:page];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.myReleaseTableView footerEndRefreshing];
+    });
 }
 
 - (void)goToCheckApplyRecordsOrAdditionMessage:(NSString *)string withRow:(NSInteger)row

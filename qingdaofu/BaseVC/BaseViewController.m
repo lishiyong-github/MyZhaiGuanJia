@@ -85,25 +85,24 @@
 
 - (void)tokenIsValid
 {
-    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-    AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
-    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer= [AFHTTPResponseSerializer serializer];
+   
     NSString *validString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kTokenOverdue];
-    NSURL *URL = [NSURL URLWithString:validString];
-    NSURLRequest *request = [NSURLRequest requestWithURL:URL];
-    NSURLSessionUploadTask *uploadTask = [manager uploadTaskWithRequest:request fromData:nil progress:^(NSProgress * _Nonnull uploadProgress) {
+    NSDictionary *params = @{@"token" : [self getValidateToken]?[self getValidateToken]:@""};
+    
+    [manager POST:validString parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
         
-    } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
-        if (error) {
-            NSLog(@"token 错误");
-        }else{
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             TokenModel *model = [TokenModel objectWithKeyValues:responseObject];
             if (self.didTokenValid) {
                 self.didTokenValid(model);
-            }
         }
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
     }];
-    [uploadTask resume];
     
     /*
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
