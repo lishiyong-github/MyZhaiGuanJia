@@ -57,7 +57,6 @@
     [self.view setNeedsUpdateConstraints];
     
     [self getEndMessages];
-    [self getScheduleDetails];
 }
 
 - (void)updateViewConstraints
@@ -436,11 +435,13 @@
                              @"id" : self.idString,
                              @"category" : self.categaryString
                              };
+    QDFWeakSelf;
     [self requestDataPostWithString:releaseString params:params successBlock:^(id responseObject){
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
-        [self.endArray addObject:response];
-        [self.releaseEndTableView reloadData];
-        
+        [weakself.endArray addObject:response];
+        [weakself.releaseEndTableView reloadData];
+        [weakself getScheduleDetails];
+
     } andFailBlock:^(NSError *error){
         
     }];

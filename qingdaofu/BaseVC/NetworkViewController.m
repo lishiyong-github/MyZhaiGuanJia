@@ -61,6 +61,8 @@
 
 - (void)requestDataPostWithString:(NSString *)string params:(NSDictionary *)params successBlock:(void (^)(id responseObject))successBlock andFailBlock:(void (^)(NSError *error))failBlock
 {
+    [self showHudInView:self.view hint:@"正在加载"];
+    
     AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
     session.responseSerializer = [AFHTTPResponseSerializer serializer];
     session.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -69,10 +71,12 @@
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (successBlock) {
+            [self hideHud];
             successBlock(responseObject);
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         if (failBlock) {
+            [self hideHud];
             failBlock(error);
         }
     }];

@@ -33,6 +33,8 @@
 @property (nonatomic,strong) NSMutableArray *responseDataArray;
 @property (nonatomic,strong) NSMutableArray *releaseDataArray;
 
+@property (nonatomic,assign) NSInteger page;
+
 @end
 
 @implementation MyReleaseViewController
@@ -409,11 +411,10 @@
     });
 }
 
-int Page = 0;
 - (void)refreshFooter
 {
-    Page ++;
-    NSString *page = [NSString stringWithFormat:@"%d",Page];
+    self.page ++;
+    NSString *page = [NSString stringWithFormat:@"%d",self.page];
     [self getMyReleaseListWithPage:page];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.myReleaseTableView footerEndRefreshing];

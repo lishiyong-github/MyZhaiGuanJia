@@ -13,7 +13,7 @@
 
 #import "UploadFilesViewController.h"  //债权文件
 #import "DebtCreditMessageViewController.h"  //债权人信息
-#import "BrandViewController.h"
+#import "BrandsViewController.h"
 
 #import "ReportFootView.h"
 #import "EvaTopSwitchView.h"
@@ -315,7 +315,7 @@
                 [cell.agentButton setTitle:@"请选择" forState:0];
                 [cell.agentButton addAction:^(UIButton *btn) {
                     NSLog(@"选择机动车品牌");
-                    BrandViewController *brandVC = [[BrandViewController alloc] init];
+                    BrandsViewController *brandVC = [[BrandsViewController alloc] init];
                     [self.navigationController pushViewController:brandVC animated:YES];
                 }];
             }else if ([_number intValue] == 2) {//应收帐款

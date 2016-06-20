@@ -107,8 +107,8 @@
  */
 
 #define kQDFUrlString @"http://www.zcb2016.com/wap/"
-//#define kQDFTestUrlString @"http://testq.zcb2016.com/wap/"
-#define kQDFTestUrlString @"http://192.168.20.149/wap/"
+#define kQDFTestUrlString @"http://testq.zcb2016.com/wap/"
+//#define kQDFTestUrlString @"http://192.168.20.149/wap/"
 
 
 //post

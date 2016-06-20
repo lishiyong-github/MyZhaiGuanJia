@@ -40,7 +40,12 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    NSLog(@"=====%@=====",NSStringFromClass([self class]));
+    NSLog(@"=====%@===init==",NSStringFromClass([self class]));
+}
+
+- (void)dealloc
+{
+    NSLog(@"=====%@===dealloc==",NSStringFromClass([self class]));
 }
 
 -(UIBarButtonItem *)leftItem

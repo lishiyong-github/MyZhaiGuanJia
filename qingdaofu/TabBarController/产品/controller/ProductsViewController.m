@@ -17,7 +17,6 @@
 #import "AllProductsChooseView.h"
 
 #import "UIViewController+BlurView.h"
-
 @interface ProductsViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
@@ -25,8 +24,6 @@
 @property (nonatomic,strong) AllProductsChooseView *chooseView;
 @property (nonatomic,strong) UITableView *productsTableView;
 
-@property (nonatomic,strong) UIButton *backButtonView;
-@property (nonatomic,strong) AllProView *proView;
 @property (nonatomic,strong) NSString *proString;
 
 @end
@@ -47,12 +44,6 @@
 
     [self.view addSubview:self.chooseView];
     [self.view addSubview:self.productsTableView];
-    [self.view addSubview:self.backButtonView];
-    [self.backButtonView setHidden:YES];
-    
-    self.topConstraints = [self.backButtonView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:40];
-
-    self.proView.heightTableConstraints = [self.proView autoSetDimension:ALDimensionHeight toSize:240];
     
     [self.view setNeedsUpdateConstraints];
 }
@@ -69,7 +60,7 @@
         [self.productsTableView autoPinEdgeToSuperviewEdge:ALEdgeRight];
         [self.productsTableView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kTabBarHeight];
         
-        [self.backButtonView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+//        [self.backButtonView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
         
         self.didSetupConstraints = YES;
     }
@@ -88,13 +79,10 @@
             btn.selected = !btn.selected;
             
             if (btn.selected) {
-                [weakself.backButtonView setHidden:NO];
-                weakself.topConstraints.constant = 0;
-                weakself.proView.dataList = @[@"全部",@"融资",@"催收",@"诉讼"];
-                weakself.proView.heightTableConstraints.constant = 5*40;
-                [weakself.proView reloadData];
+//                weakself.proView.dataList = @[@"全部",@"融资",@"催收",@"诉讼"];
+//                weakself.proView.heightTableConstraints.constant = 5*40;
+//                [weakself.proView reloadData];
             }else{
-                [weakself.backButtonView setHidden:YES];
             }
             
         }];
@@ -117,7 +105,6 @@
             switch (selectedButton.tag) {
                 case 201:{//区域
                     
-                    [weakself.backButtonView setHidden:YES];
                 }
                     break;
                 case 202:{//状态
@@ -125,13 +112,17 @@
                     selectedButton.selected = !selectedButton.selected;
                     
                     if (selectedButton.selected) {
-                        [weakself.backButtonView setHidden:NO];
-                        weakself.topConstraints.constant = 40;
-                        weakself.proView.dataList = @[@"不限",@"发布中",@"处理中",@"已结案"];
-                        weakself.proView.heightTableConstraints.constant = 5*40;
-                        [weakself.proView reloadData];
+                        
+//                        NSArray *stateArray = @[@"不限",@"发布中",@"处理中",@"已结案"];
+                        
+                    
+                        
+//                        [weakself.backButtonView setHidden:NO];
+//                        weakself.topConstraints.constant = 40;
+//                        weakself.proView.dataList = @[@"不限",@"发布中",@"处理中",@"已结案"];
+//                        weakself.proView.heightTableConstraints.constant = 5*40;
+//                        [weakself.proView reloadData];
                     }else{
-                        [weakself.backButtonView setHidden:YES];
                     }
                     
                 }
@@ -141,14 +132,13 @@
                     selectedButton.selected = !selectedButton.selected;
 
                     if (selectedButton.selected) {
-                        weakself.topConstraints.constant = 40;
+                        
 
-                        [weakself.backButtonView setHidden:NO];
-                        weakself.proView.dataList = @[@"不限",@"30万以下",@"30-100万",@"100-500万",@"500万以上"];
-                        weakself.proView.heightTableConstraints.constant = 6*40;
-                        [weakself.proView reloadData];
+//                        weakself.roView.dataList = @[@"不限",@"30万以下",@"30-100万",@"100-500万",@"500万以上"];
+//                        weakself.proView.heightTableConstraints.constant = 6*40;
+//                        [weakself.proView reloadData];
                     }else{
-                        [weakself.backButtonView setHidden:YES];
+//                        [weakself.backButtonView setHidden:YES];
                     }
                 }
                     break;
@@ -160,46 +150,9 @@
     return _chooseView;
 }
 
-- (UIButton *)backButtonView
-{
-    if (!_backButtonView) {
-        _backButtonView = [UIButton newAutoLayoutView];
-        _backButtonView.backgroundColor = kBlackColor;
-        _backButtonView.alpha = 0.8;
-        [_backButtonView addSubview:self.proView];
-        
-//        QDFWeakSelf;
-//        [_backButtonView addAction:^(UIButton *btn) {
-//            [weakself.backButtonView setHidden:YES];
-//            weakself.chooseView.squrebutton.selected = NO;
-//            weakself.chooseView.stateButton.selected = NO;
-//            weakself.chooseView.moneyButton.selected = NO;
-//        }];
-        
-        [self.proView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
-    }
-    return _backButtonView;
-}
-
-- (AllProView *)proView
-{
-    if (!_proView) {
-        _proView = [AllProView newAutoLayoutView];
-        _proView.backgroundColor = kNavColor;
-        
-//        QDFWeakSelf;
-//        [_proView setDidSelectedRow:^(NSIndexPath *indexPath) {
-//            
-//            
-//        }];
-    }
-    return _proView;
-}
-
 - (UITableView *)productsTableView
 {
     if (!_productsTableView) {
-//        _productsTableView = [UITableView newAutoLayoutView];
         _productsTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _productsTableView = [[UITableView alloc ]initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _productsTableView.delegate = self;
@@ -234,9 +187,9 @@
     }
     [cell.recommendimageView setHidden:YES];
 
-    UIView *cellbackButtonView = [[UIView alloc] initWithFrame:CGRectMake(0, kBigPadding, kScreenWidth, 156)];
-    cellbackButtonView.backgroundColor = kSeparateColor;
-    cell.selectedBackgroundView = cellbackButtonView;
+//    UIView *cellbackButtonView = [[UIView alloc] initWithFrame:CGRectMake(0, kBigPadding, kScreenWidth, 156)];
+//    cellbackButtonView.backgroundColor = kSeparateColor;
+//    cell.selectedBackgroundView = cellbackButtonView;
     
     return cell;
 }

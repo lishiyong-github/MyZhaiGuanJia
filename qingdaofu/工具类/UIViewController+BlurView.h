@@ -17,4 +17,6 @@
 
 - (void)showBlurInView:(UIView *)view withArray:(NSArray *)array andTitle:(NSString *)title finishBlock:(void(^)(NSString *text,NSInteger row))finishBlock;
 
+- (void)showBlurInView:(UIView *)view withArray:(NSArray *)array finishBlock:(void(^)(NSString *text,NSInteger row))finishBlock;
+
 @end

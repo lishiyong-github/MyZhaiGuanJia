@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		9CEA216B1CE2140C002C5BA7 /* UIButton+Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CEA216A1CE2140C002C5BA7 /* UIButton+Addition.m */; };
 		9CEA216C1CE2140C002C5BA7 /* UIButton+Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CEA216A1CE2140C002C5BA7 /* UIButton+Addition.m */; };
+		9CF131751D1827FE00ADBA27 /* BrandsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF131741D1827FE00ADBA27 /* BrandsViewController.m */; };
 		9CF191401CEC445300CFEDA1 /* Reveal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CF1913F1CEC445300CFEDA1 /* Reveal.framework */; };
 		A1039F0C1C72C55400771747 /* RefreshViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1039F0B1C72C55400771747 /* RefreshViewController.m */; };
 		A10D7B6C1CEABDCB00422D7D /* MainView.m in Sources */ = {isa = PBXBuildFile; fileRef = A10D7B6B1CEABDCB00422D7D /* MainView.m */; };
@@ -39,7 +40,6 @@
 		A14C17611D07F692003826F8 /* list_litigation_nor@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A14C175F1D07F692003826F8 /* list_litigation_nor@3x.png */; };
 		A14C17641D080049003826F8 /* ProDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A14C17631D080049003826F8 /* ProDetailCell.m */; };
 		A14C17681D0AE577003826F8 /* UserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A14C17671D0AE577003826F8 /* UserModel.m */; };
-		A1522BE51D0F90F600135C72 /* BrandViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1522BE41D0F90F600135C72 /* BrandViewController.m */; };
 		A1522BEB1D0FB17B00135C72 /* PaceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A1522BEA1D0FB17B00135C72 /* PaceModel.m */; };
 		A1522BEE1D0FB22E00135C72 /* PaceResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A1522BED1D0FB22E00135C72 /* PaceResponse.m */; };
 		A1522BF11D0FB50100135C72 /* PaceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1522BF01D0FB50100135C72 /* PaceCell.m */; };
@@ -451,6 +451,8 @@
 /* Begin PBXFileReference section */
 		9CEA21691CE2140C002C5BA7 /* UIButton+Addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+Addition.h"; sourceTree = "<group>"; };
 		9CEA216A1CE2140C002C5BA7 /* UIButton+Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+Addition.m"; sourceTree = "<group>"; };
+		9CF131731D1827FE00ADBA27 /* BrandsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrandsViewController.h; sourceTree = "<group>"; };
+		9CF131741D1827FE00ADBA27 /* BrandsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrandsViewController.m; sourceTree = "<group>"; };
 		9CF1913F1CEC445300CFEDA1 /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
 		A1039F0A1C72C55400771747 /* RefreshViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RefreshViewController.h; sourceTree = "<group>"; };
 		A1039F0B1C72C55400771747 /* RefreshViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RefreshViewController.m; sourceTree = "<group>"; };
@@ -496,8 +498,6 @@
 		A14C17631D080049003826F8 /* ProDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProDetailCell.m; sourceTree = "<group>"; };
 		A14C17661D0AE577003826F8 /* UserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserModel.h; sourceTree = "<group>"; };
 		A14C17671D0AE577003826F8 /* UserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserModel.m; sourceTree = "<group>"; };
-		A1522BE31D0F90F600135C72 /* BrandViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrandViewController.h; sourceTree = "<group>"; };
-		A1522BE41D0F90F600135C72 /* BrandViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrandViewController.m; sourceTree = "<group>"; };
 		A1522BE91D0FB17B00135C72 /* PaceModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaceModel.h; sourceTree = "<group>"; };
 		A1522BEA1D0FB17B00135C72 /* PaceModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaceModel.m; sourceTree = "<group>"; };
 		A1522BEC1D0FB22E00135C72 /* PaceResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaceResponse.h; sourceTree = "<group>"; };
@@ -1211,8 +1211,8 @@
 		A1522BE21D0F90BD00135C72 /* 机动车品牌 */ = {
 			isa = PBXGroup;
 			children = (
-				A1522BE31D0F90F600135C72 /* BrandViewController.h */,
-				A1522BE41D0F90F600135C72 /* BrandViewController.m */,
+				9CF131731D1827FE00ADBA27 /* BrandsViewController.h */,
+				9CF131741D1827FE00ADBA27 /* BrandsViewController.m */,
 			);
 			path = "机动车品牌";
 			sourceTree = "<group>";
@@ -3092,7 +3092,6 @@
 				A176341D1D067A6E00CD4623 /* PublishingResponse.m in Sources */,
 				A17634241D06B68700CD4623 /* CompleteResponse.m in Sources */,
 				A17965021CD3690D00B6AD47 /* MyStoreCell.m in Sources */,
-				A1522BE51D0F90F600135C72 /* BrandViewController.m in Sources */,
 				A1ECB66F1CED6CA70017EA10 /* PlaceHolderTextView.m in Sources */,
 				A18C67661CD08DA800C7B070 /* LoginView.m in Sources */,
 				A19B8E231CCF42E300F8EBF2 /* NSArray+PureLayout.m in Sources */,
@@ -3144,6 +3143,7 @@
 				A17EE3791CD82F4800ECC631 /* MyDetailSaveViewController.m in Sources */,
 				A1A016AA1C5A0C0300027134 /* ViewController.m in Sources */,
 				A17F7BFC1CE5DDDA00E882A3 /* ApplyRecordsViewController.m in Sources */,
+				9CF131751D1827FE00ADBA27 /* BrandsViewController.m in Sources */,
 				A1A0174F1C5B696A00027134 /* MJExtensionConst.m in Sources */,
 				A1A017271C5B421500027134 /* BaseViewController.m in Sources */,
 				A10D7B751CEAF5EA00422D7D /* MyAgentViewController.m in Sources */,

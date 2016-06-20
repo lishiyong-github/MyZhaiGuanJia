@@ -32,6 +32,7 @@
 @property (nonatomic,strong) UITableView *myOrderTableView;
 
 @property (nonatomic,strong) NSMutableArray *myOrderDataList;
+@property (nonatomic,assign) NSInteger page;
 
 @end
 
@@ -383,16 +384,15 @@
     }];
 }
 
-//int Page = 0;
-//- (void)refreshsFooter
-//{
-//    Page ++;
-//    NSString *page = [NSString stringWithFormat:@"%d",Page];
-//    [self getOrderListWithPage:page];
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        [self.myOrderTableView footerEndRefreshing];
-//    });
-//}
+- (void)refreshsFooter
+{
+    self.page ++;
+    NSString *page = [NSString stringWithFormat:@"%d",self.page];
+    [self getOrderListWithPage:page];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.myOrderTableView footerEndRefreshing];
+    });
+}
 
 - (void)goToWriteScheduleOrEvaluate:(NSString *)string withRow:(NSInteger)row
 {

@@ -12,7 +12,6 @@
 #import "BaseCommitButton.h"
 #import "UIViewController+MutipleImageChoice.h"
 
-
 @interface UploadViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
@@ -84,9 +83,8 @@
                     
 //                    weakself.allImage = images;
                     NSString *str;
-                    NSMutableString *str1;
                     for (int i=0; i<[images count]; i++) {
-                        str = [NSString stringWithFormat:@"'%@'",images[i]];
+                        str = [str stringByAppendingString:images[i]];
                     }
                     
                     NSLog(@"str is %@",str);
