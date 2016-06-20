@@ -85,6 +85,27 @@
 
 - (void)tokenIsValid
 {
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
+    
+    NSString *validString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kTokenOverdue];
+    NSURL *URL = [NSURL URLWithString:validString];
+    NSURLRequest *request = [NSURLRequest requestWithURL:URL];
+    NSURLSessionUploadTask *uploadTask = [manager uploadTaskWithRequest:request fromData:nil progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"token 错误");
+        }else{
+            TokenModel *model = [TokenModel objectWithKeyValues:responseObject];
+            if (self.didTokenValid) {
+                self.didTokenValid(model);
+            }
+        }
+    }];
+    [uploadTask resume];
+    
+    /*
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -101,6 +122,7 @@
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 
     }];
+     */
 }
 
 /*

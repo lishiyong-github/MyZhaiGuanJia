@@ -101,7 +101,7 @@
 {
     if (!_closingCommitButton) {
         _closingCommitButton = [BaseCommitButton newAutoLayoutView];
-        [_closingCommitButton setTitle:@"追加评价" forState:0];
+        [_closingCommitButton setTitle:@"评价" forState:0];
         
         QDFWeakSelf;
         [_closingCommitButton addAction:^(UIButton *btn) {

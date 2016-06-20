@@ -7,8 +7,10 @@
 //
 
 #import "ReportCollectViewController.h"
+
 #import "ReportFiSucViewController.h"  //发布成功
 #import "MySaveViewController.h"  //保存
+
 #import "UploadFilesViewController.h"  //债权文件
 #import "DebtCreditMessageViewController.h" //债权人信息
 
@@ -411,10 +413,10 @@
         if (indexPath.row == 10) {//债权文件
             UploadFilesViewController *uploadFilesVC = [[UploadFilesViewController alloc] init];
             
-            QDFWeakSelf;
-            [uploadFilesVC setUploadImages:^(NSDictionary *imageDic) {
-                [weakself.coDataDictionary setValue:imageDic forKey:@"credit"];
-            }];
+//            QDFWeakSelf;
+//            [uploadFilesVC setUploadImages:^(NSDictionary *imageDic) {
+//                [weakself.coDataDictionary setValue:imageDic forKey:@"credit"];
+//            }];
             
             [self.navigationController pushViewController:uploadFilesVC animated:YES];
         }else if (indexPath.row == 11){//债权人信息

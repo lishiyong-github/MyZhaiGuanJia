@@ -9,5 +9,7 @@
 #import "NetworkViewController.h"
 
 @interface UploadFilesViewController : NetworkViewController
+
 @property (nonatomic,strong) void (^uploadImages)(NSDictionary *);
+
 @end

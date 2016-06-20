@@ -96,6 +96,7 @@
     if (!_processingCommitButton) {
         _processingCommitButton = [BaseCommitButton newAutoLayoutView];
         [_processingCommitButton setTitle:@"申请结案" forState:0];
+        [_processingCommitButton addTarget:self action:@selector(endProduct) forControlEvents:UIControlEventTouchUpInside];
     }
     return _processingCommitButton;
 }
@@ -471,11 +472,24 @@
         if (delayModel.is_agree == nil) {
             //未申请
             [applyButton setImage:[UIImage imageNamed:@"conserve_tip_icon"] forState:0];
-            [applyButton setTitle:@"距离案件处理结束日期还有20天，可提前7天申请延期，只可申请一次" forState:0];
-        }else{
+            NSString *delay = delayModel.delays?delayModel.delays:@"20";
+            NSString *de = [NSString stringWithFormat:@"距离案件处理结束日期还有%@天，可提前7天申请延期，只可申请一次",delay];
+            [applyButton setTitle:de forState:0];
+            
+        }else{//已申请：1同意，2拒绝，3作废，0申请中
+            
+            if ([delayModel.is_agree intValue] == 0) {
+                [applyButton setTitle:@"  申请中" forState:0];
+            }else if ([delayModel.is_agree intValue] == 1){
+                [applyButton setTitle:@"  申请成功，等待发布确认" forState:0];
+            }else if ([delayModel.is_agree intValue] == 2){
+                [applyButton setTitle:@"  发布方已拒绝" forState:0];
+            }else if ([delayModel.is_agree intValue] == 3){
+                [applyButton setTitle:@"  作废" forState:0];
+            }
+            
             //已申请
             [applyButton setImage:[UIImage imageNamed:@"conserve_wait_icon"] forState:0];
-            [applyButton setTitle:@"申请成功，等待发布确认" forState:0];
         }
         
         [footerView addSubview:applyButton];
@@ -576,6 +590,28 @@
         DelayResponse *response = [DelayResponse objectWithKeyValues:responseObject];
         [self.delayArray addObject:response.delay];
         [self.myProcessingTableView reloadData];
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
+//申请结案
+- (void)endProduct//status:3为终止。4为结案。
+{
+    NSString *endpString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyreleaseDealingEndString];
+    NSDictionary *params = @{@"id" : self.idString,
+                             @"category" : self.categaryString,
+                             @"token" : [self getValidateToken]
+                             };
+    [self requestDataPostWithString:endpString params:params successBlock:^(id responseObject) {
+        BaseModel *sModel = [BaseModel objectWithKeyValues:responseObject];
+        [self showHint:@"申请成功"];
+        
+        if ([sModel.code isEqualToString:@"0000"]) {//成功
+            [self.processingCommitButton setBackgroundColor:kSelectedColor];
+            [self.processingCommitButton setTitle:@"已申请" forState:0];
+        }
         
     } andFailBlock:^(NSError *error) {
         

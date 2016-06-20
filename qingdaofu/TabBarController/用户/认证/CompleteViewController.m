@@ -174,7 +174,7 @@
         if (indexPath.row == 0) {
             return kCellHeight;
         }
-        return 195+titleSize.height;
+        return 225+titleSize.height;
         
     }else if ([self.categoryString intValue] == 2){//律所
         if (indexPath.row == 0) {
@@ -261,11 +261,14 @@
         NSMutableAttributedString *IDString = [cell.comIDLabel setAttributeString:@"身份证号码：" withColor:kBlackColor andSecond:certificationModel.cardno withColor:kLightGrayColor withFont:14];
         [cell.comIDLabel setAttributedText:IDString];
         
-        NSMutableAttributedString *mailString = [cell.comMailLabel setAttributeString:@"邮箱：            " withColor:kBlackColor andSecond:certificationModel.email withColor:kLightGrayColor withFont:14];
+        NSMutableAttributedString *mobileString = [cell.comIDLabel setAttributeString:@"联系方式：" withColor:kBlackColor andSecond:certificationModel.mobile withColor:kLightGrayColor withFont:14];
+        [cell.mobileLabel setAttributedText:mobileString];
+        
+        NSMutableAttributedString *mailString = [cell.comMailLabel setAttributeString:@"邮箱：            " withColor:kBlackColor andSecond:certificationModel.email?certificationModel.email:@"未填写" withColor:kLightGrayColor withFont:14];
         [cell.comMailLabel setAttributedText:mailString];
         
         cell.comExampleLabel.text = @"经典案例：   ";
-        cell.comExampleLabel2.text = certificationModel.casedesc;
+        cell.comExampleLabel2.text = certificationModel.casedesc?certificationModel.casedesc:@"未填写";
         
         return cell;
         

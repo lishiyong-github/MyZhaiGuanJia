@@ -15,6 +15,8 @@
 @property (nonatomic,assign) BOOL didSetupConstraints;
 
 @property (nonatomic,strong) NSMutableArray *collectionDataList;
+
 @property (nonatomic,strong) void (^didSelectedItem)(NSInteger);
+
 - (void)reloadData;
 @end

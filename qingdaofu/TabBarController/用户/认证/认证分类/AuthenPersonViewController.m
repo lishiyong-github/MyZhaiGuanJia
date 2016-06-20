@@ -21,10 +21,11 @@
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *personAuTableView;
 @property (nonatomic,strong) BaseCommitButton *personAuCommitButton;
-@property (nonatomic,strong) UIAlertController *alertController;
 
-@property (nonatomic,assign) NSInteger pictureInt;
 @property (nonatomic,strong) NSMutableDictionary *perDataDictionary;
+@property (nonatomic,strong) NSMutableDictionary *perImageDictionary;
+@property (nonatomic,strong) NSMutableArray *imageArray;
+
 
 @end
 
@@ -89,6 +90,22 @@
     return _perDataDictionary;
 }
 
+- (NSMutableDictionary *)perImageDictionary
+{
+    if (!_perImageDictionary) {
+        _perImageDictionary = [NSMutableDictionary dictionary];
+    }
+    return _perImageDictionary;
+}
+
+- (NSMutableArray *)imageArray
+{
+    if (!_imageArray) {
+        _imageArray = [NSMutableArray array];
+    }
+    return _imageArray;
+}
+
 #pragma mark - tableView delegate and datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -132,19 +149,20 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
+        cell.collectionDataList = [NSMutableArray arrayWithObjects:@"btn_camera",@"btn_camera", nil];
         QDFWeakSelf;
+        QDFWeak(cell);
         [cell setDidSelectedItem:^(NSInteger itemTag) {
             
-            if (itemTag == 0) {
-                [weakself addImageWithMutipleChoise:YES andFinishBlock:^(NSArray *images) {
-                    [weakself.perDataDictionary setValue:images forKey:@"cardimg"];
-                }];
-            }
-            
-//            [self presentViewController:self.alertController animated:YES completion:nil];
-//            _pictureInt = itemTag;
+            [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
+                
+                if (images.count > 0) {
+                    [weakcell.collectionDataList replaceObjectAtIndex:itemTag withObject:images[0]];
+                    weakself.imageArray = [NSMutableArray arrayWithArray:images];
+                    [weakcell reloadData];
+                }
+            }];
         }];
-        
         return cell;
         
     }else if (indexPath.section == 1){
@@ -295,22 +313,33 @@
     [self.view endEditing:YES];
     NSString *personAuString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kAuthenString];
     
-    self.perDataDictionary[@"cardimg"] = self.perDataDictionary[@"cardimg"]?self.perDataDictionary[@"cardimg"]:self.respnseModel.certification.cardimg;
     self.perDataDictionary[@"name"] = self.perDataDictionary[@"name"]?self.perDataDictionary[@"name"]:self.respnseModel.certification.name;
     self.perDataDictionary[@"cardno"] = self.perDataDictionary[@"cardno"]?self.perDataDictionary[@"cardno"]:self.respnseModel.certification.cardno;
     self.perDataDictionary[@"mobile"] = self.perDataDictionary[@"mobile"]?self.perDataDictionary[@"mobile"]:self.respnseModel.certification.mobile;
     self.perDataDictionary[@"email"] = self.perDataDictionary[@"email"]?self.perDataDictionary[@"email"]:self.respnseModel.certification.email;
     self.perDataDictionary[@"casedesc"] = self.perDataDictionary[@"casedesc"]?self.perDataDictionary[@"casedesc"]:self.respnseModel.certification.casedesc;
-    [self.perDataDictionary setValue:@"1" forKey:@"category"];
+    [self.perDataDictionary setValue:@"1" forKey:@"category"];//认证类型
     [self.perDataDictionary setValue:[self getValidateToken] forKey:@"token"];
     
     if (self.respnseModel) {
         [self.perDataDictionary setValue:@"update" forKey:@"type"];  //update为修改
     }else{
-        [self.perDataDictionary setValue:@"add" forKey:@"type"];  //update为修改
+        [self.perDataDictionary setValue:@"add" forKey:@"type"];  //add为修改
     }
     NSDictionary *params = self.perDataDictionary;
     
+    NSDictionary *imageParams = [NSDictionary dictionaryWithObject:self.imageArray forKey:@"cardimg"];
+    
+    [self requestDataPostWithString:personAuString params:params andImages:imageParams successBlock:^(id responseObject) {
+        
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        NSLog(@"+++++++ %@",dic);
+        
+    } andFailBlock:^(NSError *error) {
+        NSLog(@"****** %@",error);
+    }];
+    
+    /*
     [self requestDataPostWithString:personAuString params:params successBlock:^(id responseObject){
         
         BaseModel *personModel = [BaseModel objectWithKeyValues:responseObject];
@@ -330,144 +359,8 @@
     } andFailBlock:^(NSError *error){
         
     }];
-}
-
-#pragma mark - alertView
-- (UIAlertController *)alertController
-{
-    if (!_alertController) {
-        _alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-        
-        
-        UIAlertAction *action0 = [UIAlertAction actionWithTitle:@"拍照" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            
-            NSUInteger sourceType = 0;
-            sourceType = UIImagePickerControllerSourceTypeCamera;
-            [self takePhotos:sourceType];
-        }];
-        
-        UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"从相册选取" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            NSUInteger sourceType = 0;
-            sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-            [self takePhotos:sourceType];
-        }];
-        
-        UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            
-        }];
-        
-        [_alertController addAction:action0];
-        [_alertController addAction:action1];
-        [_alertController addAction:action2];
-        
-    }
-    return _alertController;
-}
-
-- (void)showAlertViewController
-{
-    [self presentViewController:self.alertController animated:YES completion:nil];
-}
-
-- (void)takePhotos:(NSInteger)sourceType
-{
-    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera] && sourceType == UIImagePickerControllerSourceTypeCamera) {
-        NSLog(@"未发现照相机");
-        return;
-    }
-    
-    UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
-    imagePickerController.delegate = self;
-    imagePickerController.allowsEditing = YES;
-    imagePickerController.sourceType = sourceType;
-    [self presentViewController:imagePickerController animated:YES completion:nil];
-}
-
-#pragma mark - image picker delegte
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
-{
-    [picker dismissViewControllerAnimated:YES completion:nil];
-    UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
-    /* 此处info 有六个值
-     * UIImagePickerControllerMediaType; // an NSString UTTypeImage)
-     * UIImagePickerControllerOriginalImage;  // a UIImage 原始图片
-     * UIImagePickerControllerEditedImage;    // a UIImage 裁剪后图片
-     * UIImagePickerControllerCropRect;       // an NSValue (CGRect)
-     * UIImagePickerControllerMediaURL;       // an NSURL
-     * UIImagePickerControllerReferenceURL    // an NSURL that references an asset in the AssetsLibrary framework
-     * UIImagePickerControllerMediaMetadata    // an NSDictionary containing metadata from a captured photo
      */
-    
-    //保存图片至本地
-    [self saveImage:image withName:@"user.png"];
-    
-    NSString *fullPath = [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"] stringByAppendingPathComponent:@"user.png"];
-    
-    UIImage *savedImage = [[UIImage alloc] initWithContentsOfFile:fullPath];
-    
-    TakePictureCell *cell = [self.personAuTableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
-    [cell.collectionDataList replaceObjectAtIndex:(NSUInteger)_pictureInt withObject:savedImage];
-    [cell reloadData];
 }
-
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)saveImage:(UIImage *)currentImage withName:(NSString *)imageName
-{
-    NSData *imageData = UIImageJPEGRepresentation(currentImage, 0.5);
-    
-    //获取沙盒目录
-    NSString *fullPath = [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"] stringByAppendingPathComponent:imageName];
-    
-    //将图片写入文件
-    [imageData writeToFile:fullPath atomically:NO];
-    
-    //保存到NSUserDefaults
-//    NSUserDefaults *userDefaults = 
-}
-
-
-#pragma mark - method commit
-- (void)commit
-{
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString *fullPath = [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"] stringByAppendingPathComponent:@"user.png"];
-    
-    if ([fileManager fileExistsAtPath:fullPath]) {
-        
-    }
-}
-
-/*
-- (void)submit:(NSFileManager *)fileManager andPath:(NSString *)fullPath
-{
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
-    
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    [manager.requestSerializer setValue:@"text/html;charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
-    
-    UIImage *image = [UIImage imageWithContentsOfFile:fullPath];
-    NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
-    
-    [manager POST:@"" parameters:[NSDictionary new] constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-        
-        if ([fileManager fileExistsAtPath:fullPath]) {
-            [formData appendPartWithFileData:imageData name:@"userfiles[]" fileName:@"user.png" mimeType:@"image/x-png"];
-        }
-        
-    } success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-    }];
-    
-}
- */
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

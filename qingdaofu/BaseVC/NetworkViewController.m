@@ -8,7 +8,6 @@
 
 #import "NetworkViewController.h"
 #import "MBProgressHUD.h"
-#import "AFNetworking.h"
 
 @interface NetworkViewController ()
 
@@ -42,14 +41,11 @@
  */
 - (void)requestDataPostWithString:(NSString *)string params:(NSDictionary *)params andImages:(NSDictionary *)images successBlock:(void (^)(id responseObject))successBlock andFailBlock:(void (^)(NSError *error))failBlock
 {
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    [manager.requestSerializer setValue:@"text/html;charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
-
+    AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
+    session.requestSerializer = [AFHTTPRequestSerializer serializer];
+    session.responseSerializer = [AFHTTPResponseSerializer serializer];
     
-    [manager POST:string parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+    [session POST:string parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         if (images) {
             for (NSString *key in [images allKeys]) {
                 NSArray *uploadImages = images[key];
@@ -62,13 +58,15 @@
                 }
             }
         }
-    } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+
+    } progress:^(NSProgress * _Nonnull uploadProgress) {
         
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (successBlock) {
             successBlock(responseObject);
         }
         
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         if (failBlock) {
             failBlock(error);
         }
@@ -78,7 +76,23 @@
 {
 //    [self requestDataPostWithString:string params:params andImages:nil successBlock:successBlock andFailBlock:failBlock];
     
+    AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
+    session.responseSerializer = [AFHTTPResponseSerializer serializer];
+    session.requestSerializer = [AFHTTPRequestSerializer serializer];
     
+    [session POST:string parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if (successBlock) {
+            successBlock(responseObject);
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        if (failBlock) {
+            failBlock(error);
+        }
+    }];
+    
+    /*
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
@@ -93,7 +107,7 @@
             failBlock(error);
         }
     }];
-
+*/
 }
 
 - (void)didReceiveMemoryWarning {

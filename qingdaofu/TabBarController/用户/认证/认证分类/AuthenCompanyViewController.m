@@ -23,13 +23,9 @@
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *companyAuTableView;
 @property (nonatomic,strong) BaseCommitButton *companyAuCommitButton;
-@property (nonatomic,strong) UIAlertController *alertController;
-
-@property (nonatomic,strong) NSString *pictureString;
-@property (nonatomic,strong) UIImage *pictureImage1;
-@property (nonatomic,strong) UIImage *pictureImage2;
 
 @property (nonatomic,strong) NSMutableDictionary *comDataDictionary;
+@property (nonatomic,strong) NSMutableArray *imageArray;
 
 
 @end
@@ -41,9 +37,6 @@
     [super viewDidLoad];
     self.navigationItem.title = @"认证公司";
     self.navigationItem.leftBarButtonItem = self.leftItem;
-    
-    self.pictureImage1 = [UIImage imageNamed:@"btn_camera"];
-    self.pictureImage2  = [UIImage imageNamed:@"btn_camera"];
     
     [self setupForDismissKeyboard];
     
@@ -108,6 +101,14 @@
     return _comDataDictionary;
 }
 
+- (NSMutableArray *)imageArray
+{
+    if (!_imageArray) {
+        _imageArray = [NSMutableArray array];
+    }
+    return _imageArray;
+}
+
 
 #pragma mark - tableView delegate and datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -150,30 +151,22 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
+        cell.collectionDataList = [NSMutableArray arrayWithObjects:@"btn_camera",@"btn_camera", nil];;
         QDFWeakSelf;
+        QDFWeak(cell);
         [cell setDidSelectedItem:^(NSInteger itemTag) {
             
-            if (itemTag == 0) {
-                [weakself addImageWithMutipleChoise:YES andFinishBlock:^(NSArray *images) {
+            [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
+                
+                if (images.count > 0) {
+                    [weakcell.collectionDataList replaceObjectAtIndex:itemTag withObject:images[0]];
+                    
                     [weakself.comDataDictionary setValue:images forKey:@"cardimg"];
-                }];
-            }
+                    [weakcell reloadData];
+                }
+
+            }];
         }];
-        
-        //        [cell.pictureButton1 setImage:self.pictureImage1 forState:0];
-        //        [cell.pictureButton1 addTarget:self action:@selector(showAlertViewController) forControlEvents:UIControlEventTouchUpInside];
-        //        QDFWeakSelf;
-        //        [cell.pictureButton1 addAction:^(UIButton *btn) {
-        //            self.pictureString = @"picture1";
-        //            [weakself showAlertViewController];
-        //        }];
-        
-        //        [cell.pictureButton2 setImage:self.pictureImage2 forState:0];
-        //        [cell.pictureButton2 addAction:^(UIButton *btn) {
-        //            self.pictureString = @"picture2";
-        //            [weakself showAlertViewController];
-        //        }];
-        
         return cell;
         
     }else if (indexPath.section == 1){
@@ -402,147 +395,6 @@
         
     }];
 }
-
-
-#pragma mark - alertView
-- (UIAlertController *)alertController
-{
-    if (!_alertController) {
-        _alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-        
-        UIAlertAction *action0 = [UIAlertAction actionWithTitle:@"拍照" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            
-            NSUInteger sourceType = 0;
-            sourceType = UIImagePickerControllerSourceTypeCamera;
-            [self takePhotos:sourceType];
-        }];
-        
-        UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"从相册选取" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            NSUInteger sourceType = 0;
-            sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-            [self takePhotos:sourceType];
-        }];
-        
-        UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            
-        }];
-        
-        [_alertController addAction:action0];
-        [_alertController addAction:action1];
-        [_alertController addAction:action2];
-        
-    }
-    return _alertController;
-}
-
-- (void)showAlertViewController
-{
-    [self presentViewController:self.alertController animated:YES completion:nil];
-}
-
-- (void)takePhotos:(NSInteger)sourceType
-{
-    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera] && sourceType == UIImagePickerControllerSourceTypeCamera) {
-        NSLog(@"未发现照相机");
-        return;
-    }
-    
-    UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
-    imagePickerController.delegate = self;
-    imagePickerController.allowsEditing = YES;
-    imagePickerController.sourceType = sourceType;
-    [self presentViewController:imagePickerController animated:YES completion:nil];
-}
-
-#pragma mark - image picker delegte
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
-{
-    [picker dismissViewControllerAnimated:YES completion:nil];
-    UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
-    /* 此处info 有六个值
-     * UIImagePickerControllerMediaType; // an NSString UTTypeImage)
-     * UIImagePickerControllerOriginalImage;  // a UIImage 原始图片
-     * UIImagePickerControllerEditedImage;    // a UIImage 裁剪后图片
-     * UIImagePickerControllerCropRect;       // an NSValue (CGRect)
-     * UIImagePickerControllerMediaURL;       // an NSURL
-     * UIImagePickerControllerReferenceURL    // an NSURL that references an asset in the AssetsLibrary framework
-     * UIImagePickerControllerMediaMetadata    // an NSDictionary containing metadata from a captured photo
-     */
-    
-    //保存图片至本地
-    [self saveImage:image withName:@"user.png"];
-    
-    NSString *fullPath = [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"] stringByAppendingPathComponent:@"user.png"];
-    
-    UIImage *savedImage = [[UIImage alloc] initWithContentsOfFile:fullPath];
-    
-    if ([self.pictureString isEqualToString:@"picture1"]) {
-        self.pictureImage1 = savedImage;
-    }else{
-        self.pictureImage2 = savedImage;
-    }
-    
-    [self.companyAuTableView reloadData];
-}
-
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)saveImage:(UIImage *)currentImage withName:(NSString *)imageName
-{
-    NSData *imageData = UIImageJPEGRepresentation(currentImage, 0.5);
-    
-    //获取沙盒目录
-    NSString *fullPath = [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"] stringByAppendingPathComponent:imageName];
-    
-    //将图片写入文件
-    [imageData writeToFile:fullPath atomically:NO];
-    
-    //保存到NSUserDefaults
-    //    NSUserDefaults *userDefaults =
-}
-
-
-#pragma mark - method commit
-- (void)commit
-{
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString *fullPath = [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"] stringByAppendingPathComponent:@"user.png"];
-    
-    if ([fileManager fileExistsAtPath:fullPath]) {
-        
-    }
-}
-
-/*
-- (void)submit:(NSFileManager *)fileManager andPath:(NSString *)fullPath
-{
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
-    
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    [manager.requestSerializer setValue:@"text/html;charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
-    
-    UIImage *image = [UIImage imageWithContentsOfFile:fullPath];
-    NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
-    
-    [manager POST:@"" parameters:[NSDictionary new] constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-        
-        if ([fileManager fileExistsAtPath:fullPath]) {
-            [formData appendPartWithFileData:imageData name:@"userfiles[]" fileName:@"user.png" mimeType:@"image/x-png"];
-        }
-        
-    } success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-    }];
-    
-}
-*/
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

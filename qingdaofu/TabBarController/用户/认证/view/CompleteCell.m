@@ -18,10 +18,9 @@
         [self.contentView addSubview:self.comNameLabel];
         [self.contentView addSubview:self.comImageButton];
         [self.contentView addSubview:self.comIDLabel];
+        [self.contentView addSubview:self.mobileLabel];
         [self.contentView addSubview:self.comPicLabel];
         [self.contentView addSubview:self.comPicButton];
-        
-//        [self.contentView addSubview:self.comPhotoView];
         [self.contentView addSubview:self.comMailLabel];
         [self.contentView addSubview:self.comExampleLabel];
         [self.contentView addSubview:self.comExampleLabel2];
@@ -43,8 +42,11 @@
         
         [self.comIDLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
         [self.comIDLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.comNameLabel withOffset:kBigPadding];
+        
+        [self.mobileLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
+        [self.mobileLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.comIDLabel withOffset:kBigPadding];
 
-        [self.comPicLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.comIDLabel withOffset:kBigPadding];
+        [self.comPicLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.mobileLabel withOffset:kBigPadding];
         [self.comPicLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
         
         [self.comPicButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:110];
@@ -93,14 +95,14 @@
     return _comIDLabel;
 }
 
-//- (CompletePhotoView *)comPhotoView
-//{
-//    if (!_comPhotoView) {
-//        _comPhotoView = [CompletePhotoView newAutoLayoutView];
-//        _comPhotoView.label.text = @"身份照片：  ";
-//    }
-//    return _comPhotoView;
-//}
+- (UILabel *)mobileLabel
+{
+    if (!_mobileLabel) {
+        _mobileLabel = [UILabel newAutoLayoutView];
+        _mobileLabel.font = kBigFont;
+    }
+    return _mobileLabel;
+}
 
 - (UILabel *)comPicLabel
 {

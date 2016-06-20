@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "BaseViewController.h"
 
-#import "AFNetworking.h"
 
 @interface NetworkViewController : BaseViewController
 

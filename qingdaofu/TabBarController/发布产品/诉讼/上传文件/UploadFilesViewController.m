@@ -7,9 +7,9 @@
 //
 
 #import "UploadFilesViewController.h"
+#import "UploadViewController.h"
 
 #import "UIButton+Addition.h"
-#import "UIViewController+MutipleImageChoice.h"
 
 #import "MineUserCell.h"
 
@@ -104,34 +104,42 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    QDFWeakSelf;
-    [self addImageWithMutipleChoise:YES andFinishBlock:^(NSArray *images) {
-        switch (indexPath.row) {
-            case 0:
-                [weakself.imagesDictionaty setObject:images forKey:@"11"];
-                break;
-            case 1:
-                
-                break;
-            case 2:
-                
-                break;
-            case 3:
-                
-                break;
-            case 4:
-                
-                break;
-            case 5:
-                
-                break;
-                
-            default:
-                break;
+    
+    UploadViewController *uploadVC = [[UploadViewController alloc] init];
+//    
+//    [self setUploadImages:^(NSDictionary *imageDic) {
+//        
+//    }];
+    
+    [self.navigationController pushViewController:uploadVC animated:YES];
+    
+    switch (indexPath.row) {
+        case 0:{
+            
         }
-    }];
+            break;
+        case 1:
+            
+            break;
+        case 2:
+            
+            break;
+        case 3:
+            
+            break;
+        case 4:
+            
+            break;
+        case 5:
+            
+            break;
+            
+        default:
+            break;
+    }
 }
 
+#pragma mark - method
 - (void)back
 {
     [super back];

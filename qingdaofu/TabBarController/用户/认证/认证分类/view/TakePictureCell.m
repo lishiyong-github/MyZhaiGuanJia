@@ -41,7 +41,7 @@
     if (!_pictureCollection) {
                 
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-        layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+        layout.scrollDirection = UICollectionViewScrollDirectionVertical;
         _pictureCollection = [[UICollectionView alloc ] initWithFrame:CGRectMake(0, 0, kScreenWidth, 80) collectionViewLayout:layout];
         _pictureCollection.translatesAutoresizingMaskIntoConstraints = NO;
         _pictureCollection.delegate = self;
@@ -56,8 +56,8 @@
 - (NSMutableArray *)collectionDataList
 {
     if (!_collectionDataList) {
-        _collectionDataList = [NSMutableArray arrayWithArray:@[[UIImage imageNamed:@"btn_camera"],[UIImage imageNamed:@"btn_camera"]]];
-
+        _collectionDataList = [NSMutableArray array];
+        
     }
     return _collectionDataList;
 }
@@ -70,8 +70,6 @@
 #pragma mark - collectionView deleagte datasource DelegateFlowLayout
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-//    return 2;
-//    return self.pictureDataArray.count;
     return self.collectionDataList.count;
 }
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -83,8 +81,7 @@
         cell = [[UICollectionViewCell alloc] init];
     }
     
-//    cell.contentView.backgroundColor = kYellowColor;
-    cell.contentView.backgroundColor = [UIColor colorWithPatternImage:self.collectionDataList[indexPath.item]];
+    cell.contentView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:self.collectionDataList[indexPath.item]]];
     
     return cell;
 }

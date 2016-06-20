@@ -23,7 +23,6 @@
         self.dataSource = self;
         self.separatorColor = kSeparateColor;
         self.backgroundColor = kBackColor;
-//        self.scrollEnabled = NO;
         
         if ([self respondsToSelector:@selector(setSeparatorInset:)]) {
             [self setSeparatorInset:UIEdgeInsetsZero];

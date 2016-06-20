@@ -374,7 +374,6 @@
                 
                 NSString *value = [NSString stringWithFormat:@"%d",row];
                 [self.dataDictionary setValue:value forKey:@"mortgagecategory"];
-            
                 
             }];
         }
