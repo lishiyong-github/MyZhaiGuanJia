@@ -49,6 +49,9 @@
     [self.view setNeedsUpdateConstraints];
     
     [self getMyReleaseListWithPage:@"0"];
+    
+    [self.myReleaseTableView addFooterWithTarget:self action:@selector(refreshHeaderOfMyRelease)];
+    [self.myReleaseTableView addHeaderWithTarget:self action:@selector(refreshFooterOfMyRelease)];
 }
 
 - (void)updateViewConstraints
@@ -137,8 +140,6 @@
         _myReleaseTableView.dataSource = self;
         _myReleaseTableView.backgroundColor = kBackColor;
         _myReleaseTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
-        
-        [_myReleaseTableView addFooterWithTarget:self action:@selector(refreshFooter)];
     }
     return _myReleaseTableView;
 }
@@ -385,12 +386,15 @@
                              @"page" : page
                              };
     [self requestDataPostWithString:myReleaseString params:params successBlock:^(id responseObject) {
+        
+        [self.releaseDataArray removeAllObjects];
         ReleaseResponse *responseModel = [ReleaseResponse objectWithKeyValues:responseObject];
         
         [self.responseDataArray addObject:responseModel];
 
         if (responseModel.rows.count == 0) {
             [self showHint:@"没有更多了"];
+            _page--;
         }
         
         for (RowsModel *rowsModel in responseModel.rows) {
@@ -403,7 +407,7 @@
     }];
 }
 
-- (void)refreshHeaderWithPage:(NSString *)page
+- (void)refreshHeaderOfMyRelease
 {
     [self getMyReleaseListWithPage:@"0"];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -411,11 +415,12 @@
     });
 }
 
-- (void)refreshFooter
+- (void)refreshFooterOfMyRelease
 {
-    self.page ++;
-    NSString *page = [NSString stringWithFormat:@"%d",self.page];
+    _page ++;
+    NSString *page = [NSString stringWithFormat:@"%d",_page];
     [self getMyReleaseListWithPage:page];
+    
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.myReleaseTableView footerEndRefreshing];
     });

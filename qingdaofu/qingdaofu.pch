@@ -165,7 +165,7 @@
 #define kIsCompleteString  @"certification/view"  //是否认证
 #define kChangeAuthenString @""
 
-#define kProductsListString @"capital/mysave"    //产品列表
+#define kProductsListString @"capital/list"    //产品列表
 #define kProductsRecommendListString  @"capital/recommendlist"   //推荐产品列表
 #define kProdutsDetailString @"capital/view"    //产品详情
 #define kEndProductsString   @"public/wxclosedswidget"   //发布中的产品可结案

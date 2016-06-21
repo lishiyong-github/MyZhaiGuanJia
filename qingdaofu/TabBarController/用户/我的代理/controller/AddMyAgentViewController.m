@@ -95,7 +95,7 @@
     cell.leftFieldConstraints.constant = 90;
     
     NSArray *aArray = @[@"姓名",@"联系方式",@"身份证号",@"执业证号",@"登录密码"];
-    NSArray *bArray = @[@"请输入姓名",@"请输入联系方式",@"请输入身份证号",@"请输入执业证号(律所必填)",@"请设置代理人登录密码"];
+    NSArray *bArray = @[@"请输入姓名",@"请输入联系方式",@"请输入正确的身份证号",@"请输入17位的执业证号(律所必填)",@"请设置代理人登录密码"];
 
     [cell.caseNoButton setTitle:aArray[indexPath.row] forState:0];
     cell.caseNoTextField.clearButtonMode = UITextFieldViewModeWhileEditing;

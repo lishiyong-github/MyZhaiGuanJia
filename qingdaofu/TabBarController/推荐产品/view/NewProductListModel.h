@@ -27,7 +27,7 @@
 @property (nonatomic,copy) NSString *rate;
 @property (nonatomic,copy) NSString *rate_cat;
 @property (nonatomic,copy) NSString *rebate;
-@property (nonatomic,copy) NSString *seatmortgage;
+@property (nonatomic,copy) NSString *seatmortgage; //详细地址
 @property (nonatomic,copy) NSString *term;
 @property (nonatomic,copy) NSString *uidString;
 

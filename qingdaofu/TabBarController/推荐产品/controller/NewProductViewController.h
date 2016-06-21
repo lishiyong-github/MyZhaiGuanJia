@@ -6,8 +6,8 @@
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
-#import "RefreshViewController.h"
+#import "NetworkViewController.h"
 
-@interface NewProductViewController : RefreshViewController
+@interface NewProductViewController : NetworkViewController
 
 @end

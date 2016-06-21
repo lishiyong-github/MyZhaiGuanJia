@@ -146,6 +146,10 @@
                              @"page" : page
                              };
     [self requestDataPostWithString:agentListString params:params successBlock:^(id responseObject){
+        
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        NSLog(@"$$$$$ %@",dic);
+        
         PublishingResponse *resultModel = [PublishingResponse objectWithKeyValues:responseObject];
         
         for (UserModel *userModel in resultModel.user) {

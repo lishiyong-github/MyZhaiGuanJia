@@ -32,7 +32,7 @@
 @property (nonatomic,strong) UIPageControl *pageControl;
 
 @property (nonatomic,strong) NSMutableArray *productsDataListArray;
-
+@property (nonatomic,assign) NSInteger newPage;
 @end
 
 @implementation NewProductViewController
@@ -42,7 +42,6 @@
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:kBlackColor,NSFontAttributeName:kNavFont}];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:kNavColor] forBarMetrics:UIBarMetricsDefault];
     
-    [self.productsDataListArray removeAllObjects];
     [self getRecommendProductslistWithPage:@"0"];
 }
 
@@ -53,8 +52,6 @@
     
     [self.view addSubview:self.mainTableView];
     [self.view setNeedsUpdateConstraints];
-    [self getRecommendProductslistWithPage:@"0"];
-    
 }
 
 - (UIButton *)titleView
@@ -89,7 +86,7 @@
         _mainTableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 110)];
         [_mainTableView.tableHeaderView addSubview:self.mainHeaderScrollView];
         [_mainTableView addSubview:self.pageControl];
-        [_mainTableView addFooterWithTarget:self action:@selector(recommendFooterRefresh)];
+        [_mainTableView addFooterWithTarget:self action:@selector(footerRefreshOfRecommend)];
     }
     return _mainTableView;
 }
@@ -254,7 +251,7 @@
     }
     
     cell.nameLabel.text = newModel.codeString;
-    cell.addressLabel.text = newModel.seatmortgage;
+    cell.addressLabel.text = newModel.seatmortgage?newModel.seatmortgage:@"无抵押物地址";
     
     return cell;
 }
@@ -331,24 +328,33 @@
     NSString *recommendString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductsRecommendListString];
     NSDictionary *params = @{@"page" : page};
     
-    [self footerRefreshWithUrlString:recommendString Parameter:params successBlock:^(id responseObject){
+    [self requestDataPostWithString:recommendString params:params successBlock:^(id responseObject) {
+        if ([page intValue] == 0) {
+            [self.productsDataListArray removeAllObjects];
+        }
+        
         NewProductModel *model = [NewProductModel objectWithKeyValues:responseObject];
+        
+        if (model.result.count == 0) {
+            [self showHint:@"没有更多了"];
+            _newPage--;
+        }
+        
         for (NewProductListModel *listModel in model.result) {
             [self.productsDataListArray addObject:listModel];
         }
-                
-        [self.mainTableView reloadData];
         
-    } andfailedBlock:^(NSError *error){
+        [self.mainTableView reloadData];
+
+    } andFailBlock:^(NSError *error) {
         
     }];
 }
 
-int financialPage = 1;
-- (void)recommendFooterRefresh
+- (void)footerRefreshOfRecommend
 {
-    financialPage += 1;
-    NSString *page = [NSString stringWithFormat:@"%d",financialPage];
+    _newPage++;
+    NSString *page = [NSString stringWithFormat:@"%d",_newPage];
     [self getRecommendProductslistWithPage:page];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.mainTableView footerEndRefreshing];

@@ -18,6 +18,9 @@
 #import "AllProductsChooseView.h"
 
 #import "UIViewController+BlurView.h"
+
+#import "NewProductModel.h"
+#import "NewProductListModel.h"
 @interface ProductsViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
@@ -33,10 +36,10 @@
 @property (nonatomic,strong) NSDictionary *cityDcitionary;
 @property (nonatomic,strong) NSDictionary *districtDictionary;
 
+//参数
 @property (nonatomic,strong) NSMutableDictionary *paramsDictionary;
-
-@property (nonatomic,strong) NSString *proString;
-
+@property (nonatomic,strong) NSMutableArray *allDataList;
+@property (nonatomic,assign) NSInteger page;
 @end
 
 @implementation ProductsViewController
@@ -57,6 +60,7 @@
     [self.view addSubview:self.productsTableView];
     
     [self.view setNeedsUpdateConstraints];
+    [self getProductsListWithPage:@"0"];
 }
 
 - (void)updateViewConstraints
@@ -80,16 +84,26 @@
 {
     if (!_proTitleView) {
         _proTitleView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
-        [_proTitleView setImage:[UIImage imageNamed:@"title_product_open"] forState:0];
-        [_proTitleView setImage:[UIImage imageNamed:@"title_product_close"] forState:UIControlStateSelected];
+//        [_proTitleView setImage:[UIImage imageNamed:@"title_product_open"] forState:0];
+//        [_proTitleView setImage:[UIImage imageNamed:@"title_product_close"] forState:UIControlStateSelected];
+        [_proTitleView setTitle:@"所有产品" forState:0];
+        _proTitleView.titleLabel.font = kNavFont;
+        [_proTitleView setTitleColor:kBlackColor forState:0];
         
         QDFWeakSelf;
         [_proTitleView addAction:^(UIButton *btn) {
 
-            NSArray *titleArray = @[@"全部",@"融资",@"催收",@"诉讼"];
-            [weakself showBlurInView:weakself.view withArray:titleArray withTop:0 finishBlock:^(NSString *text, NSInteger row) {
-                
-            }];
+            btn.selected = !btn.selected;
+            if (btn.selected) {
+                NSArray *titleArray = @[@"全部",@"融资",@"催收",@"诉讼"];
+                [weakself showBlurInView:weakself.view withArray:titleArray withTop:0 finishBlock:^(NSString *text, NSInteger row) {
+                    NSString *value = [NSString stringWithFormat:@"%d",row];
+                    [btn setTitle:text forState:0];
+                    [weakself.paramsDictionary setValue:value forKey:@"category"];
+                    [weakself getProductsListWithPage:@"0"];
+                }];
+            }
+            
         }];
     }
     return _proTitleView;
@@ -140,6 +154,11 @@
                             UIButton *but2 = [weakself.view viewWithTag:203];
                             but1.userInteractionEnabled = YES;
                             but2.userInteractionEnabled = YES;
+                            
+                            NSString *value = [NSString stringWithFormat:@"%d",row];
+                            [selectedButton setTitle:text forState:0];
+                            [weakself.paramsDictionary setValue:value forKey:@"status"];
+                            [weakself getProductsListWithPage:@"0"];
 
                         }];
                 }
@@ -159,6 +178,11 @@
                         UIButton *but2 = [weakself.view viewWithTag:202];
                         but1.userInteractionEnabled = YES;
                         but2.userInteractionEnabled = YES;
+                        
+                        NSString *value = [NSString stringWithFormat:@"%d",row];
+                        [selectedButton setTitle:text forState:0];
+                        [weakself.paramsDictionary setValue:value forKey:@"money"];
+                        [weakself getProductsListWithPage:@"0"];
                     }];
                 }
                     break;
@@ -179,6 +203,8 @@
         _productsTableView.dataSource = self;
         _productsTableView.backgroundColor = kBackColor;
         _productsTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
+        [_productsTableView addHeaderWithTarget:self action:@selector(headerRefreshWithAllProducts)];
+        [_productsTableView addFooterWithTarget:self action:@selector(footerRefreshOfAllProducts)];
     }
     return _productsTableView;
 }
@@ -231,11 +257,19 @@
     return _paramsDictionary;
 }
 
+- (NSMutableArray *)allDataList
+{
+    if (!_allDataList) {
+        _allDataList = [NSMutableArray array];
+    }
+    return _allDataList;
+}
+
 #pragma mark - tableView delegate and datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (tableView == self.productsTableView) {
-        return 10;
+        return self.allDataList.count;
     }
     return 1;
 }
@@ -270,7 +304,61 @@
         if (!cell) {
             cell = [[HomeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
+        
+        NewProductListModel *proModel = self.allDataList[indexPath.section];
+
         [cell.recommendimageView setHidden:YES];
+        
+        cell.moneyView.label1.text = proModel.money;
+        cell.moneyView.label2.text = @"借款本金(万元)";
+        
+        if ([proModel.category isEqualToString:@"1"]) {//融资
+            [cell.typeImageView setImage:[UIImage imageNamed:@"list_financing"]];
+            cell.pointView.label1.text = proModel.rebate;
+            cell.pointView.label2.text = @"返点(%)";
+            cell.rateView.label1.text = proModel.rate;
+            if ([proModel.rate_cat isEqualToString:@"1"]) {
+                cell.rateView.label2.text = @"借款利率(天)";
+            }else{
+                cell.rateView.label2.text = @"借款利率(月)";
+            }
+        }else if ([proModel.category isEqualToString:@"2"]){//催收
+            [cell.typeImageView setImage:[UIImage imageNamed:@"list_collection"]];
+            
+            cell.pointView.label1.text = proModel.agencycommission;
+            cell.pointView.label2.text = @"代理费用(万元)";
+            if ([proModel.loan_type isEqualToString:@"1"]) {
+                cell.rateView.label1.text = @"房产抵押";
+            }else if ([proModel.loan_type isEqualToString:@"2"]){
+                cell.rateView.label1.text = @"应收账款";
+            }else if ([proModel.loan_type isEqualToString:@"3"]){
+                cell.rateView.label1.text = @"机动车抵押";
+            }else{
+                cell.rateView.label1.text = @"无抵押";
+            }
+            cell.rateView.label2.text = @"债权类型";
+        }else{//诉讼
+            [cell.typeImageView setImage:[UIImage imageNamed:@"list_litigation"]];
+            cell.pointView.label1.text = proModel.agencycommission;
+            if ([proModel.agencycommissiontype isEqualToString:@"1"]) {
+                cell.pointView.label2.text = @"固定费用(万)";
+            }else{
+                cell.pointView.label2.text = @"风险费率(%)";
+            }
+            if ([proModel.loan_type isEqualToString:@"1"]) {
+                cell.rateView.label1.text = @"房产抵押";
+            }else if ([proModel.loan_type isEqualToString:@"2"]){
+                cell.rateView.label1.text = @"应收账款";
+            }else if ([proModel.loan_type isEqualToString:@"3"]){
+                cell.rateView.label1.text = @"机动车抵押";
+            }else{
+                cell.rateView.label1.text = @"无抵押";
+            }
+            cell.rateView.label2.text = @"债权类型";
+        }
+        
+        cell.nameLabel.text = proModel.codeString;
+        cell.addressLabel.text = proModel.seatmortgage?proModel.seatmortgage:@"无抵押物地址";
         
         return cell;
         
@@ -316,9 +404,22 @@
 {
     if (tableView == self.productsTableView) {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        ProductsDetailsViewController *productsDetailsVC = [[ProductsDetailsViewController alloc] init];
-        productsDetailsVC.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:productsDetailsVC animated:YES];
+        
+        [self tokenIsValid];
+        
+        QDFWeakSelf;
+        [self setDidTokenValid:^(TokenModel *model) {
+            if ([model.code isEqualToString:@"0000"]) {//正常
+                ProductsDetailsViewController *productsDetailVC = [[ProductsDetailsViewController alloc] init];
+                productsDetailVC.hidesBottomBarWhenPushed = YES;
+                NewProductListModel *sModel = weakself.allDataList[indexPath.section];
+                productsDetailVC.idString = sModel.idString;
+                productsDetailVC.categoryString = sModel.category;
+                [weakself.navigationController pushViewController:productsDetailVC animated:YES];
+            }else {//token过期,或未认证（code=3001过期   code=3006未认证）
+                [weakself showHint:model.msg];
+            }
+        }];
     }else if (tableView == self.tableView11){
         [self.view addSubview:self.tableView12];
         self.widthConstraints.constant = kScreenWidth/2;
@@ -346,13 +447,14 @@
         [self.tableView12 removeFromSuperview];
         [self.tableView13 removeFromSuperview];
         
-        
         UIButton *but1 = [self.view viewWithTag:202];
         UIButton *but2 = [self.view viewWithTag:203];
         but1.userInteractionEnabled = YES;
         but2.userInteractionEnabled = YES;
 
         [self.chooseView.squrebutton setTitle:self.districtDictionary.allValues[indexPath.row] forState:0];
+        
+        self.widthConstraints.constant = kScreenWidth;
         
         [self.paramsDictionary setValue:self.districtDictionary.allKeys[indexPath.row] forKey:@"area"];
         [self getProductsListWithPage:@"0"];
@@ -432,36 +534,59 @@
 {
     NSString *allProString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductsListString];
     
-    
-    self.paramsDictionary[@"province"] = self.paramsDictionary[@"province"]?self.paramsDictionary[@"province"]:@"";
-    self.paramsDictionary[@"city"] = self.paramsDictionary[@"city"]?self.paramsDictionary[@"city"]:@"";
-    self.paramsDictionary[@"area"] = self.paramsDictionary[@"area"]?self.paramsDictionary[@"area"]:@"";
+    self.paramsDictionary[@"province"] = self.paramsDictionary[@"province"]?self.paramsDictionary[@"province"]:@"0";
+    self.paramsDictionary[@"city"] = self.paramsDictionary[@"city"]?self.paramsDictionary[@"city"]:@"0";
+    self.paramsDictionary[@"area"] = self.paramsDictionary[@"area"]?self.paramsDictionary[@"area"]:@"0";
     self.paramsDictionary[@"category"] = self.paramsDictionary[@"category"]?self.paramsDictionary[@"category"]:@"0";
     self.paramsDictionary[@"money"] = self.paramsDictionary[@"money"]?self.paramsDictionary[@"money"]:@"0";
     self.paramsDictionary[@"status"] = self.paramsDictionary[@"status"]?self.paramsDictionary[@"status"]:@"0";
-    
-    
-//    if ([self.paramsDictionary[@"province"] isEqualToString:@"310000"]) {
-//        [self.paramsDictionary setValue:@"0" forKey:@"province"];
-//    }
-//    if ([self.paramsDictionary[@"city"] isEqualToString:@"310100"]) {
-//        [self.paramsDictionary setValue:@"0" forKey:@"city"];
-//    }
-//    if ([self.paramsDictionary[@"area"] isEqualToString:@"310100"]) {
-//        [self.paramsDictionary setValue:@"0" forKey:@"area"];
-//    }
     
     [self.paramsDictionary setValue:[self getValidateToken] forKey:@"token"];
     [self.paramsDictionary setValue:page forKey:@"page"];
     
     NSDictionary *params = self.paramsDictionary;
     [self requestDataPostWithString:allProString params:params successBlock:^(id responseObject) {
-        NSDictionary *dicc = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSLog(@"####### %@",dicc);
+        
+        if ([page intValue] == 0) {
+            [self.allDataList removeAllObjects];
+        }
+        
+        NewProductModel *response = [NewProductModel objectWithKeyValues:responseObject];
+        
+        if (response.result.count == 0) {
+            [self showHint:@"没有更多了"];
+            _page--;
+        }
+        
+        for (NewProductListModel *model in response.result) {
+            [self.allDataList addObject:model];
+        }
+        
+        [self.productsTableView reloadData];
         
     } andFailBlock:^(NSError *error) {
         
     }];
+}
+
+- (void)headerRefreshWithAllProducts
+{
+    [self getProductsListWithPage:@"0"];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.productsTableView headerEndRefreshing];
+    });
+}
+
+- (void)footerRefreshOfAllProducts
+{
+    _page++;
+    NSString *pp = [NSString stringWithFormat:@"%d",_page];
+    [self getProductsListWithPage:pp];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.productsTableView footerEndRefreshing];
+    });
 }
 
 - (void)didReceiveMemoryWarning {
