@@ -129,6 +129,7 @@
 #define kPublishSuit          @"publish/creditorcollection"  //发布诉讼
 #define kBrandString  @"common/brand"  //机动车品牌
 #define kBrandAudiString  @"common/brandchild"  //车系
+#define kGuarantyString @"common/getsearch"   //小区
 
 /*修改发布*/
 #define k

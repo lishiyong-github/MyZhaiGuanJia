@@ -84,6 +84,7 @@
 		A159F9811D0D727A00A6A024 /* UIView+MJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = A159F9791D0D727A00A6A024 /* UIView+MJExtension.m */; };
 		A159F9841D0E3D6600A6A024 /* FinanCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A159F9831D0E3D6600A6A024 /* FinanCell.m */; };
 		A159F9871D0E7EFF00A6A024 /* SuitBaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A159F9861D0E7EFF00A6A024 /* SuitBaseCell.m */; };
+		A15F61841D18DF1F0060AF7B /* GuarantyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A15F61831D18DF1F0060AF7B /* GuarantyViewController.m */; };
 		A1602E741CED8D320053F850 /* CompleteCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1602E731CED8D320053F850 /* CompleteCell.m */; };
 		A1602E771CEDA9F50053F850 /* CompletePhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = A1602E761CEDA9F50053F850 /* CompletePhotoView.m */; };
 		A1602E7A1CEDAF790053F850 /* BidMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1602E791CEDAF790053F850 /* BidMessageCell.m */; };
@@ -290,13 +291,11 @@
 		A19D29741CD2158100DAAEA7 /* AuthenPersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A19D29731CD2158100DAAEA7 /* AuthenPersonViewController.m */; };
 		A1A016A41C5A0C0300027134 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A016A31C5A0C0300027134 /* main.m */; };
 		A1A016A71C5A0C0300027134 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A016A61C5A0C0300027134 /* AppDelegate.m */; };
-		A1A016AA1C5A0C0300027134 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A016A91C5A0C0300027134 /* ViewController.m */; };
 		A1A016AD1C5A0C0300027134 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1A016AB1C5A0C0300027134 /* Main.storyboard */; };
 		A1A016AF1C5A0C0300027134 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1A016AE1C5A0C0300027134 /* Assets.xcassets */; };
 		A1A016B21C5A0C0300027134 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1A016B01C5A0C0300027134 /* LaunchScreen.storyboard */; };
 		A1A016BD1C5A0C0300027134 /* qingdaofuTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A016BC1C5A0C0300027134 /* qingdaofuTests.m */; };
 		A1A016C81C5A0C0300027134 /* qingdaofuUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A016C71C5A0C0300027134 /* qingdaofuUITests.m */; };
-		A1A017031C5B3B4500027134 /* AMap.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A1A017021C5B3B4500027134 /* AMap.bundle */; };
 		A1A017051C5B3B7500027134 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1A017041C5B3B7500027134 /* UIKit.framework */; };
 		A1A017071C5B3B8C00027134 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1A017061C5B3B8C00027134 /* Foundation.framework */; };
 		A1A017091C5B3B9400027134 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1A017081C5B3B9400027134 /* CoreGraphics.framework */; };
@@ -311,7 +310,6 @@
 		A1A0171B1C5B3BFD00027134 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1A0171A1C5B3BFD00027134 /* Security.framework */; };
 		A1A017271C5B421500027134 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A017261C5B421500027134 /* BaseViewController.m */; };
 		A1A0172A1C5B422700027134 /* NetworkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A017291C5B422700027134 /* NetworkViewController.m */; };
-		A1A0172C1C5B5D7400027134 /* MAMapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1A0172B1C5B5D7400027134 /* MAMapKit.framework */; };
 		A1A017301C5B607300027134 /* UIImage+Color.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A0172F1C5B607300027134 /* UIImage+Color.m */; };
 		A1A017351C5B67D400027134 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A017331C5B67D400027134 /* MBProgressHUD.m */; };
 		A1A0174E1C5B696A00027134 /* MJDictionaryCache.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A017381C5B696A00027134 /* MJDictionaryCache.m */; };
@@ -571,6 +569,8 @@
 		A159F9831D0E3D6600A6A024 /* FinanCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FinanCell.m; sourceTree = "<group>"; };
 		A159F9851D0E7EFF00A6A024 /* SuitBaseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuitBaseCell.h; sourceTree = "<group>"; };
 		A159F9861D0E7EFF00A6A024 /* SuitBaseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SuitBaseCell.m; sourceTree = "<group>"; };
+		A15F61821D18DF1F0060AF7B /* GuarantyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuarantyViewController.h; sourceTree = "<group>"; };
+		A15F61831D18DF1F0060AF7B /* GuarantyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GuarantyViewController.m; sourceTree = "<group>"; };
 		A1602E721CED8D310053F850 /* CompleteCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompleteCell.h; sourceTree = "<group>"; };
 		A1602E731CED8D320053F850 /* CompleteCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompleteCell.m; sourceTree = "<group>"; };
 		A1602E751CEDA9F50053F850 /* CompletePhotoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompletePhotoView.h; sourceTree = "<group>"; };
@@ -893,8 +893,6 @@
 		A1A016A31C5A0C0300027134 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A1A016A51C5A0C0300027134 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		A1A016A61C5A0C0300027134 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		A1A016A81C5A0C0300027134 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		A1A016A91C5A0C0300027134 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		A1A016AC1C5A0C0300027134 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A1A016AE1C5A0C0300027134 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A1A016B11C5A0C0300027134 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -907,8 +905,6 @@
 		A1A016C91C5A0C0300027134 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A1A016F51C5B038A00027134 /* qingdaofu.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = qingdaofu.pch; sourceTree = "<group>"; };
 		A1A016FC1C5B312100027134 /* APIKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIKey.h; sourceTree = "<group>"; };
-		A1A017001C5B389200027134 /* MAMapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MAMapKit.framework; sourceTree = "<group>"; };
-		A1A017021C5B3B4500027134 /* AMap.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = AMap.bundle; path = MAMapKit.framework/AMap.bundle; sourceTree = "<group>"; };
 		A1A017041C5B3B7500027134 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A1A017061C5B3B8C00027134 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A1A017081C5B3B9400027134 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -925,7 +921,6 @@
 		A1A017261C5B421500027134 /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		A1A017281C5B422700027134 /* NetworkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkViewController.h; sourceTree = "<group>"; };
 		A1A017291C5B422700027134 /* NetworkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkViewController.m; sourceTree = "<group>"; };
-		A1A0172B1C5B5D7400027134 /* MAMapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MAMapKit.framework; path = "../../../../../../Downloads/高德地图/MAMapKit.framework"; sourceTree = "<group>"; };
 		A1A0172E1C5B607300027134 /* UIImage+Color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Color.h"; sourceTree = "<group>"; };
 		A1A0172F1C5B607300027134 /* UIImage+Color.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Color.m"; sourceTree = "<group>"; };
 		A1A017331C5B67D400027134 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
@@ -1110,7 +1105,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1A0172C1C5B5D7400027134 /* MAMapKit.framework in Frameworks */,
 				A1A0171B1C5B3BFD00027134 /* Security.framework in Frameworks */,
 				A1A017191C5B3BF600027134 /* libc++.tbd in Frameworks */,
 				A1A017171C5B3BD600027134 /* libstdc++.6.0.9.tbd in Frameworks */,
@@ -1334,6 +1328,15 @@
 			children = (
 			);
 			path = "债务人信息";
+			sourceTree = "<group>";
+		};
+		A15F61811D18DEC90060AF7B /* 抵押物小区 */ = {
+			isa = PBXGroup;
+			children = (
+				A15F61821D18DF1F0060AF7B /* GuarantyViewController.h */,
+				A15F61831D18DF1F0060AF7B /* GuarantyViewController.m */,
+			);
+			path = "抵押物小区";
 			sourceTree = "<group>";
 		};
 		A161754C1D12578A001BB200 /* model */ = {
@@ -2012,6 +2015,7 @@
 		A19985441CE07FD10055A572 /* 诉讼 */ = {
 			isa = PBXGroup;
 			children = (
+				A15F61811D18DEC90060AF7B /* 抵押物小区 */,
 				A1522BE21D0F90BD00135C72 /* 机动车品牌 */,
 				A159F9881D0EE23600A6A024 /* 债务人信息 */,
 				A10D7B881CEB222A00422D7D /* 债权人信息 */,
@@ -2349,8 +2353,6 @@
 				A18B26471CEAA699005526C5 /* MainViewController.m */,
 				A10D7B6A1CEABDCB00422D7D /* MainView.h */,
 				A10D7B6B1CEABDCB00422D7D /* MainView.m */,
-				A1A016A81C5A0C0300027134 /* ViewController.h */,
-				A1A016A91C5A0C0300027134 /* ViewController.m */,
 				A1A016AB1C5A0C0300027134 /* Main.storyboard */,
 				A1A016AE1C5A0C0300027134 /* Assets.xcassets */,
 				A1A016B01C5A0C0300027134 /* LaunchScreen.storyboard */,
@@ -2399,7 +2401,6 @@
 		A1A016FF1C5B376D00027134 /* Framework */ = {
 			isa = PBXGroup;
 			children = (
-				A1A0172B1C5B5D7400027134 /* MAMapKit.framework */,
 				9CF1913F1CEC445300CFEDA1 /* Reveal.framework */,
 				A1A0171A1C5B3BFD00027134 /* Security.framework */,
 				A1A017181C5B3BF600027134 /* libc++.tbd */,
@@ -2413,8 +2414,6 @@
 				A1A017081C5B3B9400027134 /* CoreGraphics.framework */,
 				A1A017061C5B3B8C00027134 /* Foundation.framework */,
 				A1A017041C5B3B7500027134 /* UIKit.framework */,
-				A1A017021C5B3B4500027134 /* AMap.bundle */,
-				A1A017001C5B389200027134 /* MAMapKit.framework */,
 			);
 			path = Framework;
 			sourceTree = "<group>";
@@ -2988,7 +2987,6 @@
 				A1A97E471CDC666400EDE320 /* news_system_icon@3x.png in Resources */,
 				A19985391CE07CFD0055A572 /* tab_product_s@3x.png in Resources */,
 				A1A97E791CDCA2C700EDE320 /* conserve_fixed_icon@3x.png in Resources */,
-				A1A017031C5B3B4500027134 /* AMap.bundle in Resources */,
 				A1718DF41CFD6C490007DA6F /* list_icon_end@3x.png in Resources */,
 				A1770E371CFECCBA003579E1 /* publish_star@3x.png in Resources */,
 				A1A97E301CDC5C3A00EDE320 /* list_icon_firm@2x.png in Resources */,
@@ -3112,6 +3110,7 @@
 				A1B028A71D17766900F32A09 /* UploadViewController.m in Sources */,
 				A1770E161CFE6AA3003579E1 /* CompleteLawCell.m in Sources */,
 				A19B8E531CCF533B00F8EBF2 /* ProductsViewController.m in Sources */,
+				A15F61841D18DF1F0060AF7B /* GuarantyViewController.m in Sources */,
 				A1522BF91D1005F000135C72 /* EvaluateResponse.m in Sources */,
 				A1982B361CFFD730001770A7 /* CompanyWebSiteViewController.m in Sources */,
 				A1718E0E1CFD84B60007DA6F /* AuthenCompanyViewController.m in Sources */,
@@ -3141,7 +3140,6 @@
 				A17EE3821CD8518600ECC631 /* BaseCommitButton.m in Sources */,
 				A19985151CE02B7A0055A572 /* ModifyPassWordViewController.m in Sources */,
 				A17EE3791CD82F4800ECC631 /* MyDetailSaveViewController.m in Sources */,
-				A1A016AA1C5A0C0300027134 /* ViewController.m in Sources */,
 				A17F7BFC1CE5DDDA00E882A3 /* ApplyRecordsViewController.m in Sources */,
 				9CF131751D1827FE00ADBA27 /* BrandsViewController.m in Sources */,
 				A1A0174F1C5B696A00027134 /* MJExtensionConst.m in Sources */,
@@ -3415,6 +3413,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/qingdaofu/Framework",
+					"$(PROJECT_DIR)/qingdaofu/第三方",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/qingdaofu/qingdaofu.pch";
@@ -3443,6 +3442,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/qingdaofu/Framework",
+					"$(PROJECT_DIR)/qingdaofu/第三方",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/qingdaofu/qingdaofu.pch";

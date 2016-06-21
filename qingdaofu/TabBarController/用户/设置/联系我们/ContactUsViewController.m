@@ -7,7 +7,6 @@
 //
 
 #import "ContactUsViewController.h"
-#import "ViewController.h"
 
 #import "MineUserCell.h"
 
@@ -104,8 +103,8 @@
         NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",@"400-855-7022"];
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
     }else if (indexPath.row == 4){
-        ViewController *VC = [[ViewController alloc] init];
-        [self.navigationController pushViewController:VC animated:YES];
+//        ViewController *VC = [[ViewController alloc] init];
+//        [self.navigationController pushViewController:VC animated:YES];
     }
 }
 

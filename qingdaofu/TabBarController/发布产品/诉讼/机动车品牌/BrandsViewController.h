@@ -12,5 +12,5 @@
 
 @property (nonatomic,strong) NSArray *dataList;
 
-@property (nonatomic,strong) void (^didSelectedRow)(NSInteger,NSString *);
+@property (nonatomic,strong) void (^didSelectedRow)(NSString *,NSString *,NSString*,NSString*,NSString*,NSString *);
 @end

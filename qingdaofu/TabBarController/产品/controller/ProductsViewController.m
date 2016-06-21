@@ -21,8 +21,14 @@
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UIButton *proTitleView;
-@property (nonatomic,strong) AllProductsChooseView *chooseView;
+@property (nonatomic,strong) AllProductsChooseView *chooseView;  //头部选择栏
 @property (nonatomic,strong) UITableView *productsTableView;
+
+@property (nonatomic,strong) UITableView *tableView11;
+@property (nonatomic,strong) UITableView *tableView12;
+@property (nonatomic,strong) UITableView *tableView13;
+
+
 
 @property (nonatomic,strong) NSString *proString;
 
@@ -59,8 +65,6 @@
         [self.productsTableView autoPinEdgeToSuperviewEdge:ALEdgeLeft];
         [self.productsTableView autoPinEdgeToSuperviewEdge:ALEdgeRight];
         [self.productsTableView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kTabBarHeight];
-        
-//        [self.backButtonView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
         
         self.didSetupConstraints = YES;
     }
@@ -104,7 +108,26 @@
             
             switch (selectedButton.tag) {
                 case 201:{//区域
+                    selectedButton.selected = !selectedButton.selected;
                     
+                    if (selectedButton.selected) {
+                        [weakself.view addSubview: weakself.tableView11];
+                        
+                        [weakself.tableView11 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:weakself.chooseView];
+                        [weakself.tableView11 autoPinEdgeToSuperviewEdge:ALEdgeLeft];
+                        [weakself.tableView11 autoPinEdgeToSuperviewEdge:ALEdgeBottom];
+                        weakself.widthConstraints = [weakself.tableView11 autoSetDimension:ALDimensionWidth toSize:kScreenWidth];
+                    }else{
+                        if (weakself.tableView11) {
+                            [weakself.tableView11 removeFromSuperview];
+                        }
+                        if (weakself.tableView12) {
+                            [weakself.tableView12 removeFromSuperview];
+                        }
+                        if (weakself.tableView13) {
+                            [weakself.tableView13 removeFromSuperview];
+                        }
+                    }
                 }
                     break;
                 case 202:{//状态
@@ -163,48 +186,154 @@
     return _productsTableView;
 }
 
+- (UITableView *)tableView11
+{
+    if (!_tableView11) {
+        _tableView11 = [UITableView newAutoLayoutView];
+        _tableView11.delegate = self;
+        _tableView11.dataSource = self;
+        _tableView11.tableFooterView = [[UIView alloc] init];
+        _tableView11.backgroundColor = UIColorFromRGB1(0x333333, 0.7);
+    }
+    return _tableView11;
+}
+
+- (UITableView *)tableView12
+{
+    if (!_tableView12) {
+        _tableView12 = [UITableView newAutoLayoutView];
+        _tableView12.delegate = self;
+        _tableView12.dataSource = self;
+        _tableView12.tableFooterView = [[UIView alloc] init];
+        _tableView12.backgroundColor = UIColorFromRGB1(0x333333, 0.7);
+    }
+    return _tableView12;
+}
+
+- (UITableView *)tableView13
+{
+    if (!_tableView13) {
+        _tableView13 = [UITableView newAutoLayoutView];
+        _tableView13.delegate = self;
+        _tableView13.dataSource = self;
+        _tableView13.tableFooterView = [[UIView alloc] init];
+        _tableView13.backgroundColor = UIColorFromRGB1(0x333333, 0.7);
+    }
+    return _tableView13;
+}
+
 #pragma mark - tableView delegate and datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 10;
+    if (tableView == self.productsTableView) {
+        return 10;
+    }
+    return 1;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 1;
+    
+    if (tableView == self.productsTableView) {
+        return 1;
+    }else if (tableView == self.tableView11){
+        return 2;
+    }else if (tableView == self.tableView12){
+        return 3;
+    }else if (tableView == self.tableView13){
+        return 4;
+    }
+    return 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 156;
+    if (tableView == self.productsTableView) {
+        return 156;
+    }
+    return 40;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *identifier = @"pros";
-    HomeCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    if (!cell) {
-        cell = [[HomeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-    }
-    [cell.recommendimageView setHidden:YES];
+    if (tableView == self.productsTableView) {
+        static NSString *identifier = @"pros";
+        HomeCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell) {
+            cell = [[HomeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        [cell.recommendimageView setHidden:YES];
+        
+        return cell;
+        
+    }else if (tableView == self.tableView11){//省
+        static NSString *identifier = @"aa";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        
+        cell.textLabel.text = @"省份";
+        
+        return cell;
+    }else if (tableView == self.tableView12){//市
+        static NSString *identifier = @"bb";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.textLabel.text = @"市区";
+        
+        return cell;
+    }else if (tableView == self.tableView13){//区
+        static NSString *identifier = @"cc";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        
+        cell.textLabel.text = @"小镇";
 
-//    UIView *cellbackButtonView = [[UIView alloc] initWithFrame:CGRectMake(0, kBigPadding, kScreenWidth, 156)];
-//    cellbackButtonView.backgroundColor = kSeparateColor;
-//    cell.selectedBackgroundView = cellbackButtonView;
-    
-    return cell;
+        return cell;
+    }
+    return nil;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    ProductsDetailsViewController *productsDetailsVC = [[ProductsDetailsViewController alloc] init];
-    productsDetailsVC.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:productsDetailsVC animated:YES];
+    
+    if (tableView == self.productsTableView) {
+        ProductsDetailsViewController *productsDetailsVC = [[ProductsDetailsViewController alloc] init];
+        productsDetailsVC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:productsDetailsVC animated:YES];
+    }else if (tableView == self.tableView11){
+        [self.view addSubview:self.tableView12];
+        self.widthConstraints.constant = kScreenWidth/2;
+        [self.tableView12 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.tableView11];
+        [self.tableView12 autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.tableView11];
+        [self.tableView12 autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.tableView11];
+        [self.tableView12 autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.tableView11];
+    }else if (tableView == self.tableView12){
+        [self.view addSubview:self.tableView13];
+        self.widthConstraints.constant = kScreenWidth/3;
+        [self.tableView13 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.tableView12];
+        [self.tableView13 autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.tableView11];
+        [self.tableView13 autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.tableView11];
+        [self.tableView13 autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.tableView11];
+    }else if (tableView == self.tableView13){
+        [self.tableView11 removeFromSuperview];
+        [self.tableView12 removeFromSuperview];
+        [self.tableView13 removeFromSuperview];
+        self.widthConstraints.constant = kScreenWidth;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return kBigPadding;
+    if (tableView == self.productsTableView) {
+        return kBigPadding;
+    }
+    return 0.1f;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -218,8 +347,6 @@
     SearchViewController *searchVC = [[SearchViewController alloc] init];
     searchVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:searchVC animated:YES];
-    
-//    [self presentViewController:searchVC animated:YES completion:nil];
 }
 
 - (void)getProductsListWithPage:(NSString *)page

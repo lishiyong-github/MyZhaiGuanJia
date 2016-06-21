@@ -6,8 +6,10 @@
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
-#import "BaseViewController.h"
+#import "NetworkViewController.h"
 
-@interface GuarantyViewController : BaseViewController
+@interface GuarantyViewController : NetworkViewController
+
+@property (nonatomic,strong) void (^didSelectedArea)(NSString *,NSString *,NSString *);
 
 @end

@@ -13,15 +13,18 @@
 @property (nonatomic,assign) BOOL didSetupConstarints;
 @property (nonatomic,strong) UITableView *tableView1;
 @property (nonatomic,strong) UITableView *tableView2;
-@property (nonatomic,strong) NSMutableArray *brandArray;
-@property (nonatomic,strong) NSMutableArray *audiArray;
+@property (nonatomic,strong) UITableView *tableView3;
 
 @property (nonatomic,strong) NSMutableDictionary *brandDic;
 @property (nonatomic,strong) NSMutableDictionary *audiDic;
+@property (nonatomic,strong) NSArray *licenseplateArray;
 
-
-@property (nonatomic,assign) NSInteger row1;
-@property (nonatomic,assign) NSInteger *row2;
+@property (nonatomic,strong) NSString *string1;
+@property (nonatomic,strong) NSString *string11;
+@property (nonatomic,strong) NSString *string2;
+@property (nonatomic,strong) NSString *string22;
+@property (nonatomic,strong) NSString *string3;
+@property (nonatomic,strong) NSString *string33;
 
 @end
 
@@ -44,9 +47,7 @@
     if (!self.didSetupConstarints) {
         
         [self.tableView1 autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeRight];
-        [self.tableView1 autoSetDimension:ALDimensionWidth toSize:kScreenWidth/2];
-//        [self.tableView2 autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeLeft];
-//        [self.tableView2 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.tableView1];
+        [self.tableView1 autoSetDimension:ALDimensionWidth toSize:kScreenWidth/3];
         
         self.didSetupConstarints = YES;
     }
@@ -77,20 +78,16 @@
     return _tableView2;
 }
 
-- (NSMutableArray *)brandArray
+- (UITableView *)tableView3
 {
-    if (!_brandArray) {
-        _brandArray = [NSMutableArray array];
+    if (!_tableView3) {
+        _tableView3 = [UITableView newAutoLayoutView];
+        _tableView3.delegate = self;
+        _tableView3.dataSource = self;
+        _tableView3.tableFooterView = [[UIView alloc] init];
+        _tableView3.backgroundColor = kBackColor;
     }
-    return _brandArray;
-}
-
-- (NSMutableArray *)audiArray
-{
-    if (!_audiArray) {
-        _audiArray = [NSMutableArray array];
-    }
-    return _audiArray;
+    return _tableView3;
 }
 
 - (NSMutableDictionary *)brandDic
@@ -110,14 +107,24 @@
     return _audiDic;
 }
 
+- (NSArray *)licenseplateArray
+{
+    if (!_licenseplateArray) {
+        _licenseplateArray = @[@"沪牌",@"非沪牌"];
+    }
+    return _licenseplateArray;
+}
+
 #pragma mark - delegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (tableView == _tableView1) {
+    if (tableView == self.tableView1) {
         
         return self.brandDic.allKeys.count;
+    }else if(tableView == self.tableView2){
+        return self.audiDic.allKeys.count;
     }else{
-        return self.audiArray.count;
+        return self.licenseplateArray.count;
     }
 }
 
@@ -141,6 +148,17 @@
         cell.textLabel.text = self.brandDic[key];
         
         return cell;
+    }else if(tableView == self.tableView2){
+        identifier = @"car2";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        
+        if (!cell) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        
+        cell.textLabel.text = self.audiDic.allValues[indexPath.row];
+        
+        return cell;
     }else{
         identifier = @"car2";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -149,7 +167,8 @@
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         
-        cell.textLabel.text = self.audiArray[indexPath.row];
+        cell.textLabel.text = self.licenseplateArray[indexPath.row];
+        
         return cell;
     }
     
@@ -157,22 +176,38 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
+{    
     if (tableView == self.tableView1) {
-        
-        _row1 = indexPath.row + 1;
-        
         [self.view addSubview:self.tableView2];
         [self.tableView2 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.tableView1];
-        [self.tableView2 autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeLeft];
+        [self.tableView2 autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.tableView1];
+        [self.tableView2 autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.tableView1];
+        [self.tableView2 autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.tableView1];
         
         NSString *bb = [NSString stringWithFormat:@"%d",indexPath.row+1];
-        NSString *ww = self.brandDic[bb];
+        _string11 = self.brandDic[bb];
+        _string1 = bb;
         [self getAudiListWithBrand:bb];
         
+    }else if(tableView == self.tableView2){
+        
+        [self.view addSubview:self.tableView3];
+        [self.tableView3 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.tableView2];
+        [self.tableView3 autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.tableView1];
+        [self.tableView3 autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.tableView1];
+        [self.tableView3 autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.tableView1];
+        
+        _string2 = self.audiDic.allKeys[indexPath.row];
+        _string22 = self.audiDic.allValues[indexPath.row];
+        
     }else{
+        
+        _string3 = [NSString stringWithFormat:@"%d",indexPath.row+1];
+        _string33 = self.licenseplateArray[indexPath.row];
+        
+        if (self.didSelectedRow) {
+            self.didSelectedRow(_string1,_string11,_string2,_string22,_string3,_string33);
+        }
         
         [self back];
     }
@@ -203,38 +238,21 @@
 //车系
 - (void)getAudiListWithBrand:(NSString *)brand
 {
-    [self.audiArray removeAllObjects];
-//    [self.audiArray addObjectsFromArray:@[@"A版",@"B版",@"C版",@"D版"]];
-//    [self.tableView2 reloadData];
+    [self.audiDic removeAllObjects];
     
     NSString *auditString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kBrandAudiString];
-    NSDictionary *params = @{@"carbrand" : brand};
+    NSDictionary *params = @{@"pid" : brand};
     
+    QDFWeakSelf;
     [self requestDataPostWithString:auditString params:params successBlock:^(id responseObject) {
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSLog(@"MMMMMMM %@",dic);
 
+        weakself.audiDic = [NSMutableDictionary dictionaryWithDictionary:dic];
+        [weakself.tableView2 reloadData];
         
     } andFailBlock:^(NSError *error) {
         
     }];
-    
-    
-    /*
-    [self requestDataPostWithString:auditString params:nil successBlock:^(id responseObject) {
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSLog(@"MMMMMMM %@",dic);
-        
-        for (int p=0; p<[[dic allKeys] count]; p++) {
-            [self.audiArray addObject:dic.allValues[p]];
-        }
-     
-        [self.tableView2 reloadData];
-        
-    } andFailBlock:^(NSError *error) {
-        
-    }];
-     */
 }
 
 - (void)didReceiveMemoryWarning {

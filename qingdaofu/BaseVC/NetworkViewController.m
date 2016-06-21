@@ -80,23 +80,6 @@
             failBlock(error);
         }
     }];
-    
-    /*
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    
-    [manager POST:string parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        if (successBlock) {
-            successBlock(responseObject);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failBlock) {
-            failBlock(error);
-        }
-    }];
-*/
 }
 
 - (void)didReceiveMemoryWarning {

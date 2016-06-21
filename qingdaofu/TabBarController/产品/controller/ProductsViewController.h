@@ -10,7 +10,6 @@
 
 @interface ProductsViewController : BaseViewController
 
-//@property (nonatomic,strong) NSLayoutConstraint *heightConstraints;
-@property (nonatomic,strong) NSLayoutConstraint *topConstraints;
+@property (nonatomic,strong) NSLayoutConstraint *widthConstraints;  //tableView的宽度
 
 @end
