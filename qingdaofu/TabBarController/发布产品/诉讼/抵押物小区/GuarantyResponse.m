@@ -10,4 +10,9 @@
 
 @implementation GuarantyResponse
 
++ (NSDictionary *)objectClassInArray
+{
+    return @{@"result" : @"GuarantyModel"};
+}
+
 @end

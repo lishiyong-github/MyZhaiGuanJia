@@ -10,4 +10,9 @@
 
 @implementation GuarantyModel
 
++ (NSDictionary *)replacedKeyFromPropertyName
+{
+    return @{@"idString" : @"id"};
+}
+
 @end

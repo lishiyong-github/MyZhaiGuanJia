@@ -10,6 +10,6 @@
 
 @interface GuarantyViewController : NetworkViewController
 
-@property (nonatomic,strong) void (^didSelectedArea)(NSString *,NSString *,NSString *);
+@property (nonatomic,strong) void (^didSelectedArea)(NSString *,NSString *,NSString *,NSString*);
 
 @end

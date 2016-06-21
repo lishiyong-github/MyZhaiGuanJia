@@ -299,9 +299,18 @@
                 [cell.agentButton setTitle:@"请选择" forState:0];
                 
                 QDFWeakSelf;
+                QDFWeak(cell);
                 [cell.agentButton addAction:^(UIButton *btn) {
-                    NSLog(@"选择小区名");
                     GuarantyViewController *guarantyVC = [[GuarantyViewController alloc] init];
+                    [guarantyVC setDidSelectedArea:^(NSString *name, NSString *province_id, NSString *city_id, NSString *district_id) {
+                        [weakself.suitDataDictionary setValue:name forKey:@"mortorage_community"];
+                        [weakself.suitDataDictionary setValue:province_id forKey:@"province_id"];
+                        [weakself.suitDataDictionary setValue:city_id forKey:@"city_id"];
+                        [weakself.suitDataDictionary setValue:district_id forKey:@"district_id"];
+                        weakcell.agentTextField.text = [NSString stringWithFormat:@"%@",name];
+                        [weakcell.agentButton setTitle:@"已选择" forState:0];
+                    }];
+                    
                     [weakself.navigationController pushViewController:guarantyVC animated:YES];
                 }];
                 
@@ -547,8 +556,11 @@
     self.suitDataDictionary[@"money"] = self.suitDataDictionary[@"money"]?self.suitDataDictionary[@"money"]:@""; //融资金额，万为单位
     self.suitDataDictionary[@"agencycommission"] = self.suitDataDictionary[@"agencycommission"]?self.suitDataDictionary[@"agencycommission"]:@"";
     self.suitDataDictionary[@"loan_type"] = self.suitDataDictionary[@"loan_type"]?self.suitDataDictionary[@"loan_type"]:@"";
-    self.suitDataDictionary[@"mortorage_community"] = self.suitDataDictionary[@"mortorage_community"]?self.suitDataDictionary[@"mortorage_community"]:@"";
-    self.suitDataDictionary[@"seatmortgage"] = self.suitDataDictionary[@"seatmortgage"]?self.suitDataDictionary[@"seatmortgage"]:@"";
+    self.suitDataDictionary[@"mortorage_community"] = self.suitDataDictionary[@"mortorage_community"]?self.suitDataDictionary[@"mortorage_community"]:@"";//抵押物地址
+    self.suitDataDictionary[@"seatmortgage"] = self.suitDataDictionary[@"seatmortgage"]?self.suitDataDictionary[@"seatmortgage"]:@""; //详细地址
+    self.suitDataDictionary[@"province_id"] = self.suitDataDictionary[@"province_id"]?self.suitDataDictionary[@"province_id"]:@"";
+    self.suitDataDictionary[@"city_id"] = self.suitDataDictionary[@"city_id"]?self.suitDataDictionary[@"city_id"]:@"";
+    self.suitDataDictionary[@"district_id"] = self.suitDataDictionary[@"district_id"]?self.suitDataDictionary[@"district_id"]:@"";
     self.suitDataDictionary[@"carbrand"] = self.suitDataDictionary[@"carbrand"]?self.suitDataDictionary[@"carbrand"]:@"";   //车品牌
     self.suitDataDictionary[@"audi"] = self.suitDataDictionary[@"audi"]?self.suitDataDictionary[@"audi"]:@"";  //车系
     self.suitDataDictionary[@"accountr"] = self.suitDataDictionary[@"accountr"]?self.suitDataDictionary[@"accountr"]:@""; //应收帐款

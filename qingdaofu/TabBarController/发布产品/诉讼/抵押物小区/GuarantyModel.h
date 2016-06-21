@@ -10,4 +10,7 @@
 
 @interface GuarantyModel : NSObject
 
+@property (nonatomic,copy) NSString *idString;
+@property (nonatomic,copy) NSString *name;
+
 @end

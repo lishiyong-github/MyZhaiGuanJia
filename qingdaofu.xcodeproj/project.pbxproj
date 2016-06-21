@@ -85,6 +85,8 @@
 		A159F9841D0E3D6600A6A024 /* FinanCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A159F9831D0E3D6600A6A024 /* FinanCell.m */; };
 		A159F9871D0E7EFF00A6A024 /* SuitBaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A159F9861D0E7EFF00A6A024 /* SuitBaseCell.m */; };
 		A15F61841D18DF1F0060AF7B /* GuarantyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A15F61831D18DF1F0060AF7B /* GuarantyViewController.m */; };
+		A15F61891D1905940060AF7B /* GuarantyResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A15F61881D1905940060AF7B /* GuarantyResponse.m */; };
+		A15F618C1D1906820060AF7B /* GuarantyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A15F618B1D1906820060AF7B /* GuarantyModel.m */; };
 		A1602E741CED8D320053F850 /* CompleteCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1602E731CED8D320053F850 /* CompleteCell.m */; };
 		A1602E771CEDA9F50053F850 /* CompletePhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = A1602E761CEDA9F50053F850 /* CompletePhotoView.m */; };
 		A1602E7A1CEDAF790053F850 /* BidMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1602E791CEDAF790053F850 /* BidMessageCell.m */; };
@@ -571,6 +573,10 @@
 		A159F9861D0E7EFF00A6A024 /* SuitBaseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SuitBaseCell.m; sourceTree = "<group>"; };
 		A15F61821D18DF1F0060AF7B /* GuarantyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuarantyViewController.h; sourceTree = "<group>"; };
 		A15F61831D18DF1F0060AF7B /* GuarantyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GuarantyViewController.m; sourceTree = "<group>"; };
+		A15F61871D1905940060AF7B /* GuarantyResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuarantyResponse.h; sourceTree = "<group>"; };
+		A15F61881D1905940060AF7B /* GuarantyResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GuarantyResponse.m; sourceTree = "<group>"; };
+		A15F618A1D1906820060AF7B /* GuarantyModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuarantyModel.h; sourceTree = "<group>"; };
+		A15F618B1D1906820060AF7B /* GuarantyModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GuarantyModel.m; sourceTree = "<group>"; };
 		A1602E721CED8D310053F850 /* CompleteCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompleteCell.h; sourceTree = "<group>"; };
 		A1602E731CED8D320053F850 /* CompleteCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompleteCell.m; sourceTree = "<group>"; };
 		A1602E751CEDA9F50053F850 /* CompletePhotoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompletePhotoView.h; sourceTree = "<group>"; };
@@ -1335,6 +1341,10 @@
 			children = (
 				A15F61821D18DF1F0060AF7B /* GuarantyViewController.h */,
 				A15F61831D18DF1F0060AF7B /* GuarantyViewController.m */,
+				A15F61871D1905940060AF7B /* GuarantyResponse.h */,
+				A15F61881D1905940060AF7B /* GuarantyResponse.m */,
+				A15F618A1D1906820060AF7B /* GuarantyModel.h */,
+				A15F618B1D1906820060AF7B /* GuarantyModel.m */,
 			);
 			path = "抵押物小区";
 			sourceTree = "<group>";
@@ -3084,6 +3094,7 @@
 				A17F7BF51CE5C52700E882A3 /* NewPublishCell.m in Sources */,
 				A17964FD1CD3682A00B6AD47 /* MyDetailStoreViewController.m in Sources */,
 				A1A97E5B1CDC74D800EDE320 /* NewsCell.m in Sources */,
+				A15F618C1D1906820060AF7B /* GuarantyModel.m in Sources */,
 				A1770E271CFEA314003579E1 /* StarCell.m in Sources */,
 				A16BA1571CED4A2500A7010C /* MyAgentListViewController.m in Sources */,
 				A16BA1491CEC4E2B00A7010C /* TakePictureCell.m in Sources */,
@@ -3260,6 +3271,7 @@
 				A1A017551C5B696A00027134 /* NSObject+MJCoding.m in Sources */,
 				A1B028F21D1794DC00F32A09 /* UIImageView+WebCache.m in Sources */,
 				A16BA1541CEC757900A7010C /* AllProView.m in Sources */,
+				A15F61891D1905940060AF7B /* GuarantyResponse.m in Sources */,
 				A1A34C3D1CE32CF700AD454A /* LoginCell.m in Sources */,
 				A159F9441D0BEE5E00A6A024 /* MBResourceManager.m in Sources */,
 				A1A97E4E1CDC66D600EDE320 /* PublishMessagesViewController.m in Sources */,

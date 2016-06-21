@@ -10,4 +10,6 @@
 
 @interface GuarantyResponse : BaseModel
 
+@property (nonatomic,strong) NSArray *result;
+
 @end

@@ -8,13 +8,16 @@
 
 #import "GuarantyViewController.h"
 
+#import "GuarantyResponse.h"
+#import "GuarantyModel.h"
+
 @interface GuarantyViewController ()<UISearchControllerDelegate,UISearchResultsUpdating,UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstarints;
 @property (nonatomic,strong) UITableView *guTableView;
 @property (nonatomic,strong) UISearchController *searchController;
 
-@property (nonatomic,strong) UITextField *navTextField;
+@property (nonatomic,strong) NSMutableArray *guDataArray;
 
 @end
 
@@ -24,39 +27,14 @@
     [super viewDidLoad];
     self.title = @"抵押物地址";
     self.navigationItem.leftBarButtonItem = self.leftItem;
-//    self.navigationItem.titleView = self.searchController.searchBar;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(cancel)];
     
     [self.view addSubview:self.guTableView];
-    [self.view setNeedsUpdateConstraints];
-    
-}
-
-- (void)updateViewConstraints
-{
-    if (!self.didSetupConstarints) {
-        
-        [self.guTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
-        
-        self.didSetupConstarints = YES;
-    }
-    [super updateViewConstraints];
-}
-
-- (UITextField *)navTextField
-{
-    if (!_navTextField) {
-        _navTextField = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
-        _navTextField.placeholder = @"输入小区名";
-        _navTextField.font = kNavFont;
-    }
-    return _navTextField;
 }
 
 - (UITableView *)guTableView
 {
     if (!_guTableView) {
-        _guTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 100, kScreenWidth, kScreenHeight) style:UITableViewStylePlain];
+        _guTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, kNavHeight, kScreenWidth, kScreenHeight-kNavHeight) style:UITableViewStylePlain];
         _guTableView.delegate = self;
         _guTableView.dataSource = self;
         _guTableView.tableFooterView = [[UIView alloc] init];
@@ -72,17 +50,30 @@
         _searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
         _searchController.searchResultsUpdater = self;
         _searchController.delegate = self;
-        _searchController.searchBar.frame = CGRectMake(0, kCellHeight, kScreenWidth/2, kCellHeight);
+        _searchController.searchBar.frame = CGRectMake(0, kNavHeight, kScreenWidth/2, kCellHeight);
         _searchController.searchBar.tintColor = kBlueColor;
         _searchController.dimsBackgroundDuringPresentation = NO;//设置为NO,可以点击搜索出来的内容
     }
     return _searchController;
 }
 
+- (NSMutableArray *)guDataArray
+{
+    if (!_guDataArray) {
+        _guDataArray = [NSMutableArray array];
+    }
+    return _guDataArray;
+}
+
 #pragma mark - tabelView deleagte and datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 10;
+    return self.guDataArray.count;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -97,9 +88,23 @@
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
-    cell.textLabel.text = @"小区小徐";
+    
+    GuarantyModel *model = self.guDataArray[indexPath.row];
+    cell.textLabel.text = [NSString stringWithFormat:@"%@",model.name];
     
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.didSelectedArea) {
+        GuarantyModel *model = self.guDataArray[indexPath.row];
+        self.didSelectedArea(model.name,@"1",@"2",@"3");
+    }
+
+    [self didDismissSearchController:self.searchController];
+    [self.guTableView removeFromSuperview];
+    [self back];
 }
 
 #pragma mark - search
@@ -117,22 +122,19 @@
 //搜索界面消失
 -(void)didDismissSearchController:(UISearchController *)searchController
 {
-//    [self customSortingOfChinese:self.dataArray];
-    [self.guTableView reloadData];
+    [searchController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark -- 搜索方法
 // 搜索时触发的方法
 -(void)updateSearchResultsForSearchController:(UISearchController *)searchController
 {
-//    NSString *searchStr = [searchController.searchBar text];
-    NSString *searchStr = @"1";
+    NSString *searchStr = [searchController.searchBar text];
     
-    // 谓词
-//    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS %@", searchStr];
-    
-    // 调用小区的方法
-    [self getGuarantyListWithString:searchStr];
+    if (searchStr && searchController.active) {
+        // 调用小区的方法
+        [self getGuarantyListWithString:searchStr];
+    }
 }
 
 - (void)getGuarantyListWithString:(NSString *)predicate
@@ -141,21 +143,21 @@
     NSDictionary *params = @{@"name" : predicate};
     [self requestDataPostWithString:guarantyString params:params successBlock:^(id responseObject) {
         
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSLog(@"++++++ %@",dic);
+        [self.guDataArray removeAllObjects];
+        
+        GuarantyResponse *response = [GuarantyResponse objectWithKeyValues:responseObject];
+        
+        for (GuarantyModel *model in response.result) {
+            [self.guDataArray addObject:model];
+        }
+        
         // 刷新列表
         [self.guTableView reloadData];
 
     } andFailBlock:^(NSError *error) {
-        
+        [self showHint:@"加载失败"];
     }];
 }
-
-//- (void)cancel
-//{
-//    [self.guTableView setHidden:YES];
-//}
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
