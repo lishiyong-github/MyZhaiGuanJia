@@ -18,4 +18,6 @@
 @property (nonatomic,strong) void (^didSelectedRow)(NSString *text,NSInteger indexRow);
 @property (nonatomic,strong) void (^didSelectedButton)(NSInteger);
 
+@property (nonatomic,strong) NSString *tableType;
+
 @end

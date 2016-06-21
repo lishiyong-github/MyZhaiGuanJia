@@ -145,7 +145,6 @@
 #define kCheckReleasePeople @"apply/users"   //查看发布方详情
 
 
-
 #define kMyReleaseString  @"apply/released"   //我的发布
 #define kMyReleaseDetailString @"public/wxreleaseinformationwidget"  //我的发布详情/我的接单详情
 #define kLookUpScheduleString @"public/wxspeedwidget"   //查看进度
@@ -174,7 +173,9 @@
 #define kProductHouseString @"capital/shenqing"   //申请接单
 #define kRequestStoreString @"capital/shoucang"   //申请收藏
 
-
+#define kProvinceString @"common/province"  //产品页面获取省份
+#define kCityString @"common/city"  //产品页面获取市
+#define kDistrictString @"common/area"  //产品页面获取区
 
 #define kMySaveString @"list/mysave"    //我的保存
 #define kMyStoreString @"apply/myshoucang"  //我的收藏

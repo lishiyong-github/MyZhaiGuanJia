@@ -11,6 +11,7 @@
 #import "ProductsDetailsViewController.h"   //详细信息
 
 #import "HomeCell.h"
+#import "BidOneCell.h"
 #import "UIImage+Color.h"
 #import "AllProView.h"
 
@@ -28,7 +29,11 @@
 @property (nonatomic,strong) UITableView *tableView12;
 @property (nonatomic,strong) UITableView *tableView13;
 
+@property (nonatomic,strong) NSDictionary *provinceDictionary;
+@property (nonatomic,strong) NSDictionary *cityDcitionary;
+@property (nonatomic,strong) NSDictionary *districtDictionary;
 
+@property (nonatomic,strong) NSMutableDictionary *paramsDictionary;
 
 @property (nonatomic,strong) NSString *proString;
 
@@ -80,15 +85,11 @@
         
         QDFWeakSelf;
         [_proTitleView addAction:^(UIButton *btn) {
-            btn.selected = !btn.selected;
-            
-            if (btn.selected) {
-//                weakself.proView.dataList = @[@"全部",@"融资",@"催收",@"诉讼"];
-//                weakself.proView.heightTableConstraints.constant = 5*40;
-//                [weakself.proView reloadData];
-            }else{
-            }
-            
+
+            NSArray *titleArray = @[@"全部",@"融资",@"催收",@"诉讼"];
+            [weakself showBlurInView:weakself.view withArray:titleArray withTop:0 finishBlock:^(NSString *text, NSInteger row) {
+                
+            }];
         }];
     }
     return _proTitleView;
@@ -108,61 +109,57 @@
             
             switch (selectedButton.tag) {
                 case 201:{//区域
-                    selectedButton.selected = !selectedButton.selected;
+                        UIButton *but1 = [weakself.view viewWithTag:202];
+                        UIButton *but2 = [weakself.view viewWithTag:203];
+                        but1.userInteractionEnabled = NO;
+                        but2.userInteractionEnabled = NO;
                     
-                    if (selectedButton.selected) {
                         [weakself.view addSubview: weakself.tableView11];
                         
                         [weakself.tableView11 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:weakself.chooseView];
                         [weakself.tableView11 autoPinEdgeToSuperviewEdge:ALEdgeLeft];
-                        [weakself.tableView11 autoPinEdgeToSuperviewEdge:ALEdgeBottom];
+                        [weakself.tableView11 autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kTabBarHeight];
                         weakself.widthConstraints = [weakself.tableView11 autoSetDimension:ALDimensionWidth toSize:kScreenWidth];
-                    }else{
-                        if (weakself.tableView11) {
-                            [weakself.tableView11 removeFromSuperview];
-                        }
-                        if (weakself.tableView12) {
-                            [weakself.tableView12 removeFromSuperview];
-                        }
-                        if (weakself.tableView13) {
-                            [weakself.tableView13 removeFromSuperview];
-                        }
-                    }
+                        
+                        [weakself getProvinceList];
                 }
                     break;
                 case 202:{//状态
                     
-                    selectedButton.selected = !selectedButton.selected;
-                    
-                    if (selectedButton.selected) {
+                        UIButton *but1 = [weakself.view viewWithTag:201];
+                        UIButton *but2 = [weakself.view viewWithTag:203];
+                        but1.userInteractionEnabled = NO;
+                        but2.userInteractionEnabled = NO;
                         
-//                        NSArray *stateArray = @[@"不限",@"发布中",@"处理中",@"已结案"];
+                        NSArray *stateArray = @[@"不限",@"发布中",@"处理中",@"已结案"];
                         
-                    
-                        
-//                        [weakself.backButtonView setHidden:NO];
-//                        weakself.topConstraints.constant = 40;
-//                        weakself.proView.dataList = @[@"不限",@"发布中",@"处理中",@"已结案"];
-//                        weakself.proView.heightTableConstraints.constant = 5*40;
-//                        [weakself.proView reloadData];
-                    }else{
-                    }
-                    
+                        [weakself showBlurInView:weakself.view withArray:stateArray withTop:weakself.chooseView.height finishBlock:^(NSString *text, NSInteger row) {
+                            [selectedButton setTitle:text forState:0];
+                            
+                            UIButton *but1 = [weakself.view viewWithTag:201];
+                            UIButton *but2 = [weakself.view viewWithTag:203];
+                            but1.userInteractionEnabled = YES;
+                            but2.userInteractionEnabled = YES;
+
+                        }];
                 }
                     break;
                 case 203:{//金额
-
-                    selectedButton.selected = !selectedButton.selected;
-
-                    if (selectedButton.selected) {
+                    
+                        UIButton *but1 = [weakself.view viewWithTag:201];
+                        UIButton *but2 = [weakself.view viewWithTag:202];
+                        but1.userInteractionEnabled = NO;
+                        but2.userInteractionEnabled = NO;
                         
-
-//                        weakself.roView.dataList = @[@"不限",@"30万以下",@"30-100万",@"100-500万",@"500万以上"];
-//                        weakself.proView.heightTableConstraints.constant = 6*40;
-//                        [weakself.proView reloadData];
-                    }else{
-//                        [weakself.backButtonView setHidden:YES];
-                    }
+                        NSArray *moneyArray = @[@"不限",@"30万以下",@"30-100万",@"100-500万",@"500万以上"];
+                    [weakself showBlurInView:weakself.view withArray:moneyArray withTop:selectedButton.height finishBlock:^(NSString *text, NSInteger row) {
+                        [selectedButton setTitle:text forState:0];
+                        
+                        UIButton *but1 = [weakself.view viewWithTag:201];
+                        UIButton *but2 = [weakself.view viewWithTag:202];
+                        but1.userInteractionEnabled = YES;
+                        but2.userInteractionEnabled = YES;
+                    }];
                 }
                     break;
                 default:
@@ -193,7 +190,9 @@
         _tableView11.delegate = self;
         _tableView11.dataSource = self;
         _tableView11.tableFooterView = [[UIView alloc] init];
-        _tableView11.backgroundColor = UIColorFromRGB1(0x333333, 0.7);
+        _tableView11.backgroundColor = UIColorFromRGB1(0x333333, 0.6);
+        _tableView11.layer.borderColor = kSeparateColor.CGColor;
+        _tableView11.layer.borderWidth = kLineWidth;
     }
     return _tableView11;
 }
@@ -218,8 +217,18 @@
         _tableView13.dataSource = self;
         _tableView13.tableFooterView = [[UIView alloc] init];
         _tableView13.backgroundColor = UIColorFromRGB1(0x333333, 0.7);
+        _tableView13.layer.borderColor = kSeparateColor.CGColor;
+        _tableView13.layer.borderWidth = kLineWidth;
     }
     return _tableView13;
+}
+
+- (NSMutableDictionary *)paramsDictionary
+{
+    if (!_paramsDictionary) {
+        _paramsDictionary = [NSMutableDictionary dictionary];
+    }
+    return _paramsDictionary;
 }
 
 #pragma mark - tableView delegate and datasource
@@ -236,11 +245,11 @@
     if (tableView == self.productsTableView) {
         return 1;
     }else if (tableView == self.tableView11){
-        return 2;
+        return self.provinceDictionary.allKeys.count;
     }else if (tableView == self.tableView12){
-        return 3;
+        return self.cityDcitionary.allKeys.count;
     }else if (tableView == self.tableView13){
-        return 4;
+        return self.districtDictionary.allKeys.count;
     }
     return 0;
 }
@@ -250,7 +259,7 @@
     if (tableView == self.productsTableView) {
         return 156;
     }
-    return 40;
+    return kCellHeight;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -267,31 +276,36 @@
         
     }else if (tableView == self.tableView11){//省
         static NSString *identifier = @"aa";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        BidOneCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         if (!cell) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            cell = [[BidOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         
-        cell.textLabel.text = @"省份";
+        cell.oneButton.userInteractionEnabled = NO;
+        [cell.oneButton setTitle:self.provinceDictionary.allValues[indexPath.row] forState:0];
         
         return cell;
+        
     }else if (tableView == self.tableView12){//市
         static NSString *identifier = @"bb";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        BidOneCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         if (!cell) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            cell = [[BidOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
-        cell.textLabel.text = @"市区";
         
+        cell.oneButton.userInteractionEnabled = NO;
+        [cell.oneButton setTitle:self.cityDcitionary.allValues[indexPath.row] forState:0];
+
         return cell;
     }else if (tableView == self.tableView13){//区
         static NSString *identifier = @"cc";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        BidOneCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         if (!cell) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            cell = [[BidOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         
-        cell.textLabel.text = @"小镇";
+        cell.oneButton.userInteractionEnabled = NO;
+        [cell.oneButton setTitle:self.districtDictionary.allValues[indexPath.row] forState:0];
 
         return cell;
     }
@@ -300,9 +314,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
     if (tableView == self.productsTableView) {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
         ProductsDetailsViewController *productsDetailsVC = [[ProductsDetailsViewController alloc] init];
         productsDetailsVC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:productsDetailsVC animated:YES];
@@ -313,6 +326,10 @@
         [self.tableView12 autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.tableView11];
         [self.tableView12 autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.tableView11];
         [self.tableView12 autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.tableView11];
+        
+        [self.paramsDictionary setValue:self.provinceDictionary.allKeys[indexPath.row] forKey:@"province"];
+        [self getCityListWithProvinceID:self.provinceDictionary.allKeys[indexPath.row]];
+        
     }else if (tableView == self.tableView12){
         [self.view addSubview:self.tableView13];
         self.widthConstraints.constant = kScreenWidth/3;
@@ -320,11 +337,25 @@
         [self.tableView13 autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.tableView11];
         [self.tableView13 autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.tableView11];
         [self.tableView13 autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.tableView11];
+        
+        [self.paramsDictionary setValue:self.cityDcitionary.allKeys[indexPath.row] forKey:@"city"];
+        [self getDistrictListWithCityID:self.cityDcitionary.allKeys[indexPath.row]];
+        
     }else if (tableView == self.tableView13){
         [self.tableView11 removeFromSuperview];
         [self.tableView12 removeFromSuperview];
         [self.tableView13 removeFromSuperview];
-        self.widthConstraints.constant = kScreenWidth;
+        
+        
+        UIButton *but1 = [self.view viewWithTag:202];
+        UIButton *but2 = [self.view viewWithTag:203];
+        but1.userInteractionEnabled = YES;
+        but2.userInteractionEnabled = YES;
+
+        [self.chooseView.squrebutton setTitle:self.districtDictionary.allValues[indexPath.row] forState:0];
+        
+        [self.paramsDictionary setValue:self.districtDictionary.allKeys[indexPath.row] forKey:@"area"];
+        [self getProductsListWithPage:@"0"];
     }
 }
 
@@ -349,9 +380,88 @@
     [self.navigationController pushViewController:searchVC animated:YES];
 }
 
+- (void)getProvinceList
+{
+    NSString *provinceString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProvinceString];
+    [self requestDataPostWithString:provinceString params:nil successBlock:^(id responseObject) {
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        
+        self.provinceDictionary = dic;
+        
+        [self.tableView11 reloadData];
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
+- (void)getCityListWithProvinceID:(NSString *)provinceId
+{
+    NSString *cityString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kCityString];
+    NSDictionary *params = @{@"fatherID" : provinceId};
+    [self requestDataPostWithString:cityString params:params successBlock:^(id responseObject) {
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        NSLog(@"-------- %@",dic);
+        
+        self.cityDcitionary = dic[provinceId];
+        
+        [self.tableView12 reloadData];
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
+- (void)getDistrictListWithCityID:(NSString *)cityId
+{
+    NSString *districtString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kDistrictString];
+    NSDictionary *params = @{@"fatherID" : cityId};
+    [self requestDataPostWithString:districtString params:params successBlock:^(id responseObject) {
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        
+        self.districtDictionary = dic[cityId];
+        
+        [self.tableView13 reloadData];
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
 - (void)getProductsListWithPage:(NSString *)page
 {
+    NSString *allProString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductsListString];
     
+    
+    self.paramsDictionary[@"province"] = self.paramsDictionary[@"province"]?self.paramsDictionary[@"province"]:@"";
+    self.paramsDictionary[@"city"] = self.paramsDictionary[@"city"]?self.paramsDictionary[@"city"]:@"";
+    self.paramsDictionary[@"area"] = self.paramsDictionary[@"area"]?self.paramsDictionary[@"area"]:@"";
+    self.paramsDictionary[@"category"] = self.paramsDictionary[@"category"]?self.paramsDictionary[@"category"]:@"0";
+    self.paramsDictionary[@"money"] = self.paramsDictionary[@"money"]?self.paramsDictionary[@"money"]:@"0";
+    self.paramsDictionary[@"status"] = self.paramsDictionary[@"status"]?self.paramsDictionary[@"status"]:@"0";
+    
+    
+//    if ([self.paramsDictionary[@"province"] isEqualToString:@"310000"]) {
+//        [self.paramsDictionary setValue:@"0" forKey:@"province"];
+//    }
+//    if ([self.paramsDictionary[@"city"] isEqualToString:@"310100"]) {
+//        [self.paramsDictionary setValue:@"0" forKey:@"city"];
+//    }
+//    if ([self.paramsDictionary[@"area"] isEqualToString:@"310100"]) {
+//        [self.paramsDictionary setValue:@"0" forKey:@"area"];
+//    }
+    
+    [self.paramsDictionary setValue:[self getValidateToken] forKey:@"token"];
+    [self.paramsDictionary setValue:page forKey:@"page"];
+    
+    NSDictionary *params = self.paramsDictionary;
+    [self requestDataPostWithString:allProString params:params successBlock:^(id responseObject) {
+        NSDictionary *dicc = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        NSLog(@"####### %@",dicc);
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
 }
 
 - (void)didReceiveMemoryWarning {

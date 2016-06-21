@@ -6,9 +6,9 @@
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
-#import "BaseViewController.h"
+#import "NetworkViewController.h"
 
-@interface ProductsViewController : BaseViewController
+@interface ProductsViewController : NetworkViewController
 
 @property (nonatomic,strong) NSLayoutConstraint *widthConstraints;  //tableView的宽度
 
