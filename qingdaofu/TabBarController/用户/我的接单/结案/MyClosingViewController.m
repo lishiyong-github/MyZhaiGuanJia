@@ -8,6 +8,9 @@
 
 #import "MyClosingViewController.h"
 
+#import "UIImageView+WebCache.h"
+
+
 #import "CheckDetailPublishViewController.h"  //查看发布方
 #import "AdditionalEvaluateViewController.h"  //追加评价
 #import "AdditionMessageViewController.h"     //补充信息
@@ -66,8 +69,7 @@
     [self.view setNeedsUpdateConstraints];
     
     [self getDetailMessageOfClosing];
-    [self lookUpSchedule];
-    [self getOrderEvaluateDetails];
+
 }
 
 - (void)updateViewConstraints
@@ -128,6 +130,14 @@
     return _scheduleOrderCloArray;
 }
 
+- (NSMutableArray *)evaluateResponseArray
+{
+    if (!_evaluateResponseArray) {
+        _evaluateResponseArray = [NSMutableArray array];
+    }
+    return _evaluateResponseArray;
+}
+
 - (NSMutableArray *)evaluateArray
 {
     if (!_evaluateArray) {
@@ -136,13 +146,6 @@
     return _evaluateArray;
 }
 
-- (NSMutableArray *)evaluateResponseArray
-{
-    if (!_evaluateResponseArray) {
-        _evaluateResponseArray = [NSMutableArray array];
-    }
-    return _evaluateResponseArray;
-}
 
 
 #pragma mark -
@@ -172,7 +175,18 @@
     if ((indexPath.section == 3) && (indexPath.row == 1)){
         return 145;
     }else if ((indexPath.section == 4) && (indexPath.row == 1)){
-        return 170;
+        
+        LaunchEvaluateModel *model;
+        if (self.evaluateArray.count > 0) {
+            model = self.evaluateArray[0];
+        }
+        if ([model.picture isEqualToString:@""] || model.picture == nil) {
+            return 110;
+        }else{
+            return 170;
+        }
+        
+//        return 170;
     }
     return kCellHeight;
 }
@@ -444,7 +458,7 @@
             if (self.evaluateResponseArray.count > 0) {
                 EvaluateResponse *response = self.evaluateResponseArray[0];
                 float creditor = [response.creditor floatValue];
-                NSString *creditorStr = [NSString stringWithFormat:@"|  收到的评价(%.1f分)",creditor];
+                NSString *creditorStr = [NSString stringWithFormat:@"|  给出的评价(%.1f分)",creditor];
                 [cell.userNameButton setTitle:creditorStr forState:0];
                 
                 [cell.userActionButton setTitle:@"查看更多" forState:0];
@@ -464,8 +478,8 @@
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             
-            if (self.evaluateArray.count > 0) {
-                EvaluateResponse *response = self.evaluateArray[0];
+            if (self.evaluateResponseArray.count > 0) {
+                EvaluateResponse *response = self.evaluateResponseArray[0];
                 LaunchEvaluateModel *launchModel;
                 if (self.evaluateResponseArray.count > 0) {
                     [cell.remindImageButton setHidden:YES];
@@ -478,7 +492,9 @@
                     [cell.evaProImageView2 setHidden:NO];
                     
                     launchModel = response.launchevaluation[0];
-                    cell.evaNameLabel.text = launchModel.mobile;
+                    NSString *isHideStr = launchModel.isHide?@"匿名":launchModel.mobile;
+                    cell.evaNameLabel.text = isHideStr;
+                    cell.evaTimeLabel.text = [NSDate getYMDFormatterTime:launchModel.create_time];
                     cell.evaStarImage.currentIndex = [response.creditor intValue];
                     cell.evaProImageView1.backgroundColor = kLightGrayColor;
                     cell.evaProImageView2.backgroundColor = kLightGrayColor;
@@ -488,6 +504,21 @@
                     }else{
                         cell.evaTextLabel.text = launchModel.content;
                     }
+                    
+                    if (launchModel.picture == nil || [launchModel.picture isEqualToString:@""]) {
+                        [cell.evaProImageView1 setHidden:YES];
+                        [cell.evaProImageView2 setHidden:YES];
+                    }else{
+                        [cell.evaProImageView1 setHidden:NO];
+                        [cell.evaProImageView2 setHidden:NO];
+                        
+                        NSString *str1 = [launchModel.picture substringWithRange:NSMakeRange(1, launchModel.picture.length-2)];
+                        
+                        NSString *str2 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str1];
+                        NSURL *url = [NSURL URLWithString:str2];
+                        [cell.evaProImageView1 sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+                    }
+                    
                 }else{
                     [cell.remindImageButton setHidden:NO];
                     [cell.evaProductButton setHidden:YES];
@@ -543,7 +574,6 @@
             AllEvaluationViewController *allEvaluationVC = [[AllEvaluationViewController alloc] init];
             allEvaluationVC.idString = dealModel.idString;
             allEvaluationVC.categoryString = dealModel.category;
-//            allEvaluationVC.pidString = self.pidString;
             allEvaluationVC.evaTypeString = @"launchevaluation";
             [self.navigationController pushViewController:allEvaluationVC animated:YES];
         }
@@ -558,7 +588,6 @@
     checkDetailPublishVC.categoryString = self.categaryString;
     checkDetailPublishVC.pidString = self.pidString;
     checkDetailPublishVC.typeString = @"发布方";
-    checkDetailPublishVC.evaTypeString = @"evaluate";
     [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
 }
 
@@ -573,7 +602,7 @@
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
         [self.orderCloseArray addObject:response];
         [self.myClosingTableView reloadData];
-        
+        [self lookUpSchedule];
     } andFailBlock:^(NSError *error){
         
     }];
@@ -595,7 +624,7 @@
             [self.scheduleOrderCloArray addObject:scheduleModel];
         }
         [self.myClosingTableView reloadData];
-        
+        [self getOrderEvaluateDetails];
     } andFailBlock:^(NSError *error) {
         
     }];
@@ -606,13 +635,16 @@
     NSString *evaluateString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyEvaluateString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"id" : self.idString,
-                             @"category" : self.categaryString
+                             @"category" : self.categaryString,
+                             @"page" : @"0"
                              };
     [self requestDataPostWithString:evaluateString params:params successBlock:^(id responseObject) {
         
-        EvaluateResponse *response = [EvaluateResponse objectWithKeyValues:responseObject];
+        NSDictionary *diccc = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        NSLog(@"))))))))) %@",diccc);
         
-        [self.evaluateArray addObject:response];
+        EvaluateResponse *response = [EvaluateResponse objectWithKeyValues:responseObject];
+        [self.evaluateResponseArray addObject:response];
         
         for (LaunchEvaluateModel *launchModel in response.launchevaluation) {
             [self.evaluateArray addObject:launchModel];

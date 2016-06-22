@@ -195,9 +195,13 @@
     
     if (indexPath.section == 3 && indexPath.row == 0) {//我的代理
         if (self.model.pid == nil) {//本人登录
+            if ([self.model.state integerValue] == 1 && [self.model.category integerValue] == 1) {
+                cell.userInteractionEnabled = NO;
+                [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
+                [cell.userNameButton setTitle:@"  我的代理(个人用户不能添加代理)" forState:0];
+            }
         }else{
-            cell.userInteractionEnabled = NO;
-            [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
+            
         }
     }
     

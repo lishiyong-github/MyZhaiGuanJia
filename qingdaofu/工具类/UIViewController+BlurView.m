@@ -16,7 +16,7 @@
 {
     UIView *tagView = [self.view viewWithTag:99999];
     UpwardTableView *tableView = [self.view viewWithTag:99998];
-    tableView.tableType = @"有";
+    
     if (!tagView) {
         tagView = [UIView newAutoLayoutView];
         tagView.backgroundColor = UIColorFromRGB1(0x333333, 0.3);
@@ -24,6 +24,7 @@
         [tagView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
         
         tableView = [UpwardTableView newAutoLayoutView];
+        tableView.tableType = @"有";
         [self.view addSubview:tableView];
         
         if (title) {
@@ -73,7 +74,6 @@
 {
     UIView *tagView = [self.view viewWithTag:99999];
     UpwardTableView *tableView = [self.view viewWithTag:99998];
-    tableView.tableType = @"无";
     if (!tagView) {
         tagView = [UIView newAutoLayoutView];
         tagView.backgroundColor = UIColorFromRGB1(0x333333, 0.6);
@@ -82,8 +82,8 @@
         [tagView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:top];
         
         tableView = [UpwardTableView newAutoLayoutView];
+        tableView.tableType = @"无";
         [self.view addSubview:tableView];
-        
         
         [tableView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:top];
         [tableView autoPinEdgeToSuperviewEdge:ALEdgeLeft];

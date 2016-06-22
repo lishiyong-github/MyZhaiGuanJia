@@ -151,20 +151,16 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        cell.collectionDataList = [NSMutableArray arrayWithObjects:@"btn_camera",@"btn_camera", nil];;
+        cell.collectionDataList = [NSMutableArray arrayWithObjects:@"btn_camera", nil];;
         QDFWeakSelf;
         QDFWeak(cell);
         [cell setDidSelectedItem:^(NSInteger itemTag) {
             
             [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
                 
-                if (images.count > 0) {
-                    [weakcell.collectionDataList replaceObjectAtIndex:itemTag withObject:images[0]];
-                    
-                    [weakself.comDataDictionary setValue:images forKey:@"cardimg"];
-                    [weakcell reloadData];
-                }
-
+                weakcell.collectionDataList = [NSMutableArray arrayWithArray:images];
+                [weakcell reloadData];
+                [weakself.comDataDictionary setValue:images forKey:@"cardimg"];
             }];
         }];
         return cell;
@@ -354,7 +350,6 @@
      @"token" : [weakself getValidateToken]
      */
     
-    self.comDataDictionary[@"cardimg"] = self.comDataDictionary[@"cardimg"]?self.comDataDictionary[@"cardimg"]:self.responseModel.certification.cardimg;
     self.comDataDictionary[@"name"] = self.comDataDictionary[@"name"]?self.comDataDictionary[@"name"]:self.responseModel.certification.name;
     self.comDataDictionary[@"cardno"] = self.comDataDictionary[@"cardno"]?self.comDataDictionary[@"cardno"]:self.responseModel.certification.cardno;
     self.comDataDictionary[@"contact"] = self.comDataDictionary[@"contact"]?self.comDataDictionary[@"contact"]:self.responseModel.certification.contact;
@@ -372,11 +367,11 @@
         [self.comDataDictionary setValue:@"add" forKey:@"type"];  //update为修改
     }
     
-    
     NSDictionary *params = self.comDataDictionary;
+    NSString *cardimg = self.comDataDictionary[@"cardimg"][0]?self.comDataDictionary[@"cardimg"][0]:self.responseModel.certification.cardimg;
+    NSDictionary *imageParams = @{@"cardimg" : cardimg};
     
-    [self requestDataPostWithString:personAuString params:params successBlock:^(id responseObject){
-        
+    [self requestDataPostWithString:personAuString params:params andImages:imageParams successBlock:^(id responseObject) {
         BaseModel *personModel = [BaseModel objectWithKeyValues:responseObject];
         [self showHint:personModel.msg];
         
@@ -390,8 +385,7 @@
             completeVC.categoryString = @"1";
             [personNav pushViewController:completeVC animated:NO];
         }
-        
-    } andFailBlock:^(NSError *error){
+    } andFailBlock:^(NSError *error) {
         
     }];
 }

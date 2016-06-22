@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface LaunchEvaluateModel : NSObject
+@interface LaunchEvaluateModel : NSObject  //给出的评价
 
 @property (nonatomic,copy) NSString *buid;  //
 @property (nonatomic,copy) NSString *category;  //产品类型
@@ -19,7 +19,7 @@
 @property (nonatomic,copy) NSString *create_times;// 追加评价时间
 @property (nonatomic,copy) NSString *gaoxiao;//
 @property (nonatomic,copy) NSString *idString;//
-@property (nonatomic,copy) NSString *isHide;//
+@property (nonatomic,copy) NSString *isHide;//  
 @property (nonatomic,copy) NSString *kuaijie;//
 @property (nonatomic,copy) NSString *mobile;  //手机号
 @property (nonatomic,copy) NSString *picture;//评价图片

@@ -358,7 +358,7 @@
         }
         
         cell.nameLabel.text = proModel.codeString;
-        cell.addressLabel.text = proModel.seatmortgage?proModel.seatmortgage:@"无抵押物地址";
+        cell.addressLabel.text = proModel.location?proModel.location:@"无抵押物地址";
         
         return cell;
         
@@ -503,7 +503,6 @@
     NSDictionary *params = @{@"fatherID" : provinceId};
     [self requestDataPostWithString:cityString params:params successBlock:^(id responseObject) {
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSLog(@"-------- %@",dic);
         
         self.cityDcitionary = dic[provinceId];
         
@@ -541,7 +540,6 @@
     self.paramsDictionary[@"money"] = self.paramsDictionary[@"money"]?self.paramsDictionary[@"money"]:@"0";
     self.paramsDictionary[@"status"] = self.paramsDictionary[@"status"]?self.paramsDictionary[@"status"]:@"0";
     
-    [self.paramsDictionary setValue:[self getValidateToken] forKey:@"token"];
     [self.paramsDictionary setValue:page forKey:@"page"];
     
     NSDictionary *params = self.paramsDictionary;

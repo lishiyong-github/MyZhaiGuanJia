@@ -116,17 +116,16 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.tableType) {
-        
+    if ([self.tableType isEqualToString:@"有"]) {
         if (indexPath.row > 0) {
             if (self.didSelectedRow) {
                 self.didSelectedRow(self.upwardDataList[indexPath.row-1],indexPath.row);
             }
         }
-    }
-    
-    if (self.didSelectedRow) {
-        self.didSelectedRow(self.upwardDataList[indexPath.row],indexPath.row);
+    }else{
+        if (self.didSelectedRow) {
+            self.didSelectedRow(self.upwardDataList[indexPath.row],indexPath.row);
+        }
     }
 }
 

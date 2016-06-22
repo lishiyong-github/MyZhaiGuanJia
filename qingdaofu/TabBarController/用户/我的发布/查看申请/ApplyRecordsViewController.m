@@ -140,7 +140,7 @@
                 checkDetailPublishVC.idString = self.idStr;
                 checkDetailPublishVC.categoryString = self.categaryStr;
                 checkDetailPublishVC.pidString = userModel.uidInner;
-                checkDetailPublishVC.evaTypeString = @"launchevaluation";
+//                checkDetailPublishVC.evaTypeString = @"launchevaluation";
                 [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];
             }];
         }

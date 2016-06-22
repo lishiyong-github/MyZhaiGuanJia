@@ -61,8 +61,6 @@
     [self.view setNeedsUpdateConstraints];
     
     [self getDetailMessageOfProcessing];
-    [self lookUpProcessingSchedule];
-    [self delayRequest];
 }
 
 - (void)updateViewConstraints
@@ -537,7 +535,6 @@
     checkDetailPublishVC.categoryString = self.categaryString;
     checkDetailPublishVC.pidString = self.pidString;
     checkDetailPublishVC.typeString = @"发布方";
-    checkDetailPublishVC.evaTypeString = @"evaluate";
     [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
 }
 
@@ -552,6 +549,7 @@
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
         [self.processArray addObject:response];
         [self.myProcessingTableView reloadData];
+        [self lookUpProcessingSchedule];
         
     } andFailBlock:^(NSError *error){
         
@@ -573,6 +571,7 @@
             [self.scheduleOrderProArray addObject:scheduleModel];
         }
         [self.myProcessingTableView reloadData];
+        [self delayRequest];
         
     } andFailBlock:^(NSError *error) {
         

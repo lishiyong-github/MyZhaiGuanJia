@@ -32,11 +32,16 @@
 @property (nonatomic,strong) UITableView *myOrderTableView;
 
 @property (nonatomic,strong) NSMutableArray *myOrderDataList;
-@property (nonatomic,assign) NSInteger page;
+@property (nonatomic,assign) NSInteger pageOrder;
 
 @end
 
 @implementation MyOrderViewController
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self refreshsHeaderOfMyOrder];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -49,8 +54,6 @@
     [self.view addSubview:self.myOrderTableView];
     
     [self.view setNeedsUpdateConstraints];
-    
-    [self getOrderListWithPage:@"0"];
 }
 
 - (void)updateViewConstraints
@@ -96,40 +99,42 @@
         
         QDFWeakSelf;
         [_orderHeadView setDidSelectedSeg:^(NSInteger segTag) {
-//            [weakself.myOrderDataList removeAllObjects];
+            [weakself.myOrderDataList removeAllObjects];
+            _pageOrder = 0;
             switch (segTag) {
                 case 111:{//全部
                     weakself.status = @"-1";
                     weakself.progresStatus = @"0";
-                    [weakself getOrderListWithPage:@"0"];
+//                    [weakself getOrderListWithPage:@"0"];
+                    [weakself refreshsHeaderOfMyOrder];
                 }
                     break;
                 case 112:{//申请中
                     weakself.orderHeadView.leftsConstraints.constant = kScreenWidth/5;
                     weakself.status = @"0";
                     weakself.progresStatus = @"1";
-                    [weakself getOrderListWithPage:@"0"];
+                    [weakself refreshsHeaderOfMyOrder];
                 }
                     break;
                 case 113:{//处理中
                     weakself.orderHeadView.leftsConstraints.constant = kScreenWidth/5*2;
                     weakself.status = @"1";
                     weakself.progresStatus = @"2";
-                    [weakself getOrderListWithPage:@"0"];
+                    [weakself refreshsHeaderOfMyOrder];
                 }
                     break;
                 case 114:{//终止
                     weakself.orderHeadView.leftsConstraints.constant = kScreenWidth/5*3;
                     weakself.status = @"1";
                     weakself.progresStatus = @"3";
-                    [weakself getOrderListWithPage:@"0"];
+                    [weakself refreshsHeaderOfMyOrder];
                 }
                     break;
                 case 115:{//结案
                     weakself.orderHeadView.leftsConstraints.constant = kScreenWidth/5*4;
                     weakself.status = @"1";
                     weakself.progresStatus = @"4";
-                    [weakself getOrderListWithPage:@"0"];
+                    [weakself refreshsHeaderOfMyOrder];
                 }
                     break;
                 default:
@@ -149,7 +154,8 @@
         _myOrderTableView.dataSource = self;
         _myOrderTableView.backgroundColor = kBackColor;
         _myOrderTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
-//        [_myOrderTableView addFooterWithTarget:self action:@selector(refreshsFooter)];
+        [_myOrderTableView addHeaderWithTarget:self action:@selector(refreshsHeaderOfMyOrder)];
+        [_myOrderTableView addFooterWithTarget:self action:@selector(refreshsFooterOfMyOrder)];
     }
     return _myOrderTableView;
 }
@@ -367,10 +373,16 @@
                              };
     
     [self requestDataPostWithString:myOrderString params:params successBlock:^(id responseObject) {
+        
+        if ([page intValue] == 0) {
+            [self.myOrderDataList removeAllObjects];
+        }
+        
         ReleaseResponse *responceModel = [ReleaseResponse objectWithKeyValues:responseObject];
         
         if (responceModel.rows.count == 0) {
             [self showHint:@"没有更多了"];
+            _pageOrder -- ;
         }
         
         for (RowsModel *orderModel in responceModel.rows) {
@@ -384,10 +396,18 @@
     }];
 }
 
-- (void)refreshsFooter
+- (void)refreshsHeaderOfMyOrder
 {
-    self.page ++;
-    NSString *page = [NSString stringWithFormat:@"%d",self.page];
+    [self getOrderListWithPage:@"0"];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.myOrderTableView headerEndRefreshing];
+    });
+}
+
+- (void)refreshsFooterOfMyOrder
+{
+    _pageOrder ++;
+    NSString *page = [NSString stringWithFormat:@"%d",_pageOrder];
     [self getOrderListWithPage:page];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.myOrderTableView footerEndRefreshing];

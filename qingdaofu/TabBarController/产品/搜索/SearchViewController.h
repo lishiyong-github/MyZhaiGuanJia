@@ -6,8 +6,8 @@
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
-#import "BaseViewController.h"
+#import "NetworkViewController.h"
 
-@interface SearchViewController : UIViewController
+@interface SearchViewController : NetworkViewController
 
 @end

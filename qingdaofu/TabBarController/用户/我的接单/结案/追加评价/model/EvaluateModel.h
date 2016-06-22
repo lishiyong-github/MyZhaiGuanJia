@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface EvaluateModel : NSObject
+@interface EvaluateModel : NSObject  //收到的评价
 
 @property (nonatomic,copy) NSString *buid;  //
 @property (nonatomic,copy) NSString *category;  //产品类型

@@ -291,8 +291,6 @@
     checkDetailPublishVC.categoryString = self.categaryString;
     checkDetailPublishVC.pidString = self.pidString;
     checkDetailPublishVC.typeString = @"发布方";
-    checkDetailPublishVC.evaTypeString = @"evaluate";
-    
     [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
 }
 

@@ -21,6 +21,7 @@
 @property (nonatomic,strong) UITableView *mySavetableView;
 
 @property (nonatomic,strong) NSMutableArray *mySaveDataList;
+@property (nonatomic,assign) NSInteger pageSave;
 
 @end
 
@@ -34,7 +35,7 @@
     [self.view addSubview:self.mySavetableView];
     [self.view setNeedsUpdateConstraints];
     
-    [self getMySaveListWithPage:@"0"];
+    [self refreshHeaderOfMySave];
 }
 
 - (void)updateViewConstraints
@@ -58,6 +59,8 @@
         _mySavetableView.backgroundColor = kBackColor;
         _mySavetableView.separatorColor = kSeparateColor;
         _mySavetableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
+        [_mySavetableView addHeaderWithTarget:self action:@selector(refreshHeaderOfMySave)];
+        [_mySavetableView addFooterWithTarget:self action:@selector(refreshFooterOfMySave)];
     }
     return _mySavetableView;
 }
@@ -149,11 +152,16 @@
                              @"page" : page
                              };
     [self requestDataPostWithString:mySaveString params:params successBlock:^(id responseObject){
-        
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSLog(@"++++++ %@",dic);
+        if ([page integerValue] == 0) {
+            [self.mySaveDataList removeAllObjects];
+        }
         
         ReleaseResponse *responseModel = [ReleaseResponse objectWithKeyValues:responseObject];
+        
+        if (responseModel.rows.count == 0) {
+            [self showHint:@"没有更多了"];
+            _pageSave--;
+        }
         
         for (RowsModel *model in responseModel.rows) {
             [self.mySaveDataList addObject:model];
@@ -165,12 +173,30 @@
     }];
 }
 
-//发布
+- (void)refreshHeaderOfMySave
+{
+    [self getMySaveListWithPage:@"0"];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.mySavetableView headerEndRefreshing];
+    });
+}
+
+- (void)refreshFooterOfMySave
+{
+    _pageSave ++;
+    NSString *page = [NSString stringWithFormat:@"%d",_pageSave];
+    [self getMySaveListWithPage:page];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.mySavetableView footerEndRefreshing];
+    });
+}
+
+#pragma mark - method
 - (void)goToPublishWithRow:(NSInteger)row
 {
     RowsModel *pubModel = self.mySaveDataList[row];
     
-    NSString *reportString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMySaveString];
+    NSString *reportString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMySavePublishString];
     
     NSDictionary *params = @{@"id" : pubModel.idString,
                              @"category" : pubModel.category,
@@ -194,30 +220,10 @@
     } andFailBlock:^(NSError *error) {
         
     }];
-    
-    /*
-    self.dataDictionary[@"money"] = self.dataDictionary[@"money"]?self.dataDictionary[@"money"]:@"";
-    self.dataDictionary[@"rebate"] = self.dataDictionary[@"rebate"]?self.dataDictionary[@"rebate"]:@"";
-    self.dataDictionary[@"rate"] = self.dataDictionary[@"rate"]?self.dataDictionary[@"rate"]:@"";
-    self.dataDictionary[@"rate_cat"] = self.dataDictionary[@"rate_cat"]?self.dataDictionary[@"rate_cat"]:@"";
-    self.dataDictionary[@"mortorage_community"] = self.dataDictionary[@"mortorage_community"]?self.dataDictionary[@"mortorage_community"]:@"";
-    self.dataDictionary[@"seatmortgage"] = self.dataDictionary[@"seatmortgage"]?self.dataDictionary[@"seatmortgage"]:@"";
-    self.dataDictionary[@"province_id"] = self.dataDictionary[@"province_id"]?self.dataDictionary[@"province_id"]:@"";
-    self.dataDictionary[@"city_id"] = self.dataDictionary[@"city_id"]?self.dataDictionary[@"city_id"]:@"";
-    self.dataDictionary[@"district_id"] = self.dataDictionary[@"district_id"]?self.dataDictionary[@"district_id"]:@"";
-    self.dataDictionary[@"term"] = self.dataDictionary[@"term"]?self.dataDictionary[@"term"]:@"";
-    self.dataDictionary[@"mortgagecategory"] = self.dataDictionary[@"mortgagecategory"]?self.dataDictionary[@"mortgagecategory"]:@"";
-    self.dataDictionary[@"status"] = self.dataDictionary[@"status"]?self.dataDictionary[@"status"]:@"";
-    self.dataDictionary[@"rentmoney"] = self.dataDictionary[@"rentmoney"]?self.dataDictionary[@"rentmoney"]:@"";
-    self.dataDictionary[@"mortgagearea"] = self.dataDictionary[@"mortgagearea"]?self.dataDictionary[@"mortgagearea"]:@"";
-    self.dataDictionary[@"loanyear"] = self.dataDictionary[@"loanyear"]?self.dataDictionary[@"loanyear"]:@"";
-    self.dataDictionary[@"obligeeyear"] = self.dataDictionary[@"obligeeyear"]?self.dataDictionary[@"obligeeyear"]:@"";
-    
-    [self.dataDictionary setValue:@"1" forKey:@"category"];
-    [self.dataDictionary setValue:type forKey:@"progress_status"];//0为保存 1为发布
-    [self.dataDictionary setValue:[self getValidateToken] forKey:@"token"];
-    */
 }
+
+
+
 
 //删除
 - (void)deleteOneSaveOfRow:(NSInteger)indexRow
@@ -240,7 +246,6 @@
     } andFailBlock:^(NSError *error){
         
     }];
-    
 }
 
 - (void)didReceiveMemoryWarning {

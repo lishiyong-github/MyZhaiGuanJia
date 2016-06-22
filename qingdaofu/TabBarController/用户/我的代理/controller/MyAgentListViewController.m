@@ -20,6 +20,7 @@
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *myAgentListTableView;
 @property (nonatomic,strong) NSMutableArray *agentDataList;
+@property (nonatomic,assign) NSInteger pageAgent;
 
 @end
 
@@ -27,15 +28,19 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    
-    [self getMyagentListWithPage:@"0"];
+    [self headerRefreshOfMyAgent];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @"代理人列表";
     self.navigationItem.leftBarButtonItem = self.leftItem;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"继续添加" style:UIBarButtonItemStylePlain target:self action:@selector(goToAddAgent)];
+    
+    
+    if ([self.typePid isEqualToString:@"本人"]) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"添加" style:UIBarButtonItemStylePlain target:self action:@selector(goToAddAgent)];
+    }
+    
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kBlueColor} forState:0];
 
     [self.view addSubview:self.myAgentListTableView];
@@ -62,6 +67,8 @@
         _myAgentListTableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
         _myAgentListTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
         _myAgentListTableView.backgroundColor = kBackColor;
+        [_myAgentListTableView addHeaderWithTarget:self action:@selector(headerRefreshOfMyAgent)];
+        [_myAgentListTableView addFooterWithTarget:self action:@selector(footerRefreshOfMyAgent)];
     }
     return _myAgentListTableView;
 }
@@ -139,18 +146,24 @@
 
 - (void)getMyagentListWithPage:(NSString *)page
 {
-    [self.agentDataList removeAllObjects];
-    
     NSString *agentListString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyAgentString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"page" : page
                              };
     [self requestDataPostWithString:agentListString params:params successBlock:^(id responseObject){
         
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSLog(@"$$$$$ %@",dic);
+        if ([page integerValue] == 0) {
+            [self.agentDataList removeAllObjects];
+        }
         
         PublishingResponse *resultModel = [PublishingResponse objectWithKeyValues:responseObject];
+        
+        if (resultModel.user.count > 0) {
+            [self.navigationItem.rightBarButtonItem setTitle:@"继续添加"];
+        }else{
+            _pageAgent--;
+            [self showHint:@"没有更多"];
+        }
         
         for (UserModel *userModel in resultModel.user) {
             [self.agentDataList addObject:userModel];
@@ -162,6 +175,26 @@
         
     }];
 }
+
+- (void)headerRefreshOfMyAgent
+{
+    _pageAgent = 0;
+    [self getMyagentListWithPage:@"0"];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.myAgentListTableView headerEndRefreshing];
+    });
+}
+
+- (void)footerRefreshOfMyAgent
+{
+    _pageAgent ++;
+    NSString *page = [NSString stringWithFormat:@"%d",_pageAgent];
+    [self getMyagentListWithPage:page];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.myAgentListTableView footerEndRefreshing];
+    });
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

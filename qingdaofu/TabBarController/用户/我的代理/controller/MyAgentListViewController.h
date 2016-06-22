@@ -10,4 +10,6 @@
 
 @interface MyAgentListViewController : NetworkViewController
 
+@property (nonatomic,strong) NSString *typePid; //本人登录或代理人登录
+
 @end

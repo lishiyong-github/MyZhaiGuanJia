@@ -23,7 +23,7 @@
 #import "CompleteResponse.h"
 #import "CertificationModel.h"
 
-#define string @"不得不崩更多活动活动吧动荡不定活动和"
+#import "UIButton+WebCache.h"
 
 @interface CompleteViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -126,7 +126,7 @@
 {
     if (!_completeCommitButton) {
         _completeCommitButton = [BaseCommitButton newAutoLayoutView];
-        [_completeCommitButton setTitle:@"修改身份" forState:0];
+        [_completeCommitButton setTitle:@"修改认证" forState:0];
         
         QDFWeakSelf;
         [_completeCommitButton addAction:^(UIButton *btn) {
@@ -168,20 +168,26 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGSize titleSize = [string boundingRectWithSize:CGSizeMake(kScreenWidth*0.5, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:kFirstFont} context:nil].size;
+    CompleteResponse *response;
+    if (self.completeDataArray.count > 0) {
+        response = self.completeDataArray[0];
+    }
+    CertificationModel *model = response.certification;
+    
+    CGSize titleSize = [model.casedesc boundingRectWithSize:CGSizeMake(kScreenWidth*0.5, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:kFirstFont} context:nil].size;
     
     if ([self.categoryString intValue] == 1) {//个人
         if (indexPath.row == 0) {
             return kCellHeight;
         }
-        return 225+titleSize.height;
+        return 210+titleSize.height;
         
     }else if ([self.categoryString intValue] == 2){//律所
         if (indexPath.row == 0) {
             return kCellHeight;
         }
         
-        return 260+titleSize.height;
+        return 245+titleSize.height;
     }
     
     //公司
@@ -189,7 +195,7 @@
         return kCellHeight;
     }
     
-    return 325+titleSize.height;
+    return 310+titleSize.height;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -261,6 +267,8 @@
         NSMutableAttributedString *IDString = [cell.comIDLabel setAttributeString:@"身份证号码：" withColor:kBlackColor andSecond:certificationModel.cardno withColor:kLightGrayColor withFont:14];
         [cell.comIDLabel setAttributedText:IDString];
         
+        //图片
+        
         NSMutableAttributedString *mobileString = [cell.comIDLabel setAttributeString:@"联系方式：" withColor:kBlackColor andSecond:certificationModel.mobile withColor:kLightGrayColor withFont:14];
         [cell.mobileLabel setAttributedText:mobileString];
         
@@ -287,6 +295,12 @@
         
         NSMutableAttributedString *IDString = [cell.comIDLabel setAttributeString:@"执业证号：" withColor:kBlackColor andSecond:certificationModel.cardno withColor:kLightGrayColor withFont:14];
         [cell.comIDLabel setAttributedText:IDString];
+        
+        //图片
+        NSString *subString = [certificationModel.cardimg substringWithRange:NSMakeRange(1, certificationModel.cardimg.length-2)];
+        NSString *urlString = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subString];
+        NSURL *url = [NSURL URLWithString:urlString];
+        [cell.comPicButton sd_setBackgroundImageWithURL:url forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
         
         NSMutableAttributedString *personNameString = [cell.comPersonNameLabel setAttributeString:@"联系人：    " withColor:kBlackColor andSecond:certificationModel.contact withColor:kLightGrayColor withFont:14];
         [cell.comPersonNameLabel setAttributedText:personNameString];
@@ -361,10 +375,21 @@
     NSString *completeString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kIsCompleteString];
     NSDictionary *params = @{@"token" : [self getValidateToken]};
     [self requestDataPostWithString:completeString params:params successBlock:^(id responseObject){
+        
+        NSDictionary *frfrf = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        NSLog(@"()()()( %@",frfrf);
+        
         CompleteResponse *response = [CompleteResponse objectWithKeyValues:responseObject];
         
         [self.completeDataArray addObject:response];
         [self.completeTableView reloadData];
+        
+        if ([response.certification.canModify integerValue] == 0) {//canModify＝1可以修改，＝0不可修改
+            [self.completeCommitButton setBackgroundColor:kSelectedColor];
+            [self.completeCommitButton setTitle:@"不可修改认证" forState:0];
+            [self.completeCommitButton setTitleColor:kBlackColor forState:0];
+            self.completeCommitButton.userInteractionEnabled = NO;
+        }
         
     } andFailBlock:^(NSError *error){
         

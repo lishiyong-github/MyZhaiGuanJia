@@ -94,6 +94,14 @@
                         case 9:{//我的代理
                             MyAgentListViewController *myAgentListVC = [[MyAgentListViewController alloc] init];
                             myAgentListVC.hidesBottomBarWhenPushed = YES;
+                            
+                            if (tModel.pid == nil) {
+                                myAgentListVC.typePid = @"本人";
+                            }else{
+                                myAgentListVC.typePid = @"非本人";
+                                
+                            }
+                            
                             [weakself.navigationController pushViewController:myAgentListVC animated:YES];
                         }
                             break;

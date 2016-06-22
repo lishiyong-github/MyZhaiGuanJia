@@ -16,6 +16,7 @@
 
 #import "NewPublishCell.h"
 #import "HomeCell.h"
+#import "FourCell.h"
 
 #import "UIImage+Color.h"
 
@@ -87,6 +88,7 @@
         [_mainTableView.tableHeaderView addSubview:self.mainHeaderScrollView];
         [_mainTableView addSubview:self.pageControl];
         [_mainTableView addFooterWithTarget:self action:@selector(footerRefreshOfRecommend)];
+        _mainTableView.separatorColor = kSeparateColor;
     }
     return _mainTableView;
 }
@@ -144,7 +146,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 //    return 1+6;
-    return 1+self.productsDataListArray.count;
+    return 2+self.productsDataListArray.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -156,6 +158,8 @@
 {
     if (indexPath.section == 0) {
         return 110;
+    }else if (indexPath.section == 1){
+        return 160;
     }
     return 156;
 }
@@ -192,8 +196,41 @@
         }];
         
         return cell;
+    }else if (indexPath.section == 1){
+        identifier = @"main1";
+        FourCell *cell = [tableView dequeueReusableCellWithIdentifier: identifier];
+        if (!cell) {
+            cell = [[FourCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        [cell setDidClickButton:^(NSInteger tag) {
+            switch (tag) {
+                case 11:{//房产评估
+                    NSLog(@"房产评估");
+                }
+                    break;
+                case 22:{//房屋产调
+                    NSLog(@"房屋产调");
+                }
+                    break;
+                case 33:{//诉讼保全
+                    NSLog(@"诉讼保全");
+                }
+                    break;
+                case 44:{//申请保函
+                    NSLog(@"申请保函");
+                }
+                    break;
+                default:
+                    break;
+            }
+        }];
+        
+        return cell;
     }
-    identifier = @"main1";
+    
+    identifier = @"main2";
     HomeCell *cell = [tableView dequeueReusableCellWithIdentifier: identifier];
     if (!cell) {
         cell = [[HomeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
@@ -251,7 +288,7 @@
     }
     
     cell.nameLabel.text = newModel.codeString;
-    cell.addressLabel.text = newModel.seatmortgage?newModel.seatmortgage:@"无抵押物地址";
+    cell.addressLabel.text = newModel.location?newModel.location:@"无抵押物地址";
     
     return cell;
 }

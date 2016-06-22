@@ -8,6 +8,8 @@
 
 #import "ReleaseCloseViewController.h"
 
+#import "UIImageView+WebCache.h"
+
 #import "CheckDetailPublishViewController.h"  //查看发布方
 #import "AdditionalEvaluateViewController.h"  //追加评价
 #import "AdditionMessageViewController.h"     //补充信息
@@ -67,8 +69,6 @@
     [self.view setNeedsUpdateConstraints];
     
     [self getCloseMessages];
-    [self getPacesDetails];
-    [self getEvaluateDetails];
 }
 
 - (void)updateViewConstraints
@@ -439,13 +439,13 @@
             if (self.evaluateResponseArray.count > 0) {
                 EvaluateResponse *response = self.evaluateResponseArray[0];
                 float creditor = [response.creditor floatValue];
-                NSString *creditorStr = [NSString stringWithFormat:@"|  收到的评价(%.1f分)",creditor];
+                NSString *creditorStr = [NSString stringWithFormat:@"|  给出的评价(%.1f分)",creditor];
                 [cell.userNameButton setTitle:creditorStr forState:0];
                 
                 [cell.userActionButton setTitle:@"查看更多" forState:0];
                 [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
             }else{
-                [cell.userNameButton setTitle:@"|  收到的评价" forState:0];
+                [cell.userNameButton setTitle:@"|  给出的评价" forState:0];
                 [cell.userActionButton setTitle:@"无" forState:0];
             }
             
@@ -466,7 +466,7 @@
             if (self.evaluateResponseArray.count > 0) {
                 [cell.remindImageButton setHidden:YES];
                 [cell.evaProductButton setHidden:YES];
-                [cell.evaNameLabel setHidden: NO];
+                [cell.evaNameLabel setHidden:NO];
                 [cell.evaStarImage setHidden:NO];
                 [cell.evaTimeLabel setHidden:NO];
                 [cell.evaTextLabel setHidden:NO];
@@ -474,7 +474,10 @@
                 [cell.evaProImageView2 setHidden:NO];
                 
                 launchModel = response.launchevaluation[0];
-                cell.evaNameLabel.text = launchModel.mobile;
+
+                NSString *isHideStr = launchModel.isHide?@"匿名":launchModel.mobile;
+                cell.evaNameLabel.text = isHideStr;
+                cell.evaTimeLabel.text = [NSDate getYMDFormatterTime:launchModel.create_time];
                 cell.evaStarImage.currentIndex = [response.creditor intValue];
                 cell.evaProImageView1.backgroundColor = kLightGrayColor;
                 cell.evaProImageView2.backgroundColor = kLightGrayColor;
@@ -484,6 +487,13 @@
                 }else{
                     cell.evaTextLabel.text = launchModel.content;
                 }
+                
+                if (launchModel.picture == nil || [launchModel.picture isEqualToString:@""]) {
+                
+                }else{
+                    
+                }
+                
             }else{
                 [cell.remindImageButton setHidden:NO];
                 [cell.evaProductButton setHidden:YES];
@@ -538,8 +548,7 @@
             AllEvaluationViewController *allEvaluationVC = [[AllEvaluationViewController alloc] init];
             allEvaluationVC.idString = dealModel.idString;
             allEvaluationVC.categoryString = dealModel.category;
-//            allEvaluationVC.pidString = self.pidString;
-            allEvaluationVC.evaTypeString = @"evaluate";
+            allEvaluationVC.evaTypeString = @"launchevaluation";
             [self.navigationController pushViewController:allEvaluationVC animated:YES];
         }
     }
@@ -553,7 +562,6 @@
     checkDetailPublishVC.categoryString = self.categaryString;
     checkDetailPublishVC.pidString = self.pidString;
     checkDetailPublishVC.typeString = @"接单方";
-    checkDetailPublishVC.evaTypeString = @"launchevaluation";
     [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
 }
 
@@ -569,6 +577,7 @@
         [self.releaseArray addObject:response];
         [self.ReleaseCloseTableView reloadData];
         
+        [self getPacesDetails];
     } andFailBlock:^(NSError *error){
         
     }];
@@ -588,7 +597,8 @@
             [self.scheduleReleaseCloArray addObject:model];
         }
         [self.ReleaseCloseTableView reloadData];
-        
+        [self getEvaluateDetails];
+
     } andFailBlock:^(NSError *error) {
         
     }];

@@ -18,7 +18,7 @@
 #import "CompleteResponse.h"
 #import "CertificationModel.h"
 
-//评价
+//收到的评价
 #import "EvaluateResponse.h"
 #import "EvaluateModel.h"
 
@@ -47,7 +47,6 @@
     [self.view setNeedsUpdateConstraints];
     
     [self getMessageOfOrderPeople];
-    [self getAllEvaluationListWithPage:@"0"];
 }
 
 - (void)updateViewConstraints
@@ -287,7 +286,7 @@
         allEvaluationVC.idString = self.idString;
         allEvaluationVC.categoryString = self.categoryString;
         allEvaluationVC.pidString = self.pidString;
-        allEvaluationVC.evaTypeString = self.evaTypeString;
+        allEvaluationVC.evaTypeString = @"evaluate";
         [self.navigationController pushViewController:allEvaluationVC animated:YES];
     }
 }
@@ -349,6 +348,9 @@
         [self.certifiDataArray addObject:response.certification];
         
         [self.checkDetailTableView reloadData];
+        
+        [self getAllEvaluationListWithPage:@"0"];
+        
     } andFailBlock:^(NSError *error) {
         
     }];

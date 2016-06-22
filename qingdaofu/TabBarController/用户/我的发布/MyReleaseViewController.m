@@ -33,12 +33,16 @@
 @property (nonatomic,strong) NSMutableArray *responseDataArray;
 @property (nonatomic,strong) NSMutableArray *releaseDataArray;
 
-@property (nonatomic,assign) NSInteger page;
+@property (nonatomic,assign) NSInteger pageRelease;
 
 @end
 
 @implementation MyReleaseViewController
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self refreshHeaderOfMyRelease];
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @"所有产品";
@@ -48,10 +52,6 @@
     [self.view addSubview:self.myReleaseTableView];
     [self.view setNeedsUpdateConstraints];
     
-    [self getMyReleaseListWithPage:@"0"];
-    
-    [self.myReleaseTableView addFooterWithTarget:self action:@selector(refreshHeaderOfMyRelease)];
-    [self.myReleaseTableView addHeaderWithTarget:self action:@selector(refreshFooterOfMyRelease)];
 }
 
 - (void)updateViewConstraints
@@ -100,27 +100,27 @@
             switch (segTag) {
                 case 111:{
                     weakself.progreStatus = @"0";
-                    [weakself getMyReleaseListWithPage:@"0"];
+                    [weakself refreshHeaderOfMyRelease];
                 }
                     break;
                 case 112:{
                     weakself.progreStatus = @"1";
-                    [weakself getMyReleaseListWithPage:@"0"];
+                    [weakself refreshHeaderOfMyRelease];
                 }
                     break;
                 case 113:{
                     weakself.progreStatus = @"2";
-                    [weakself getMyReleaseListWithPage:@"0"];
+                    [weakself refreshHeaderOfMyRelease];
                 }
                     break;
                 case 114:{
                     weakself.progreStatus = @"3";
-                    [weakself getMyReleaseListWithPage:@"0"];
+                    [weakself refreshHeaderOfMyRelease];
                 }
                     break;
                 case 115:{
                     weakself.progreStatus = @"4";
-                    [weakself getMyReleaseListWithPage:@"0"];
+                    [weakself refreshHeaderOfMyRelease];
                 }
                     break;
                 default:
@@ -140,6 +140,8 @@
         _myReleaseTableView.dataSource = self;
         _myReleaseTableView.backgroundColor = kBackColor;
         _myReleaseTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
+        [_myReleaseTableView addHeaderWithTarget:self action:@selector(refreshHeaderOfMyRelease)];
+        [_myReleaseTableView addFooterWithTarget:self action:@selector(refreshFooterOfMyRelease)];
     }
     return _myReleaseTableView;
 }
@@ -387,14 +389,17 @@
                              };
     [self requestDataPostWithString:myReleaseString params:params successBlock:^(id responseObject) {
         
-        [self.releaseDataArray removeAllObjects];
+        if ([page intValue] == 0) {
+            [self.releaseDataArray removeAllObjects];
+        }
+        
         ReleaseResponse *responseModel = [ReleaseResponse objectWithKeyValues:responseObject];
         
         [self.responseDataArray addObject:responseModel];
 
         if (responseModel.rows.count == 0) {
             [self showHint:@"没有更多了"];
-            _page--;
+            _pageRelease --;
         }
         
         for (RowsModel *rowsModel in responseModel.rows) {
@@ -409,7 +414,9 @@
 
 - (void)refreshHeaderOfMyRelease
 {
+    _pageRelease = 0;
     [self getMyReleaseListWithPage:@"0"];
+    
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.myReleaseTableView headerEndRefreshing];
     });
@@ -417,8 +424,8 @@
 
 - (void)refreshFooterOfMyRelease
 {
-    _page ++;
-    NSString *page = [NSString stringWithFormat:@"%d",_page];
+    _pageRelease ++;
+    NSString *page = [NSString stringWithFormat:@"%d",_pageRelease];
     [self getMyReleaseListWithPage:page];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{

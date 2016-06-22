@@ -155,12 +155,9 @@
         [cell setDidSelectedItem:^(NSInteger itemTag) {
             
             [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
-                
-                if (images.count > 0) {
-                    [weakcell.collectionDataList replaceObjectAtIndex:itemTag withObject:images[0]];
-                    weakself.imageArray = [NSMutableArray arrayWithArray:images];
-                    [weakcell reloadData];
-                }
+                weakcell.collectionDataList = [NSMutableArray arrayWithArray:images];
+                [weakcell reloadData];
+                [self.perDataDictionary setValue:images forKey:@"cardimg"];
             }];
         }];
         return cell;
@@ -318,6 +315,7 @@
     self.perDataDictionary[@"mobile"] = self.perDataDictionary[@"mobile"]?self.perDataDictionary[@"mobile"]:self.respnseModel.certification.mobile;
     self.perDataDictionary[@"email"] = self.perDataDictionary[@"email"]?self.perDataDictionary[@"email"]:self.respnseModel.certification.email;
     self.perDataDictionary[@"casedesc"] = self.perDataDictionary[@"casedesc"]?self.perDataDictionary[@"casedesc"]:self.respnseModel.certification.casedesc;
+    
     [self.perDataDictionary setValue:@"1" forKey:@"category"];//认证类型
     [self.perDataDictionary setValue:[self getValidateToken] forKey:@"token"];
     
@@ -327,13 +325,14 @@
         [self.perDataDictionary setValue:@"add" forKey:@"type"];  //add为修改
     }
     NSDictionary *params = self.perDataDictionary;
-    
-    NSDictionary *imageParams = [NSDictionary dictionaryWithObject:self.imageArray forKey:@"cardimg"];
-    
+    NSString *cardimg = self.perDataDictionary[@"cardimg"][0]?self.perDataDictionary[@"cardimg"][0]:self.respnseModel.certification.cardimg;
+    NSDictionary *imageParams = @{@"cardimg" : cardimg};
     [self requestDataPostWithString:personAuString params:params andImages:imageParams successBlock:^(id responseObject) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
         NSLog(@"+++++++ %@",dic);
+        
+        [self showHint:dic[@"msg"]];
         
     } andFailBlock:^(NSError *error) {
         NSLog(@"****** %@",error);

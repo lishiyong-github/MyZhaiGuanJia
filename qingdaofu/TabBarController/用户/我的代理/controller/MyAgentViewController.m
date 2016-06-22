@@ -138,8 +138,14 @@
         QDFWeakSelf;
         [cell.agentEditButton addAction:^(UIButton *btn) {
             AddMyAgentViewController *addMyagentVC = [[AddMyAgentViewController alloc] init];
-            addMyagentVC.model = self.agentModel;
+            addMyagentVC.model = weakself.agentModel;
             addMyagentVC.agentFlagString = @"update";
+            
+            [addMyagentVC setDidSaveModel:^(UserModel *uModel) {
+                weakself.agentModel = uModel;
+                [weakself.myAgentTableView reloadData];
+            }];
+            
             [weakself.navigationController pushViewController:addMyagentVC animated:YES];
         }];
     }else if ([self.agentModel.isstop intValue] == 1){//停用

@@ -68,7 +68,7 @@
 {
     if (!_detailSaveTableView) {
 
-        _detailSaveTableView.translatesAutoresizingMaskIntoConstraints = NO;
+        _detailSaveTableView.translatesAutoresizingMaskIntoConstraints = YES;
         _detailSaveTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _detailSaveTableView.delegate = self;
         _detailSaveTableView.dataSource = self;
@@ -317,7 +317,7 @@
         pubModel = self.saveDetailArray[0];
     }
     
-    NSString *reportString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMySaveString];
+    NSString *reportString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMySavePublishString];
     
     NSDictionary *params = @{@"id" : pubModel.idString,
                              @"category" : pubModel.category,

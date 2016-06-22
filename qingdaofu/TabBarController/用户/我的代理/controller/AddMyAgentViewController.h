@@ -14,4 +14,6 @@
 @property (nonatomic,strong) NSString *agentFlagString;
 @property (nonatomic,strong) UserModel *model;
 
+@property (nonatomic,strong) void (^didSaveModel)(UserModel *);
+
 @end

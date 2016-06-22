@@ -8,6 +8,7 @@
 
 #import "MyStoreViewController.h"
 #import "MyDetailStoreViewController.h"    //收藏详细
+#import "MyOrderViewController.h" //我的接单
 
 #import "MyStoreCell.h"
 #import "MineUserCell.h"
@@ -20,11 +21,16 @@
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *myStoreTableView;
 @property (nonatomic,strong) NSMutableArray *storeDataList;
+@property (nonatomic,assign) NSInteger pageStore;
 
 @end
 
 @implementation MyStoreViewController
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self refreshHeaderOfMySave];
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @"我的收藏";
@@ -32,7 +38,6 @@
     
     [self.view addSubview:self.myStoreTableView];
     [self.view setNeedsUpdateConstraints];
-    [self getMyStoreListWithPage:@"0"];
 }
 
 - (void)updateViewConstraints
@@ -56,6 +61,8 @@
         _myStoreTableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
         _myStoreTableView.separatorColor = kSeparateColor;
         _myStoreTableView.backgroundColor = kBackColor;
+        [_myStoreTableView addHeaderWithTarget:self action:@selector(refreshHeaderOfMySave)];
+        [_myStoreTableView addFooterWithTarget:self action:@selector(refreshFooterOfMySave)];
     }
     return _myStoreTableView;
 }
@@ -133,10 +140,11 @@
     MyDetailStoreViewController *myDetailStoreVC = [[MyDetailStoreViewController alloc] init];
     myDetailStoreVC.idString = rowModel.idString;
     myDetailStoreVC.categoryString = rowModel.category;
+    myDetailStoreVC.codeString = rowModel.codeString;
     [self.navigationController pushViewController:myDetailStoreVC animated:YES];
 }
 
-#pragma mark - method
+#pragma mark - refresh method
 - (void)getMyStoreListWithPage:(NSString *)page
 {
     NSString *storeString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyStoreString];
@@ -145,7 +153,16 @@
                              };
     [self requestDataPostWithString:storeString params:params successBlock:^(id responseObject){
         
+        if ([page integerValue] == 0) {
+            [self.storeDataList removeAllObjects];
+        }
+        
         ReleaseResponse *responseModel = [ReleaseResponse objectWithKeyValues:responseObject];
+        
+        if (responseModel.rows.count == 0) {
+            [self showHint:@"没有更多了"];
+            _pageStore--;
+        }
         
         for (RowsModel *storeModel in responseModel.rows) {
             [self.storeDataList addObject:storeModel];
@@ -158,6 +175,26 @@
     }];
 }
 
+- (void)refreshHeaderOfMySave
+{
+    _pageStore = 0;
+    [self getMyStoreListWithPage:@"0"];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.myStoreTableView headerEndRefreshing];
+    });
+}
+
+- (void)refreshFooterOfMySave
+{
+    _pageStore ++;
+    NSString *page = [NSString stringWithFormat:@"%d",_pageStore];
+    [self getMyStoreListWithPage:page];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.myStoreTableView footerEndRefreshing];
+    });
+}
+
+#pragma mark - method
 - (void)goToApplyWithRow:(NSInteger)row
 {
     RowsModel *appModel = self.storeDataList[row];
@@ -172,6 +209,14 @@
         if ([appModel.code isEqualToString:@"0000"]) {
             [self.storeDataList removeObjectAtIndex:row];
             [self.myStoreTableView reloadData];
+            
+            UINavigationController *nav = self.navigationController;
+            [nav popViewControllerAnimated:NO];
+            
+            MyOrderViewController *myOrderVC = [[MyOrderViewController alloc] init];
+            myOrderVC.status = @"0";
+            myOrderVC.progresStatus = @"1";
+            [nav pushViewController:myOrderVC animated:NO];
         }
         
     } andFailBlock:^(NSError *error) {

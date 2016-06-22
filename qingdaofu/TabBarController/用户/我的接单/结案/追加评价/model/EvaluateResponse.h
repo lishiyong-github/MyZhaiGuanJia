@@ -13,8 +13,8 @@
 @property (nonatomic,copy) NSString *creditor;  //评价方得评价平均分数
 @property (nonatomic,copy) NSString *creditors;  //被评人得到的评价平均分数
 @property (nonatomic,copy) NSString *evalua;  //评价次数
-@property (nonatomic,strong) NSMutableArray *evaluate; //收到的评价
-@property (nonatomic,strong) NSMutableArray *launchevaluation; //发出的评价
+@property (nonatomic,strong) NSMutableArray *evaluate; //收到的评价（发布方）
+@property (nonatomic,strong) NSMutableArray *launchevaluation; //发出的评价(接单方)
 @property (nonatomic,copy) NSString *uid;  //登陆人的UID
 
 @end

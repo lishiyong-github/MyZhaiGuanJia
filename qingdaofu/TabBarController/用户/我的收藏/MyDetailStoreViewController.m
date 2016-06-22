@@ -10,6 +10,7 @@
 
 #import "ProductsDetailsProViewController.h"   //产品信息
 #import "CheckDetailPublishViewController.h" //发布人信息
+#import "MyOrderViewController.h"   //我的接单
 
 #import "ProDetailCell.h"
 #import "MineUserCell.h"
@@ -32,7 +33,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = @"BX201601010001";
+    self.navigationItem.title = self.codeString;
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
     [self.view addSubview:self.detailStoreTableView];
@@ -60,8 +61,7 @@
 - (UITableView *)detailStoreTableView
 {
     if (!_detailStoreTableView) {
-//        _detailStoreTableView = [UITableView newAutoLayoutView];
-        _detailStoreTableView.translatesAutoresizingMaskIntoConstraints = NO;
+        _detailStoreTableView.translatesAutoresizingMaskIntoConstraints = YES;
         _detailStoreTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _detailStoreTableView.delegate = self;
         _detailStoreTableView.dataSource = self;
@@ -74,6 +74,8 @@
     if (!_detailStoreCommitButton) {
         _detailStoreCommitButton = [BaseCommitButton newAutoLayoutView];
         [_detailStoreCommitButton setTitle:@"立即申请" forState:0];
+        
+        [_detailStoreCommitButton addTarget:self action:@selector(requestApply:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _detailStoreCommitButton;
 }
@@ -243,7 +245,6 @@
                 checkDetailPublishVC.categoryString = self.categoryString;
                 checkDetailPublishVC.pidString = pModel.uidInner;
                 checkDetailPublishVC.typeString = @"发布方";
-                checkDetailPublishVC.evaTypeString = @"launchevaluation";
                 [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
             }
         }
@@ -261,7 +262,6 @@
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
         PublishingResponse *respModel = [PublishingResponse objectWithKeyValues:responseObject];
         
-        self.navigationItem.title = respModel.product.codeString;
         [self.detailStoreArray addObject:respModel];
         [self.detailStoreTableView reloadData];
         
@@ -270,6 +270,37 @@
     }];
 }
 
+
+- (void)requestApply:(UIButton *)sender
+{
+    NSString *applyString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductHouseString];
+    NSDictionary *params = @{@"token" : [self getValidateToken],
+                             @"id" : self.idString,
+                             @"category" : self.categoryString
+                             };
+    [self requestDataPostWithString:applyString params:params successBlock:^(id responseObject) {
+        BaseModel *appModel = [BaseModel objectWithKeyValues:responseObject];
+        [self showHint:appModel.msg];
+        if ([appModel.code isEqualToString:@"0000"]) {
+            [sender setBackgroundColor:kSelectedColor];
+            [sender setTitle:@"申请中" forState:0];
+            [sender setTitleColor:kBlackColor forState:0];
+            sender.userInteractionEnabled = NO;
+            
+            UINavigationController *nav = self.navigationController;
+            [nav popViewControllerAnimated:NO];
+            [nav popViewControllerAnimated:NO];
+            
+            MyOrderViewController *myOrderVC = [[MyOrderViewController alloc] init];
+            myOrderVC.status = @"0";
+            myOrderVC.progresStatus = @"1";
+            [nav pushViewController:myOrderVC animated:NO];
+        }
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

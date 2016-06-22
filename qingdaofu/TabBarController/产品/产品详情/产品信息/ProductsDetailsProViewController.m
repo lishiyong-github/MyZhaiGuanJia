@@ -370,7 +370,7 @@
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"" message:@"是否提醒发布方完善信息？" preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction *act1 = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        
+        [self warnningMethod];
     }];
     
     UIAlertAction *act2 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil];
@@ -380,6 +380,25 @@
     
     [self.navigationController presentViewController:alertController animated:YES completion:nil];
 }
+
+- (void)warnningMethod
+{
+    NSString *warnString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kCheckOrderToWarnning];
+    NSDictionary *params = @{@"token" : [self getValidateToken],
+                             @"id" : self.yyModel.product.idString,
+                             @"category" : self.yyModel.product.category,
+                             @"pid" : self.yyModel.product.uidInner
+                             };
+    [self requestDataPostWithString:warnString params:params successBlock:^(id responseObject) {
+        BaseModel *warnModel = [BaseModel objectWithKeyValues:responseObject];
+        
+        [self showHint:warnModel.msg];
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

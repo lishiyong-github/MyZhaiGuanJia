@@ -15,6 +15,8 @@
 #import "AgentCell.h"
 #import "BaseCommitButton.h"
 
+#import "UIViewController+MutipleImageChoice.h"
+
 @interface AuthenLawViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
@@ -172,21 +174,17 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        cell.backgroundColor = kRedColor;
-        
-        //        [cell.pictureButton1 setImage:self.pictureImage1 forState:0];
-        //        [cell.pictureButton1 addTarget:self action:@selector(showAlertViewController) forControlEvents:UIControlEventTouchUpInside];
-        //        QDFWeakSelf;
-        //        [cell.pictureButton1 addAction:^(UIButton *btn) {
-        //            self.pictureString = @"picture1";
-        //            [weakself showAlertViewController];
-        //        }];
-        
-        //        [cell.pictureButton2 setImage:self.pictureImage2 forState:0];
-        //        [cell.pictureButton2 addAction:^(UIButton *btn) {
-        //            self.pictureString = @"picture2";
-        //            [weakself showAlertViewController];
-        //        }];
+        cell.collectionDataList = [NSMutableArray arrayWithObjects:@"btn_camera", nil];
+       
+        QDFWeak(cell);
+        QDFWeakSelf;
+        [cell setDidSelectedItem:^(NSInteger item) {
+            [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
+                weakcell.collectionDataList = [NSMutableArray arrayWithArray:images];
+                [weakcell reloadData];
+                [weakself.lawDataDictionary setValue:images forKey:@"cardimg"];
+            }];
+        }];
         
         return cell;
         
@@ -355,8 +353,7 @@
 - (void)goToAuthenLawMessages
 {
     [self.view endEditing:YES];
-    NSString *personAuString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kAuthenString];
-    
+    NSString *lawAuString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kAuthenString];
     /*
      @"category" : @"2",
      @"name" : @"上海律所", //律所名称
@@ -370,7 +367,7 @@
      @"token" : [weakself getValidateToken]
      */
     
-    self.lawDataDictionary[@"cardimg"] = self.lawDataDictionary[@"cardimg"]?self.lawDataDictionary[@"cardimg"]:self.responseModel.certification.cardimg;
+//    self.lawDataDictionary[@"cardimg"] = self.lawDataDictionary[@"cardimg"]?self.lawDataDictionary[@"cardimg"]:self.responseModel.certification.cardimg;
     self.lawDataDictionary[@"name"] = self.lawDataDictionary[@"name"]?self.lawDataDictionary[@"name"]:self.responseModel.certification.name;
     self.lawDataDictionary[@"cardno"] = self.lawDataDictionary[@"cardno"]?self.lawDataDictionary[@"cardno"]:self.responseModel.certification.cardno;
     self.lawDataDictionary[@"contact"] = self.lawDataDictionary[@"contact"]?self.lawDataDictionary[@"contact"]:self.responseModel.certification.contact;
@@ -388,8 +385,10 @@
     
     NSDictionary *params = self.lawDataDictionary;
     
-    [self requestDataPostWithString:personAuString params:params successBlock:^(id responseObject){
-        
+    NSString *cardimg = self.lawDataDictionary[@"cardimg"][0]?self.lawDataDictionary[@"cardimg"][0]:self.responseModel.certification.cardimg;
+    NSDictionary *imageParams = @{@"cardimg" : cardimg};
+    
+    [self requestDataPostWithString:lawAuString params:params andImages:imageParams successBlock:^(id responseObject) {
         BaseModel *personModel = [BaseModel objectWithKeyValues:responseObject];
         [self showHint:personModel.msg];
         
@@ -403,8 +402,8 @@
             completeVC.categoryString = @"2";
             [personNav pushViewController:completeVC animated:NO];
         }
-        
-    } andFailBlock:^(NSError *error){
+
+    } andFailBlock:^(NSError *error) {
         
     }];
 }

@@ -6,11 +6,11 @@
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
-#import "BaseViewController.h"
+#import "NetworkViewController.h"
 #import "PublishingResponse.h"
 #import "PublishingModel.h"
 
-@interface ProductsDetailsProViewController : BaseViewController
+@interface ProductsDetailsProViewController : NetworkViewController
 
 @property (nonatomic,strong) PublishingResponse *yyModel;
 

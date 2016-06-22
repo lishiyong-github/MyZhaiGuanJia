@@ -15,9 +15,7 @@
 
 @property (nonatomic,strong) UITableView *searchTableView;
 @property (nonatomic,strong) UISearchController *searchVC;
-@property (nonatomic,strong) UICollectionView *searCollection;
 
-@property (nonatomic,strong) UITextField *textField;
 @property (nonatomic,strong) NSArray *dataArray;
 
 @end
@@ -26,9 +24,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    self.navigationItem.title = @"搜索";
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(backController)];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.textField];
+    self.navigationItem.title = @"搜索";
+    
+    self.navigationItem.leftBarButtonItem = self.leftItem;
     
     [self.view addSubview:self.searchTableView];
     
@@ -43,32 +41,13 @@
 {
     if (!self.didSetupConstraints) {
         
-        [self.textField autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kSmallPadding];
-        [self.textField autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:7.5];
-        [self.textField autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:7.5];
-        [self.textField autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:60];
-        
         [self.searchTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [self.searchTableView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:100];
+        [self.searchTableView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kNavHeight];
         
         self.didSetupConstraints = YES;
     }
     [super updateViewConstraints];
 }
-
-- (UITextField *)textField
-{
-    if (!_textField) {
-        _textField = [UITextField newAutoLayoutView];
-        _textField.placeholder = @" 搜索";
-        _textField.textColor = kBlackColor;
-        _textField.backgroundColor = kBackColor;
-        _textField.layer.cornerRadius = 2;
-        _textField.font = kBigFont;
-    }
-    return _textField;
-}
-
 - (UITableView *)searchTableView
 {
     if (!_searchTableView) {
@@ -88,23 +67,19 @@
         _searchVC = [[UISearchController alloc] initWithSearchResultsController:nil];
         _searchVC.searchResultsUpdater = self;
         _searchVC.delegate = self;
-        _searchVC.searchBar.frame = CGRectMake(0, 200, kScreenWidth, 44);
-        _searchVC.searchBar.tintColor = kRedColor;
+        _searchVC.searchBar.frame = CGRectMake(0, kNavHeight, kScreenWidth, 44);
+        _searchVC.searchBar.tintColor = kBlueColor;
         _searchVC.dimsBackgroundDuringPresentation = NO;
-        self.dataArray = [NSMutableArray arrayWithObjects:@"大兴", @"丰台", @"海淀", @"朝阳", @"东城", @"崇文", @"西城", @"石景山",@"通州", @"密云", @"迪拜", @"华仔", @"三胖子", @"大连",  nil];
     }
     return _searchVC;
 }
 
-- (UICollectionView *)searCollection
+- (NSArray *)dataArray
 {
-    if (!_searCollection) {
-//        UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc]initialLayoutAttributesForAppearingItemAtIndexPath:nil];
-//        _searCollection = [[UICollectionViewController alloc] initWithCollectionViewLayout:flowLayout];
-        
-
+    if (!_dataArray) {
+        _dataArray = [NSMutableArray arrayWithObjects:@"大兴", @"丰台", @"海淀", @"朝阳", @"东城", @"崇文", @"西城", @"石景山",@"通州", @"密云", @"迪拜", @"华仔", @"三胖子", @"大连",  nil];
     }
-    return _searCollection;
+    return _dataArray;
 }
 
 #pragma mark - UISearchResultsUpdating

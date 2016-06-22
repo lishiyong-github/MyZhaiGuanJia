@@ -179,10 +179,22 @@
 
     NSDictionary *params = self.addAgentDictionary;
     
+    UserModel *saveModel = [[UserModel alloc] init];
+    saveModel.username = params[@"name"];
+    saveModel.mobile = params[@"mobile"];
+    saveModel.cardno = params[@"cardno"];
+    saveModel.zycardno = params[@"zycardno"];
+    saveModel.password_hash = params[@"password_hash"];
+    
     [self requestDataPostWithString:addAgentString params:params successBlock:^(id responseObject) {
         BaseModel *addModel = [BaseModel objectWithKeyValues:responseObject];
         [self showHint:addModel.msg];
         if ([addModel.code isEqualToString:@"0000"]) {
+            
+            if (self.didSaveModel) {
+                self.didSaveModel(saveModel);
+            }
+            
             [self.navigationController popViewControllerAnimated:YES];
         }
         

@@ -14,6 +14,8 @@
 #import "TextFieldCell.h"
 #import "TakePictureCell.h"
 
+#import "UIViewController+MutipleImageChoice.h"
+
 @interface AdditionalEvaluateViewController ()<UITableViewDataSource,UITableViewDelegate,UITextViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
@@ -108,7 +110,7 @@
     }else if (indexPath.row ==2){
         return 100;
     }else if (indexPath.row == 3){
-        return 100;
+        return 80;
     }
     return kCellHeight;
 }
@@ -199,8 +201,19 @@
         if (!cell) {
             cell = [[TakePictureCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
-        
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        cell.collectionDataList = [NSMutableArray arrayWithObjects:@"btn_camera", nil];
+        
+        QDFWeakSelf;
+        QDFWeak(cell);
+        [cell setDidSelectedItem:^(NSInteger itemTag) {
+            [weakself addImageWithMaxSelection:4 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
+                
+                weakcell.collectionDataList = [NSMutableArray arrayWithArray:images];
+                [weakcell reloadData];
+            }];
+        }];
         
         return cell;
     }

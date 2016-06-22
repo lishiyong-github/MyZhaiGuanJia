@@ -14,6 +14,8 @@
 #import "LaunchEvaluateModel.h"
 #import "EvaluateModel.h"
 
+#import "UIImageView+WebCache.h"
+
 @interface AllEvaluationViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
@@ -21,6 +23,7 @@
 
 @property (nonatomic,strong) NSMutableArray *responseArray;
 @property (nonatomic,strong) NSMutableArray *allEvaluateArray;
+@property (nonatomic,assign) NSInteger pageEva;
 
 @end
 
@@ -34,8 +37,7 @@
     [self.view addSubview:self.allEvaTableView];
     [self.view setNeedsUpdateConstraints];
     
-    [self.allEvaTableView addFooterWithTarget:self action:@selector(getEvaluateDetailListsWithPage:)];
-    [self getEvaluateDetailListsWithPage:@"0"];
+    [self refreshHeaderOfAllEvaluation];
 }
 
 - (void)updateViewConstraints
@@ -59,6 +61,8 @@
         _allEvaTableView.separatorColor = kSeparateColor;
         _allEvaTableView.backgroundColor = kBackColor;
         _allEvaTableView.tableFooterView = [[UIView alloc] init];
+        [_allEvaTableView addHeaderWithTarget:self action:@selector(refreshHeaderOfAllEvaluation)];
+        [_allEvaTableView addFooterWithTarget:self action:@selector(refreshFooterOfAllEvaluation)];
     }
     return _allEvaTableView;
 }
@@ -98,7 +102,25 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 170;
+    if (self.allEvaluateArray.count > 0) {
+        
+        if ([self.evaTypeString isEqualToString:@"evaluate"]) {
+            EvaluateModel *model = self.allEvaluateArray[indexPath.section];
+            if ([model.picture isEqualToString:@""] || model.picture == nil) {
+                return 110;
+            }else{
+                return 170;
+            }
+        }else if ([self.evaTypeString isEqualToString:@"launchevaluation"]){
+            LaunchEvaluateModel *model = self.allEvaluateArray[indexPath.section];
+            if ([model.picture isEqualToString:@""] || model.picture == nil) {
+                return 110;
+            }else{
+                return 170;
+            }
+        }
+    }
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -122,7 +144,7 @@
         [cell.evaProImageView1 setHidden:NO];
         [cell.evaProImageView2 setHidden:NO];
         
-        if ([self.evaTypeString isEqualToString:@"evaluate"]) {
+        if ([self.evaTypeString isEqualToString:@"evaluate"]) {//收到的
             EvaluateModel *model = self.allEvaluateArray[indexPath.section];
             NSString *isHideStr = model.isHide?@"匿名":model.mobile;
             cell.evaNameLabel.text = isHideStr;
@@ -135,20 +157,39 @@
             }else{
                 cell.evaTextLabel.text = model.content;
             }
-         }else{
+            
+            if ([model.picture isEqualToString:@""] || model.picture == nil) {
+                [cell.evaProImageView1 setHidden:YES];
+                [cell.evaProImageView2 setHidden:YES];
+            }else{
+                [cell.evaProImageView1 setHidden:NO];
+                [cell.evaProImageView2 setHidden:NO];
+            }
+            
+         }else if([self.evaTypeString isEqualToString:@"launchevaluation"]){//给出的
             LaunchEvaluateModel *model = self.allEvaluateArray[indexPath.section];
             NSString *isHideStr = model.isHide?@"匿名":model.mobile;
             cell.evaNameLabel.text = isHideStr;
             cell.evaTimeLabel.text = [NSDate getYMDFormatterTime:model.create_time];
             cell.evaStarImage.currentIndex = [response.creditor intValue];
-//            cell.evaTextLabel.text = model.content;
-            //model.content?@"未填写评价内容":model.content;
             cell.evaProImageView1.backgroundColor = kLightGrayColor;
             cell.evaProImageView2.backgroundColor = kLightGrayColor;
              if (model.content == nil || [model.content isEqualToString:@""]) {
                  cell.evaTextLabel.text = @"未填写评价内容";
              }else{
                  cell.evaTextLabel.text = model.content;
+             }
+             
+             if ([model.picture isEqualToString:@""] || model.picture == nil) {
+                 [cell.evaProImageView1 setHidden:YES];
+                 [cell.evaProImageView2 setHidden:YES];
+             }else{
+                 [cell.evaProImageView1 setHidden:NO];
+                 [cell.evaProImageView2 setHidden:NO];
+                 
+                 NSString *string = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,model.picture];
+                 NSURL *URL = [NSURL URLWithString:string];
+                 [cell.evaProImageView1 sd_setImageWithURL:URL placeholderImage:[UIImage imageNamed:@""]];
              }
          }
     }else{
@@ -178,22 +219,49 @@
 #pragma mark - method
 -  (void)getEvaluateDetailListsWithPage:(NSString *)page
 {
-    NSString *evaluateString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kCheckOrderToEvaluationString];
-    NSDictionary *params = @{@"token" : [self getValidateToken],
-                             @"id" : self.idString,
-                             @"category" : self.categoryString,
-                             @"pid" : self.pidString,
-                             @"page" : page
-                             };
+    NSString *evaluateString;
+    NSDictionary *params;
+    
+    if ([self.evaTypeString isEqualToString:@"launchevaluation"]) {//结案给出的评价
+        evaluateString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyEvaluateString];
+        params = @{@"token" : [self getValidateToken],
+                   @"id" : self.idString,
+                   @"category" : self.categoryString,
+                   @"page" : page
+                   };
+
+    }else if ([self.evaTypeString isEqualToString:@"evaluate"]){///发布接单里面的结案详情中给出的评价
+        evaluateString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kCheckOrderToEvaluationString];
+        params = @{@"token" : [self getValidateToken],
+                   @"id" : self.idString,
+                   @"category" : self.categoryString,
+                   @"page" : page,
+                   @"pid" : self.pidString,
+                   };
+    }
+    
     [self requestDataPostWithString:evaluateString params:params successBlock:^(id responseObject) {
+
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        NSLog(@"^^^^^ %@",dic);
+        
+        if ([page integerValue] == 0) {
+            [self.allEvaluateArray removeAllObjects];
+        }
+        
         EvaluateResponse *response = [EvaluateResponse objectWithKeyValues:responseObject];
         [self.responseArray addObject:response];
         
-        if ([self.evaTypeString isEqualToString:@"evaluate"]) {
+        if (response.evaluate.count == 0) {
+            [self showHint:@"没有更多了"];
+            _pageEva--;
+        }
+        
+        if ([self.evaTypeString isEqualToString:@"evaluate"]) {//收到的评价
             for (EvaluateModel *model in response.evaluate) {
                 [self.allEvaluateArray addObject:model];
             }
-        }else if([self.evaTypeString isEqualToString:@"launchevaluation"]){
+        }else if([self.evaTypeString isEqualToString:@"launchevaluation"]){//给出的评价
             for (LaunchEvaluateModel *model in response.launchevaluation) {
                 [self.allEvaluateArray addObject:model];
             }
@@ -204,6 +272,25 @@
     } andFailBlock:^(NSError *error) {
         
     }];
+}
+
+- (void)refreshHeaderOfAllEvaluation
+{
+    _pageEva = 0;
+    [self getEvaluateDetailListsWithPage:@"0"];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.allEvaTableView headerEndRefreshing];
+    });
+}
+
+- (void)refreshFooterOfAllEvaluation
+{
+    _pageEva++;
+    NSString *page = [NSString stringWithFormat:@"%d",_pageEva];
+    [self getEvaluateDetailListsWithPage:page];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.allEvaTableView footerEndRefreshing];
+    });
 }
 
 - (void)didReceiveMemoryWarning {

@@ -56,7 +56,6 @@
     [self.view setNeedsUpdateConstraints];
     
     [self getDetailMessageOfEnding];
-    [self getScheduleDetails];
 }
 
 - (void)updateViewConstraints
@@ -440,7 +439,6 @@
     checkDetailPublishVC.categoryString = self.categaryString;
     checkDetailPublishVC.pidString = self.pidString;
     checkDetailPublishVC.typeString = @"发布方";
-    checkDetailPublishVC.evaTypeString = @"evaluate";
     [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
 }
 
@@ -455,7 +453,7 @@
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
         [self.endArray addObject:response];
         [self.myEndingTableView reloadData];
-        
+        [self getScheduleDetails];
     } andFailBlock:^(NSError *error){
         
     }];
