@@ -11,13 +11,12 @@
 #import "ForgetPassViewController.h"  //忘记密码
 
 #import "LoginCell.h"
-#import "LoginForgetView.h"
+#import "BaseCommitButton.h"
 @interface LoginViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,strong) UITableView *loginTableView;
 @property (nonatomic,assign) BOOL didSetupConstraints;
 
-@property (nonatomic,strong) LoginForgetView *loginFooterView;
 @property (nonatomic,strong) NSMutableDictionary *loginDictionary;
 @end
 
@@ -56,28 +55,8 @@
         _loginTableView.separatorColor = kSeparateColor;
         _loginTableView.backgroundColor = kBackColor;
         _loginTableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
-        _loginTableView.tableFooterView = self.loginFooterView;
     }
     return _loginTableView;
-}
-
-- (LoginForgetView *)loginFooterView
-{
-    if (!_loginFooterView) {
-        _loginFooterView = [[LoginForgetView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 100)];
-        
-        QDFWeakSelf;
-        [_loginFooterView setDidSelecBtn:^(NSInteger buttonTag) {
-            if (buttonTag == 21) {//登录
-                [weakself.view endEditing:YES];
-                [weakself loginUser];
-            }else{//忘记密码
-                ForgetPassViewController *forgetPassVC = [[ForgetPassViewController alloc] init];
-                [weakself.navigationController pushViewController:forgetPassVC animated:YES];
-            }
-        }];
-    }
-    return _loginFooterView;
 }
 
 - (NSMutableDictionary *)loginDictionary
@@ -142,6 +121,43 @@
     return cell;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 100;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 100)];
+    
+    BaseCommitButton *loginCommitButton = [BaseCommitButton newAutoLayoutView];
+    [loginCommitButton setTitle:@"登录" forState:0];
+    [loginCommitButton addTarget: self action:@selector(loginUser) forControlEvents:UIControlEventTouchUpInside];
+    [footerView addSubview:loginCommitButton];
+    
+    UIButton *forgrtButton = [UIButton newAutoLayoutView];
+    [forgrtButton setTitleColor:kBlueColor forState:0];
+    forgrtButton.titleLabel.font = kSecondFont;
+    [forgrtButton setTitle:@"忘记密码?" forState:0];
+    [footerView addSubview:forgrtButton];
+    QDFWeakSelf;
+    [forgrtButton addAction:^(UIButton *btn) {
+        ForgetPassViewController *forgetPassVC = [[ForgetPassViewController alloc] init];
+        [weakself.navigationController pushViewController:forgetPassVC animated:YES];
+    }];
+    
+    [loginCommitButton autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:30];
+    [loginCommitButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
+    [loginCommitButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
+    [loginCommitButton autoSetDimension:ALDimensionHeight toSize:40];
+    
+    [forgrtButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:loginCommitButton withOffset:kBigPadding];
+    [forgrtButton autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:loginCommitButton];
+    
+    return footerView;
+    
+}
+
 #pragma mark - method
 - (void)registerNewUser
 {
@@ -151,6 +167,7 @@
 
 - (void)loginUser
 {
+    [self.view endEditing:YES];
     NSString *loginString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kLoginString];
     
     NSString *mobile = self.loginDictionary[@"mobile"]?self.loginDictionary[@"mobile"]:@"";

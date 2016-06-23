@@ -116,7 +116,7 @@
 //    //发起逆地理编码
 //    [_searchAPI AMapReGoecodeSearch: regeo];
     
-//    [self back];
+    [self back];
 }
 
 ////实现逆地理编码的回调函数
