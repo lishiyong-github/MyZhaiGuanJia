@@ -194,7 +194,7 @@
                     NSString *statusStr = [NSString stringWithFormat:@"%d",row];
                     [self.scheduleDictionary setValue:statusStr forKey:@"status"];
                 }];
-            }else if ([weakself.categoryString intValue] == 2){//催收
+            }else if ([weakself.categoryString intValue] == 2){//清收
                 [weakself showBlurInView:self.view withArray:collectArr andTitle:@"选择处置类型" finishBlock:^(NSString *text,NSInteger row) {
                     [weakcell.caseGoButton setTitle:text forState:0];
                     NSString *statusStr = [NSString stringWithFormat:@"%d",row];
@@ -241,7 +241,7 @@
      6 => '其他',
      ];
      
-     催收：[
+     清收：[
      1 => '电话',
      2 => '上门',
      3 => '面谈',
@@ -298,7 +298,7 @@
                                   @"status" : statusStr,
                                   @"content" : contentStr
                                  };
-    }else if ([self.categoryString intValue] == 2){//催收
+    }else if ([self.categoryString intValue] == 2){//清收
         params = @{@"token" : [self getValidateToken],
                    @"product_id" : self.idString,
                    @"category" : self.categoryString,

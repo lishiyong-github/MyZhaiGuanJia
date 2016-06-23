@@ -88,6 +88,12 @@
     return token;
 }
 
+- (NSString *)getValidateMobile
+{
+    NSString *mobile = [[NSUserDefaults standardUserDefaults] objectForKey:@"mobile"];
+    return mobile;
+}
+
 - (void)tokenIsValid
 {
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];

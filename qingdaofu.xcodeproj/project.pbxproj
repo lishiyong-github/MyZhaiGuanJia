@@ -501,6 +501,7 @@
 		A145B2A51CEEEDA6003A93B7 /* EvaluatePhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EvaluatePhotoCell.m; sourceTree = "<group>"; };
 		A145B2AA1CEEF579003A93B7 /* EvaluateSendCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EvaluateSendCell.h; sourceTree = "<group>"; };
 		A145B2AB1CEEF579003A93B7 /* EvaluateSendCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EvaluateSendCell.m; sourceTree = "<group>"; };
+		A14853E81D1BB18D0088AA4D /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		A14C17571D07A78E003826F8 /* NSDate+FormatterTime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+FormatterTime.h"; sourceTree = "<group>"; };
 		A14C17581D07A78E003826F8 /* NSDate+FormatterTime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+FormatterTime.m"; sourceTree = "<group>"; };
 		A14C175E1D07F692003826F8 /* list_litigation_nor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list_litigation_nor@2x.png"; sourceTree = "<group>"; };
@@ -2361,6 +2362,7 @@
 		A1A016961C5A0C0300027134 = {
 			isa = PBXGroup;
 			children = (
+				A14853E81D1BB18D0088AA4D /* AVFoundation.framework */,
 				A1982B371CFFF484001770A7 /* StoreKit.framework */,
 				A1A016A11C5A0C0300027134 /* qingdaofu */,
 				A1A016BB1C5A0C0300027134 /* qingdaofuTests */,
@@ -3472,17 +3474,21 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/qingdaofu/Framework",
 					"$(PROJECT_DIR)/qingdaofu/第三方",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/qingdaofu/qingdaofu.pch";
 				INFOPLIST_FILE = qingdaofu/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
-					"-ObjC",
 					"-framework",
-					Reveal,
+					"-fobjc-arc",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.zhixiang.qingdaofu;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3501,17 +3507,21 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/qingdaofu/Framework",
 					"$(PROJECT_DIR)/qingdaofu/第三方",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/qingdaofu/qingdaofu.pch";
 				INFOPLIST_FILE = qingdaofu/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
-					"-ObjC",
 					"-framework",
-					Reveal,
+					"-fobjc-arc",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.zhixiang.qingdaofu;
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -95,7 +95,7 @@
 
             btn.selected = !btn.selected;
             if (btn.selected) {
-                NSArray *titleArray = @[@"全部",@"融资",@"催收",@"诉讼"];
+                NSArray *titleArray = @[@"全部",@"融资",@"清收",@"诉讼"];
                 [weakself showBlurInView:weakself.view withArray:titleArray withTop:0 finishBlock:^(NSString *text, NSInteger row) {
                     NSString *value = [NSString stringWithFormat:@"%d",row];
                     [btn setTitle:text forState:0];
@@ -322,7 +322,7 @@
             }else{
                 cell.rateView.label2.text = @"借款利率(月)";
             }
-        }else if ([proModel.category isEqualToString:@"2"]){//催收
+        }else if ([proModel.category isEqualToString:@"2"]){//清收
             [cell.typeImageView setImage:[UIImage imageNamed:@"list_collection"]];
             
             cell.pointView.label1.text = proModel.agencycommission;

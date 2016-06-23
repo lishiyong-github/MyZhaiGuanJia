@@ -9,7 +9,7 @@
 #import "NewProductViewController.h"
 
 #import "ReportFinanceViewController.h"  //发布融资
-#import "ReportSuitViewController.h"   //发布催收
+#import "ReportSuitViewController.h"   //发布清收
 #import "ReportCollectViewController.h" //发布诉讼
 #import "ProductsDetailsViewController.h" //详细信息
 #import "MarkingViewController.h"
@@ -183,7 +183,7 @@
             [weakself.navigationController pushViewController:reportFinanceVC animated:YES];
         }];
         
-        [cell.collectionButton addAction:^(UIButton *btn) {//催收
+        [cell.collectionButton addAction:^(UIButton *btn) {//清收
             ReportCollectViewController *reportCollectVC = [[ReportCollectViewController alloc] init];
             reportCollectVC.hidesBottomBarWhenPushed = YES;
             [weakself.navigationController pushViewController:reportCollectVC animated:YES];
@@ -252,7 +252,7 @@
         }else{
             cell.rateView.label2.text = @"借款利率(月)";
         }
-    }else if ([newModel.category isEqualToString:@"2"]){//催收
+    }else if ([newModel.category isEqualToString:@"2"]){//清收
         [cell.typeImageView setImage:[UIImage imageNamed:@"list_collection"]];
         
         cell.pointView.label1.text = newModel.agencycommission;

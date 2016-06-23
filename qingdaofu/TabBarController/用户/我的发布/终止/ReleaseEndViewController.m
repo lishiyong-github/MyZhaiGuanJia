@@ -212,8 +212,8 @@
                     string4 = @"  返点";
                     imageString4 = @"conserve_rebate_icon";
                     string44 = endModel.rebate;
-                }else if ([endModel.category intValue] == 2){//催收
-                    string22 = @"催收";
+                }else if ([endModel.category intValue] == 2){//清收
+                    string22 = @"清收";
                     string3 = @"  代理费用(万)";
                     imageString3 = @"conserve_fixed_icon";
                     string33 = endModel.agencycommission;

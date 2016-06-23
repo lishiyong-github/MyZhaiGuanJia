@@ -182,6 +182,7 @@
             
             if ([exitModel.code isEqualToString:@"0000"]) {
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"token"];
+                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"mobile"];
                 [[NSUserDefaults standardUserDefaults] synchronize];
                 
                 [self.navigationController popViewControllerAnimated:YES];

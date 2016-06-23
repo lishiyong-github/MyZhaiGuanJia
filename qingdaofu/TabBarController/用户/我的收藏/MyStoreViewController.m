@@ -99,7 +99,7 @@
     
     if ([storeModel.category isEqualToString:@"1"]) {//融资
         [cell.userNameButton setImage:[UIImage imageNamed:@"list_financing"] forState:0];
-    }else if ([storeModel.category isEqualToString:@"2"]){//催收
+    }else if ([storeModel.category isEqualToString:@"2"]){//清收
         [cell.userNameButton setImage:[UIImage imageNamed:@"list_collection"] forState:0];
     }else if([storeModel.category isEqualToString:@"3"]){//诉讼
         [cell.userNameButton setImage:[UIImage imageNamed:@"list_litigation"] forState:0];

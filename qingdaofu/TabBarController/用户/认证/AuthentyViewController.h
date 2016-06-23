@@ -10,4 +10,6 @@
 
 @interface AuthentyViewController : BaseViewController
 
+@property (nonatomic,strong) NSString *typeAuthty;  //认证  首次认证为add,其余都为update
+
 @end

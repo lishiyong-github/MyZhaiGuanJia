@@ -171,6 +171,7 @@
         
         if ([loginModel.code isEqualToString:@"0000"]) {
             [[NSUserDefaults standardUserDefaults] setObject:loginModel.token forKey:@"token"];
+            [[NSUserDefaults standardUserDefaults] setObject:self.loginDictionary[@"mobile"] forKey:@"mobile"];
             [[NSUserDefaults standardUserDefaults] synchronize];
             [self.navigationController popViewControllerAnimated:YES];
         }

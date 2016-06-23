@@ -67,7 +67,7 @@
     if (!_pubCoSingleButton) {
         _pubCoSingleButton = [SingleButton newAutoLayoutView];
         [_pubCoSingleButton.label setTextColor:kNavColor];
-        [_pubCoSingleButton.label setText:@"发布催收"];
+        [_pubCoSingleButton.label setText:@"发布清收"];
     }
     return _pubCoSingleButton;
 }

@@ -19,7 +19,7 @@
 @property (nonatomic,copy) NSString *borrowinginfo;
 @property (nonatomic,copy) NSString *browsenumber;
 @property (nonatomic,copy) NSString *carbrand;  //机动车抵押：机动车品牌
-@property (nonatomic,copy) NSString *category;   //类别（融资，催收，诉讼）
+@property (nonatomic,copy) NSString *category;   //类别（融资，清收，诉讼）
 @property (nonatomic,copy) NSString *city_id;
 @property (nonatomic,copy) NSString *codeString;  //产品编号
 @property (nonatomic,copy) NSString *commissionperiod;  //委托代理期限

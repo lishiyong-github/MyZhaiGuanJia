@@ -7,6 +7,7 @@
 //
 
 #import "TakePictureCell.h"
+#import "UIImageView+WebCache.h"
 
 @interface TakePictureCell ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
 
@@ -81,7 +82,14 @@
         cell = [[UICollectionViewCell alloc] init];
     }
     
-    cell.contentView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:self.collectionDataList[indexPath.item]]];
+    if ( [self.collectionDataList[indexPath.item] isKindOfClass:[NSURL class]]) {
+        //account_bitmap
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
+       [imageView sd_setImageWithURL:self.collectionDataList[indexPath.item] placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+        cell.contentView.backgroundColor = [UIColor colorWithPatternImage:imageView.image];
+    }else{
+        cell.contentView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:self.collectionDataList[indexPath.item]]];
+    }
     
     return cell;
 }

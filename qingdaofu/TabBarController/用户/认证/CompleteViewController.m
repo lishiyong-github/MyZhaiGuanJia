@@ -131,6 +131,7 @@
         QDFWeakSelf;
         [_completeCommitButton addAction:^(UIButton *btn) {
             AuthentyViewController *authentyVC = [[AuthentyViewController alloc] init];
+            authentyVC.typeAuthty = @"1";
             [weakself.navigationController pushViewController:authentyVC animated:YES];
         }];
     }
@@ -180,7 +181,7 @@
         if (indexPath.row == 0) {
             return kCellHeight;
         }
-        return 210+titleSize.height;
+        return 245+titleSize.height;
         
     }else if ([self.categoryString intValue] == 2){//律所
         if (indexPath.row == 0) {
@@ -228,16 +229,22 @@
             
             if ([weakself.categoryString intValue] == 1) {//个人
                 AuthenPersonViewController *authenPersonVC = [[AuthenPersonViewController alloc] init];
+                authenPersonVC.typeAuthen = @"1";
                 authenPersonVC.respnseModel = response;
+                authenPersonVC.categoryString = self.categoryString;
                 [weakself.navigationController pushViewController:authenPersonVC animated:YES];
                 
             }else if ([weakself.categoryString intValue] == 2){//律所
                 AuthenLawViewController *authenLawVC = [[AuthenLawViewController alloc] init];
                 authenLawVC.responseModel = response;
+                authenLawVC.typeAuthen = @"1";
+                authenLawVC.categoryString = self.categoryString;
                 [weakself.navigationController pushViewController:authenLawVC animated:YES];
             }else if([weakself.categoryString intValue] == 3){//公司
                 AuthenCompanyViewController *authenCompanyVC = [[AuthenCompanyViewController alloc] init];
                 authenCompanyVC.responseModel = response;
+                authenCompanyVC.typeAuthen = @"1";
+                authenCompanyVC.categoryString = self.categoryString;
                 [weakself.navigationController pushViewController:authenCompanyVC animated:YES];
             }
         }];
@@ -269,7 +276,7 @@
         
         //图片
         
-        NSMutableAttributedString *mobileString = [cell.comIDLabel setAttributeString:@"联系方式：" withColor:kBlackColor andSecond:certificationModel.mobile withColor:kLightGrayColor withFont:14];
+        NSMutableAttributedString *mobileString = [cell.comIDLabel setAttributeString:@"联系方式：    " withColor:kBlackColor andSecond:certificationModel.mobile withColor:kLightGrayColor withFont:14];
         [cell.mobileLabel setAttributedText:mobileString];
         
         NSMutableAttributedString *mailString = [cell.comMailLabel setAttributeString:@"邮箱：            " withColor:kBlackColor andSecond:certificationModel.email?certificationModel.email:@"未填写" withColor:kLightGrayColor withFont:14];
@@ -399,7 +406,7 @@
 
 - (void)showRemindMessage:(UIBarButtonItem *)barButton
 {
-//    NSLog(@"可发布融资催收诉讼");
+//    NSLog(@"可发布融资清收诉讼");
     
     UIButton *remindButton = [UIButton newAutoLayoutView];
     [self.view addSubview:remindButton];

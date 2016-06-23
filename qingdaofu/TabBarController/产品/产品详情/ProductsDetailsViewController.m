@@ -194,7 +194,7 @@
                 }
                 cell.deTypeView.fLabel2.text = proModel.rate;
                 
-            }else if ([proModel.category intValue] == 2){//催收
+            }else if ([proModel.category intValue] == 2){//清收
                 //上边
                 cell.deRateLabel.text = @"代理费率(%)";
                 cell.deRateLabel1.text = proModel.agencycommission;

@@ -200,7 +200,7 @@
         /*typeImageView
          nameLabel*/
         //融资－－借款本金（万元），返点（％），借款利率（月，天）
-        //催收－－借款本金（万元），代理费用，债权类型
+        //清收－－借款本金（万元），代理费用，债权类型
         //诉讼－－借款本金（万元），代理费用（或风险费率  具体看用户自己选择），债权类型
         if ([rowModel.category intValue] == 1) {//融资
             cell.typeImageView.image = [UIImage imageNamed:@"list_financing"];
@@ -217,7 +217,7 @@
                 cell.rateView.label2.text = @"借款利率(月)";
             }
             
-        }else if ([rowModel.category intValue] == 2){//催收
+        }else if ([rowModel.category intValue] == 2){//清收
             cell.typeImageView.image = [UIImage imageNamed:@"list_collection"];
             if ([rowModel.progress_status intValue] > 2) {
                 cell.typeImageView.image = [UIImage imageNamed:@"list_collection_nor"];

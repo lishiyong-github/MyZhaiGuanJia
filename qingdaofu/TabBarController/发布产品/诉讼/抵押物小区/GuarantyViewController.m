@@ -104,8 +104,32 @@
 
     [self didDismissSearchController:self.searchController];
     [self.guTableView removeFromSuperview];
-    [self back];
+    
+//    _searchAPI = [[AMapSearchAPI alloc] init];
+//    _searchAPI.delegate = self;
+//    //构造AMapReGeocodeSearchRequest对象
+//    AMapReGeocodeSearchRequest *regeo = [[AMapReGeocodeSearchRequest alloc] init];
+//    regeo.location = [AMapGeoPoint locationWithLatitude:39.990459 longitude:116.481476];
+//    regeo.radius = 10000;
+//    //    regeoRequest.requireExtension = YES;
+//    
+//    //发起逆地理编码
+//    [_searchAPI AMapReGoecodeSearch: regeo];
+    
+//    [self back];
 }
+
+////实现逆地理编码的回调函数
+//- (void)onReGeocodeSearchDone:(AMapReGeocodeSearchRequest *)request response:(AMapReGeocodeSearchResponse *)response
+//{
+//    if(response.regeocode != nil)
+//    {
+//        //通过AMapReGeocodeSearchResponse对象处理搜索结果
+//        NSString *result = [NSString stringWithFormat:@"ReGeocode: %@", response.regeocode];
+//        NSLog(@"ReGeo: %@", result);
+//    }
+//}
+
 
 #pragma mark - search
 - (void)willPresentSearchController:(UISearchController *)searchController

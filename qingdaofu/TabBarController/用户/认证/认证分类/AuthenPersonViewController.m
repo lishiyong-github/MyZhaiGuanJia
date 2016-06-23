@@ -149,7 +149,15 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        cell.collectionDataList = [NSMutableArray arrayWithObjects:@"btn_camera",@"btn_camera", nil];
+        if (certificationModel.cardimg) {
+            NSString *subString = [certificationModel.cardimg substringWithRange:NSMakeRange(1, certificationModel.cardimg.length-2)];
+            NSString *urlString = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subString];
+            NSURL *url = [NSURL URLWithString:urlString];
+            cell.collectionDataList = [NSMutableArray arrayWithObject:url];
+        }else{
+            cell.collectionDataList = [NSMutableArray arrayWithObjects:@"btn_camera", nil];
+        }
+        
         QDFWeakSelf;
         QDFWeak(cell);
         [cell setDidSelectedItem:^(NSInteger itemTag) {
@@ -196,7 +204,7 @@
                 [self.perDataDictionary setValue:text forKey:@"cardno"];
             }];
         }else if (indexPath.row == 3){
-            cell.agentTextField.text = certificationModel.mobile;
+            cell.agentTextField.text = certificationModel.mobile?certificationModel.mobile:[self getValidateMobile];
             QDFWeak(cell);
             [cell setDidEndEditing:^(NSString *text) {
                 weakcell.agentTextField.text = text;
@@ -319,20 +327,29 @@
     [self.perDataDictionary setValue:@"1" forKey:@"category"];//认证类型
     [self.perDataDictionary setValue:[self getValidateToken] forKey:@"token"];
     
-    if (self.respnseModel) {
+    if ([self.typeAuthen integerValue] == 1) {
         [self.perDataDictionary setValue:@"update" forKey:@"type"];  //update为修改
     }else{
-        [self.perDataDictionary setValue:@"add" forKey:@"type"];  //add为修改
+        [self.perDataDictionary setValue:@"add" forKey:@"type"];  //add为 首次添加
     }
     NSDictionary *params = self.perDataDictionary;
-    NSString *cardimg = self.perDataDictionary[@"cardimg"][0]?self.perDataDictionary[@"cardimg"][0]:self.respnseModel.certification.cardimg;
-    NSDictionary *imageParams = @{@"cardimg" : cardimg};
-    [self requestDataPostWithString:personAuString params:params andImages:imageParams successBlock:^(id responseObject) {
+//    NSString *cardimg = self.perDataDictionary[@"cardimg"][0]?self.perDataDictionary[@"cardimg"][0]:self.respnseModel.certification.cardimg;
+//    NSDictionary *imageParams = @{@"cardimg" : cardimg};
+    [self requestDataPostWithString:personAuString params:params andImages:nil successBlock:^(id responseObject) {
+
+        BaseModel *model = [BaseModel objectWithKeyValues:responseObject];
+        [self showHint:model.msg];
         
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSLog(@"+++++++ %@",dic);
-        
-        [self showHint:dic[@"msg"]];
+        if ([model.code isEqualToString:@"0000"]) {
+            UINavigationController *nav = self.navigationController;
+            [nav popViewControllerAnimated:NO];
+            [nav popViewControllerAnimated:NO];
+            CompleteViewController *completeVC = [[CompleteViewController alloc] init];
+            completeVC.categoryString = self.categoryString;
+            completeVC.hidesBottomBarWhenPushed = YES;
+            [nav pushViewController:completeVC animated:NO];
+            
+        }
         
     } andFailBlock:^(NSError *error) {
         NSLog(@"****** %@",error);

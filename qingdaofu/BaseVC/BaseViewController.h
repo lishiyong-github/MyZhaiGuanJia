@@ -19,6 +19,7 @@
 @property (nonatomic,strong) void (^didTokenValid)(TokenModel *tokenModel);
 
 - (NSString *)getValidateToken;
+- (NSString *)getValidateMobile;
 
 - (void)back;
 

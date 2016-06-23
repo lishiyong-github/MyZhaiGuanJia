@@ -23,7 +23,6 @@
 
 #import "MySettingsViewController.h"  //设置
 
-#import "LoginView.h"
 #import "LoginTableView.h"
 
 #import "CompleteResponse.h"
@@ -200,6 +199,7 @@
                 }else if ([tokenModel.code isEqualToString:@"3006"]){//未认证
                     AuthentyViewController *authentyVC = [[AuthentyViewController alloc] init];
                     authentyVC.hidesBottomBarWhenPushed = YES;
+                    authentyVC.typeAuthty = @"0";
                     [weakself.navigationController pushViewController:authentyVC animated:YES];
                 }else{
                     NSString *categoryStr;
@@ -213,7 +213,6 @@
                     
                     CompleteViewController *completeVC = [[CompleteViewController alloc] init];
                     completeVC.hidesBottomBarWhenPushed = YES;
-//                    completeVC.categoryString = categoryStr;
                     completeVC.categoryString = tokenModel.category;
                     [weakself.navigationController pushViewController:completeVC animated:YES];
                 }

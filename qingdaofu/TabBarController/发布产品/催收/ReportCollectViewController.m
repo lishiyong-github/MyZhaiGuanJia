@@ -46,7 +46,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = @"发布催收";
+    self.navigationItem.title = @"发布清收";
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
     [self setupForDismissKeyboard];

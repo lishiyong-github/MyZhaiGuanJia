@@ -101,14 +101,13 @@
  */
 #define QDFWeakSelf QDFWeak(self)
 
-
 /**
  Application Programming Interface（API）
  */
 
 #define kQDFUrlString @"http://www.zcb2016.com/wap/"
-#define kQDFTestUrlString @"http://testq.zcb2016.com/wap/"
-//#define kQDFTestUrlString @"http://192.168.20.149/wap/"
+//#define kQDFTestUrlString @"http://testq.zcb2016.com/wap/"
+#define kQDFTestUrlString @"http://192.168.20.149/wap/"
 
 #define kQDFTestImageString @"http://testq.zcb2016.com"
 
@@ -128,7 +127,7 @@
 
 /*发布产品*/
 #define kPublishFinanceString @"publish/financing"  //发布融资
-#define kPublishCollection    @"publish/creditorcollection"  //发布催收
+#define kPublishCollection    @"publish/creditorcollection"  //发布清收
 #define kPublishSuit          @"publish/creditorcollection"  //发布诉讼
 #define kBrandString  @"common/brand"  //机动车品牌
 #define kBrandAudiString  @"common/brandchild"  //车系
@@ -166,7 +165,6 @@
 
 #define kAuthenString @"certification/add"   //认证
 #define kIsCompleteString  @"certification/view"  //是否认证
-#define kChangeAuthenString @""
 
 #define kProductsListString @"capital/list"    //产品列表
 #define kProductsRecommendListString  @"capital/recommendlist"   //推荐产品列表

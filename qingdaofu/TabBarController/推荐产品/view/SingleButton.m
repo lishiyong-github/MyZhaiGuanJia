@@ -49,7 +49,6 @@
 {
     if (!_button) {
         _button = [UIButton newAutoLayoutView];
-//        _button.backgroundColor = kBlueColor;
         _button.layer.masksToBounds = YES;
         _button.userInteractionEnabled = NO;
     }
@@ -61,12 +60,8 @@
     if (!_label) {
         _label = [UILabel newAutoLayoutView];
         _label.font = kBigFont;
-        _label.text = @"发布催收";
+        _label.text = @"发布清收";
         _label.textAlignment = NSTextAlignmentCenter;
-        //根据字体得到NSString的尺寸
-//        CGSize size = [_label.text sizeWithAttributes:@{NSFontAttributeName:kBigFont}];
-        //文字高、宽
-//        _textH = size.height;
     }
     return _label;
 }

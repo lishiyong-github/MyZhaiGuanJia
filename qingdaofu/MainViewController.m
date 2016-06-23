@@ -79,7 +79,7 @@
         //
         UINavigationController *viewController = tabBarController.selectedViewController;
         
-        UIAlertController *tabAlertController = [UIAlertController alertControllerWithTitle:@"测试" message:@"发布催收融资" preferredStyle:UIAlertControllerStyleActionSheet];
+        UIAlertController *tabAlertController = [UIAlertController alertControllerWithTitle:@"测试" message:@"发布清收融资" preferredStyle:UIAlertControllerStyleActionSheet];
         
         UIAlertAction *act1 = [UIAlertAction actionWithTitle:@"诉讼" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             ReportSuitViewController *reportSuitVC = [[ReportSuitViewController alloc] init];
@@ -87,7 +87,7 @@
             [viewController pushViewController:reportSuitVC animated:YES];
         }];
         
-        UIAlertAction *act2 = [UIAlertAction actionWithTitle:@"催收" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        UIAlertAction *act2 = [UIAlertAction actionWithTitle:@"清收" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             
         }];
         
@@ -164,7 +164,7 @@
     //
     UINavigationController *viewController = tabBarController.selectedViewController;
     
-    UIAlertController *tabAlertController = [UIAlertController alertControllerWithTitle:@"测试" message:@"发布催收融资" preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertController *tabAlertController = [UIAlertController alertControllerWithTitle:@"测试" message:@"发布清收融资" preferredStyle:UIAlertControllerStyleActionSheet];
     
     UIAlertAction *act1 = [UIAlertAction actionWithTitle:@"诉讼" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         ReportSuitViewController *reportSuitVC = [[ReportSuitViewController alloc] init];
@@ -172,7 +172,7 @@
         [viewController pushViewController:reportSuitVC animated:YES];
     }];
     
-    UIAlertAction *act2 = [UIAlertAction actionWithTitle:@"催收" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *act2 = [UIAlertAction actionWithTitle:@"清收" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         
     }];
     

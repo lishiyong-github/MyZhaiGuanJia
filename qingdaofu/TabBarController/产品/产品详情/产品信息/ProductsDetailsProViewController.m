@@ -115,7 +115,7 @@
             
             [_leftTableView.leftDataArray1 addObjectsFromArray:@[@"借款金额(万)",@"返点(%)",@"借款利率(%)",@"借款利率类型",@"抵押物地址",@"详细地址"]];
             [_leftTableView.leftDataArray2 addObjectsFromArray:@[leftModel.money,leftModel.rebate,leftModel.rate,leftModel.rate_cat,leftModel.mortorage_community,leftModel.seatmortgage]];
-        }else if ([leftModel.category intValue] == 2){//催收
+        }else if ([leftModel.category intValue] == 2){//清收
             
             NSString *loanTypeStr;//债权类型
             if ([leftModel.loan_type intValue] == 1) {
@@ -259,7 +259,7 @@
         _rightTableView.dataList1 = [NSMutableArray arrayWithArray:@[@"借款期限",@"借款期限类型",@"抵押物类型",@"抵押物状态",@"抵押物面积",@"借款人年龄",@"权利人年龄"]];
         _rightTableView.dataList2 = [NSMutableArray arrayWithArray:@[term,rateCatStr,mortgagecategory,status,mortgagearea,loanyear,obligeeyear]];
             
-        }else{//催收，诉讼
+        }else{//清收，诉讼
             
             NSString *rate = @"无"; //借款利率
             NSString *rate_cat = @"无"; //借款期限类型

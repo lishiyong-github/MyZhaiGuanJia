@@ -10,7 +10,7 @@
 
 #import "AdditionMessageViewController.h"
 #import "ReportFinanceViewController.h"   //发布融资
-#import "ReportCollectViewController.h"  //发布催收
+#import "ReportCollectViewController.h"  //发布清收
 #import "ReportSuitViewController.h"  //发布诉讼
 
 #import "MyReleaseViewController.h"   //我的发布
@@ -183,8 +183,8 @@
                 string4 = @"  返点";
                 imageString4 = @"conserve_rebate_icon";
                 string44 = saveModel.rebate;
-            }else if ([saveModel.category intValue] == 2){//催收
-                string22 = @"催收";
+            }else if ([saveModel.category intValue] == 2){//清收
+                string22 = @"清收";
                 string3 = @"  代理费用(万元)";
                 imageString3 = @"conserve_fixed_icon";
                 string33 = saveModel.agencycommission;

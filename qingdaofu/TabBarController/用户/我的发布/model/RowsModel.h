@@ -14,7 +14,7 @@
 @property (nonatomic,copy) NSString *app_id;  //接单方申请的状态：0为申请中（接单方刚发起申请）。1为申请成功（发布方已同意接单方的申请）。2为收藏（接单方将数据收藏但为申请）。
 @property (nonatomic,copy) NSString *applyclose;  //状态：3为终止。4为结案
 @property (nonatomic,copy) NSString *applyclosefrom;   //发起申请人的uid
-@property (nonatomic,copy) NSString *category;   //类型：1为融资。2为催收。3为诉讼。
+@property (nonatomic,copy) NSString *category;   //类型：1为融资。2为清收。3为诉讼。
 @property (nonatomic,copy) NSString *city_id;   //城市ID
 @property (nonatomic,copy) NSString *codeString;  //产品编号
 @property (nonatomic,copy) NSString *create_time;  //

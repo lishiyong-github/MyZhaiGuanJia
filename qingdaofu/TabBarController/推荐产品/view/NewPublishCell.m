@@ -58,7 +58,7 @@
     if (!_collectionButton) {
         _collectionButton = [SingleButton newAutoLayoutView];
 //        _collectionButton.center = self.center;
-        _collectionButton.label.text = @"发布催收";
+        _collectionButton.label.text = @"发布清收";
         [_collectionButton.button setBackgroundImage:[UIImage imageNamed:@"btn_collection"] forState:0];
         _collectionButton.button.userInteractionEnabled = NO;
     }

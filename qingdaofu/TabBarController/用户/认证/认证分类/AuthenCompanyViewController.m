@@ -151,7 +151,15 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        cell.collectionDataList = [NSMutableArray arrayWithObjects:@"btn_camera", nil];;
+        if (certificationModel.cardimg) {
+            NSString *subString = [certificationModel.cardimg substringWithRange:NSMakeRange(1, certificationModel.cardimg.length-2)];
+            NSString *urlString = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subString];
+            NSURL *url = [NSURL URLWithString:urlString];
+            cell.collectionDataList = [NSMutableArray arrayWithObject:url];
+        }else{
+            cell.collectionDataList = [NSMutableArray arrayWithObjects:@"btn_camera", nil];
+        }
+
         QDFWeakSelf;
         QDFWeak(cell);
         [cell setDidSelectedItem:^(NSInteger itemTag) {
@@ -160,7 +168,7 @@
                 
                 weakcell.collectionDataList = [NSMutableArray arrayWithArray:images];
                 [weakcell reloadData];
-                [weakself.comDataDictionary setValue:images forKey:@"cardimg"];
+//                [weakself.comDataDictionary setValue:images forKey:@"cardimg"];
             }];
         }];
         return cell;
@@ -334,7 +342,7 @@
 - (void)goToAuthenCompanyMessages
 {
     [self.view endEditing:YES];
-    NSString *personAuString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kAuthenString];
+    NSString *comAuString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kAuthenString];
     /*
      @"category" : @"3",
      @"name" : @"米mi", //用户名
@@ -361,17 +369,17 @@
     [self.comDataDictionary setValue:@"3" forKey:@"category"];
     [self.comDataDictionary setValue:[self getValidateToken] forKey:@"token"];
     
-    if (self.responseModel) {
+    if ([self.typeAuthen integerValue] == 1) {
         [self.comDataDictionary setValue:@"update" forKey:@"type"];  //update为修改
     }else{
         [self.comDataDictionary setValue:@"add" forKey:@"type"];  //update为修改
     }
     
     NSDictionary *params = self.comDataDictionary;
-    NSString *cardimg = self.comDataDictionary[@"cardimg"][0]?self.comDataDictionary[@"cardimg"][0]:self.responseModel.certification.cardimg;
-    NSDictionary *imageParams = @{@"cardimg" : cardimg};
+//    NSString *cardimg = self.comDataDictionary[@"cardimg"][0]?self.comDataDictionary[@"cardimg"][0]:self.responseModel.certification.cardimg;
+//    NSDictionary *imageParams = @{@"cardimg" : cardimg};
     
-    [self requestDataPostWithString:personAuString params:params andImages:imageParams successBlock:^(id responseObject) {
+    [self requestDataPostWithString:comAuString params:params andImages:nil successBlock:^(id responseObject) {
         BaseModel *personModel = [BaseModel objectWithKeyValues:responseObject];
         [self showHint:personModel.msg];
         

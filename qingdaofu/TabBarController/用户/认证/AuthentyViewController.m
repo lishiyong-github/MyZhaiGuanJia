@@ -111,8 +111,8 @@
     
     NSArray *imageArr = @[@"list_icon_personal",@"list_icon_firm",@"list_icon_company"];
     NSArray *textArr = @[@"认证个人",@"认证律所",@"认证公司"];
-    NSArray *detailArr = @[@"可发布融资、催收、诉讼",@"可发布融资、催收、诉讼",@"可发布融资、催收、诉讼"];
-    NSArray *deArr = @[@"暂不支持代理",@"可代理诉讼、催收",@"可代理诉讼、催收"];
+    NSArray *detailArr = @[@"可发布融资、清收、诉讼",@"可发布融资、清收、诉讼",@"可发布融资、清收、诉讼"];
+    NSArray *deArr = @[@"暂不支持代理",@"可代理诉讼、清收",@"可代理诉讼、清收"];
     
     cell.aImageView.image = [UIImage imageNamed:imageArr[indexPath.row]];
     cell.bLabel.text = textArr[indexPath.row];
@@ -123,12 +123,18 @@
     [cell.AuthenButton addAction:^(UIButton *btn) {
         if (indexPath.row == 0) {//认证个人
             AuthenPersonViewController *authenPersonVC = [[AuthenPersonViewController alloc] init];
+            authenPersonVC.typeAuthen = self.typeAuthty;
+            authenPersonVC.categoryString = [NSString stringWithFormat:@"%d",indexPath.row+1];
             [weakself.navigationController pushViewController:authenPersonVC animated:YES];
         }else if (indexPath.row == 1){//认证律所
             AuthenLawViewController *authenLawVC = [[AuthenLawViewController alloc] init];
+            authenLawVC.typeAuthen = self.typeAuthty;
+            authenLawVC.categoryString = [NSString stringWithFormat:@"%d",indexPath.row+1];
             [weakself.navigationController pushViewController:authenLawVC animated:YES];
         }else{//认证公司
             AuthenCompanyViewController *authenCompanyVC = [[AuthenCompanyViewController alloc] init];
+            authenCompanyVC.typeAuthen = self.typeAuthty;
+            authenCompanyVC.categoryString = [NSString stringWithFormat:@"%d",indexPath.row+1];
             [weakself.navigationController pushViewController:authenCompanyVC animated:YES];
         }
     }];
