@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-@class ResultModel;
 
 @interface BaseModel : NSObject
 

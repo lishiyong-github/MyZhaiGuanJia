@@ -106,16 +106,6 @@
         [cell setFinishEditing:^(NSString *text) {
             [self.loginDictionary setValue:text forKey:@"password"];
         }];
-        
-        QDFWeak(cell);
-        [cell.loginButton addAction:^(UIButton *btn) {
-            btn.selected = !btn.selected;
-            if (btn.selected) {
-                weakcell.loginTextField.secureTextEntry = NO;
-            }else{
-                weakcell.loginTextField.secureTextEntry = YES;
-            }
-        }];
     }
     
     return cell;
@@ -123,7 +113,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return 100;
+    return 120;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section

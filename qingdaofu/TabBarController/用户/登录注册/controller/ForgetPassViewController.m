@@ -16,6 +16,8 @@
 @property (nonatomic,strong) UITableView *forgetPassTableView;
 @property (nonatomic,assign) BOOL didSetupConstraints;
 
+@property (nonatomic,strong) NSMutableDictionary *forgetDictionay;
+
 @end
 
 @implementation ForgetPassViewController
@@ -56,6 +58,14 @@
     return _forgetPassTableView;
 }
 
+- (NSMutableDictionary *)forgetDictionay
+{
+    if (!_forgetDictionay) {
+        _forgetDictionay = [NSMutableDictionary dictionary];
+    }
+    return _forgetDictionay;
+}
+
 #pragma mark - tableView delelagte and datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -82,28 +92,29 @@
     [attributeStr addAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(0, attributeStr.length)];
     [cell.loginTextField setAttributedPlaceholder:attributeStr];
     
+    QDFWeakSelf;
+    // @"validatecode" : @"1835", @"new_password"
     if (indexPath.row == 0) {
         [cell.getCodebutton setHidden:YES];
         [cell.loginButton setHidden:YES];
+        [cell setFinishEditing:^(NSString *text) {
+            [weakself.forgetDictionay setValue:text forKey:@"mobile"];
+        }];
     }else if (indexPath.row == 1){
         [cell.loginButton setHidden:YES];
         [cell.getCodebutton setBackgroundColor:kBlueColor];
         [cell.getCodebutton setTitleColor:kNavColor forState:0];
         [cell.getCodebutton setTitle:@"获取验证码" forState:0];
         [cell.getCodebutton addTarget:self action:@selector(getForgetCode:) forControlEvents:UIControlEventTouchUpInside];
-        
+        [cell setFinishEditing:^(NSString *text) {
+            [weakself.forgetDictionay setValue:text forKey:@"validatecode"];
+        }];
     }else{
         [cell.getCodebutton setHidden:YES];
         [cell.loginButton setTitle:@"显示密码" forState:0];
         [cell.loginButton setTitle:@"隐藏密码" forState:UIControlStateSelected];
-        QDFWeak(cell);
-        [cell.loginButton addAction:^(UIButton *btn) {
-            btn.selected = !btn.selected;
-            if (btn.selected) {
-                weakcell.loginTextField.secureTextEntry = YES;
-            }else{
-                weakcell.loginTextField.secureTextEntry = NO;
-            }
+        [cell setFinishEditing:^(NSString *text) {
+            [weakself.forgetDictionay setValue:text forKey:@"new_password"];
         }];
     }
     
@@ -126,10 +137,13 @@
     return footerView;
 }
 
+#pragma mark - method
 - (void)getForgetCode:(JKCountDownButton *)sender
 {
+    [self.view endEditing:YES];
     NSString *codeString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kLoginGetCodeString];
-    NSDictionary *params = @{@"mobile" : @"13162521916"};
+    self.forgetDictionay[@"mobile"] = self.forgetDictionay[@"mobile"]?self.forgetDictionay[@"mobile"]:@"";
+    NSDictionary *params = @{@"mobile" : self.forgetDictionay[@"mobile"]};
     
     [self requestDataPostWithString:codeString params:params successBlock:^(id responseObject){//成功
         
@@ -158,10 +172,14 @@
 
 - (void)forgetCommitAction
 {
+    [self.view endEditing:YES];
     NSString *forgetString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kResetPasswordString];
-    NSDictionary *params = @{@"mobile" : @"13162521916",
-                             @"validatecode" : @"1835",
-                             @"new_password" : @"123456"};
+    
+    self.forgetDictionay[@"mobile"] = self.forgetDictionay[@"mobile"]?self.forgetDictionay[@"mobile"]:@"";
+    self.forgetDictionay[@"validatecode"] = self.forgetDictionay[@"validatecode"]?self.forgetDictionay[@"validatecode"]:@"";
+    self.forgetDictionay[@"new_password"] = self.forgetDictionay[@"new_password"]?self.forgetDictionay[@"new_password"]:@"";
+
+    NSDictionary *params = self.forgetDictionay;
     [self requestDataPostWithString:forgetString params:params successBlock:^(id responseObject){
         BaseModel *forgetModel = [BaseModel objectWithKeyValues:responseObject];
         [self showHint:forgetModel.msg];

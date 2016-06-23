@@ -31,14 +31,13 @@
         
         [self.loginTextField autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
         [self.loginTextField autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
+        [self.loginTextField autoSetDimension:ALDimensionWidth toSize:150];
         
         [self.loginButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.loginButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.loginTextField];
         
         [self.getCodebutton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.getCodebutton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.loginTextField];
-        [self.getCodebutton autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:8];
-        [self.getCodebutton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:8];
         [self.getCodebutton autoSetDimension:ALDimensionWidth toSize:80];
         
         self.didSetupConstraints = YES;
@@ -53,6 +52,7 @@
         _loginTextField.textColor = kBlackColor;
         _loginTextField.font = kBigFont;
         _loginTextField.delegate = self;
+        _loginTextField.secureTextEntry = YES;
     }
     return _loginTextField;
 }
@@ -63,6 +63,16 @@
         _loginButton = [UIButton newAutoLayoutView];
         _loginButton.titleLabel.font = kSecondFont;
         [_loginButton setTitleColor:kBlueColor forState:0];
+        
+        QDFWeakSelf;
+        [_loginButton addAction:^(UIButton *btn) {
+            btn.selected = !btn.selected;
+            if (btn.selected) {
+                weakself.loginTextField.secureTextEntry = NO;
+            }else{
+                weakself.loginTextField.secureTextEntry = YES;
+            }
+        }];
     }
     return _loginButton;
 }
@@ -74,13 +84,6 @@
         _getCodebutton.titleLabel.font = kSecondFont;
     }
     return _getCodebutton;
-}
-
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
-{
-    [textField endEditing:YES];
-    
-    return YES;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
