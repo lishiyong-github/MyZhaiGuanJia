@@ -111,6 +111,7 @@
         }];
         
     }else if (indexPath.row == 2){
+        cell.loginTextField.secureTextEntry = YES;
         [cell.getCodebutton setHidden:YES];
         [cell.loginButton setTitle:@"显示密码" forState:0];
         [cell.loginButton setTitle:@"隐藏密码" forState:UIControlStateSelected];

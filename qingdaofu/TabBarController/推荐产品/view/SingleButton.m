@@ -60,7 +60,7 @@
     if (!_label) {
         _label = [UILabel newAutoLayoutView];
         _label.font = kBigFont;
-        _label.text = @"发布清收";
+//        _label.text = @"发布清收";
         _label.textAlignment = NSTextAlignmentCenter;
     }
     return _label;

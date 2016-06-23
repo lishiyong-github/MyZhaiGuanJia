@@ -9,8 +9,8 @@
 #import "NewProductViewController.h"
 
 #import "ReportFinanceViewController.h"  //发布融资
-#import "ReportSuitViewController.h"   //发布清收
-#import "ReportCollectViewController.h" //发布诉讼
+#import "ReportSuitViewController.h"   //发布诉讼
+#import "ReportCollectViewController.h" //发布请收
 #import "ProductsDetailsViewController.h" //详细信息
 #import "MarkingViewController.h"
 
@@ -22,6 +22,8 @@
 
 #import "NewProductModel.h"
 #import "NewProductListModel.h"
+
+#import "UIViewController+BlurView.h"
 
 @interface NewProductViewController ()<UITableViewDataSource,UITableViewDelegate,UIScrollViewDelegate>
 
@@ -145,7 +147,6 @@
 #pragma mark - tableView delelagte and datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-//    return 1+6;
     return 2+self.productsDataListArray.count;
 }
 
@@ -184,18 +185,21 @@
         }];
         
         [cell.collectionButton addAction:^(UIButton *btn) {//清收
-            ReportCollectViewController *reportCollectVC = [[ReportCollectViewController alloc] init];
-            reportCollectVC.hidesBottomBarWhenPushed = YES;
-            [weakself.navigationController pushViewController:reportCollectVC animated:YES];
+            ReportSuitViewController *reportSuitVC = [[ReportSuitViewController alloc] init];
+            reportSuitVC.hidesBottomBarWhenPushed = YES;
+            reportSuitVC.categoryString = @"2";
+            [weakself.navigationController pushViewController:reportSuitVC animated:YES];
         }];
         
         [cell.suitButton addAction:^(UIButton *btn) {//诉讼
             ReportSuitViewController *reportSuitVC = [[ReportSuitViewController alloc] init];
             reportSuitVC.hidesBottomBarWhenPushed = YES;
+            reportSuitVC.categoryString = @"3";
             [weakself.navigationController pushViewController:reportSuitVC animated:YES];
         }];
         
         return cell;
+        
     }else if (indexPath.section == 1){
         identifier = @"main1";
         FourCell *cell = [tableView dequeueReusableCellWithIdentifier: identifier];
@@ -237,7 +241,7 @@
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    NewProductListModel *newModel = self.productsDataListArray[indexPath.section-1];
+    NewProductListModel *newModel = self.productsDataListArray[indexPath.section-2];
     
     cell.moneyView.label1.text = newModel.money;
     cell.moneyView.label2.text = @"借款本金(万元)";
@@ -315,7 +319,7 @@
             if ([model.code isEqualToString:@"0000"]) {//正常
                 ProductsDetailsViewController *productsDetailVC = [[ProductsDetailsViewController alloc] init];
                 productsDetailVC.hidesBottomBarWhenPushed = YES;
-                NewProductListModel *sModel = weakself.productsDataListArray[indexPath.section - 1];
+                NewProductListModel *sModel = weakself.productsDataListArray[indexPath.section - 2];
                 productsDetailVC.idString = sModel.idString;
                 productsDetailVC.categoryString = sModel.category;
                 [weakself.navigationController pushViewController:productsDetailVC animated:YES];

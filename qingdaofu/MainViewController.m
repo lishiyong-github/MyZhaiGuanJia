@@ -20,6 +20,7 @@
 #import "ReportSuitViewController.h"     //诉讼
 
 #import "MainView.h"
+#import "UIViewController+BlurView.h"
 
 @interface MainViewController ()<TabBarDelegate,UIActionSheetDelegate>
 
@@ -33,8 +34,6 @@
     [super viewDidLoad];
     
     [self showTabBarItem];
-    
-//    [self.view setNeedsUpdateConstraints];
 }
 
 - (void)showTabBarItem
@@ -53,6 +52,7 @@
     
     UITabBarController *tabBarController = [[UITabBarController alloc] init];
     tabBarController.viewControllers = @[newproductNav,productsNav,messageNav,mineNav];
+
     
 //    [[UITabBar appearance] setBackgroundImage:[[UIImage alloc] init]];
 //    [[UITabBar appearance] setShadowImage:[[UIImage alloc] init]];
@@ -60,54 +60,13 @@
     TabBar *tabBar = [[TabBar alloc] initWithFrame:tabBarController.tabBar.bounds];
     
     CGFloat normalButtonWidth = kScreenWidth/5;
-    //(kScreenWidth * 3 / 4) / 4;
     CGFloat tabBarHeight = CGRectGetHeight(tabBar.frame);
     CGFloat publishItemWidth = kScreenWidth/5;
-    //(kScreenWidth / 4);
     
     TabBarItem *newProductItem = [self tabBarItemWithFram:CGRectMake(0, 0, normalButtonWidth, tabBarHeight) title:@"精选" normalImageName:@"tab_recommend" selectedImageName:@"tab_recommend_s" tabBarItemType:TabBarItemTypeNormal];
     TabBarItem *productsItem = [self tabBarItemWithFram:CGRectMake(normalButtonWidth, 0, normalButtonWidth, tabBarHeight) title:@"产品" normalImageName:@"tab_product" selectedImageName:@"tab_product_s" tabBarItemType:TabBarItemTypeNormal];
     
     TabBarItem *publishItem = [self tabBarItemWithFram:CGRectMake(normalButtonWidth * 2, 4.5, normalButtonWidth, tabBarHeight) title:@"" normalImageName:@"publishs" selectedImageName:@"" tabBarItemType:TabBarItemTypeRise];
-    
-    [publishItem addAction:^(UIButton *btn) {
-        
-        NSLog(@"诉讼");
-        
-        UIWindow *window = [UIApplication sharedApplication].keyWindow;
-        UITabBarController *tabBarController = (UITabBarController *)window.rootViewController;
-        //
-        UINavigationController *viewController = tabBarController.selectedViewController;
-        
-        UIAlertController *tabAlertController = [UIAlertController alertControllerWithTitle:@"测试" message:@"发布清收融资" preferredStyle:UIAlertControllerStyleActionSheet];
-        
-        UIAlertAction *act1 = [UIAlertAction actionWithTitle:@"诉讼" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            ReportSuitViewController *reportSuitVC = [[ReportSuitViewController alloc] init];
-            [reportSuitVC setHidesBottomBarWhenPushed:YES];
-            [viewController pushViewController:reportSuitVC animated:YES];
-        }];
-        
-        UIAlertAction *act2 = [UIAlertAction actionWithTitle:@"清收" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            
-        }];
-        
-        UIAlertAction *act3 = [UIAlertAction actionWithTitle:@"融资" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            ReportFinanceViewController *reportFinanceVC = [[ReportFinanceViewController alloc] init];
-            [reportFinanceVC setHidesBottomBarWhenPushed:YES];
-            [viewController pushViewController:reportFinanceVC animated:YES];
-        }];
-        
-        UIAlertAction *act0 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-            
-        }];
-        
-        [tabAlertController addAction:act1];
-        [tabAlertController addAction:act2];
-        [tabAlertController addAction:act3];
-        [tabAlertController addAction:act0];
-        
-        [viewController presentViewController:tabAlertController animated:YES completion:nil];
-    }];
     
     TabBarItem *messageItem = [self tabBarItemWithFram:CGRectMake(normalButtonWidth * 2 + publishItemWidth, 0, normalButtonWidth, tabBarHeight) title:@"消息" normalImageName:@"news" selectedImageName:@"news_s" tabBarItemType:TabBarItemTypeNormal];
     TabBarItem *mineItem = [self tabBarItemWithFram:CGRectMake(normalButtonWidth * 3 + publishItemWidth, 0, normalButtonWidth, tabBarHeight) title:@"用户" normalImageName:@"tab_user" selectedImageName:@"tab_user_s" tabBarItemType:TabBarItemTypeNormal];
@@ -142,8 +101,14 @@
 #pragma mark - tabBar delegate
 - (void)tabBarDidSelectedRiseButton
 {
+    NSLog(@"发布");
     
-        NSLog(@"发布");
+    UIView *tagView = [self.view viewWithTag:99999];
+    if (!tagView) {
+        tagView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
+        tagView.backgroundColor = UIColorFromRGB1(0x333333, 0.6);
+        [self.view addSubview:tagView];
+    }
     
 //    UIView *showView = [UIView newAutoLayoutView];
 //    //

@@ -85,14 +85,12 @@
     if (!_proTitleView) {
         _proTitleView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
 //        [_proTitleView setImage:[UIImage imageNamed:@"title_product_open"] forState:0];
-//        [_proTitleView setImage:[UIImage imageNamed:@"title_product_close"] forState:UIControlStateSelected];
         [_proTitleView setTitle:@"所有产品" forState:0];
         _proTitleView.titleLabel.font = kNavFont;
         [_proTitleView setTitleColor:kBlackColor forState:0];
         
         QDFWeakSelf;
         [_proTitleView addAction:^(UIButton *btn) {
-
             btn.selected = !btn.selected;
             if (btn.selected) {
                 NSArray *titleArray = @[@"全部",@"融资",@"清收",@"诉讼"];
@@ -102,8 +100,9 @@
                     [weakself.paramsDictionary setValue:value forKey:@"category"];
                     [weakself getProductsListWithPage:@"0"];
                 }];
+            }else{
+                [weakself hiddenBlurView];
             }
-            
         }];
     }
     return _proTitleView;

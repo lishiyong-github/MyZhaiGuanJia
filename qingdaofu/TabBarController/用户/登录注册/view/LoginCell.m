@@ -52,7 +52,6 @@
         _loginTextField.textColor = kBlackColor;
         _loginTextField.font = kBigFont;
         _loginTextField.delegate = self;
-        _loginTextField.secureTextEntry = YES;
     }
     return _loginTextField;
 }

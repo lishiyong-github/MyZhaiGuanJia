@@ -10,4 +10,6 @@
 
 @interface ReportSuitViewController : NetworkViewController
 
+@property (nonatomic,strong) NSString *categoryString;  //2为催收，3为诉讼
+
 @end

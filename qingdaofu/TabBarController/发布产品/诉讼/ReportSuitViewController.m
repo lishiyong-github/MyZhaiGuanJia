@@ -45,7 +45,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = @"发布诉讼";
+    if ([self.categoryString integerValue] == 2) {
+        self.navigationItem.title = @"发布清收";
+    }else{
+        self.navigationItem.title = @"发布诉讼";
+    }
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
     [self setupForDismissKeyboard];
@@ -242,7 +246,7 @@
                 [self.suitTableView reloadData];
             }];
             return cell;
-        }else if (indexPath.row == 5){//具体
+        }else if (indexPath.row == 5){//具体地址
             identifier = @"suitSect05";
             EditDebtAddressCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
             if (!cell) {
@@ -276,21 +280,35 @@
         if (indexPath.row == 0) {//基本信息
             NSMutableAttributedString *dddd = [cell.agentLabel setAttributeString:@"|  基本信息" withColor:kBlueColor andSecond:@"(必填)" withColor:kBlackColor withFont:12];
             [cell.agentLabel setAttributedText:dddd];
-            [cell.agentTextField setHidden:YES];
-            [cell.agentButton setHidden:YES];
+            cell.agentTextField.userInteractionEnabled = NO;
+            [cell.agentButton setTitle:@"" forState:0];
+            [cell.agentButton setImage:[UIImage imageNamed:@""] forState:0];
+            
         }else if (indexPath.row == 1){//借款本金
+            cell.agentTextField.userInteractionEnabled = YES;
             [cell.agentButton setTitle:@"万元" forState:0];
+            [cell.agentButton setImage:[UIImage imageNamed:@""] forState:0];
             [cell setDidEndEditing:^(NSString *text) {
                 [self.suitDataDictionary setValue:text forKey:@"money"];
             }];
             
         }else if (indexPath.row == 2){//代理费用
-            [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-            [cell.agentButton setTitle:@"请选择" forState:0];
-            [cell setDidEndEditing:^(NSString *text) {
-                [self.suitDataDictionary setValue:text forKey:@"agencycommission"];
-            }];
-            [cell.agentButton addTarget:self action:@selector(showTitleOfUpwardView:) forControlEvents:UIControlEventTouchUpInside];
+            
+            cell.agentTextField.userInteractionEnabled = YES;
+            if ([self.categoryString integerValue] == 2) {
+                [cell.agentButton setTitle:@"%" forState:0];
+                [cell.agentButton setImage:[UIImage imageNamed:@""] forState:0];
+            }else{
+                [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+                NSString *eeee = self.suitDataDictionary[@"agencycommissiontype_str"]?self.suitDataDictionary[@"agencycommissiontype_str"]:@"请选择";
+                [cell.agentButton setTitle:eeee forState:0];
+                
+                [cell setDidEndEditing:^(NSString *text) {
+                    [self.suitDataDictionary setValue:text forKey:@"agencycommission"];
+                }];
+                [cell.agentButton addTarget:self action:@selector(showTitleOfUpwardView:) forControlEvents:UIControlEventTouchUpInside];
+            }
+            
         }else if (indexPath.row == 4){//抵押物地址
             if ([_number intValue] == 1) {//抵押物地址
                 cell.agentTextField.userInteractionEnabled = NO;
@@ -386,34 +404,88 @@
     if (indexPath.row == 0) {
         NSMutableAttributedString *ffff = [cell.agentLabel setAttributeString:@"|  补充信息" withColor:kBlueColor andSecond:@"(选填)" withColor:kBlackColor withFont:12];
         [cell.agentLabel setAttributedText:ffff];
-        [cell.agentTextField setHidden:YES];
-        [cell.agentButton setHidden:YES];
+        cell.agentTextField.userInteractionEnabled = NO;
+        [cell.agentButton setTitle:@"" forState:0];
+        [cell.agentButton setImage:[UIImage imageNamed:@""] forState:0];
+        
     }else if (indexPath.row == 1){//借款利率
+        cell.agentTextField.userInteractionEnabled = YES;
         [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        NSString *eeee = self.suitDataDictionary[@"rate_cat_str"]?self.suitDataDictionary[@"rate_cat_str"]:@"请选择";
+        [cell.agentButton setTitle:eeee forState:0];
+        
         [cell setDidEndEditing:^(NSString *text) {
             [self.suitDataDictionary setValue:text forKey:@"rate"];
         }];
         [cell.agentButton addTarget:self action:@selector(showTitleOfUpwardView:) forControlEvents:UIControlEventTouchUpInside];
     }else if (indexPath.row == 2){//借款期限
+        cell.agentTextField.userInteractionEnabled = YES;
         [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        NSString *eeee = self.suitDataDictionary[@"rate_cat_str"]?self.suitDataDictionary[@"rate_cat_str"]:@"请选择";
+        [cell.agentButton setTitle:eeee forState:0];
+        
         [cell setDidEndEditing:^(NSString *text) {
             [self.suitDataDictionary setValue:text forKey:@"term"];
         }];
         [cell.agentButton addTarget:self action:@selector(showTitleOfUpwardView:) forControlEvents:UIControlEventTouchUpInside];
-    }else if ((indexPath.row > 2) && (indexPath.row < 7)){
-        [cell.agentTextField setHidden:YES];
+    }else if (indexPath.row == 3){//还款方式
+        cell.agentTextField.userInteractionEnabled = NO;
         [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        NSString *eeee = self.suitDataDictionary[@"repaymethod_str"]?self.suitDataDictionary[@"repaymethod_str"]:@"请选择";
+        [cell.agentButton setTitle:eeee forState:0];
+        
+        [cell.agentButton addTarget:self action:@selector(showTitleOfUpwardView:) forControlEvents:UIControlEventTouchUpInside];
+    }else if (indexPath.row == 4){//债务人主体
+        cell.agentTextField.userInteractionEnabled = NO;
+        [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        NSString *eeee = self.suitDataDictionary[@"obligor_str"]?self.suitDataDictionary[@"obligor_str"]:@"请选择";
+        [cell.agentButton setTitle:eeee forState:0];
+        
+        [cell.agentButton addTarget:self action:@selector(showTitleOfUpwardView:) forControlEvents:UIControlEventTouchUpInside];
+    }else if (indexPath.row == 5){//委托事项
+        cell.agentTextField.userInteractionEnabled = NO;
+        [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        NSString *eeee = self.suitDataDictionary[@"commitment_str"]?self.suitDataDictionary[@"commitment_str"]:@"请选择";
+        [cell.agentButton setTitle:eeee forState:0];
+
+        [cell.agentButton addTarget:self action:@selector(showTitleOfUpwardView:) forControlEvents:UIControlEventTouchUpInside];
+    }else if (indexPath.row == 6){//委托代理期限
+        cell.agentTextField.userInteractionEnabled = NO;
+        [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        NSString *eeee = self.suitDataDictionary[@"commissionperiod_str"]?self.suitDataDictionary[@"commissionperiod_str"]:@"请选择";
+        [cell.agentButton setTitle:eeee forState:0];
+        
         [cell.agentButton addTarget:self action:@selector(showTitleOfUpwardView:) forControlEvents:UIControlEventTouchUpInside];
     }else if (indexPath.row == 7){//已付本金
+        cell.agentTextField.userInteractionEnabled = YES;
+        [cell.agentButton setTitle:@"元" forState:0];
+        [cell.agentButton setImage:[UIImage imageNamed:@""] forState:0];
+        
         [cell setDidEndEditing:^(NSString *text) {
             [self.suitDataDictionary setValue:text forKey:@"paidmoney"];
         }];
     }else if (indexPath.row == 8){//已付利息
+        cell.agentTextField.userInteractionEnabled = YES;
+        [cell.agentButton setTitle:@"元" forState:0];
+        [cell.agentButton setImage:[UIImage imageNamed:@""] forState:0];
+        
         [cell setDidEndEditing:^(NSString *text) {
             [self.suitDataDictionary setValue:text forKey:@"interestpaid"];
         }];
-    }else if(indexPath.row > 9){
+    }else if (indexPath.row == 10){//债权文件
+        cell.agentTextField.userInteractionEnabled = NO;
         [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        [cell.agentButton setTitle:@"上传" forState:0];
+        [cell.agentButton addTarget:self action:@selector(showTitleOfUpwardView:) forControlEvents:UIControlEventTouchUpInside];
+    }else if (indexPath.row == 11){//债权人信息
+        cell.agentTextField.userInteractionEnabled = NO;
+        [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        [cell.agentButton setTitle:@"完善" forState:0];
+        [cell.agentButton addTarget:self action:@selector(showTitleOfUpwardView:) forControlEvents:UIControlEventTouchUpInside];
+    }else if (indexPath.row == 12){//债务人信息
+        cell.agentTextField.userInteractionEnabled = NO;
+        [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        [cell.agentButton setTitle:@"完善" forState:0];
         [cell.agentButton addTarget:self action:@selector(showTitleOfUpwardView:) forControlEvents:UIControlEventTouchUpInside];
     }
     
@@ -478,6 +550,7 @@
                 
                 NSString *value = [NSString stringWithFormat:@"%d",row];
                 [self.suitDataDictionary setValue:value forKey:@"agencycommissiontype"];
+                [self.suitDataDictionary setValue:text forKey:@"agencycommissiontype_str"];
             }];
         }
             break;
@@ -486,6 +559,8 @@
                 [btn setTitle:text forState:0];
                 NSString *value = [NSString stringWithFormat:@"%d",row];
                 [self.suitDataDictionary setValue:value forKey:@"rate_cat"];
+                [self.suitDataDictionary setValue:text forKey:@"rate_cat_str"];
+
                 UIButton *elseBtn = [self.suitTableView viewWithTag:9];
                 [elseBtn setTitle:text forState:0];
                 
@@ -497,8 +572,9 @@
                 [btn setTitle:text forState:0];
                 
                 NSString *value = [NSString stringWithFormat:@"%d",row];
-                [self.suitDataDictionary setValue:value forKey:@"term"];
-                
+                [self.suitDataDictionary setValue:value forKey:@"rate_cat"];
+                [self.suitDataDictionary setValue:text forKey:@"rate_cat_str"];
+
                 UIButton *elseBtn = [self.suitTableView viewWithTag:8];
                 [elseBtn setTitle:text forState:0];
             }];
@@ -510,6 +586,8 @@
                 
                 NSString *value = [NSString stringWithFormat:@"%d",row];
                 [self.suitDataDictionary setValue:value forKey:@"repaymethod"];
+                [self.suitDataDictionary setValue:text forKey:@"repaymethod_str"];
+
             }];
         }
             break;
@@ -519,6 +597,8 @@
                 
                 NSString *value = [NSString stringWithFormat:@"%d",row];
                 [self.suitDataDictionary setValue:value forKey:@"obligor"];
+                [self.suitDataDictionary setValue:text forKey:@"obligor_str"];
+
             }];
         }
             break;
@@ -528,6 +608,8 @@
                 
                 NSString *value = [NSString stringWithFormat:@"%d",row];
                 [self.suitDataDictionary setValue:value forKey:@"commitment"];
+                [self.suitDataDictionary setValue:text forKey:@"commitment_str"];
+
             }];
         }
             break;
@@ -537,7 +619,7 @@
                 
                 NSString *value = [NSString stringWithFormat:@"%d",row];
                 [self.suitDataDictionary setValue:value forKey:@"commissionperiod"];
-                
+                [self.suitDataDictionary setValue:text forKey:@"commissionperiod_str"];
             }];
         }
             break;

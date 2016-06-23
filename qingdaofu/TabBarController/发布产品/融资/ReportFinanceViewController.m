@@ -30,7 +30,6 @@
 /* 单元格内容 */
 @property (nonatomic,strong) NSMutableArray *finanTextArray;
 @property (nonatomic,strong) NSMutableArray *financeholderArray;
-@property (nonatomic,strong) NSMutableArray *finanActArray;
 
 //租金
 @property (nonatomic,strong) NSString *stateString;
@@ -143,7 +142,7 @@
 - (NSMutableArray *)finanTextArray
 {
     if (!_finanTextArray) {
-        NSMutableArray *a1 = [NSMutableArray arrayWithArray:@[@"|  基本信息",@"金额",@"返点(%)",@"借款利率(%)",@"抵押物地址",@""]];
+        NSMutableArray *a1 = [NSMutableArray arrayWithArray:@[@"|  基本信息",@"金额",@"返点",@"借款利率",@"抵押物地址",@""]];
         NSMutableArray *a2 = [NSMutableArray arrayWithObjects:@"|  补充信息",@"借款期限",@"抵押物类型",@"抵押物状态",@"抵押物面积",@"借款人年龄",@"权利人年龄", nil];
         _finanTextArray = [NSMutableArray arrayWithArray:@[a1,a2]];
         
@@ -154,25 +153,12 @@
 - (NSMutableArray *)financeholderArray
 {
     if (!_financeholderArray) {
-        NSMutableArray *a1 = [NSMutableArray arrayWithObjects:@"",@"填写您希望融资的金额",@"能够给到中介的返点，如没有请输入0",@"能够给到融资方的利息(%)",@"小区/写字楼/商铺等",@"", nil];  //@[@"",@"填写您希望融资的金额",@"能够给到中介的返点，如没有请输入0",@"能够给到融资方的利息(%)",@"小区/写字楼/商铺等",@""]];
+        NSMutableArray *a1 = [NSMutableArray arrayWithObjects:@"",@"填写您希望融资的金额",@"能够给到中介的返点，如没有请输入0",@"能够给到融资方的利息(%)",@"小区/写字楼/商铺等",@"", nil];
         NSMutableArray *a2 = [NSMutableArray arrayWithObjects:@"",@"输入借款期限",@"",@"",@"输入抵押物面积",@"请输入年龄，只能输入数字",@"",nil];
         _financeholderArray = [NSMutableArray arrayWithArray:@[a1,a2]];
     }
     return _financeholderArray;
 }
-
-- (NSMutableArray *)finanActArray
-{
-    if (!_finanActArray) {
-        NSMutableArray *a1 = [NSMutableArray arrayWithObjects:@"",@"万元",@"",@"请选择",@"",@"", nil];  //@[@"",@"填写您希望融资的金额",@"能够给到中介的返点，如没有请输入0",@"能够给到融资方的利息(%)",@"小区/写字楼/商铺等",@""]];
-        NSMutableArray *a2 = [NSMutableArray arrayWithObjects:@"",@"请选择",@"请选择",@"请选择",@"m²",@"岁",@"请选择",nil];
-        
-        _finanActArray = [NSMutableArray arrayWithArray:@[a1,a2]];
-    }
-    return _finanActArray;
-}
-
-
 
 - (NSMutableDictionary *)dataDictionary
 {
@@ -237,28 +223,38 @@
     
     cell.agentLabel.text = self.finanTextArray[indexPath.section][indexPath.row];
     cell.agentTextField.placeholder = self.financeholderArray[indexPath.section][indexPath.row];
-    [cell.agentButton setTitle:self.finanActArray[indexPath.section][indexPath.row] forState:0];
     
     if (indexPath.section == 0) {//seciont=0
         if (indexPath.row == 0) {
             NSMutableAttributedString *dddd = [cell.agentLabel setAttributeString:@"|  基本信息" withColor:kBlueColor andSecond:@"(必填)" withColor:kBlackColor withFont:12];
             [cell.agentLabel setAttributedText:dddd];
-            [cell.agentTextField setHidden:YES];
-            [cell.agentButton setHidden:YES];
+            cell.agentTextField.userInteractionEnabled = NO;
+            [cell.agentButton setTitle:@"" forState:0];
+            [cell.agentButton setImage:[UIImage imageNamed:@""] forState:0];
+            
         }else if (indexPath.row == 1){//金额
+            [cell.agentButton setTitle:@"万元" forState:0];
+            [cell.agentButton setImage:[UIImage imageNamed:@""] forState:0];
             [cell setDidEndEditing:^(NSString *text) {
                 [self.dataDictionary setValue:text forKey:@"money"];
             }];
         }else if (indexPath.row == 2){//返点
+            [cell.agentButton setTitle:@"%" forState:0];
+            [cell.agentButton setImage:[UIImage imageNamed:@""] forState:0];
             [cell setDidEndEditing:^(NSString *text) {
                 [self.dataDictionary setValue:text forKey:@"rebate"];
             }];
         }else if (indexPath.row == 3) {//利率
             [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            NSString *rate_cat = self.dataDictionary[@"rate_cat_str"]?self.dataDictionary[@"rate_cat_str"]:@"请选择";
+            [cell.agentButton setTitle:rate_cat forState:0];
+            
             [cell setDidEndEditing:^(NSString *text) {
                 [self.dataDictionary setValue:text forKey:@"rate"];
             }];
         }else{//抵押物地址（小区名）
+            [cell.agentButton setTitle:@"请选择" forState:0];
+            [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
             [cell setDidEndEditing:^(NSString *text) {
                 [self.dataDictionary setValue:text forKey:@"mortorage_community"];
             }];
@@ -267,32 +263,54 @@
         if (indexPath.row == 0) {
             NSMutableAttributedString *ffff = [cell.agentLabel setAttributeString:@"|  补充信息" withColor:kBlueColor andSecond:@"(选填)" withColor:kBlackColor withFont:12];
             [cell.agentLabel setAttributedText:ffff];
-            [cell.agentTextField setHidden:YES];
-            [cell.agentButton setHidden:YES];
+            cell.agentTextField.userInteractionEnabled = NO;
+            [cell.agentButton setTitle:@"" forState:0];
+            [cell.agentButton setImage:[UIImage imageNamed:@""] forState:0];
             
         }else if (indexPath.row == 1){//借款期限
             [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            NSString *rate_cat = self.dataDictionary[@"rate_cat_str"]?self.dataDictionary[@"rate_cat_str"]:@"请选择";
+            [cell.agentButton setTitle:rate_cat forState:0];
+            
             [cell setDidEndEditing:^(NSString *text) {
                 [self.dataDictionary setValue:text forKey:@"term"];
             }];
         }else if (indexPath.row == 2){//抵押物类型
             [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            NSString *rate_cat = self.dataDictionary[@"mortgagecategory_str"]?self.dataDictionary[@"mortgagecategory_str"]:@"请选择";
+            [cell.agentButton setTitle:rate_cat forState:0];
+            
             [cell.agentTextField setHidden:YES];
         }else if (indexPath.row == 3){//抵押物状态
             [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            NSString *rate_cat = self.dataDictionary[@"status_str"]?self.dataDictionary[@"status_str"]:@"请选择";
+            [cell.agentButton setTitle:rate_cat forState:0];
+            
             [cell.agentTextField setHidden:YES];
         }else if (indexPath.row == [self.finanTextArray[1] count] - 3){//抵押物面积
+            [cell.agentButton setImage:[UIImage imageNamed:@""] forState:0];
+            [cell.agentButton setTitle:@"m²" forState:0];
             [cell setDidEndEditing:^(NSString *text) {
                 [self.dataDictionary setValue:text forKey:@"mortgagearea"];
             }];
         }else if (indexPath.row == [self.finanTextArray[1] count] - 2){//借款人年龄
+            [cell.agentButton setTitle:@"岁" forState:0];
+            [cell.agentButton setImage:[UIImage imageNamed:@""] forState:0];
             [cell setDidEndEditing:^(NSString *text) {
                 [self.dataDictionary setValue:text forKey:@"loanyear"];
             }];
         }else if(indexPath.row == [self.finanTextArray[1] count] - 1){//权利人年龄
             [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            NSString *sss = self.dataDictionary[@"obligeeyear_str"]?self.dataDictionary[@"obligeeyear_str"]:@"请选择";
+            [cell.agentButton setTitle:sss forState:0];
+            
             [cell.agentTextField setHidden:YES];
         }else{//租金（第四行）
+            cell.agentLabel.text = self.finanTextArray[indexPath.section][indexPath.row];
+            cell.agentTextField.placeholder = self.financeholderArray[indexPath.section][indexPath.row];
+            [cell.agentButton setTitle:@"元" forState:0];
+            [cell.agentButton setImage:[UIImage imageNamed:@""] forState:0];
+            
             if ([self.finanTextArray[1] count] == 8) {
                 [cell setDidEndEditing:^(NSString *text) {
                     [self.dataDictionary setValue:text forKey:@"rentmoney"];
@@ -337,10 +355,10 @@
 
 - (void)showTextOfUpwardView:(UIButton *)btn
 {
-    NSArray *arr3 = @[@"天",@"月"];
+    NSArray *arr3 = @[@"天(%)",@"月(%)"];
     NSArray *arr9 = @[@"住宅",@"商户",@"办公楼"];
     NSArray *arr10 = @[@"自住",@"出租"];
-    NSArray *arr13 = @[@"65岁以上",@"65岁以下"];
+    NSArray *arr13 = @[@"65岁以下",@"65岁以上"];
     
     switch (btn.tag) {
         case 3:{//借款利率
@@ -349,7 +367,9 @@
                 
                 NSString *value = [NSString stringWithFormat:@"%d",row];
                 [self.dataDictionary setValue:value forKey:@"rate_cat"];
-
+                [self.dataDictionary setValue:text forKey:@"rate_cat_str"];
+                
+                //借款期限
                 UIButton *elseBtn = [self.reportFinanceTableView viewWithTag:8];
                 [elseBtn setTitle:text forState:0];
             }];
@@ -361,6 +381,7 @@
                 
                 NSString *value = [NSString stringWithFormat:@"%d",row];
                 [self.dataDictionary setValue:value forKey:@"rate_cat"];
+                [self.dataDictionary setValue:text forKey:@"rate_cat_str"];
                
                 UIButton *elseBtn = [self.reportFinanceTableView viewWithTag:3];
                 [elseBtn setTitle:text forState:0];
@@ -374,7 +395,7 @@
                 
                 NSString *value = [NSString stringWithFormat:@"%d",row];
                 [self.dataDictionary setValue:value forKey:@"mortgagecategory"];
-                
+                [self.dataDictionary setValue:text forKey:@"mortgagecategory_str"];
             }];
         }
             break;
@@ -384,19 +405,18 @@
                 
                 NSString *value = [NSString stringWithFormat:@"%d",row];
                 [self.dataDictionary setValue:value forKey:@"status"];
+                [self.dataDictionary setValue:text forKey:@"status_str"];
                 
                 if ([text isEqualToString:@"出租"]) {
                     if ([self.finanTextArray[1] count] == 7) {
                         [self.finanTextArray[1] insertObject:@"租金" atIndex:4];
                         [self.financeholderArray[1] insertObject:@"请填写租金" atIndex:4];
-                        [self.finanActArray[1] insertObject:@"" atIndex:4];
                         [self.reportFinanceTableView reloadData];
                     }
                 }else{
                     if ([self.finanTextArray[1] count] == 8) {
                         [self.finanTextArray[1] removeObjectAtIndex:4];
                         [self.financeholderArray[1] removeObjectAtIndex:4];
-                        [self.finanActArray[1] removeObjectAtIndex:4];
                         [self.reportFinanceTableView reloadData];
                     }
                 }
@@ -404,13 +424,31 @@
         }
             break;
         case 13:{//权利人年龄
-            [self showBlurInView:self.view withArray:arr13 andTitle:@"选择权利人年龄" finishBlock:^(NSString *text,NSInteger row) {
-                [btn setTitle:text forState:0];
-                
-                NSString *value = [NSString stringWithFormat:@"%d",row];
-                [self.dataDictionary setValue:value forKey:@"obligeeyear"];
-               
-            }];
+            
+            if ([self.finanTextArray[1] count] == 7) {
+                [self showBlurInView:self.view withArray:arr13 andTitle:@"选择权利人年龄" finishBlock:^(NSString *text,NSInteger row) {
+                    [btn setTitle:text forState:0];
+                    
+                    NSString *value = [NSString stringWithFormat:@"%d",row];
+                    [self.dataDictionary setValue:value forKey:@"obligeeyear"];
+                    [self.dataDictionary setValue:text forKey:@"obligeeyear_str"];
+                    
+                }];
+            }
+            
+        }
+            break;
+        case 14:{
+            if ([self.finanTextArray[1] count] == 8) {
+                [self showBlurInView:self.view withArray:arr13 andTitle:@"选择权利人年龄" finishBlock:^(NSString *text,NSInteger row) {
+                    [btn setTitle:text forState:0];
+                    
+                    NSString *value = [NSString stringWithFormat:@"%d",row];
+                    [self.dataDictionary setValue:value forKey:@"obligeeyear"];
+                    [self.dataDictionary setValue:text forKey:@"obligeeyear_str"];
+                    
+                }];
+            }
         }
             break;
         default:

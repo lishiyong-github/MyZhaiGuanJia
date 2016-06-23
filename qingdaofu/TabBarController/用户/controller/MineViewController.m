@@ -185,6 +185,15 @@
                 }else{
                     [weakself showHint:tModel.msg];
                 }
+                
+                if ([tModel.code isEqualToString:@"3006"] || [tModel.code isEqualToString:@"0000"]) {
+                    
+                    if (buttonTag == 12) {
+                        MySettingsViewController *mySettingVC = [[MySettingsViewController alloc] init];
+                        mySettingVC.hidesBottomBarWhenPushed = YES;
+                        [weakself.navigationController pushViewController:mySettingVC animated:YES];
+                    }
+                }
             }];
         
         }];
