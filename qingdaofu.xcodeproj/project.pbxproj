@@ -100,6 +100,7 @@
 		A16175561D12A1CF001BB200 /* LoginTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = A16175551D12A1CF001BB200 /* LoginTableView.m */; };
 		A161755D1D138A6A001BB200 /* RecordResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A161755C1D138A6A001BB200 /* RecordResponse.m */; };
 		A161756C1D13A731001BB200 /* SkyAssociationMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = A161756B1D13A731001BB200 /* SkyAssociationMenuView.m */; };
+		A16391501D1D12110051F1D0 /* DebtCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A163914F1D1D12110051F1D0 /* DebtCell.m */; };
 		A16486B11D00088B00B442C1 /* title_product_close@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A16486AD1D00088B00B442C1 /* title_product_close@2x.png */; };
 		A16486B21D00088B00B442C1 /* title_product_close@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A16486AE1D00088B00B442C1 /* title_product_close@3x.png */; };
 		A16486B31D00088B00B442C1 /* title_product_open@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A16486AF1D00088B00B442C1 /* title_product_open@2x.png */; };
@@ -123,9 +124,7 @@
 		A16856A51CE9B864006A0887 /* DebtDocumnetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A16856A41CE9B864006A0887 /* DebtDocumnetsViewController.m */; };
 		A16856A91CE9BF82006A0887 /* ProDetailHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = A16856A81CE9BF82006A0887 /* ProDetailHeadView.m */; };
 		A16856AC1CE9CBA5006A0887 /* ProDetailHeadFootView.m in Sources */ = {isa = PBXBuildFile; fileRef = A16856AB1CE9CBA5006A0887 /* ProDetailHeadFootView.m */; };
-		A16BA13D1CEBF57E00A7010C /* DebtCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A16BA13C1CEBF57E00A7010C /* DebtCell.m */; };
 		A16BA1401CEC11B600A7010C /* EditDebtCreditMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A16BA13F1CEC11B600A7010C /* EditDebtCreditMessageViewController.m */; };
-		A16BA1431CEC155B00A7010C /* EditDebtCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A16BA1421CEC155B00A7010C /* EditDebtCell.m */; };
 		A16BA1461CEC2ECB00A7010C /* EditDebtAddressCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A16BA1451CEC2ECB00A7010C /* EditDebtAddressCell.m */; };
 		A16BA1491CEC4E2B00A7010C /* TakePictureCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A16BA1481CEC4E2B00A7010C /* TakePictureCell.m */; };
 		A16BA14C1CEC733A00A7010C /* nav_logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A16BA14A1CEC733A00A7010C /* nav_logo@2x.png */; };
@@ -610,6 +609,8 @@
 		A161755C1D138A6A001BB200 /* RecordResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordResponse.m; sourceTree = "<group>"; };
 		A161756A1D13A731001BB200 /* SkyAssociationMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkyAssociationMenuView.h; sourceTree = "<group>"; };
 		A161756B1D13A731001BB200 /* SkyAssociationMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkyAssociationMenuView.m; sourceTree = "<group>"; };
+		A163914E1D1D12110051F1D0 /* DebtCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebtCell.h; sourceTree = "<group>"; };
+		A163914F1D1D12110051F1D0 /* DebtCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebtCell.m; sourceTree = "<group>"; };
 		A16486AD1D00088B00B442C1 /* title_product_close@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "title_product_close@2x.png"; sourceTree = "<group>"; };
 		A16486AE1D00088B00B442C1 /* title_product_close@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "title_product_close@3x.png"; sourceTree = "<group>"; };
 		A16486AF1D00088B00B442C1 /* title_product_open@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "title_product_open@2x.png"; sourceTree = "<group>"; };
@@ -644,12 +645,8 @@
 		A16856A81CE9BF82006A0887 /* ProDetailHeadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProDetailHeadView.m; sourceTree = "<group>"; };
 		A16856AA1CE9CBA5006A0887 /* ProDetailHeadFootView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProDetailHeadFootView.h; sourceTree = "<group>"; };
 		A16856AB1CE9CBA5006A0887 /* ProDetailHeadFootView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProDetailHeadFootView.m; sourceTree = "<group>"; };
-		A16BA13B1CEBF57E00A7010C /* DebtCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebtCell.h; sourceTree = "<group>"; };
-		A16BA13C1CEBF57E00A7010C /* DebtCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebtCell.m; sourceTree = "<group>"; };
 		A16BA13E1CEC11B600A7010C /* EditDebtCreditMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditDebtCreditMessageViewController.h; sourceTree = "<group>"; };
 		A16BA13F1CEC11B600A7010C /* EditDebtCreditMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditDebtCreditMessageViewController.m; sourceTree = "<group>"; };
-		A16BA1411CEC155B00A7010C /* EditDebtCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditDebtCell.h; sourceTree = "<group>"; };
-		A16BA1421CEC155B00A7010C /* EditDebtCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditDebtCell.m; sourceTree = "<group>"; };
 		A16BA1441CEC2ECB00A7010C /* EditDebtAddressCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditDebtAddressCell.h; sourceTree = "<group>"; };
 		A16BA1451CEC2ECB00A7010C /* EditDebtAddressCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditDebtAddressCell.m; sourceTree = "<group>"; };
 		A16BA1471CEC4E2B00A7010C /* TakePictureCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TakePictureCell.h; sourceTree = "<group>"; };
@@ -1484,12 +1481,10 @@
 		A16BA13A1CEBF56E00A7010C /* view */ = {
 			isa = PBXGroup;
 			children = (
-				A16BA13B1CEBF57E00A7010C /* DebtCell.h */,
-				A16BA13C1CEBF57E00A7010C /* DebtCell.m */,
-				A16BA1411CEC155B00A7010C /* EditDebtCell.h */,
-				A16BA1421CEC155B00A7010C /* EditDebtCell.m */,
 				A16BA1441CEC2ECB00A7010C /* EditDebtAddressCell.h */,
 				A16BA1451CEC2ECB00A7010C /* EditDebtAddressCell.m */,
+				A163914E1D1D12110051F1D0 /* DebtCell.h */,
+				A163914F1D1D12110051F1D0 /* DebtCell.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -3199,7 +3194,6 @@
 				A1A34C3A1CE32C9300AD454A /* ForgetPassViewController.m in Sources */,
 				A19D29471CD1B44D00DAAEA7 /* MoneyView.m in Sources */,
 				A159F95E1D0D66BC00A6A024 /* DelayRequestsViewController.m in Sources */,
-				A16BA1431CEC155B00A7010C /* EditDebtCell.m in Sources */,
 				A19B8E571CCF640300F8EBF2 /* MessageCell.m in Sources */,
 				A1A34C371CE32C8000AD454A /* RegisterViewController.m in Sources */,
 				A16175531D1291D5001BB200 /* TokenModel.m in Sources */,
@@ -3290,10 +3284,10 @@
 				A16856801CE99358006A0887 /* ProductsDetailsProViewController.m in Sources */,
 				A14C17681D0AE577003826F8 /* UserModel.m in Sources */,
 				A1B028E91D1794DC00F32A09 /* SDWebImageDecoder.m in Sources */,
+				A16391501D1D12110051F1D0 /* DebtCell.m in Sources */,
 				A159F94B1D0C497300A6A024 /* UIViewController+BlurView.m in Sources */,
 				A161755D1D138A6A001BB200 /* RecordResponse.m in Sources */,
 				A10D7B7E1CEAFB7A00422D7D /* AgentCell.m in Sources */,
-				A16BA13D1CEBF57E00A7010C /* DebtCell.m in Sources */,
 				A18C675F1CD087C500C7B070 /* UIView+Fram.m in Sources */,
 				A16FF5A81D05A3E400C50A0B /* ReleaseResponse.m in Sources */,
 				A145B2A61CEEEDA6003A93B7 /* EvaluatePhotoCell.m in Sources */,

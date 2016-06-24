@@ -15,10 +15,11 @@
 @property (nonatomic,copy) NSString *agencycommissiontype; //代理费用类型：1为固定费用(万)2为风险费率(%)
 @property (nonatomic,copy) NSString *applyclose;  //状态：3为终止。4为结案
 @property (nonatomic,copy) NSString *applyclosefrom;  //发起申请人的uid
-@property (nonatomic,copy) NSString *audi;  //车系
 @property (nonatomic,copy) NSString *borrowinginfo;
 @property (nonatomic,copy) NSString *browsenumber;
 @property (nonatomic,copy) NSString *carbrand;  //机动车抵押：机动车品牌
+@property (nonatomic,copy) NSString *audi;  //车系
+@property (nonatomic,copy) NSString *licenseplate;  //车牌类型：1=>'沪牌',2=>'非沪牌',
 @property (nonatomic,copy) NSString *category;   //类别（融资，清收，诉讼）
 @property (nonatomic,copy) NSString *city_id;
 @property (nonatomic,copy) NSString *codeString;  //产品编号
@@ -34,11 +35,10 @@
 @property (nonatomic,copy) NSString *is_del;
 @property (nonatomic,copy) NSString *judicialstatusA;
 @property (nonatomic,copy) NSString *judicialstatusB;
-@property (nonatomic,copy) NSString *licenseplate;  //车牌类型：1=>'沪牌',2=>'非沪牌',
-@property (nonatomic,copy) NSString *loan_type;  //债权类型
+@property (nonatomic,copy) NSString *loan_type;  //债权类型  1.房产抵押；3.机动车抵押；2.应收帐款；4无抵押
 @property (nonatomic,copy) NSString *modify_time;
 @property (nonatomic,copy) NSString *money;   //金额
-@property (nonatomic,copy) NSString *mortorage_community;
+@property (nonatomic,copy) NSString *mortorage_community;   //小区
 @property (nonatomic,copy) NSString *mortorage_has;
 @property (nonatomic,copy) NSString *obligor;  //债务人主体：1=>'自然人',2=>'法人',3=>'其他(未成年,外籍等)',
 @property (nonatomic,copy) NSString *paidmoney; //已付本金
@@ -47,10 +47,10 @@
 @property (nonatomic,copy) NSString *progress_status;
 @property (nonatomic,copy) NSString *province_id;
 @property (nonatomic,copy) NSString *rate;   //利率
-@property (nonatomic,copy) NSString *rate_cat;
+@property (nonatomic,copy) NSString *rate_cat;  //利率类型
 @property (nonatomic,copy) NSString *rebate;
 @property (nonatomic,copy) NSString *repaymethod;  //还款方式
-@property (nonatomic,copy) NSString *seatmortgage;  //抵押物地址
+@property (nonatomic,copy) NSString *seatmortgage;  //抵押物地址（详细地址）
 @property (nonatomic,copy) NSString *term;  //借款期限
 @property (nonatomic,copy) NSString *uidInner;  //发布人uid
 @property (nonatomic,copy) NSString *status;  //状态：1=>'自住',2=>'出租',
@@ -59,5 +59,21 @@
 @property (nonatomic,copy) NSString *mortgagearea;  //面积
 @property (nonatomic,copy) NSString *loanyear;  //借款人年龄
 @property (nonatomic,copy) NSString *obligeeyear;  //权利人年龄
+
+
+///////
+//债权人信息
+@property (nonatomic,copy) NSString *creditorname;
+@property (nonatomic,copy) NSString *creditormobile;
+@property (nonatomic,copy) NSString *creditoraddress;
+@property (nonatomic,copy) NSString *creditorcardcode;
+//@property (nonatomic,copy) NSString *creditorname;  //图片
+
+//债务人信息
+@property (nonatomic,copy) NSString *borrowingname;
+@property (nonatomic,copy) NSString *borrowingmobile;
+@property (nonatomic,copy) NSString *borrowingaddress;
+@property (nonatomic,copy) NSString *borrowingcardcode;
+//@property (nonatomic,copy) NSString *borrowingcardimage; //图片
 
 @end

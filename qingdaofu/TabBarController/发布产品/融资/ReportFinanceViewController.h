@@ -7,7 +7,10 @@
 //
 
 #import "NetworkViewController.h"
+#import "PublishingModel.h"
 
 @interface ReportFinanceViewController : NetworkViewController
+
+@property (nonatomic,strong) PublishingModel *fiModel;
 
 @end

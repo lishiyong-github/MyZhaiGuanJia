@@ -68,7 +68,17 @@
 {
     if (!_debtCreditCommitButton) {
         _debtCreditCommitButton = [BaseCommitButton newAutoLayoutView];
-        [_debtCreditCommitButton setTitle:@"继续添加" forState:0];
+        QDFWeakSelf;
+        [_debtCreditCommitButton addAction:^(UIButton *btn) {
+            EditDebtCreditMessageViewController *editDebtCreditMessageVC = [[EditDebtCreditMessageViewController alloc] init];
+            [weakself.navigationController pushViewController:editDebtCreditMessageVC animated:YES];
+        }];
+        
+        if ([self.tagString integerValue] == 1) {
+            [_debtCreditCommitButton setTitle:@"继续添加" forState:0];
+        }else{
+            [_debtCreditCommitButton setTitle:@"添加" forState:0];
+        }
     }
     return _debtCreditCommitButton;
 }
@@ -76,7 +86,10 @@
 #pragma mark - tableView delegate and datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 4;
+    if ([self.tagString integerValue] == 1) {
+        return 4;
+    }
+    return 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

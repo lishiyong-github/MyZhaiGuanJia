@@ -10,6 +10,7 @@
 
 #import "ReportFiSucViewController.h"   //发布成功
 #import "MySaveViewController.h"   //我的保存
+#import "GuarantyViewController.h"  //小区
 
 #import "AgentCell.h"
 #import "EditDebtAddressCell.h"
@@ -143,7 +144,15 @@
 {
     if (!_finanTextArray) {
         NSMutableArray *a1 = [NSMutableArray arrayWithArray:@[@"|  基本信息",@"金额",@"返点",@"借款利率",@"抵押物地址",@""]];
-        NSMutableArray *a2 = [NSMutableArray arrayWithObjects:@"|  补充信息",@"借款期限",@"抵押物类型",@"抵押物状态",@"抵押物面积",@"借款人年龄",@"权利人年龄", nil];
+        NSMutableArray *a2;
+        
+        if ([self.fiModel.status integerValue] == 2) {//出租
+            a2 = [NSMutableArray arrayWithObjects:@"|  补充信息",@"借款期限",@"抵押物类型",@"抵押物状态",@"租金",@"抵押物面积",@"借款人年龄",@"权利人年龄", nil];
+        }else{
+            a2 = [NSMutableArray arrayWithObjects:@"|  补充信息",@"借款期限",@"抵押物类型",@"抵押物状态",@"抵押物面积",@"借款人年龄",@"权利人年龄", nil];
+        }
+        
+//        = [NSMutableArray arrayWithObjects:@"|  补充信息",@"借款期限",@"抵押物类型",@"抵押物状态",@"抵押物面积",@"借款人年龄",@"权利人年龄", nil];
         _finanTextArray = [NSMutableArray arrayWithArray:@[a1,a2]];
         
     }
@@ -154,7 +163,13 @@
 {
     if (!_financeholderArray) {
         NSMutableArray *a1 = [NSMutableArray arrayWithObjects:@"",@"填写您希望融资的金额",@"能够给到中介的返点，如没有请输入0",@"能够给到融资方的利息(%)",@"小区/写字楼/商铺等",@"", nil];
-        NSMutableArray *a2 = [NSMutableArray arrayWithObjects:@"",@"输入借款期限",@"",@"",@"输入抵押物面积",@"请输入年龄，只能输入数字",@"",nil];
+        NSMutableArray *a2;
+        if ([self.fiModel.status integerValue] == 2) {
+            a2 = [NSMutableArray arrayWithObjects:@"",@"输入借款期限",@"",@"",@"填写租金",@"输入抵押物面积",@"请输入年龄，只能输入数字",@"",nil];
+        }else{
+            a2 = [NSMutableArray arrayWithObjects:@"",@"输入借款期限",@"",@"",@"输入抵押物面积",@"请输入年龄，只能输入数字",@"",nil];
+        }
+//        = [NSMutableArray arrayWithObjects:@"",@"输入借款期限",@"",@"",@"输入抵押物面积",@"请输入年龄，只能输入数字",@"",nil];
         _financeholderArray = [NSMutableArray arrayWithArray:@[a1,a2]];
     }
     return _financeholderArray;
@@ -195,7 +210,350 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier;
+    if (indexPath.section == 0) {
+        if (indexPath.row == 0) {//基本信息
+            identifier = @"finance00";
+            AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.leftdAgentContraints.constant = 100;
+            [cell.agentTextField setHidden:YES];
+            [cell.agentButton setHidden:YES];
+            
+            NSMutableAttributedString *dddd = [cell.agentLabel setAttributeString:@"|  基本信息" withColor:kBlueColor andSecond:@"(必填)" withColor:kBlackColor withFont:12];
+            [cell.agentLabel setAttributedText:dddd];
+            
+            return cell;
+        }else if (indexPath.row == 1){//金额
+            identifier = @"finance01";
+            AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.leftdAgentContraints.constant = 100;
+            
+            cell.agentLabel.text = self.finanTextArray[indexPath.section][indexPath.row];
+            cell.agentTextField.placeholder = self.financeholderArray[indexPath.section][indexPath.row];
+            if (self.dataDictionary[@"money"]) {
+                cell.agentTextField.text = self.dataDictionary[@"money"];
+            }else{
+                cell.agentTextField.text = self.fiModel.money?self.fiModel.money:@"";
+            }
+            [cell.agentButton setTitle:@"万元" forState:0];
+            
+            [cell setDidEndEditing:^(NSString *text) {
+                [self.dataDictionary setValue:text forKey:@"money"];
+            }];
+            
+            return cell;
+        }else if (indexPath.row == 2){//返点
+            identifier = @"finance02";
+            AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.leftdAgentContraints.constant = 100;
+            
+            cell.agentLabel.text = self.finanTextArray[indexPath.section][indexPath.row];
+            cell.agentTextField.placeholder = self.financeholderArray[indexPath.section][indexPath.row];
+            if (self.dataDictionary[@"rebate"]) {
+                cell.agentTextField.text = self.dataDictionary[@"rebate"];
+            }else{
+                cell.agentTextField.text = self.fiModel.rebate?self.fiModel.rebate:@"";
+            }
+            [cell.agentButton setTitle:@"%" forState:0];
+            
+            [cell setDidEndEditing:^(NSString *text) {
+                [self.dataDictionary setValue:text forKey:@"rebate"];
+            }];
+            
+            return cell;
+        }else if (indexPath.row == 3){//借款利率
+            identifier = @"finance03";
+            AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.leftdAgentContraints.constant = 100;
+            
+            cell.agentLabel.text = self.finanTextArray[indexPath.section][indexPath.row];
+            cell.agentTextField.placeholder = self.financeholderArray[indexPath.section][indexPath.row];
+            if (self.dataDictionary[@"rate"]) {
+                cell.agentTextField.text = self.dataDictionary[@"rate"];
+            }else{
+                cell.agentTextField.text = self.fiModel.rate?self.fiModel.rate:@"";
+            }
+            
+            [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            if (self.fiModel.rate_cat) {
+                NSArray *dddd = @[@"天(%)",@"月(%)"];
+                [cell.agentButton setTitle:dddd[[self.fiModel.rate_cat integerValue]-1] forState:0];
+            }else{
+                NSString *rate_cat = self.dataDictionary[@"rate_cat_str"]?self.dataDictionary[@"rate_cat_str"]:@"请选择";
+                [cell.agentButton setTitle:rate_cat forState:0];
+            }
+            
+            cell.agentButton.tag = 3;
+            [cell.agentButton addTarget:self action:@selector(showTextOfUpwardView:) forControlEvents:UIControlEventTouchUpInside];
+            
+            [cell setDidEndEditing:^(NSString *text) {
+                [self.dataDictionary setValue:text forKey:@"rate"];
+            }];
+
+            return cell;
+        }else if (indexPath.row == 4){//抵押物地址
+            identifier = @"finance04";
+            AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.leftdAgentContraints.constant = 100;
+            cell.agentTextField.userInteractionEnabled = NO;
+            
+            cell.agentLabel.text = self.finanTextArray[indexPath.section][indexPath.row];
+            cell.agentTextField.placeholder = self.financeholderArray[indexPath.section][indexPath.row];
+            [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            if (self.fiModel.mortorage_community) {
+                cell.agentTextField.text = self.fiModel.mortorage_community?self.fiModel.mortorage_community:@"";
+                [cell.agentButton setTitle:@"已选择" forState:0];
+            }else{
+                [cell.agentButton setTitle:@"请选择" forState:0];
+            }
+            
+            cell.agentButton.tag = 4;
+            [cell.agentButton addTarget:self action:@selector(showTextOfUpwardView:) forControlEvents:UIControlEventTouchUpInside];
+            
+            [cell setDidEndEditing:^(NSString *text) {
+                [self.dataDictionary setValue:text forKey:@"mortorage_community"];
+            }];
+
+            return cell;
+        }else if (indexPath.row == 5){//详细地址
+            identifier = @"finance05";
+            EditDebtAddressCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[EditDebtAddressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.leftTextViewConstraints.constant = 95;
+            cell.ediTextView.placeholder = @"详细地址";
+            if (self.dataDictionary[@"seatmortgage"]) {
+                cell.ediTextView.text = self.dataDictionary[@"seatmortgage"];
+            }else{
+                cell.ediTextView.text = self.fiModel.seatmortgage?self.fiModel.seatmortgage:@"";
+            }
+            [cell setDidEndEditing:^(NSString *text) {
+                [self.dataDictionary setValue:text forKey:@"seatmortgage"];
+            }];
+            
+            return cell;
+        }
+    }
     
+    //section == 1
+    if (indexPath.row == 0) {//补充信息
+        identifier = @"finance10";
+        AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell) {
+            cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.leftdAgentContraints.constant = 100;
+        [cell.agentTextField setHidden:YES];
+        [cell.agentButton setHidden:YES];
+        
+        NSMutableAttributedString *dddd = [cell.agentLabel setAttributeString:@"|  补充信息" withColor:kBlueColor andSecond:@"(选填)" withColor:kBlackColor withFont:12];
+        [cell.agentLabel setAttributedText:dddd];
+        
+        return cell;
+    }else if (indexPath.row == 1){//借款期限
+        identifier = @"finance11";
+        AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell) {
+            cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.leftdAgentContraints.constant = 100;
+        
+        cell.agentLabel.text = self.finanTextArray[indexPath.section][indexPath.row];
+        cell.agentTextField.placeholder = self.financeholderArray[indexPath.section][indexPath.row];
+        [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        if (self.dataDictionary[@"term"]) {
+            cell.agentTextField.text = self.dataDictionary[@"term"];
+        }else{
+            cell.agentTextField.text = self.fiModel.term?self.fiModel.term:@"";
+        }
+        
+        if (self.fiModel.rate_cat) {
+            NSArray *dddd = @[@"天(%)",@"月(%)"];
+            [cell.agentButton setTitle:dddd[[self.fiModel.rate_cat integerValue]-1] forState:0];
+        }else{
+            NSString *rate_cat = self.dataDictionary[@"rate_cat_str"]?self.dataDictionary[@"rate_cat_str"]:@"请选择";
+            [cell.agentButton setTitle:rate_cat forState:0];
+        }
+        
+        cell.agentButton.tag = 8;
+        [cell.agentButton addTarget:self action:@selector(showTextOfUpwardView:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [cell setDidEndEditing:^(NSString *text) {
+            [self.dataDictionary setValue:text forKey:@"term"];
+        }];
+        
+        return cell;
+    }else if (indexPath.row == 2){//抵押物类型
+        identifier = @"finance12";
+        AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell) {
+            cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.leftdAgentContraints.constant = 100;
+        [cell.agentTextField setHidden:YES];
+        
+        cell.agentLabel.text = self.finanTextArray[indexPath.section][indexPath.row];
+        [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        
+        if (self.fiModel.mortgagecategory) {
+            NSArray *dddd = @[@"住宅",@"商户",@"办公楼"];
+            [cell.agentButton setTitle:dddd[[self.fiModel.mortgagecategory integerValue]-1] forState:0];
+        }else{
+            NSString *rate_cat = self.dataDictionary[@"mortgagecategory_str"]?self.dataDictionary[@"mortgagecategory_str"]:@"请选择";
+            [cell.agentButton setTitle:rate_cat forState:0];
+        }
+        
+        cell.agentButton.tag = 9;
+        [cell.agentButton addTarget:self action:@selector(showTextOfUpwardView:) forControlEvents:UIControlEventTouchUpInside];
+        
+        return cell;
+    }else if (indexPath.row == 3){//抵押物状态
+        identifier = @"finance13";
+        AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell) {
+            cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.leftdAgentContraints.constant = 100;
+        [cell.agentTextField setHidden:YES];
+        
+        cell.agentLabel.text = self.finanTextArray[indexPath.section][indexPath.row];
+        [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        
+        if (self.fiModel.status) {
+            NSArray *dddd = @[@"自住",@"出租"];
+            [cell.agentButton setTitle:dddd[[self.fiModel.status integerValue]-1] forState:0];
+        }else{
+            NSString *rate_cat = self.dataDictionary[@"status_str"]?self.dataDictionary[@"status_str"]:@"请选择";
+            [cell.agentButton setTitle:rate_cat forState:0];
+        }
+        
+        cell.agentButton.tag = 10;
+        [cell.agentButton addTarget:self action:@selector(showTextOfUpwardView:) forControlEvents:UIControlEventTouchUpInside];
+        
+        return cell;
+    }else if (indexPath.row == [self.finanTextArray[1]count]-3){//抵押物面积
+        identifier = @"finance15";
+        AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell) {
+            cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.leftdAgentContraints.constant = 100;
+        
+        cell.agentLabel.text = self.finanTextArray[indexPath.section][indexPath.row];
+        cell.agentTextField.placeholder = self.financeholderArray[indexPath.section][indexPath.row];
+        if (self.dataDictionary[@"mortgagearea"]) {
+            cell.agentTextField.text = self.dataDictionary[@"mortgagearea"];
+        }else{
+            cell.agentTextField.text = self.fiModel.mortgagearea?self.fiModel.mortgagearea:@"";
+        }
+        [cell.agentButton setTitle:@"m²" forState:0];
+        
+        [cell setDidEndEditing:^(NSString *text) {
+            [self.dataDictionary setValue:text forKey:@"mortgagearea"];
+        }];
+
+        return cell;
+
+    }else if (indexPath.row == [self.finanTextArray[1]count]-2){//借款人年龄
+        identifier = @"finance16";
+        AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell) {
+            cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.leftdAgentContraints.constant = 100;
+        
+        cell.agentLabel.text = self.finanTextArray[indexPath.section][indexPath.row];
+        cell.agentTextField.placeholder = self.financeholderArray[indexPath.section][indexPath.row];
+        if (self.dataDictionary[@"loanyear"]) {
+            cell.agentTextField.text = self.dataDictionary[@"loanyear"];
+        }else{
+            cell.agentTextField.text = self.fiModel.loanyear?self.fiModel.loanyear:@"";
+        }
+        [cell.agentButton setTitle:@"岁" forState:0];
+        
+        [cell setDidEndEditing:^(NSString *text) {
+            [self.dataDictionary setValue:text forKey:@"loanyear"];
+        }];
+        
+        return cell;
+    }else if(indexPath.row == [self.finanTextArray[1]count]-1){//权利人年龄
+        identifier = @"finance17";
+        AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell) {
+            cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.leftdAgentContraints.constant = 100;
+        [cell.agentTextField setHidden:YES];
+        
+        cell.agentLabel.text = self.finanTextArray[indexPath.section][indexPath.row];
+        [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        if (self.fiModel.obligeeyear) {
+            NSArray *dddd = @[@"65岁以下",@"65岁以上"];
+            [cell.agentButton setTitle:dddd[[self.fiModel.obligeeyear integerValue]-1] forState:0];
+        }else{
+            NSString *sss = self.dataDictionary[@"obligeeyear_str"]?self.dataDictionary[@"obligeeyear_str"]:@"请选择";
+            [cell.agentButton setTitle:sss forState:0];
+        }
+        
+        cell.agentButton.tag = 6+[self.finanTextArray[1] count];
+        [cell.agentButton addTarget:self action:@selector(showTextOfUpwardView:) forControlEvents:UIControlEventTouchUpInside];
+        
+        return cell;
+    }else{//租金
+        identifier = @"finance14";
+        AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell) {
+            cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.leftdAgentContraints.constant = 100;
+        
+        cell.agentLabel.text = self.finanTextArray[indexPath.section][indexPath.row];
+        cell.agentTextField.placeholder = self.financeholderArray[indexPath.section][indexPath.row];
+        cell.agentTextField.text = self.fiModel.rentmoney?self.fiModel.rentmoney:@"";
+        [cell.agentButton setTitle:@"元" forState:0];
+        
+        if ([self.finanTextArray[1] count] == 8) {
+            [cell setDidEndEditing:^(NSString *text) {
+                [self.dataDictionary setValue:text forKey:@"rentmoney"];
+            }];
+        }
+        
+        return cell;
+    }
+    return nil;
+    
+    
+    //////////////////////////////////////////////////
+/*
     if ((indexPath.section == 0) && (indexPath.row == 5)) {
         identifier = @"finance0";
         EditDebtAddressCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -204,6 +562,7 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.ediTextView.placeholder = @"详细地址";
+        cell.ediTextView.text = self.fiModel.seatmortgage?self.fiModel.seatmortgage:@"";
         cell.leftTextViewConstraints.constant = 95;
         
         [cell setDidEndEditing:^(NSString *text) {
@@ -228,23 +587,32 @@
         if (indexPath.row == 0) {
             NSMutableAttributedString *dddd = [cell.agentLabel setAttributeString:@"|  基本信息" withColor:kBlueColor andSecond:@"(必填)" withColor:kBlackColor withFont:12];
             [cell.agentLabel setAttributedText:dddd];
-            cell.agentTextField.userInteractionEnabled = NO;
-            [cell.agentButton setTitle:@"" forState:0];
-            [cell.agentButton setImage:[UIImage imageNamed:@""] forState:0];
+//            cell.agentTextField.userInteractionEnabled = NO;
+//            [cell.agentButton setTitle:@"" forState:0];
+//            [cell.agentButton setImage:[UIImage imageNamed:@""] forState:0];
+            [cell.agentTextField setHidden:YES];
+            [cell.agentButton setHidden:YES];
             
         }else if (indexPath.row == 1){//金额
+            [cell.agentTextField setHidden:NO];
+            [cell.agentButton setHidden:NO];
+            cell.agentTextField.text = self.fiModel.money?self.fiModel.money:@"";
             [cell.agentButton setTitle:@"万元" forState:0];
             [cell.agentButton setImage:[UIImage imageNamed:@""] forState:0];
             [cell setDidEndEditing:^(NSString *text) {
                 [self.dataDictionary setValue:text forKey:@"money"];
             }];
         }else if (indexPath.row == 2){//返点
+            [cell.agentTextField setHidden:NO];
+            [cell.agentButton setHidden:NO];
             [cell.agentButton setTitle:@"%" forState:0];
             [cell.agentButton setImage:[UIImage imageNamed:@""] forState:0];
             [cell setDidEndEditing:^(NSString *text) {
                 [self.dataDictionary setValue:text forKey:@"rebate"];
             }];
         }else if (indexPath.row == 3) {//利率
+            [cell.agentTextField setHidden:NO];
+            [cell.agentButton setHidden:NO];
             [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
             NSString *rate_cat = self.dataDictionary[@"rate_cat_str"]?self.dataDictionary[@"rate_cat_str"]:@"请选择";
             [cell.agentButton setTitle:rate_cat forState:0];
@@ -253,6 +621,9 @@
                 [self.dataDictionary setValue:text forKey:@"rate"];
             }];
         }else{//抵押物地址（小区名）
+            [cell.agentTextField setHidden:NO];
+            cell.agentTextField.userInteractionEnabled = NO;
+            [cell.agentButton setHidden:NO];
             [cell.agentButton setTitle:@"请选择" forState:0];
             [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
             [cell setDidEndEditing:^(NSString *text) {
@@ -263,11 +634,15 @@
         if (indexPath.row == 0) {
             NSMutableAttributedString *ffff = [cell.agentLabel setAttributeString:@"|  补充信息" withColor:kBlueColor andSecond:@"(选填)" withColor:kBlackColor withFont:12];
             [cell.agentLabel setAttributedText:ffff];
-            cell.agentTextField.userInteractionEnabled = NO;
-            [cell.agentButton setTitle:@"" forState:0];
-            [cell.agentButton setImage:[UIImage imageNamed:@""] forState:0];
+            [cell.agentTextField setHidden:YES];
+            [cell.agentButton setHidden:YES];
+//            cell.agentTextField.userInteractionEnabled = NO;
+//            [cell.agentButton setTitle:@"" forState:0];
+//            [cell.agentButton setImage:[UIImage imageNamed:@""] forState:0];
             
         }else if (indexPath.row == 1){//借款期限
+            [cell.agentTextField setHidden:NO];
+            [cell.agentButton setHidden:NO];
             [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
             NSString *rate_cat = self.dataDictionary[@"rate_cat_str"]?self.dataDictionary[@"rate_cat_str"]:@"请选择";
             [cell.agentButton setTitle:rate_cat forState:0];
@@ -276,18 +651,27 @@
                 [self.dataDictionary setValue:text forKey:@"term"];
             }];
         }else if (indexPath.row == 2){//抵押物类型
+            [cell.agentTextField setHidden:NO];
+            cell.agentTextField.userInteractionEnabled = NO;
+            [cell.agentButton setHidden:NO];
             [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
             NSString *rate_cat = self.dataDictionary[@"mortgagecategory_str"]?self.dataDictionary[@"mortgagecategory_str"]:@"请选择";
             [cell.agentButton setTitle:rate_cat forState:0];
             
             [cell.agentTextField setHidden:YES];
         }else if (indexPath.row == 3){//抵押物状态
+            [cell.agentTextField setHidden:NO];
+            cell.agentTextField.userInteractionEnabled = NO;
+            [cell.agentButton setHidden:NO];
             [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
             NSString *rate_cat = self.dataDictionary[@"status_str"]?self.dataDictionary[@"status_str"]:@"请选择";
             [cell.agentButton setTitle:rate_cat forState:0];
             
             [cell.agentTextField setHidden:YES];
         }else if (indexPath.row == [self.finanTextArray[1] count] - 3){//抵押物面积
+            [cell.agentTextField setHidden:NO];
+            cell.agentTextField.userInteractionEnabled = YES;
+            [cell.agentButton setHidden:NO];
             [cell.agentButton setImage:[UIImage imageNamed:@""] forState:0];
             [cell.agentButton setTitle:@"m²" forState:0];
             [cell setDidEndEditing:^(NSString *text) {
@@ -323,6 +707,7 @@
     [cell.agentButton addTarget:self action:@selector(showTextOfUpwardView:) forControlEvents:UIControlEventTouchUpInside];
     
     return cell;
+ */
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -375,6 +760,11 @@
             }];
         }
             break;
+        case 4:{//抵押物小区
+            GuarantyViewController *guarantyVC =[[GuarantyViewController alloc] init];
+            [self.navigationController pushViewController:guarantyVC animated:YES];
+        }
+            break;
         case 8:{//借款期限
             [self showBlurInView:self.view withArray:arr3 andTitle:@"选择借款期限类型" finishBlock:^(NSString *text,NSInteger row) {
                 [btn setTitle:text forState:0];
@@ -385,7 +775,6 @@
                
                 UIButton *elseBtn = [self.reportFinanceTableView viewWithTag:3];
                 [elseBtn setTitle:text forState:0];
-
             }];
         }
             break;
@@ -424,7 +813,6 @@
         }
             break;
         case 13:{//权利人年龄
-            
             if ([self.finanTextArray[1] count] == 7) {
                 [self showBlurInView:self.view withArray:arr13 andTitle:@"选择权利人年龄" finishBlock:^(NSString *text,NSInteger row) {
                     [btn setTitle:text forState:0];

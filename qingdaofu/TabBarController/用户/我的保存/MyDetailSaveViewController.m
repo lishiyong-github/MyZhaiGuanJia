@@ -7,8 +7,8 @@
 //
 
 #import "MyDetailSaveViewController.h"
-
 #import "AdditionMessageViewController.h"
+
 #import "ReportFinanceViewController.h"   //发布融资
 #import "ReportCollectViewController.h"  //发布清收
 #import "ReportSuitViewController.h"  //发布诉讼
@@ -233,6 +233,23 @@
                 [cell.userNameButton setTitleColor:kBlueColor forState:0];
                 [cell.userActionButton setTitle:@"编辑" forState:0];
                 [cell.userActionButton setTitleColor:kBlueColor forState:0];
+                
+                QDFWeakSelf;
+                [cell.userActionButton addAction:^(UIButton *btn) {
+                   
+                    if ([self.categaryString integerValue] == 1) {//融资
+                        ReportFinanceViewController *reportFinanceVC = [[ReportFinanceViewController alloc] init];
+                        reportFinanceVC.fiModel = saveModel;
+                        [weakself.navigationController pushViewController:reportFinanceVC animated:YES];
+                    }else{
+                        ReportSuitViewController *reportSuitVC = [[ReportSuitViewController alloc] init];
+                        reportSuitVC.suModel= saveModel;
+                        reportSuitVC.categoryString = self.categaryString;
+                        [weakself.navigationController pushViewController:reportSuitVC animated:YES];
+                    }
+                    
+                }];
+                
             }
             return cell;
         }
@@ -273,23 +290,6 @@
 }
 
 #pragma mark - method
-- (void)toEditMessages
-{
-    NSString *pigpigString = @"cuishou";
-    if ([pigpigString isEqualToString:@"cuishou"]) {
-        ReportCollectViewController *reportCollectVC = [[ReportCollectViewController alloc] init];
-        
-        [self.navigationController pushViewController:reportCollectVC animated:YES];
-    }else if ([pigpigString isEqualToString:@"rongzi"]){
-        ReportFinanceViewController *reportFinanceVC = [[ReportFinanceViewController alloc] init];
-        
-        [self.navigationController pushViewController:reportFinanceVC animated:YES];
-    }else{
-        ReportSuitViewController *reportSuitVC = [[ReportSuitViewController alloc] init];
-        [self.navigationController pushViewController:reportSuitVC animated:YES];
-    }
-}
-
 - (void)getSaveDetailMessage
 {
     NSString *sDetailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseDetailString];

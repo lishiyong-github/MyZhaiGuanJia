@@ -18,7 +18,6 @@
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) NSLayoutConstraint *leftTextViewConstraints;
-//@property (nonatomic,strong) NSLayoutConstraint *textHeightConstraint;
 
 @property (nonatomic,strong) void (^didEndEditing)(NSString *);
 

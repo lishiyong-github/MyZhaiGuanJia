@@ -11,10 +11,14 @@
 #import "AgentCell.h"
 #import "EditDebtAddressCell.h"
 #import "TakePictureCell.h"
+#import "UIViewController+MutipleImageChoice.h"
+
 @interface EditDebtCreditMessageViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *editDebtTableView;
+@property (nonatomic,strong) NSMutableDictionary *editDictionary;
+
 @end
 
 @implementation EditDebtCreditMessageViewController
@@ -55,6 +59,14 @@
     return _editDebtTableView;
 }
 
+- (NSMutableDictionary *)editDictionary
+{
+    if (!_editDictionary) {
+        _editDictionary = [NSMutableDictionary dictionary];
+    }
+    return _editDictionary;
+}
+
 #pragma mark - tabelView deledate and datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -91,6 +103,23 @@
         cell.agentLabel.text = editTextArray[indexPath.row];
         cell.agentTextField.placeholder = editHolderArray[indexPath.row];
         
+        /*
+         //债权人信息
+         @property (nonatomic,copy) NSString *creditorname;
+         @property (nonatomic,copy) NSString *creditormobile;
+         @property (nonatomic,copy) NSString *creditoraddress;
+         @property (nonatomic,copy) NSString *creditorcardcode;
+         */
+        [cell setDidEndEditing:^(NSString *text) {
+            if (indexPath.row == 0) {//姓名
+                [self.editDictionary setValue:text forKey:@"creditorname"];
+            }else if (indexPath.row == 1){//手机号
+                [self.editDictionary setValue:text forKey:@"creditormobile"];
+            }else if (indexPath.row == 3){//证件号
+                [self.editDictionary setValue:text forKey:@"creditorcardcode"];
+            }
+        }];
+        
         return cell;
     }else if (indexPath.row == 2){
         identifier = @"editDebt1";
@@ -104,6 +133,9 @@
         cell.ediLabel.text = @"联系地址";
         cell.ediTextView.placeholder = @"请输入联系地址";
         
+        [cell setDidEndEditing:^(NSString *text) {
+            [self.editDictionary setValue:text forKey:@"creditoraddress"];
+        }];
         return cell;
     }
     
@@ -114,88 +146,34 @@
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    return cell;
-        /*
-    if (indexPath.row ==0) {
-        identifier = @"editDebt0";
-        ReportFinanceCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if (!cell) {
-            cell = [[ReportFinanceCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.fiLabel.text = @"姓名";
-        cell.fiTextField.placeholder = @"请输入姓名";
-        cell.leftTextFieldConstraits.constant = 90;
-        
-        return cell;
-    }else if (indexPath.row == 1){
-        identifier = @"editDebt1";
-        ReportFinanceCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if (!cell) {
-            cell = [[ReportFinanceCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.fiLabel.text = @"联系方式";
-        cell.fiTextField.placeholder = @"请输入联系方式";
-        cell.leftTextFieldConstraits.constant = 90;
-
-        return cell;
-    }else if (indexPath.row == 2){
-        identifier = @"editDebt2";
-        EditDebtAddressCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if (!cell) {
-            cell = [[EditDebtAddressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-        cell.ediLabel.text = @"联系地址";
-        cell.ediTextView.placeholder = @"请输入联系地址";
-        
-        return cell;
-        
-    }else if (indexPath.row == 3){
-        identifier = @"editDebt3";
-        ReportFinanceCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if (!cell) {
-            cell = [[ReportFinanceCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.fiLabel.text = @"证件号";
-        cell.fiTextField.placeholder = @"请输入证件号";
-        cell.leftTextFieldConstraits.constant = 90;
-
-        return cell;
-    }
+    cell.collectionDataList = [NSMutableArray arrayWithObject:@"btn_camera"];
     
-    identifier = @"editDebt4";
-    EditDebtCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    if (!cell) {
-        cell = [[EditDebtCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-    }
-    
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    [cell.editImageButton1 addAction:^(UIButton *btn) {
-        NSLog(@"添加图片");
-    }];
-    
-    [cell.editImageButton2 addAction:^(UIButton *btn) {
-        NSLog(@"图片");
+    [self addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
+        cell.collectionDataList = [NSMutableArray arrayWithArray:images];
     }];
     
     return cell;
-     */
-    
 }
 
 #pragma mark - method
 - (void)saveDebtMessage
 {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)back
+{
+    [super back];
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:nil message:@"是否保存?" preferredStyle:UIAlertControllerStyleAlert];
     
+    UIAlertAction *act1 = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self saveDebtMessage];
+    }];
+    
+    UIAlertAction *act2 = [UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleDefault handler:nil];
+ 
+    [alertVC addAction:act1];
+    [alertVC addAction:act2];
 }
 
 - (void)didReceiveMemoryWarning {

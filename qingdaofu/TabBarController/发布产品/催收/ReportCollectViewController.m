@@ -523,6 +523,21 @@
             }];
         }
             break;
+        case 17:{//债权文件
+            UploadFilesViewController *uploadFilesVC = [[UploadFilesViewController alloc] init];
+            [self.navigationController pushViewController:uploadFilesVC animated:YES];
+        }
+            break;
+        case 18:{//债权人信息
+            DebtCreditMessageViewController *debtCreditMessageVC = [[DebtCreditMessageViewController alloc] init];
+            [self.navigationController pushViewController:debtCreditMessageVC animated:YES];
+        }
+            break;
+        case 19:{//债务人信息
+            DebtCreditMessageViewController *debtCreditMessageVC = [[DebtCreditMessageViewController alloc] init];
+            [self.navigationController pushViewController:debtCreditMessageVC animated:YES];
+        }
+            break;
         default:
             break;
     }
