@@ -9,7 +9,10 @@
 #import "MyPublishingViewController.h"
 #import "AdditionMessageViewController.h"  //补充信息
 #import "ApplyRecordsViewController.h"   //申请记录
-#import "AgreementViewController.h"
+#import "AgreementViewController.h"//协议
+
+#import "ReportFinanceViewController.h"  //发布融资
+#import "ReportSuitViewController.h"  //发布催收，发布诉讼
 
 #import "BaseCommitButton.h"
 
@@ -222,6 +225,8 @@
                 if ([publishModel.progress_status intValue] < 2) {
                     [cell.userActionButton setTitle:@"编辑" forState:0];
                     [cell.userActionButton setTitleColor:kBlueColor forState:0];
+                    
+                    [cell.userActionButton addTarget:self action:@selector(editAllMessages) forControlEvents:UIControlEventTouchUpInside];
                 }
             }
             return cell;
@@ -289,14 +294,6 @@
 }
 
 #pragma mark - method
-- (void)showRecordList
-{
-    ApplyRecordsViewController *applyRecordsVC = [[ApplyRecordsViewController alloc] init];
-    applyRecordsVC.idStr = self.idString;
-    applyRecordsVC.categaryStr = self.categaryString;
-    [self.navigationController pushViewController:applyRecordsVC animated:YES];
-}
-
 - (void)getDetailMessages
 {
     NSString *detailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseDetailString];
@@ -312,6 +309,35 @@
     } andFailBlock:^(NSError *error){
         
     }];
+}
+
+- (void)showRecordList
+{
+    ApplyRecordsViewController *applyRecordsVC = [[ApplyRecordsViewController alloc] init];
+    applyRecordsVC.idStr = self.idString;
+    applyRecordsVC.categaryStr = self.categaryString;
+    [self.navigationController pushViewController:applyRecordsVC animated:YES];
+}
+
+//编辑信息
+- (void)editAllMessages
+{
+    if (self.publishingDataArray.count > 0) {
+        
+        PublishingResponse *response = self.publishingDataArray[0];
+        PublishingModel *rModel = response.product;
+        
+        if ([rModel.category integerValue] == 1) {
+            ReportFinanceViewController *reportFinanceVC = [[ReportFinanceViewController alloc] init];
+            reportFinanceVC.fiModel = rModel;
+            [self.navigationController pushViewController:reportFinanceVC animated:YES];
+        }else{
+            ReportSuitViewController *reportSuiVC = [[ReportSuitViewController alloc] init];
+            reportSuiVC.categoryString = rModel.category;
+            reportSuiVC.suModel = rModel;
+            [self.navigationController pushViewController:reportSuiVC animated:YES];
+        }
+    }
 }
 
 - (void)didReceiveMemoryWarning {

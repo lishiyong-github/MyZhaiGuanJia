@@ -101,6 +101,9 @@
 		A161755D1D138A6A001BB200 /* RecordResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A161755C1D138A6A001BB200 /* RecordResponse.m */; };
 		A161756C1D13A731001BB200 /* SkyAssociationMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = A161756B1D13A731001BB200 /* SkyAssociationMenuView.m */; };
 		A16391501D1D12110051F1D0 /* DebtCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A163914F1D1D12110051F1D0 /* DebtCell.m */; };
+		A16391541D1D13360051F1D0 /* DebtModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A16391531D1D13360051F1D0 /* DebtModel.m */; };
+		A16391571D1D22350051F1D0 /* list_chapter@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A16391551D1D22350051F1D0 /* list_chapter@2x.png */; };
+		A16391581D1D22350051F1D0 /* list_chapter@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A16391561D1D22350051F1D0 /* list_chapter@3x.png */; };
 		A16486B11D00088B00B442C1 /* title_product_close@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A16486AD1D00088B00B442C1 /* title_product_close@2x.png */; };
 		A16486B21D00088B00B442C1 /* title_product_close@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A16486AE1D00088B00B442C1 /* title_product_close@3x.png */; };
 		A16486B31D00088B00B442C1 /* title_product_open@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A16486AF1D00088B00B442C1 /* title_product_open@2x.png */; };
@@ -611,6 +614,10 @@
 		A161756B1D13A731001BB200 /* SkyAssociationMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkyAssociationMenuView.m; sourceTree = "<group>"; };
 		A163914E1D1D12110051F1D0 /* DebtCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebtCell.h; sourceTree = "<group>"; };
 		A163914F1D1D12110051F1D0 /* DebtCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebtCell.m; sourceTree = "<group>"; };
+		A16391521D1D13360051F1D0 /* DebtModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebtModel.h; sourceTree = "<group>"; };
+		A16391531D1D13360051F1D0 /* DebtModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebtModel.m; sourceTree = "<group>"; };
+		A16391551D1D22350051F1D0 /* list_chapter@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list_chapter@2x.png"; sourceTree = "<group>"; };
+		A16391561D1D22350051F1D0 /* list_chapter@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list_chapter@3x.png"; sourceTree = "<group>"; };
 		A16486AD1D00088B00B442C1 /* title_product_close@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "title_product_close@2x.png"; sourceTree = "<group>"; };
 		A16486AE1D00088B00B442C1 /* title_product_close@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "title_product_close@3x.png"; sourceTree = "<group>"; };
 		A16486AF1D00088B00B442C1 /* title_product_open@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "title_product_open@2x.png"; sourceTree = "<group>"; };
@@ -1198,6 +1205,7 @@
 		A10D7B881CEB222A00422D7D /* 债权人信息 */ = {
 			isa = PBXGroup;
 			children = (
+				A16391511D1D131E0051F1D0 /* model */,
 				A16BA13A1CEBF56E00A7010C /* view */,
 				A10D7B891CEB246700422D7D /* DebtCreditMessageViewController.h */,
 				A10D7B8A1CEB246700422D7D /* DebtCreditMessageViewController.m */,
@@ -1399,6 +1407,15 @@
 				A161756B1D13A731001BB200 /* SkyAssociationMenuView.m */,
 			);
 			path = SkyAssociationMenu;
+			sourceTree = "<group>";
+		};
+		A16391511D1D131E0051F1D0 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				A16391521D1D13360051F1D0 /* DebtModel.h */,
+				A16391531D1D13360051F1D0 /* DebtModel.m */,
+			);
+			path = model;
 			sourceTree = "<group>";
 		};
 		A16856731CE951D0006A0887 /* view */ = {
@@ -1785,6 +1802,8 @@
 		A192B4BC1CDB45EB0053FC4C /* images */ = {
 			isa = PBXGroup;
 			children = (
+				A16391551D1D22350051F1D0 /* list_chapter@2x.png */,
+				A16391561D1D22350051F1D0 /* list_chapter@3x.png */,
 				A14853EA1D1BBE2E0088AA4D /* selected_dis@2x.png */,
 				A14853EB1D1BBE2E0088AA4D /* selected_dis@3x.png */,
 				A14853EC1D1BBE2E0088AA4D /* selected@2x.png */,
@@ -3003,6 +3022,7 @@
 				A1A34C2E1CE319C000AD454A /* bond_icon_warrants@3x.png in Resources */,
 				A1A34BF81CE2DFB400AD454A /* tab_user@2x.png in Resources */,
 				A1A34BF91CE2DFB400AD454A /* tab_user@3X.png in Resources */,
+				A16391571D1D22350051F1D0 /* list_chapter@2x.png in Resources */,
 				A1770E1C1CFE8672003579E1 /* tip_image@2x.png in Resources */,
 				A1A016AF1C5A0C0300027134 /* Assets.xcassets in Resources */,
 				A1A97E231CDC414600EDE320 /* information_nav_back@3x.png in Resources */,
@@ -3026,6 +3046,7 @@
 				A1A97E721CDCA2BF00EDE320 /* conserve_investment_icon@2x.png in Resources */,
 				A1A97E2E1CDC5C3A00EDE320 /* list_icon_company@2x.png in Resources */,
 				A1A34C2A1CE319C000AD454A /* bond_icon_repayment@3x.png in Resources */,
+				A16391581D1D22350051F1D0 /* list_chapter@3x.png in Resources */,
 				A1718DFB1CFD6C5A0007DA6F /* list_icon_treatment@2x.png in Resources */,
 				A1718DF71CFD6C510007DA6F /* list_icon_publish@2x.png in Resources */,
 				A1770E3A1CFEDEED003579E1 /* list_litigation@2x.png in Resources */,
@@ -3252,6 +3273,7 @@
 				A1B0292E1D17CE6F00F32A09 /* AFURLResponseSerialization.m in Sources */,
 				A1770E241CFEA2C1003579E1 /* LEOStarView.m in Sources */,
 				A16856A51CE9B864006A0887 /* DebtDocumnetsViewController.m in Sources */,
+				A16391541D1D13360051F1D0 /* DebtModel.m in Sources */,
 				A14C17591D07A78E003826F8 /* NSDate+FormatterTime.m in Sources */,
 				A16856A91CE9BF82006A0887 /* ProDetailHeadView.m in Sources */,
 				A1A0172A1C5B422700027134 /* NetworkViewController.m in Sources */,

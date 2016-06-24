@@ -16,8 +16,12 @@
 @property (nonatomic,assign) BOOL didSetupConstraints;
 
 @property (nonatomic,strong) UIImageView *typeImageView;
+@property (nonatomic,strong) UIImageView *closeImage;
 @property (nonatomic,strong) UILabel *nameLabel;
 @property (nonatomic,strong) UILabel *typeLabel;
+
+@property (nonatomic,strong) UIButton *typeButton;
+
 @property (nonatomic,strong) UILabel *addressLabel;
 @property (nonatomic,strong) LineLabel *grayLabel;
 @property (nonatomic,strong) MoneyView *moneyView;
@@ -27,7 +31,5 @@
 @property (nonatomic,strong) UIButton *firstButton;
 @property (nonatomic,strong) UIButton *secondButton;
 @property (nonatomic,strong) UIButton *thirdButton;
-
-
 
 @end

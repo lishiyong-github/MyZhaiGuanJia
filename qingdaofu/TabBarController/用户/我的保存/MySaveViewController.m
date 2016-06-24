@@ -149,7 +149,8 @@
 {
     NSString *mySaveString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMySaveString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
-                             @"page" : page
+                             @"page" : page,
+                             @"limit" : @"10"
                              };
     [self requestDataPostWithString:mySaveString params:params successBlock:^(id responseObject){
         if ([page integerValue] == 0) {

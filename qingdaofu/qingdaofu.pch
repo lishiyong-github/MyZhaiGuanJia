@@ -106,8 +106,8 @@
  */
 
 #define kQDFUrlString @"http://www.zcb2016.com/wap/"
-//#define kQDFTestUrlString @"http://testq.zcb2016.com/wap/"
-#define kQDFTestUrlString @"http://192.168.20.149/wap/"
+#define kQDFTestUrlString @"http://testq.zcb2016.com/wap/"
+//#define kQDFTestUrlString @"http://192.168.20.149/wap/"
 
 #define kQDFTestImageString @"http://testq.zcb2016.com"
 
@@ -153,6 +153,7 @@
 #define kRequestApplyString @"capital/Shoucang"   //立即申请
 #define kMyRecordsString  @"apply/ordertaking"   //申请记录
 #define kMyRecordsMessageString @"apply/user"  //申请记录里的申请人详情
+#define kMyRecordsMessageAgreeString @"apply/agreeorder" //申请记录里的申请人详情的同意申请
 #define kEvaluateString @"public/evaluate"  //去评价
 #define kAgreementString @"apply/agereements"   //服务协议
 #define kMyEvaluateString @"apply/userlists"  //我的评价(给出的)

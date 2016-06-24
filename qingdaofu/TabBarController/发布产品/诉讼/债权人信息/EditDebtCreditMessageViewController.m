@@ -13,6 +13,7 @@
 #import "TakePictureCell.h"
 #import "UIViewController+MutipleImageChoice.h"
 
+
 @interface EditDebtCreditMessageViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
@@ -102,6 +103,14 @@
         cell.leftdAgentContraints.constant = 85;
         cell.agentLabel.text = editTextArray[indexPath.row];
         cell.agentTextField.placeholder = editHolderArray[indexPath.row];
+        if (indexPath.row == 0) {
+            cell.agentTextField.text = self.deModel.creditorname?self.deModel.creditorname:@"";
+        }else if (indexPath.row == 1){
+            cell.agentTextField.text = self.deModel.creditormobile?self.deModel.creditormobile:@"";
+        }else if (indexPath.row == 3){
+            cell.agentTextField.text = self.deModel.creditorcardcode?self.deModel.creditorcardcode:@"";
+        }
+        
         
         /*
          //债权人信息
@@ -121,6 +130,7 @@
         }];
         
         return cell;
+        
     }else if (indexPath.row == 2){
         identifier = @"editDebt1";
         EditDebtAddressCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -132,10 +142,12 @@
         cell.leftTextViewConstraints.constant = 80;
         cell.ediLabel.text = @"联系地址";
         cell.ediTextView.placeholder = @"请输入联系地址";
+        cell.ediTextView.text = self.deModel.creditoraddress?self.deModel.creditoraddress:@"";
         
         [cell setDidEndEditing:^(NSString *text) {
             [self.editDictionary setValue:text forKey:@"creditoraddress"];
         }];
+        
         return cell;
     }
     
@@ -148,8 +160,12 @@
     
     cell.collectionDataList = [NSMutableArray arrayWithObject:@"btn_camera"];
     
-    [self addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
-        cell.collectionDataList = [NSMutableArray arrayWithArray:images];
+    QDFWeakSelf;
+    QDFWeak(cell);
+    [cell setDidSelectedItem:^(NSInteger tag) {
+        [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
+            weakcell.collectionDataList = [NSMutableArray arrayWithArray:images];
+        }];
     }];
     
     return cell;
@@ -158,6 +174,21 @@
 #pragma mark - method
 - (void)saveDebtMessage
 {
+    [self.view endEditing:YES];
+    DebtModel *dModel = [[DebtModel alloc] init];
+    dModel.creditorname = self.editDictionary[@"creditorname"]?self.editDictionary[@"creditorname"]:self.deModel.creditorname;
+    dModel.creditormobile = self.editDictionary[@"creditormobile"]?self.editDictionary[@"creditormobile"]:self.deModel.creditormobile;
+    dModel.creditoraddress = self.editDictionary[@"creditoraddress"]?self.editDictionary[@"creditoraddress"]:self.deModel.creditoraddress;
+    dModel.creditorcardcode = self.editDictionary[@"creditorcardcode"]?self.editDictionary[@"creditorcardcode"]:self.deModel.creditorcardcode;
+    
+    if ((dModel.creditoraddress == nil) && (dModel.creditorcardcode == nil) && (dModel.creditormobile == nil) && (dModel.creditorname == nil)) {
+        [self showHint:@"没有数据，无法保存"];
+    }else{
+        if (self.didSaveMessage) {
+            self.didSaveMessage(dModel);
+        }
+    }
+
     [self.navigationController popViewControllerAnimated:YES];
 }
 

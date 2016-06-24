@@ -161,7 +161,8 @@
     NSString *stopString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyAgentStopString];
     NSDictionary *params = @{@"id" : self.agentModel.idString,
                              @"status" : @"0",
-                             @"token" : [self getValidateToken]
+                             @"token" : [self getValidateToken],
+                             @"limit" : @"10"
                              };
     [self requestDataPostWithString:stopString params:params successBlock:^(id responseObject) {
         BaseModel *reModel = [BaseModel objectWithKeyValues:responseObject];

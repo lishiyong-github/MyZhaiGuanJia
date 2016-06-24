@@ -149,8 +149,8 @@
                         }
                             break;
                         case 30:{//我的接单(全部)
-                            myOrderVC.status = @"";
-                            myOrderVC.progresStatus = @"";
+                            myOrderVC.status = @"-1";
+                            myOrderVC.progresStatus = @"0";
                             [weakself.navigationController pushViewController:myOrderVC animated:YES];
                         }
                             break;

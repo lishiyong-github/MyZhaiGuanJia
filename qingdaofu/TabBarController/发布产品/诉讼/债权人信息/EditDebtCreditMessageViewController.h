@@ -7,7 +7,11 @@
 //
 
 #import "NetworkViewController.h"
+#import "DebtModel.h"
 
 @interface EditDebtCreditMessageViewController : NetworkViewController
+
+@property (nonatomic,strong) DebtModel *deModel;
+@property (nonatomic,strong) void (^didSaveMessage)(DebtModel *);
 
 @end

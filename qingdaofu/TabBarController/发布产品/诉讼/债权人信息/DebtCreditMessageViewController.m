@@ -14,12 +14,14 @@
 #import "DebtCell.h"
 
 #import "UIView+UITextColor.h"
+#import "DebtModel.h"
 
 @interface DebtCreditMessageViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *debtCreditTableView;
 @property (nonatomic,strong) BaseCommitButton *debtCreditCommitButton;
+@property (nonatomic,strong) NSMutableArray *debtArray;
 
 @end
 
@@ -53,8 +55,7 @@
 - (UITableView *)debtCreditTableView
 {
     if (!_debtCreditTableView) {
-//        _debtCreditTableView = [UITableView newAutoLayoutView];
-        _debtCreditTableView.translatesAutoresizingMaskIntoConstraints = NO;
+        _debtCreditTableView.translatesAutoresizingMaskIntoConstraints = YES;
         _debtCreditTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _debtCreditTableView.delegate = self;
         _debtCreditTableView.dataSource = self;
@@ -71,6 +72,11 @@
         QDFWeakSelf;
         [_debtCreditCommitButton addAction:^(UIButton *btn) {
             EditDebtCreditMessageViewController *editDebtCreditMessageVC = [[EditDebtCreditMessageViewController alloc] init];
+            [editDebtCreditMessageVC setDidSaveMessage:^(DebtModel * deModel) {
+                [weakself.debtArray addObject:deModel];
+                [weakself.debtCreditTableView reloadData];
+            }];
+            
             [weakself.navigationController pushViewController:editDebtCreditMessageVC animated:YES];
         }];
         
@@ -83,18 +89,27 @@
     return _debtCreditCommitButton;
 }
 
+- (NSMutableArray *)debtArray
+{
+    if (!_debtArray) {
+        _debtArray = [NSMutableArray array];
+    }
+    return _debtArray;
+}
+
 #pragma mark - tableView delegate and datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if ([self.tagString integerValue] == 1) {
-        return 4;
-    }
-    return 0;
+//    if ([self.tagString integerValue] == 1) {
+//        return 4;
+//    }
+//    return 0;
+    return self.debtArray.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 200;
+    return 190;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -111,23 +126,33 @@
     }
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    DebtModel *deModel = self.debtArray[indexPath.section];
     
-    NSMutableAttributedString *nameStr = [cell.debtNameLabel setAttributeString:@"姓        名    " withColor:kBlackColor andSecond:@"离意义" withColor:kLightGrayColor withFont:12];
+    NSString *name = deModel.creditorname?deModel.creditorname:@"未填写";
+    NSMutableAttributedString *nameStr = [cell.debtNameLabel setAttributeString:@"姓        名    " withColor:kBlackColor andSecond:name withColor:kLightGrayColor withFont:12];
     [cell.debtNameLabel setAttributedText:nameStr];
     
-    NSMutableAttributedString *telStr = [cell.debtTelLabel setAttributeString:@"联系方式    " withColor:kBlackColor andSecond:@"12345678905" withColor:kLightGrayColor withFont:12];
+    NSString *tel = deModel.creditormobile?deModel.creditormobile:@"未填写";
+    NSMutableAttributedString *telStr = [cell.debtTelLabel setAttributeString:@"联系方式    " withColor:kBlackColor andSecond:tel withColor:kLightGrayColor withFont:12];
     [cell.debtTelLabel setAttributedText:telStr];
     
     cell.debtAddressLabel.text = @"联系地址";
-    cell.debtAddressLabel1.text = @"上海市浦东新区浦东南路855号世界广场34楼清道夫债管家";
+    cell.debtAddressLabel1.text = deModel.creditoraddress?deModel.creditoraddress:@"未填写";
     
-    NSMutableAttributedString *IDStr = [cell.debtIDLabel setAttributeString:@"证件号        " withColor:kBlackColor andSecond:@"1234567890456789566" withColor:kLightGrayColor withFont:12];
+    NSString *ID = deModel.creditorcardcode?deModel.creditorcardcode:@"未填写";
+    NSMutableAttributedString *IDStr = [cell.debtIDLabel setAttributeString:@"证件号        " withColor:kBlackColor andSecond:ID withColor:kLightGrayColor withFont:12];
     [cell.debtIDLabel setAttributedText:IDStr];
     
     QDFWeakSelf;
     [cell.debtEditButton addAction:^(UIButton *btn) {
-        EditDebtCreditMessageViewController *editDebtCreditMessageVc = [[EditDebtCreditMessageViewController alloc] init];
-        [weakself.navigationController pushViewController:editDebtCreditMessageVc animated:YES];
+        EditDebtCreditMessageViewController *editDebtCreditMessageVC = [[EditDebtCreditMessageViewController alloc] init];
+        editDebtCreditMessageVC.deModel = deModel;
+        [editDebtCreditMessageVC setDidSaveMessage:^(DebtModel * deModel) {
+            [weakself.debtArray replaceObjectAtIndex:indexPath.section withObject:deModel];
+            [weakself.debtCreditTableView reloadData];
+        }];
+
+        [weakself.navigationController pushViewController:editDebtCreditMessageVC animated:YES];
     }];
     
     return cell;

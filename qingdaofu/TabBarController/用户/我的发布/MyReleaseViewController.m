@@ -261,8 +261,12 @@
         }
         /*typeLabel*/
         if ([rowModel.progress_status integerValue]  == 0) {
+            [cell.typeLabel setHidden:NO];
             cell.typeLabel.text = @"待发布";
+            [cell.typeButton setHidden:YES];
         }else if ([rowModel.progress_status integerValue]  == 1){
+            [cell.typeLabel setHidden:NO];
+            [cell.typeButton setHidden:YES];
             cell.typeLabel.text = @"发布中";
             [cell.firstButton setHidden:NO];
             [cell.secondButton setHidden:NO];
@@ -281,6 +285,8 @@
             }];
             
         }else if ([rowModel.progress_status integerValue]  == 2){
+            [cell.typeLabel setHidden:NO];
+            [cell.typeButton setHidden:YES];
             cell.typeLabel.text = @"处理中";
             [cell.firstButton setHidden:YES];
             [cell.secondButton setHidden:NO];
@@ -298,12 +304,16 @@
             }];
             
         }else if ([rowModel.progress_status integerValue]  == 3){
+            [cell.typeLabel setHidden:NO];
+            [cell.typeButton setHidden:YES];
             cell.typeLabel.text = @"终止";
             [cell.firstButton setHidden:YES];
             [cell.secondButton setHidden:YES];
             [cell.thirdButton setHidden:YES];
         }else if([rowModel.progress_status integerValue]  == 4){
-            cell.typeLabel.text = @"已结案";
+            [cell.typeLabel setHidden:YES];
+            [cell.typeButton setHidden:NO];
+            [cell.typeButton setImage:[UIImage imageNamed:@"list_chapter"] forState:0];
             [cell.firstButton setHidden:YES];
             [cell.secondButton setHidden:YES];
             [cell.thirdButton setHidden:NO];

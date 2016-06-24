@@ -102,6 +102,10 @@
                 }];
             }else{
                 [weakself hiddenBlurView];
+//                UIView *view1 = [weakself.view viewWithTag:99999];
+//                UIView *view2 = [weakself.view viewWithTag:99998];
+//                [view1 removeFromSuperview];
+//                [view2 removeFromSuperview];
             }
         }];
     }

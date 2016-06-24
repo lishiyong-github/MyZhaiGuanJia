@@ -149,7 +149,8 @@
 {
     NSString *storeString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyStoreString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
-                             @"page" : page
+                             @"page" : page,
+                             @"limit" : @"10"
                              };
     [self requestDataPostWithString:storeString params:params successBlock:^(id responseObject){
         

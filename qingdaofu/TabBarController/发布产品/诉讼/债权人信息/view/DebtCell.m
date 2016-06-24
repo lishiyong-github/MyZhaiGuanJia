@@ -49,7 +49,7 @@
         [self.debtAddressLabel1 autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         
         [self.debtIDLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
-        [self.debtIDLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.debtAddressLabel1 withOffset:kSmallPadding];
+        [self.debtIDLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.debtAddressLabel withOffset:kSmallPadding];
         
         [self.debtImageView1 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.debtIDLabel withOffset:kSmallPadding];
         [self.debtImageView1 autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
@@ -112,7 +112,7 @@
         _debtAddressLabel1 = [UILabel newAutoLayoutView];
         _debtAddressLabel1.font = kSecondFont;
         _debtAddressLabel1.textColor = kLightGrayColor;
-        _debtAddressLabel1.numberOfLines = 0;
+//        _debtAddressLabel1.numberOfLines = 0;
     }
     return _debtAddressLabel1;
 }
@@ -144,7 +144,6 @@
     }
     return _debtImageView2;
 }
-
 
 - (void)awakeFromNib {
     // Initialization code

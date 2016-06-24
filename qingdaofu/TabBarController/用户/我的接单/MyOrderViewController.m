@@ -269,16 +269,27 @@
     }
     
     /*typeLabel*/
+    
     if ([rowModel.progress_status integerValue]  == 0) {
+        [cell.typeLabel setHidden:NO];
         cell.typeLabel.text = @"待申请";
+        [cell.typeButton setHidden:YES];
     }else if ([rowModel.progress_status integerValue]  == 1){
+        [cell.typeLabel setHidden:NO];
         cell.typeLabel.text = @"申请中";
+        [cell.typeButton setHidden:YES];
     }else if ([rowModel.progress_status integerValue]  == 2){
+        [cell.typeLabel setHidden:NO];
         cell.typeLabel.text = @"处理中";
+        [cell.typeButton setHidden:YES];
     }else if ([rowModel.progress_status integerValue]  == 3){
+        [cell.typeLabel setHidden:NO];
         cell.typeLabel.text = @"终止";
+        [cell.typeButton setHidden:YES];
     }else if([rowModel.progress_status integerValue]  == 4){
-        cell.typeLabel.text = @"已结案";
+        [cell.typeLabel setHidden:YES];
+        [cell.typeButton setHidden:NO];
+        [cell.typeButton setImage:[UIImage imageNamed:@"list_chapter"] forState:0];
     }
     
     cell.addressLabel.text = rowModel.seatmortgage;
@@ -334,30 +345,30 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    RowsModel *model = self.myOrderDataList[indexPath.section];
-   if ([self.progresStatus isEqualToString:@"1"]){//申请中
+    RowsModel *eModel = self.myOrderDataList[indexPath.section];
+   if ([eModel.progress_status isEqualToString:@"1"]){//申请中
        MyApplyingViewController *myApplyingVC = [[MyApplyingViewController alloc] init];
-       myApplyingVC.idString = model.idString;
-       myApplyingVC.categaryString = model.category;
-       myApplyingVC.pidString = model.uidString;
+       myApplyingVC.idString = eModel.idString;
+       myApplyingVC.categaryString = eModel.category;
+       myApplyingVC.pidString = eModel.uidString;
        [self.navigationController pushViewController:myApplyingVC animated:YES];
-    }else if ([self.progresStatus isEqualToString:@"2"]){//处理中
+    }else if ([eModel.progress_status isEqualToString:@"2"]){//处理中
         MyProcessingViewController *myProcessingVC = [[MyProcessingViewController alloc] init];
-        myProcessingVC.idString = model.idString;
-        myProcessingVC.categaryString = model.category;
-        myProcessingVC.pidString = model.uidString;
+        myProcessingVC.idString = eModel.idString;
+        myProcessingVC.categaryString = eModel.category;
+        myProcessingVC.pidString = eModel.uidString;
         [self.navigationController pushViewController:myProcessingVC animated:YES];
-    }else if ([self.progresStatus isEqualToString:@"3"]){//终止
+    }else if ([eModel.progress_status isEqualToString:@"3"]){//终止
         MyEndingViewController *myEndingVC = [[MyEndingViewController alloc] init];
-        myEndingVC.idString = model.idString;
-        myEndingVC.categaryString = model.category;
-        myEndingVC.pidString = model.uidString;
+        myEndingVC.idString = eModel.idString;
+        myEndingVC.categaryString = eModel.category;
+        myEndingVC.pidString = eModel.uidString;
         [self.navigationController pushViewController:myEndingVC animated:YES];
-    }else if([self.progresStatus isEqualToString:@"4"]){//结案
+    }else if([eModel.progress_status isEqualToString:@"4"]){//结案
         MyClosingViewController *myClosingVC = [[MyClosingViewController alloc] init];
-        myClosingVC.idString = model.idString;
-        myClosingVC.categaryString = model.category;
-        myClosingVC.pidString = model.uidString;
+        myClosingVC.idString = eModel.idString;
+        myClosingVC.categaryString = eModel.category;
+        myClosingVC.pidString = eModel.uidString;
         [self.navigationController pushViewController:myClosingVC animated:YES];
     }
 }

@@ -26,6 +26,7 @@
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *checkDetailTableView;
+@property (nonatomic,strong) BaseCommitButton *appAgreeButton;
 
 @property (nonatomic,strong) UIButton *rightBarBtn;
 
@@ -44,6 +45,7 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightBarBtn];
 
     [self.view addSubview:self.checkDetailTableView];
+    [self.view addSubview:self.appAgreeButton];
     [self.view setNeedsUpdateConstraints];
     
     [self getMessageOfOrderPeople];
@@ -53,7 +55,11 @@
 {
     if (!self.didSetupConstraints) {
         
-        [self.checkDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+        [self.checkDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
+        [self.checkDetailTableView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kTabBarHeight];
+        
+        [self.appAgreeButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+        [self.appAgreeButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.checkDetailTableView];
         
         self.didSetupConstraints = YES;
     }
@@ -84,6 +90,28 @@
         _checkDetailTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
     }
     return _checkDetailTableView;
+}
+
+- (BaseCommitButton *)appAgreeButton
+{
+    if (!_appAgreeButton) {
+        _appAgreeButton = [BaseCommitButton newAutoLayoutView];
+        
+        QDFWeakSelf;
+        if ([self.typeString isEqualToString:@"申请人"]) {
+            [_appAgreeButton setTitle:@"同意申请" forState:0];
+            
+            [_appAgreeButton addAction:^(UIButton *btn) {
+                [weakself bottomMethod:@"同意申请"];
+            }];
+            
+        }else if ([self.typeString isEqualToString:@"发布方"]){
+            
+        }else if ([self.typeString isEqualToString:@"接单方"]){
+            
+        }
+    }
+    return _appAgreeButton;
 }
 
 - (NSMutableArray *)certifiDataArray
@@ -376,6 +404,30 @@
     } andFailBlock:^(NSError *error) {
         
     }];
+}
+
+- (void)bottomMethod:(NSString *)nameString
+{
+    if ([nameString isEqualToString:@"同意申请"]) {//发布方同意接单方申请
+        NSString *dfdfString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyRecordsMessageAgreeString];
+        NSDictionary *params = @{@"id" : self.idString,
+                                 @"category" : self.categoryString,
+                                 @"token" : [self getValidateToken]
+                                 };
+        [self requestDataPostWithString:dfdfString params:params successBlock:^(id responseObject) {
+            BaseModel *dfdfModel = [BaseModel objectWithKeyValues:responseObject];
+            [self showHint:dfdfModel.msg];
+            
+            if ([dfdfModel.code isEqualToString:@"0000"]) {
+                [self.appAgreeButton setBackgroundColor:kSelectedColor];
+                [self.appAgreeButton setTitleColor:kBlackColor forState:0];
+                [self.appAgreeButton setTitle:@"已同意" forState:0];
+            }
+            
+        } andFailBlock:^(NSError *error) {
+            
+        }];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

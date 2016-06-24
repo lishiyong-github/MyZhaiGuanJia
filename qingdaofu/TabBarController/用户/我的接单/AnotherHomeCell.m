@@ -19,6 +19,9 @@
         [self.contentView addSubview:self.typeImageView];
         [self.contentView addSubview:self.nameLabel];
         [self.contentView addSubview:self.typeLabel];
+        
+        [self.contentView addSubview:self.typeButton];
+        
         [self.contentView addSubview:self.addressLabel];
         [self.contentView addSubview:self.grayLabel];
         [self.contentView addSubview:self.moneyView];
@@ -47,6 +50,10 @@
         
         [self.typeLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.typeLabel autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.nameLabel];
+        
+        
+        [self.typeButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
+        [self.typeButton autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kBigPadding];
         
         [self.addressLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.typeImageView];
         [self.addressLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.typeImageView withOffset:10];
@@ -118,6 +125,16 @@
         _typeLabel.textColor = kBlueColor;
     }
     return _typeLabel;
+}
+
+- (UIButton *)typeButton
+{
+    if (!_typeButton) {
+        _typeButton = [UIButton newAutoLayoutView];
+        [_typeButton setTitleColor:kBlueColor forState:0];
+        _typeButton.titleLabel.font = kSecondFont;
+    }
+    return _typeButton;
 }
 
 - (UILabel *)addressLabel
