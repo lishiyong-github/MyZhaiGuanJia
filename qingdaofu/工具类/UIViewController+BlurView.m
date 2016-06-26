@@ -17,18 +17,20 @@
 //有标题
 - (void)showBlurInView:(UIView *)view withArray:(NSArray *)array andTitle:(NSString *)title finishBlock:(void (^)(NSString *text,NSInteger row))finishBlock
 {
+    [self hiddenBlurView];
     UIView *tagView = [self.view viewWithTag:99999];
     UpwardTableView *tableView = [self.view viewWithTag:99998];
     
     if (!tagView) {
         tagView = [UIView newAutoLayoutView];
         tagView.backgroundColor = UIColorFromRGB1(0x333333, 0.3);
-        [self.view addSubview:tagView];
+        tagView.tag = 99999;
+        [view addSubview:tagView];
         [tagView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
         
         tableView = [UpwardTableView newAutoLayoutView];
         tableView.tableType = @"有";
-        [self.view addSubview:tableView];
+        [tagView addSubview:tableView];
       
         [tableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
         if (array.count > 7) {
@@ -47,21 +49,17 @@
         [control autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:tableView];
         [control addAction:^(UIButton *btn) {
             [tagView removeFromSuperview];
-            [tableView removeFromSuperview];
         }];
     }
     
-    QDFWeak(tableView);
     if (finishBlock) {
         [tableView setDidSelectedRow:^(NSString *text,NSInteger row) {
             [tagView removeFromSuperview];
-            [weaktableView removeFromSuperview];
             finishBlock(text,row);
         }];
         
         [tableView setDidSelectedButton:^(NSInteger tag) {
             [tagView removeFromSuperview];
-            [weaktableView removeFromSuperview];
         }];
     }
 }
@@ -69,81 +67,94 @@
 //无标题，有topconstraints－－－产品页面的选择功能
 - (void)showBlurInView:(UIView *)view withArray:(NSArray *)array withTop:(CGFloat)top finishBlock:(void (^)(NSString *, NSInteger))finishBlock
 {
+    [self hiddenBlurView];
     UIView *tagView = [self.view viewWithTag:99999];
     UpwardTableView *tableView = [self.view viewWithTag:99998];
     if (!tagView) {
         tagView = [UIView newAutoLayoutView];
         tagView.backgroundColor = UIColorFromRGB1(0x333333, 0.7);
-        [self.view addSubview:tagView];
+        tagView.tag = 99999;
+        [view addSubview:tagView];
         [tagView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
         [tagView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:top];
         
         tableView = [UpwardTableView newAutoLayoutView];
         tableView.tableType = @"无";
-        [self.view addSubview:tableView];
+
+        [tagView addSubview:tableView];
         
-        [tableView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:top];
-        [tableView autoPinEdgeToSuperviewEdge:ALEdgeLeft];
-        [tableView autoPinEdgeToSuperviewEdge:ALEdgeRight];
+        [tableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
         tableView.heightTableConstraints.constant = array.count*40;
         [tableView setUpwardDataList:array];
     }
     
-    QDFWeak(tableView);
     if (finishBlock) {
         [tableView setDidSelectedRow:^(NSString *text,NSInteger row) {
             [tagView removeFromSuperview];
-            [weaktableView removeFromSuperview];
             finishBlock(text,row);
         }];
     }
 }
 
 //推荐页面的发布
-- (void)showBlurInView:(UIView *)view withArray:(NSArray *)array finishBlock:(void(^)(NSString *text,NSInteger row))finishBlock
+- (void)showBlurInView:(UIView *)view withArray:(NSArray *)array finishBlock:(void(^)(NSInteger row))finishBlock
 {
+    [self hiddenBlurView];
     UIView *tagView = [self.view viewWithTag:99999];
+    NewPublishCell *cell;
     if (!tagView) {
         tagView = [UIView newAutoLayoutView];
-        tagView.backgroundColor = UIColorFromRGB1(0x333333, 0.6);
-        [self.view addSubview:tagView];
+        tagView.backgroundColor = UIColorFromRGB1(0x333333, 0.8);
+        tagView.tag = 99999;
+        if (!view) {
+            view = self.view;
+        }
+        [view addSubview:tagView];
         [tagView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+
+        cell = [NewPublishCell newAutoLayoutView];
+        [cell.financeButton.label setTextColor:kNavColor];
+        [cell.collectionButton.label setTextColor:kNavColor];
+        [cell.suitButton.label  setTextColor:kNavColor];
+        [tagView addSubview:cell];
         
-//        SingleButton *financeButton = [SingleButton newAutoLayoutView];
-//        [financeButton.button setImage:[UIImage imageNamed:@""] forState:0];
-//        [financeButton.label setText:@"发布融资"];
-//        [self.view addSubview:financeButton];
-//        
-//        SingleButton *collectButton = [SingleButton newAutoLayoutView];
-//        [financeButton.button setImage:[UIImage imageNamed:@""] forState:0];
-//        [financeButton.label setText:@"发布清收"];
-//        [self.view addSubview:collectButton];
-//        
-//        SingleButton *suitButton = [SingleButton newAutoLayoutView];
-//        [financeButton.button setImage:[UIImage imageNamed:@""] forState:0];
-//        [financeButton.label setText:@"发布诉讼"];
-//        [self.view addSubview:suitButton];
         
-//        NewPublishCell *cell = [NewPublishCell newAutoLayoutView];
-//        [self.view addSubview:cell];
-//        
-//        [cell autoPinEdgeToSuperviewEdge:ALEdgeLeft];
-//        [cell autoPinEdgeToSuperviewEdge:ALEdgeRight];
-//        [cell autoAlignAxisToSuperviewAxis:ALAxisVertical];
+        UIButton *cancelButton = [UIButton newAutoLayoutView];
+        [cancelButton setTitle:@"取消" forState:0];
+        [cancelButton setTitleColor:kRedColor forState:0];
+        [cancelButton addAction:^(UIButton *btn) {
+            [tagView removeFromSuperview];
+        }];
+        [tagView addSubview:cancelButton];
+        
+        [cell autoPinEdgeToSuperviewEdge:ALEdgeLeft];
+        [cell autoPinEdgeToSuperviewEdge:ALEdgeRight];
+        [cell autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
+        [cell autoSetDimension:ALDimensionHeight toSize:115];
+        
+        [cancelButton autoAlignAxis:ALAxisVertical toSameAxisOfView:cell];
+        [cancelButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:40];
+    }
+    
+    if (finishBlock) {
+        [cell setDidSelectedItem:^(NSInteger item) {
+            [tagView removeFromSuperview];
+            if (item == 11) {//融资
+                finishBlock(11);
+            }else if (item == 12){//清收
+                finishBlock(12);
+            }else if (item == 13){//诉讼
+                finishBlock(13);
+            }
+        }];
     }
 }
 
 
 - (void)hiddenBlurView
 {
-    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
-    
-    UIView *tagView = [window viewWithTag:99999];
-//    [self.view viewWithTag:99999];
-    UIView *tableView = [window viewWithTag:99998];
-//    [self.view viewWithTag:99998];
+    UIView *tagView = [self.view viewWithTag:99999];
     [tagView removeFromSuperview];
-    [tableView removeFromSuperview];
 }
 
 

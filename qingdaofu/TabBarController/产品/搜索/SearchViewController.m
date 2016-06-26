@@ -9,12 +9,12 @@
 #import "SearchViewController.h"
 
 #import "MineUserCell.h"
-@interface SearchViewController ()<UISearchControllerDelegate,UISearchResultsUpdating,UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
+@interface SearchViewController ()<UISearchControllerDelegate,UISearchResultsUpdating,UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UISearchBarDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 
 @property (nonatomic,strong) UITableView *searchTableView;
-@property (nonatomic,strong) UISearchController *searchVC;
+@property (nonatomic,strong) UISearchBar *searchBar;
 
 @property (nonatomic,strong) NSArray *dataArray;
 
@@ -24,15 +24,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = @"搜索";
     
-    self.navigationItem.leftBarButtonItem = self.leftItem;
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.searchBar];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(backController)];
     
     [self.view addSubview:self.searchTableView];
-    
-//    NSCoder *coder = [NSCoder allocWithZone:<#(struct _NSZone *)#>];
-////a:1:{i:0;a:2:{s:4:"name";s:5:"adasd";s:6:"mobile";s:11:"18221497868";}};
-//    [self initWithCoder:coder];
     
     [self.view setNeedsUpdateConstraints];
 }
@@ -41,8 +37,7 @@
 {
     if (!self.didSetupConstraints) {
         
-        [self.searchTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [self.searchTableView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kNavHeight];
+        [self.searchTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
         
         self.didSetupConstraints = YES;
     }
@@ -56,22 +51,18 @@
         _searchTableView.dataSource = self;
         _searchTableView.backgroundColor = kBackColor;
         _searchTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
-        _searchTableView.tableHeaderView = self.searchVC.searchBar;
     }
     return _searchTableView;
 }
 
-- (UISearchController *)searchVC
+- (UISearchBar *)searchBar
 {
-    if (!_searchVC) {
-        _searchVC = [[UISearchController alloc] initWithSearchResultsController:nil];
-        _searchVC.searchResultsUpdater = self;
-        _searchVC.delegate = self;
-        _searchVC.searchBar.frame = CGRectMake(0, kNavHeight, kScreenWidth, 44);
-        _searchVC.searchBar.tintColor = kBlueColor;
-        _searchVC.dimsBackgroundDuringPresentation = NO;
+    if (!_searchBar) {
+        _searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth-40*2, 44)];
+        _searchBar.delegate = self;
+        _searchBar.barStyle = UISearchBarStyleProminent;
     }
-    return _searchVC;
+    return _searchBar;
 }
 
 - (NSArray *)dataArray
@@ -199,5 +190,20 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
+{
+    return YES;
+}
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+{
+    
+}
+//- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar;                        // return NO to not resign first responder
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
+{
+    
+}
 
 @end

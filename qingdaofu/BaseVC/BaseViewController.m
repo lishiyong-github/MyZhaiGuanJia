@@ -24,6 +24,9 @@
     [super viewDidLoad];
     
     self.view.backgroundColor = kBackColor;
+//    self.edgesForExtendedLayout = UIRectEdgeNone ;
+//    self.extendedLayoutIncludesOpaqueBars = NO ;
+//    self.automaticallyAdjustsScrollViewInsets = NO ;
     
     //设置导航条的字体颜色
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:kBlackColor,NSFontAttributeName:kNavFont}];

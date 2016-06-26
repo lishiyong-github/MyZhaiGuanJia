@@ -49,6 +49,8 @@
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:kBlackColor,NSFontAttributeName:kNavFont}];
     
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:kNavColor] forBarMetrics:UIBarMetricsDefault];
+    
+    [self getProductsListWithPage:@"0"];
 }
 
 - (void)viewDidLoad {
@@ -60,7 +62,6 @@
     [self.view addSubview:self.productsTableView];
     
     [self.view setNeedsUpdateConstraints];
-    [self getProductsListWithPage:@"0"];
 }
 
 - (void)updateViewConstraints
@@ -93,6 +94,11 @@
         [_proTitleView addAction:^(UIButton *btn) {
             btn.selected = !btn.selected;
             if (btn.selected) {
+                [weakself hiddenBlurView];
+                [weakself.tableView11 removeFromSuperview];
+                [weakself.tableView12 removeFromSuperview];
+                [weakself.tableView13 removeFromSuperview];
+                
                 NSArray *titleArray = @[@"全部",@"融资",@"清收",@"诉讼"];
                 [weakself showBlurInView:weakself.view withArray:titleArray withTop:0 finishBlock:^(NSString *text, NSInteger row) {
                     NSString *value = [NSString stringWithFormat:@"%d",row];
@@ -102,10 +108,6 @@
                 }];
             }else{
                 [weakself hiddenBlurView];
-//                UIView *view1 = [weakself.view viewWithTag:99999];
-//                UIView *view2 = [weakself.view viewWithTag:99998];
-//                [view1 removeFromSuperview];
-//                [view2 removeFromSuperview];
             }
         }];
     }
@@ -123,70 +125,76 @@
 
         QDFWeakSelf;
         [_chooseView setDidSelectedButton:^(UIButton *selectedButton) {
-            
             switch (selectedButton.tag) {
                 case 201:{//区域
-                        UIButton *but1 = [weakself.view viewWithTag:202];
-                        UIButton *but2 = [weakself.view viewWithTag:203];
-                        but1.userInteractionEnabled = NO;
-                        but2.userInteractionEnabled = NO;
-                    
-                        [weakself.view addSubview: weakself.tableView11];
+                    selectedButton.selected = !selectedButton.selected;
+                    if (selectedButton.selected) {
+                        [weakself hiddenBlurView];
+                        [weakself.tableView11 removeFromSuperview];
+                        [weakself.tableView12 removeFromSuperview];
+                        [weakself.tableView13 removeFromSuperview];
                         
+                        [weakself.view addSubview: weakself.tableView11];
                         [weakself.tableView11 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:weakself.chooseView];
                         [weakself.tableView11 autoPinEdgeToSuperviewEdge:ALEdgeLeft];
                         [weakself.tableView11 autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kTabBarHeight];
                         weakself.widthConstraints = [weakself.tableView11 autoSetDimension:ALDimensionWidth toSize:kScreenWidth];
                         
                         [weakself getProvinceList];
+                    }else{
+                        [weakself hiddenBlurView];
+                        [weakself.tableView11 removeFromSuperview];
+                        [weakself.tableView12 removeFromSuperview];
+                        [weakself.tableView13 removeFromSuperview];
+                    }
                 }
                     break;
                 case 202:{//状态
                     
-                        UIButton *but1 = [weakself.view viewWithTag:201];
-                        UIButton *but2 = [weakself.view viewWithTag:203];
-                        but1.userInteractionEnabled = NO;
-                        but2.userInteractionEnabled = NO;
+                    selectedButton.selected = !selectedButton.selected;
+                    if (selectedButton.selected) {
+                        [weakself hiddenBlurView];
+                        [weakself.tableView11 removeFromSuperview];
+                        [weakself.tableView12 removeFromSuperview];
+                        [weakself.tableView13 removeFromSuperview];
                         
                         NSArray *stateArray = @[@"不限",@"发布中",@"处理中",@"已结案"];
-                        
                         [weakself showBlurInView:weakself.view withArray:stateArray withTop:weakself.chooseView.height finishBlock:^(NSString *text, NSInteger row) {
                             [selectedButton setTitle:text forState:0];
-                            
-                            UIButton *but1 = [weakself.view viewWithTag:201];
-                            UIButton *but2 = [weakself.view viewWithTag:203];
-                            but1.userInteractionEnabled = YES;
-                            but2.userInteractionEnabled = YES;
                             
                             NSString *value = [NSString stringWithFormat:@"%d",row];
                             [selectedButton setTitle:text forState:0];
                             [weakself.paramsDictionary setValue:value forKey:@"status"];
                             [weakself getProductsListWithPage:@"0"];
-
                         }];
+                    }else{
+                        [weakself hiddenBlurView];
+                    }
                 }
                     break;
                 case 203:{//金额
                     
-                        UIButton *but1 = [weakself.view viewWithTag:201];
-                        UIButton *but2 = [weakself.view viewWithTag:202];
-                        but1.userInteractionEnabled = NO;
-                        but2.userInteractionEnabled = NO;
+                    selectedButton.selected = !selectedButton.selected;
+                    
+                    if (selectedButton.selected) {
+                        [weakself hiddenBlurView];
+                        [weakself.tableView11 removeFromSuperview];
+                        [weakself.tableView12 removeFromSuperview];
+                        [weakself.tableView13 removeFromSuperview];
                         
                         NSArray *moneyArray = @[@"不限",@"30万以下",@"30-100万",@"100-500万",@"500万以上"];
-                    [weakself showBlurInView:weakself.view withArray:moneyArray withTop:selectedButton.height finishBlock:^(NSString *text, NSInteger row) {
-                        [selectedButton setTitle:text forState:0];
-                        
-                        UIButton *but1 = [weakself.view viewWithTag:201];
-                        UIButton *but2 = [weakself.view viewWithTag:202];
-                        but1.userInteractionEnabled = YES;
-                        but2.userInteractionEnabled = YES;
-                        
-                        NSString *value = [NSString stringWithFormat:@"%d",row];
-                        [selectedButton setTitle:text forState:0];
-                        [weakself.paramsDictionary setValue:value forKey:@"money"];
-                        [weakself getProductsListWithPage:@"0"];
-                    }];
+                        [weakself showBlurInView:weakself.view withArray:moneyArray withTop:selectedButton.height finishBlock:^(NSString *text, NSInteger row) {
+                            [selectedButton setTitle:text forState:0];
+                            
+                            NSString *value = [NSString stringWithFormat:@"%d",row];
+                            [selectedButton setTitle:text forState:0];
+                            [weakself.paramsDictionary setValue:value forKey:@"money"];
+                            [weakself getProductsListWithPage:@"0"];
+                        }];
+                    }else{
+                        [weakself hiddenBlurView];
+                    }
+
                 }
                     break;
                 default:

@@ -49,6 +49,13 @@
         _financeButton.label.text = @"发布融资";
         [_financeButton.button setBackgroundImage:[UIImage imageNamed:@"btn_financing"] forState:0];
         _financeButton.button.userInteractionEnabled = NO;
+
+        QDFWeakSelf;
+        [_financeButton addAction:^(UIButton *btn) {
+            if (weakself.didSelectedItem) {
+                weakself.didSelectedItem(11);
+            }
+        }];
     }
     return _financeButton;
 }
@@ -57,10 +64,15 @@
 {
     if (!_collectionButton) {
         _collectionButton = [SingleButton newAutoLayoutView];
-//        _collectionButton.center = self.center;
         _collectionButton.label.text = @"发布清收";
         [_collectionButton.button setBackgroundImage:[UIImage imageNamed:@"btn_collection"] forState:0];
         _collectionButton.button.userInteractionEnabled = NO;
+        QDFWeakSelf;
+        [_collectionButton addAction:^(UIButton *btn) {
+            if (weakself.didSelectedItem) {
+                weakself.didSelectedItem(12);
+            }
+        }];
     }
     return _collectionButton;
 }
@@ -72,6 +84,13 @@
         _suitButton.label.text = @"发布诉讼";
         [_suitButton.button setBackgroundImage:[UIImage imageNamed:@"btn_litigation"] forState:0];
         _suitButton.button.userInteractionEnabled = NO;
+        
+        QDFWeakSelf;
+        [_suitButton addAction:^(UIButton *btn) {
+            if (weakself.didSelectedItem) {
+                weakself.didSelectedItem(13);
+            }
+        }];
     }
     return _suitButton;
 }

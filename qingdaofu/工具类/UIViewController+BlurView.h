@@ -14,7 +14,7 @@
 
 - (void)showBlurInView:(UIView *)view withArray:(NSArray *)array withTop:(CGFloat)top finishBlock:(void(^)(NSString *text,NSInteger row))finishBlock;
 
-- (void)showBlurInView:(UIView *)view withArray:(NSArray *)array finishBlock:(void(^)(NSString *text,NSInteger row))finishBlock;
+- (void)showBlurInView:(UIView *)view withArray:(NSArray *)array finishBlock:(void(^)(NSInteger row))finishBlock;
 
 - (void)hiddenBlurView;
 

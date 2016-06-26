@@ -101,14 +101,39 @@
 #pragma mark - tabBar delegate
 - (void)tabBarDidSelectedRiseButton
 {
-    NSLog(@"发布");
+    QDFWeakSelf;
+    [self showBlurInView:[UIApplication sharedApplication].keyWindow withArray:nil finishBlock:^(NSInteger row) {
+        
+        UIWindow *window = [UIApplication sharedApplication].keyWindow;
+        UITabBarController *tabBarController = (UITabBarController *)window.rootViewController;
+        //
+        UINavigationController *viewController = tabBarController.selectedViewController;
+        
+        if (row == 11) {
+            ReportFinanceViewController *reportFinanceVC = [[ReportFinanceViewController alloc] init];
+            reportFinanceVC.hidesBottomBarWhenPushed = YES;
+            [viewController pushViewController:reportFinanceVC animated:YES];
+        }else if (row == 12){
+            ReportSuitViewController *collectVC = [[ReportSuitViewController alloc] init];
+            collectVC.categoryString = @"2";
+            collectVC.hidesBottomBarWhenPushed = YES;
+            [viewController pushViewController:collectVC animated:YES];
+        }else{
+            ReportSuitViewController *reportSuitVC = [[ReportSuitViewController alloc] init];
+            reportSuitVC.categoryString = @"3";
+            reportSuitVC.hidesBottomBarWhenPushed = YES;
+            [viewController pushViewController:reportSuitVC animated:YES];
+
+        }
+        
+    }];
     
-    UIView *tagView = [self.view viewWithTag:99999];
-    if (!tagView) {
-        tagView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
-        tagView.backgroundColor = UIColorFromRGB1(0x333333, 0.6);
-        [self.view addSubview:tagView];
-    }
+//    UIView *tagView = [self.view viewWithTag:99999];
+//    if (!tagView) {
+//        tagView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
+//        tagView.backgroundColor = UIColorFromRGB1(0x333333, 0.6);
+//        [self.view addSubview:tagView];
+//    }
     
 //    UIView *showView = [UIView newAutoLayoutView];
 //    //

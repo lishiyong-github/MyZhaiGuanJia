@@ -12,8 +12,8 @@
 
 @interface TabBar : UIView
 
-@property (nonatomic,copy) NSArray *tabBarItems;
-@property (nonatomic,weak) id <TabBarDelegate> delegate;
+@property (nonatomic,strong) NSArray *tabBarItems;
+@property (nonatomic,strong) id <TabBarDelegate> delegate;
 
 @end
 

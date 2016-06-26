@@ -19,5 +19,6 @@
 @property (nonatomic,strong) SingleButton *collectionButton;
 @property (nonatomic,strong) SingleButton *suitButton;
 
+@property (nonatomic,strong) void (^didSelectedItem)(NSInteger);
 
 @end
