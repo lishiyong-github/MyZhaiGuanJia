@@ -10,7 +10,7 @@
 
 #import "ReportFinanceViewController.h"  //发布融资
 #import "ReportSuitViewController.h"   //发布诉讼
-#import "ReportCollectViewController.h" //发布请收
+//#import "ReportCollectViewController.h" //发布请收
 #import "ProductsDetailsViewController.h" //详细信息
 #import "MarkingViewController.h"
 
@@ -185,16 +185,18 @@
         }];
         
         [cell.collectionButton addAction:^(UIButton *btn) {//清收
-            ReportSuitViewController *reportSuitVC = [[ReportSuitViewController alloc] init];
-            reportSuitVC.hidesBottomBarWhenPushed = YES;
-            reportSuitVC.categoryString = @"2";
-            [weakself.navigationController pushViewController:reportSuitVC animated:YES];
+            ReportSuitViewController *reportCollectVC = [[ReportSuitViewController alloc] init];
+            reportCollectVC.hidesBottomBarWhenPushed = YES;
+            reportCollectVC.categoryString = @"2";
+            reportCollectVC.tagString = @"1";
+            [weakself.navigationController pushViewController:reportCollectVC animated:YES];
         }];
         
         [cell.suitButton addAction:^(UIButton *btn) {//诉讼
             ReportSuitViewController *reportSuitVC = [[ReportSuitViewController alloc] init];
             reportSuitVC.hidesBottomBarWhenPushed = YES;
             reportSuitVC.categoryString = @"3";
+            reportSuitVC.tagString = @"1";
             [weakself.navigationController pushViewController:reportSuitVC animated:YES];
         }];
         

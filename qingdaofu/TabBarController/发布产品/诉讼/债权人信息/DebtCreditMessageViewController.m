@@ -73,6 +73,14 @@
         [_debtCreditCommitButton addAction:^(UIButton *btn) {
             EditDebtCreditMessageViewController *editDebtCreditMessageVC = [[EditDebtCreditMessageViewController alloc] init];
             [editDebtCreditMessageVC setDidSaveMessage:^(DebtModel * deModel) {
+                
+                if ([weakself.tagString integerValue] == 1) {//
+                    [weakself.debtCreditCommitButton setBackgroundColor:kSelectedColor];
+                    [weakself.debtCreditCommitButton setTitleColor:kBlackColor forState:0];
+                    [weakself.debtCreditCommitButton setTitle:@"不能再次添加" forState:0];
+                    weakself.debtCreditCommitButton.userInteractionEnabled = NO;
+                }
+                
                 [weakself.debtArray addObject:deModel];
                 [weakself.debtCreditTableView reloadData];
             }];
@@ -80,7 +88,7 @@
             [weakself.navigationController pushViewController:editDebtCreditMessageVC animated:YES];
         }];
         
-        if ([self.tagString integerValue] == 1) {
+        if ([self.tagString integerValue] == 2) {
             [_debtCreditCommitButton setTitle:@"继续添加" forState:0];
         }else{
             [_debtCreditCommitButton setTitle:@"添加" forState:0];
@@ -100,10 +108,6 @@
 #pragma mark - tableView delegate and datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-//    if ([self.tagString integerValue] == 1) {
-//        return 4;
-//    }
-//    return 0;
     return self.debtArray.count;
 }
 
@@ -148,8 +152,10 @@
         EditDebtCreditMessageViewController *editDebtCreditMessageVC = [[EditDebtCreditMessageViewController alloc] init];
         editDebtCreditMessageVC.deModel = deModel;
         [editDebtCreditMessageVC setDidSaveMessage:^(DebtModel * deModel) {
+            
             [weakself.debtArray replaceObjectAtIndex:indexPath.section withObject:deModel];
             [weakself.debtCreditTableView reloadData];
+            
         }];
 
         [weakself.navigationController pushViewController:editDebtCreditMessageVC animated:YES];

@@ -104,6 +104,15 @@
 		A16391541D1D13360051F1D0 /* DebtModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A16391531D1D13360051F1D0 /* DebtModel.m */; };
 		A16391571D1D22350051F1D0 /* list_chapter@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A16391551D1D22350051F1D0 /* list_chapter@2x.png */; };
 		A16391581D1D22350051F1D0 /* list_chapter@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A16391561D1D22350051F1D0 /* list_chapter@3x.png */; };
+		A16391711D20194B0051F1D0 /* FSBasicImage.m in Sources */ = {isa = PBXBuildFile; fileRef = A163915C1D20194B0051F1D0 /* FSBasicImage.m */; };
+		A16391721D20194B0051F1D0 /* FSBasicImageSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A163915E1D20194B0051F1D0 /* FSBasicImageSource.m */; };
+		A16391731D20194B0051F1D0 /* FSImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = A16391611D20194B0051F1D0 /* FSImageLoader.m */; };
+		A16391741D20194B0051F1D0 /* FSImageScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = A16391631D20194B0051F1D0 /* FSImageScrollView.m */; };
+		A16391751D20194B0051F1D0 /* FSImageTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = A16391661D20194B0051F1D0 /* FSImageTitleView.m */; };
+		A16391761D20194B0051F1D0 /* FSImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = A16391681D20194B0051F1D0 /* FSImageView.m */; };
+		A16391771D20194B0051F1D0 /* FSImageViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A163916B1D20194B0051F1D0 /* FSImageViewerViewController.m */; };
+		A16391781D20194B0051F1D0 /* FSPlaceholderImages.m in Sources */ = {isa = PBXBuildFile; fileRef = A163916D1D20194B0051F1D0 /* FSPlaceholderImages.m */; };
+		A16391791D20194B0051F1D0 /* UIViewController+ImageBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = A16391701D20194B0051F1D0 /* UIViewController+ImageBrowser.m */; };
 		A16486B11D00088B00B442C1 /* title_product_close@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A16486AD1D00088B00B442C1 /* title_product_close@2x.png */; };
 		A16486B21D00088B00B442C1 /* title_product_close@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A16486AE1D00088B00B442C1 /* title_product_close@3x.png */; };
 		A16486B31D00088B00B442C1 /* title_product_open@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A16486AF1D00088B00B442C1 /* title_product_open@2x.png */; };
@@ -618,6 +627,28 @@
 		A16391531D1D13360051F1D0 /* DebtModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebtModel.m; sourceTree = "<group>"; };
 		A16391551D1D22350051F1D0 /* list_chapter@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list_chapter@2x.png"; sourceTree = "<group>"; };
 		A16391561D1D22350051F1D0 /* list_chapter@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list_chapter@3x.png"; sourceTree = "<group>"; };
+		A163915B1D20194B0051F1D0 /* FSBasicImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSBasicImage.h; sourceTree = "<group>"; };
+		A163915C1D20194B0051F1D0 /* FSBasicImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSBasicImage.m; sourceTree = "<group>"; };
+		A163915D1D20194B0051F1D0 /* FSBasicImageSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSBasicImageSource.h; sourceTree = "<group>"; };
+		A163915E1D20194B0051F1D0 /* FSBasicImageSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSBasicImageSource.m; sourceTree = "<group>"; };
+		A163915F1D20194B0051F1D0 /* FSImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSImage.h; sourceTree = "<group>"; };
+		A16391601D20194B0051F1D0 /* FSImageLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSImageLoader.h; sourceTree = "<group>"; };
+		A16391611D20194B0051F1D0 /* FSImageLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSImageLoader.m; sourceTree = "<group>"; };
+		A16391621D20194B0051F1D0 /* FSImageScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSImageScrollView.h; sourceTree = "<group>"; };
+		A16391631D20194B0051F1D0 /* FSImageScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSImageScrollView.m; sourceTree = "<group>"; };
+		A16391641D20194B0051F1D0 /* FSImageSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSImageSource.h; sourceTree = "<group>"; };
+		A16391651D20194B0051F1D0 /* FSImageTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSImageTitleView.h; sourceTree = "<group>"; };
+		A16391661D20194B0051F1D0 /* FSImageTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSImageTitleView.m; sourceTree = "<group>"; };
+		A16391671D20194B0051F1D0 /* FSImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSImageView.h; sourceTree = "<group>"; };
+		A16391681D20194B0051F1D0 /* FSImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSImageView.m; sourceTree = "<group>"; };
+		A16391691D20194B0051F1D0 /* FSImageViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSImageViewer.h; sourceTree = "<group>"; };
+		A163916A1D20194B0051F1D0 /* FSImageViewerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSImageViewerViewController.h; sourceTree = "<group>"; };
+		A163916B1D20194B0051F1D0 /* FSImageViewerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSImageViewerViewController.m; sourceTree = "<group>"; };
+		A163916C1D20194B0051F1D0 /* FSPlaceholderImages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSPlaceholderImages.h; sourceTree = "<group>"; };
+		A163916D1D20194B0051F1D0 /* FSPlaceholderImages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSPlaceholderImages.m; sourceTree = "<group>"; };
+		A163916E1D20194B0051F1D0 /* FSTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSTitleView.h; sourceTree = "<group>"; };
+		A163916F1D20194B0051F1D0 /* UIViewController+ImageBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ImageBrowser.h"; sourceTree = "<group>"; };
+		A16391701D20194B0051F1D0 /* UIViewController+ImageBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ImageBrowser.m"; sourceTree = "<group>"; };
 		A16486AD1D00088B00B442C1 /* title_product_close@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "title_product_close@2x.png"; sourceTree = "<group>"; };
 		A16486AE1D00088B00B442C1 /* title_product_close@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "title_product_close@3x.png"; sourceTree = "<group>"; };
 		A16486AF1D00088B00B442C1 /* title_product_open@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "title_product_open@2x.png"; sourceTree = "<group>"; };
@@ -1416,6 +1447,35 @@
 				A16391531D1D13360051F1D0 /* DebtModel.m */,
 			);
 			path = model;
+			sourceTree = "<group>";
+		};
+		A163915A1D20194B0051F1D0 /* ImageBrowser */ = {
+			isa = PBXGroup;
+			children = (
+				A163915B1D20194B0051F1D0 /* FSBasicImage.h */,
+				A163915C1D20194B0051F1D0 /* FSBasicImage.m */,
+				A163915D1D20194B0051F1D0 /* FSBasicImageSource.h */,
+				A163915E1D20194B0051F1D0 /* FSBasicImageSource.m */,
+				A163915F1D20194B0051F1D0 /* FSImage.h */,
+				A16391601D20194B0051F1D0 /* FSImageLoader.h */,
+				A16391611D20194B0051F1D0 /* FSImageLoader.m */,
+				A16391621D20194B0051F1D0 /* FSImageScrollView.h */,
+				A16391631D20194B0051F1D0 /* FSImageScrollView.m */,
+				A16391641D20194B0051F1D0 /* FSImageSource.h */,
+				A16391651D20194B0051F1D0 /* FSImageTitleView.h */,
+				A16391661D20194B0051F1D0 /* FSImageTitleView.m */,
+				A16391671D20194B0051F1D0 /* FSImageView.h */,
+				A16391681D20194B0051F1D0 /* FSImageView.m */,
+				A16391691D20194B0051F1D0 /* FSImageViewer.h */,
+				A163916A1D20194B0051F1D0 /* FSImageViewerViewController.h */,
+				A163916B1D20194B0051F1D0 /* FSImageViewerViewController.m */,
+				A163916C1D20194B0051F1D0 /* FSPlaceholderImages.h */,
+				A163916D1D20194B0051F1D0 /* FSPlaceholderImages.m */,
+				A163916E1D20194B0051F1D0 /* FSTitleView.h */,
+				A163916F1D20194B0051F1D0 /* UIViewController+ImageBrowser.h */,
+				A16391701D20194B0051F1D0 /* UIViewController+ImageBrowser.m */,
+			);
+			path = ImageBrowser;
 			sourceTree = "<group>";
 		};
 		A16856731CE951D0006A0887 /* view */ = {
@@ -2520,6 +2580,7 @@
 		A1A017311C5B677200027134 /* 第三方 */ = {
 			isa = PBXGroup;
 			children = (
+				A163915A1D20194B0051F1D0 /* ImageBrowser */,
 				A1B0291C1D17CE6F00F32A09 /* AFNetworking */,
 				A1B028C81D1794DC00F32A09 /* SDWebImage */,
 				A16175691D13A70F001BB200 /* SkyAssociationMenu */,
@@ -3117,6 +3178,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A16391751D20194B0051F1D0 /* FSImageTitleView.m in Sources */,
 				A16486BB1D002ADF00B442C1 /* UIViewController+HUD.m in Sources */,
 				A14C17641D080049003826F8 /* ProDetailCell.m in Sources */,
 				A1A017561C5B696A00027134 /* NSObject+MJKeyValue.m in Sources */,
@@ -3133,6 +3195,7 @@
 				A10D7B6C1CEABDCB00422D7D /* MainView.m in Sources */,
 				A1A34C161CE3148A00AD454A /* UploadFilesViewController.m in Sources */,
 				A199851D1CE0360B0055A572 /* MessageRemindViewController.m in Sources */,
+				A16391721D20194B0051F1D0 /* FSBasicImageSource.m in Sources */,
 				A192B4B41CDB2CAF0053FC4C /* AdditionMessageViewController.m in Sources */,
 				A1522BF11D0FB50100135C72 /* PaceCell.m in Sources */,
 				A18F14161CF6D3C100B14318 /* CaseViewController.m in Sources */,
@@ -3152,7 +3215,9 @@
 				A15F618C1D1906820060AF7B /* GuarantyModel.m in Sources */,
 				A1770E271CFEA314003579E1 /* StarCell.m in Sources */,
 				A16BA1571CED4A2500A7010C /* MyAgentListViewController.m in Sources */,
+				A16391771D20194B0051F1D0 /* FSImageViewerViewController.m in Sources */,
 				A16BA1491CEC4E2B00A7010C /* TakePictureCell.m in Sources */,
+				A16391791D20194B0051F1D0 /* UIViewController+ImageBrowser.m in Sources */,
 				A176341D1D067A6E00CD4623 /* PublishingResponse.m in Sources */,
 				A17634241D06B68700CD4623 /* CompleteResponse.m in Sources */,
 				A17965021CD3690D00B6AD47 /* MyStoreCell.m in Sources */,
@@ -3213,6 +3278,7 @@
 				A10D7B751CEAF5EA00422D7D /* MyAgentViewController.m in Sources */,
 				A168569E1CE9B39D006A0887 /* ProdLeftView.m in Sources */,
 				A1A34C3A1CE32C9300AD454A /* ForgetPassViewController.m in Sources */,
+				A16391741D20194B0051F1D0 /* FSImageScrollView.m in Sources */,
 				A19D29471CD1B44D00DAAEA7 /* MoneyView.m in Sources */,
 				A159F95E1D0D66BC00A6A024 /* DelayRequestsViewController.m in Sources */,
 				A19B8E571CCF640300F8EBF2 /* MessageCell.m in Sources */,
@@ -3252,6 +3318,7 @@
 				A17EE3911CD8796900ECC631 /* SuggestionViewController.m in Sources */,
 				A19D294E1CD1E04300DAAEA7 /* HomeCell.m in Sources */,
 				A159F9801D0D727A00A6A024 /* UIScrollView+MJRefresh.m in Sources */,
+				A16391711D20194B0051F1D0 /* FSBasicImage.m in Sources */,
 				A16175561D12A1CF001BB200 /* LoginTableView.m in Sources */,
 				A1B028EE1D1794DC00F32A09 /* UIButton+WebCache.m in Sources */,
 				A17964D51CD2EAB100B6AD47 /* AuthenBaseView.m in Sources */,
@@ -3296,12 +3363,14 @@
 				A1A0174E1C5B696A00027134 /* MJDictionaryCache.m in Sources */,
 				A17691171CD97E30004289DD /* MyApplyingViewController.m in Sources */,
 				A16FF58E1D05050F00C50A0B /* BaseModel.m in Sources */,
+				A16391731D20194B0051F1D0 /* FSImageLoader.m in Sources */,
 				A1B0292A1D17CE6F00F32A09 /* AFHTTPSessionManager.m in Sources */,
 				A154B8EA1CE1B47B00884CA4 /* ReportFiSucViewController.m in Sources */,
 				A1A97E511CDC66E900EDE320 /* ReceiveMessagesViewController.m in Sources */,
 				A19D296A1CD208E900DAAEA7 /* AuthentyViewController.m in Sources */,
 				A18B26481CEAA699005526C5 /* MainViewController.m in Sources */,
 				A19B8E4A1CCF530900F8EBF2 /* MineViewController.m in Sources */,
+				A16391781D20194B0051F1D0 /* FSPlaceholderImages.m in Sources */,
 				9CEA216B1CE2140C002C5BA7 /* UIButton+Addition.m in Sources */,
 				A16856801CE99358006A0887 /* ProductsDetailsProViewController.m in Sources */,
 				A14C17681D0AE577003826F8 /* UserModel.m in Sources */,
@@ -3334,6 +3403,7 @@
 				A1B028E61D1794DC00F32A09 /* NSData+ImageContentType.m in Sources */,
 				A19D293E1CD1A32D00DAAEA7 /* NSString+Fram.m in Sources */,
 				A1718E0B1CFD84A40007DA6F /* AuthenLawViewController.m in Sources */,
+				A16391761D20194B0051F1D0 /* FSImageView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

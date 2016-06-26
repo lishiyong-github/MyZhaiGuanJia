@@ -12,6 +12,10 @@
 #import "BaseCommitButton.h"
 #import "UIViewController+MutipleImageChoice.h"
 
+#import "FSBasicImage.h"
+#import "FSBasicImageSource.h"
+#import "FSImageViewerViewController.h"
+
 @interface UploadViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
@@ -89,6 +93,8 @@
                     
                     NSLog(@"str is %@",str);
                     
+                    weakself.allImage = images;
+                    
                     [cell reloadData];
                 }
                 
@@ -147,12 +153,14 @@
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-//    //展示图片
-//    QDFWeak(cell);
-//    QDFWeakSelf;
-//    [cell setDidSelectedItem:^(NSInteger itemTag) {
-//        
-//    }];
+    //展示图片
+    QDFWeakSelf;
+    [cell setDidSelectedItem:^(NSInteger itemTag) {
+        FSBasicImageSource *photoSource = [[FSBasicImageSource alloc] initWithImages:weakself.allImage];
+        FSImageViewerViewController *browser = [[FSImageViewerViewController alloc] initWithImageSource:photoSource imageIndex:itemTag];
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:browser];
+        [weakself presentViewController:nav animated:YES completion:nil];
+    }];
     
     return cell;
 }
