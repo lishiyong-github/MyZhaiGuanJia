@@ -21,7 +21,6 @@
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *debtCreditTableView;
 @property (nonatomic,strong) BaseCommitButton *debtCreditCommitButton;
-@property (nonatomic,strong) NSMutableArray *debtArray;
 
 @end
 
@@ -74,41 +73,21 @@
 {
     if (!_debtCreditCommitButton) {
         _debtCreditCommitButton = [BaseCommitButton newAutoLayoutView];
+        [_debtCreditCommitButton setTitle:@"添加" forState:0];
         QDFWeakSelf;
         [_debtCreditCommitButton addAction:^(UIButton *btn) {
+            
             EditDebtCreditMessageViewController *editDebtCreditMessageVC = [[EditDebtCreditMessageViewController alloc] init];
             editDebtCreditMessageVC.categoryString = weakself.categoryString;
-            
-//            [editDebtCreditMessageVC setDidSaveMessageArray:^(NSArray *infos) {
-//                if ([weakself.tagString integerValue] == 1) {//
-//                        [weakself.debtCreditCommitButton setHidden:YES];
-//                    }else{
-//                        [weakself.debtCreditCommitButton setTitle:@"继续添加" forState:0];
-//                    }
-//    
-//                    [weakself.debtArray addObject:infos];
-//                    [weakself.debtCreditTableView reloadData];
-//            }];
             [editDebtCreditMessageVC setDidSaveMessage:^(DebtModel *deModel) {
-                if ([weakself.tagString integerValue] == 1) {//
-                    [weakself.debtCreditCommitButton setHidden:YES];
-                }else{
-                    [weakself.debtCreditCommitButton setTitle:@"继续添加" forState:0];
-                }
-
+                
                 [weakself.debtArray addObject:deModel];
                 [weakself.debtCreditTableView reloadData];
+                [weakself.debtCreditCommitButton setTitle:@"继续添加" forState:0];
             }];
-            
             
             [weakself.navigationController pushViewController:editDebtCreditMessageVC animated:YES];
         }];
-        
-        if ([self.tagString integerValue] == 2) {
-            [_debtCreditCommitButton setTitle:@"继续添加" forState:0];
-        }else{
-            [_debtCreditCommitButton setTitle:@"添加" forState:0];
-        }
     }
     return _debtCreditCommitButton;
 }

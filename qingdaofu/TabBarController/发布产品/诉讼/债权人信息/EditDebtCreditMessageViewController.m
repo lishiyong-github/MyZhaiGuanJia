@@ -216,27 +216,9 @@
             [self showHint:@"没有数据，不能保存"];
         }else{
             
-            cModel.creditorname = cModel.creditorname?cModel.creditorname:@"";
-            cModel.creditormobile = cModel.creditormobile?cModel.creditormobile:@"";
-            cModel.creditorcardcode = cModel.creditorcardcode?cModel.creditorcardcode:@"";
-            cModel.creditoraddress = cModel.creditoraddress?cModel.creditoraddress:@"";
-
-//            NSDictionary *dic1 = [NSDictionary dictionaryWithObject:cModel.creditorname forKey:@"creditorname"];
-//            NSDictionary *dic2 = [NSDictionary dictionaryWithObject:cModel.creditormobile forKey:@"creditormobile"];
-//            NSDictionary *dic3 = [NSDictionary dictionaryWithObject:cModel.creditorcardcode forKey:@"creditorcardcode"];
-//            NSDictionary *dic4 = [NSDictionary dictionaryWithObject:cModel.creditoraddress forKey:@"creditoraddress"];
-//            
-//            NSArray *aa = [NSArray arrayWithObjects:dic1,dic2,dic3,dic4, nil];
-            
-            NSArray *aa = [NSArray arrayWithObjects:cModel.creditorname,cModel.creditormobile,cModel.creditorcardcode,cModel.creditoraddress, nil];
-            
             if (self.didSaveMessage) {
                 self.didSaveMessage(cModel);
             }
-            
-//            if (self.didSaveMessageArray) {
-//                self.didSaveMessageArray(aa);
-//            }
         }
 
     }else{
@@ -249,17 +231,9 @@
         if ((bModel.borrowingname == nil || [bModel.borrowingname isEqualToString:@""]) && (bModel.borrowingmobile == nil || [bModel.borrowingmobile isEqualToString:@""]) && (bModel.borrowingcardcode == nil || [bModel.borrowingcardcode isEqualToString:@""]) && (bModel.borrowingaddress == nil || [bModel.borrowingaddress isEqualToString:@""])) {
             [self showHint:@"没有数据，不能保存"];
         }else{
-            
-            bModel.borrowingname = bModel.borrowingname?bModel.borrowingname:@"";
-            bModel.borrowingmobile = bModel.borrowingmobile?bModel.borrowingmobile:@"";
-            bModel.borrowingcardcode = bModel.borrowingcardcode?bModel.borrowingcardcode:@"";
-            bModel.borrowingaddress = bModel.borrowingaddress?bModel.borrowingaddress:@"";
-            
-            NSArray *aa = [NSArray arrayWithObjects:bModel.borrowingname,bModel.borrowingmobile,bModel.borrowingcardcode,bModel.borrowingaddress, nil];
-            
-//            if (self.didSaveMessageArray) {
-//                self.didSaveMessageArray(aa);
-//            }
+            if (self.didSaveMessage) {
+                self.didSaveMessage(bModel);
+            }
         }
     }
     [self.navigationController popViewControllerAnimated:YES];

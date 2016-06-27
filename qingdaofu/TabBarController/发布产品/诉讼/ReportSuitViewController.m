@@ -39,6 +39,8 @@
 @property (nonatomic,strong) NSMutableDictionary *suitDataDictionary;  //参数
 @property (nonatomic,strong) NSString *rowString;    //债权类型
 @property (nonatomic,strong) NSString *number;
+@property (nonatomic,strong) NSArray *creditorInfos;
+
 @end
 
 @implementation ReportSuitViewController
@@ -793,19 +795,30 @@
             [self.navigationController pushViewController:uploadFilesVC animated:YES];
         }else if (indexPath.row == 11){//债权人信息
             DebtCreditMessageViewController *debtCreditMessageVC = [[DebtCreditMessageViewController alloc] init];
-            debtCreditMessageVC.tagString = self.tagString;
+//            debtCreditMessageVC.tagString = self.tagString;
             debtCreditMessageVC.categoryString = @"1";
+            debtCreditMessageVC.debtArray = [NSMutableArray arrayWithArray:self.creditorInfos];
             [debtCreditMessageVC setDidEndEditting:^(NSArray *arrays) {
                 
-                NSArray *dictArray = [DebtModel keyValuesArrayWithObjectArray:arrays];
-                [self.suitDataDictionary setValue:dictArray forKey:@"creditorinfo"];
+                NSString *qqq = @"";
+                NSString *endStr = @"";
+                for (NSInteger i=0; i<arrays.count; i++) {
+                    DebtModel *model = arrays[i];
+                    
+                    qqq = [NSString stringWithFormat:@"creditorname-%d=%@,creditormobile-%d=%@,creditorcardcode-%d=%@,creditoraddress-%d=%@",i,model.creditorname,i,model.creditormobile,i,model.creditorcardcode,i,model.creditoraddress];
+                    
+                    endStr = [NSString stringWithFormat:@"%@,%@",endStr,qqq];
+                }
+                
+                self.creditorInfos = arrays;
+                [self.suitDataDictionary setValue:endStr forKey:@"creditorinfo"];
             }];
             [self.navigationController pushViewController:debtCreditMessageVC animated:YES];
             
         }else if (indexPath.row == 12){//债务人信息
             DebtCreditMessageViewController *debtCreditMessageVC = [[DebtCreditMessageViewController alloc] init];
             debtCreditMessageVC.tagString = self.tagString;
-            debtCreditMessageVC.categoryString = @"2";
+//            debtCreditMessageVC.categoryString = @"2";
             [debtCreditMessageVC setDidEndEditting:^(NSArray *arrays) {
                 
                 NSArray *dictArray = [DebtModel keyValuesArrayWithObjectArray:arrays];
