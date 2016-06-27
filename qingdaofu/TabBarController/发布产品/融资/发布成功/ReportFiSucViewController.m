@@ -11,7 +11,7 @@
 #import "MyReleaseViewController.h"   //我的发布
 #import "ReportFinanceViewController.h"
 #import "ReportSuitViewController.h"
-//#import "ProductsViewController.h"
+#import "UIViewController+SelectedIndex.h"
 
 #import "UIViewController+BlurView.h"
 #import "EvaTopSwitchView.h"
@@ -230,7 +230,8 @@
         MyReleaseViewController *myReleaseVC = [[MyReleaseViewController alloc] init];
         myReleaseVC.hidesBottomBarWhenPushed = YES;
         myReleaseVC.progreStatus = @"1";
-        [nav pushViewController:myReleaseVC animated:YES];
+        [nav pushViewController:myReleaseVC animated:NO];
+        [weakself setSelectedIndex:4];
     }];
     
     return cell;

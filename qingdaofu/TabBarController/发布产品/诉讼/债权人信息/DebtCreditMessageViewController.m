@@ -183,11 +183,10 @@
         editDebtCreditMessageVC.deModel = deModel;
         editDebtCreditMessageVC.categoryString = self.categoryString;
         
-//        [editDebtCreditMessageVC setDidSaveMessageArray:^(NSArray *infos) {
-//            [weakself.debtArray replaceObjectAtIndex:indexPath.section withObject:infos];
-//            [weakself.debtCreditTableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationFade];
-//        }];
-        
+        [editDebtCreditMessageVC setDidSaveMessage:^(DebtModel *model) {
+           [weakself.debtArray replaceObjectAtIndex:indexPath.section withObject:model];
+            [weakself.debtCreditTableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationFade];
+        }];
         [weakself.navigationController pushViewController:editDebtCreditMessageVC animated:YES];
     }];
     

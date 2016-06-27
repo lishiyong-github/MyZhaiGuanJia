@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9C8B97E31D21788B008B760B /* UIViewController+SelectedIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C8B97E21D21788B008B760B /* UIViewController+SelectedIndex.m */; };
 		9CEA216B1CE2140C002C5BA7 /* UIButton+Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CEA216A1CE2140C002C5BA7 /* UIButton+Addition.m */; };
 		9CEA216C1CE2140C002C5BA7 /* UIButton+Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CEA216A1CE2140C002C5BA7 /* UIButton+Addition.m */; };
 		9CF131751D1827FE00ADBA27 /* BrandsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF131741D1827FE00ADBA27 /* BrandsViewController.m */; };
@@ -472,6 +473,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9C8B97E11D21788B008B760B /* UIViewController+SelectedIndex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+SelectedIndex.h"; sourceTree = "<group>"; };
+		9C8B97E21D21788B008B760B /* UIViewController+SelectedIndex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+SelectedIndex.m"; sourceTree = "<group>"; };
 		9CEA21691CE2140C002C5BA7 /* UIButton+Addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+Addition.h"; sourceTree = "<group>"; };
 		9CEA216A1CE2140C002C5BA7 /* UIButton+Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+Addition.m"; sourceTree = "<group>"; };
 		9CF131731D1827FE00ADBA27 /* BrandsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrandsViewController.h; sourceTree = "<group>"; };
@@ -2578,6 +2581,8 @@
 				A14C17581D07A78E003826F8 /* NSDate+FormatterTime.m */,
 				A159F9491D0C497300A6A024 /* UIViewController+BlurView.h */,
 				A159F94A1D0C497300A6A024 /* UIViewController+BlurView.m */,
+				9C8B97E11D21788B008B760B /* UIViewController+SelectedIndex.h */,
+				9C8B97E21D21788B008B760B /* UIViewController+SelectedIndex.m */,
 			);
 			path = "工具类";
 			sourceTree = "<group>";
@@ -3231,6 +3236,7 @@
 				A18C67661CD08DA800C7B070 /* LoginView.m in Sources */,
 				A19B8E231CCF42E300F8EBF2 /* NSArray+PureLayout.m in Sources */,
 				A17964FA1CD3656800B6AD47 /* MyStoreViewController.m in Sources */,
+				9C8B97E31D21788B008B760B /* UIViewController+SelectedIndex.m in Sources */,
 				A1B028EA1D1794DC00F32A09 /* SDWebImageDownloader.m in Sources */,
 				A16856A11CE9B3AD006A0887 /* ProdRightView.m in Sources */,
 				A159F97D1D0D727A00A6A024 /* MJRefreshFooterView.m in Sources */,

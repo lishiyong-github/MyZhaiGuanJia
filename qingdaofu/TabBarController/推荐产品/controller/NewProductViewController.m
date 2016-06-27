@@ -24,6 +24,7 @@
 #import "NewProductListModel.h"
 
 #import "UIViewController+BlurView.h"
+#import "UIViewController+SelectedIndex.h"
 
 @interface NewProductViewController ()<UITableViewDataSource,UITableViewDelegate,UIScrollViewDelegate>
 
