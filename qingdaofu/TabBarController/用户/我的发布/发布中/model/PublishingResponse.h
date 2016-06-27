@@ -16,9 +16,9 @@
 @property (nonatomic,copy) NSString *creditor;
 @property (nonatomic,strong) PublishingModel *product;
 @property (nonatomic,copy) NSString *uidString;
-@property (nonatomic,copy) NSString *borrowinginfos;
-@property (nonatomic,copy) NSString *creditorfiles;
-@property (nonatomic,copy) NSString *creditorinfos;
+@property (nonatomic,strong) NSArray *borrowinginfos;  //债务人信息
+@property (nonatomic,strong) NSArray *creditorfiles; //债权文件
+@property (nonatomic,strong) NSArray *creditorinfos;//债权人信息
 @property (nonatomic,copy) NSString *guaranteemethods;
 
 /* 代理人详情 */

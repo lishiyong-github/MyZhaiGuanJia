@@ -7,9 +7,13 @@
 //
 
 #import "ReportFiSucViewController.h"
-#import "MyReleaseViewController.h"   //我的发布
-#import "ProductsViewController.h"
 
+#import "MyReleaseViewController.h"   //我的发布
+#import "ReportFinanceViewController.h"
+#import "ReportSuitViewController.h"
+//#import "ProductsViewController.h"
+
+#import "UIViewController+BlurView.h"
 #import "EvaTopSwitchView.h"
 
 #import "MineUserCell.h"
@@ -122,6 +126,32 @@
         [_reportSucFootView.sendButton setTitle:@"  继续发布" forState:0];
         [_reportSucFootView.sendButton setImage:[UIImage imageNamed:@"add"] forState:0];
         [_reportSucFootView.sendButton setTitleColor:kBlueColor forState:0];
+        QDFWeakSelf;
+        [_reportSucFootView.sendButton addAction:^(UIButton *btn) {
+            [weakself showBlurInView:[UIApplication sharedApplication].keyWindow withArray:nil finishBlock:^(NSInteger row) {
+                UINavigationController *nav = weakself.navigationController;
+                [nav popViewControllerAnimated:NO];
+                [nav popViewControllerAnimated:NO];
+                
+                if (row == 11) {
+                    ReportFinanceViewController *reportFinanceVC = [[ReportFinanceViewController alloc] init];
+                    reportFinanceVC.hidesBottomBarWhenPushed = YES;
+                    [nav pushViewController:reportFinanceVC animated:NO];
+                }else if (row == 12){
+                    ReportSuitViewController *collectVC = [[ReportSuitViewController alloc] init];
+                    collectVC.categoryString = @"2";
+                    collectVC.tagString = @"1";
+                    collectVC.hidesBottomBarWhenPushed = YES;
+                    [nav pushViewController:collectVC animated:NO];
+                }else{
+                    ReportSuitViewController *reportSuitVC = [[ReportSuitViewController alloc] init];
+                    reportSuitVC.categoryString = @"3";
+                    reportSuitVC.tagString = @"1";
+                    reportSuitVC.hidesBottomBarWhenPushed = YES;
+                    [nav pushViewController:reportSuitVC animated:NO];
+                }
+            }];
+        }];
     }
     return _reportSucFootView;
 }
@@ -192,6 +222,16 @@
     cell.userActionButton.titleLabel.font = kBigFont;
     [cell.userActionButton setTitleColor:kBlueColor forState:0];
     [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+    QDFWeakSelf;
+    [cell.userActionButton addAction:^(UIButton *btn) {
+        UINavigationController *nav = weakself.navigationController;
+        [nav popViewControllerAnimated:NO];
+        [nav popViewControllerAnimated:NO];
+        MyReleaseViewController *myReleaseVC = [[MyReleaseViewController alloc] init];
+        myReleaseVC.hidesBottomBarWhenPushed = YES;
+        myReleaseVC.progreStatus = @"1";
+        [nav pushViewController:myReleaseVC animated:YES];
+    }];
     
     return cell;
 }
@@ -207,6 +247,7 @@
     headerView.backgroundColor = kBackColor;
     return headerView;
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }

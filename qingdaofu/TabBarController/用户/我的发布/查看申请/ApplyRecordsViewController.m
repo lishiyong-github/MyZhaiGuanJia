@@ -7,7 +7,6 @@
 //
 
 #import "ApplyRecordsViewController.h"
-//#import "ApplyRecordsDetailViewController.h"   //申请人信息
 #import "CheckDetailPublishViewController.h"   //申请人信息
 
 #import "ApplyRecordsCell.h"
@@ -25,6 +24,11 @@
 
 @implementation ApplyRecordsViewController
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self getApplyRecordsListWithPage:@"0"];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @"申请记录";
@@ -32,7 +36,6 @@
 
     [self.view addSubview:self.applyRecordsTableView];
     [self.view setNeedsUpdateConstraints];
-    [self getApplyRecordsListWithPage:@"0"];
 }
 
 - (void)updateViewConstraints

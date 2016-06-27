@@ -11,11 +11,12 @@
 #import "GuarantyResponse.h"
 #import "GuarantyModel.h"
 
-@interface GuarantyViewController ()<UISearchControllerDelegate,UISearchResultsUpdating,UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate>
+@interface GuarantyViewController ()<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,UISearchBarDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstarints;
 @property (nonatomic,strong) UITableView *guTableView;
-@property (nonatomic,strong) UISearchController *searchController;
+@property (nonatomic,strong) UISearchBar *guSearchBar;
+//@property (nonatomic,strong) UISearchController *searchController;
 
 @property (nonatomic,strong) NSMutableArray *guDataArray;
 
@@ -27,34 +28,45 @@
     [super viewDidLoad];
     self.title = @"抵押物地址";
     self.navigationItem.leftBarButtonItem = self.leftItem;
+    self.navigationItem.titleView = self.guSearchBar;
     
     [self.view addSubview:self.guTableView];
+    [self.view setNeedsUpdateConstraints];
+}
+
+- (void)updateViewConstraints
+{
+    if (!self.didSetupConstarints) {
+
+        [self.guTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+        
+        self.didSetupConstarints = YES;
+    }
+    [super updateViewConstraints];
 }
 
 - (UITableView *)guTableView
 {
     if (!_guTableView) {
-        _guTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, kNavHeight, kScreenWidth, kScreenHeight-kNavHeight) style:UITableViewStylePlain];
+        _guTableView = [UITableView newAutoLayoutView];
         _guTableView.delegate = self;
         _guTableView.dataSource = self;
         _guTableView.tableFooterView = [[UIView alloc] init];
-        _guTableView.backgroundColor = [UIColor clearColor];
-        _guTableView.tableHeaderView = self.searchController.searchBar;
+        _guTableView.backgroundColor = kBackColor;
     }
     return _guTableView;
 }
 
--(UISearchController *)searchController
+- (UISearchBar *)guSearchBar
 {
-    if (!_searchController) {
-        _searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
-        _searchController.searchResultsUpdater = self;
-        _searchController.delegate = self;
-        _searchController.searchBar.frame = CGRectMake(0, kNavHeight, kScreenWidth/2, kCellHeight);
-        _searchController.searchBar.tintColor = kBlueColor;
-        _searchController.dimsBackgroundDuringPresentation = NO;//设置为NO,可以点击搜索出来的内容
+    if (!_guSearchBar) {
+        _guSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth-120*2, 44)];
+        _guSearchBar.searchBarStyle = UISearchBarStyleProminent;
+        _guSearchBar.delegate = self;
+        [_guSearchBar setBarTintColor:kLightGrayColor];
+        _guSearchBar.backgroundColor = kRedColor;
     }
-    return _searchController;
+    return _guSearchBar;
 }
 
 - (NSMutableArray *)guDataArray
@@ -88,6 +100,7 @@
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
+    cell.backgroundColor = kBackColor;
     
     GuarantyModel *model = self.guDataArray[indexPath.row];
     cell.textLabel.text = [NSString stringWithFormat:@"%@",model.name];
@@ -102,8 +115,8 @@
         self.didSelectedArea(model.name,@"1",@"2",@"3");
     }
 
-    [self didDismissSearchController:self.searchController];
-    [self.guTableView removeFromSuperview];
+//    [self didDismissSearchController:self.searchController];
+//    [self.guTableView removeFromSuperview];
     
 //    _searchAPI = [[AMapSearchAPI alloc] init];
 //    _searchAPI.delegate = self;
@@ -132,6 +145,19 @@
 
 
 #pragma mark - search
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
+{
+    return YES;
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    if (searchText) {
+        // 调用小区的方法
+        [self getGuarantyListWithString:searchBar.text];
+    }
+}
+/*
 - (void)willPresentSearchController:(UISearchController *)searchController
 {
     NSLog(@"将要  开始  搜索时触发的方法");
@@ -160,6 +186,7 @@
         [self getGuarantyListWithString:searchStr];
     }
 }
+ */
 
 - (void)getGuarantyListWithString:(NSString *)predicate
 {

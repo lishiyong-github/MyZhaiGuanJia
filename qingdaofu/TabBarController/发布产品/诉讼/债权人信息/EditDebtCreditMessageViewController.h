@@ -12,6 +12,9 @@
 @interface EditDebtCreditMessageViewController : NetworkViewController
 
 @property (nonatomic,strong) DebtModel *deModel;
+@property (nonatomic,strong) NSString *categoryString;  //1：债权人信息，2:债务人信息
+
 @property (nonatomic,strong) void (^didSaveMessage)(DebtModel *);
+//@property (nonatomic,strong) void (^didSaveMessageArray)(NSArray *);
 
 @end

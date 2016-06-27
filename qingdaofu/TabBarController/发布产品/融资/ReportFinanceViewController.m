@@ -320,7 +320,7 @@
             cell.agentTextField.placeholder = self.financeholderArray[indexPath.section][indexPath.row];
             [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
             if (self.fiModel.mortorage_community) {
-                cell.agentTextField.text = self.fiModel.mortorage_community?self.fiModel.mortorage_community:@"";
+                cell.agentTextField.text = self.fiModel.mortorage_community?self.fiModel.mortorage_community:self.dataDictionary[@"mortorage_community"];
                 [cell.agentButton setTitle:@"已选择" forState:0];
             }else{
                 [cell.agentButton setTitle:@"请选择" forState:0];
@@ -329,10 +329,6 @@
             cell.agentButton.tag = 4;
             [cell.agentButton addTarget:self action:@selector(showTextOfUpwardView:) forControlEvents:UIControlEventTouchUpInside];
             
-            [cell setDidEndEditing:^(NSString *text) {
-                [self.dataDictionary setValue:text forKey:@"mortorage_community"];
-            }];
-
             return cell;
         }else if (indexPath.row == 5){//详细地址
             identifier = @"finance05";
@@ -343,6 +339,7 @@
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.leftTextViewConstraints.constant = 95;
             cell.ediTextView.placeholder = @"详细地址";
+            
             if (self.dataDictionary[@"seatmortgage"]) {
                 cell.ediTextView.text = self.dataDictionary[@"seatmortgage"];
             }else{
@@ -761,7 +758,18 @@
         }
             break;
         case 4:{//抵押物小区
+            
             GuarantyViewController *guarantyVC =[[GuarantyViewController alloc] init];
+            [guarantyVC setDidSelectedArea:^(NSString *name, NSString *province_id, NSString *city_id, NSString *district_id) {
+                [self.dataDictionary setValue:name forKey:@"mortorage_community"];
+                [self.dataDictionary setValue:province_id forKey:@"province_id"];
+                [self.dataDictionary setValue:city_id forKey:@"city_id"];
+                [self.dataDictionary setValue:district_id forKey:@"district_id"];
+                
+                AgentCell *cell = [self.reportFinanceTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:4 inSection:0]];
+                cell.agentTextField.text = [NSString stringWithFormat:@"%@",name];
+                [cell.agentButton setTitle:@"已选择" forState:0];
+            }];
             [self.navigationController pushViewController:guarantyVC animated:YES];
         }
             break;
@@ -851,22 +859,22 @@
     NSString *reFinanceString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPublishFinanceString];
     
     /* 参数 */
-    self.dataDictionary[@"money"] = self.dataDictionary[@"money"]?self.dataDictionary[@"money"]:@"";//融资金额，万为单位
-    self.dataDictionary[@"rebate"] = self.dataDictionary[@"rebate"]?self.dataDictionary[@"rebate"]:@"";//返点，实数
-    self.dataDictionary[@"rate"] = self.dataDictionary[@"rate"]?self.dataDictionary[@"rate"]:@"";//利率
-    self.dataDictionary[@"rate_cat"] = self.dataDictionary[@"rate_cat"]?self.dataDictionary[@"rate_cat"]:@"";//利率单位 1-天  2-月
-    self.dataDictionary[@"mortorage_community"] = self.dataDictionary[@"mortorage_community"]?self.dataDictionary[@"mortorage_community"]:@"";//小区名
-    self.dataDictionary[@"seatmortgage"] = self.dataDictionary[@"seatmortgage"]?self.dataDictionary[@"seatmortgage"]:@"";//详细地址
-    self.dataDictionary[@"province_id"] = self.dataDictionary[@"province_id"]?self.dataDictionary[@"province_id"]:@"";
-    self.dataDictionary[@"city_id"] = self.dataDictionary[@"city_id"]?self.dataDictionary[@"city_id"]:@"";
-    self.dataDictionary[@"district_id"] = self.dataDictionary[@"district_id"]?self.dataDictionary[@"district_id"]:@"";
-    self.dataDictionary[@"term"] = self.dataDictionary[@"term"]?self.dataDictionary[@"term"]:@"";//借款期限
-    self.dataDictionary[@"mortgagecategory"] = self.dataDictionary[@"mortgagecategory"]?self.dataDictionary[@"mortgagecategory"]:@"";//抵押物类型1=>'住宅', 2=>'商户',3=>'办公楼'
-    self.dataDictionary[@"status"] = self.dataDictionary[@"status"]?self.dataDictionary[@"status"]:@"";//房子状态   1=>'自住',2=>'出租',
-    self.dataDictionary[@"rentmoney"] = self.dataDictionary[@"rentmoney"]?self.dataDictionary[@"rentmoney"]:@"";//租金
-    self.dataDictionary[@"mortgagearea"] = self.dataDictionary[@"mortgagearea"]?self.dataDictionary[@"mortgagearea"]:@"";//房子面积
-    self.dataDictionary[@"loanyear"] = self.dataDictionary[@"loanyear"]?self.dataDictionary[@"loanyear"]:@"";//借款人年龄
-    self.dataDictionary[@"obligeeyear"] = self.dataDictionary[@"obligeeyear"]?self.dataDictionary[@"obligeeyear"]:@"";//权利人年龄 1=>'65岁以下',2=>'65岁以上'
+    self.dataDictionary[@"money"] = self.dataDictionary[@"money"]?self.dataDictionary[@"money"]:self.fiModel.money;//融资金额，万为单位
+    self.dataDictionary[@"rebate"] = self.dataDictionary[@"rebate"]?self.dataDictionary[@"rebate"]:self.fiModel.rebate;//返点，实数
+    self.dataDictionary[@"rate"] = self.dataDictionary[@"rate"]?self.dataDictionary[@"rate"]:self.fiModel.rate;//利率
+    self.dataDictionary[@"rate_cat"] = self.dataDictionary[@"rate_cat"]?self.dataDictionary[@"rate_cat"]:self.fiModel.rate_cat;//利率单位 1-天  2-月
+    self.dataDictionary[@"mortorage_community"] = self.dataDictionary[@"mortorage_community"]?self.dataDictionary[@"mortorage_community"]:self.fiModel.mortorage_community;//小区名
+    self.dataDictionary[@"seatmortgage"] = self.dataDictionary[@"seatmortgage"]?self.dataDictionary[@"seatmortgage"]:self.fiModel.seatmortgage;//详细地址
+    self.dataDictionary[@"province_id"] = self.dataDictionary[@"province_id"]?self.dataDictionary[@"province_id"]:self.fiModel.province_id;
+    self.dataDictionary[@"city_id"] = self.dataDictionary[@"city_id"]?self.dataDictionary[@"city_id"]:self.fiModel.city_id;
+    self.dataDictionary[@"district_id"] = self.dataDictionary[@"district_id"]?self.dataDictionary[@"district_id"]:self.fiModel.district_id;
+    self.dataDictionary[@"term"] = self.dataDictionary[@"term"]?self.dataDictionary[@"term"]:self.fiModel.term;//借款期限
+    self.dataDictionary[@"mortgagecategory"] = self.dataDictionary[@"mortgagecategory"]?self.dataDictionary[@"mortgagecategory"]:self.fiModel.mortgagecategory;//抵押物类型1=>'住宅', 2=>'商户',3=>'办公楼'
+    self.dataDictionary[@"status"] = self.dataDictionary[@"status"]?self.dataDictionary[@"status"]:self.fiModel.status;//房子状态   1=>'自住',2=>'出租',
+    self.dataDictionary[@"rentmoney"] = self.dataDictionary[@"rentmoney"]?self.dataDictionary[@"rentmoney"]:self.fiModel.rentmoney;//租金
+    self.dataDictionary[@"mortgagearea"] = self.dataDictionary[@"mortgagearea"]?self.dataDictionary[@"mortgagearea"]:self.fiModel.mortgagearea;//房子面积
+    self.dataDictionary[@"loanyear"] = self.dataDictionary[@"loanyear"]?self.dataDictionary[@"loanyear"]:self.fiModel.loanyear;//借款人年龄
+    self.dataDictionary[@"obligeeyear"] = self.dataDictionary[@"obligeeyear"]?self.dataDictionary[@"obligeeyear"]:self.fiModel.obligeeyear;//权利人年龄 1=>'65岁以下',2=>'65岁以上'
     
     [self.dataDictionary setValue:@"1" forKey:@"category"];
     [self.dataDictionary setValue:type forKey:@"progress_status"];//0为保存 1为发布

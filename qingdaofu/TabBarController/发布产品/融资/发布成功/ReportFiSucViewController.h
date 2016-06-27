@@ -10,6 +10,6 @@
 
 @interface ReportFiSucViewController : BaseViewController
 
-@property (nonatomic,strong) NSString *reportType;
+@property (nonatomic,strong) NSString *reportType;  //融资清收诉讼
 
 @end

@@ -101,7 +101,6 @@
 #pragma mark - tabBar delegate
 - (void)tabBarDidSelectedRiseButton
 {
-    QDFWeakSelf;
     [self showBlurInView:[UIApplication sharedApplication].keyWindow withArray:nil finishBlock:^(NSInteger row) {
         
         UIWindow *window = [UIApplication sharedApplication].keyWindow;
@@ -116,11 +115,13 @@
         }else if (row == 12){
             ReportSuitViewController *collectVC = [[ReportSuitViewController alloc] init];
             collectVC.categoryString = @"2";
+            collectVC.tagString = @"1";
             collectVC.hidesBottomBarWhenPushed = YES;
             [viewController pushViewController:collectVC animated:YES];
         }else{
             ReportSuitViewController *reportSuitVC = [[ReportSuitViewController alloc] init];
             reportSuitVC.categoryString = @"3";
+            reportSuitVC.tagString = @"1";
             reportSuitVC.hidesBottomBarWhenPushed = YES;
             [viewController pushViewController:reportSuitVC animated:YES];
 

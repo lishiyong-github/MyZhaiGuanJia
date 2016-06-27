@@ -605,11 +605,13 @@
                              };
     [self requestDataPostWithString:endpString params:params successBlock:^(id responseObject) {
         BaseModel *sModel = [BaseModel objectWithKeyValues:responseObject];
-        [self showHint:@"申请成功"];
         
         if ([sModel.code isEqualToString:@"0000"]) {//成功
+            [self showHint:@"申请成功"];
+
             [self.processingCommitButton setBackgroundColor:kSelectedColor];
             [self.processingCommitButton setTitle:@"已申请" forState:0];
+            [self.navigationController popViewControllerAnimated:YES];
         }
         
     } andFailBlock:^(NSError *error) {

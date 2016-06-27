@@ -10,17 +10,18 @@
 
 @interface DebtModel : NSObject
 
-/*
- //债权人信息
- @property (nonatomic,copy) NSString *creditorname;
- @property (nonatomic,copy) NSString *creditormobile;
- @property (nonatomic,copy) NSString *creditoraddress;
- @property (nonatomic,copy) NSString *creditorcardcode;
- */
-
+//债权人信息
 @property (nonatomic,copy) NSString *creditorname;
 @property (nonatomic,copy) NSString *creditormobile;
 @property (nonatomic,copy) NSString *creditoraddress;
 @property (nonatomic,copy) NSString *creditorcardcode;
+@property (nonatomic,copy) NSString *creditorcardimage;
+
+//债务人信息
+@property (nonatomic,copy) NSString *borrowingname;
+@property (nonatomic,copy) NSString *borrowingmobile;
+@property (nonatomic,copy) NSString *borrowingaddress;
+@property (nonatomic,copy) NSString *borrowingcardcode;
+@property (nonatomic,copy) NSString *borrowingcardimage;
 
 @end

@@ -9,10 +9,13 @@
 #import "ProductsDetailsProViewController.h"
 
 #import "DebtDocumnetsViewController.h"    //债权文件
+#import "ProductsCheckDetailViewController.h"  //债权人信息
 
 #import "EvaTopSwitchView.h"
 #import "ProdLeftView.h"
 #import "ProdRightView.h"
+
+#import "DebtModel.h"
 
 @interface ProductsDetailsProViewController ()
 
@@ -325,14 +328,16 @@
             if (rightModel.performancecontract) {
                 performancecontract = rightModel.performancecontract;
             }
-            if (rightModel.creditorfile) {
-                creditorfile = rightModel.creditorfile;
+            
+            if (self.yyModel.creditorfiles.count > 0) {
+                creditorfile = @"查看";
             }
-            if (rightModel.creditorinfo) {
-                creditorinfo = rightModel.creditorinfo;
+            
+            if (self.yyModel.creditorinfos.count > 0) {
+                creditorinfo = @"查看";
             }
-            if (rightModel.borrowinginfo) {
-                borrowinginfo = rightModel.borrowinginfo;
+            if (self.yyModel.borrowinginfos.count > 0) {
+                borrowinginfo = @"查看";
             }
             
             _rightTableView.dataList1 = [NSMutableArray arrayWithArray:@[@"借款利率(%)",@"借款利率类型",@"借款期限",@"借款期限类型",@"还款方式",@"债务人主体",@"委托事项",@"委托代理期限(月)",@"已付本金",@"已付利息",@"合同履行地",@"债权文件",@"债权人信息",@"债务人信息"]];
@@ -342,23 +347,28 @@
         QDFWeakSelf;
         [_rightTableView setDidSelectedRow:^(NSInteger row) {
             switch (row) {
-                case 9:{//债权文件
+                case 11:{//债权文件
                     DebtDocumnetsViewController *debtDocumnetsVC = [[DebtDocumnetsViewController alloc] init];
                     [weakself.navigationController pushViewController:debtDocumnetsVC animated:YES];
                 }
                     break;
-                case 10:{//债权人信息
-                    
+                case 12:{//债权人信息
+                    ProductsCheckDetailViewController *productsCheckDetailVC = [[ProductsCheckDetailViewController alloc] init];
+                    productsCheckDetailVC.listArray = weakself.yyModel.creditorinfos;
+                    productsCheckDetailVC.categoryString = @"1";
+                    [weakself.navigationController pushViewController:productsCheckDetailVC animated:YES];
                 }
                     break;
-                case 11:{//债务人信息
-                    
+                case 13:{//债务人信息
+                    ProductsCheckDetailViewController *productsCheckDetailVC = [[ProductsCheckDetailViewController alloc] init];
+                    productsCheckDetailVC.listArray = weakself.yyModel.borrowinginfos;
+                    productsCheckDetailVC.categoryString = @"2";
+                    [weakself.navigationController pushViewController:productsCheckDetailVC animated:YES];
                 }
                     break;
                 default:
                     break;
             }
-            
         }];
     }
     return _rightTableView;

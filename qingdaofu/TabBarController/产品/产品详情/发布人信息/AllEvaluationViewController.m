@@ -164,6 +164,10 @@
             }else{
                 [cell.evaProImageView1 setHidden:NO];
                 [cell.evaProImageView2 setHidden:NO];
+                NSString *baseString = [model.picture substringWithRange:NSMakeRange(1, model.picture.length-2)];
+                NSString *string = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,baseString];
+                NSURL *URL = [NSURL URLWithString:string];
+                [cell.evaProImageView1 sd_setImageWithURL:URL placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
             }
             
          }else if([self.evaTypeString isEqualToString:@"launchevaluation"]){//给出的
@@ -187,9 +191,10 @@
                  [cell.evaProImageView1 setHidden:NO];
                  [cell.evaProImageView2 setHidden:NO];
                  
-                 NSString *string = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,model.picture];
+                 NSString *baseString = [model.picture substringWithRange:NSMakeRange(1, model.picture.length-2)];
+                 NSString *string = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,baseString];
                  NSURL *URL = [NSURL URLWithString:string];
-                 [cell.evaProImageView1 sd_setImageWithURL:URL placeholderImage:[UIImage imageNamed:@""]];
+                 [cell.evaProImageView1 sd_setImageWithURL:URL placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
              }
          }
     }else{

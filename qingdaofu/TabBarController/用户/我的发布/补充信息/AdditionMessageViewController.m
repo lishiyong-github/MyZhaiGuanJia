@@ -97,8 +97,8 @@
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    PublishingResponse *resonse = self.addMessageDataArray[0];
-    PublishingModel *messageModel = resonse.product;
+    PublishingResponse *messageResonse = self.addMessageDataArray[0];
+    PublishingModel *messageModel = messageResonse.product;
     
     if ([messageModel.category intValue] == 1) {//融资
         NSString *rateCatStr; //借款期限类型
@@ -192,10 +192,31 @@
             }
         }
         
+        NSMutableArray *creditorfilesArray = [NSMutableArray array];
+        NSMutableArray *creditorinfosArray = [NSMutableArray array];
+        NSMutableArray *borrowinginfosArray = [NSMutableArray array];
+        NSString *creditorfile = @"无";//债权文件
+        NSString *creditorinfo = @"无";//债权人信息
+        NSString *borrowinginfo = @"无";//债务人信息
+
+        for (DebtModel *debtModel in messageResonse.creditorfiles) {
+            [creditorfilesArray addObject:debtModel];
+            creditorfile = @"查看";
+        }
         
-        NSString *creditorfile = messageModel.creditorfile?@"查看":@"无";  //债权文件
-        NSString *creditorinfo = messageModel.creditorinfo?@"查看":@"无";  //债权人信息
-        NSString *borrowinginfo = messageModel.borrowinginfo?@"查看":@"无";  //债务人信息
+        for (DebtModel *debtModel in messageResonse.creditorinfos) {
+            [creditorinfosArray addObject:debtModel];
+            creditorinfo = @"查看";
+        }
+        
+        for (DebtModel *debtModel in messageResonse.borrowinginfos) {
+            [borrowinginfosArray addObject:debtModel];
+            borrowinginfo = @"查看";
+        }
+        
+//        NSString *creditorfile = messageModel.creditorfile?@"查看":@"无";  //债权文件
+//        NSString *creditorinfo = messageModel.creditorinfo?@"查看":@"无";  //债权人信息
+//        NSString *borrowinginfo = messageModel.borrowinginfo?@"查看":@"无";  //债务人信息
         
         NSArray *dataList1 = @[@"借款利率(%)",@"借款利率类型",@"借款期限",@"借款期限类型",@"还款方式",@"债务人主体",@"委托事项",@"委托代理期限(月)",@"已付本金",@"已付利息",@"合同履行地",@"债权文件",@"债权人信息",@"债务人信息"];
         NSArray *dataList2 = @[rate,rate_cat,term,rate_cat,repaymethod,obligor,commitment,commissionperiod,paidmoney,interestpaid,performancecontract,creditorfile,creditorinfo,borrowinginfo];

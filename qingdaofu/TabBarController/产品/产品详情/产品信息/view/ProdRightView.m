@@ -56,35 +56,34 @@
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-//    NSArray *tiArray = @[@"借款期限",@"还款方式",@"债务人主体",@"委托事项",@"委托代理期限",@"已付本金",@"已付利息",@"合同履行地",@"付款方式",@"债权文件",@"债权人信息",@"债务人信息"];
     [cell.userNameButton setTitle:self.dataList1[indexPath.row] forState:0];
     [cell.userActionButton setTitleColor:kBlueColor forState:0];
     [cell.userActionButton setTitle:self.dataList2[indexPath.row] forState:0];
     cell.userActionButton.userInteractionEnabled = NO;
     
-//    if (indexPath.row > 8) {
-//        [cell.userActionButton setTitle:@"查看" forState:0];
-//    }
-    
     return cell;
 }
 
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    if (indexPath.row == 9) {
-//        if (self.didSelectedRow) {
-//            self.didSelectedRow(9);
-//        }
-//    }else if (indexPath.row == 10){
-//        if (self.didSelectedRow) {
-//            self.didSelectedRow(10);
-//        }
-//    }else if (indexPath.row == 11){
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.didSelectedRow) {
+        self.didSelectedRow(indexPath.row);
+    }
+    
+//    if (indexPath.row == self.dataList1.count-1) {
 //        if (self.didSelectedRow) {
 //            self.didSelectedRow(11);
 //        }
+//    }else if (indexPath.row == 12){
+//        if (self.didSelectedRow) {
+//            self.didSelectedRow(12);
+//        }
+//    }else if (indexPath.row == 13){
+//        if (self.didSelectedRow) {
+//            self.didSelectedRow(13);
+//        }
 //    }
-//}
+}
 
 /*
 // Only override drawRect: if you perform custom drawing.

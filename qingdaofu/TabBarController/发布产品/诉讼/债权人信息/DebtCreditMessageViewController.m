@@ -29,7 +29,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = @"债权人信息";
+    
+    if ([self.categoryString integerValue] == 1) {
+        self.navigationItem.title = @"债权人信息";
+    }else{
+        self.navigationItem.title = @"债务人信息";
+    }
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
     [self.view addSubview:self.debtCreditTableView];
@@ -72,18 +77,29 @@
         QDFWeakSelf;
         [_debtCreditCommitButton addAction:^(UIButton *btn) {
             EditDebtCreditMessageViewController *editDebtCreditMessageVC = [[EditDebtCreditMessageViewController alloc] init];
-            [editDebtCreditMessageVC setDidSaveMessage:^(DebtModel * deModel) {
-                
+            editDebtCreditMessageVC.categoryString = weakself.categoryString;
+            
+//            [editDebtCreditMessageVC setDidSaveMessageArray:^(NSArray *infos) {
+//                if ([weakself.tagString integerValue] == 1) {//
+//                        [weakself.debtCreditCommitButton setHidden:YES];
+//                    }else{
+//                        [weakself.debtCreditCommitButton setTitle:@"继续添加" forState:0];
+//                    }
+//    
+//                    [weakself.debtArray addObject:infos];
+//                    [weakself.debtCreditTableView reloadData];
+//            }];
+            [editDebtCreditMessageVC setDidSaveMessage:^(DebtModel *deModel) {
                 if ([weakself.tagString integerValue] == 1) {//
-                    [weakself.debtCreditCommitButton setBackgroundColor:kSelectedColor];
-                    [weakself.debtCreditCommitButton setTitleColor:kBlackColor forState:0];
-                    [weakself.debtCreditCommitButton setTitle:@"不能再次添加" forState:0];
-                    weakself.debtCreditCommitButton.userInteractionEnabled = NO;
+                    [weakself.debtCreditCommitButton setHidden:YES];
+                }else{
+                    [weakself.debtCreditCommitButton setTitle:@"继续添加" forState:0];
                 }
-                
+
                 [weakself.debtArray addObject:deModel];
                 [weakself.debtCreditTableView reloadData];
             }];
+            
             
             [weakself.navigationController pushViewController:editDebtCreditMessageVC animated:YES];
         }];
@@ -130,20 +146,55 @@
     }
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    DebtModel *deModel = self.debtArray[indexPath.section];
+    [cell.debtEditButton setTitle:@"编辑" forState:0];
     
-    NSString *name = deModel.creditorname?deModel.creditorname:@"未填写";
+    DebtModel *deModel = self.debtArray[indexPath.section];
+//    NSArray *deArray = self.debtArray[indexPath.section];
+//    DebtModel *deModel = [[DebtModel alloc] init];
+
+//    if ([self.categoryString integerValue] == 1) {
+//        deModel.creditorname = deArray[0];
+//        deModel.creditormobile = deArray[1];
+//        deModel.creditorcardcode = deArray[2];
+//        deModel.creditoraddress = deArray[3];
+//    }else{
+//        deModel.borrowingname = deArray[0];
+//        deModel.borrowingmobile = deArray[1];
+//        deModel.borrowingcardcode = deArray[2];
+//        deModel.borrowingaddress = deArray[3];
+//    }
+    
+    NSString *name;
+    if ([self.categoryString  integerValue] == 1) {
+        name = deModel.creditorname?deModel.creditorname:@"未填写";
+    }else{
+        name = deModel.borrowingname?deModel.borrowingname:@"未填写";
+    }
     NSMutableAttributedString *nameStr = [cell.debtNameLabel setAttributeString:@"姓        名    " withColor:kBlackColor andSecond:name withColor:kLightGrayColor withFont:12];
     [cell.debtNameLabel setAttributedText:nameStr];
     
-    NSString *tel = deModel.creditormobile?deModel.creditormobile:@"未填写";
+    NSString *tel;
+    if ([self.categoryString  integerValue] == 1) {
+        tel = deModel.creditormobile?deModel.creditormobile:@"未填写";
+    }else{
+        tel = deModel.borrowingmobile?deModel.borrowingmobile:@"未填写";
+    }
     NSMutableAttributedString *telStr = [cell.debtTelLabel setAttributeString:@"联系方式    " withColor:kBlackColor andSecond:tel withColor:kLightGrayColor withFont:12];
     [cell.debtTelLabel setAttributedText:telStr];
     
     cell.debtAddressLabel.text = @"联系地址";
-    cell.debtAddressLabel1.text = deModel.creditoraddress?deModel.creditoraddress:@"未填写";
-    
-    NSString *ID = deModel.creditorcardcode?deModel.creditorcardcode:@"未填写";
+    if ([self.categoryString integerValue] == 1) {
+        cell.debtAddressLabel1.text = deModel.creditoraddress?deModel.creditoraddress:@"未填写";
+    }else{
+        cell.debtAddressLabel1.text = deModel.borrowingaddress?deModel.borrowingaddress:@"未填写";
+    }
+
+    NSString *ID;
+    if ([self.categoryString  integerValue] == 1) {
+        ID = deModel.creditorcardcode?deModel.creditorcardcode:@"未填写";
+    }else{
+        ID = deModel.borrowingcardcode?deModel.borrowingcardcode:@"未填写";
+    }
     NSMutableAttributedString *IDStr = [cell.debtIDLabel setAttributeString:@"证件号        " withColor:kBlackColor andSecond:ID withColor:kLightGrayColor withFont:12];
     [cell.debtIDLabel setAttributedText:IDStr];
     
@@ -151,13 +202,13 @@
     [cell.debtEditButton addAction:^(UIButton *btn) {
         EditDebtCreditMessageViewController *editDebtCreditMessageVC = [[EditDebtCreditMessageViewController alloc] init];
         editDebtCreditMessageVC.deModel = deModel;
-        [editDebtCreditMessageVC setDidSaveMessage:^(DebtModel * deModel) {
-            
-            [weakself.debtArray replaceObjectAtIndex:indexPath.section withObject:deModel];
-            [weakself.debtCreditTableView reloadData];
-            
-        }];
-
+        editDebtCreditMessageVC.categoryString = self.categoryString;
+        
+//        [editDebtCreditMessageVC setDidSaveMessageArray:^(NSArray *infos) {
+//            [weakself.debtArray replaceObjectAtIndex:indexPath.section withObject:infos];
+//            [weakself.debtCreditTableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationFade];
+//        }];
+        
         [weakself.navigationController pushViewController:editDebtCreditMessageVC animated:YES];
     }];
     
@@ -172,6 +223,22 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     return 0.1f;
+}
+
+#pragma mark - method
+- (void)back
+{
+    if ([self.tagString integerValue] == 1) {//一个
+        if (self.didEndEditting) {
+            self.didEndEditting(self.debtArray);
+        }
+        [self.navigationController popViewControllerAnimated:YES];
+    }else{
+        if (self.didEndEditting) {
+            self.didEndEditting(self.debtArray);
+        }
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

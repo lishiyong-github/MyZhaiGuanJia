@@ -20,6 +20,7 @@
 		A10D7B811CEB083300422D7D /* ReportCollectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A10D7B801CEB083300422D7D /* ReportCollectViewController.m */; };
 		A10D7B871CEB1BE000422D7D /* UIView+UITextColor.m in Sources */ = {isa = PBXBuildFile; fileRef = A10D7B861CEB1BE000422D7D /* UIView+UITextColor.m */; };
 		A10D7B8B1CEB246700422D7D /* DebtCreditMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A10D7B8A1CEB246700422D7D /* DebtCreditMessageViewController.m */; };
+		A116300E1D2107F000E2D321 /* ProductsCheckDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A116300D1D2107F000E2D321 /* ProductsCheckDetailViewController.m */; };
 		A145B28D1CEEAE02003A93B7 /* conserve_tip_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A145B2891CEEAE02003A93B7 /* conserve_tip_icon@2x.png */; };
 		A145B28E1CEEAE02003A93B7 /* conserve_tip_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A145B28A1CEEAE02003A93B7 /* conserve_tip_icon@3x.png */; };
 		A145B28F1CEEAE02003A93B7 /* conserve_wait_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A145B28B1CEEAE02003A93B7 /* conserve_wait_icon@2x.png */; };
@@ -494,6 +495,8 @@
 		A10D7B861CEB1BE000422D7D /* UIView+UITextColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+UITextColor.m"; sourceTree = "<group>"; };
 		A10D7B891CEB246700422D7D /* DebtCreditMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebtCreditMessageViewController.h; sourceTree = "<group>"; };
 		A10D7B8A1CEB246700422D7D /* DebtCreditMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebtCreditMessageViewController.m; sourceTree = "<group>"; };
+		A116300C1D2107F000E2D321 /* ProductsCheckDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductsCheckDetailViewController.h; sourceTree = "<group>"; };
+		A116300D1D2107F000E2D321 /* ProductsCheckDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductsCheckDetailViewController.m; sourceTree = "<group>"; };
 		A145B2891CEEAE02003A93B7 /* conserve_tip_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conserve_tip_icon@2x.png"; sourceTree = "<group>"; };
 		A145B28A1CEEAE02003A93B7 /* conserve_tip_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conserve_tip_icon@3x.png"; sourceTree = "<group>"; };
 		A145B28B1CEEAE02003A93B7 /* conserve_wait_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conserve_wait_icon@2x.png"; sourceTree = "<group>"; };
@@ -1507,6 +1510,8 @@
 				A168569B1CE9B38A006A0887 /* view */,
 				A168567E1CE99358006A0887 /* ProductsDetailsProViewController.h */,
 				A168567F1CE99358006A0887 /* ProductsDetailsProViewController.m */,
+				A116300C1D2107F000E2D321 /* ProductsCheckDetailViewController.h */,
+				A116300D1D2107F000E2D321 /* ProductsCheckDetailViewController.m */,
 			);
 			path = "产品信息";
 			sourceTree = "<group>";
@@ -3213,6 +3218,7 @@
 				A17964FD1CD3682A00B6AD47 /* MyDetailStoreViewController.m in Sources */,
 				A1A97E5B1CDC74D800EDE320 /* NewsCell.m in Sources */,
 				A15F618C1D1906820060AF7B /* GuarantyModel.m in Sources */,
+				A116300E1D2107F000E2D321 /* ProductsCheckDetailViewController.m in Sources */,
 				A1770E271CFEA314003579E1 /* StarCell.m in Sources */,
 				A16BA1571CED4A2500A7010C /* MyAgentListViewController.m in Sources */,
 				A16391771D20194B0051F1D0 /* FSImageViewerViewController.m in Sources */,

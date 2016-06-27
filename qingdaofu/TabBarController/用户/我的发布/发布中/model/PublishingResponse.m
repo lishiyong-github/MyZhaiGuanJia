@@ -7,6 +7,7 @@
 //
 
 #import "PublishingResponse.h"
+@class DebtModel;
 
 @implementation PublishingResponse
 + (NSDictionary *)replacedKeyFromPropertyName
@@ -25,7 +26,10 @@
 + (NSDictionary *)objectClassInArray
 {
     return @{@"uidString" : @"uid",
-             @"user" : @"UserModel"
+             @"user" : @"UserModel",
+             @"borrowinginfos" : @"DebtModel",
+             @"creditorinfos" : @"DebtModel",
+             @"creditorinfos" : @"DebtModel"
              };
 }
 

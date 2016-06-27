@@ -106,9 +106,9 @@
             }];
             
         }else if ([self.typeString isEqualToString:@"发布方"]){
-            
+            [_appAgreeButton setHidden:YES];
         }else if ([self.typeString isEqualToString:@"接单方"]){
-            
+            [_appAgreeButton setHidden:YES];
         }
     }
     return _appAgreeButton;
@@ -155,8 +155,15 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ((indexPath.section == 1) && (indexPath.row >0)) {
-        return 170;
+    if ((indexPath.section == 1) && (indexPath.row > 0)) {
+        if (self.allEvaDataArray.count > 0) {
+            EvaluateModel *model = self.allEvaDataArray[0];
+            if (model.picture == nil || [model.picture isEqualToString:@""]) {
+                return 105;
+            }else{
+                return 170;
+            }
+        }
     }
     
     return kCellHeight;
@@ -237,6 +244,7 @@
         }
         return cell;
     }
+    
     identifier = @"publish11";
     EvaluatePhotoCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     
@@ -254,11 +262,17 @@
         [cell.evaTimeLabel setHidden:NO];
         [cell.evaTextLabel setHidden:NO];
         [cell.evaStarImage setHidden:NO];
-        [cell.evaProImageView1 setHidden:NO];
-        [cell.evaProImageView2 setHidden:NO];
         
         EvaluateResponse *evaResponse = self.allEvaResponse[0];
         evaModel = self.allEvaDataArray[indexPath.row-1];
+        
+        if (evaModel.picture == nil || [evaModel.picture isEqualToString:@""]) {
+            [cell.evaProImageView1 setHidden:YES];
+            [cell.evaProImageView2 setHidden:YES];
+        }else{
+            [cell.evaProImageView1 setHidden:NO];
+            [cell.evaProImageView2 setHidden:NO];
+        }
         
         NSString *isHideStr = evaModel.isHide?@"匿名":evaModel.mobile;
         cell.evaNameLabel.text = isHideStr;
@@ -373,9 +387,11 @@
                              };
     [self requestDataPostWithString:yyyString params:params successBlock:^(id responseObject) {
         CompleteResponse *response = [CompleteResponse objectWithKeyValues:responseObject];
-        [self.certifiDataArray addObject:response.certification];
         
-        [self.checkDetailTableView reloadData];
+        if (response.certification) {
+            [self.certifiDataArray addObject:response.certification];
+            [self.checkDetailTableView reloadData];
+        }
         
         [self getAllEvaluationListWithPage:@"0"];
         
@@ -412,7 +428,8 @@
         NSString *dfdfString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyRecordsMessageAgreeString];
         NSDictionary *params = @{@"id" : self.idString,
                                  @"category" : self.categoryString,
-                                 @"token" : [self getValidateToken]
+                                 @"token" : [self getValidateToken],
+                                 @"uid" : self.pidString
                                  };
         [self requestDataPostWithString:dfdfString params:params successBlock:^(id responseObject) {
             BaseModel *dfdfModel = [BaseModel objectWithKeyValues:responseObject];
@@ -422,6 +439,8 @@
                 [self.appAgreeButton setBackgroundColor:kSelectedColor];
                 [self.appAgreeButton setTitleColor:kBlackColor forState:0];
                 [self.appAgreeButton setTitle:@"已同意" forState:0];
+                self.appAgreeButton.userInteractionEnabled = NO;
+                
             }
             
         } andFailBlock:^(NSError *error) {
