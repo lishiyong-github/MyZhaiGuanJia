@@ -33,6 +33,9 @@
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
     [self.view addSubview:self.mySavetableView];
+    [self.view addSubview:self.baseRemindImageView];
+    [self.baseRemindImageView setHidden:YES];
+    
     [self.view setNeedsUpdateConstraints];
     
     [self refreshHeaderOfMySave];
@@ -43,6 +46,9 @@
     if (!self.didSetupConstraints) {
         
         [self.mySavetableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+        
+        [self.baseRemindImageView autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
+        [self.baseRemindImageView autoAlignAxisToSuperviewAxis:ALAxisVertical];
         
         self.didSetupConstraints = YES;
     }
@@ -168,6 +174,12 @@
             [self.mySaveDataList addObject:model];
         }
         
+        if (self.mySaveDataList.count > 0) {
+            [self.baseRemindImageView setHidden:YES];
+        }else{
+            [self.baseRemindImageView setHidden:NO];
+        }
+        
         [self.mySavetableView reloadData];
     } andFailBlock:^(NSError *error){
         
@@ -242,6 +254,12 @@
         if ([model.code isEqualToString:@"0000"]) {
             [self.mySaveDataList removeObjectAtIndex:indexRow];
             [self.mySavetableView reloadData];
+            
+            if (self.mySaveDataList.count > 0) {
+                [self.baseRemindImageView setHidden:YES];
+            }else{
+                [self.baseRemindImageView setHidden:NO];
+            }
         }
         
     } andFailBlock:^(NSError *error){

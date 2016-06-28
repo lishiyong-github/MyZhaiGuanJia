@@ -301,7 +301,7 @@
                              @"id" : self.idString,
                              @"category" : self.categaryString
                              };
-    [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
+    [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){        
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
         [self.publishingDataArray addObject:response];
         [self.publishingTableView reloadData];
@@ -327,14 +327,14 @@
         PublishingResponse *response = self.publishingDataArray[0];
         PublishingModel *rModel = response.product;
         
-        if ([rModel.category integerValue] == 1) {
+        if ([rModel.category integerValue] == 1) {//融资
             ReportFinanceViewController *reportFinanceVC = [[ReportFinanceViewController alloc] init];
             reportFinanceVC.fiModel = rModel;
             [self.navigationController pushViewController:reportFinanceVC animated:YES];
-        }else{
+        }else{//清收，诉讼
             ReportSuitViewController *reportSuiVC = [[ReportSuitViewController alloc] init];
             reportSuiVC.categoryString = rModel.category;
-            reportSuiVC.suModel = rModel;
+            reportSuiVC.suResponse = response;
             [self.navigationController pushViewController:reportSuiVC animated:YES];
         }
     }

@@ -140,13 +140,13 @@
                 }else if (row == 12){
                     ReportSuitViewController *collectVC = [[ReportSuitViewController alloc] init];
                     collectVC.categoryString = @"2";
-                    collectVC.tagString = @"1";
+//                    collectVC.tagString = @"1";
                     collectVC.hidesBottomBarWhenPushed = YES;
                     [nav pushViewController:collectVC animated:NO];
                 }else{
                     ReportSuitViewController *reportSuitVC = [[ReportSuitViewController alloc] init];
                     reportSuitVC.categoryString = @"3";
-                    reportSuitVC.tagString = @"1";
+//                    reportSuitVC.tagString = @"1";
                     reportSuitVC.hidesBottomBarWhenPushed = YES;
                     [nav pushViewController:reportSuitVC animated:NO];
                 }
@@ -230,8 +230,8 @@
         MyReleaseViewController *myReleaseVC = [[MyReleaseViewController alloc] init];
         myReleaseVC.hidesBottomBarWhenPushed = YES;
         myReleaseVC.progreStatus = @"1";
-        [nav pushViewController:myReleaseVC animated:NO];
         [weakself setSelectedIndex:4];
+        [nav pushViewController:myReleaseVC animated:NO];
     }];
     
     return cell;

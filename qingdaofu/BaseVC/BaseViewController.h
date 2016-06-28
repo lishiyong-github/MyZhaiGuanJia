@@ -15,6 +15,7 @@
 @interface BaseViewController : UIViewController
 
 @property (nonatomic,strong) UIBarButtonItem *leftItem;
+@property (nonatomic,strong) UIImageView *baseRemindImageView;
 
 @property (nonatomic,strong) void (^didTokenValid)(TokenModel *tokenModel);
 

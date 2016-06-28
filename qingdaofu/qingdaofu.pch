@@ -182,8 +182,10 @@
 #define kMySaveString @"list/mysave"    //我的保存
 #define kDeleteSaveString  @"public/deleteproduct"  //删除保存
 #define kMySavePublishString @"public/releaselist"  //我的保存里面的发布
+#define kMySavePublishEditString @"publish/editcollection" //我的保存详情里面的编辑发布
 #define kMyStoreString @"apply/myshoucang"  //我的收藏
 #define kDeleteStoreString @"public/deletes"   //删除收藏,取消收藏
+
 
 #define kMyAgentString @"certification/agentlist"   //我的代理
 #define kMyAgentDetailString @"certification/agentexhibition"  //代理详情

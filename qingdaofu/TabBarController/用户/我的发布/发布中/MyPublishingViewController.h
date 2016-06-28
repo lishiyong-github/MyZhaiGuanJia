@@ -7,10 +7,12 @@
 //
 
 #import "NetworkViewController.h"
+#import "ReleaseResponse.h"
 
 @interface MyPublishingViewController : NetworkViewController
 
 @property (nonatomic,strong) NSString *idString;
 @property (nonatomic,strong) NSString *categaryString;
+@property (nonatomic,strong) ReleaseResponse *reResponse;
 
 @end

@@ -31,7 +31,11 @@
     self.view.backgroundColor = kBackColor;
     
     [self.view addSubview:self.paceTableView];
+    [self.view addSubview:self.baseRemindImageView];
+    [self.baseRemindImageView setHidden:YES];
+    
     [self.view setNeedsUpdateConstraints];
+    
     [self getPaceMessagesList];
 }
 
@@ -40,6 +44,9 @@
     if (!self.didSetupConstarits) {
         
         [self.paceTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+        
+        [self.baseRemindImageView autoAlignAxisToSuperviewAxis:ALAxisVertical];
+        [self.baseRemindImageView autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
         
         self.didSetupConstarits = YES;
     }
@@ -162,6 +169,13 @@
         for (PaceModel *paceModel in response.disposing) {
             [self.paceDataArray addObject:paceModel];
         }
+        
+        if (self.paceDataArray.count > 0) {
+            [self.baseRemindImageView setHidden:YES];
+        }else{
+            [self.baseRemindImageView setHidden:NO];
+        }
+        
         [self.paceTableView reloadData];
         
     } andFailBlock:^(NSError *error) {

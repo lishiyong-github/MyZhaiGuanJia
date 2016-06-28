@@ -21,6 +21,7 @@
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *allEvaTableView;
 
+//json解析
 @property (nonatomic,strong) NSMutableArray *responseArray;
 @property (nonatomic,strong) NSMutableArray *allEvaluateArray;
 @property (nonatomic,assign) NSInteger pageEva;
@@ -35,6 +36,9 @@
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
     [self.view addSubview:self.allEvaTableView];
+    [self.view addSubview:self.baseRemindImageView];
+    [self.baseRemindImageView setHidden:YES];
+    
     [self.view setNeedsUpdateConstraints];
     
     [self refreshHeaderOfAllEvaluation];
@@ -45,6 +49,9 @@
     if (!self.didSetupConstraints) {
         
         [self.allEvaTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+        
+        [self.baseRemindImageView autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
+        [self.baseRemindImageView autoAlignAxisToSuperviewAxis:ALAxisVertical];
         
         self.didSetupConstraints = YES;
     }
@@ -270,6 +277,12 @@
             for (LaunchEvaluateModel *model in response.launchevaluation) {
                 [self.allEvaluateArray addObject:model];
             }
+        }
+        
+        if (self.allEvaluateArray.count > 0) {
+            [self .baseRemindImageView setHidden:YES];
+        }else{
+            [self .baseRemindImageView setHidden:NO];
         }
         
         [self.allEvaTableView reloadData];

@@ -8,13 +8,16 @@
 
 #import "AdditionMessageViewController.h"
 
-#import "UploadFilesViewController.h"  //债权文件
-#import "DebtCreditMessageViewController.h" //债权人信息
+//#import "UploadFilesViewController.h"  //债权文件
+//#import "DebtCreditMessageViewController.h" //债权人信息
+#import "ProductsCheckDetailViewController.h"   //债权人信息，债务人信息
 
 #import "MineUserCell.h"
 
 #import "PublishingResponse.h"
 #import "PublishingModel.h"
+
+#import "DebtModel.h"
 
 @interface AdditionMessageViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -73,6 +76,12 @@
 #pragma mark - 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    
+//    if ([self.categoryString intValue] == 1) {//融资
+//        return 8;
+//    }
+//    return 14;//清收，诉讼
+    
     if (self.addMessageDataArray.count > 0) {
         if ([self.categoryString intValue] == 1) {
             return 8;
@@ -192,56 +201,46 @@
             }
         }
         
-        NSMutableArray *creditorfilesArray = [NSMutableArray array];
-        NSMutableArray *creditorinfosArray = [NSMutableArray array];
-        NSMutableArray *borrowinginfosArray = [NSMutableArray array];
-        NSString *creditorfile = @"无";//债权文件
-        NSString *creditorinfo = @"无";//债权人信息
-        NSString *borrowinginfo = @"无";//债务人信息
-
-        for (DebtModel *debtModel in messageResonse.creditorfiles) {
-            [creditorfilesArray addObject:debtModel];
-            creditorfile = @"查看";
+        PublishingResponse *meResponse;
+//        = self.addMessageDataArray[0];
+        if (self.addMessageDataArray.count > 0) {
+           meResponse = self.addMessageDataArray[0];
         }
-        
-        for (DebtModel *debtModel in messageResonse.creditorinfos) {
-            [creditorinfosArray addObject:debtModel];
-            creditorinfo = @"查看";
-        }
-        
-        for (DebtModel *debtModel in messageResonse.borrowinginfos) {
-            [borrowinginfosArray addObject:debtModel];
-            borrowinginfo = @"查看";
-        }
-        
-//        NSString *creditorfile = messageModel.creditorfile?@"查看":@"无";  //债权文件
-//        NSString *creditorinfo = messageModel.creditorinfo?@"查看":@"无";  //债权人信息
-//        NSString *borrowinginfo = messageModel.borrowinginfo?@"查看":@"无";  //债务人信息
+        NSString *creditorfile =meResponse.creditorfiles.count?@"查看":@"无";//债权文件
+        NSString *creditorinfo = meResponse.creditorinfos.count?@"查看":@"无";//债权人信息
+        NSString *borrowinginfo = meResponse.borrowinginfos.count?@"查看":@"无";//债务人信息
         
         NSArray *dataList1 = @[@"借款利率(%)",@"借款利率类型",@"借款期限",@"借款期限类型",@"还款方式",@"债务人主体",@"委托事项",@"委托代理期限(月)",@"已付本金",@"已付利息",@"合同履行地",@"债权文件",@"债权人信息",@"债务人信息"];
         NSArray *dataList2 = @[rate,rate_cat,term,rate_cat,repaymethod,obligor,commitment,commissionperiod,paidmoney,interestpaid,performancecontract,creditorfile,creditorinfo,borrowinginfo];
         [cell.userNameButton setTitle:dataList1[indexPath.row] forState:0];
         [cell.userActionButton setTitle:dataList2[indexPath.row] forState:0];
         cell.userActionButton.userInteractionEnabled = NO;
-        
-        if (indexPath.row > 10) {
-            [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-        }
     }
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    PublishingResponse *response;
+    if (self.addMessageDataArray.count > 0) {
+        response = self.addMessageDataArray[0];
+    }
+//
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.row == 11) {//债权人件
-        UploadFilesViewController *uploabFilesVC = [[UploadFilesViewController alloc] init];
-        [self.navigationController pushViewController:uploabFilesVC animated:YES];
+//        UploadFilesViewController *uploabFilesVC = [[UploadFilesViewController alloc] init];
+//        [self.navigationController pushViewController:uploabFilesVC animated:YES];
     }else if (indexPath.row == 12){//债权人信息
-        DebtCreditMessageViewController *debtCreditMessageVC = [[DebtCreditMessageViewController alloc] init];
-        [self.navigationController pushViewController:debtCreditMessageVC animated:YES];
-    }else if (indexPath.row == 13){//债务人信息
+        ProductsCheckDetailViewController *productsCheckDetailVC = [[ProductsCheckDetailViewController alloc] init];
+        productsCheckDetailVC.categoryString = @"1";
+        productsCheckDetailVC.listArray = response.creditorinfos;
+        [self.navigationController pushViewController:productsCheckDetailVC animated:YES];
         
+    }else if (indexPath.row == 13){//债务人信息
+        ProductsCheckDetailViewController *productsCheckDetailVC = [[ProductsCheckDetailViewController alloc] init];
+        productsCheckDetailVC.categoryString = @"2";
+        productsCheckDetailVC.listArray = response.borrowinginfos;
+        [self.navigationController pushViewController:productsCheckDetailVC animated:YES];
     }
 }
 
@@ -259,6 +258,7 @@
                              @"category" : self.categoryString
                              };
     [self requestDataPostWithString:messageString params:params successBlock:^(id responseObject){
+        
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
         
         [self.addMessageDataArray addObject:response];

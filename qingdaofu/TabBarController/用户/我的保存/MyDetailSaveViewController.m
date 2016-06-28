@@ -129,7 +129,8 @@
 {
     static NSString *identifier;
     
-    PublishingModel *saveModel = self.saveDetailArray[0];
+    PublishingResponse *response = self.saveDetailArray[0];
+    PublishingModel *saveModel = response.product;
     
     if (indexPath.section == 0) {
         identifier = @"detailSave0";
@@ -236,15 +237,15 @@
                 
                 QDFWeakSelf;
                 [cell.userActionButton addAction:^(UIButton *btn) {
-                   
                     if ([self.categaryString integerValue] == 1) {//融资
                         ReportFinanceViewController *reportFinanceVC = [[ReportFinanceViewController alloc] init];
                         reportFinanceVC.fiModel = saveModel;
                         [weakself.navigationController pushViewController:reportFinanceVC animated:YES];
                     }else{
                         ReportSuitViewController *reportSuitVC = [[ReportSuitViewController alloc] init];
-                        reportSuitVC.suModel= saveModel;
+                        reportSuitVC.suResponse = response;
                         reportSuitVC.categoryString = self.categaryString;
+//                        reportSuitVC.tagString = @"2";
                         [weakself.navigationController pushViewController:reportSuitVC animated:YES];
                     }
                     
@@ -301,7 +302,7 @@
         
         PublishingResponse *responseModel = [PublishingResponse objectWithKeyValues:responseObject];
         
-        [self.saveDetailArray addObject:responseModel.product];
+        [self.saveDetailArray addObject:responseModel];
         [self.detailSaveTableView reloadData];
         
     } andFailBlock:^(NSError *error){

@@ -120,8 +120,7 @@
         
         
         UIButton *cancelButton = [UIButton newAutoLayoutView];
-        [cancelButton setTitle:@"取消" forState:0];
-        [cancelButton setTitleColor:kRedColor forState:0];
+        [cancelButton setImage:[UIImage imageNamed:@"btn_close"] forState:0];
         [cancelButton addAction:^(UIButton *btn) {
             [tagView removeFromSuperview];
         }];

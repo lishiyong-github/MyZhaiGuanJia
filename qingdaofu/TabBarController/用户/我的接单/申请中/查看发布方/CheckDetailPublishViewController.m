@@ -212,6 +212,7 @@
             }
         }else if (indexPath.row == 5){
             [cell.userActionButton setTitle:@"查看" forState:0];
+            cell.userActionButton.userInteractionEnabled = NO;
             [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
         }
         return cell;

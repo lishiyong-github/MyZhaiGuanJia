@@ -105,7 +105,7 @@
         
         UIWindow *window = [UIApplication sharedApplication].keyWindow;
         UITabBarController *tabBarController = (UITabBarController *)window.rootViewController;
-        //
+
         UINavigationController *viewController = tabBarController.selectedViewController;
         
         if (row == 11) {
@@ -115,76 +115,18 @@
         }else if (row == 12){
             ReportSuitViewController *collectVC = [[ReportSuitViewController alloc] init];
             collectVC.categoryString = @"2";
-            collectVC.tagString = @"1";
+//            collectVC.tagString = @"1";
             collectVC.hidesBottomBarWhenPushed = YES;
             [viewController pushViewController:collectVC animated:YES];
         }else{
             ReportSuitViewController *reportSuitVC = [[ReportSuitViewController alloc] init];
             reportSuitVC.categoryString = @"3";
-            reportSuitVC.tagString = @"1";
+//            reportSuitVC.tagString = @"1";
             reportSuitVC.hidesBottomBarWhenPushed = YES;
             [viewController pushViewController:reportSuitVC animated:YES];
-
         }
-        
     }];
-    
-//    UIView *tagView = [self.view viewWithTag:99999];
-//    if (!tagView) {
-//        tagView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
-//        tagView.backgroundColor = UIColorFromRGB1(0x333333, 0.6);
-//        [self.view addSubview:tagView];
-//    }
-    
-//    UIView *showView = [UIView newAutoLayoutView];
-//    //
-//    [showView setBackgroundColor:kBlackColor];
-//    showView.alpha = 0.8;
-//    [window addSubview:showView];
-//    [showView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
-//    return;
-
-    
 }
-
-- (void)displayView
-{
-    
-    UIWindow *window = [UIApplication sharedApplication].keyWindow;
-    UITabBarController *tabBarController = (UITabBarController *)window.rootViewController;
-    //
-    UINavigationController *viewController = tabBarController.selectedViewController;
-    
-    UIAlertController *tabAlertController = [UIAlertController alertControllerWithTitle:@"测试" message:@"发布清收融资" preferredStyle:UIAlertControllerStyleActionSheet];
-    
-    UIAlertAction *act1 = [UIAlertAction actionWithTitle:@"诉讼" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        ReportSuitViewController *reportSuitVC = [[ReportSuitViewController alloc] init];
-        [reportSuitVC setHidesBottomBarWhenPushed:YES];
-        [viewController pushViewController:reportSuitVC animated:YES];
-    }];
-    
-    UIAlertAction *act2 = [UIAlertAction actionWithTitle:@"清收" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        
-    }];
-    
-    UIAlertAction *act3 = [UIAlertAction actionWithTitle:@"融资" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        ReportFinanceViewController *reportFinanceVC = [[ReportFinanceViewController alloc] init];
-        [reportFinanceVC setHidesBottomBarWhenPushed:YES];
-        [viewController pushViewController:reportFinanceVC animated:YES];
-    }];
-    
-    UIAlertAction *act0 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        
-    }];
-    
-    [tabAlertController addAction:act1];
-    [tabAlertController addAction:act2];
-    [tabAlertController addAction:act3];
-    [tabAlertController addAction:act0];
-    
-    [viewController presentViewController:tabAlertController animated:YES completion:nil];
-}
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

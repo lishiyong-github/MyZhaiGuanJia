@@ -12,5 +12,6 @@
 @interface ReportFinanceViewController : NetworkViewController
 
 @property (nonatomic,strong) PublishingModel *fiModel;
+//@property (nonatomic,strong) NSString *tagString;
 
 @end

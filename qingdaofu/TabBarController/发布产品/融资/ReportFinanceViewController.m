@@ -319,12 +319,8 @@
             cell.agentLabel.text = self.finanTextArray[indexPath.section][indexPath.row];
             cell.agentTextField.placeholder = self.financeholderArray[indexPath.section][indexPath.row];
             [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-            if (self.fiModel.mortorage_community) {
-                cell.agentTextField.text = self.fiModel.mortorage_community?self.fiModel.mortorage_community:self.dataDictionary[@"mortorage_community"];
-                [cell.agentButton setTitle:@"已选择" forState:0];
-            }else{
-                [cell.agentButton setTitle:@"请选择" forState:0];
-            }
+            [cell.agentButton setTitle:@"请选择" forState:0];
+            cell.agentTextField.text = self.fiModel.mortorage_community?self.fiModel.mortorage_community:self.dataDictionary[@"mortorage_community"];
             
             cell.agentButton.tag = 4;
             [cell.agentButton addTarget:self action:@selector(showTextOfUpwardView:) forControlEvents:UIControlEventTouchUpInside];
@@ -768,7 +764,6 @@
                 
                 AgentCell *cell = [self.reportFinanceTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:4 inSection:0]];
                 cell.agentTextField.text = [NSString stringWithFormat:@"%@",name];
-                [cell.agentButton setTitle:@"已选择" forState:0];
             }];
             [self.navigationController pushViewController:guarantyVC animated:YES];
         }

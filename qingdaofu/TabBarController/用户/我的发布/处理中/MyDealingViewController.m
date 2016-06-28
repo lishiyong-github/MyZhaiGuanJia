@@ -353,8 +353,8 @@
     
     if ((indexPath.section == 1) && (indexPath.row == 5)) {//补充信息
         AdditionMessageViewController *additionMessageVC = [[AdditionMessageViewController alloc] init];
-        additionMessageVC.idString = dealModel.idString;
         additionMessageVC.categoryString = dealModel.category;
+        additionMessageVC.idString = dealModel.idString;
         [self.navigationController pushViewController:additionMessageVC animated:YES];
     }else if (indexPath.section == 2) {//协议
         AgreementViewController *agreementVC = [[AgreementViewController alloc] init];
@@ -408,9 +408,9 @@
                              };
     [self requestDataPostWithString:endpString params:params successBlock:^(id responseObject) {
         BaseModel *sModel = [BaseModel objectWithKeyValues:responseObject];
-        [self showHint:@"成功"];
         
         if ([sModel.code isEqualToString:@"0000"]) {//成功
+            [self showHint:@"成功"];
             [self.dealFootView setHidden:YES];
             [self.dealCommitButton setHidden:NO];
             [self.dealCommitButton setTitle:@"已终止" forState:0];

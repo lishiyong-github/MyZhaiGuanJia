@@ -30,10 +30,11 @@
 @property (nonatomic,strong) AllProSegView *releaseProView;
 @property (nonatomic,strong) UITableView *myReleaseTableView;
 
+//json解析
 @property (nonatomic,strong) NSMutableArray *responseDataArray;
 @property (nonatomic,strong) NSMutableArray *releaseDataArray;
 
-@property (nonatomic,assign) NSInteger pageRelease;
+@property (nonatomic,assign) NSInteger pageRelease;//页数
 
 @end
 
@@ -50,8 +51,10 @@
 
     [self.view addSubview:self.releaseProView];
     [self.view addSubview:self.myReleaseTableView];
-    [self.view setNeedsUpdateConstraints];
+    [self.view addSubview:self.baseRemindImageView];
+    [self.baseRemindImageView setHidden:YES];
     
+    [self.view setNeedsUpdateConstraints];
 }
 
 - (void)updateViewConstraints
@@ -63,6 +66,9 @@
         
         [self.myReleaseTableView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.releaseProView];
         [self.myReleaseTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+        
+        [self.baseRemindImageView autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
+        [self.baseRemindImageView autoAlignAxisToSuperviewAxis:ALAxisVertical];
         
         self.didSetupConstraints = YES;
     }
@@ -365,6 +371,7 @@
             MyPublishingViewController *myPublishingVC = [[MyPublishingViewController alloc] init];
             myPublishingVC.idString = sModel.idString;
             myPublishingVC.categaryString = sModel.category;
+            myPublishingVC.reResponse = self.responseDataArray[0];
             [self.navigationController pushViewController:myPublishingVC animated:YES];
         }else if ([sModel.progress_status isEqualToString:@"2"]){//处理中
             MyDealingViewController *myDealingVC = [[MyDealingViewController alloc] init];
@@ -415,6 +422,13 @@
         for (RowsModel *rowsModel in responseModel.rows) {
             [self.releaseDataArray addObject:rowsModel];
         }
+        
+        if (self.releaseDataArray.count > 0) {
+            [self.baseRemindImageView setHidden:YES];
+        }else{
+            [self.baseRemindImageView setHidden:NO];
+        }
+        
         [self.myReleaseTableView reloadData];
         
     } andFailBlock:^(NSError *error) {
@@ -449,8 +463,9 @@
     
    if([string isEqualToString:@"补充信息"]){
        AdditionMessageViewController *additionMessageVC = [[AdditionMessageViewController alloc] init];
-       additionMessageVC.idString = model.idString;
+//       additionMessageVC.meResponse = self.responseDataArray[0];
        additionMessageVC.categoryString = model.category;
+       additionMessageVC.idString = model.idString;
        [self.navigationController pushViewController:additionMessageVC animated:YES];
    }else if ([string isEqualToString:@"查看申请"]){
       ApplyRecordsViewController *applyRecordsVC = [[ApplyRecordsViewController alloc] init];

@@ -86,9 +86,9 @@
     DebtModel *deModel = self.listArray[indexPath.section];
     
     NSString *name;
-    if ([self.categoryString  integerValue] == 1) {
+    if ([self.categoryString  integerValue] == 1) {//债权人信息
         name = deModel.creditorname?deModel.creditorname:@"未填写";
-    }else{
+    }else{//债务人信息
         name = deModel.borrowingname?deModel.borrowingname:@"未填写";
     }
     NSMutableAttributedString *nameStr = [cell.debtNameLabel setAttributeString:@"姓        名    " withColor:kBlackColor andSecond:name withColor:kLightGrayColor withFont:12];

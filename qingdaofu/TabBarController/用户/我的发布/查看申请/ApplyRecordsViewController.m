@@ -35,6 +35,9 @@
     self.navigationItem.leftBarButtonItem = self.leftItem;
 
     [self.view addSubview:self.applyRecordsTableView];
+    [self.view addSubview:self.baseRemindImageView];
+    [self.baseRemindImageView setHidden:YES];
+    
     [self.view setNeedsUpdateConstraints];
 }
 
@@ -43,6 +46,9 @@
     if (!self.didSetupConstraints) {
         
         [self.applyRecordsTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+        
+        [self.baseRemindImageView autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
+        [self.baseRemindImageView autoAlignAxisToSuperviewAxis:ALAxisVertical];
 
         self.didSetupConstraints = YES;
     }
@@ -166,6 +172,13 @@
         for (UserModel *model in response.user) {
             [self.recordsDataArray addObject:model];
         }
+        
+        if (self.recordsDataArray.count > 0) {
+            [self.baseRemindImageView setHidden:YES];
+        }else{
+            [self.baseRemindImageView setHidden:NO];
+        }
+        
         [self.applyRecordsTableView reloadData];
         
     } andFailBlock:^(id responseObject){

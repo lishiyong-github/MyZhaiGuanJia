@@ -37,6 +37,9 @@
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
     [self.view addSubview:self.myStoreTableView];
+    [self.view addSubview:self.baseRemindImageView];
+    [self.baseRemindImageView setHidden:YES];
+    
     [self.view setNeedsUpdateConstraints];
 }
 
@@ -45,6 +48,9 @@
     if (!self.didSetupConstraints) {
         
         [self.myStoreTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+        
+        [self.baseRemindImageView autoAlignAxisToSuperviewAxis:ALAxisVertical];
+        [self.baseRemindImageView autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
         
         self.didSetupConstraints = YES;
     }
@@ -70,7 +76,6 @@
 - (NSMutableArray *)storeDataList
 {
     if (!_storeDataList) {
-//        NSArray *aa = @[@"",@"",@"",@"",@"",@"",@"",@"",@"",@""];
         _storeDataList = [NSMutableArray array];
     }
     return _storeDataList;
@@ -169,6 +174,12 @@
             [self.storeDataList addObject:storeModel];
         }
         
+        if (self.storeDataList.count > 0) {
+            [self.baseRemindImageView setHidden:YES];
+        }else{
+            [self.baseRemindImageView setHidden:NO];
+        }
+        
         [self.myStoreTableView reloadData];
         
     } andFailBlock:^(NSError *error){
@@ -240,6 +251,11 @@
         if ([deleteModel.code isEqualToString:@"0000"]) {
             [self.storeDataList removeObjectAtIndex:indexRow];
             [self.myStoreTableView reloadData];
+            if (self.storeDataList.count > 0) {
+                [self.baseRemindImageView setHidden:YES];
+            }else{
+                [self.baseRemindImageView setHidden:NO];
+            }
         }
     } andFailBlock:^(NSError *error){
         

@@ -30,9 +30,11 @@
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) AllProSegView *orderHeadView;
 @property (nonatomic,strong) UITableView *myOrderTableView;
+//@property (nonatomic,strong) UIImageView *remindImageView;
 
+//json解析
 @property (nonatomic,strong) NSMutableArray *myOrderDataList;
-@property (nonatomic,assign) NSInteger pageOrder;
+@property (nonatomic,assign) NSInteger pageOrder;//页数
 
 @end
 
@@ -52,6 +54,8 @@
     
     [self.view addSubview:self.orderHeadView];
     [self.view addSubview:self.myOrderTableView];
+    [self.view addSubview:self.baseRemindImageView];
+    [self.baseRemindImageView setHidden:YES];
     
     [self.view setNeedsUpdateConstraints];
 }
@@ -65,6 +69,9 @@
         
         [self.myOrderTableView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.orderHeadView];
         [self.myOrderTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+        
+        [self.baseRemindImageView autoAlignAxisToSuperviewAxis:ALAxisVertical];
+        [self.baseRemindImageView autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
         
         self.didSetupConstraints = YES;
     }
@@ -398,6 +405,12 @@
         
         for (RowsModel *orderModel in responceModel.rows) {
             [self.myOrderDataList addObject:orderModel];
+        }
+        
+        if (self.myOrderDataList.count > 0) {
+            [self.baseRemindImageView setHidden:YES];
+        }else{
+            [self.baseRemindImageView setHidden:NO];
         }
         
         [self.myOrderTableView reloadData];

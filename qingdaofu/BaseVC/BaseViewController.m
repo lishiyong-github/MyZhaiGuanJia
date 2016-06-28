@@ -13,7 +13,6 @@
 
 @interface BaseViewController ()<UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
-@property (nonatomic,strong) UIButton *leftBackBtn;
 @property (nonatomic,assign) BOOL didSetupConstraints;
 
 @end
@@ -54,31 +53,21 @@
 -(UIBarButtonItem *)leftItem
 {
     if (!_leftItem) {
-        
-//        _leftItem = [[UIBarButtonItem alloc] initWithCustomView:self.leftBackBtn];
-        
-//        [self.leftBackBtn autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:10];
-//        [self.leftBackBtn autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:10];
-        
-//        [self.leftBackBtn autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(10, 10, 0, 0)];
-        
         _leftItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"information_nav_back"] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
     }
     return _leftItem;
 }
 
-- (UIButton *)leftBackBtn
+- (UIImageView *)baseRemindImageView
 {
-    if (!_leftBackBtn) {
-        _leftBackBtn = [UIButton newAutoLayoutView];
-        [_leftBackBtn setImage:[UIImage imageNamed:@"information_nav_back"] forState:0];
-        _leftBackBtn.layer.borderColor = kRedColor.CGColor;
-        _leftBackBtn.layer.borderWidth = kLineWidth;
-        [_leftBackBtn addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+    if (!_baseRemindImageView) {
+        _baseRemindImageView = [UIImageView newAutoLayoutView];
+        [_baseRemindImageView setImage:[UIImage imageNamed:@"kong"]];
     }
-    return _leftBackBtn;
+    return _baseRemindImageView;
 }
 
+#pragma mark - method
 - (void)back
 {
     [self.navigationController popViewControllerAnimated:YES];

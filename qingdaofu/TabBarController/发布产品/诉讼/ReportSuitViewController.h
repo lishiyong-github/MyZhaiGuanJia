@@ -8,12 +8,12 @@
 
 #import "NetworkViewController.h"
 #import "PublishingModel.h"
+#import "PublishingResponse.h"
 
 @interface ReportSuitViewController : NetworkViewController
 
 @property (nonatomic,strong) NSString *categoryString;  //2为催收，3为诉讼
-@property (nonatomic,strong) PublishingModel *suModel;
-
-@property (nonatomic,strong) NSString *tagString;  //1.首次发布；2.保存中修改发布／我的发布（发布中）的修改发布
+@property (nonatomic,strong) PublishingResponse *suResponse;
+//@property (nonatomic,strong) NSString *tagString;  //1.直接发布；2.保存中修改发布／我的发布（发布中）的修改发布
 
 @end

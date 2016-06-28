@@ -44,6 +44,9 @@
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kBlueColor} forState:0];
 
     [self.view addSubview:self.myAgentListTableView];
+    [self.view addSubview:self.baseRemindImageView];
+    [self.baseRemindImageView setHidden:YES];
+    
     [self.view setNeedsUpdateConstraints];
 }
 
@@ -52,6 +55,9 @@
     if (!self.didSetupConstraints) {
         
         [self.myAgentListTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+        
+        [self.baseRemindImageView autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
+        [self.baseRemindImageView autoAlignAxisToSuperviewAxis:ALAxisVertical];
         
         self.didSetupConstraints = YES;
     }
@@ -167,6 +173,12 @@
         
         for (UserModel *userModel in resultModel.user) {
             [self.agentDataList addObject:userModel];
+        }
+        
+        if (self.agentDataList.count > 0) {
+            [self.baseRemindImageView setHidden:YES];
+        }else{
+            [self.baseRemindImageView setHidden:NO];
         }
         
         [self.myAgentListTableView reloadData];

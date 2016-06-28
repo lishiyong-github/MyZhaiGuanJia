@@ -26,6 +26,15 @@
 
 @implementation DebtCreditMessageViewController
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    if (self.debtArray.count > 0) {
+        [self.baseRemindImageView setHidden:YES];
+    }else{
+        [self.baseRemindImageView setHidden:NO];
+    }
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -38,6 +47,9 @@
     
     [self.view addSubview:self.debtCreditTableView];
     [self.view addSubview:self.debtCreditCommitButton];
+    [self.view addSubview:self.baseRemindImageView];
+    [self.baseRemindImageView setHidden:YES];
+    
     [self.view setNeedsUpdateConstraints];
 }
 
@@ -50,6 +62,9 @@
         
         [self.debtCreditCommitButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
         [self.debtCreditCommitButton autoSetDimension:ALDimensionHeight toSize:kTabBarHeight];
+        
+        [self.baseRemindImageView autoAlignAxisToSuperviewAxis:ALAxisVertical];
+        [self.baseRemindImageView autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
         
         self.didSetupConstraints = YES;
     }
@@ -206,17 +221,10 @@
 #pragma mark - method
 - (void)back
 {
-    if ([self.tagString integerValue] == 1) {//一个
-        if (self.didEndEditting) {
-            self.didEndEditting(self.debtArray);
-        }
-        [self.navigationController popViewControllerAnimated:YES];
-    }else{
-        if (self.didEndEditting) {
-            self.didEndEditting(self.debtArray);
-        }
-        [self.navigationController popViewControllerAnimated:YES];
+    if (self.didEndEditting) {
+        self.didEndEditting(self.debtArray);
     }
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

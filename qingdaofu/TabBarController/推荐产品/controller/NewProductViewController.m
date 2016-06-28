@@ -177,32 +177,47 @@
         }
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
+
         QDFWeakSelf;
-        [cell.financeButton addAction:^(UIButton *btn) {//融资
-            ReportFinanceViewController *reportFinanceVC = [[ReportFinanceViewController alloc] init];
-            reportFinanceVC.hidesBottomBarWhenPushed = YES;
-            [weakself.navigationController pushViewController:reportFinanceVC animated:YES];
-        }];
-        
-        [cell.collectionButton addAction:^(UIButton *btn) {//清收
-            ReportSuitViewController *reportCollectVC = [[ReportSuitViewController alloc] init];
-            reportCollectVC.hidesBottomBarWhenPushed = YES;
-            reportCollectVC.categoryString = @"2";
-            reportCollectVC.tagString = @"1";
-            [weakself.navigationController pushViewController:reportCollectVC animated:YES];
-        }];
-        
-        [cell.suitButton addAction:^(UIButton *btn) {//诉讼
-            ReportSuitViewController *reportSuitVC = [[ReportSuitViewController alloc] init];
-            reportSuitVC.hidesBottomBarWhenPushed = YES;
-            reportSuitVC.categoryString = @"3";
-            reportSuitVC.tagString = @"1";
-            [weakself.navigationController pushViewController:reportSuitVC animated:YES];
+        [cell setDidSelectedItem:^(NSInteger item) {
+            [weakself tokenIsValid];
+            [weakself setDidTokenValid:^(TokenModel *tModel) {
+                if ([tModel.code isEqualToString:@"0000"]) {
+                    switch (item) {
+                        case 11:{//融资
+                            ReportFinanceViewController *reportFinanceVC = [[ReportFinanceViewController alloc] init];
+                            reportFinanceVC.hidesBottomBarWhenPushed = YES;
+                            [weakself.navigationController pushViewController:reportFinanceVC animated:YES];
+                        }
+                            break;
+                        case 12:{//清收
+                            ReportSuitViewController *reportCollectVC = [[ReportSuitViewController alloc] init];
+                            reportCollectVC.hidesBottomBarWhenPushed = YES;
+                            reportCollectVC.categoryString = @"2";
+//                            reportCollectVC.tagString = @"1";
+                            [weakself.navigationController pushViewController:reportCollectVC animated:YES];
+                        }
+                            break;
+                        case 13:{//诉讼
+                            ReportSuitViewController *reportSuitVC = [[ReportSuitViewController alloc] init];
+                            reportSuitVC.hidesBottomBarWhenPushed = YES;
+                            reportSuitVC.categoryString = @"3";
+//                            reportSuitVC.tagString = @"1";
+                            [weakself.navigationController pushViewController:reportSuitVC animated:YES];
+                        }
+                            break;
+                        default:
+                            break;
+                    }
+
+                }else{
+                    [self showHint:tModel.msg];
+                }
+            }];
+            
         }];
         
         return cell;
-        
     }else if (indexPath.section == 1){
         identifier = @"main1";
         FourCell *cell = [tableView dequeueReusableCellWithIdentifier: identifier];
