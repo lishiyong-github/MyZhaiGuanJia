@@ -93,8 +93,7 @@
 {
     if (!_processingCommitButton) {
         _processingCommitButton = [BaseCommitButton newAutoLayoutView];
-        [_processingCommitButton setTitle:@"申请结案" forState:0];
-        [_processingCommitButton addTarget:self action:@selector(endProduct) forControlEvents:UIControlEventTouchUpInside];
+//        [_processingCommitButton addTarget:self action:@selector(endProduct) forControlEvents:UIControlEventTouchUpInside];
     }
     return _processingCommitButton;
 }
@@ -288,6 +287,7 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         [cell.oneButton setTitle:@"查看补充信息" forState:0];
         [cell.oneButton setImage:[UIImage imageNamed:@"more"] forState:0];
+        cell.oneButton.userInteractionEnabled = NO;
         
         return cell;
         
@@ -352,11 +352,16 @@
                 [cell.addressLabel setHidden:NO];
                 
                 //案号类型
-                NSArray *auditArray = @[@"一审",@"二审",@"再审",@"执行"];
-                NSInteger auditInt = [scheduleModel.audit intValue];
-                NSString *auditStr = auditArray[auditInt];
+                NSString *auditStr;
+                if ([self.categaryString integerValue] == 3) {
+                    NSArray *auditArray = @[@"一审",@"二审",@"再审",@"执行"];
+                    NSInteger auditInt = [scheduleModel.audit intValue];
+                    auditStr = auditArray[auditInt];
+                }else{
+                    auditStr = @"无";
+                }
                 
-                NSMutableAttributedString *caseTypestring = [cell.deadlineLabel setAttributeString:@"案号类型：" withColor:kBlackColor andSecond:auditStr?auditStr:@"无" withColor:kLightGrayColor withFont:12];
+                NSMutableAttributedString *caseTypestring = [cell.deadlineLabel setAttributeString:@"案号类型：" withColor:kBlackColor andSecond:auditStr withColor:kLightGrayColor withFont:12];
                 [cell.deadlineLabel setAttributedText:caseTypestring];
                 
                 cell.timeLabel.text = @"2016-05-30";
@@ -502,8 +507,16 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 2) {//协议
+    if (indexPath.section == 1 && indexPath.row == 5) {//补充信息
+        AdditionMessageViewController *additionalMessageVC = [[AdditionMessageViewController alloc] init];
+        additionalMessageVC.idString = self.idString;
+        additionalMessageVC.categoryString = self.categaryString;
+        [self.navigationController pushViewController:additionalMessageVC animated:YES];
+        
+    }else if (indexPath.section == 2) {//协议
         AgreementViewController *agreementVc = [[AgreementViewController alloc] init];
+        agreementVc.idString = self.idString;
+        agreementVc.categoryString = self.categaryString;
         [self.navigationController pushViewController:agreementVc animated:YES];
     }else if (indexPath.section == 3) {
         if (indexPath.row == 0) {//进度
@@ -520,10 +533,16 @@
         }
         
     }else if (indexPath.section == 4) {//申请延期
-//        DelayRequestsViewController *delayRequestVC = [[DelayRequestsViewController alloc] init];
-//        delayRequestVC.idString = self.idString;
-//        delayRequestVC.categoryString = self.categaryString;
-//        [self.navigationController pushViewController:delayRequestVC animated:YES];
+        DelayModel *delayModel;
+        if (self.delayArray.count > 0) {
+            delayModel = self.delayArray[0];
+        }
+        if (delayModel.is_agree == nil) {//立即申请
+            DelayRequestsViewController *delayRequestVC = [[DelayRequestsViewController alloc] init];
+            delayRequestVC.idString = self.idString;
+            delayRequestVC.categoryString = self.categaryString;
+            [self.navigationController pushViewController:delayRequestVC animated:YES];
+        }
     }
 }
 
@@ -546,9 +565,22 @@
                              @"category" : self.categaryString
                              };
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
+        
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
         [self.processArray addObject:response];
         [self.myProcessingTableView reloadData];
+        
+        if ([response.product.progress_status integerValue] == 2 && ![response.uidString isEqualToString:response.product.uidInner]) {
+            if ([response.product.applyclose integerValue] == 0) {
+                [self.processingCommitButton setTitle:@"申请结案" forState:0];
+            }else if ([response.product.applyclose integerValue] == 4 && [response.product.applyclosefrom isEqualToString:response.product.uidInner]){
+                [self.processingCommitButton setTitle:@"申请同意结案" forState:0];
+            }else{
+                [self.processingCommitButton setTitle:@"结案申请中" forState:0];
+                [self.processingCommitButton setBackgroundColor:kSelectedColor];
+            }
+        }
+        
         [self lookUpProcessingSchedule];
         
     } andFailBlock:^(NSError *error){
@@ -578,6 +610,7 @@
     }];
 }
 
+//申请延期状态
 - (void)delayRequest
 {
     NSString *deString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kIsDelayRequestString];
@@ -601,14 +634,14 @@
     NSString *endpString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyreleaseDealingEndString];
     NSDictionary *params = @{@"id" : self.idString,
                              @"category" : self.categaryString,
-                             @"token" : [self getValidateToken]
+                             @"token" : [self getValidateToken],
+                             @"status" : @"4"
                              };
     [self requestDataPostWithString:endpString params:params successBlock:^(id responseObject) {
         BaseModel *sModel = [BaseModel objectWithKeyValues:responseObject];
+         [self showHint:sModel.msg];
         
         if ([sModel.code isEqualToString:@"0000"]) {//成功
-            [self showHint:@"申请成功"];
-
             [self.processingCommitButton setBackgroundColor:kSelectedColor];
             [self.processingCommitButton setTitle:@"已申请" forState:0];
             [self.navigationController popViewControllerAnimated:YES];

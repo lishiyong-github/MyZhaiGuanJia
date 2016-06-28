@@ -79,7 +79,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (self.myApplyArray.count > 0) {
-        return 3;
+        return 2;
     }
     return 0;
 }
@@ -238,23 +238,7 @@
         cell.oneButton.userInteractionEnabled = NO;
         return cell;
     }
-    
-    identifier = @"applying2";
-    
-    MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    
-    if (!cell) {
-        cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-    }
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    [cell.userNameButton setTitle:@"|  服务协议" forState:0];
-    [cell.userNameButton setTitleColor:kBlueColor forState:0];
-    [cell.userActionButton setTitle:@"点击查看" forState:0];
-    [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-    cell.userActionButton.userInteractionEnabled = NO;
-    
-    return cell;
+    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -274,12 +258,6 @@
         addtionMessageVC.idString = self.idString;
         addtionMessageVC.categoryString = self.categaryString;
         [self.navigationController pushViewController:addtionMessageVC animated:YES];
-    }else if (indexPath.section == 2){
-        AgreementViewController *agreementVc = [[AgreementViewController alloc] init];
-        agreementVc.idString = self.idString;
-        agreementVc.categoryString = self.categaryString;
-        [self.navigationController pushViewController:agreementVc animated:YES];
-        
     }
 }
 

@@ -44,7 +44,6 @@
 		A14C17681D0AE577003826F8 /* UserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A14C17671D0AE577003826F8 /* UserModel.m */; };
 		A1522BEB1D0FB17B00135C72 /* PaceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A1522BEA1D0FB17B00135C72 /* PaceModel.m */; };
 		A1522BEE1D0FB22E00135C72 /* PaceResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A1522BED1D0FB22E00135C72 /* PaceResponse.m */; };
-		A1522BF11D0FB50100135C72 /* PaceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1522BF01D0FB50100135C72 /* PaceCell.m */; };
 		A1522BF41D0FFFE000135C72 /* kong@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1522BF21D0FFFE000135C72 /* kong@2x.png */; };
 		A1522BF51D0FFFE000135C72 /* kong@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1522BF31D0FFFE000135C72 /* kong@3x.png */; };
 		A1522BF91D1005F000135C72 /* EvaluateResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A1522BF81D1005F000135C72 /* EvaluateResponse.m */; };
@@ -532,8 +531,6 @@
 		A1522BEA1D0FB17B00135C72 /* PaceModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaceModel.m; sourceTree = "<group>"; };
 		A1522BEC1D0FB22E00135C72 /* PaceResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaceResponse.h; sourceTree = "<group>"; };
 		A1522BED1D0FB22E00135C72 /* PaceResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaceResponse.m; sourceTree = "<group>"; };
-		A1522BEF1D0FB50100135C72 /* PaceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaceCell.h; sourceTree = "<group>"; };
-		A1522BF01D0FB50100135C72 /* PaceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaceCell.m; sourceTree = "<group>"; };
 		A1522BF21D0FFFE000135C72 /* kong@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kong@2x.png"; sourceTree = "<group>"; };
 		A1522BF31D0FFFE000135C72 /* kong@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kong@3x.png"; sourceTree = "<group>"; };
 		A1522BF71D1005F000135C72 /* EvaluateResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EvaluateResponse.h; sourceTree = "<group>"; };
@@ -1861,8 +1858,6 @@
 			children = (
 				A192B4B61CDB34030053FC4C /* PaceViewController.h */,
 				A192B4B71CDB34030053FC4C /* PaceViewController.m */,
-				A1522BEF1D0FB50100135C72 /* PaceCell.h */,
-				A1522BF01D0FB50100135C72 /* PaceCell.m */,
 				A1522BE91D0FB17B00135C72 /* PaceModel.h */,
 				A1522BEA1D0FB17B00135C72 /* PaceModel.m */,
 				A1522BEC1D0FB22E00135C72 /* PaceResponse.h */,
@@ -3215,7 +3210,6 @@
 				A199851D1CE0360B0055A572 /* MessageRemindViewController.m in Sources */,
 				A16391721D20194B0051F1D0 /* FSBasicImageSource.m in Sources */,
 				A192B4B41CDB2CAF0053FC4C /* AdditionMessageViewController.m in Sources */,
-				A1522BF11D0FB50100135C72 /* PaceCell.m in Sources */,
 				A18F14161CF6D3C100B14318 /* CaseViewController.m in Sources */,
 				A196CE021CFC1BD400AC6C87 /* AgreementViewController.m in Sources */,
 				A16BA1401CEC11B600A7010C /* EditDebtCreditMessageViewController.m in Sources */,

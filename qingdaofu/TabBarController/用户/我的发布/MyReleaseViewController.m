@@ -463,7 +463,6 @@
     
    if([string isEqualToString:@"补充信息"]){
        AdditionMessageViewController *additionMessageVC = [[AdditionMessageViewController alloc] init];
-//       additionMessageVC.meResponse = self.responseDataArray[0];
        additionMessageVC.categoryString = model.category;
        additionMessageVC.idString = model.idString;
        [self.navigationController pushViewController:additionMessageVC animated:YES];

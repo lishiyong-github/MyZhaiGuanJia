@@ -56,7 +56,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.titleView = self.proTitleView;
-    self.navigationItem.rightBarButtonItem  = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"nav_search"] style:UIBarButtonItemStylePlain target:self action:@selector(searchProducts)];
+//    self.navigationItem.rightBarButtonItem  = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"nav_search"] style:UIBarButtonItemStylePlain target:self action:@selector(searchProducts)];
 
     [self.view addSubview:self.chooseView];
     [self.view addSubview:self.productsTableView];

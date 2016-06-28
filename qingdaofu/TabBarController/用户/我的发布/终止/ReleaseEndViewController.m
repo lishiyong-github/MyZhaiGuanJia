@@ -314,7 +314,6 @@
                 }
                 
                 return cell;
-                
             }
             identifier = @"releaseEnd41";
             BidMessageCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -333,11 +332,16 @@
                 [cell.addressLabel setHidden:NO];
                 
                 //案号类型
-                NSArray *auditArray = @[@"一审",@"二审",@"再审",@"执行"];
-                NSInteger auditInt = [scheduleModel.audit intValue];
-                NSString *auditStr = auditArray[auditInt];
+                NSString *auditStr = @"";
+                if ([self.categaryString integerValue] == 3) {//诉讼
+                    NSArray *auditArray = @[@"一审",@"二审",@"再审",@"执行"];
+                    NSInteger auditInt = [scheduleModel.audit intValue];
+                    auditStr = auditArray[auditInt];
+                }else{
+                    auditStr = @"无";
+                }
                 
-                NSMutableAttributedString *caseTypestring = [cell.deadlineLabel setAttributeString:@"案号类型：" withColor:kBlackColor andSecond:auditStr?auditStr:@"无" withColor:kLightGrayColor withFont:12];
+                NSMutableAttributedString *caseTypestring = [cell.deadlineLabel setAttributeString:@"案号类型：" withColor:kBlackColor andSecond:auditStr withColor:kLightGrayColor withFont:12];
                 [cell.deadlineLabel setAttributedText:caseTypestring];
                 
                 cell.timeLabel.text = @"2016-05-30";

@@ -252,11 +252,7 @@
                    };
     }
     
-    [self requestDataPostWithString:evaluateString params:params successBlock:^(id responseObject) {
-
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSLog(@"^^^^^ %@",dic);
-        
+    [self requestDataPostWithString:evaluateString params:params successBlock:^(id responseObject) {        
         if ([page integerValue] == 0) {
             [self.allEvaluateArray removeAllObjects];
         }

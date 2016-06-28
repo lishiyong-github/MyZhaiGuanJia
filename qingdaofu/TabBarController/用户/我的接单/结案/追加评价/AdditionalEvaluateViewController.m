@@ -24,6 +24,8 @@
 @property (nonatomic,strong) BaseCommitButton *commitEvaButton;
 @property (nonatomic,strong) NSMutableDictionary *evaDataDictionary;
 
+@property (nonatomic,assign) NSInteger charCount;
+
 @end
 
 @implementation AdditionalEvaluateViewController
@@ -248,18 +250,26 @@
 }
 
 #pragma mark - textView delegate
-//- (void)textViewDidEndEditing:(UITextView *)textView
-//{
-//    [self.additionalTableView reloadData];
-//}
-
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     if (range.location > 600) {
         return NO;
     }
+    
+    _charCount= [[textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]length];
+    
+    TextFieldCell *cell = [self.additionalTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]];
+    cell.countLabel.text = [NSString stringWithFormat:@"%d/600",_charCount];
+
     return YES;
 }
+
+//-(NSInteger) getTotalChars{
+//    NSString *str  =[_editor textInRange:[_editor textRangeWithRange:[self visibleRangeOfTextView:_editor]]];
+//    NSLog(@"%@",str);
+//    NSInteger charCount= [[str stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]length];
+//    return charCount=charCount-1;
+//}
 
 #pragma mark - method
 - (void)evaluateCommitMessages

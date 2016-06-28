@@ -206,7 +206,8 @@
         if (self.addMessageDataArray.count > 0) {
            meResponse = self.addMessageDataArray[0];
         }
-        NSString *creditorfile =meResponse.creditorfiles.count?@"查看":@"无";//债权文件
+        NSString *creditorfile = @"查看";
+//        meResponse.creditorfiles.count?@"查看":@"无";//债权文件
         NSString *creditorinfo = meResponse.creditorinfos.count?@"查看":@"无";//债权人信息
         NSString *borrowinginfo = meResponse.borrowinginfos.count?@"查看":@"无";//债务人信息
         

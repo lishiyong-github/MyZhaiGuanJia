@@ -156,6 +156,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ((indexPath.section == 1) && (indexPath.row > 0)) {
+        
         if (self.allEvaDataArray.count > 0) {
             EvaluateModel *model = self.allEvaDataArray[0];
             if (model.picture == nil || [model.picture isEqualToString:@""]) {
@@ -163,6 +164,8 @@
             }else{
                 return 170;
             }
+        }else{
+            return 105;
         }
     }
     
@@ -231,7 +234,7 @@
         
         [cell.userNameButton setTitleColor:kBlueColor forState:0];
         cell.userActionButton.userInteractionEnabled = NO;
-        if (self.allEvaResponse.count > 0) {
+        if (self.allEvaDataArray.count > 0) {
             EvaluateResponse *response = self.allEvaResponse[0];
             float creditor = [response.creditor floatValue];
             NSString *creditorStr = [NSString stringWithFormat:@"|  收到的评价(%.1f分)",creditor];
@@ -325,12 +328,15 @@
         caseVC.caseString = cerModel.casedesc;
         [self.navigationController pushViewController:caseVC animated:YES];
     }else if ((indexPath.section == 1) && (indexPath.row == 0)) {//全部评价
-        AllEvaluationViewController *allEvaluationVC = [[AllEvaluationViewController alloc] init];
-        allEvaluationVC.idString = self.idString;
-        allEvaluationVC.categoryString = self.categoryString;
-        allEvaluationVC.pidString = self.pidString;
-        allEvaluationVC.evaTypeString = @"evaluate";
-        [self.navigationController pushViewController:allEvaluationVC animated:YES];
+        
+        if (self.allEvaDataArray.count > 0) {
+            AllEvaluationViewController *allEvaluationVC = [[AllEvaluationViewController alloc] init];
+            allEvaluationVC.idString = self.idString;
+            allEvaluationVC.categoryString = self.categoryString;
+            allEvaluationVC.pidString = self.pidString;
+            allEvaluationVC.evaTypeString = @"evaluate";
+            [self.navigationController pushViewController:allEvaluationVC animated:YES];
+        }
     }
 }
 
@@ -374,7 +380,6 @@
 - (void)getMessageOfOrderPeople
 {
     NSString *yyyString;
-    
     if ([self.typeString isEqualToString:@"发布方"]) {
         yyyString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kCheckReleasePeople];
     }else{

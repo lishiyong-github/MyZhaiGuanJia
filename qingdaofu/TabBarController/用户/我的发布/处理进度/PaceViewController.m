@@ -8,7 +8,6 @@
 
 #import "PaceViewController.h"
 
-//#import "PaceCell.h"
 #import "BidMessageCell.h"
 
 #import "PaceResponse.h"
@@ -19,6 +18,8 @@
 @property (nonatomic,assign) BOOL didSetupConstarits;
 @property (nonatomic,strong) UITableView *paceTableView;
 @property (nonatomic,strong) NSMutableArray *paceDataArray;
+
+@property (nonatomic,assign) NSInteger pagePace;
 
 @end
 
@@ -34,9 +35,12 @@
     [self.view addSubview:self.baseRemindImageView];
     [self.baseRemindImageView setHidden:YES];
     
+    [self.paceTableView addHeaderWithTarget:self action:@selector(headerRefreshOfPace)];
+    [self.paceTableView addFooterWithTarget:self action:@selector(footerRefreshOfPace)];
+    
     [self.view setNeedsUpdateConstraints];
     
-    [self getPaceMessagesList];
+    [self headerRefreshOfPace];
 }
 
 - (void)updateViewConstraints
@@ -90,10 +94,6 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    if ([self.categoryString intValue] == 3) {
-//        return 145;
-//    }
-//    return 75;
     return 145;
 }
 
@@ -157,15 +157,27 @@
 }
 
 #pragma mark - method
-- (void)getPaceMessagesList
+- (void)getPaceMessagesListWithPage:(NSString *)page
 {
     NSString *paceString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kLookUpScheduleString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"id" : self.idString,
-                             @"category" : self.categoryString
+                             @"category" : self.categoryString,
+                             @"page" : page
                              };
     [self requestDataPostWithString:paceString params:params successBlock:^(id responseObject) {
+        
+        if ([page integerValue] == 0) {
+            [self.paceDataArray removeAllObjects];
+        }
+        
         PaceResponse *response = [PaceResponse objectWithKeyValues:responseObject];
+        
+        if (response.disposing.count == 0) {
+            _pagePace--;
+            [self showHint:@"没有更多了"];
+        }
+        
         for (PaceModel *paceModel in response.disposing) {
             [self.paceDataArray addObject:paceModel];
         }
@@ -181,6 +193,24 @@
     } andFailBlock:^(NSError *error) {
         
     }];
+}
+
+- (void)headerRefreshOfPace
+{
+    [self getPaceMessagesListWithPage:@"0"];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.paceTableView headerEndRefreshing];
+    });
+}
+
+- (void)footerRefreshOfPace
+{
+    _pagePace++;
+    NSString *page = [NSString stringWithFormat:@"%d",_pagePace];
+    [self getPaceMessagesListWithPage:page];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.paceTableView footerEndRefreshing];
+    });
 }
 
 - (void)didReceiveMemoryWarning {

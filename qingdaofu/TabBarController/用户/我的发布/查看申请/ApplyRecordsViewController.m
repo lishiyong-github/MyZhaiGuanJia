@@ -20,13 +20,15 @@
 @property (nonatomic,strong) UITableView *applyRecordsTableView;
 @property (nonatomic,strong) NSMutableArray *recordsDataArray;
 
+@property (nonatomic,assign) NSInteger pageRecords;
+
 @end
 
 @implementation ApplyRecordsViewController
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [self getApplyRecordsListWithPage:@"0"];
+    [self headerRefreshOfRecords];
 }
 
 - (void)viewDidLoad {
@@ -37,6 +39,8 @@
     [self.view addSubview:self.applyRecordsTableView];
     [self.view addSubview:self.baseRemindImageView];
     [self.baseRemindImageView setHidden:YES];
+    [self.applyRecordsTableView addHeaderWithTarget:self action:@selector(headerRefreshOfRecords)];
+    [self.applyRecordsTableView addFooterWithTarget:self action:@selector(footerRefreshOfRecords)];
     
     [self.view setNeedsUpdateConstraints];
 }
@@ -168,7 +172,18 @@
                              @"page" : page
                              };
     [self requestDataPostWithString:listString params:params successBlock:^(id responseObject){
+        
+        if ([page integerValue] == 0) {
+            [self.recordsDataArray removeAllObjects];
+        }
+        
         RecordResponse *response = [RecordResponse objectWithKeyValues:responseObject];
+        
+        if (response.user.count == 0) {
+            _pageRecords--;
+            [self showHint:@"没有更多了"];
+        }
+        
         for (UserModel *model in response.user) {
             [self.recordsDataArray addObject:model];
         }
@@ -184,6 +199,24 @@
     } andFailBlock:^(id responseObject){
         
     }];
+}
+
+- (void)headerRefreshOfRecords
+{
+    [self getApplyRecordsListWithPage:@"0"];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.applyRecordsTableView headerEndRefreshing];
+    });
+}
+
+- (void)footerRefreshOfRecords
+{
+    _pageRecords++;
+    NSString *page = [NSString stringWithFormat:@"%d",_pageRecords];
+    [self getApplyRecordsListWithPage:page];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.applyRecordsTableView footerEndRefreshing];
+    });
 }
 
 - (void)didReceiveMemoryWarning {

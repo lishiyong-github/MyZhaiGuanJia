@@ -51,6 +51,7 @@
     [self.view addSubview:self.dealFootView];
     [self.view addSubview:self.dealCommitButton];
     [self.dealCommitButton setHidden:YES];
+    [self.dealFootView setHidden:YES];
     
     [self.view setNeedsUpdateConstraints];
     
@@ -140,7 +141,7 @@
         _dealCommitButton = [BaseCommitButton newAutoLayoutView];
         [_dealCommitButton setBackgroundColor:kLightGrayColor];
         [_dealCommitButton setBackgroundColor:kSelectedColor];
-        _dealCommitButton.userInteractionEnabled = NO;
+//        _dealCommitButton.userInteractionEnabled = NO;
     }
     return _dealCommitButton;
 }
@@ -393,6 +394,25 @@
         [self.dealingDataList addObject:response];
         [self.dealingTableView reloadData];
         
+        if ([response.product.progress_status integerValue] == 2 && [response.uidString isEqualToString:response.product.uidInner]) {
+            if ([response.product.applyclose integerValue] == 0) {
+//                 [self.dealCommitButton setTitle:@"申请结案" forState:0];
+                [self.dealCommitButton setHidden:YES];
+                [self.dealFootView setHidden:NO];
+                
+            }else if ([response.product.applyclose integerValue] == 4 && ![response.product.applyclosefrom isEqualToString:response.product.uidInner]){
+                [self.dealFootView setHidden:YES];
+                [self.dealCommitButton setHidden:NO];
+                [self.dealCommitButton setTitle:@"申请同意结案" forState:0];
+            }else{
+                [self.dealFootView setHidden:YES];
+                [self.dealCommitButton setHidden:NO];
+                [self.dealCommitButton setTitle:@"结案申请中" forState:0];
+                [self.dealCommitButton setBackgroundColor:kSelectedColor];
+            }
+        }
+
+        
     } andFailBlock:^(NSError *error){
         
     }];
@@ -408,9 +428,9 @@
                              };
     [self requestDataPostWithString:endpString params:params successBlock:^(id responseObject) {
         BaseModel *sModel = [BaseModel objectWithKeyValues:responseObject];
+        [self showHint:sModel.msg];
         
         if ([sModel.code isEqualToString:@"0000"]) {//成功
-            [self showHint:@"成功"];
             [self.dealFootView setHidden:YES];
             [self.dealCommitButton setHidden:NO];
             [self.dealCommitButton setTitle:@"已终止" forState:0];
