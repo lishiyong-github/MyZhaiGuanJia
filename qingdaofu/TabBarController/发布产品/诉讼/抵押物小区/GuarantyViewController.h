@@ -10,6 +10,7 @@
 
 @interface GuarantyViewController : NetworkViewController
 
-@property (nonatomic,strong) void (^didSelectedArea)(NSString *,NSString *,NSString *,NSString*);
+//（省 、市、 区）、小区地址、详细地址
+@property (nonatomic,strong) void (^didSelectedArea)(NSString*,NSString*);
 
 @end

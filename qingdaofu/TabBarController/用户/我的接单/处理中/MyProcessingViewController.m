@@ -426,19 +426,30 @@
     [cell.userNameButton setTitleColor:kBlueColor forState:0];
     [cell.userNameButton setTitle:@"|  申请延期" forState:0];
     
+    DelayResponse *delayResponss;
     DelayModel *delayModel;
+    PublishingModel *puModel;
     if (self.delayArray.count > 0) {
-        delayModel = self.delayArray[0];
+        delayResponss = self.delayArray[0];
+        delayModel = delayResponss.delay;
+        puModel = delayResponss.product;
     }
     
     if (delayModel.is_agree == nil) {
-        [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-        [cell.userActionButton setTitle:@"立即申请" forState:0];
+        if (![puModel.applyclose isEqualToString:@"4"]) {
+            if ([delayModel.delays integerValue] <= 7) {
+                [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+                [cell.userActionButton setTitle:@"立即申请" forState:0];
+            }
+        }else{//由于双方申请了结案，故不能点击申请延期
+            [cell.userActionButton setTitle:@"不能申请延期" forState:0];
+            cell.userInteractionEnabled = NO;
+        }
     }else{
         [cell.userActionButton setTitle:@"已申请" forState:0];
         [cell.userActionButton setTitleColor:kBlackColor forState:0];
+        cell.userInteractionEnabled = NO;
     }
-    
     
     return cell;
 }
@@ -466,20 +477,32 @@
         applyButton.titleLabel.font = kTabBarFont;
         [applyButton setTitleColor:kGrayColor forState:0];
         
+        DelayResponse *delayResponss;
         DelayModel *delayModel;
+        PublishingModel *puModel;
         if (self.delayArray.count > 0) {
-            delayModel = self.delayArray[0];
+            delayResponss = self.delayArray[0];
+            delayModel = delayResponss.delay;
+            puModel = delayResponss.product;
         }
         
         if (delayModel.is_agree == nil) {
-            //未申请
-            [applyButton setImage:[UIImage imageNamed:@"conserve_tip_icon"] forState:0];
-            NSString *delay = delayModel.delays?delayModel.delays:@"20";
-            NSString *de = [NSString stringWithFormat:@"距离案件处理结束日期还有%@天，可提前7天申请延期，只可申请一次",delay];
-            [applyButton setTitle:de forState:0];
+            if (![puModel.applyclose isEqualToString:@"4"]) {
+                if ([delayModel.delays integerValue] <= 7) {
+                    //未申请
+                    [applyButton setImage:[UIImage imageNamed:@"conserve_tip_icon"] forState:0];
+                   NSString *delay = delayModel.delays>=0?delayModel.delays:@"0";
+                    NSString *de = [NSString stringWithFormat:@"距离案件处理结束日期还有%@天，可提前7天申请延期，只可申请一次",delay];
+                    [applyButton setTitle:de forState:0];
+
+                }
+            }else{
+                [applyButton setTitle:@"结案申请中，不能申请延期" forState:0];
+            }
+        }else{
+            [applyButton setImage:[UIImage imageNamed:@"conserve_wait_icon"] forState:0];
             
-        }else{//已申请：1同意，2拒绝，3作废，0申请中
-            
+            //已申请：0申请中,1同意，2拒绝，3作废，
             if ([delayModel.is_agree intValue] == 0) {
                 [applyButton setTitle:@"  申请中" forState:0];
             }else if ([delayModel.is_agree intValue] == 1){
@@ -489,13 +512,9 @@
             }else if ([delayModel.is_agree intValue] == 3){
                 [applyButton setTitle:@"  作废" forState:0];
             }
-            
-            //已申请
-            [applyButton setImage:[UIImage imageNamed:@"conserve_wait_icon"] forState:0];
         }
-        
+    
         [footerView addSubview:applyButton];
-        
         [applyButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
         [applyButton autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:5];
         
@@ -532,16 +551,10 @@
         }
         
     }else if (indexPath.section == 4) {//申请延期
-        DelayModel *delayModel;
-        if (self.delayArray.count > 0) {
-            delayModel = self.delayArray[0];
-        }
-        if (delayModel.is_agree == nil) {//立即申请
-            DelayRequestsViewController *delayRequestVC = [[DelayRequestsViewController alloc] init];
-            delayRequestVC.idString = self.idString;
-            delayRequestVC.categoryString = self.categaryString;
-            [self.navigationController pushViewController:delayRequestVC animated:YES];
-        }
+        DelayRequestsViewController *delayRequestVC = [[DelayRequestsViewController alloc] init];
+        delayRequestVC.idString = self.idString;
+        delayRequestVC.categoryString = self.categaryString;
+        [self.navigationController pushViewController:delayRequestVC animated:YES];
     }
 }
 
@@ -623,7 +636,7 @@
                              };
     [self requestDataPostWithString:deString params:params successBlock:^(id responseObject) {
         DelayResponse *response = [DelayResponse objectWithKeyValues:responseObject];
-        [self.delayArray addObject:response.delay];
+        [self.delayArray addObject:response];
         [self.myProcessingTableView reloadData];
         
     } andFailBlock:^(NSError *error) {

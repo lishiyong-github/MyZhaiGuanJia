@@ -36,7 +36,9 @@
 @property (nonatomic,strong) NSMutableArray *sTextArray;
 @property (nonatomic,strong) NSMutableArray *sHolderArray;
 
-@property (nonatomic,strong) NSMutableDictionary *suitDataDictionary;  //参数
+//参数
+@property (nonatomic,strong) NSMutableDictionary *suitDataDictionary;
+@property (nonatomic,strong) NSMutableDictionary *suitImageDictionary;
 @property (nonatomic,strong) NSString *rowString;    //债权类型
 @property (nonatomic,strong) NSString *number;
 @property (nonatomic,strong) NSMutableArray *creditorInfos;
@@ -187,6 +189,14 @@
         _suitDataDictionary = [NSMutableDictionary dictionary];
     }
     return _suitDataDictionary;
+}
+
+- (NSMutableDictionary *)suitImageDictionary
+{
+    if (!_suitImageDictionary) {
+        _suitImageDictionary = [NSMutableDictionary dictionary];
+    }
+    return _suitImageDictionary;
 }
 
 - (NSMutableArray *)sTextArray
@@ -369,6 +379,7 @@
                     _number = @"1";
                     
                 }else if (selectedTag == 1){//机动车
+                    [cell.agentButton setHidden:NO];
                     self.rowString = @"5";
                     [self.sTextArray[0] replaceObjectAtIndex:4 withObject:@"机动车"];
                     [self.sHolderArray[0] replaceObjectAtIndex:4 withObject:@"选择机动车品牌"];
@@ -413,13 +424,11 @@
                 QDFWeak(cell);
                 [cell.agentButton addAction:^(UIButton *btn) {
                     GuarantyViewController *guarantyVC = [[GuarantyViewController alloc] init];
-                    [guarantyVC setDidSelectedArea:^(NSString *name, NSString *province_id, NSString *city_id, NSString *district_id) {
-                        [weakself.suitDataDictionary setValue:name forKey:@"mortorage_community"];
-                        [weakself.suitDataDictionary setValue:province_id forKey:@"province_id"];
-                        [weakself.suitDataDictionary setValue:city_id forKey:@"city_id"];
-                        [weakself.suitDataDictionary setValue:district_id forKey:@"district_id"];
-                        weakcell.agentTextField.text = [NSString stringWithFormat:@"%@",name];
-//                        [weakcell.agentButton setTitle:@"已选择" forState:0];
+                    [guarantyVC setDidSelectedArea:^(NSString *mortorage_community, NSString *seatmortgage) {
+                        
+                        [weakself.suitDataDictionary setValue:mortorage_community forKey:@"mortorage_community"];
+                        [weakself.suitDataDictionary setValue:seatmortgage forKey:@"seatmortgage"];
+                        [weakself.suitTableView reloadData];
                     }];
                     
                     [weakself.navigationController pushViewController:guarantyVC animated:YES];
@@ -813,8 +822,7 @@
             UploadFilesViewController *uploadFilesVC = [[UploadFilesViewController alloc] init];
             
             QDFWeakSelf;
-            [uploadFilesVC setChooseImages:^(NSDictionary *imageDic) {
-                [weakself.suitDataDictionary setObject:imageDic forKey:@"creditorfile"];
+            [uploadFilesVC setChooseImages:^(NSDictionary *imageDic) {                weakself.suitImageDictionary = [NSMutableDictionary dictionaryWithDictionary:imageDic];
             }];
             
             [self.navigationController pushViewController:uploadFilesVC animated:YES];
@@ -877,6 +885,7 @@
 
 - (void)showTitleOfUpwardView:(UIButton *)btn
 {
+    [self.view endEditing:YES];
     NSArray *arr2 = @[@"固定费用(万)",@"代理费率(%)"];
     NSArray *arr8 = @[@"天",@"月"];
     NSArray *arr10 = @[@"一次性到期还本付息",@"按月付息，到期还本"];
@@ -982,9 +991,9 @@
     self.suitDataDictionary[@"loan_type"] = self.suitDataDictionary[@"loan_type"]?self.suitDataDictionary[@"loan_type"]:self.suResponse.product.loan_type;
     self.suitDataDictionary[@"mortorage_community"] = self.suitDataDictionary[@"mortorage_community"]?self.suitDataDictionary[@"mortorage_community"]:self.suResponse.product.mortorage_community;//抵押物地址
     self.suitDataDictionary[@"seatmortgage"] = self.suitDataDictionary[@"seatmortgage"]?self.suitDataDictionary[@"seatmortgage"]:self.suResponse.product.seatmortgage; //详细地址
-    self.suitDataDictionary[@"province_id"] = self.suitDataDictionary[@"province_id"]?self.suitDataDictionary[@"province_id"]:self.suResponse.product.province_id;
-    self.suitDataDictionary[@"city_id"] = self.suitDataDictionary[@"city_id"]?self.suitDataDictionary[@"city_id"]:self.suResponse.product.city_id;
-    self.suitDataDictionary[@"district_id"] = self.suitDataDictionary[@"district_id"]?self.suitDataDictionary[@"district_id"]:self.suResponse.product.district_id;
+    self.suitDataDictionary[@"province_id"] = @"0";
+    self.suitDataDictionary[@"city_id"] = @"0";
+    self.suitDataDictionary[@"district_id"] = @"0";
     self.suitDataDictionary[@"carbrand"] = self.suitDataDictionary[@"carbrand"]?self.suitDataDictionary[@"carbrand"]:self.suResponse.product.carbrand;   //车品牌
     self.suitDataDictionary[@"audi"] = self.suitDataDictionary[@"audi"]?self.suitDataDictionary[@"audi"]:self.suResponse.product.audi;  //车系
     self.suitDataDictionary[@"accountr"] = self.suitDataDictionary[@"accountr"]?self.suitDataDictionary[@"accountr"]:self.suResponse.product.accountr; //应收帐款
@@ -1008,6 +1017,41 @@
     
     NSDictionary *params = self.suitDataDictionary;
     
+    [self requestDataPostWithString:reFinanceString params:params andImages:self.suitImageDictionary successBlock:^(id responseObject) {
+        
+        NSDictionary *ssss = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        NSLog(@"sssssss %@",ssss);
+        
+        BaseModel *suitModel = [BaseModel objectWithKeyValues:responseObject];
+        
+        [self showHint:suitModel.msg];
+        
+        if ([suitModel.code isEqualToString:@"0000"]) {
+            if ([typeString intValue] == 0) {//保存
+                UINavigationController *nav = self.navigationController;
+                [nav popViewControllerAnimated:NO];
+                
+                MySaveViewController *mySaveVC = [[MySaveViewController alloc] init];
+                mySaveVC.hidesBottomBarWhenPushed = YES;
+                [nav pushViewController:mySaveVC animated:NO];
+            }else{
+                ReportFiSucViewController *reportFiSucVC = [[ReportFiSucViewController alloc] init];
+                if ([self.categoryString integerValue] == 1) {
+                    reportFiSucVC.reportType = @"清收";
+                }else{
+                    reportFiSucVC.reportType = @"诉讼";
+                }
+                [self.navigationController pushViewController:reportFiSucVC animated:YES];
+            }
+        }
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+    
+    
+    
+    /*
     [self requestDataPostWithString:reFinanceString params:params successBlock:^(id responseObject){
         
         BaseModel *suitModel = [BaseModel objectWithKeyValues:responseObject];
@@ -1035,7 +1079,7 @@
     } andFailBlock:^(NSError *error){
         
     }];
-    
+    */
 }
 
 /*

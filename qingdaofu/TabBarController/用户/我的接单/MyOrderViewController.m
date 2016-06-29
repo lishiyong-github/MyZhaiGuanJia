@@ -30,10 +30,10 @@
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) AllProSegView *orderHeadView;
 @property (nonatomic,strong) UITableView *myOrderTableView;
-//@property (nonatomic,strong) UIImageView *remindImageView;
 
 //json解析
 @property (nonatomic,strong) NSMutableArray *myOrderDataList;
+@property (nonatomic,strong) NSMutableDictionary *myOrderResonseDic;
 @property (nonatomic,assign) NSInteger pageOrder;//页数
 
 @end
@@ -175,6 +175,14 @@
     return _myOrderDataList;
 }
 
+- (NSMutableDictionary *)myOrderResonseDic
+{
+    if (!_myOrderResonseDic) {
+        _myOrderResonseDic = [NSMutableDictionary dictionary];
+    }
+    return _myOrderResonseDic;
+}
+
 #pragma mark - tableView delegate and datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -190,8 +198,15 @@
 {
     RowsModel *orderModel = self.myOrderDataList[indexPath.section];
     
-    if (([orderModel.progress_status intValue] == 1) || [orderModel.progress_status intValue] == 3) {
+    if (([orderModel.progress_status integerValue] == 1) || [orderModel.progress_status integerValue] == 3) {
         return 156;
+    }else if ([orderModel.progress_status integerValue] == 4){
+        
+        NSString *id_category = [NSString stringWithFormat:@"%@_%@",orderModel.idString,orderModel.category];
+        NSString *value = self.myOrderResonseDic[id_category];
+        if ([value integerValue] == 2) {//不能评价
+            return 156;
+        }
     }
     return 200;
 }
@@ -318,23 +333,29 @@
         
         QDFWeakSelf;
         [cell.secondButton addAction:^(UIButton *btn) {
-            [weakself goToWriteScheduleOrEvaluate:@"申请延期" withRow:indexPath.row];
+            [weakself goToWriteScheduleOrEvaluate:@"申请延期" withRow:indexPath.row withString:@""];
         }];
         
         [cell.thirdButton addAction:^(UIButton *btn) {
-            [weakself goToWriteScheduleOrEvaluate:@"填写进度" withRow:indexPath.row];
+            [weakself goToWriteScheduleOrEvaluate:@"填写进度" withRow:indexPath.row withString:@""];
         }];
         
     }else {//结案
         [cell.firstButton setHidden:YES];
         [cell.secondButton setHidden:YES];
-        [cell.thirdButton setHidden:NO];
-        [cell.thirdButton setTitle:@"去评价" forState:0];
         
-        QDFWeakSelf;
-        [cell.thirdButton addAction:^(UIButton *btn) {
-            [weakself goToWriteScheduleOrEvaluate:@"去评价" withRow:indexPath.row];
-        }];
+        NSString *id_category = [NSString stringWithFormat:@"%@_%@",rowModel.idString,rowModel.category];
+        NSString *value = self.myOrderResonseDic[id_category];
+        if ([value integerValue] == 2) {
+            [cell.thirdButton setHidden:YES];
+        }else{
+            [cell.thirdButton setHidden:NO];
+            [cell.thirdButton setTitle:@"去评价" forState:0];
+            QDFWeakSelf;
+            [cell.thirdButton addAction:^(UIButton *btn) {
+                [weakself goToWriteScheduleOrEvaluate:@"去评价" withRow:indexPath.row withString:value];
+            }];
+        }
     }
     
     return cell;
@@ -391,9 +412,9 @@
                              };
     
     [self requestDataPostWithString:myOrderString params:params successBlock:^(id responseObject) {
-        
         if ([page intValue] == 0) {
             [self.myOrderDataList removeAllObjects];
+            [self.myOrderResonseDic removeAllObjects];
         }
         
         ReleaseResponse *responceModel = [ReleaseResponse objectWithKeyValues:responseObject];
@@ -402,6 +423,8 @@
             [self showHint:@"没有更多了"];
             _pageOrder -- ;
         }
+        
+        [self.myOrderResonseDic setValuesForKeysWithDictionary:responceModel.creditor];
         
         for (RowsModel *orderModel in responceModel.rows) {
             [self.myOrderDataList addObject:orderModel];
@@ -438,7 +461,7 @@
     });
 }
 
-- (void)goToWriteScheduleOrEvaluate:(NSString *)string withRow:(NSInteger)row
+- (void)goToWriteScheduleOrEvaluate:(NSString *)string withRow:(NSInteger)row withString:(NSString *)evaString
 {
     RowsModel *model = self.myOrderDataList[row];
     
@@ -453,8 +476,9 @@
         AdditionalEvaluateViewController *additionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
         additionalEvaluateVC.idString = model.idString;
         additionalEvaluateVC.categoryString = model.category;
-        additionalEvaluateVC.typeString = @"接单方";
         additionalEvaluateVC.codeString = model.codeString;
+        additionalEvaluateVC.typeString = @"接单方";
+        additionalEvaluateVC.evaString = evaString;
         [self.navigationController pushViewController:additionalEvaluateVC animated:YES];
     }
 }

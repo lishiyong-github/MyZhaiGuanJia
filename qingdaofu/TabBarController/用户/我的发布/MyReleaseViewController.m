@@ -31,8 +31,8 @@
 @property (nonatomic,strong) UITableView *myReleaseTableView;
 
 //json解析
-@property (nonatomic,strong) NSMutableArray *responseDataArray;
 @property (nonatomic,strong) NSMutableArray *releaseDataArray;
+@property (nonatomic,strong) NSMutableDictionary *releaseDic;
 
 @property (nonatomic,assign) NSInteger pageRelease;//页数
 
@@ -152,20 +152,20 @@
     return _myReleaseTableView;
 }
 
-- (NSMutableArray *)responseDataArray
-{
-    if (!_responseDataArray) {
-        _responseDataArray = [NSMutableArray array];
-    }
-    return _responseDataArray;
-}
-
 - (NSMutableArray *)releaseDataArray
 {
     if (!_releaseDataArray) {
         _releaseDataArray = [NSMutableArray array];
     }
     return _releaseDataArray;
+}
+
+- (NSMutableDictionary *)releaseDic
+{
+    if (!_releaseDic) {
+        _releaseDic = [NSMutableDictionary dictionary];
+    }
+    return _releaseDic;
 }
 
 #pragma mark - 
@@ -182,8 +182,14 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     RowsModel *rModel = self.releaseDataArray[indexPath.section];
-    if ([rModel.progress_status intValue] == 3) {
+    if ([rModel.progress_status intValue] == 3) {//终止
         return 156;
+    }else if ([rModel.progress_status integerValue] == 4){//结案
+        NSString *id_category = [NSString stringWithFormat:@"%@_%@",rModel.idString,rModel.category];
+        NSString *value = self.releaseDic[id_category];
+        if ([value integerValue] == 2) {//不能评价
+            return 156;
+        }
     }
     return 200;
 }
@@ -277,17 +283,24 @@
             [cell.firstButton setHidden:NO];
             [cell.secondButton setHidden:NO];
             [cell.thirdButton setHidden:NO];
-            [cell.firstButton setTitle:@"您有新的申请记录" forState:0];
             [cell.secondButton setTitle:@"补充信息" forState:0];
             [cell.thirdButton setTitle:@"查看申请" forState:0];
             
+            if ([rowModel.app_id isEqualToString:@"0"]) {
+                [cell.firstButton setHidden:NO];
+                [cell.firstButton setImage:[UIImage imageNamed:@"tip"] forState:0];
+                [cell.firstButton setTitle:@" 您有新的申请记录" forState:0];
+            }else{
+                [cell.firstButton setHidden:YES];
+            }
+            
             QDFWeakSelf;
             [cell.secondButton addAction:^(UIButton *btn) {
-                [weakself goToCheckApplyRecordsOrAdditionMessage:@"补充信息" withRow:indexPath.section];
+                [weakself goToCheckApplyRecordsOrAdditionMessage:@"补充信息" withRow:indexPath.section withEvaString:@""];
             }];
             
             [cell.thirdButton addAction:^(UIButton *btn) {
-                [weakself goToCheckApplyRecordsOrAdditionMessage:@"查看申请" withRow:indexPath.section];
+                [weakself goToCheckApplyRecordsOrAdditionMessage:@"查看申请" withRow:indexPath.section withEvaString:@""];
             }];
             
         }else if ([rowModel.progress_status integerValue]  == 2){
@@ -302,11 +315,11 @@
             
             QDFWeakSelf;
             [cell.secondButton addAction:^(UIButton *btn) {
-                [weakself goToCheckApplyRecordsOrAdditionMessage:@"查看进度" withRow:indexPath.section];
+                [weakself goToCheckApplyRecordsOrAdditionMessage:@"查看进度" withRow:indexPath.section withEvaString:@""];
             }];
             
             [cell.thirdButton addAction:^(UIButton *btn) {
-                [weakself goToCheckApplyRecordsOrAdditionMessage:@"联系接单方" withRow:indexPath.section];
+                [weakself goToCheckApplyRecordsOrAdditionMessage:@"联系接单方" withRow:indexPath.section withEvaString:@""];
             }];
             
         }else if ([rowModel.progress_status integerValue]  == 3){
@@ -316,40 +329,33 @@
             [cell.firstButton setHidden:YES];
             [cell.secondButton setHidden:YES];
             [cell.thirdButton setHidden:YES];
-        }else if([rowModel.progress_status integerValue]  == 4){
+        }else if([rowModel.progress_status integerValue]  == 4){//结案
             [cell.typeLabel setHidden:YES];
             [cell.typeButton setHidden:NO];
             [cell.typeButton setImage:[UIImage imageNamed:@"list_chapter"] forState:0];
             [cell.firstButton setHidden:YES];
             [cell.secondButton setHidden:YES];
-            [cell.thirdButton setHidden:NO];
-            [cell.thirdButton setTitle:@"去评价" forState:0];
-            QDFWeakSelf;
-            [cell.thirdButton addAction:^(UIButton *btn) {
-                [weakself goToCheckApplyRecordsOrAdditionMessage:@"去评价" withRow:indexPath.section];
-            }];
+//            [cell.thirdButton setHidden:NO];
+//            [cell.thirdButton setTitle:@"去评价" forState:0];
+            
+            
+            NSString *id_category = [NSString stringWithFormat:@"%@_%@",rowModel.idString,rowModel.category];
+            NSString *value = self.releaseDic[id_category];
+            if ([value integerValue] == 2) {//不能评价
+                [cell.thirdButton setHidden:YES];
+            }else{
+                [cell.thirdButton setHidden:NO];
+                [cell.thirdButton setTitle:@"去评价" forState:0];
+                QDFWeakSelf;
+                [cell.thirdButton addAction:^(UIButton *btn) {
+                    [weakself goToCheckApplyRecordsOrAdditionMessage:@"去评价" withRow:indexPath.section withEvaString:value];
+                }];
+            }
         }
         
         cell.addressLabel.text = rowModel.seatmortgage;
         cell.moneyView.label1.text = rowModel.money;
         cell.moneyView.label2.text = @"借款本金(万元)";
-        
-//                    QDFWeakSelf;
-//            [cell.secondButton addAction:^(UIButton *btn) {
-    
-//                AdditionMessageViewController *additionMessageVC = [[AdditionMessageViewController alloc] init];
-//                additionMessageVC.categoryString = rowModel.category;
-//                additionMessageVC.tModel = self.responseDataArray[0];
-//                [weakself.navigationController pushViewController:additionMessageVC animated:YES];
-                
-//            }];
-    
-//            [cell.thirdButton addAction:^(UIButton *btn) {
-//                ApplyRecordsViewController *applyRecordsVC = [[ApplyRecordsViewController alloc] init];
-//                applyRecordsVC.idStr = rowModel.idString;
-//                applyRecordsVC.categaryStr = rowModel.category;
-//                [weakself.navigationController pushViewController:applyRecordsVC animated:YES];
-//            }];
     
     return cell;
 }
@@ -371,7 +377,6 @@
             MyPublishingViewController *myPublishingVC = [[MyPublishingViewController alloc] init];
             myPublishingVC.idString = sModel.idString;
             myPublishingVC.categaryString = sModel.category;
-            myPublishingVC.reResponse = self.responseDataArray[0];
             [self.navigationController pushViewController:myPublishingVC animated:YES];
         }else if ([sModel.progress_status isEqualToString:@"2"]){//处理中
             MyDealingViewController *myDealingVC = [[MyDealingViewController alloc] init];
@@ -406,18 +411,22 @@
                              };
     [self requestDataPostWithString:myReleaseString params:params successBlock:^(id responseObject) {
         
+        NSDictionary *gygy = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        NSLog(@"$$$$$$$ %@",gygy);
+        
         if ([page intValue] == 0) {
             [self.releaseDataArray removeAllObjects];
+            [self.releaseDic removeAllObjects];
         }
         
         ReleaseResponse *responseModel = [ReleaseResponse objectWithKeyValues:responseObject];
-        
-        [self.responseDataArray addObject:responseModel];
 
         if (responseModel.rows.count == 0) {
             [self showHint:@"没有更多了"];
             _pageRelease --;
         }
+        
+        [self.releaseDic setValuesForKeysWithDictionary:responseModel.creditor];
         
         for (RowsModel *rowsModel in responseModel.rows) {
             [self.releaseDataArray addObject:rowsModel];
@@ -457,7 +466,7 @@
     });
 }
 
-- (void)goToCheckApplyRecordsOrAdditionMessage:(NSString *)string withRow:(NSInteger)row
+- (void)goToCheckApplyRecordsOrAdditionMessage:(NSString *)string withRow:(NSInteger)row withEvaString:(NSString *)evaString
 {
     RowsModel *model = self.releaseDataArray[row];
     
@@ -481,10 +490,11 @@
         
     }else if ([string isEqualToString:@"去评价"]){
         AdditionalEvaluateViewController *additionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
-        additionalEvaluateVC.typeString = @"发布方";
         additionalEvaluateVC.idString = model.idString;
         additionalEvaluateVC.categoryString = model.category;
         additionalEvaluateVC.codeString = model.codeString;
+        additionalEvaluateVC.typeString = @"发布方";
+        additionalEvaluateVC.evaString = evaString;
         [self.navigationController pushViewController:additionalEvaluateVC animated:YES];
     }
 }

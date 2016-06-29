@@ -227,7 +227,7 @@
             
             MyReleaseViewController *myReleaseVC = [[MyReleaseViewController alloc] init];
             myReleaseVC.progreStatus = @"1";
-            [nav pushViewController:myReleaseVC animated:YES];
+            [nav pushViewController:myReleaseVC animated:NO];
         }
         
     } andFailBlock:^(NSError *error) {

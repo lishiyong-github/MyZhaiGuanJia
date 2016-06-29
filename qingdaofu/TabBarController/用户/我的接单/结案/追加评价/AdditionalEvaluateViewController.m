@@ -129,14 +129,6 @@
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-//        if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
-//            [cell setSeparatorInset:UIEdgeInsetsZero];
-//        }
-//        
-//        if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
-//            [cell setLayoutMargins:UIEdgeInsetsZero];
-//        }
-        
         cell.backgroundColor = kBackColor;
         
         NSArray *tyArray = @[@"融资",@"清收",@"诉讼"];
@@ -286,7 +278,7 @@
     self.evaDataDictionary[@"category"] = self.categoryString;
     self.evaDataDictionary[@"product_id"] = self.idString;
     self.evaDataDictionary[@"picture"] = @"";
-    self.evaDataDictionary[@"type"] = self.categoryString;
+    self.evaDataDictionary[@"type"] = self.evaString;
     self.evaDataDictionary[@"token"] = [self getValidateToken];
     
     NSDictionary *params = self.evaDataDictionary;

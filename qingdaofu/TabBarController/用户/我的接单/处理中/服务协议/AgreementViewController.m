@@ -45,7 +45,7 @@
         if ([self.flagString integerValue] == 1) {
             [self.agreeButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:5];
             [self.agreeButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:5];
-            [self.agreeButton autoSetDimensionsToSize:CGSizeMake(60, 30)];
+            [self.agreeButton autoSetDimensionsToSize:CGSizeMake(80, 30)];
         }
         
         self.didSetupConstraints = YES;

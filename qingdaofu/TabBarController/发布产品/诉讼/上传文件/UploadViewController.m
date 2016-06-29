@@ -152,6 +152,7 @@
     }
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.pictureCollection.userInteractionEnabled = NO;
     
     //展示图片
     QDFWeakSelf;

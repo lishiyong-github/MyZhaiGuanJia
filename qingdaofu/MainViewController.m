@@ -51,10 +51,6 @@
     
     UITabBarController *tabBarController = [[UITabBarController alloc] init];
     tabBarController.viewControllers = @[newproductNav,productsNav,messageNav,mineNav];
-
-    
-//    [[UITabBar appearance] setBackgroundImage:[[UIImage alloc] init]];
-//    [[UITabBar appearance] setShadowImage:[[UIImage alloc] init]];
     
     TabBar *tabBar = [[TabBar alloc] initWithFrame:tabBarController.tabBar.bounds];
     
@@ -113,19 +109,17 @@
                 if (row == 11) {
                     ReportFinanceViewController *reportFinanceVC = [[ReportFinanceViewController alloc] init];
                     reportFinanceVC.hidesBottomBarWhenPushed = YES;
-                    [viewController pushViewController:reportFinanceVC animated:YES];
+//                    [viewController pushViewController:reportFinanceVC animated:YES];
                 }else if (row == 12){
                     ReportSuitViewController *collectVC = [[ReportSuitViewController alloc] init];
                     collectVC.categoryString = @"2";
-                    //            collectVC.tagString = @"1";
                     collectVC.hidesBottomBarWhenPushed = YES;
-                    [viewController pushViewController:collectVC animated:YES];
+//                    [viewController pushViewController:collectVC animated:YES];
                 }else{
                     ReportSuitViewController *reportSuitVC = [[ReportSuitViewController alloc] init];
                     reportSuitVC.categoryString = @"3";
-                    //            reportSuitVC.tagString = @"1";
                     reportSuitVC.hidesBottomBarWhenPushed = YES;
-                    [viewController pushViewController:reportSuitVC animated:YES];
+//                    [viewController pushViewController:reportSuitVC animated:YES];
                 }
 
             }else{

@@ -8,17 +8,22 @@
 
 #import "GuarantyViewController.h"
 
+#import <AMapFoundationKit/AMapFoundationKit.h>
+#import <MAMapKit/MAMapKit.h>
+#import <AMapSearchKit/AMapSearchKit.h>
+
 #import "GuarantyResponse.h"
 #import "GuarantyModel.h"
 
-@interface GuarantyViewController ()<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,UISearchBarDelegate>
+@interface GuarantyViewController ()<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,UISearchBarDelegate,AMapSearchDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstarints;
 @property (nonatomic,strong) UITableView *guTableView;
 @property (nonatomic,strong) UISearchBar *guSearchBar;
-//@property (nonatomic,strong) UISearchController *searchController;
+@property (nonatomic,strong) AMapSearchAPI *fSearchAPI;
 
 @property (nonatomic,strong) NSMutableArray *guDataArray;
+@property (nonatomic,strong) NSString *titleString;  // 选中的小区地址
 
 @end
 
@@ -32,6 +37,8 @@
     
     [self.view addSubview:self.guTableView];
     [self.view setNeedsUpdateConstraints];
+    
+    [AMapServices sharedServices].apiKey = @"947453c33b48d4d7447a58d202f038bb";
 }
 
 - (void)updateViewConstraints
@@ -110,84 +117,18 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.didSelectedArea) {
-        GuarantyModel *model = self.guDataArray[indexPath.row];
-        self.didSelectedArea(model.name,@"1",@"2",@"3");
-    }
-
-//    [self didDismissSearchController:self.searchController];
-//    [self.guTableView removeFromSuperview];
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section]];
+    NSString *title = cell.textLabel.text;
+    _titleString = title;
     
-//    _searchAPI = [[AMapSearchAPI alloc] init];
-//    _searchAPI.delegate = self;
-//    //构造AMapReGeocodeSearchRequest对象
-//    AMapReGeocodeSearchRequest *regeo = [[AMapReGeocodeSearchRequest alloc] init];
-//    regeo.location = [AMapGeoPoint locationWithLatitude:39.990459 longitude:116.481476];
-//    regeo.radius = 10000;
-//    //    regeoRequest.requireExtension = YES;
-//    
-//    //发起逆地理编码
-//    [_searchAPI AMapReGoecodeSearch: regeo];
-    
-    [self back];
+    self.fSearchAPI = [[AMapSearchAPI alloc] init];
+    self.fSearchAPI.delegate = self;
+    AMapGeocodeSearchRequest *geo = [[AMapGeocodeSearchRequest alloc] init];
+    geo.address = title;
+    [self.fSearchAPI AMapGeocodeSearch:geo];
 }
 
-////实现逆地理编码的回调函数
-//- (void)onReGeocodeSearchDone:(AMapReGeocodeSearchRequest *)request response:(AMapReGeocodeSearchResponse *)response
-//{
-//    if(response.regeocode != nil)
-//    {
-//        //通过AMapReGeocodeSearchResponse对象处理搜索结果
-//        NSString *result = [NSString stringWithFormat:@"ReGeocode: %@", response.regeocode];
-//        NSLog(@"ReGeo: %@", result);
-//    }
-//}
-
-
-#pragma mark - search
-- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
-{
-    return YES;
-}
-
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
-{
-    if (searchText) {
-        // 调用小区的方法
-        [self getGuarantyListWithString:searchBar.text];
-    }
-}
-/*
-- (void)willPresentSearchController:(UISearchController *)searchController
-{
-    NSLog(@"将要  开始  搜索时触发的方法");
-}
-
-// 搜索界面将要消失
--(void)willDismissSearchController:(UISearchController *)searchController
-{
-    NSLog(@"将要  取消  搜索时触发的方法");
-}
-
-//搜索界面消失
--(void)didDismissSearchController:(UISearchController *)searchController
-{
-    [searchController dismissViewControllerAnimated:YES completion:nil];
-}
-
-#pragma mark -- 搜索方法
-// 搜索时触发的方法
--(void)updateSearchResultsForSearchController:(UISearchController *)searchController
-{
-    NSString *searchStr = [searchController.searchBar text];
-    
-    if (searchStr && searchController.active) {
-        // 调用小区的方法
-        [self getGuarantyListWithString:searchStr];
-    }
-}
- */
-
+#pragma mark - method
 - (void)getGuarantyListWithString:(NSString *)predicate
 {
     NSString *guarantyString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kGuarantyString];
@@ -204,10 +145,88 @@
         
         // 刷新列表
         [self.guTableView reloadData];
-
+        
     } andFailBlock:^(NSError *error) {
         [self showHint:@"加载失败"];
     }];
+}
+
+#pragma mark - UISearchBarDelegate
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
+{
+    return YES;
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    if (searchText) {
+        // 调用小区的方法
+        [self getGuarantyListWithString:searchBar.text];
+    }
+}
+
+#pragma mark - AMapSearchDelegate
+//实现正向地理编码的回调函数
+- (void)onGeocodeSearchDone:(AMapGeocodeSearchRequest *)request response:(AMapGeocodeSearchResponse *)response
+{
+    if(response.geocodes.count == 0)
+    {
+        if (self.didSelectedArea) {
+            self.didSelectedArea(_titleString,@"");
+        }
+        [self back];
+        return;
+    }
+    
+    CGFloat latitude = 0.0;
+    CGFloat longitude = 0.0;
+    
+    for (AMapTip *p in response.geocodes) {
+        latitude = p.location.latitude;
+        longitude = p.location.longitude;
+    }
+    
+    //构造AMapReGeocodeSearchRequest对象
+    AMapReGeocodeSearchRequest *regeo = [[AMapReGeocodeSearchRequest alloc] init];
+    regeo.location = [AMapGeoPoint locationWithLatitude:latitude     longitude:longitude];
+    regeo.radius = 10000;
+    regeo.requireExtension = YES;
+    
+    [self.fSearchAPI AMapReGoecodeSearch:regeo];
+}
+
+//实现逆地理编码的回调函数
+- (void)onReGeocodeSearchDone:(AMapReGeocodeSearchRequest *)request response:(AMapReGeocodeSearchResponse *)response
+{
+    if(response.regeocode != nil)
+    {
+        //1.
+        AMapReGeocode *regeocode = response.regeocode;
+        
+        ///////2.////
+        //格式化地址
+        NSString *formattedAddress = regeocode.formattedAddress;
+        
+        if (self.didSelectedArea) {
+            self.didSelectedArea(_titleString,formattedAddress);
+        }
+        [self back];
+        return;
+        
+    }else{
+        if (self.didSelectedArea) {
+            self.didSelectedArea(_titleString,@"");
+        }
+        [self back];
+    }
+}
+
+- (void)AMapSearchRequest:(id)request didFailWithError:(NSError *)error
+{
+    if (self.didSelectedArea) {
+        self.didSelectedArea(_titleString,@"");
+    }
+    [self back];
 }
 
 - (void)didReceiveMemoryWarning {

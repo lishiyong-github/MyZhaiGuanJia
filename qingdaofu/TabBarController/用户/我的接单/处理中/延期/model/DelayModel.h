@@ -12,5 +12,6 @@
 
 @property (nonatomic,copy) NSString *is_agree;  //是否能申请延期
 @property (nonatomic,copy) NSString *delays;  //时间间隔
+//@property (nonatomic,cp) <#UITableView#> *<#esTableView#>;
 
 @end

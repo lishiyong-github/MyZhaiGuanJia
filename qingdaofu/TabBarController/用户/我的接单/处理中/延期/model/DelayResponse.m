@@ -13,7 +13,8 @@
 + (NSDictionary *)replacedKeyFromPropertyName
 {
     return @{
-             @"delay" : @"result.delay"
+             @"delay" : @"result.delay",
+             @"product" : @"result.product"
              };
 }
 

@@ -8,9 +8,11 @@
 
 #import "BaseModel.h"
 @class DelayModel;
+@class PublishingModel;
 
 @interface DelayResponse : BaseModel
 
 @property (nonatomic,strong) DelayModel *delay;
+@property (nonatomic,strong) PublishingModel *product;
 
 @end

@@ -11,7 +11,7 @@
 
 @interface ReleaseResponse : BaseModel
 
-@property (nonatomic,strong) CreditorModel *creditor;
+@property (nonatomic,strong) NSDictionary *creditor;
 @property (nonatomic,copy) NSString *page;
 @property (nonatomic,strong) NSMutableArray *rows;
 

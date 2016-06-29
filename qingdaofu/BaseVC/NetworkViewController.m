@@ -31,12 +31,17 @@
         if (images) {
         
             for (NSString *key in [images allKeys]) {
-                
                 NSArray *uploadImages = images[key];
                 
                 for (id obj in uploadImages) {
                     if ([obj isKindOfClass:[NSString class]]) {
+                        
                         [formData appendPartWithFileData:[NSData dataWithContentsOfFile:obj] name:key fileName:KTimeStamp mimeType:@"image/png"];
+                        
+                        
+                        
+                        NSLog(@"******* %@",formData);
+                        
                     }else if ([obj isKindOfClass:[UIImage class]]){
                         [formData appendPartWithFileData:UIImageJPEGRepresentation(obj, 0.7) name:key fileName:KTimeStamp mimeType:@"image/png"];
                     }
