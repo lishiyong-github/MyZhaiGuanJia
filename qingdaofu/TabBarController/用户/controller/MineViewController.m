@@ -116,12 +116,6 @@
                             [weakself.navigationController pushViewController:myStoreVC animated:YES];
                         }
                             break;
-                        case 12:{//我的设置
-                            MySettingsViewController *mySettingsVC = [[MySettingsViewController alloc] init];
-                            mySettingsVC.hidesBottomBarWhenPushed = YES;
-                            [weakself.navigationController pushViewController:mySettingsVC animated:YES];
-                        }
-                            break;
                         case 20:{//我的发布
                             NSLog(@"全部");
                             myReleaseVC.progreStatus = @"0";

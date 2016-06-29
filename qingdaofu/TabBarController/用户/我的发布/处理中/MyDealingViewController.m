@@ -36,6 +36,11 @@
 
 @implementation MyDealingViewController
 
+- (void)viewWillAppear:(BOOL)animated
+{
+     [self getDealingMessage];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @"产品详情";
@@ -54,8 +59,6 @@
     [self.dealFootView setHidden:YES];
     
     [self.view setNeedsUpdateConstraints];
-    
-    [self getDealingMessage];
 }
 
 - (void)updateViewConstraints
@@ -361,6 +364,7 @@
         AgreementViewController *agreementVC = [[AgreementViewController alloc] init];
         agreementVC.idString = dealModel.idString;
         agreementVC.categoryString = dealModel.category;
+        agreementVC.flagString = @"0";
         [self.navigationController pushViewController:agreementVC animated:YES];
     }else if (indexPath.section == 3) {//查看进度
         PaceViewController *paceVC = [[PaceViewController alloc] init];
@@ -395,20 +399,29 @@
         [self.dealingTableView reloadData];
         
         if ([response.product.progress_status integerValue] == 2 && [response.uidString isEqualToString:response.product.uidInner]) {
-            if ([response.product.applyclose integerValue] == 0) {
-//                 [self.dealCommitButton setTitle:@"申请结案" forState:0];
+            if ([response.product.applyclose integerValue] == 0) {//终止／申请结案
                 [self.dealCommitButton setHidden:YES];
                 [self.dealFootView setHidden:NO];
+                QDFWeakSelf;
+                [_dealFootView setDidSelectedButton:^(NSInteger tag) {
+                    if (tag == 33) {//终止
+                        [weakself endProductWithStatusString:@"3"];
+                    }else{//申请结案
+                        [weakself endProductWithStatusString:@"4"];
+                    }
+                }];
                 
             }else if ([response.product.applyclose integerValue] == 4 && ![response.product.applyclosefrom isEqualToString:response.product.uidInner]){
                 [self.dealFootView setHidden:YES];
                 [self.dealCommitButton setHidden:NO];
                 [self.dealCommitButton setTitle:@"申请同意结案" forState:0];
+                [self endProductWithStatusString:@"4"];
             }else{
                 [self.dealFootView setHidden:YES];
                 [self.dealCommitButton setHidden:NO];
                 [self.dealCommitButton setTitle:@"结案申请中" forState:0];
                 [self.dealCommitButton setBackgroundColor:kSelectedColor];
+                self.dealCommitButton.userInteractionEnabled = NO;
             }
         }
 
@@ -433,7 +446,7 @@
         if ([sModel.code isEqualToString:@"0000"]) {//成功
             [self.dealFootView setHidden:YES];
             [self.dealCommitButton setHidden:NO];
-            [self.dealCommitButton setTitle:@"已终止" forState:0];
+            [self.navigationController popViewControllerAnimated:YES];
         }
         
     } andFailBlock:^(NSError *error) {

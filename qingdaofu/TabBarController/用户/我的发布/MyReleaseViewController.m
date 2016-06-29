@@ -484,6 +484,7 @@
         additionalEvaluateVC.typeString = @"发布方";
         additionalEvaluateVC.idString = model.idString;
         additionalEvaluateVC.categoryString = model.category;
+        additionalEvaluateVC.codeString = model.codeString;
         [self.navigationController pushViewController:additionalEvaluateVC animated:YES];
     }
 }

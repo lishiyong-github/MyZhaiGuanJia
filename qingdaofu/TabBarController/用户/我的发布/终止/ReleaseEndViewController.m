@@ -409,6 +409,7 @@
         AgreementViewController *agreementVC = [[AgreementViewController alloc] init];
         agreementVC.idString = dealModel.idString;
         agreementVC.categoryString = dealModel.category;
+        agreementVC.flagString = @"0";
         [self.navigationController pushViewController:agreementVC animated:YES];
     }else if ((indexPath.section == 3) && (indexPath.row == 0)) {
         if (self.scheduleReleaseEndArray.count > 0) {

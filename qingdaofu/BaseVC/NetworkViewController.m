@@ -59,7 +59,6 @@
     }];
 }
 
-
 - (void)requestDataPostWithString:(NSString *)string params:(NSDictionary *)params successBlock:(void (^)(id responseObject))successBlock andFailBlock:(void (^)(NSError *error))failBlock
 {
     [self showHudInView:self.view hint:@"正在加载"];

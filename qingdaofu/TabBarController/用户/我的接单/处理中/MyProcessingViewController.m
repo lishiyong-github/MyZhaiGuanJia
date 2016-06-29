@@ -93,7 +93,6 @@
 {
     if (!_processingCommitButton) {
         _processingCommitButton = [BaseCommitButton newAutoLayoutView];
-//        [_processingCommitButton addTarget:self action:@selector(endProduct) forControlEvents:UIControlEventTouchUpInside];
     }
     return _processingCommitButton;
 }
@@ -573,11 +572,15 @@
         if ([response.product.progress_status integerValue] == 2 && ![response.uidString isEqualToString:response.product.uidInner]) {
             if ([response.product.applyclose integerValue] == 0) {
                 [self.processingCommitButton setTitle:@"申请结案" forState:0];
+                [self.processingCommitButton addTarget:self action:@selector(endProduct) forControlEvents:UIControlEventTouchUpInside];
+                
             }else if ([response.product.applyclose integerValue] == 4 && [response.product.applyclosefrom isEqualToString:response.product.uidInner]){
                 [self.processingCommitButton setTitle:@"申请同意结案" forState:0];
+                [self.processingCommitButton addTarget:self action:@selector(endProduct) forControlEvents:UIControlEventTouchUpInside];
             }else{
                 [self.processingCommitButton setTitle:@"结案申请中" forState:0];
                 [self.processingCommitButton setBackgroundColor:kSelectedColor];
+                self.processingCommitButton.userInteractionEnabled = NO;
             }
         }
         
@@ -643,7 +646,6 @@
         
         if ([sModel.code isEqualToString:@"0000"]) {//成功
             [self.processingCommitButton setBackgroundColor:kSelectedColor];
-            [self.processingCommitButton setTitle:@"已申请" forState:0];
             [self.navigationController popViewControllerAnimated:YES];
         }
         

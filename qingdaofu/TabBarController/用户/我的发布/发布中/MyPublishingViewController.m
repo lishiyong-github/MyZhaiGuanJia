@@ -81,7 +81,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (self.publishingDataArray.count > 0) {
-        return 3;
+        return 2;
     }
     return 0;
 }
@@ -245,22 +245,6 @@
         cell.oneButton.userInteractionEnabled = NO;
         return cell;
     }
-    identifier = @"detailSave3";
-    MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    
-    if (!cell) {
-        cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-    }
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    [cell.userNameButton setTitle:@"|  服务协议" forState:0];
-    [cell.userNameButton setTitleColor:kBlueColor forState:0];
-    [cell.userActionButton setTitle:@"点击查看" forState:0];
-    [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-    cell.userActionButton.userInteractionEnabled = NO;
-
-    return cell;
-        
     }
     return nil;
 }
@@ -285,11 +269,6 @@
         additionMessageVC.idString = model.idString;
         additionMessageVC.categoryString = model.category;
         [self.navigationController pushViewController:additionMessageVC animated:YES];
-    }else if (indexPath.section == 2) {//协议
-        AgreementViewController *agreementVC = [[AgreementViewController alloc] init];
-        agreementVC.idString = model.idString;
-        agreementVC.categoryString = model.category;
-        [self.navigationController pushViewController:agreementVC animated:YES];
     }
 }
 

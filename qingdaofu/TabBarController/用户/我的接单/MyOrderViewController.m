@@ -454,6 +454,7 @@
         additionalEvaluateVC.idString = model.idString;
         additionalEvaluateVC.categoryString = model.category;
         additionalEvaluateVC.typeString = @"接单方";
+        additionalEvaluateVC.codeString = model.codeString;
         [self.navigationController pushViewController:additionalEvaluateVC animated:YES];
     }
 }

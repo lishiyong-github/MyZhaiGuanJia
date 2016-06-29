@@ -74,7 +74,7 @@
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     NSArray *textArray = @[@"客服热线  ",@"总机          ",@"传真          ",@"邮箱           ",@"公司地址  "];
-    NSArray *detailArray = @[@"400-855-7022",@"021-80120900",@"021-80120901",@"zx@direct-invest.com.cn",@"上海市浦东南路855号世界广场34楼A座"];
+    NSArray *detailArray = @[@"400-855-7022",@"021-8012-0900",@"021-8012-0901",@"zx@direct-invest.com.cn",@"上海市浦东南路855号世界广场34楼A座"];
     NSMutableAttributedString *attributeString = [cell.userNameButton setAttributeString:textArray[indexPath.row] withColor:kBlackColor andSecond:detailArray[indexPath.row] withColor:kLightGrayColor withFont:14];
     [cell.userNameButton setAttributedTitle:attributeString forState:0];
     cell.userNameButton.userInteractionEnabled = NO;

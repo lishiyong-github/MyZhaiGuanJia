@@ -6,11 +6,13 @@
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
-#import "BaseViewController.h"
+#import "NetworkViewController.h"
 
-@interface AgreementViewController : BaseViewController
+@interface AgreementViewController : NetworkViewController
 
 @property (nonatomic,strong) NSString *idString;
 @property (nonatomic,strong) NSString *categoryString;
+@property (nonatomic,strong) NSString *pidString;
+@property (nonatomic,strong) NSString *flagString; //1为有同意按钮  0为无
 
 @end

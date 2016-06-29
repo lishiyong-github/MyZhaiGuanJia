@@ -19,7 +19,6 @@
 #import "ReportFinanceViewController.h"  //融资
 #import "ReportSuitViewController.h"     //诉讼
 
-#import "MainView.h"
 #import "UIViewController+BlurView.h"
 
 @interface MainViewController ()<TabBarDelegate,UIActionSheetDelegate>
@@ -101,30 +100,39 @@
 #pragma mark - tabBar delegate
 - (void)tabBarDidSelectedRiseButton
 {
+    QDFWeakSelf;
     [self showBlurInView:[UIApplication sharedApplication].keyWindow withArray:nil finishBlock:^(NSInteger row) {
         
         UIWindow *window = [UIApplication sharedApplication].keyWindow;
         UITabBarController *tabBarController = (UITabBarController *)window.rootViewController;
-
         UINavigationController *viewController = tabBarController.selectedViewController;
         
-        if (row == 11) {
-            ReportFinanceViewController *reportFinanceVC = [[ReportFinanceViewController alloc] init];
-            reportFinanceVC.hidesBottomBarWhenPushed = YES;
-            [viewController pushViewController:reportFinanceVC animated:YES];
-        }else if (row == 12){
-            ReportSuitViewController *collectVC = [[ReportSuitViewController alloc] init];
-            collectVC.categoryString = @"2";
-//            collectVC.tagString = @"1";
-            collectVC.hidesBottomBarWhenPushed = YES;
-            [viewController pushViewController:collectVC animated:YES];
-        }else{
-            ReportSuitViewController *reportSuitVC = [[ReportSuitViewController alloc] init];
-            reportSuitVC.categoryString = @"3";
-//            reportSuitVC.tagString = @"1";
-            reportSuitVC.hidesBottomBarWhenPushed = YES;
-            [viewController pushViewController:reportSuitVC animated:YES];
-        }
+        [weakself tokenIsValid];
+        [weakself setDidTokenValid:^(TokenModel *tokenModel) {
+            if ([tokenModel.code isEqualToString:@"0000"]) {
+                if (row == 11) {
+                    ReportFinanceViewController *reportFinanceVC = [[ReportFinanceViewController alloc] init];
+                    reportFinanceVC.hidesBottomBarWhenPushed = YES;
+                    [viewController pushViewController:reportFinanceVC animated:YES];
+                }else if (row == 12){
+                    ReportSuitViewController *collectVC = [[ReportSuitViewController alloc] init];
+                    collectVC.categoryString = @"2";
+                    //            collectVC.tagString = @"1";
+                    collectVC.hidesBottomBarWhenPushed = YES;
+                    [viewController pushViewController:collectVC animated:YES];
+                }else{
+                    ReportSuitViewController *reportSuitVC = [[ReportSuitViewController alloc] init];
+                    reportSuitVC.categoryString = @"3";
+                    //            reportSuitVC.tagString = @"1";
+                    reportSuitVC.hidesBottomBarWhenPushed = YES;
+                    [viewController pushViewController:reportSuitVC animated:YES];
+                }
+
+            }else{
+                [weakself showHint:tokenModel.msg];
+            }
+        }];
+                
     }];
 }
 

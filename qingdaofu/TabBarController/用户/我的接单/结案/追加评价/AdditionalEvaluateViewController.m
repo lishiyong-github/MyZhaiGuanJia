@@ -68,13 +68,13 @@
         _additionalTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kCellHeight)];
         _additionalTableView.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
         
-        if ([_additionalTableView respondsToSelector:@selector(setSeparatorInset:)]) {
-            [_additionalTableView setSeparatorInset:UIEdgeInsetsZero];
-        }
-        
-        if ([_additionalTableView respondsToSelector:@selector(setLayoutMargins:)]) {
-            [_additionalTableView setLayoutMargins:UIEdgeInsetsZero];
-        }
+//        if ([_additionalTableView respondsToSelector:@selector(setSeparatorInset:)]) {
+//            [_additionalTableView setSeparatorInset:UIEdgeInsetsZero];
+//        }
+//        
+//        if ([_additionalTableView respondsToSelector:@selector(setLayoutMargins:)]) {
+//            [_additionalTableView setLayoutMargins:UIEdgeInsetsZero];
+//        }
     }
     return _additionalTableView;
 }
@@ -129,16 +129,20 @@
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
-            [cell setSeparatorInset:UIEdgeInsetsZero];
-        }
-        
-        if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
-            [cell setLayoutMargins:UIEdgeInsetsZero];
-        }
+//        if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
+//            [cell setSeparatorInset:UIEdgeInsetsZero];
+//        }
+//        
+//        if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+//            [cell setLayoutMargins:UIEdgeInsetsZero];
+//        }
         
         cell.backgroundColor = kBackColor;
-        cell.textLabel.text = @"您的融资单号RZ201602020001已经结束，感谢您对平台的信任，请留下您的评价";
+        
+        NSArray *tyArray = @[@"融资",@"清收",@"诉讼"];
+        NSString *tyString = tyArray[[self.categoryString integerValue] -1];
+        
+        cell.textLabel.text = [NSString stringWithFormat:@"您的%@单号%@已经结束，感谢您对平台的信任，请留下您的评价",tyString,self.codeString];
         cell.textLabel.font = kFirstFont;
         cell.textLabel.textColor = kBlueColor;
         cell.textLabel.numberOfLines = 0;
@@ -152,27 +156,27 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        if ([self.typeString isEqualToString:@"发布方"]) {
-            cell.starLabel1.text = @"态度";
-            cell.starLabel2.text = @"专业知识";
-            cell.starLabel3.text = @"办事效率";
-        }else if ([self.typeString isEqualToString:@"接单方"]){
+        if ([self.typeString isEqualToString:@"发布方"]) {//发布方给接单方
             cell.starLabel1.text = @"真实性";
             cell.starLabel2.text = @"配合度";
             cell.starLabel3.text = @"响应度";
+        }else if ([self.typeString isEqualToString:@"接单方"]){//接单方给发布方
+            cell.starLabel1.text = @"态度";
+            cell.starLabel2.text = @"专业知识";
+            cell.starLabel3.text = @"办事效率";
         }
         
         [cell.starView1 setMarkComplete:^(CGFloat score) {
-            NSString *scoreStr1 = [NSString stringWithFormat:@"%.f",score];
+            NSString *scoreStr1 = [NSString stringWithFormat:@"%0.f",score/2];
             [self.evaDataDictionary setValue:scoreStr1 forKey:@"serviceattitude"];
         }];
         
         [cell.starView2 setMarkComplete:^(CGFloat score) {
-            NSString *scoreStr2 = [NSString stringWithFormat:@"%.f",score];
+            NSString *scoreStr2 = [NSString stringWithFormat:@"%0.f",score/2];
             [self.evaDataDictionary setValue:scoreStr2 forKey:@"professionalknowledge"];
         }];
         [cell.starView3 setMarkComplete:^(CGFloat score) {
-            NSString *scoreStr3 = [NSString stringWithFormat:@"%.f",score];
+            NSString *scoreStr3 = [NSString stringWithFormat:@"%0.f",score/2];
             [self.evaDataDictionary setValue:scoreStr3 forKey:@"workefficiency"];
         }];
         
@@ -226,13 +230,13 @@
         }
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
-            [cell setSeparatorInset:UIEdgeInsetsZero];
-        }
-        
-        if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
-            [cell setLayoutMargins:UIEdgeInsetsZero];
-        }
+//        if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
+//            [cell setSeparatorInset:UIEdgeInsetsZero];
+//        }
+//        
+//        if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+//            [cell setLayoutMargins:UIEdgeInsetsZero];
+//        }
         [cell.userActionButton setTitle:@"匿名评价  " forState:0];
         [cell.userActionButton setImage:[UIImage imageNamed:@"anonymous"] forState:0];
         [cell.userActionButton setImage:[UIImage imageNamed:@"real_name"] forState:UIControlStateSelected];
@@ -264,60 +268,35 @@
     return YES;
 }
 
-//-(NSInteger) getTotalChars{
-//    NSString *str  =[_editor textInRange:[_editor textRangeWithRange:[self visibleRangeOfTextView:_editor]]];
-//    NSLog(@"%@",str);
-//    NSInteger charCount= [[str stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]length];
-//    return charCount=charCount-1;
-//}
-
 #pragma mark - method
 - (void)evaluateCommitMessages
 {
     [self.view endEditing:YES];
     NSString *evaluateString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kEvaluateString];
     
-    NSString *serviceattitude = @"";
-    NSString *professionalknowledge = @"";
-    NSString *workefficiency = @"";
-    NSString *content = @"";
-    NSString *isHide = @"";
+    //发布方：态度。接单方：真实性
+    self.evaDataDictionary[@"serviceattitude"] = self.evaDataDictionary[@"serviceattitude"]?self.evaDataDictionary[@"serviceattitude"]:@"";
+    //发布方：专业知识。接单方：响应度
+    self.evaDataDictionary[@"professionalknowledge"] = self.evaDataDictionary[@"professionalknowledge"]?self.evaDataDictionary[@"professionalknowledge"]:@"";
+    //发布方：办事效率。接单方：响应度
+    self.evaDataDictionary[@"workefficiency"] = self.evaDataDictionary[@"workefficiency"]?self.evaDataDictionary[@"workefficiency"]:@"";
+    self.evaDataDictionary[@"content"] = self.evaDataDictionary[@"content"]?self.evaDataDictionary[@"content"]:@"";
+    self.evaDataDictionary[@"isHide"] = self.evaDataDictionary[@"isHide"]?self.evaDataDictionary[@"isHide"]:@"";
+
+    self.evaDataDictionary[@"category"] = self.categoryString;
+    self.evaDataDictionary[@"product_id"] = self.idString;
+    self.evaDataDictionary[@"picture"] = @"";
+    self.evaDataDictionary[@"type"] = self.categoryString;
+    self.evaDataDictionary[@"token"] = [self getValidateToken];
     
-    if (self.evaDataDictionary[@"serviceattitude"]) {
-        serviceattitude = self.evaDataDictionary[@"serviceattitude"];
-    }
+    NSDictionary *params = self.evaDataDictionary;
     
-    if (self.evaDataDictionary[@"professionalknowledge"]) {
-        professionalknowledge = self.evaDataDictionary[@"professionalknowledge"];
-    }
-    if (self.evaDataDictionary[@"workefficiency"]) {
-        workefficiency = self.evaDataDictionary[@"workefficiency"];
-    }
-    if (self.evaDataDictionary[@"content"]) {
-        content = self.evaDataDictionary[@"content"];
-    }
-    if (self.evaDataDictionary[@"isHide"]) {
-        isHide = self.evaDataDictionary[@"isHide"];
-    }
-    
-    NSDictionary *params = @{@"serviceattitude" : serviceattitude,   //发布方：态度。接单方：真实性
-                             @"professionalknowledge" : professionalknowledge,//发布方：专业知识。接单方：配合度
-                             @"workefficiency" : workefficiency,  //发布方：办事效率。接单方：响应度
-                             @"content" : content,  //评价内容
-                             @"category" : self.categoryString,
-                             @"product_id" : self.idString,
-                             @"isHide" : isHide,//0为正常评价。1为匿名评价
-                             @"picture" : @"",
-                             @"token" : [self getValidateToken],
-                             @"type" : @"0"
-                             };
     [self requestDataPostWithString:evaluateString params:params successBlock:^(id responseObject) {
         BaseModel *evaModel = [BaseModel objectWithKeyValues:responseObject];
+        [self showHint:evaModel.msg];
+        
         if ([evaModel.code isEqualToString:@"0000"]) {
-            [self showHint:evaModel.msg];
             [self.navigationController popViewControllerAnimated:YES];
-        }else{
-            [self showHint:@"提交失败"];
         }
     } andFailBlock:^(NSError *error) {
         

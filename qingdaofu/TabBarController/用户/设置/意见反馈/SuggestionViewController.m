@@ -16,11 +16,16 @@
 #import "TextFieldCell.h"
 #import "BaseCommitButton.h"
 
+#import "UIViewController+MutipleImageChoice.h"
+
 @interface SuggestionViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *suggestTableView;
 @property (nonatomic,strong) BaseCommitButton *suggestCommitButton;
+
+@property (nonatomic,strong) NSMutableDictionary *suggestsDictionary;
+@property (nonatomic,strong) NSMutableDictionary *suggestImageDic;
 
 @end
 
@@ -51,8 +56,7 @@
 - (UITableView *)suggestTableView
 {
     if (!_suggestTableView) {
-//        _suggestTableView = [UITableView newAutoLayoutView];
-        _suggestTableView.translatesAutoresizingMaskIntoConstraints = NO;
+        _suggestTableView.translatesAutoresizingMaskIntoConstraints = YES;
         _suggestTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _suggestTableView.backgroundColor = kBackColor;
         _suggestTableView.delegate = self;
@@ -68,32 +72,26 @@
     if (!_suggestCommitButton) {
         _suggestCommitButton = [[BaseCommitButton alloc] initWithFrame:CGRectMake(kBigPadding, kBigPadding, kScreenWidth-kBigPadding*2, 40)];
         [_suggestCommitButton setTitle:@"提交" forState:0];
-        
-        QDFWeakSelf;
-        [_suggestCommitButton addAction:^(UIButton *btn) {
-            NSLog(@"提交");
-            
-            NSString *suggestionString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kSuggestionString];
-            NSDictionary *params = @{@"phone" : @"13162521916",
-                                     @"opinion" : @"有事找有事找",
-                                     @"token" : [weakself getValidateToken]
-                                     };
-            [weakself requestDataPostWithString:suggestionString params:params successBlock:^(id responseObject){
-                BaseModel *suggestModel = [BaseModel objectWithKeyValues:responseObject];
-                [weakself showHint:suggestModel.msg];
-                if ([suggestModel.code isEqualToString:@"0000"]) {
-                    [weakself.navigationController popViewControllerAnimated:YES];
-                }
-                
-            } andFailBlock:^(NSError *error){
-                
-            }];
-            
-        }];
+        [_suggestCommitButton addTarget:self action:@selector(commitSuggests) forControlEvents:UIControlEventTouchUpInside];
     }
     return _suggestCommitButton;
 }
 
+- (NSMutableDictionary *)suggestsDictionary
+{
+    if (!_suggestsDictionary) {
+        _suggestsDictionary = [NSMutableDictionary dictionary];
+    }
+    return _suggestsDictionary;
+}
+
+- (NSMutableDictionary *)suggestImageDic
+{
+    if (!_suggestImageDic) {
+        _suggestImageDic = [NSMutableDictionary dictionary];
+    }
+    return _suggestImageDic;
+}
 #pragma mark - tabelView delegate and dataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -136,6 +134,11 @@
             cell.textField.placeholder = @"请详细描述您的问题或建议，您的反馈是我们前进最大的动力";
             cell.textField.font = kSecondFont;
             
+            QDFWeakSelf;
+            [cell setDidEndEditing:^(NSString *text) {
+                [weakself.suggestsDictionary setValue:text forKey:@"opinion"];
+            }];
+            
             return cell;
         }
         
@@ -146,8 +149,17 @@
             cell = [[TakePictureCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//        [cell.editImageButton1.label setHidden:YES];
-//        [cell.editImageButton2.label setHidden:YES];
+        cell.collectionDataList = [NSMutableArray arrayWithObject:@"btn_camera"];
+        
+        QDFWeakSelf;
+        QDFWeak(cell);
+        [cell setDidSelectedItem:^(NSInteger item) {
+            [weakself addImageWithMaxSelection:4 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
+                weakcell.collectionDataList = [NSMutableArray arrayWithArray:images];
+                [weakcell reloadData];
+                [weakself.suggestImageDic setValue:images forKey:@""];
+            }];
+        }];
 
         return cell;
     }
@@ -164,6 +176,11 @@
     cell.agentTextField.placeholder = @"手机号码/邮箱（选填，方便我们联系您）";
     cell.agentTextField.font = kSecondFont;
     
+    QDFWeakSelf;
+    [cell setDidEndEditing:^(NSString *text) {
+        [weakself.suggestsDictionary setValue:text forKey:@"phone"];
+    }];
+    
     return cell;
 }
 
@@ -178,6 +195,51 @@
         return kBigPadding;
     }
     return 0.1f;
+}
+
+#pragma mark - method
+- (void)commitSuggests
+{
+    [self.view endEditing:YES];
+    NSString *suggestionString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kSuggestionString];
+    self.suggestsDictionary[@"opinion"] = self.suggestsDictionary[@"opinion"]?self.suggestsDictionary[@"opinion"]:@"";
+    self.suggestsDictionary[@"phone"] = self.suggestsDictionary[@"phone"]?self.suggestsDictionary[@"phone"]:@"";
+
+    NSDictionary *params = @{@"phone" : self.suggestsDictionary[@"phone"],
+                             @"opinion" : self.suggestsDictionary[@"opinion"],
+                             @"token" : [self getValidateToken],
+                             @"picture" : @""
+                             };
+    
+    [self requestDataPostWithString:suggestionString params:params andImages:nil successBlock:^(id responseObject) {
+        BaseModel *suggestModel = [BaseModel objectWithKeyValues:responseObject];
+        [self showHint:suggestModel.msg];
+        
+        if ([suggestModel.code isEqualToString:@"0000"]) {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+    
+    
+    
+    
+    
+    
+    /*
+    [self requestDataPostWithString:suggestionString params:params successBlock:^(id responseObject){
+        BaseModel *suggestModel = [BaseModel objectWithKeyValues:responseObject];
+        [self showHint:suggestModel.msg];
+        
+        if ([suggestModel.code isEqualToString:@"0000"]) {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        
+    } andFailBlock:^(NSError *error){
+        
+    }];
+     */
 }
 
 - (void)didReceiveMemoryWarning {

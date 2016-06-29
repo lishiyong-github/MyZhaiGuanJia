@@ -13,7 +13,6 @@
 		9CF131751D1827FE00ADBA27 /* BrandsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF131741D1827FE00ADBA27 /* BrandsViewController.m */; };
 		9CF191401CEC445300CFEDA1 /* Reveal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CF1913F1CEC445300CFEDA1 /* Reveal.framework */; };
 		A1039F0C1C72C55400771747 /* RefreshViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1039F0B1C72C55400771747 /* RefreshViewController.m */; };
-		A10D7B6C1CEABDCB00422D7D /* MainView.m in Sources */ = {isa = PBXBuildFile; fileRef = A10D7B6B1CEABDCB00422D7D /* MainView.m */; };
 		A10D7B751CEAF5EA00422D7D /* MyAgentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A10D7B741CEAF5EA00422D7D /* MyAgentViewController.m */; };
 		A10D7B781CEAF73C00422D7D /* MyAgentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A10D7B771CEAF73C00422D7D /* MyAgentCell.m */; };
 		A10D7B7B1CEAFAFE00422D7D /* AddMyAgentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A10D7B7A1CEAFAFE00422D7D /* AddMyAgentViewController.m */; };
@@ -483,8 +482,6 @@
 		9CF1913F1CEC445300CFEDA1 /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
 		A1039F0A1C72C55400771747 /* RefreshViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RefreshViewController.h; sourceTree = "<group>"; };
 		A1039F0B1C72C55400771747 /* RefreshViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RefreshViewController.m; sourceTree = "<group>"; };
-		A10D7B6A1CEABDCB00422D7D /* MainView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainView.h; sourceTree = "<group>"; };
-		A10D7B6B1CEABDCB00422D7D /* MainView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainView.m; sourceTree = "<group>"; };
 		A10D7B731CEAF5EA00422D7D /* MyAgentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAgentViewController.h; sourceTree = "<group>"; };
 		A10D7B741CEAF5EA00422D7D /* MyAgentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAgentViewController.m; sourceTree = "<group>"; };
 		A10D7B761CEAF73C00422D7D /* MyAgentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAgentCell.h; sourceTree = "<group>"; };
@@ -2477,8 +2474,6 @@
 				A1A016A61C5A0C0300027134 /* AppDelegate.m */,
 				A18B26461CEAA699005526C5 /* MainViewController.h */,
 				A18B26471CEAA699005526C5 /* MainViewController.m */,
-				A10D7B6A1CEABDCB00422D7D /* MainView.h */,
-				A10D7B6B1CEABDCB00422D7D /* MainView.m */,
 				A1A016AB1C5A0C0300027134 /* Main.storyboard */,
 				A1A016AE1C5A0C0300027134 /* Assets.xcassets */,
 				A1A016B01C5A0C0300027134 /* LaunchScreen.storyboard */,
@@ -3205,7 +3200,6 @@
 				A1B028E81D1794DC00F32A09 /* SDWebImageCompat.m in Sources */,
 				A159F9811D0D727A00A6A024 /* UIView+MJExtension.m in Sources */,
 				A161754F1D1257A9001BB200 /* ApplicationStateModel.m in Sources */,
-				A10D7B6C1CEABDCB00422D7D /* MainView.m in Sources */,
 				A1A34C161CE3148A00AD454A /* UploadFilesViewController.m in Sources */,
 				A199851D1CE0360B0055A572 /* MessageRemindViewController.m in Sources */,
 				A16391721D20194B0051F1D0 /* FSBasicImageSource.m in Sources */,

@@ -107,7 +107,18 @@
 
         QDFWeakSelf;
         [_ReleaseCloseCommitButton addAction:^(UIButton *btn) {
+            
+            PublishingModel *clModel;
+            if (self.releaseArray.count > 0) {
+                PublishingResponse *clResponse = self.releaseArray[0];
+                clModel = clResponse.product;
+            }
+            
             AdditionalEvaluateViewController *additionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
+            additionalEvaluateVC.typeString = @"发布方";
+            additionalEvaluateVC.idString = weakself.idString;
+            additionalEvaluateVC.categoryString = weakself.categaryString;
+            additionalEvaluateVC.codeString = clModel.codeString;
             [weakself.navigationController pushViewController:additionalEvaluateVC animated:YES];
         }];
     }
@@ -380,11 +391,16 @@
                 [cell.addressLabel setHidden:NO];
                 
                 //案号类型
-                NSArray *auditArray = @[@"一审",@"二审",@"再审",@"执行"];
-                NSInteger auditInt = [scheduleModel.audit intValue];
-                NSString *auditStr = auditArray[auditInt];
+                NSString *auditStr;
+                if ([self.categaryString integerValue] == 3) {
+                    NSArray *auditArray = @[@"一审",@"二审",@"再审",@"执行"];
+                    NSInteger auditInt = [scheduleModel.audit intValue];
+                    auditStr = auditArray[auditInt];
+                }else{
+                    auditStr = @"无";
+                }
                 
-                NSMutableAttributedString *caseTypestring = [cell.deadlineLabel setAttributeString:@"案号类型：" withColor:kBlackColor andSecond:auditStr?auditStr:@"无" withColor:kLightGrayColor withFont:12];
+                NSMutableAttributedString *caseTypestring = [cell.deadlineLabel setAttributeString:@"案号类型：" withColor:kBlackColor andSecond:auditStr withColor:kLightGrayColor withFont:12];
                 [cell.deadlineLabel setAttributedText:caseTypestring];
                 
                 cell.timeLabel.text = @"2016-05-30";
@@ -535,6 +551,7 @@
         AgreementViewController *agreementVC = [[AgreementViewController alloc] init];
         agreementVC.idString = dealModel.idString;
         agreementVC.categoryString = dealModel.category;
+        agreementVC.flagString = @"0";
         [self.navigationController pushViewController:agreementVC animated:YES];
     }else if ((indexPath.section == 3) && (indexPath.row == 0)){
         if (self.scheduleReleaseCloArray.count > 0) {

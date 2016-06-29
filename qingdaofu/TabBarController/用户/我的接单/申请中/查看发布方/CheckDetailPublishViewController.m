@@ -7,8 +7,9 @@
 //
 
 #import "CheckDetailPublishViewController.h"
-#import "AllEvaluationViewController.h"
+#import "AllEvaluationViewController.h"  //所有评价
 #import "CaseViewController.h"  //经典案例
+#import "AgreementViewController.h"  //服务协议
 
 #import "MineUserCell.h"
 #import "EvaluatePhotoCell.h"
@@ -100,11 +101,14 @@
         QDFWeakSelf;
         if ([self.typeString isEqualToString:@"申请人"]) {
             [_appAgreeButton setTitle:@"同意申请" forState:0];
-            
             [_appAgreeButton addAction:^(UIButton *btn) {
-                [weakself bottomMethod:@"同意申请"];
+                AgreementViewController *agreementVC = [[AgreementViewController alloc] init];
+                agreementVC.flagString = @"1";
+                agreementVC.idString = weakself.idString;
+                agreementVC.categoryString = weakself.categoryString;
+                agreementVC.pidString = weakself.pidString;
+                [weakself.navigationController pushViewController:agreementVC animated:YES];
             }];
-            
         }else if ([self.typeString isEqualToString:@"发布方"]){
             [_appAgreeButton setHidden:YES];
         }else if ([self.typeString isEqualToString:@"接单方"]){
@@ -428,6 +432,7 @@
     }];
 }
 
+/*
 - (void)bottomMethod:(NSString *)nameString
 {
     if ([nameString isEqualToString:@"同意申请"]) {//发布方同意接单方申请
@@ -455,6 +460,7 @@
     }
 }
 
+ */
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

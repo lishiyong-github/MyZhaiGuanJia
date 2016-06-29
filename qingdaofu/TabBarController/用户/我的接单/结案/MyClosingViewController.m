@@ -107,7 +107,17 @@
         
         QDFWeakSelf;
         [_closingCommitButton addAction:^(UIButton *btn) {
+            PublishingModel *pubModel;
+            if (self.orderCloseArray.count > 0) {
+               PublishingResponse *response = weakself.orderCloseArray[0];
+                pubModel = response.product;
+            }
+            
             AdditionalEvaluateViewController *additionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
+            additionalEvaluateVC.typeString = @"接单方";
+            additionalEvaluateVC.idString = weakself.idString;
+            additionalEvaluateVC.categoryString = weakself.categaryString;
+            additionalEvaluateVC.codeString = pubModel.codeString;
             [weakself.navigationController pushViewController:additionalEvaluateVC animated:YES];
         }];
     }
