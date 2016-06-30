@@ -7,6 +7,7 @@
 //
 
 #import "ContactUsViewController.h"
+#import "MyLocationViewController.h"  //地图
 
 #import "MineUserCell.h"
 
@@ -102,9 +103,11 @@
     if (indexPath.row == 0) {//客服热线
         NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",@"400-855-7022"];
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
-    }else if (indexPath.row == 4){
+    }else if (indexPath.row == 4){//地图
 //        ViewController *VC = [[ViewController alloc] init];
 //        [self.navigationController pushViewController:VC animated:YES];
+        MyLocationViewController *myLocationVC = [[MyLocationViewController alloc] init];
+        [self.navigationController pushViewController:myLocationVC animated:YES];
     }
 }
 

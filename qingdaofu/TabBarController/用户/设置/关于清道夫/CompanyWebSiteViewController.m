@@ -41,7 +41,8 @@
 {
     if (!_companyWebView) {
         _companyWebView = [[UIWebView alloc] init];
-        NSString *companyString = @"http://www.zcb2016.com";
+        NSString *companyString = kQDFTestImageString;
+//        @"http://www.zcb2016.com";
         NSURL *companyUrl = [NSURL URLWithString:companyString];
         [_companyWebView loadRequest:[NSURLRequest requestWithURL:companyUrl]];
     }

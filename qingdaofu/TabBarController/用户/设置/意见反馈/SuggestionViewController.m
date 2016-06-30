@@ -8,9 +8,6 @@
 
 #import "SuggestionViewController.h"
 
-#import "EditDebtAddressCell.h"
-//#import "EditDebtCell.h"
-
 #import "AgentCell.h"
 #import "TakePictureCell.h"
 #import "TextFieldCell.h"
@@ -100,20 +97,21 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == 0) {
-        return 2;
-    }
+//    if (section == 0) {
+//        return 2;
+//    }
     return 1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        if (indexPath.row == 0) {
-            return 70;
-        }else{
-            return 80;
-        }
+//        if (indexPath.row == 0) {
+//            return 70;
+//        }else{
+//            return 80;
+//        }
+        return 150;
     }
     return kCellHeight;
 }
@@ -142,26 +140,26 @@
             return cell;
         }
         
-        identifier = @"suggest01";
-        TakePictureCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        
-        if (!cell) {
-            cell = [[TakePictureCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.collectionDataList = [NSMutableArray arrayWithObject:@"btn_camera"];
-        
-        QDFWeakSelf;
-        QDFWeak(cell);
-        [cell setDidSelectedItem:^(NSInteger item) {
-            [weakself addImageWithMaxSelection:4 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
-                weakcell.collectionDataList = [NSMutableArray arrayWithArray:images];
-                [weakcell reloadData];
-                [weakself.suggestImageDic setValue:images forKey:@""];
-            }];
-        }];
-
-        return cell;
+//        identifier = @"suggest01";
+//        TakePictureCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+//        
+//        if (!cell) {
+//            cell = [[TakePictureCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+//        }
+//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//        cell.collectionDataList = [NSMutableArray arrayWithObject:@"btn_camera"];
+//        
+//        QDFWeakSelf;
+//        QDFWeak(cell);
+//        [cell setDidSelectedItem:^(NSInteger item) {
+//            [weakself addImageWithMaxSelection:4 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
+//                weakcell.collectionDataList = [NSMutableArray arrayWithArray:images];
+//                [weakcell reloadData];
+//                [weakself.suggestImageDic setValue:images forKey:@""];
+//            }];
+//        }];
+//
+//        return cell;
     }
     identifier = @"suggest1";
     AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -171,8 +169,10 @@
     }
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
+    [cell.agentLabel setHidden:YES];
+    [cell.agentButton setHidden:YES];
     cell.leftdAgentContraints.constant = kBigPadding;
+    
     cell.agentTextField.placeholder = @"手机号码/邮箱（选填，方便我们联系您）";
     cell.agentTextField.font = kSecondFont;
     
@@ -207,8 +207,7 @@
 
     NSDictionary *params = @{@"phone" : self.suggestsDictionary[@"phone"],
                              @"opinion" : self.suggestsDictionary[@"opinion"],
-                             @"token" : [self getValidateToken],
-                             @"picture" : @""
+                             @"token" : [self getValidateToken]
                              };
     
     [self requestDataPostWithString:suggestionString params:params andImages:nil successBlock:^(id responseObject) {

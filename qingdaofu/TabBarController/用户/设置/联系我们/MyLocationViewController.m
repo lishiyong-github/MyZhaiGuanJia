@@ -8,7 +8,14 @@
 
 #import "MyLocationViewController.h"
 
-@interface MyLocationViewController ()
+#import <AMapFoundationKit/AMapFoundationKit.h>
+#import <MAMapKit/MAMapKit.h>
+
+
+@interface MyLocationViewController ()<MAMapViewDelegate>
+
+@property (nonatomic,assign) BOOL didSetupConstraits;
+@property (nonatomic,strong) MAMapView *map;
 
 @end
 
@@ -16,7 +23,25 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    self.title = @"地图";
+    self.navigationItem.leftBarButtonItem = self.leftItem;
+    
+    [AMapServices sharedServices].apiKey = @"947453c33b48d4d7447a58d202f038bb";
+    [self.view addSubview:self.map];
+}
+
+- (MAMapView *)map
+{
+    if (!_map) {
+        _map = [[MAMapView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
+        _map.delegate = self;
+        
+        //经度121.515037
+        //纬度:31.232292
+        _map.centerCoordinate = CLLocationCoordinate2DMake(31.232292, 121.515037);
+        _map.zoomLevel = 17;
+    }
+    return _map;
 }
 
 - (void)didReceiveMemoryWarning {

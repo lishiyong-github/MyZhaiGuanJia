@@ -36,6 +36,7 @@
 
 @property (nonatomic,assign) NSInteger pageRelease;//页数
 
+
 @end
 
 @implementation MyReleaseViewController
@@ -335,20 +336,22 @@
             [cell.typeButton setImage:[UIImage imageNamed:@"list_chapter"] forState:0];
             [cell.firstButton setHidden:YES];
             [cell.secondButton setHidden:YES];
-//            [cell.thirdButton setHidden:NO];
-//            [cell.thirdButton setTitle:@"去评价" forState:0];
-            
             
             NSString *id_category = [NSString stringWithFormat:@"%@_%@",rowModel.idString,rowModel.category];
             NSString *value = self.releaseDic[id_category];
-            if ([value integerValue] == 2) {//不能评价
+            if ([value integerValue] >= 2) {//不能评价
                 [cell.thirdButton setHidden:YES];
             }else{
                 [cell.thirdButton setHidden:NO];
-                [cell.thirdButton setTitle:@"去评价" forState:0];
+                
+                if ([value integerValue] == 0) {
+                    [cell.thirdButton setTitle:@"去评价" forState:0];
+                }else{
+                    [cell.thirdButton setTitle:@"再次评价" forState:0];
+                }
                 QDFWeakSelf;
                 [cell.thirdButton addAction:^(UIButton *btn) {
-                    [weakself goToCheckApplyRecordsOrAdditionMessage:@"去评价" withRow:indexPath.section withEvaString:value];
+                    [weakself goToCheckApplyRecordsOrAdditionMessage:@"评价" withRow:indexPath.section withEvaString:value];
                 }];
             }
         }
@@ -392,7 +395,13 @@
             releaseEndVC.pidString = sModel.pid;
             [self.navigationController pushViewController:releaseEndVC animated:YES];
         }else if ([sModel.progress_status isEqualToString:@"4"]){//结案
+            
+            RowsModel *eModel = self.releaseDataArray[indexPath.section];
+            NSString *id_category = [NSString stringWithFormat:@"%@_%@",eModel.idString,eModel.category];
+            NSString *value1 = self.releaseDic[id_category];
+            
             ReleaseCloseViewController *releaseCloseVC = [[ReleaseCloseViewController alloc] init];
+            releaseCloseVC.evaString = value1;
             releaseCloseVC.idString = sModel.idString;
             releaseCloseVC.categaryString = sModel.category;
             releaseCloseVC.pidString = sModel.pid;
@@ -488,7 +497,7 @@
         [self.navigationController pushViewController:paceVC animated:YES];
     }else if ([string isEqualToString:@"联系接单方"]){
         
-    }else if ([string isEqualToString:@"去评价"]){
+    }else if ([string isEqualToString:@"评价"]){
         AdditionalEvaluateViewController *additionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
         additionalEvaluateVC.idString = model.idString;
         additionalEvaluateVC.categoryString = model.category;

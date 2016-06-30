@@ -110,7 +110,6 @@
 //#define kQDFTestUrlString @"http://192.168.20.149/wap/"
 
 #define kQDFTestImageString @"http://testq.zcb2016.com"
-
 //#define kQDFTestImageString @"http://192.168.20.149"
 
 //post

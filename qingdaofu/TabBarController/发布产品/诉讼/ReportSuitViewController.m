@@ -148,11 +148,7 @@
             [weakself setDidTokenValid:^(TokenModel *model) {
                 if ([model.code isEqualToString:@"0000"]) {
                     if (tag == 33) {//保存
-//                        if ([self.tagString integerValue] == 1) {
-                            [weakself reportSuitActionWithTypeString:@"0"];
-//                        }else{
-//                            [weakself reportSuitActionWithTypeString1:@"0"];
-//                        }
+                        [weakself reportSuitActionWithTypeString:@"0"];
                     }else{
                         [weakself reportSuitActionWithTypeString:@"1"];
                     }

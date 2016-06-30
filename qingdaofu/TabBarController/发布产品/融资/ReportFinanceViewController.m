@@ -322,7 +322,7 @@
             if (self.dataDictionary[@"mortorage_community"]) {
                 cell.agentTextField.text = self.dataDictionary[@"mortorage_community"];
             }else{
-                cell.agentTextField.text = self.fiModel.seatmortgage?self.fiModel.seatmortgage:@"";
+                cell.agentTextField.text = self.fiModel.seatmortgage?self.fiModel.mortorage_community:@"";
             }
             
             [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
@@ -611,8 +611,8 @@
                 [self.reportFinanceTableView reloadData];
                 
                 //小区名
-                AgentCell *cell = [self.reportFinanceTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:4 inSection:0]];
-                cell.agentTextField.text = [NSString stringWithFormat:@"%@",mortorage_community];
+//                AgentCell *cell = [self.reportFinanceTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:4 inSection:0]];
+//                cell.agentTextField.text = [NSString stringWithFormat:@"%@",mortorage_community];
             }];
             [self.navigationController pushViewController:guarantyVC animated:YES];
         }

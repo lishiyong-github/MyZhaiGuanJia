@@ -204,7 +204,7 @@
         
         NSString *id_category = [NSString stringWithFormat:@"%@_%@",orderModel.idString,orderModel.category];
         NSString *value = self.myOrderResonseDic[id_category];
-        if ([value integerValue] == 2) {//不能评价
+        if ([value integerValue] >= 2) {//不能评价
             return 156;
         }
     }
@@ -346,11 +346,16 @@
         
         NSString *id_category = [NSString stringWithFormat:@"%@_%@",rowModel.idString,rowModel.category];
         NSString *value = self.myOrderResonseDic[id_category];
-        if ([value integerValue] == 2) {
+        if ([value integerValue] >= 2) {
             [cell.thirdButton setHidden:YES];
         }else{
             [cell.thirdButton setHidden:NO];
-            [cell.thirdButton setTitle:@"去评价" forState:0];
+            
+            if ([value integerValue] == 0) {
+                [cell.thirdButton setTitle:@"去评价" forState:0];
+            }else{
+                [cell.thirdButton setTitle:@"再次评价" forState:0];
+            }
             QDFWeakSelf;
             [cell.thirdButton addAction:^(UIButton *btn) {
                 [weakself goToWriteScheduleOrEvaluate:@"去评价" withRow:indexPath.row withString:value];
@@ -393,10 +398,16 @@
         myEndingVC.pidString = eModel.uidString;
         [self.navigationController pushViewController:myEndingVC animated:YES];
     }else if([eModel.progress_status isEqualToString:@"4"]){//结案
+        
+        RowsModel *eModel = self.myOrderDataList[indexPath.section];
+        NSString *id_category = [NSString stringWithFormat:@"%@_%@",eModel.idString,eModel.category];
+        NSString *value1 = self.myOrderResonseDic[id_category];
+        
         MyClosingViewController *myClosingVC = [[MyClosingViewController alloc] init];
         myClosingVC.idString = eModel.idString;
         myClosingVC.categaryString = eModel.category;
         myClosingVC.pidString = eModel.uidString;
+        myClosingVC.evaString = value1;
         [self.navigationController pushViewController:myClosingVC animated:YES];
     }
 }

@@ -44,6 +44,7 @@
 @property (nonatomic,strong) UITableView *ReleaseCloseTableView;
 @property (nonatomic,strong) BaseCommitButton *ReleaseCloseCommitButton;
 
+
 @property (nonatomic,strong) NSMutableArray *releaseArray;
 @property (nonatomic,strong) NSMutableArray *scheduleReleaseCloArray;
 @property (nonatomic,strong) NSMutableArray *evaluateResponseArray;
@@ -102,25 +103,39 @@
 {
     if (!_ReleaseCloseCommitButton) {
         _ReleaseCloseCommitButton = [BaseCommitButton newAutoLayoutView];
-        [_ReleaseCloseCommitButton setTitle:@"追加评价" forState:0];
-        [_ReleaseCloseCommitButton setTitle:@"评价" forState:0];
-
-        QDFWeakSelf;
-        [_ReleaseCloseCommitButton addAction:^(UIButton *btn) {
-            
-            PublishingModel *clModel;
-            if (self.releaseArray.count > 0) {
-                PublishingResponse *clResponse = self.releaseArray[0];
-                clModel = clResponse.product;
+        
+        if ([self.evaString integerValue] < 2) {
+            if ([self.evaString integerValue] == 0) {
+                [_ReleaseCloseCommitButton setTitle:@"评价" forState:0];
+                
+            }else if ([self.evaString integerValue] == 1){
+                [_ReleaseCloseCommitButton setTitle:@"再次评价" forState:0];
+                
             }
             
-            AdditionalEvaluateViewController *additionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
-            additionalEvaluateVC.typeString = @"发布方";
-            additionalEvaluateVC.idString = weakself.idString;
-            additionalEvaluateVC.categoryString = weakself.categaryString;
-            additionalEvaluateVC.codeString = clModel.codeString;
-            [weakself.navigationController pushViewController:additionalEvaluateVC animated:YES];
-        }];
+            QDFWeakSelf;
+            [_ReleaseCloseCommitButton addAction:^(UIButton *btn) {
+                
+                PublishingModel *clModel;
+                if (self.releaseArray.count > 0) {
+                    PublishingResponse *clResponse = weakself.releaseArray[0];
+                    clModel = clResponse.product;
+                }
+                
+                AdditionalEvaluateViewController *additionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
+                additionalEvaluateVC.typeString = @"发布方";
+                additionalEvaluateVC.evaString = weakself.evaString;
+                additionalEvaluateVC.idString = weakself.idString;
+                additionalEvaluateVC.categoryString = weakself.categaryString;
+                additionalEvaluateVC.codeString = clModel.codeString;
+                [weakself.navigationController pushViewController:additionalEvaluateVC animated:YES];
+            }];
+            
+        }else{
+            [_ReleaseCloseCommitButton setTitle:@"已结案" forState:0];
+            _ReleaseCloseCommitButton.backgroundColor = kSelectedColor;
+            [_ReleaseCloseCommitButton setTitleColor:kBlackColor forState:0];
+        }
     }
     return _ReleaseCloseCommitButton;
 }
@@ -452,14 +467,19 @@
             
             [cell.userNameButton setTitleColor:kBlueColor forState:0];
             cell.userActionButton.userInteractionEnabled = NO;
+            
             if (self.evaluateResponseArray.count > 0) {
                 EvaluateResponse *response = self.evaluateResponseArray[0];
                 float creditor = [response.creditor floatValue];
                 NSString *creditorStr = [NSString stringWithFormat:@"|  给出的评价(%.1f分)",creditor];
                 [cell.userNameButton setTitle:creditorStr forState:0];
                 
-                [cell.userActionButton setTitle:@"查看更多" forState:0];
-                [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+                if (self.evaluateArray.count > 0) {
+                    [cell.userActionButton setTitle:@"查看更多" forState:0];
+                    [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+                }else{
+                    [cell.userActionButton setTitle:@"无" forState:0];
+                }
             }else{
                 [cell.userNameButton setTitle:@"|  给出的评价" forState:0];
                 [cell.userActionButton setTitle:@"无" forState:0];
@@ -468,7 +488,7 @@
             return cell;
             
         }
-        //具体评级
+        //具体评价
             identifier = @"releaseClose51";
             EvaluatePhotoCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
             if (!cell) {
@@ -476,50 +496,67 @@
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
+        //有评价
         if (self.evaluateArray.count > 0) {
-            EvaluateResponse *response = self.evaluateArray[0];
-            LaunchEvaluateModel *launchModel;
-            if (self.evaluateResponseArray.count > 0) {
-                [cell.remindImageButton setHidden:YES];
-                [cell.evaProductButton setHidden:YES];
-                [cell.evaNameLabel setHidden:NO];
-                [cell.evaStarImage setHidden:NO];
-                [cell.evaTimeLabel setHidden:NO];
-                [cell.evaTextLabel setHidden:NO];
-                [cell.evaProImageView1 setHidden:NO];
-                [cell.evaProImageView2 setHidden:NO];
-                
-                launchModel = response.launchevaluation[0];
-
-                NSString *isHideStr = launchModel.isHide?@"匿名":launchModel.mobile;
-                cell.evaNameLabel.text = isHideStr;
-                cell.evaTimeLabel.text = [NSDate getYMDFormatterTime:launchModel.create_time];
-                cell.evaStarImage.currentIndex = [response.creditor intValue];
-                cell.evaProImageView1.backgroundColor = kLightGrayColor;
-                cell.evaProImageView2.backgroundColor = kLightGrayColor;
-                
-                if (launchModel.content == nil || [launchModel.content isEqualToString:@""]) {
-                    cell.evaTextLabel.text = @"未填写评价内容";
-                }else{
-                    cell.evaTextLabel.text = launchModel.content;
-                }
-                
-                if (launchModel.picture == nil || [launchModel.picture isEqualToString:@""]) {
-                
-                }else{
-                    
-                }
-                
+            //布局
+            [cell.remindImageButton setHidden:YES];
+            [cell.evaProductButton setHidden:YES];
+            [cell.evaNameLabel setHidden:NO];
+            [cell.evaStarImage setHidden:NO];
+            [cell.evaTimeLabel setHidden:NO];
+            [cell.evaTextLabel setHidden:NO];
+            [cell.evaProImageView1 setHidden:NO];
+            [cell.evaProImageView2 setHidden:NO];
+            
+            EvaluateResponse *response = self.evaluateResponseArray[0];
+            LaunchEvaluateModel *launchModel = response.launchevaluation[0];
+            
+            NSString *isHideStr = launchModel.isHide?@"匿名":launchModel.mobile;
+            cell.evaNameLabel.text = isHideStr;
+            cell.evaTimeLabel.text = [NSDate getYMDFormatterTime:launchModel.create_time];
+            cell.evaStarImage.currentIndex = [response.creditor intValue];
+            cell.evaProImageView1.backgroundColor = kLightGrayColor;
+            cell.evaProImageView2.backgroundColor = kLightGrayColor;
+            
+            //评价内容
+            if (launchModel.content == nil || [launchModel.content isEqualToString:@""]) {
+                cell.evaTextLabel.text = @"未填写评价内容";
             }else{
-                [cell.remindImageButton setHidden:NO];
-                [cell.evaProductButton setHidden:YES];
-                [cell.evaNameLabel setHidden: YES];
-                [cell.evaStarImage setHidden:YES];
-                [cell.evaTimeLabel setHidden:YES];
-                [cell.evaTextLabel setHidden:YES];
-                [cell.evaProImageView1 setHidden:YES];
-                [cell.evaProImageView2 setHidden:YES];
-           }
+                cell.evaTextLabel.text = launchModel.content;
+            }
+            
+            //图片
+            if (launchModel.pictures.count == 1) {
+                NSString *str1;
+                if ([launchModel.pictures[0] isEqualToString:@""]) {
+                    str1 = launchModel.pictures[0];
+                }else{
+                    str1 = [launchModel.pictures[0] substringWithRange:NSMakeRange(1, [launchModel.pictures[0] length]-2)];
+                }
+                NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str1];
+                NSURL *url1 = [NSURL URLWithString:imageStr1];
+                [cell.evaProImageView1 sd_setImageWithURL:url1 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+                [cell.evaProImageView2 sd_setImageWithURL:nil placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+            }else if (launchModel.pictures.count >= 2){
+                NSString *str1 = [launchModel.pictures[0] substringWithRange:NSMakeRange(1, [launchModel.pictures[0] length]-2)];
+                NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str1];
+                NSURL *url1 = [NSURL URLWithString:imageStr1];
+                [cell.evaProImageView1 sd_setImageWithURL:url1 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+                NSString *str2 = [launchModel.pictures[1] substringWithRange:NSMakeRange(1, [launchModel.pictures[1] length]-2)];
+                NSString *imageStr2 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str2];
+                NSURL *url2 = [NSURL URLWithString:imageStr2];
+                [cell.evaProImageView2 sd_setImageWithURL:url2 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+            }
+        }else{//无评价时布局
+            
+            [cell.remindImageButton setHidden:NO];
+            [cell.evaProductButton setHidden:YES];
+            [cell.evaNameLabel setHidden: YES];
+            [cell.evaStarImage setHidden:YES];
+            [cell.evaTimeLabel setHidden:YES];
+            [cell.evaTextLabel setHidden:YES];
+            [cell.evaProImageView1 setHidden:YES];
+            [cell.evaProImageView2 setHidden:YES];
         }
         
             return cell;
@@ -582,6 +619,7 @@
     [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
 }
 
+//详情
 - (void)getCloseMessages
 {
     NSString *releaseString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseDetailString];
@@ -600,6 +638,7 @@
     }];
 }
 
+//进度
 - (void)getPacesDetails
 {
     NSString *scheduleString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kLookUpScheduleString];
@@ -610,6 +649,7 @@
     [self requestDataPostWithString:scheduleString params:params successBlock:^(id responseObject) {
         
         ScheduleResponse *response = [ScheduleResponse objectWithKeyValues:responseObject];
+        
         for (ScheduleModel *model in response.disposing) {
             [self.scheduleReleaseCloArray addObject:model];
         }
@@ -621,6 +661,7 @@
     }];
 }
 
+//评价
 - (void)getEvaluateDetails
 {
     NSString *evaluateString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyEvaluateString];
@@ -632,7 +673,7 @@
         
         EvaluateResponse *response = [EvaluateResponse objectWithKeyValues:responseObject];
         
-        [self.evaluateArray addObject:response];
+        [self.evaluateResponseArray addObject:response];
         
         for (LaunchEvaluateModel *launchModel in response.launchevaluation) {
             [self.evaluateArray addObject:launchModel];

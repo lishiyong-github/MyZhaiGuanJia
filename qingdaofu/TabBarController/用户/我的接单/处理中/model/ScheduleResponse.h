@@ -10,7 +10,7 @@
 
 @interface ScheduleResponse : BaseModel
 
-@property (nonatomic,strong) NSMutableArray *disposing;
+@property (nonatomic,strong) NSMutableArray *disposing;  //进度
 @property (nonatomic,copy) NSString *uid;
 
 @end

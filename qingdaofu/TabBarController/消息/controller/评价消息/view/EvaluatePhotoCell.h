@@ -9,15 +9,16 @@
 #import <UIKit/UIKit.h>
 
 #import "LEOStarView.h"
+#import "TakePictureCell.h"
 
 @interface EvaluatePhotoCell : UITableViewCell
 
-@property (nonatomic,strong) UILabel *evaNameLabel;
-@property (nonatomic,strong) UILabel *evaTimeLabel;
-@property (nonatomic,strong) LEOStarView *evaStarImage;
-@property (nonatomic,strong) UILabel *evaTextLabel;
-@property (nonatomic,strong) UIImageView *evaProImageView1;
-@property (nonatomic,strong) UIImageView *evaProImageView2;
+@property (nonatomic,strong) UILabel *evaNameLabel;  //评价人
+@property (nonatomic,strong) UILabel *evaTimeLabel;  //评价时间
+@property (nonatomic,strong) LEOStarView *evaStarImage;  //星级
+@property (nonatomic,strong) UILabel *evaTextLabel;  //内容
+@property (nonatomic,strong) UIImageView *evaProImageView1; //图片
+@property (nonatomic,strong) UIImageView *evaProImageView2; //图片
 
 @property (nonatomic,strong) UIButton *evaProductButton;
 @property (nonatomic,strong) UIButton *evaInnnerButton;

@@ -41,7 +41,4 @@
 @property (nonatomic,copy) NSString *loanyear;  //借款人年龄
 @property (nonatomic,copy) NSString *obligeeyear; //权利人年龄
 
-
-
-
 @end

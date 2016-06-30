@@ -23,6 +23,7 @@
 @property (nonatomic,copy) NSString *kuaijie;//
 @property (nonatomic,copy) NSString *mobile;  //手机号
 @property (nonatomic,copy) NSString *picture;//评价图片
+@property (nonatomic,strong) NSArray *pictures;  //图片列表
 @property (nonatomic,copy) NSString *pid;//
 @property (nonatomic,copy) NSString *product_id;//
 @property (nonatomic,copy) NSString *professionalknowledge;//

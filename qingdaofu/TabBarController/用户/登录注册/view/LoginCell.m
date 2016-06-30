@@ -92,6 +92,11 @@
     }
 }
 
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    return YES;
+}
+
 
 - (void)awakeFromNib {
     // Initialization code

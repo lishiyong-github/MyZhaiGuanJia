@@ -10,7 +10,7 @@
 #import "CompanyWebSiteViewController.h"
 #import <StoreKit/StoreKit.h>
 
-
+#import "SingleButton.h"
 #import "MineUserCell.h"
 //#import "UIButton.h"
 
@@ -18,8 +18,10 @@
 
 @property (nonatomic,assign) BOOL didSetupConstaints;
 @property (nonatomic,strong) UITableView *aboutTableView;
-@property (nonatomic,strong) UIButton *aboutHeaderView;
+//@property (nonatomic,strong) UIButton *aboutHeaderView;
 @property (nonatomic,strong) UIButton *aboutCommitButton;
+
+@property (nonatomic,strong) SingleButton *aboutHeaderView;
 
 @end
 
@@ -59,48 +61,27 @@
         _aboutTableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 142)];
         [_aboutTableView.tableHeaderView addSubview:self.aboutHeaderView];
         _aboutTableView.backgroundColor = kBackColor;
+        
+        [self.aboutHeaderView autoAlignAxisToSuperviewAxis:ALAxisVertical];
+        [self.aboutHeaderView autoSetDimensionsToSize:CGSizeMake(85, 120)];
+        [self.aboutHeaderView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:30];
     }
     return _aboutTableView;
 }
 
-- (UIButton *)aboutHeaderView
+- (SingleButton *)aboutHeaderView
 {
     if (!_aboutHeaderView) {
-        _aboutHeaderView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 142)];
-        _aboutHeaderView.titleLabel.font = kSecondFont;
-        [_aboutHeaderView setTitleColor:kLightGrayColor forState:0];
-        
-        [_aboutHeaderView setImage:[UIImage imageNamed:@"logo"] forState:0];
-        
+        _aboutHeaderView = [SingleButton newAutoLayoutView];
+        [_aboutHeaderView.button setImage:[UIImage imageNamed:@"logo"] forState:0];
+        _aboutHeaderView.label.font = kSecondFont;
+        _aboutHeaderView.label.textColor = kLightGrayColor;
+
         //当前版本
         NSDictionary *infoDic = [[NSBundle mainBundle] infoDictionary];
         NSString *currentVersion = [infoDic objectForKey:@"CFBundleVersion"];
         NSString *versionString = [NSString stringWithFormat:@"清道夫V%@",currentVersion];
-        [_aboutHeaderView setTitle:versionString forState:0];
-        
-//        _aboutHeaderView.transform = CGAffineTransformRotate(_aboutHeaderView.transform, M_PI);
-//        _aboutHeaderView.titleLabel.transform = CGAffineTransformRotate(_aboutHeaderView.titleLabel.transform, M_2_PI);
-//        _aboutHeaderView.imageView.transform = CGAffineTransformRotate(_aboutHeaderView.imageView.transform, M_2_PI);
-        
-        
-        //拿到title和image的大小：
-//        CGSize titleSize = CGSizeMake(60, 15);
-        //_aboutHeaderView.titleLabel.bounds.size;
-        //CGSizeMake(60, 15);
-//        _aboutHeaderView.titleLabel.bounds.size;
-//        CGSize imageSize = _aboutHeaderView.imageView.bounds.size;
-//        _aboutHeaderView.imageEdgeInsets = UIEdgeInsetsMake(-imageSize.height/2, titleSize.width/2, imageSize.height/2, -titleSize.width/2);
-//        _aboutHeaderView.titleEdgeInsets = UIEdgeInsetsMake(titleSize.height/2, -imageSize.width/2, -titleSize.height/2, imageSize.width/2);
-        
-        /*
-        //图片在上，文字在下
-        btn.imageEdgeInsets = UIEdgeInsetsMake(-imageSize.height/2, imageSize.width, imageSize.height/2, -imageSize.width);
-        btn.titleEdgeInsets = UIEdgeInsetsMake(imageSize.height, -imageSize.width/2, -imageSize.height/2, imageSize.width/2);
-        杨丹  15:22:16
-        //拿到title和image的大小：
-        CGSize titleSize = btn.titleLabel.bounds.size;
-        CGSize imageSize = btn.imageView.bounds.size;
-        */
+        [_aboutHeaderView.label setText:versionString];
     }
     return _aboutHeaderView;
 }
@@ -118,7 +99,7 @@
         NSString *aString = [NSString stringWithFormat:@"%@\n%@",aString1,aString2];
         NSMutableAttributedString *aAttributeString = [[NSMutableAttributedString alloc] initWithString:aString];
         [aAttributeString addAttributes:@{NSFontAttributeName:kSecondFont,NSForegroundColorAttributeName:kBlueColor} range:NSMakeRange(0, aString1.length)];
-        [aAttributeString addAttributes:@{NSFontAttributeName:kTabBarFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(aString1.length+1, aString2.length)];
+        [aAttributeString addAttributes:@{NSFontAttributeName:kTabBarFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(aString1.length+1, aString2.length)];
         [_aboutCommitButton setAttributedTitle:aAttributeString forState:0];
         
         QDFWeakSelf;
@@ -162,16 +143,23 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    SKStoreProductViewController *SKStoreProductsVC = [[SKStoreProductViewController alloc] init];
-    SKStoreProductsVC.delegate = self;
+    //            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/cn/app/wu-hao-zhang-gui/id1030735463?mt=8"]];
     
-    NSDictionary *dict = [NSDictionary dictionaryWithObject:@"1065452286" forKey:SKStoreProductParameterITunesItemIdentifier];
-    [SKStoreProductsVC loadProductWithParameters:dict completionBlock:^(BOOL result, NSError *error){
-        if (result)
-        {
-            [self presentViewController:SKStoreProductsVC animated:YES completion:nil];
-        }
-    }];
+    Class isAllow = NSClassFromString(@"SKStoreProductViewController");
+    
+    if (isAllow != nil) {
+        
+        SKStoreProductViewController *sKStoreProductViewController = [[SKStoreProductViewController alloc] init];
+        [sKStoreProductViewController.view setFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
+        [sKStoreProductViewController setDelegate:self];
+        [sKStoreProductViewController loadProductWithParameters:@{SKStoreProductParameterITunesItemIdentifier: @"1116869191"} completionBlock:^(BOOL result, NSError *error) {
+            if (result) {
+                [self presentViewController:sKStoreProductViewController animated:YES completion:nil];
+            }else{
+                NSLog(@"error:%@",error);
+            }
+        }];
+    }
 }
 
 #pragma mark - SKStoreProductViewControllerDelegate
@@ -180,26 +168,6 @@
     [viewController dismissViewControllerAnimated:YES completion:nil];
 }
 
-//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-//{
-//    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 142)];
-//    headerView.backgroundColor = kBackColor;
-//    
-//    //imageView
-//    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake((kScreenWidth-80)/2, 40, 80, 100)];
-//    imageView.backgroundColor = kBlueColor;
-//    [headerView addSubview:imageView];
-//    
-//    //version
-//    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, imageView.bottom+10, kScreenWidth, 20)];
-//    label.textAlignment = NSTextAlignmentCenter;
-//    label.textColor = kLightGrayColor;
-//    label.font = kFirstFont;
-//    label.text = [NSString stringWithFormat:@"清道夫V%@",@"1.0.2"];
-//    [headerView addSubview:label];
-//    
-//    return headerView;
-//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
