@@ -25,7 +25,6 @@
 		A145B28E1CEEAE02003A93B7 /* conserve_tip_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A145B28A1CEEAE02003A93B7 /* conserve_tip_icon@3x.png */; };
 		A145B28F1CEEAE02003A93B7 /* conserve_wait_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A145B28B1CEEAE02003A93B7 /* conserve_wait_icon@2x.png */; };
 		A145B2901CEEAE02003A93B7 /* conserve_wait_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A145B28C1CEEAE02003A93B7 /* conserve_wait_icon@3x.png */; };
-		A145B2931CEED691003A93B7 /* EvaluateCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A145B2921CEED691003A93B7 /* EvaluateCell.m */; };
 		A145B2A01CEEDB0D003A93B7 /* list_financing_nor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A145B2981CEEDB0D003A93B7 /* list_financing_nor@2x.png */; };
 		A145B2A11CEEDB0D003A93B7 /* list_financing_nor@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A145B2991CEEDB0D003A93B7 /* list_financing_nor@3x.png */; };
 		A145B2A21CEEDB0D003A93B7 /* list_financing@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A145B29A1CEEDB0D003A93B7 /* list_financing@2x.png */; };
@@ -82,7 +81,6 @@
 		A159F97F1D0D727A00A6A024 /* UIScrollView+MJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = A159F9751D0D727A00A6A024 /* UIScrollView+MJExtension.m */; };
 		A159F9801D0D727A00A6A024 /* UIScrollView+MJRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = A159F9771D0D727A00A6A024 /* UIScrollView+MJRefresh.m */; };
 		A159F9811D0D727A00A6A024 /* UIView+MJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = A159F9791D0D727A00A6A024 /* UIView+MJExtension.m */; };
-		A159F9841D0E3D6600A6A024 /* FinanCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A159F9831D0E3D6600A6A024 /* FinanCell.m */; };
 		A159F9871D0E7EFF00A6A024 /* SuitBaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A159F9861D0E7EFF00A6A024 /* SuitBaseCell.m */; };
 		A15F61841D18DF1F0060AF7B /* GuarantyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A15F61831D18DF1F0060AF7B /* GuarantyViewController.m */; };
 		A15F61891D1905940060AF7B /* GuarantyResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A15F61881D1905940060AF7B /* GuarantyResponse.m */; };
@@ -378,7 +376,6 @@
 		A1A017561C5B696A00027134 /* NSObject+MJKeyValue.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A017491C5B696A00027134 /* NSObject+MJKeyValue.m */; };
 		A1A017571C5B696A00027134 /* NSObject+MJProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A0174B1C5B696A00027134 /* NSObject+MJProperty.m */; };
 		A1A017581C5B696A00027134 /* NSString+MJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A0174D1C5B696A00027134 /* NSString+MJExtension.m */; };
-		A1A34BF11CE2C9EB00AD454A /* MyOrderDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A34BF01CE2C9EB00AD454A /* MyOrderDetailCell.m */; };
 		A1A34BF61CE2DFB400AD454A /* tab_user_s@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A34BF21CE2DFB400AD454A /* tab_user_s@2x.png */; };
 		A1A34BF71CE2DFB400AD454A /* tab_user_s@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A34BF31CE2DFB400AD454A /* tab_user_s@3x.png */; };
 		A1A34BF81CE2DFB400AD454A /* tab_user@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A34BF41CE2DFB400AD454A /* tab_user@2x.png */; };
@@ -530,8 +527,6 @@
 		A145B28A1CEEAE02003A93B7 /* conserve_tip_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conserve_tip_icon@3x.png"; sourceTree = "<group>"; };
 		A145B28B1CEEAE02003A93B7 /* conserve_wait_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conserve_wait_icon@2x.png"; sourceTree = "<group>"; };
 		A145B28C1CEEAE02003A93B7 /* conserve_wait_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conserve_wait_icon@3x.png"; sourceTree = "<group>"; };
-		A145B2911CEED691003A93B7 /* EvaluateCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EvaluateCell.h; sourceTree = "<group>"; };
-		A145B2921CEED691003A93B7 /* EvaluateCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EvaluateCell.m; sourceTree = "<group>"; };
 		A145B2981CEEDB0D003A93B7 /* list_financing_nor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list_financing_nor@2x.png"; sourceTree = "<group>"; };
 		A145B2991CEEDB0D003A93B7 /* list_financing_nor@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list_financing_nor@3x.png"; sourceTree = "<group>"; };
 		A145B29A1CEEDB0D003A93B7 /* list_financing@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list_financing@2x.png"; sourceTree = "<group>"; };
@@ -619,8 +614,6 @@
 		A159F9771D0D727A00A6A024 /* UIScrollView+MJRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+MJRefresh.m"; sourceTree = "<group>"; };
 		A159F9781D0D727A00A6A024 /* UIView+MJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+MJExtension.h"; sourceTree = "<group>"; };
 		A159F9791D0D727A00A6A024 /* UIView+MJExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+MJExtension.m"; sourceTree = "<group>"; };
-		A159F9821D0E3D6600A6A024 /* FinanCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FinanCell.h; sourceTree = "<group>"; };
-		A159F9831D0E3D6600A6A024 /* FinanCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FinanCell.m; sourceTree = "<group>"; };
 		A159F9851D0E7EFF00A6A024 /* SuitBaseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuitBaseCell.h; sourceTree = "<group>"; };
 		A159F9861D0E7EFF00A6A024 /* SuitBaseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SuitBaseCell.m; sourceTree = "<group>"; };
 		A15F61821D18DF1F0060AF7B /* GuarantyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuarantyViewController.h; sourceTree = "<group>"; };
@@ -1071,8 +1064,6 @@
 		A1A0174B1C5B696A00027134 /* NSObject+MJProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJProperty.m"; sourceTree = "<group>"; };
 		A1A0174C1C5B696A00027134 /* NSString+MJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MJExtension.h"; sourceTree = "<group>"; };
 		A1A0174D1C5B696A00027134 /* NSString+MJExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MJExtension.m"; sourceTree = "<group>"; };
-		A1A34BEF1CE2C9EB00AD454A /* MyOrderDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyOrderDetailCell.h; sourceTree = "<group>"; };
-		A1A34BF01CE2C9EB00AD454A /* MyOrderDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyOrderDetailCell.m; sourceTree = "<group>"; };
 		A1A34BF21CE2DFB400AD454A /* tab_user_s@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_user_s@2x.png"; sourceTree = "<group>"; };
 		A1A34BF31CE2DFB400AD454A /* tab_user_s@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_user_s@3x.png"; sourceTree = "<group>"; };
 		A1A34BF41CE2DFB400AD454A /* tab_user@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_user@2x.png"; sourceTree = "<group>"; };
@@ -1701,21 +1692,11 @@
 		A176911C1CD983E8004289DD /* 终止 */ = {
 			isa = PBXGroup;
 			children = (
-				A17691201CD9844D004289DD /* view */,
 				A176911D1CD98404004289DD /* MyEndingViewController.h */,
 				A176911E1CD98404004289DD /* MyEndingViewController.m */,
 				A192B4AD1CDAFAAC0053FC4C /* 填写进度 */,
 			);
 			path = "终止";
-			sourceTree = "<group>";
-		};
-		A17691201CD9844D004289DD /* view */ = {
-			isa = PBXGroup;
-			children = (
-				A1A34BEF1CE2C9EB00AD454A /* MyOrderDetailCell.h */,
-				A1A34BF01CE2C9EB00AD454A /* MyOrderDetailCell.m */,
-			);
-			path = view;
 			sourceTree = "<group>";
 		};
 		A17691271CD99758004289DD /* 结案 */ = {
@@ -2255,8 +2236,6 @@
 				A154B8D51CE18E7F00884CA4 /* ReportFootView.m */,
 				A16486BF1D01511100B442C1 /* UpwardTableView.h */,
 				A16486C01D01511100B442C1 /* UpwardTableView.m */,
-				A159F9821D0E3D6600A6A024 /* FinanCell.h */,
-				A159F9831D0E3D6600A6A024 /* FinanCell.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -2842,8 +2821,6 @@
 			children = (
 				A1A97E5D1CDC8AED00EDE320 /* EvaTopSwitchView.h */,
 				A1A97E5E1CDC8AED00EDE320 /* EvaTopSwitchView.m */,
-				A145B2911CEED691003A93B7 /* EvaluateCell.h */,
-				A145B2921CEED691003A93B7 /* EvaluateCell.m */,
 				A145B2A41CEEEDA6003A93B7 /* EvaluatePhotoCell.h */,
 				A145B2A51CEEEDA6003A93B7 /* EvaluatePhotoCell.m */,
 				A145B2AA1CEEF579003A93B7 /* EvaluateSendCell.h */,
@@ -3426,7 +3403,6 @@
 				A1A017541C5B696A00027134 /* NSObject+MJClass.m in Sources */,
 				A159F95A1D0D470F00A6A024 /* ScheduleResponse.m in Sources */,
 				A176912E1CD99E1E004289DD /* CheckDetailPublishViewController.m in Sources */,
-				A159F9841D0E3D6600A6A024 /* FinanCell.m in Sources */,
 				A1B028ED1D1794DC00F32A09 /* SDWebImagePrefetcher.m in Sources */,
 				A10D7B781CEAF73C00422D7D /* MyAgentCell.m in Sources */,
 				A17634271D06B6F500CD4623 /* CertificationModel.m in Sources */,
@@ -3468,11 +3444,9 @@
 				A192B4B01CDAFAC60053FC4C /* MyScheduleViewController.m in Sources */,
 				A19B8E2B1CCF474B00F8EBF2 /* TabBar.m in Sources */,
 				A16FF5A01D0581DF00C50A0B /* NewProductListModel.m in Sources */,
-				A145B2931CEED691003A93B7 /* EvaluateCell.m in Sources */,
 				A196CDE81CFBC4D300AC6C87 /* UIViewController+DismissKeyboard.m in Sources */,
 				A16486C11D01511100B442C1 /* UpwardTableView.m in Sources */,
 				A192B4B81CDB34030053FC4C /* PaceViewController.m in Sources */,
-				A1A34BF11CE2C9EB00AD454A /* MyOrderDetailCell.m in Sources */,
 				A159F97C1D0D727A00A6A024 /* MJRefreshConst.m in Sources */,
 				A1B0292E1D17CE6F00F32A09 /* AFURLResponseSerialization.m in Sources */,
 				A1770E241CFEA2C1003579E1 /* LEOStarView.m in Sources */,

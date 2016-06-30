@@ -308,23 +308,14 @@
                              @"category" : self.categoryString
                              };
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
-        
-        NSDictionary *ddd = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSLog(@"_______ %@",ddd);
-        
-        
         PublishingResponse *respModel = [PublishingResponse objectWithKeyValues:responseObject];
         
         self.navigationItem.title = respModel.product.codeString;
-        
         [self.recommendDataArray addObject:respModel];
-        
         [self applicationForOrdersStates];
-        
         [self.productsDetailsTableView reloadData];
         
     } andFailBlock:^(NSError *error){
-        
     }];
 }
 

@@ -16,7 +16,6 @@
 #import "EditDebtAddressCell.h"
 #import "ReportFootView.h"
 #import "EvaTopSwitchView.h"
-#import "FinanCell.h"
 
 #import "UIViewController+BlurView.h"
 

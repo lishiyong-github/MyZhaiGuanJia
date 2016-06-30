@@ -11,7 +11,6 @@
 #import "AdditionalEvaluateViewController.h"
 
 #import "EvaTopSwitchView.h"
-#import "EvaluateCell.h"
 #import "EvaluatePhotoCell.h"
 
 #import "EvaluateSendCell.h"  //发出评价
@@ -184,77 +183,6 @@
     }
     
     return cell;
-    
-    /*
-    if ([_tagString isEqualToString:@"get"]) {
-        identifier = @"get";
-        EvaluateCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if (!cell) {
-            cell = [[EvaluateCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        cell.evaNameLabel.text = @"12345678900";
-        cell.evaTimeLabel.text = @"2016-10-10";
-        [cell.evaStarImageView setBackgroundColor:kBlueColor];
-        cell.evaTextLabel.text = @"还行，还行，还行";
-        [cell.evaInnnerButton setImage:[UIImage imageNamed:@"list_financing"] forState:0];
-        [cell.evaInnnerButton setTitle:@"RZ201605200001" forState:0];
-        QDFWeakSelf;
-        [cell.evaProductButton addAction:^(UIButton *btn) {
-            MyClosingViewController *myClosingVc = [[MyClosingViewController alloc] init];
-            [weakself.navigationController pushViewController:myClosingVc animated:YES];
-        }];
-        
-        return cell;
-    }
-    
-    identifier = @"send";
-    EvaluateSendCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    if (!cell) {
-        cell = [[EvaluateSendCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-    }
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    cell.evaNameLabel.text = self.dataList[indexPath.section];
-//    @"12345678900";
-    cell.evaTimeLabel.text = @"2016-09-09";
-    [cell.evaStarImageView setBackgroundColor:kBlueColor];
-    cell.evaTextLabel.text = @"还行，还不错，挺满意的";
-    [cell.evaProImageView1 setBackgroundColor:kLightGrayColor];
-    [cell.evaProImageView2 setBackgroundColor:kLightGrayColor];
-    [cell.evaInnnerButton setImage:[UIImage imageNamed:@"list_financing"] forState:0];
-    [cell.evaInnnerButton setTitle:@"RZ201605200001" forState:0];
-    [cell.evaDeleteButton setTitle:@"删除" forState:0];
-    [cell.evaAdditionButton setTitle:@"追加评论" forState:0];
-    
-    QDFWeakSelf;
-    [cell.evaProductButton addAction:^(UIButton *btn) {
-        MyClosingViewController *myClosingVc = [[MyClosingViewController alloc] init];
-        [weakself.navigationController pushViewController:myClosingVc animated:YES];
-    }];
-    
-    [cell.evaDeleteButton addAction:^(UIButton *btn) {
-        
-        NSIndexSet *deleteIndexSet = [NSIndexSet indexSetWithIndex:indexPath.section];
-        [weakself.dataList removeObjectAtIndex:indexPath.section];
-        [weakself deleteSections:deleteIndexSet withRowAnimation:UITableViewRowAnimationLeft];
-        
-        NSLog(@"评论删除成功");
-        
-//        [self.dataList removeObjectAtIndex:indexPath.section];
-//         [self.evaluateTableView reloadData];
-        
-        
-//        NSIndexSet *deleteIndexSet = [NSIndexSet indexSetWithIndex:indexPath.section];
-//        [self.dataList removeObjectAtIndex:indexPath.section];
-//        [self.evaluateTableView beginUpdates];
-//        [self.evaluateTableView deleteSections:deleteIndexSet withRowAnimation:UITableViewRowAnimationFade];
-//        [self.evaluateTableView endUpdates];
-        }];
-    
-    return cell;
-     */
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section

@@ -83,6 +83,12 @@
     }
 }
 
+- (BOOL)textViewShouldEndEditing:(UITextView *)textView
+{
+    [textView resignFirstResponder];
+    return YES;
+}
+
 - (void)awakeFromNib {
     // Initialization code
 }

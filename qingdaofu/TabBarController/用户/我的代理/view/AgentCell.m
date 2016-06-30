@@ -82,6 +82,11 @@
         self.didEndEditing(textField.text);
     }
 }
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
 
 - (void)awakeFromNib {
     // Initialization code

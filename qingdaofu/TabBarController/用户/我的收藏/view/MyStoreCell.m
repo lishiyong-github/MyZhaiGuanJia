@@ -11,36 +11,16 @@
 #import "UIButton+Addition.h"
 
 @implementation MyStoreCell
-
-
-//+(instancetype)cellWithTableView:(UITableView *)tableView
-//{
-//    static NSString *identifier = @"mySave";
-//    MyStoreCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-//    
-//    if (!cell) {
-//        cell = [[MyStoreCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-//    }
-//    
-//    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//    
-//    return cell;
-//}
-
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     
     if (self) {
-//        [self addSubview:self.imageView1];
-//        [self addSubview:self.label1];
-//        [self addSubview:self.label2];
-        //        [self addSubview:self.label3];
         
         [self.contentView addSubview:self.sButton1];
         [self.contentView addSubview:self.sButton2];
         
-        [self.contentView setNeedsUpdateConstraints];
+        [self setNeedsUpdateConstraints];
     }
     return self;
 }

@@ -13,8 +13,6 @@
 
 @property (nonatomic,strong) UILabel *comNameLabel;//名称
 @property (nonatomic,strong) UILabel *comIDLabel;//ID
-//@property (nonatomic,strong) CompletePhotoView *comPhotoView;  //图片
-
 
 @property (nonatomic,strong) UILabel *comPicLabel;
 @property (nonatomic,strong) UIButton *comPicButton;

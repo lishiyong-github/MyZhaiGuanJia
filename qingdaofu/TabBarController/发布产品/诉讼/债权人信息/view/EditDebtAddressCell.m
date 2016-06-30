@@ -60,6 +60,7 @@
         _ediTextView.delegate = self;
         _ediTextView.placeholder = @"请输入地址";
         _ediTextView.placeholderColor = kLightGrayColor;
+        _ediTextView.returnKeyType = UIReturnKeyDone;
     }
     return _ediTextView;
 }
@@ -67,11 +68,14 @@
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     NSString *title = [textView.text stringByReplacingCharactersInRange:range withString:text];
-    
     if (self.didEndEditing) {
         self.didEndEditing(title);
     }
     
+    if ([text isEqualToString:@"\n"]) {
+        [textView resignFirstResponder];
+        return NO;
+    }
     return YES;
 }
 
