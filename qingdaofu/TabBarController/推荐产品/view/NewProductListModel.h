@@ -31,7 +31,7 @@
 @property (nonatomic,copy) NSString *term;
 @property (nonatomic,copy) NSString *uidString;
 
-@property (nonatomic,copy) NSString *location;  //地址
+@property (nonatomic,copy) NSString *location;  //具体地址
 
 //@property (nonatomic,copy) NSString *app_id;
 //@property (nonatomic,copy) NSString *applyclose;

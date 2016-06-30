@@ -313,15 +313,17 @@
 //发布
 - (void)goToPublish
 {
-    RowsModel *pubModel;
+    PublishingResponse *response;
+    PublishingModel *saveModel;
     if (self.saveDetailArray.count > 0) {
-        pubModel = self.saveDetailArray[0];
+        response = self.saveDetailArray[0];
+        saveModel = response.product;
     }
     
     NSString *reportString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMySavePublishString];
     
-    NSDictionary *params = @{@"id" : pubModel.idString,
-                             @"category" : pubModel.category,
+    NSDictionary *params = @{@"id" : saveModel.idString,
+                             @"category" : saveModel.category,
                              @"token" : [self getValidateToken]
                              };
     

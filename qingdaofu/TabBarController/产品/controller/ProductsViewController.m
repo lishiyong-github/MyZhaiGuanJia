@@ -500,7 +500,6 @@
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
         
         self.provinceDictionary = dic;
-        
         [self.tableView11 reloadData];
         
     } andFailBlock:^(NSError *error) {

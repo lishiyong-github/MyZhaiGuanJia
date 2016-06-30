@@ -7,7 +7,6 @@
 //
 
 #import "ProdLeftView.h"
-//#import "MyStoreCell.h"
 #import "MineUserCell.h"
 
 @implementation ProdLeftView
@@ -24,16 +23,6 @@
     }
     return self;
 }
-
-//- (void)setLeftDataArray1:(NSMutableArray *)leftDataArray1
-//{
-//    _leftDataArray1 = leftDataArray1;
-//}
-//
-//- (void)setLeftDataArray2:(NSMutableArray *)leftDataArray2
-//{
-//    _leftDataArray2 = leftDataArray2;
-//}
 
 - (NSMutableArray *)leftDataArray1
 {
@@ -71,8 +60,8 @@
     }
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.widthActConstraints.constant = 200;
     
-//    NSArray *titleArr = @[@"还款方式",@"担保方式",@"担保物所在地",@"司法现状",@"债务人主体",@"委托事项",@"委托期限",@"代理费用",@"付款方式"];
     [cell.userNameButton setTitle:self.leftDataArray1[indexPath.row] forState:0];
     [cell.userActionButton setTitle:self.leftDataArray2[indexPath.row] forState:0];
     [cell.userActionButton setTitleColor:kBlueColor forState:0];

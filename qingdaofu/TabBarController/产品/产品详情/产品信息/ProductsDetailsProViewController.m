@@ -102,6 +102,7 @@
     return _productsDeTopView;
 }
 
+//基本信息
 - (ProdLeftView *)leftTableView
 {
     if (!_leftTableView) {
@@ -203,6 +204,7 @@
     return _leftTableView;
 }
 
+//补充信息
 - (ProdRightView *)rightTableView
 {
     if (!_rightTableView) {
@@ -333,10 +335,18 @@
                 creditorfile = @"查看";
             }
             
-            if (self.yyModel.creditorinfos.count > 0) {
+            
+            DebtModel *infoModel1 = self.yyModel.creditorinfos[0];
+            if (infoModel1.creditorname == nil) {
+                creditorinfo = @"无";
+            }else{
                 creditorinfo = @"查看";
             }
-            if (self.yyModel.borrowinginfos.count > 0) {
+            
+            DebtModel *infoModel2 = self.yyModel.borrowinginfos[0];
+            if (infoModel2.borrowingname == nil) {
+                borrowinginfo = @"无";
+            }else{
                 borrowinginfo = @"查看";
             }
             
@@ -353,17 +363,25 @@
                 }
                     break;
                 case 12:{//债权人信息
-                    ProductsCheckDetailViewController *productsCheckDetailVC = [[ProductsCheckDetailViewController alloc] init];
-                    productsCheckDetailVC.listArray = weakself.yyModel.creditorinfos;
-                    productsCheckDetailVC.categoryString = @"1";
-                    [weakself.navigationController pushViewController:productsCheckDetailVC animated:YES];
+                    
+                    DebtModel *inModel = weakself.yyModel.creditorinfos[0];
+                    if (!inModel.creditorname) {
+                        ProductsCheckDetailViewController *productsCheckDetailVC = [[ProductsCheckDetailViewController alloc] init];
+                        productsCheckDetailVC.listArray = weakself.yyModel.creditorinfos;
+                        productsCheckDetailVC.categoryString = @"1";
+                        [weakself.navigationController pushViewController:productsCheckDetailVC animated:YES];
+                    }
                 }
                     break;
                 case 13:{//债务人信息
-                    ProductsCheckDetailViewController *productsCheckDetailVC = [[ProductsCheckDetailViewController alloc] init];
-                    productsCheckDetailVC.listArray = weakself.yyModel.borrowinginfos;
-                    productsCheckDetailVC.categoryString = @"2";
-                    [weakself.navigationController pushViewController:productsCheckDetailVC animated:YES];
+                    
+                    DebtModel *inModel = weakself.yyModel.borrowinginfos[0];
+                    if (!inModel.borrowingname) {
+                        ProductsCheckDetailViewController *productsCheckDetailVC = [[ProductsCheckDetailViewController alloc] init];
+                        productsCheckDetailVC.listArray = weakself.yyModel.borrowinginfos;
+                        productsCheckDetailVC.categoryString = @"2";
+                        [weakself.navigationController pushViewController:productsCheckDetailVC animated:YES];
+                    }
                 }
                     break;
                 default:

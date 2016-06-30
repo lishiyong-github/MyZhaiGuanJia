@@ -8,12 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-#import "BaseLabel.h"
-
 @interface MineUserCell : UITableViewCell
 
 @property (nonatomic,strong) UIButton *userNameButton;
 @property (nonatomic,strong) UIButton *userActionButton;
 @property (nonatomic,assign) BOOL didSetupConstraints;
+
+@property (nonatomic,strong) NSLayoutConstraint *widthActConstraints;
 
 @end

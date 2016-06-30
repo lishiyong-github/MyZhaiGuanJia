@@ -310,7 +310,7 @@
     }
     
     cell.nameLabel.text = newModel.codeString;
-    cell.addressLabel.text = newModel.location?newModel.location:@"无抵押物地址";
+    cell.addressLabel.text = newModel.seatmortgage?newModel.seatmortgage:@"无抵押物地址";
     
     return cell;
 }
@@ -388,6 +388,11 @@
     NSDictionary *params = @{@"page" : page};
     
     [self requestDataPostWithString:recommendString params:params successBlock:^(id responseObject) {
+        
+        
+        NSDictionary *jnjckwbw = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        NSLog(@"$$$$$$ %@",jnjckwbw);
+        
         if ([page intValue] == 0) {
             [self.productsDataListArray removeAllObjects];
         }

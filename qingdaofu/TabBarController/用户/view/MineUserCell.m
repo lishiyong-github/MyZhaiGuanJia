@@ -20,6 +20,8 @@
         [self.contentView addSubview:self.userActionButton];
         
         [self.contentView setNeedsUpdateConstraints];
+        
+        self.widthActConstraints = [self.userActionButton autoSetDimension:ALDimensionWidth toSize:80];
     }
     return self;
 }
@@ -28,13 +30,11 @@
 {
     if (!self.didSetupConstraints) {
         
-        NSArray *views = @[self.userNameButton,self.userActionButton];
-        [views autoAlignViewsToAxis:ALAxisHorizontal];
-        
         [self.userNameButton autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
         [self.userNameButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
         
         [self.userActionButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
+        [self.userActionButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.userNameButton];
         
         self.didSetupConstraints = YES;
     }
@@ -58,6 +58,8 @@
         [_userActionButton swapImage];
         [_userActionButton setTitleColor:kLightGrayColor forState:0];
         _userActionButton.titleLabel.font = kSecondFont;
+        _userActionButton.titleLabel.numberOfLines = 0;
+        _userActionButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     }
     return _userActionButton;
 }

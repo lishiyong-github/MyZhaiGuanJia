@@ -44,7 +44,7 @@
 - (void)updateViewConstraints
 {
     if (!self.didSetupConstarints) {
-
+        
         [self.guTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
         
         self.didSetupConstarints = YES;
@@ -67,11 +67,12 @@
 - (UISearchBar *)guSearchBar
 {
     if (!_guSearchBar) {
-        _guSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth-120*2, 44)];
+        _guSearchBar = [[UISearchBar alloc] init];
         _guSearchBar.searchBarStyle = UISearchBarStyleProminent;
         _guSearchBar.delegate = self;
-        [_guSearchBar setBarTintColor:kLightGrayColor];
-        _guSearchBar.backgroundColor = kRedColor;
+//        [_guSearchBar setBarTintColor:kLightGrayColor];
+//        _guSearchBar.backgroundColor = kSelectedColor;
+//        [_guSearchBar setTintColor:kGrayColor];
     }
     return _guSearchBar;
 }

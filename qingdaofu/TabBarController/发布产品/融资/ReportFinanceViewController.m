@@ -602,18 +602,15 @@
         }
             break;
         case 4:{//抵押物小区
-            
             GuarantyViewController *guarantyVC =[[GuarantyViewController alloc] init];
+            [self.navigationController pushViewController:guarantyVC animated:YES];
             [guarantyVC setDidSelectedArea:^(NSString *mortorage_community,NSString *seatmortgage) {//小区名，详细地址
                 [self.dataDictionary setValue:mortorage_community forKey:@"mortorage_community"];
                 [self.dataDictionary setValue:seatmortgage forKey:@"seatmortgage"];
-                [self.reportFinanceTableView reloadData];
                 
-                //小区名
-//                AgentCell *cell = [self.reportFinanceTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:4 inSection:0]];
-//                cell.agentTextField.text = [NSString stringWithFormat:@"%@",mortorage_community];
+                [self.reportFinanceTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:4 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+                [self.reportFinanceTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:5 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
             }];
-            [self.navigationController pushViewController:guarantyVC animated:YES];
         }
             break;
         case 8:{//借款期限

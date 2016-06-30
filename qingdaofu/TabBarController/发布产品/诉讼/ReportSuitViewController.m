@@ -415,19 +415,25 @@
                 cell.agentTextField.text = suModel.mortorage_community?suModel.mortorage_community:self.suitDataDictionary[@"mortorage_community"];
                 [cell.agentButton setHidden:NO];
                 [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-                [cell.agentButton setTitle:@"请选择" forState:0];                
+                [cell.agentButton setTitle:@"请选择" forState:0];
+                
                 QDFWeakSelf;
                 QDFWeak(cell);
                 [cell.agentButton addAction:^(UIButton *btn) {
                     GuarantyViewController *guarantyVC = [[GuarantyViewController alloc] init];
+                    [weakself.navigationController pushViewController:guarantyVC animated:YES];
                     [guarantyVC setDidSelectedArea:^(NSString *mortorage_community, NSString *seatmortgage) {
                         
                         [weakself.suitDataDictionary setValue:mortorage_community forKey:@"mortorage_community"];
+                        
+                        if (seatmortgage == nil) {
+                            seatmortgage = @"";
+                        }
                         [weakself.suitDataDictionary setValue:seatmortgage forKey:@"seatmortgage"];
-                        [weakself.suitTableView reloadData];
+                        
+                        weakcell.agentTextField.text = mortorage_community;
                     }];
                     
-                    [weakself.navigationController pushViewController:guarantyVC animated:YES];
                 }];
                 
             }else if ([_number intValue] == 3){//机动车抵押

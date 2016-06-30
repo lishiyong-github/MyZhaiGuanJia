@@ -2999,7 +2999,6 @@
 				TargetAttributes = {
 					A1A0169E1C5A0C0300027134 = {
 						CreatedOnToolsVersion = 7.1;
-						DevelopmentTeam = Q7TBB3Z87T;
 						SystemCapabilities = {
 							com.apple.InAppPurchase = {
 								enabled = 1;
