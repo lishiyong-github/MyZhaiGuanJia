@@ -20,6 +20,7 @@
 @property (nonatomic,strong) NSArray *creditorfiles; //债权文件
 @property (nonatomic,strong) NSArray *creditorinfos;//债权人信息
 @property (nonatomic,copy) NSString *guaranteemethods;
+@property (nonatomic,copy) NSString *car; //车信息
 
 /* 代理人详情 */
 @property (nonatomic,strong) NSMutableArray *user;

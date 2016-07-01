@@ -116,7 +116,6 @@
         QDFWeakSelf;
         [_rightButton addAction:^(UIButton *btn) {
             btn.selected = !btn.selected;
-            
             if (btn.selected) {
                 [weakself.upCommitButton setBackgroundColor:kNavColor];
                 [weakself.upCommitButton setTitle:@"删除" forState:0];
@@ -152,13 +151,25 @@
     }
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.pictureCollection.userInteractionEnabled = NO;
+//    cell.pictureCollection.userInteractionEnabled = NO;
     
     //展示图片
     QDFWeakSelf;
     [cell setDidSelectedItem:^(NSInteger itemTag) {
-        FSBasicImageSource *photoSource = [[FSBasicImageSource alloc] initWithImages:weakself.allImage];
-        FSImageViewerViewController *browser = [[FSImageViewerViewController alloc] initWithImageSource:photoSource imageIndex:itemTag];
+        
+        NSMutableArray *imgArray = [NSMutableArray array];
+        
+        for (NSString *filePath in weakself.allImage) {
+            
+            NSLog(@"###### %@",filePath);
+            
+            FSBasicImage *basicImage = [[FSBasicImage alloc] initWithImage:[UIImage imageWithContentsOfFile:filePath]];
+            [imgArray addObject:basicImage];
+            
+        }
+        
+        FSBasicImageSource *photoSource = [[FSBasicImageSource alloc] initWithImages:imgArray];
+        FSImageViewerViewController *browser = [[FSImageViewerViewController alloc] initWithImageSource:photoSource];
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:browser];
         [weakself presentViewController:nav animated:YES completion:nil];
     }];
@@ -174,10 +185,9 @@
 
 - (void)back
 {
-    [super back];
-    if (self.uploadImages) {
-        self.uploadImages(self.allImage);
-    }
+//    if (self.uploadImages) {
+//        self.uploadImages(self.allImage[0]);
+//    }
 }
 
 - (void)didReceiveMemoryWarning {

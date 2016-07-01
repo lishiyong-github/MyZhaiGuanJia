@@ -20,8 +20,6 @@
         [self.contentView addSubview:self.userActionButton];
         
         [self.contentView setNeedsUpdateConstraints];
-        
-        self.widthActConstraints = [self.userActionButton autoSetDimension:ALDimensionWidth toSize:80];
     }
     return self;
 }

@@ -10,7 +10,7 @@
 
 @interface PublishingModel : NSObject
 
-@property (nonatomic,copy) NSString *accountr;
+@property (nonatomic,copy) NSString *accountr;  //应收帐款
 @property (nonatomic,copy) NSString *agencycommission;  //代理费用
 @property (nonatomic,copy) NSString *agencycommissiontype; //代理费用类型：1为固定费用(万)2为风险费率(%)
 @property (nonatomic,copy) NSString *applyclose;  //状态：3为终止。4为结案
@@ -20,6 +20,7 @@
 @property (nonatomic,copy) NSString *carbrand;  //机动车抵押：机动车品牌
 @property (nonatomic,copy) NSString *audi;  //车系
 @property (nonatomic,copy) NSString *licenseplate;  //车牌类型：1=>'沪牌',2=>'非沪牌',
+//@property (nonatomic,copy) NSString *car;  //车信息
 @property (nonatomic,copy) NSString *category;   //类别（融资，清收，诉讼）
 @property (nonatomic,copy) NSString *city_id;
 @property (nonatomic,copy) NSString *codeString;  //产品编号

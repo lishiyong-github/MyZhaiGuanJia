@@ -85,7 +85,6 @@
 {
     if (!_proTitleView) {
         _proTitleView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
-//        [_proTitleView setImage:[UIImage imageNamed:@"title_product_open"] forState:0];
         [_proTitleView setTitle:@"所有产品" forState:0];
         _proTitleView.titleLabel.font = kNavFont;
         [_proTitleView setTitleColor:kBlackColor forState:0];
@@ -94,6 +93,11 @@
         [_proTitleView addAction:^(UIButton *btn) {
             btn.selected = !btn.selected;
             if (btn.selected) {
+                
+                weakself.chooseView.squrebutton.selected = NO;
+                weakself.chooseView.stateButton.selected = NO;
+                weakself.chooseView.moneyButton.selected = NO;
+                
                 [weakself hiddenBlurView];
                 [weakself.tableView11 removeFromSuperview];
                 [weakself.tableView12 removeFromSuperview];
@@ -138,6 +142,9 @@
                         [weakself.tableView11 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:weakself.chooseView];
                         [weakself.tableView11 autoPinEdgeToSuperviewEdge:ALEdgeLeft];
                         [weakself.tableView11 autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kTabBarHeight];
+                        
+//                        [weakself.tableView11 autoSetDimension:ALDimensionHeight toSize:40*5];
+                        
                         weakself.widthConstraints = [weakself.tableView11 autoSetDimension:ALDimensionWidth toSize:kScreenWidth];
                         
                         [weakself getProvinceList];
@@ -167,6 +174,7 @@
                             [weakself.paramsDictionary setValue:value forKey:@"status"];
                             [weakself getProductsListWithPage:@"0"];
                         }];
+                        
                     }else{
                         [weakself hiddenBlurView];
                     }
@@ -304,7 +312,7 @@
     if (tableView == self.productsTableView) {
         return 156;
     }
-    return kCellHeight;
+    return 40;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -325,6 +333,7 @@
         
         if ([proModel.category isEqualToString:@"1"]) {//融资
             [cell.typeImageView setImage:[UIImage imageNamed:@"list_financing"]];
+            cell.addressLabel.text = proModel.location;
             cell.pointView.label1.text = proModel.rebate;
             cell.pointView.label2.text = @"返点(%)";
             cell.rateView.label1.text = proModel.rate;
@@ -337,15 +346,19 @@
             [cell.typeImageView setImage:[UIImage imageNamed:@"list_collection"]];
             
             cell.pointView.label1.text = proModel.agencycommission;
-            cell.pointView.label2.text = @"代理费用(万元)";
+            cell.pointView.label2.text = @"代理费用(%)";
             if ([proModel.loan_type isEqualToString:@"1"]) {
                 cell.rateView.label1.text = @"房产抵押";
+                cell.addressLabel.text = proModel.location;
             }else if ([proModel.loan_type isEqualToString:@"2"]){
                 cell.rateView.label1.text = @"应收账款";
+                cell.addressLabel.text = @"无抵押物地址";
             }else if ([proModel.loan_type isEqualToString:@"3"]){
                 cell.rateView.label1.text = @"机动车抵押";
+                cell.addressLabel.text = @"无抵押物地址";
             }else{
                 cell.rateView.label1.text = @"无抵押";
+                cell.addressLabel.text = @"无抵押物地址";
             }
             cell.rateView.label2.text = @"债权类型";
         }else{//诉讼
@@ -358,19 +371,22 @@
             }
             if ([proModel.loan_type isEqualToString:@"1"]) {
                 cell.rateView.label1.text = @"房产抵押";
+                cell.addressLabel.text = proModel.location;
             }else if ([proModel.loan_type isEqualToString:@"2"]){
                 cell.rateView.label1.text = @"应收账款";
+                cell.addressLabel.text = @"无抵押物地址";
             }else if ([proModel.loan_type isEqualToString:@"3"]){
                 cell.rateView.label1.text = @"机动车抵押";
+                cell.addressLabel.text = @"无抵押物地址";
             }else{
                 cell.rateView.label1.text = @"无抵押";
+                cell.addressLabel.text = @"无抵押物地址";
             }
             cell.rateView.label2.text = @"债权类型";
         }
         
         cell.nameLabel.text = proModel.codeString;
-        cell.addressLabel.text = proModel.location?proModel.location:@"无抵押物地址";
-        
+                
         return cell;
         
     }else if (tableView == self.tableView11){//省

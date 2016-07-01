@@ -300,6 +300,10 @@
                              };
     [self requestDataPostWithString:sDetailString params:params successBlock:^(id responseObject){
         
+        
+        NSDictionary *cvdd = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        NSLog(@"^^^^^ %@",cvdd);
+        
         PublishingResponse *responseModel = [PublishingResponse objectWithKeyValues:responseObject];
         
         [self.saveDetailArray addObject:responseModel];

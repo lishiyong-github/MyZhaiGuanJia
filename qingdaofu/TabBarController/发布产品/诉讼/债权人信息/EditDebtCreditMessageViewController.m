@@ -205,57 +205,38 @@
 {
     [self.view endEditing:YES];
     
-    if ([self.categoryString integerValue] == 1) {
-         DebtModel *cModel = [[DebtModel alloc] init];
+    if ([self.categoryString integerValue] == 1) {//债权人信息
+        
+        DebtModel *cModel = [[DebtModel alloc] init];
         cModel.creditorname = self.editDictionary[@"creditorname"]?self.editDictionary[@"creditorname"]:self.deModel.creditorname;
         cModel.creditormobile = self.editDictionary[@"creditormobile"]?self.editDictionary[@"creditormobile"]:self.deModel.creditormobile;
         cModel.creditoraddress = self.editDictionary[@"creditoraddress"]?self.editDictionary[@"creditoraddress"]:self.deModel.creditoraddress;
         cModel.creditorcardcode = self.editDictionary[@"creditorcardcode"]?self.editDictionary[@"creditorcardcode"]:self.deModel.creditorcardcode;
-        
-        if ((cModel.creditoraddress == nil || [cModel.creditoraddress isEqualToString:@""]) && (cModel.creditorcardcode == nil || [cModel.creditorcardcode isEqualToString:@""]) && (cModel.creditormobile == nil || [cModel.creditormobile isEqualToString:@""]) && (cModel.creditorname == nil || [cModel.creditorname isEqualToString:@""])) {
-            [self showHint:@"没有数据，不能保存"];
+
+        if ((cModel.creditoraddress == nil || [cModel.creditoraddress isEqualToString:@""]) || (cModel.creditorcardcode == nil || [cModel.creditorcardcode isEqualToString:@""]) || (cModel.creditormobile == nil || [cModel.creditormobile isEqualToString:@""]) || (cModel.creditorname == nil || [cModel.creditorname isEqualToString:@""])){
+            [self showHint:@"信息填写不完整，请检查"];
         }else{
-            
             if (self.didSaveMessage) {
                 self.didSaveMessage(cModel);
             }
+            [self.navigationController popViewControllerAnimated:YES];
         }
-
-    }else{
+    }else{//债务人信息
         DebtModel *bModel = [[DebtModel alloc] init];
         bModel.borrowingname = self.editDictionary[@"borrowingname"]?self.editDictionary[@"borrowingname"]:self.deModel.borrowingname;
         bModel.borrowingmobile = self.editDictionary[@"borrowingmobile"]?self.editDictionary[@"borrowingmobile"]:self.deModel.borrowingmobile;
         bModel.borrowingaddress = self.editDictionary[@"borrowingaddress"]?self.editDictionary[@"borrowingaddress"]:self.deModel.borrowingaddress;
         bModel.borrowingcardcode = self.editDictionary[@"borrowingcardcode"]?self.editDictionary[@"borrowingcardcode"]:self.deModel.borrowingcardcode;
-        
-        if ((bModel.borrowingname == nil || [bModel.borrowingname isEqualToString:@""]) && (bModel.borrowingmobile == nil || [bModel.borrowingmobile isEqualToString:@""]) && (bModel.borrowingcardcode == nil || [bModel.borrowingcardcode isEqualToString:@""]) && (bModel.borrowingaddress == nil || [bModel.borrowingaddress isEqualToString:@""])) {
-            [self showHint:@"没有数据，不能保存"];
+
+        if ((bModel.borrowingname == nil || [bModel.borrowingname isEqualToString:@""]) && (bModel.borrowingmobile == nil || [bModel.borrowingmobile isEqualToString:@""]) && (bModel.borrowingcardcode == nil || [bModel.borrowingcardcode isEqualToString:@""]) && (bModel.borrowingaddress == nil || [bModel.borrowingaddress isEqualToString:@""])){
+            [self showHint:@"信息填写不完整，请检查"];
         }else{
             if (self.didSaveMessage) {
                 self.didSaveMessage(bModel);
             }
+            [self.navigationController popViewControllerAnimated:YES];
         }
     }
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (void)back
-{
-//    [super back];
-    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:nil message:@"是否保存?" preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction *act1 = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [self saveDebtMessage];
-    }];
-    
-    UIAlertAction *act2 = [UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action){
-        [self.navigationController popViewControllerAnimated:YES];
-    }];
- 
-    [alertVC addAction:act1];
-    [alertVC addAction:act2];
-    
-    [self presentViewController:alertVC animated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning {

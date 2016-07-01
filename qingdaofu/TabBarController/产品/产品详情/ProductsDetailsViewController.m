@@ -245,7 +245,8 @@
             cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
+        cell.userActionButton.userInteractionEnabled = NO;
+    
         NSMutableDictionary *dataDic = [[NSMutableDictionary alloc] initWithObjects:@[@"  产品信息",@"  发布人信息"] forKeys:@[@"list_icon_product",@"list_icon_user"]];
         
         [cell.userNameButton setImage:[UIImage imageNamed:dataDic.allKeys[indexPath.row]] forState:0];
@@ -308,6 +309,10 @@
                              @"category" : self.categoryString
                              };
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
+        
+        NSDictionary *bcbwwsv = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        NSLog(@"+======= %@",bcbwwsv);
+        
         PublishingResponse *respModel = [PublishingResponse objectWithKeyValues:responseObject];
         
         self.navigationItem.title = respModel.product.codeString;
@@ -332,7 +337,7 @@
         ApplicationStateModel *stateModel = [ApplicationStateModel objectWithKeyValues:responseObject];
         PublishingResponse *rModel = self.recommendDataArray[0];
         
-        if (stateModel.app_id == nil || [stateModel.app_id intValue] == 2) {
+        if ((stateModel.app_id == nil || [stateModel.app_id intValue] == 2) && [rModel.product.progress_status integerValue] == 1) {
             [self.proDetailsCommitButton setTitleColor:kNavColor forState:0];
             [self.proDetailsCommitButton setTitle:@"立即申请" forState:0];
             [self.proDetailsCommitButton addTarget: self action:@selector(applicationCommit) forControlEvents:UIControlEventTouchUpInside];
@@ -350,7 +355,6 @@
                     }else{
                         [weakself saveOrQuitSaveWithType:@"1" WithButton:btn];
                     }
-                    
                 }];
                 
             }else{//已收藏
@@ -370,28 +374,33 @@
             [self.proDetailsCommitButton setTitle:@"已申请" forState:0];
             [self.proDetailsCommitButton setBackgroundColor:kSelectedColor];
             self.proDetailsCommitButton.userInteractionEnabled = NO;
-        }else if (([stateModel.app_id intValue] == 1) && ([rModel.product.progress_status intValue] == 2)){//申请成功
-            [self.proDetailsCommitButton setTitleColor:kBlackColor forState:0];
-            [self.proDetailsCommitButton setTitle:@"申请成功" forState:0];
-            [self.proDetailsCommitButton setBackgroundColor:kSelectedColor];
+        }else if ([rModel.product.progress_status intValue] == 2){//申请成功
             
-            //添加电话按钮
-            UIButton *phoneButton = [UIButton newAutoLayoutView];
-            [phoneButton setImage:[UIImage imageNamed:@"phone"] forState:0];
-            phoneButton.backgroundColor = kBlueColor;
-            [phoneButton addAction:^(UIButton *btn) {
-                NSString *phoneStr = [NSString stringWithFormat:@"telprompt://%@",stateModel.mobile];
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
-            }];
-            [self.proDetailsCommitButton addSubview:phoneButton];
-    
-            [phoneButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:_proDetailsCommitButton];
-            [phoneButton autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:_proDetailsCommitButton];
-            [phoneButton autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:_proDetailsCommitButton];
-            [phoneButton autoSetDimension:ALDimensionWidth toSize:kTabBarHeight];
-            
+            if ([stateModel.app_id integerValue] == 1) {//自己申请成功
+                [self.proDetailsCommitButton setTitleColor:kBlackColor forState:0];
+                [self.proDetailsCommitButton setTitle:@"申请成功" forState:0];
+                [self.proDetailsCommitButton setBackgroundColor:kSelectedColor];
+                
+                //添加电话按钮
+                UIButton *phoneButton = [UIButton newAutoLayoutView];
+                [phoneButton setImage:[UIImage imageNamed:@"phone"] forState:0];
+                phoneButton.backgroundColor = kBlueColor;
+                [phoneButton addAction:^(UIButton *btn) {
+                    NSString *phoneStr = [NSString stringWithFormat:@"telprompt://%@",stateModel.mobile];
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
+                }];
+                [self.proDetailsCommitButton addSubview:phoneButton];
+                
+                [phoneButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:_proDetailsCommitButton];
+                [phoneButton autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:_proDetailsCommitButton];
+                [phoneButton autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:_proDetailsCommitButton];
+                [phoneButton autoSetDimension:ALDimensionWidth toSize:kTabBarHeight];
+            }else{//别人申请成功，自己显示被接单
+                [self.proDetailsCommitButton setTitleColor:kBlackColor forState:0];
+                [self.proDetailsCommitButton setTitle:@"已被接单" forState:0];
+                [self.proDetailsCommitButton setBackgroundColor:kSelectedColor];
+            }
         }
-        
     } andFailBlock:^(NSError *error) {
         
     }];

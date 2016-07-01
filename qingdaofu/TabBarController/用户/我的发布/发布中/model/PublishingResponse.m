@@ -15,6 +15,7 @@
     return @{@"creditor" : @"result.creditor",
             @"product" : @"result.product",
              @"uidString" : @"uid",
+             @"car" : @"result.car",
              @"borrowinginfos" : @"result.borrowinginfos",
              @"creditorfiles" : @"result.creditorfiles",
              @"creditorinfos" : @"result.creditorinfos",

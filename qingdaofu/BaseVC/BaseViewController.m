@@ -88,6 +88,7 @@
 
 - (void)tokenIsValid
 {
+    [self showHudInView:self.view hint:@"请稍候"];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer= [AFHTTPResponseSerializer serializer];
@@ -100,11 +101,12 @@
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             TokenModel *model = [TokenModel objectWithKeyValues:responseObject];
             if (self.didTokenValid) {
+                [self hideHud];
                 self.didTokenValid(model);
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
+        [self hideHud];
     }];
     
     /*

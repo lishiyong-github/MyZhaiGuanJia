@@ -121,13 +121,16 @@
             [_leftTableView.leftDataArray2 addObjectsFromArray:@[leftModel.money,leftModel.rebate,leftModel.rate,leftModel.rate_cat,leftModel.mortorage_community,leftModel.seatmortgage]];
         }else if ([leftModel.category intValue] == 2){//清收
             
+//            NSString *money = [NSString stringWithFormat:@"%@",leftModel.money];
+//            NSString *agencycommission = [NSString stringWithFormat:@"%@",leftModel.agencycommission];
+            
             NSString *loanTypeStr;//债权类型
             if ([leftModel.loan_type intValue] == 1) {
                 loanTypeStr = @"房产抵押";
-            }else if ([leftModel.loan_type intValue] == 2){
-                loanTypeStr = @"应收账款";
             }else if ([leftModel.loan_type intValue] == 3){
                 loanTypeStr = @"机动车抵押";
+            }else if ([leftModel.loan_type intValue] == 2){
+                loanTypeStr = @"应收账款";
             }else if ([leftModel.loan_type intValue] == 4){
                 loanTypeStr = @"无抵押";
             }
@@ -139,7 +142,7 @@
                 [_leftTableView.leftDataArray1 addObjectsFromArray:@[@"借款本金",@"代理费用(%)",@"债权类型",@"机动车品牌",@"机动车车系"]];
                 [_leftTableView.leftDataArray2 addObjectsFromArray:@[leftModel.money,leftModel.agencycommission,loanTypeStr,leftModel.carbrand,leftModel.audi]];
             }else if ([leftModel.loan_type intValue] == 2){//应收帐款
-                [_leftTableView.leftDataArray1 addObjectsFromArray:@[@"借款本金",@"代理费用(%)",@"债权类型",@"应收帐款"]];
+                [_leftTableView.leftDataArray1 addObjectsFromArray:@[@"借款本金",@"代理费用(%)",@"债权类型",@"应收帐款(万元)"]];
                 [_leftTableView.leftDataArray2 addObjectsFromArray:@[leftModel.money,leftModel.agencycommission,loanTypeStr,leftModel.accountr]];
             }else{
                 [_leftTableView.leftDataArray1 addObjectsFromArray:@[@"借款本金",@"代理费用(%)",@"债权类型"]];
@@ -331,10 +334,9 @@
                 performancecontract = rightModel.performancecontract;
             }
             
-            if (self.yyModel.creditorfiles.count > 0) {
-                creditorfile = @"查看";
-            }
-            
+//            if (self.yyModel.creditorfiles.count > 0) {
+//                creditorfile = @"查看";
+//            }
             
             DebtModel *infoModel1 = self.yyModel.creditorinfos[0];
             if (infoModel1.creditorname == nil) {
@@ -344,7 +346,7 @@
             }
             
             DebtModel *infoModel2 = self.yyModel.borrowinginfos[0];
-            if (infoModel2.borrowingname == nil) {
+            if (infoModel2.creditorname == nil) {
                 borrowinginfo = @"无";
             }else{
                 borrowinginfo = @"查看";
@@ -363,9 +365,9 @@
                 }
                     break;
                 case 12:{//债权人信息
-                    
                     DebtModel *inModel = weakself.yyModel.creditorinfos[0];
-                    if (!inModel.creditorname) {
+                    if (inModel.creditorname == nil) {
+                    }else{
                         ProductsCheckDetailViewController *productsCheckDetailVC = [[ProductsCheckDetailViewController alloc] init];
                         productsCheckDetailVC.listArray = weakself.yyModel.creditorinfos;
                         productsCheckDetailVC.categoryString = @"1";
@@ -376,7 +378,9 @@
                 case 13:{//债务人信息
                     
                     DebtModel *inModel = weakself.yyModel.borrowinginfos[0];
-                    if (!inModel.borrowingname) {
+                    
+                    if (inModel.creditorname == nil) {
+                    }else{
                         ProductsCheckDetailViewController *productsCheckDetailVC = [[ProductsCheckDetailViewController alloc] init];
                         productsCheckDetailVC.listArray = weakself.yyModel.borrowinginfos;
                         productsCheckDetailVC.categoryString = @"2";

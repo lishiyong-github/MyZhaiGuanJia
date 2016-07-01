@@ -9,7 +9,6 @@
 #import "UIViewController+BlurView.h"
 #import <objc/runtime.h>
 #import "UpwardTableView.h"
-#import "SingleButton.h"
 #import "NewPublishCell.h"
 
 @implementation UIViewController (BlurView)
@@ -72,7 +71,7 @@
     UpwardTableView *tableView = [self.view viewWithTag:99998];
     if (!tagView) {
         tagView = [UIView newAutoLayoutView];
-        tagView.backgroundColor = UIColorFromRGB1(0x333333, 0.7);
+        tagView.backgroundColor = UIColorFromRGB1(0x333333, 0.3);
         tagView.tag = 99999;
         [view addSubview:tagView];
         [tagView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
@@ -86,6 +85,16 @@
         [tableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
         tableView.heightTableConstraints.constant = array.count*40;
         [tableView setUpwardDataList:array];
+    }
+    
+    if (tagView) {//点击蒙板，界面消失
+        UIButton *control = [UIButton newAutoLayoutView];
+        [tagView addSubview:control];
+        [control autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+        [control autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:tableView];
+        [control addAction:^(UIButton *btn) {
+            [tagView removeFromSuperview];
+        }];
     }
     
     if (finishBlock) {

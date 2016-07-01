@@ -208,8 +208,21 @@
         }
         NSString *creditorfile = @"查看";
 //        meResponse.creditorfiles.count?@"查看":@"无";//债权文件
-        NSString *creditorinfo = meResponse.creditorinfos.count?@"查看":@"无";//债权人信息
-        NSString *borrowinginfo = meResponse.borrowinginfos.count?@"查看":@"无";//债务人信息
+        
+        DebtModel *sdModel = meResponse.creditorinfos[0];
+        NSString *creditorinfo;//债权人信息
+        if (sdModel.creditorname == nil) {
+            creditorinfo = @"无";
+        }else{
+            creditorinfo = @"查看";
+        }
+        
+        NSString *borrowinginfo;
+        if (sdModel.borrowingname == nil) {//债务人信息
+            borrowinginfo = @"无";
+        }else{
+            borrowinginfo = @"查看";
+        }
         
         NSArray *dataList1 = @[@"借款利率(%)",@"借款利率类型",@"借款期限",@"借款期限类型",@"还款方式",@"债务人主体",@"委托事项",@"委托代理期限(月)",@"已付本金",@"已付利息",@"合同履行地",@"债权文件",@"债权人信息",@"债务人信息"];
         NSArray *dataList2 = @[rate,rate_cat,term,rate_cat,repaymethod,obligor,commitment,commissionperiod,paidmoney,interestpaid,performancecontract,creditorfile,creditorinfo,borrowinginfo];

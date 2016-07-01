@@ -231,7 +231,7 @@
         myReleaseVC.hidesBottomBarWhenPushed = YES;
         myReleaseVC.progreStatus = @"1";
         [weakself setSelectedIndex:4];
-        [nav pushViewController:myReleaseVC animated:NO];
+//        [nav pushViewController:myReleaseVC animated:NO];
     }];
     
     return cell;

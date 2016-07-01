@@ -367,6 +367,7 @@
             [cell setDidSelectedSeg:^(NSInteger selectedTag) {
                 AgentCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:4 inSection:0]];
                 cell.agentTextField.text = @"";
+                [self.view endEditing:YES];
                 
                 if (selectedTag == 0) {//房产抵押
                     self.rowString = @"6";
@@ -418,56 +419,51 @@
                 [cell.agentButton setTitle:@"请选择" forState:0];
                 
                 QDFWeakSelf;
-                QDFWeak(cell);
                 [cell.agentButton addAction:^(UIButton *btn) {
                     GuarantyViewController *guarantyVC = [[GuarantyViewController alloc] init];
                     [weakself.navigationController pushViewController:guarantyVC animated:YES];
                     [guarantyVC setDidSelectedArea:^(NSString *mortorage_community, NSString *seatmortgage) {
                         
                         [weakself.suitDataDictionary setValue:mortorage_community forKey:@"mortorage_community"];
-                        
-                        if (seatmortgage == nil) {
-                            seatmortgage = @"";
-                        }
                         [weakself.suitDataDictionary setValue:seatmortgage forKey:@"seatmortgage"];
-                        
-                        weakcell.agentTextField.text = mortorage_community;
+                        [weakself.suitTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:4 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+                        [weakself.suitTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:5 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
                     }];
                     
                 }];
                 
             }else if ([_number intValue] == 3){//机动车抵押
                 cell.agentTextField.userInteractionEnabled = NO;
-                if (suModel.carbrand) {
-                    NSString *fff = [NSString stringWithFormat:@"%@ %@ %@",suModel.carbrand,suModel.audi,suModel.licenseplate];
-                    cell.agentTextField.text = fff;
+                NSString *carbr = @"";
+                if (self.suitDataDictionary[@"carbrandstr"]) {
+                    carbr = [NSString stringWithFormat:@"%@%@%@",self.suitDataDictionary[@"carbrandstr"],self.suitDataDictionary[@"audistr"],self.suitDataDictionary[@"licenseplatestr"]];
                 }
-                
+                cell.agentTextField.text = self.suResponse.car?self.suResponse.car:carbr;
+
                 [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-                if (suModel.carbrand) {
-                    [cell.agentButton setTitle:@"已选择" forState:0];
-                }else{
-                    [cell.agentButton setTitle:@"请选择" forState:0];
-                }
-                
+                [cell.agentButton setTitle:@"请选择" forState:0];
+
                 QDFWeak(cell);
                 [cell.agentButton addAction:^(UIButton *btn) {
                     BrandsViewController *brandVC = [[BrandsViewController alloc] init];
-                    
                     [brandVC setDidSelectedRow:^(NSString *brandNo,NSString *brand, NSString *audiNo,NSString *audi,NSString *licenseNo,NSString *license) {
                         [self.suitDataDictionary setValue:brandNo forKey:@"carbrand"];
                         [self.suitDataDictionary setValue:audiNo forKey:@"audi"];
                         [self.suitDataDictionary setValue:licenseNo forKey:@"licenseplate"];
+                        [self.suitDataDictionary setValue:brand forKey:@"carbrandstr"];
+                        [self.suitDataDictionary setValue:audi forKey:@"audistr"];
+                        [self.suitDataDictionary setValue:license forKey:@"licenseplatestr"];
                         
                         weakcell.agentTextField.text = [NSString stringWithFormat:@"%@  %@ %@",brand,audi,license];
-//                        [weakcell.agentButton setTitle:@"已选择" forState:0];
                     }];
                     
                     [self.navigationController pushViewController:brandVC animated:YES];
                 }];
             }else if ([_number intValue] == 2) {//应收帐款
-                [cell.agentButton setHidden:YES];
-                cell.agentTextField.text = suModel.accountr?suModel.accountr:@"";
+                cell.agentTextField.userInteractionEnabled = YES;
+                [cell.agentButton setTitle:@"万元" forState:0];
+                cell.agentTextField.text = suModel.accountr?suModel.accountr:self.suitDataDictionary[@"accountr"];
+
                 [cell setDidEndEditing:^(NSString *text) {
                     [self.suitDataDictionary setValue:text forKey:@"accountr"];
                 }];
@@ -1021,9 +1017,6 @@
     
     [self requestDataPostWithString:reFinanceString params:params andImages:self.suitImageDictionary successBlock:^(id responseObject) {
         
-        NSDictionary *ssss = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSLog(@"sssssss %@",ssss);
-        
         BaseModel *suitModel = [BaseModel objectWithKeyValues:responseObject];
         
         [self showHint:suitModel.msg];
@@ -1050,38 +1043,6 @@
     } andFailBlock:^(NSError *error) {
         
     }];
-    
-    
-    
-    /*
-    [self requestDataPostWithString:reFinanceString params:params successBlock:^(id responseObject){
-        
-        BaseModel *suitModel = [BaseModel objectWithKeyValues:responseObject];
-        
-        [self showHint:suitModel.msg];
-        
-        if ([suitModel.code isEqualToString:@"0000"]) {
-            if ([typeString intValue] == 0) {//保存
-                UINavigationController *nav = self.navigationController;
-                [nav popViewControllerAnimated:NO];
-                
-                MySaveViewController *mySaveVC = [[MySaveViewController alloc] init];
-                mySaveVC.hidesBottomBarWhenPushed = YES;
-                [nav pushViewController:mySaveVC animated:NO];
-            }else{
-                ReportFiSucViewController *reportFiSucVC = [[ReportFiSucViewController alloc] init];
-                if ([self.categoryString integerValue] == 1) {
-                    reportFiSucVC.reportType = @"清收";
-                }else{
-                    reportFiSucVC.reportType = @"诉讼";
-                }
-                [self.navigationController pushViewController:reportFiSucVC animated:YES];
-            }
-        }
-    } andFailBlock:^(NSError *error){
-        
-    }];
-    */
 }
 
 /*

@@ -32,6 +32,7 @@
 @property (nonatomic,copy) NSString *rebate;   //返点
 @property (nonatomic,copy) NSString *seatmortgage;  //抵押物所在地
 @property (nonatomic,copy) NSString *mortorage_community;  //小区名
+@property (nonatomic,copy) NSString *location;
 @property (nonatomic,copy) NSString *uidString;  //申请人的uid
 @property (nonatomic,copy) NSString *term;  //借款期限
 @property (nonatomic,copy) NSString *mortgagecategory; //抵押物类型

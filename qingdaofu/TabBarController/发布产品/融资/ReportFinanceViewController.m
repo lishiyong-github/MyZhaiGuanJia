@@ -604,12 +604,14 @@
         case 4:{//抵押物小区
             GuarantyViewController *guarantyVC =[[GuarantyViewController alloc] init];
             [self.navigationController pushViewController:guarantyVC animated:YES];
+            
+            QDFWeakSelf;
             [guarantyVC setDidSelectedArea:^(NSString *mortorage_community,NSString *seatmortgage) {//小区名，详细地址
-                [self.dataDictionary setValue:mortorage_community forKey:@"mortorage_community"];
-                [self.dataDictionary setValue:seatmortgage forKey:@"seatmortgage"];
+                [weakself.dataDictionary setValue:mortorage_community forKey:@"mortorage_community"];
+                [weakself.dataDictionary setValue:seatmortgage forKey:@"seatmortgage"];
                 
-                [self.reportFinanceTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:4 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
-                [self.reportFinanceTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:5 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+                [weakself.reportFinanceTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:4 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+                [weakself.reportFinanceTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:5 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
             }];
         }
             break;

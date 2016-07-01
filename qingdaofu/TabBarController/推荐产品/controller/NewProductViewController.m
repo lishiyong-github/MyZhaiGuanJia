@@ -266,6 +266,7 @@
     
     if ([newModel.category isEqualToString:@"1"]) {//融资
         [cell.typeImageView setImage:[UIImage imageNamed:@"list_financing"]];
+        cell.addressLabel.text = newModel.location;
         cell.pointView.label1.text = newModel.rebate;
         cell.pointView.label2.text = @"返点(%)";
         cell.rateView.label1.text = newModel.rate;
@@ -278,15 +279,19 @@
         [cell.typeImageView setImage:[UIImage imageNamed:@"list_collection"]];
         
         cell.pointView.label1.text = newModel.agencycommission;
-        cell.pointView.label2.text = @"代理费用(万元)";
+        cell.pointView.label2.text = @"代理费用(%)";
         if ([newModel.loan_type isEqualToString:@"1"]) {
             cell.rateView.label1.text = @"房产抵押";
+            cell.addressLabel.text = newModel.location;
         }else if ([newModel.loan_type isEqualToString:@"2"]){
             cell.rateView.label1.text = @"应收账款";
+            cell.addressLabel.text = @"无抵押物地址";
         }else if ([newModel.loan_type isEqualToString:@"3"]){
             cell.rateView.label1.text = @"机动车抵押";
+            cell.addressLabel.text = @"无抵押物地址";
         }else{
             cell.rateView.label1.text = @"无抵押";
+            cell.addressLabel.text = @"无抵押物地址";
         }
         cell.rateView.label2.text = @"债权类型";
     }else{//诉讼
@@ -299,18 +304,21 @@
         }
         if ([newModel.loan_type isEqualToString:@"1"]) {
             cell.rateView.label1.text = @"房产抵押";
+            cell.addressLabel.text = newModel.location;
         }else if ([newModel.loan_type isEqualToString:@"2"]){
             cell.rateView.label1.text = @"应收账款";
+            cell.addressLabel.text = @"无抵押物地址";
         }else if ([newModel.loan_type isEqualToString:@"3"]){
             cell.rateView.label1.text = @"机动车抵押";
+            cell.addressLabel.text = @"无抵押物地址";
         }else{
             cell.rateView.label1.text = @"无抵押";
+            cell.addressLabel.text = @"无抵押物地址";
         }
         cell.rateView.label2.text = @"债权类型";
     }
     
     cell.nameLabel.text = newModel.codeString;
-    cell.addressLabel.text = newModel.seatmortgage?newModel.seatmortgage:@"无抵押物地址";
     
     return cell;
 }

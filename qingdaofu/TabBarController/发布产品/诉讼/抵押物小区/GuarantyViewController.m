@@ -203,13 +203,15 @@
     {
         //1.
         AMapReGeocode *regeocode = response.regeocode;
-        
         ///////2.////
         //格式化地址
-        NSString *formattedAddress = regeocode.formattedAddress;
+         AMapAddressComponent *addressComponent = regeocode.addressComponent;
+        AMapStreetNumber *streetNumber = addressComponent.streetNumber;
+        
+        NSString *address = [NSString stringWithFormat:@"%@%@%@%@%@%@",addressComponent.province,addressComponent.city,addressComponent.district,addressComponent.township,streetNumber.street,streetNumber.number];
         
         if (self.didSelectedArea) {
-            self.didSelectedArea(_titleString,formattedAddress);
+            self.didSelectedArea(_titleString,address);
         }
         [self back];
         return;

@@ -112,7 +112,6 @@
                 case 111:{//全部
                     weakself.status = @"-1";
                     weakself.progresStatus = @"0";
-//                    [weakself getOrderListWithPage:@"0"];
                     [weakself refreshsHeaderOfMyOrder];
                 }
                     break;
@@ -238,6 +237,7 @@
             cell.typeImageView.image = [UIImage imageNamed:@"list_financing_nor"];
         }
         
+        cell.addressLabel.text = [NSString stringWithFormat:@"%@%@",rowModel.seatmortgage,rowModel.mortorage_community];
         cell.pointView.label1.text = rowModel.rebate;
         cell.pointView.label2.text = @"返点(%)";
         cell.rateView.label1.text = rowModel.rate;
@@ -257,12 +257,16 @@
         cell.pointView.label2.text = @"代理费用(万元)";
         if ([rowModel.loan_type isEqualToString:@"1"]) {
             cell.rateView.label1.text = @"房产抵押";
+            cell.addressLabel.text = [NSString stringWithFormat:@"%@%@",rowModel.seatmortgage,rowModel.mortorage_community];
         }else if ([rowModel.loan_type isEqualToString:@"2"]){
             cell.rateView.label1.text = @"应收账款";
+            cell.addressLabel.text = @"无抵押物地址";
         }else if ([rowModel.loan_type isEqualToString:@"3"]){
             cell.rateView.label1.text = @"机动车抵押";
+            cell.addressLabel.text = @"无抵押物地址";
         }else if([rowModel.loan_type isEqualToString:@"4"]){
             cell.rateView.label1.text = @"无抵押";
+            cell.addressLabel.text = @"无抵押物地址";
         }
         cell.rateView.label2.text = @"债权类型";
     }else if ([rowModel.category intValue] == 3){//诉讼
@@ -280,12 +284,16 @@
         
         if ([rowModel.loan_type isEqualToString:@"1"]) {
             cell.rateView.label1.text = @"房产抵押";
+            cell.addressLabel.text = [NSString stringWithFormat:@"%@%@",rowModel.seatmortgage,rowModel.mortorage_community];
         }else if ([rowModel.loan_type isEqualToString:@"2"]){
             cell.rateView.label1.text = @"应收账款";
+            cell.addressLabel.text = @"无抵押物地址";
         }else if ([rowModel.loan_type isEqualToString:@"3"]){
             cell.rateView.label1.text = @"机动车抵押";
+            cell.addressLabel.text = @"无抵押物地址";
         }else if([rowModel.loan_type isEqualToString:@"4"]){
             cell.rateView.label1.text = @"无抵押";
+            cell.addressLabel.text = @"无抵押物地址";
         }
         cell.rateView.label2.text = @"债权类型";
     }
@@ -313,8 +321,7 @@
         [cell.typeButton setHidden:NO];
         [cell.typeButton setImage:[UIImage imageNamed:@"list_chapter"] forState:0];
     }
-    
-    cell.addressLabel.text = rowModel.seatmortgage;
+
     cell.moneyView.label1.text = rowModel.money;
     cell.moneyView.label2.text = @"借款本金(万元)";
     

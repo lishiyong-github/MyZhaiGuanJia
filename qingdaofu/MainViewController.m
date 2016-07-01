@@ -109,17 +109,17 @@
                 if (row == 11) {
                     ReportFinanceViewController *reportFinanceVC = [[ReportFinanceViewController alloc] init];
                     reportFinanceVC.hidesBottomBarWhenPushed = YES;
-//                    [viewController pushViewController:reportFinanceVC animated:YES];
+                    [viewController pushViewController:reportFinanceVC animated:YES];
                 }else if (row == 12){
                     ReportSuitViewController *collectVC = [[ReportSuitViewController alloc] init];
                     collectVC.categoryString = @"2";
                     collectVC.hidesBottomBarWhenPushed = YES;
-//                    [viewController pushViewController:collectVC animated:YES];
+                    [viewController pushViewController:collectVC animated:YES];
                 }else{
                     ReportSuitViewController *reportSuitVC = [[ReportSuitViewController alloc] init];
                     reportSuitVC.categoryString = @"3";
                     reportSuitVC.hidesBottomBarWhenPushed = YES;
-//                    [viewController pushViewController:reportSuitVC animated:YES];
+                    [viewController pushViewController:reportSuitVC animated:YES];
                 }
 
             }else{
