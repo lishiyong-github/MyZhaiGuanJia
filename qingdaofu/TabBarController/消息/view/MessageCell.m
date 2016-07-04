@@ -18,8 +18,9 @@
         [self.contentView addSubview:self.timeLabel];
         [self.contentView addSubview:self.newsLabel];
         [self.contentView addSubview:self.countLabel];
+        [self.contentView addSubview:self.actButton];
         
-        [self.contentView setNeedsUpdateConstraints];
+        [self setNeedsUpdateConstraints];
     }
     return self;
 }
@@ -38,9 +39,15 @@
         [self.newsLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.userLabel];
         [self.newsLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.countLabel withOffset:-kBigPadding];
         
-        [self.countLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
-        [self.countLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.timeLabel withOffset:kSmallPadding];
-        [self.countLabel autoSetDimensionsToSize:CGSizeMake(18, 18)];
+//        [self.countLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
+//        [self.countLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.timeLabel withOffset:kSmallPadding];
+//        [self.countLabel autoSetDimensionsToSize:CGSizeMake(18, 18)];
+        
+        [self.countLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.actButton withOffset:5];
+        [self.countLabel autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.newsLabel];
+        
+        [self.actButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
+        [self.actButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.newsLabel];
         
         self.didSetupConstraints = YES;
     }
@@ -89,6 +96,17 @@
         [_countLabel sizeToFit];
     }
     return _countLabel;
+}
+
+- (UIButton *)actButton
+{
+    if (!_actButton) {
+        _actButton = [UIButton newAutoLayoutView];
+        [_actButton setTitleColor:kNavColor forState:0];
+        _actButton.titleLabel.font = kSecondFont;
+        _actButton.backgroundColor = kBlueColor;
+    }
+    return _actButton;
 }
 
 

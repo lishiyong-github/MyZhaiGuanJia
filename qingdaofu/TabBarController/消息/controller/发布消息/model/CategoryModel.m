@@ -10,4 +10,9 @@
 
 @implementation CategoryModel
 
++(NSDictionary *)replacedKeyFromPropertyName
+{
+    return @{@"idString" : @"id"};
+}
+
 @end

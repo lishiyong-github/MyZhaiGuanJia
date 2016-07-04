@@ -10,4 +10,14 @@
 
 @implementation MessageResponse
 
++ (NSDictionary *)replacedKeyFromPropertyName
+{
+    return @{@"message" : @"result.message"};
+}
+
++ (NSDictionary *)objectClassInArray
+{
+    return @{@"message" : @"MessageModel"};
+}
+
 @end

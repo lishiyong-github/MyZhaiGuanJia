@@ -150,7 +150,7 @@
     cell.evaNameLabel.text = self.dataList[indexPath.section];
     //@"12345678900";
     cell.evaTimeLabel.text = @"2016-10-10";
-    [cell.evaStarImageView setBackgroundColor:kBlueColor];
+//    [cell.evaStarImageView setBackgroundColor:kBlueColor];
     cell.evaTextLabel.text = @"还行，还行，还行";
     [cell.evaInnnerButton setImage:[UIImage imageNamed:@"list_financing"] forState:0];
     [cell.evaInnnerButton setTitle:@"RZ201605200001" forState:0];
@@ -200,6 +200,12 @@
     [self.evaluateTableView reloadData];
 }
 
+#pragma mark - method
+- (void)getEvaluateListWithPage:(NSString *)page
+{
+    NSString *messageEvaString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyEvaluateString];
+    
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

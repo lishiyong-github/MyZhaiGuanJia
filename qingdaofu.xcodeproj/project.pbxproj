@@ -21,6 +21,12 @@
 		A10D7B871CEB1BE000422D7D /* UIView+UITextColor.m in Sources */ = {isa = PBXBuildFile; fileRef = A10D7B861CEB1BE000422D7D /* UIView+UITextColor.m */; };
 		A10D7B8B1CEB246700422D7D /* DebtCreditMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A10D7B8A1CEB246700422D7D /* DebtCreditMessageViewController.m */; };
 		A116300E1D2107F000E2D321 /* ProductsCheckDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A116300D1D2107F000E2D321 /* ProductsCheckDetailViewController.m */; };
+		A13EA56D1D2A062F001B83A7 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A13EA56C1D2A062F001B83A7 /* CollectionViewCell.m */; };
+		A13EA5711D2A1928001B83A7 /* MessageResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A13EA5701D2A1928001B83A7 /* MessageResponse.m */; };
+		A13EA5741D2A193B001B83A7 /* MessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A13EA5731D2A193B001B83A7 /* MessageModel.m */; };
+		A13EA57B1D2A3D67001B83A7 /* tips@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A13EA5791D2A3D67001B83A7 /* tips@2x.png */; };
+		A13EA57C1D2A3D67001B83A7 /* tips@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A13EA57A1D2A3D67001B83A7 /* tips@3x.png */; };
+		A13EA57F1D2A48A5001B83A7 /* CategoryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A13EA57E1D2A48A5001B83A7 /* CategoryModel.m */; };
 		A145B28D1CEEAE02003A93B7 /* conserve_tip_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A145B2891CEEAE02003A93B7 /* conserve_tip_icon@2x.png */; };
 		A145B28E1CEEAE02003A93B7 /* conserve_tip_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A145B28A1CEEAE02003A93B7 /* conserve_tip_icon@3x.png */; };
 		A145B28F1CEEAE02003A93B7 /* conserve_wait_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A145B28B1CEEAE02003A93B7 /* conserve_wait_icon@2x.png */; };
@@ -523,6 +529,16 @@
 		A10D7B8A1CEB246700422D7D /* DebtCreditMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebtCreditMessageViewController.m; sourceTree = "<group>"; };
 		A116300C1D2107F000E2D321 /* ProductsCheckDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductsCheckDetailViewController.h; sourceTree = "<group>"; };
 		A116300D1D2107F000E2D321 /* ProductsCheckDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductsCheckDetailViewController.m; sourceTree = "<group>"; };
+		A13EA56B1D2A062F001B83A7 /* CollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewCell.h; sourceTree = "<group>"; };
+		A13EA56C1D2A062F001B83A7 /* CollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewCell.m; sourceTree = "<group>"; };
+		A13EA56F1D2A1928001B83A7 /* MessageResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageResponse.h; sourceTree = "<group>"; };
+		A13EA5701D2A1928001B83A7 /* MessageResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageResponse.m; sourceTree = "<group>"; };
+		A13EA5721D2A193B001B83A7 /* MessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageModel.h; sourceTree = "<group>"; };
+		A13EA5731D2A193B001B83A7 /* MessageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageModel.m; sourceTree = "<group>"; };
+		A13EA5791D2A3D67001B83A7 /* tips@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tips@2x.png"; sourceTree = "<group>"; };
+		A13EA57A1D2A3D67001B83A7 /* tips@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tips@3x.png"; sourceTree = "<group>"; };
+		A13EA57D1D2A48A5001B83A7 /* CategoryModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryModel.h; sourceTree = "<group>"; };
+		A13EA57E1D2A48A5001B83A7 /* CategoryModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryModel.m; sourceTree = "<group>"; };
 		A145B2891CEEAE02003A93B7 /* conserve_tip_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conserve_tip_icon@2x.png"; sourceTree = "<group>"; };
 		A145B28A1CEEAE02003A93B7 /* conserve_tip_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conserve_tip_icon@3x.png"; sourceTree = "<group>"; };
 		A145B28B1CEEAE02003A93B7 /* conserve_wait_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conserve_wait_icon@2x.png"; sourceTree = "<group>"; };
@@ -1301,6 +1317,19 @@
 			path = "债权人信息";
 			sourceTree = "<group>";
 		};
+		A13EA56E1D2A1905001B83A7 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				A13EA56F1D2A1928001B83A7 /* MessageResponse.h */,
+				A13EA5701D2A1928001B83A7 /* MessageResponse.m */,
+				A13EA5721D2A193B001B83A7 /* MessageModel.h */,
+				A13EA5731D2A193B001B83A7 /* MessageModel.m */,
+				A13EA57D1D2A48A5001B83A7 /* CategoryModel.h */,
+				A13EA57E1D2A48A5001B83A7 /* CategoryModel.m */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
 		A14C175A1D07B980003826F8 /* 处理中 */ = {
 			isa = PBXGroup;
 			children = (
@@ -1945,6 +1974,8 @@
 		A192B4BC1CDB45EB0053FC4C /* images */ = {
 			isa = PBXGroup;
 			children = (
+				A13EA5791D2A3D67001B83A7 /* tips@2x.png */,
+				A13EA57A1D2A3D67001B83A7 /* tips@3x.png */,
 				A17B80191D221C500071405F /* btn_close@2x.png */,
 				A17B801A1D221C500071405F /* btn_close@3x.png */,
 				A17B80111D221C3A0071405F /* list_collection_nor@2x.png */,
@@ -2511,6 +2542,8 @@
 				A17964D41CD2EAB100B6AD47 /* AuthenBaseView.m */,
 				A16BA1471CEC4E2B00A7010C /* TakePictureCell.h */,
 				A16BA1481CEC4E2B00A7010C /* TakePictureCell.m */,
+				A13EA56B1D2A062F001B83A7 /* CollectionViewCell.h */,
+				A13EA56C1D2A062F001B83A7 /* CollectionViewCell.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -2772,6 +2805,7 @@
 		A1A97E481CDC669300EDE320 /* 发布消息 */ = {
 			isa = PBXGroup;
 			children = (
+				A13EA56E1D2A1905001B83A7 /* model */,
 				A1A97E581CDC74C200EDE320 /* view */,
 				A1A97E4C1CDC66D600EDE320 /* PublishMessagesViewController.h */,
 				A1A97E4D1CDC66D600EDE320 /* PublishMessagesViewController.m */,
@@ -3078,6 +3112,7 @@
 				A14853F01D1BBE2E0088AA4D /* selected@2x.png in Resources */,
 				A1718DCD1CFD25D20007DA6F /* anonymous@3x.png in Resources */,
 				A1718E081CFD6E9C0007DA6F /* publishs@3x.png in Resources */,
+				A13EA57C1D2A3D67001B83A7 /* tips@3x.png in Resources */,
 				A154B8F21CE1B71D00884CA4 /* back@3x.png in Resources */,
 				A18DC9F01D25120D0021B0BF /* icon-small@2x.png in Resources */,
 				A192B4C31CDB48C90053FC4C /* list_icon_collection@2x.png in Resources */,
@@ -3248,6 +3283,7 @@
 				A18DC9E61D25120D0021B0BF /* icon-72.png in Resources */,
 				A154B8DD1CE1913300884CA4 /* withdraw@2x.png in Resources */,
 				A16856891CE994C9006A0887 /* nav_collection_s@2x.png in Resources */,
+				A13EA57B1D2A3D67001B83A7 /* tips@2x.png in Resources */,
 				A19985261CE071D40055A572 /* conserve_risk_icon@2x.png in Resources */,
 				A18DC9FC1D2514F60021B0BF /* 1334.png in Resources */,
 				A1FB26661CF2E51500B66608 /* select_oepn_s@3x.png in Resources */,
@@ -3312,6 +3348,7 @@
 				A18F14161CF6D3C100B14318 /* CaseViewController.m in Sources */,
 				A196CE021CFC1BD400AC6C87 /* AgreementViewController.m in Sources */,
 				A16BA1401CEC11B600A7010C /* EditDebtCreditMessageViewController.m in Sources */,
+				A13EA56D1D2A062F001B83A7 /* CollectionViewCell.m in Sources */,
 				A17EE3851CD8559D00ECC631 /* MySettingsViewController.m in Sources */,
 				A1E4AFB71CD0C674001A5E9E /* SingleButton.m in Sources */,
 				A1A017531C5B696A00027134 /* MJPropertyType.m in Sources */,
@@ -3447,11 +3484,13 @@
 				A16486C11D01511100B442C1 /* UpwardTableView.m in Sources */,
 				A192B4B81CDB34030053FC4C /* PaceViewController.m in Sources */,
 				A159F97C1D0D727A00A6A024 /* MJRefreshConst.m in Sources */,
+				A13EA57F1D2A48A5001B83A7 /* CategoryModel.m in Sources */,
 				A1B0292E1D17CE6F00F32A09 /* AFURLResponseSerialization.m in Sources */,
 				A1770E241CFEA2C1003579E1 /* LEOStarView.m in Sources */,
 				A16856A51CE9B864006A0887 /* DebtDocumnetsViewController.m in Sources */,
 				A16391541D1D13360051F1D0 /* DebtModel.m in Sources */,
 				A14C17591D07A78E003826F8 /* NSDate+FormatterTime.m in Sources */,
+				A13EA5711D2A1928001B83A7 /* MessageResponse.m in Sources */,
 				A16856A91CE9BF82006A0887 /* ProDetailHeadView.m in Sources */,
 				A1A0172A1C5B422700027134 /* NetworkViewController.m in Sources */,
 				A18F141C1CF6EAA800B14318 /* ProPickerView.m in Sources */,
@@ -3505,6 +3544,7 @@
 				A1B028F21D1794DC00F32A09 /* UIImageView+WebCache.m in Sources */,
 				A16BA1541CEC757900A7010C /* AllProView.m in Sources */,
 				A15F61891D1905940060AF7B /* GuarantyResponse.m in Sources */,
+				A13EA5741D2A193B001B83A7 /* MessageModel.m in Sources */,
 				A1A34C3D1CE32CF700AD454A /* LoginCell.m in Sources */,
 				A159F9441D0BEE5E00A6A024 /* MBResourceManager.m in Sources */,
 				A1A97E4E1CDC66D600EDE320 /* PublishMessagesViewController.m in Sources */,

@@ -10,24 +10,34 @@
 
 #import "NewsCell.h"
 
+
+#import "MessageResponse.h"
+#import "MessageModel.h"
+#import "CategoryModel.h"
+
 @interface SystemMessagesViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *sysMessageTableView;
 
+//json
+@property (nonatomic,assign) NSInteger pageSys;
+@property (nonatomic,strong) NSMutableArray *messageSysArray;
+
 @end
 
 @implementation SystemMessagesViewController
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self headerRefreshWithMessageOfSystem];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @"系统消息";
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
     [self.view addSubview:self.sysMessageTableView];
-    
-    
-//    [self converseToJson];
-    
     [self.view setNeedsUpdateConstraints];
 }
 
@@ -81,21 +91,30 @@
 - (UITableView *)sysMessageTableView
 {
     if (!_sysMessageTableView) {
-//        _sysMessageTableView = [UITableView newAutoLayoutView];
         _sysMessageTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _sysMessageTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _sysMessageTableView.delegate = self;
         _sysMessageTableView.dataSource = self;
         _sysMessageTableView.backgroundColor = kBackColor;
         _sysMessageTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
+        [_sysMessageTableView addHeaderWithTarget:self action:@selector(headerRefreshWithMessageOfSystem)];
+        [_sysMessageTableView addFooterWithTarget:self action:@selector(footerRefreshWithMessageOfSystem)];
     }
     return _sysMessageTableView;
 }
 
-#pragma mark -
+- (NSMutableArray *)messageSysArray
+{
+    if (!_messageSysArray) {
+        _messageSysArray = [NSMutableArray array];
+    }
+    return _messageSysArray;
+}
+
+#pragma mark - delegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 10;
+    return self.messageSysArray.count;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -118,9 +137,28 @@
     cell.selectedBackgroundView = [[UIView alloc] init];
     cell.selectedBackgroundView.backgroundColor = UIColorFromRGB(0xdee8ed);
     
-    [cell.typeButton setTitle:@"申请消息" forState:0];
-    cell.timeLabel.text = @"2016-12-12 10:10";
-    cell.contextLabel.text = @"您发布的融资RZ201601010001有心得申请记录";
+    MessageModel *model;
+    if (self.messageSysArray.count > 0) {
+        model = self.messageSysArray[indexPath.section];
+    }
+    
+    if ([model.isRead integerValue] == 0) {//未读
+        [cell.typeButton setImage:[UIImage imageNamed:@"tips"] forState:0];
+        [cell.typeButton setTitle:model.title forState:0];
+        [cell.typeButton setTitleEdgeInsets:UIEdgeInsetsMake(0, kSmallPadding, 0, 0)];
+    }else{//已读
+        [cell.typeButton setImage:[UIImage imageNamed:@"q"] forState:0];
+        [cell.typeButton setTitle:model.title forState:0];
+        [cell.typeButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    }
+    
+    cell.timeLabel.text = [NSDate getYMDhmFormatterTime:model.create_time];
+    cell.contextLabel.text = model.content;
+    
+    
+//    [cell.typeButton setTitle:@"申请消息" forState:0];
+//    cell.timeLabel.text = @"2016-12-12 10:10";
+//    cell.contextLabel.text = @"您发布的融资RZ201601010001有心得申请记录";
     
     return cell;
 }
@@ -138,7 +176,88 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (self.messageSysArray.count > 0) {
+        MessageModel *meModel = self.messageSysArray[indexPath.section];
+            [self messageIsReadWithIdStr:meModel.idStr andType:meModel.type andModel:meModel.category_id];
+    }
 }
+
+
+#pragma mark - method
+- (void)getSystemMessageListWithPage:(NSString *)page
+{
+    NSString *mesString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMessageOfPublishString];
+    NSDictionary *params = @{@"token" : [self getValidateToken],
+                             @"limit" : @"10",
+                             @"page" : page,
+                             @"type" : @"4"//发布1，接单2
+                             };
+    [self requestDataPostWithString:mesString params:params successBlock:^(id responseObject) {
+        NSDictionary *dddd = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        NSLog(@"^^^^^^^ %@",dddd);
+        
+        if ([page integerValue] == 0) {
+            [self.messageSysArray removeAllObjects];
+        }
+        
+        MessageResponse *response = [MessageResponse objectWithKeyValues:responseObject];
+        
+        for (MessageModel *mesModel in response.message) {
+            [self.messageSysArray addObject:mesModel];
+        }
+        
+        if (self.messageSysArray.count > 0) {
+            [self.baseRemindImageView setHidden:YES];
+        }else{
+            [self.baseRemindImageView setHidden:NO];
+            _pageSys--;
+        }
+        
+        [self.sysMessageTableView reloadData];
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
+- (void)headerRefreshWithMessageOfSystem
+{
+    [self getSystemMessageListWithPage:@"0"];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.sysMessageTableView headerEndRefreshing];
+    });
+}
+
+- (void)footerRefreshWithMessageOfSystem
+{
+    _pageSys++;
+    NSString *page = [NSString stringWithFormat:@"%d",_pageSys];
+    [self getSystemMessageListWithPage:page];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.sysMessageTableView footerEndRefreshing];
+    });
+}
+
+- (void)messageIsReadWithIdStr:(NSString *)idStr andType:(NSString *)typeStr andModel:(CategoryModel *)categoryModel
+{
+    NSString *isReadString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMessageIsReadString];
+    NSDictionary *params = @{@"id" : idStr,
+                             @"token" : [self getValidateToken]
+                             };
+    [self requestDataPostWithString:isReadString params:params successBlock:^(id responseObject) {
+        BaseModel *aModel = [BaseModel objectWithKeyValues:responseObject];
+        if ([aModel.code isEqualToString:@"0000"]) {
+//            MyPublishingViewController *myPublishingVC = [[MyPublishingViewController alloc] init];
+//            myPublishingVC.idString = categoryModel.idString;
+//            myPublishingVC.categaryString = categoryModel.category;
+//            [self.navigationController pushViewController:myPublishingVC animated:YES];
+        }
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

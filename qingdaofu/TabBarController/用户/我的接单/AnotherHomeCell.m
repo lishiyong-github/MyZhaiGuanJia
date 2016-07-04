@@ -51,7 +51,6 @@
         [self.typeLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.typeLabel autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.nameLabel];
         
-        
         [self.typeButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.typeButton autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kBigPadding];
         

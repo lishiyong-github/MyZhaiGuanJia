@@ -10,4 +10,11 @@
 
 @implementation MessageModel
 
++ (NSDictionary *)replacedKeyFromPropertyName
+{
+    return @{@"idStr" : @"id",
+             @"uidInner" : @"uid"
+             };
+}
+
 @end

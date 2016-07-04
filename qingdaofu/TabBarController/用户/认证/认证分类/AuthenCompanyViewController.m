@@ -323,7 +323,7 @@
         headerView.textAlignment = NSTextAlignmentCenter;
         
         NSString *str1 = @"上传验证身份证件照或名片图片";
-        NSString *str2 = @"（选填）";
+        NSString *str2 = @"（必填）";
         NSString *str3 = [NSString stringWithFormat:@"%@%@",str1,str2];
         
         NSMutableAttributedString *attributeStr = [[NSMutableAttributedString alloc] initWithString:str3];

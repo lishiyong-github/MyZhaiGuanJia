@@ -10,4 +10,7 @@
 
 @interface CategoryModel : NSObject
 
+@property (nonatomic,copy) NSString *category;
+@property (nonatomic,copy) NSString *idString;
+
 @end

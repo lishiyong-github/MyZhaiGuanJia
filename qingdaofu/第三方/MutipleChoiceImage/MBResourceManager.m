@@ -73,7 +73,7 @@
 - (void)save
 {
     NSString *cartFile = [[NSFileManager defaultManager] pathForPrivateFile:@"resource"];
-//    [self.JSONData writeToFile:cartFile atomically:YES];
+    [self.JSONData writeToFile:cartFile atomically:YES];
 }
 
 - (void)addUnusedResource:(NSString *)path

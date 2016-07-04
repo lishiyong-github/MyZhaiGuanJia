@@ -56,8 +56,7 @@
         [_userActionButton swapImage];
         [_userActionButton setTitleColor:kLightGrayColor forState:0];
         _userActionButton.titleLabel.font = kSecondFont;
-        _userActionButton.titleLabel.numberOfLines = 0;
-        _userActionButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        _userActionButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     }
     return _userActionButton;
 }

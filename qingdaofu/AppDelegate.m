@@ -27,7 +27,7 @@
     self.window.rootViewController = mainNav;
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        [[MBResourceManager sharedInstance]removeUnusedResource];
+        [[MBResourceManager sharedInstance] removeUnusedResource];
     });
 //    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), )
 

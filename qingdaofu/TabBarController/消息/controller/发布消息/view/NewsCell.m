@@ -30,13 +30,14 @@
         
         [self.typeButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
         [self.typeButton autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kSmallPadding];
+        [self.typeButton autoSetDimension:ALDimensionWidth toSize:150];
         
         [self.timeLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.timeLabel autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.typeButton];
         
         [self.contextLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.typeButton withOffset:5];
         [self.contextLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
-        [self.contextLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.goTobutton withOffset:-kBigPadding];
+        [self.contextLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:60];
         
         [self.goTobutton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.goTobutton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.contextLabel];
@@ -52,6 +53,7 @@
         _typeButton = [UIButton newAutoLayoutView];
         [_typeButton setTitleColor:kBlackColor forState:0];
         _typeButton.titleLabel.font = kBigFont;
+        _typeButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     }
     return _typeButton;
 }
@@ -82,6 +84,7 @@
         _goTobutton = [UIButton newAutoLayoutView];
         [_goTobutton setImage:[UIImage imageNamed:@"list_more"] forState:0];
 //        _goTobutton.titleLabel.font = kBigFont;
+        _goTobutton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     }
     return _goTobutton;
 }

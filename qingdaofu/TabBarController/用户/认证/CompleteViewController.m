@@ -215,39 +215,23 @@
         [cell.userNameButton setTitle:@"|  认证信息" forState:0];
         [cell.userNameButton setTitleColor:kBlueColor forState:0];
         
-        [cell.userActionButton setTitle:@"编辑" forState:0];
-        [cell.userActionButton setTitleColor:kBlueColor forState:0];
-        cell.userActionButton.titleLabel.font = kFirstFont;
+        CompleteResponse *response;
+        if (self.completeDataArray.count > 0) {
+            response = self.completeDataArray[0];
+        }
         
-        QDFWeakSelf;
-        [cell.userActionButton addAction:^(UIButton *btn) {
-            
-            CompleteResponse *response;
-            if (self.completeDataArray.count > 0) {
-                response = self.completeDataArray[0];
-            }
-            
-            if ([weakself.categoryString intValue] == 1) {//个人
-                AuthenPersonViewController *authenPersonVC = [[AuthenPersonViewController alloc] init];
-                authenPersonVC.typeAuthen = @"1";
-                authenPersonVC.respnseModel = response;
-                authenPersonVC.categoryString = self.categoryString;
-                [weakself.navigationController pushViewController:authenPersonVC animated:YES];
-                
-            }else if ([weakself.categoryString intValue] == 2){//律所
-                AuthenLawViewController *authenLawVC = [[AuthenLawViewController alloc] init];
-                authenLawVC.responseModel = response;
-                authenLawVC.typeAuthen = @"1";
-                authenLawVC.categoryString = self.categoryString;
-                [weakself.navigationController pushViewController:authenLawVC animated:YES];
-            }else if([weakself.categoryString intValue] == 3){//公司
-                AuthenCompanyViewController *authenCompanyVC = [[AuthenCompanyViewController alloc] init];
-                authenCompanyVC.responseModel = response;
-                authenCompanyVC.typeAuthen = @"1";
-                authenCompanyVC.categoryString = self.categoryString;
-                [weakself.navigationController pushViewController:authenCompanyVC animated:YES];
-            }
-        }];
+        if ([response.certification.canModify integerValue] == 0) {//canModify＝1可以修改，＝0不可修改
+            [cell.userActionButton setHidden:YES];
+        }else{
+            [cell.userActionButton setHidden:NO];
+            [cell.userActionButton setTitle:@"编辑" forState:0];
+            [cell.userActionButton setTitleColor:kBlueColor forState:0];
+            cell.userActionButton.titleLabel.font = kFirstFont;
+            QDFWeakSelf;
+            [cell.userActionButton addAction:^(UIButton *btn) {
+                [weakself goToEditCompleteMessagesWithResponseModel:response];
+            }];
+        }
         return cell;
     }
     
@@ -258,7 +242,7 @@
         certificationModel = response.certification;
     }
     
-    if ([self.categoryString intValue] == 1) {
+    if ([self.categoryString intValue] == 1) {//个人
         identifier = @"complete11";
         CompleteCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         
@@ -287,7 +271,7 @@
         
         return cell;
         
-    }else if ([self.categoryString intValue] == 2){
+    }else if ([self.categoryString intValue] == 2){//律所
         identifier = @"complete12";
         CompleteLawCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         
@@ -323,7 +307,7 @@
         
         return cell;
 
-    }else if([self.categoryString intValue] == 3){
+    }else if([self.categoryString intValue] == 3){//公司
         identifier = @"complete13";
         CompleteCompanyTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         
@@ -338,6 +322,12 @@
         
         NSMutableAttributedString *IDString = [cell.comIDLabel setAttributeString:@"营业执照号：    " withColor:kBlackColor andSecond:certificationModel.cardno withColor:kLightGrayColor withFont:14];
         [cell.comIDLabel setAttributedText:IDString];
+        
+        //图片
+        NSString *subString = [certificationModel.cardimg substringWithRange:NSMakeRange(1, certificationModel.cardimg.length-2)];
+        NSString *urlString = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subString];
+        NSURL *url = [NSURL URLWithString:urlString];
+        [cell.comPicButton sd_setBackgroundImageWithURL:url forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
         
         NSMutableAttributedString *personNameString = [cell.comPersonNameLabel setAttributeString:@"联系人：            " withColor:kBlackColor andSecond:certificationModel.contact withColor:kLightGrayColor withFont:14];
         [cell.comPersonNameLabel setAttributedText:personNameString];
@@ -415,6 +405,30 @@
     [remindButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:5];
     [remindButton autoSetDimensionsToSize:CGSizeMake(100, 40)];
     remindButton.backgroundColor = kBlueColor;
+}
+
+//跳转
+- (void)goToEditCompleteMessagesWithResponseModel:(CompleteResponse *)response
+{
+    if ([self.categoryString intValue] == 1) {//个人
+        AuthenPersonViewController *authenPersonVC = [[AuthenPersonViewController alloc] init];
+        authenPersonVC.typeAuthen = @"1";
+        authenPersonVC.respnseModel = response;
+        authenPersonVC.categoryString = self.categoryString;
+        [self.navigationController pushViewController:authenPersonVC animated:YES];
+    }else if ([self.categoryString intValue] == 2){//律所
+        AuthenLawViewController *authenLawVC = [[AuthenLawViewController alloc] init];
+        authenLawVC.responseModel = response;
+        authenLawVC.typeAuthen = @"1";
+        authenLawVC.categoryString = self.categoryString;
+        [self.navigationController pushViewController:authenLawVC animated:YES];
+    }else if([self.categoryString intValue] == 3){//公司
+        AuthenCompanyViewController *authenCompanyVC = [[AuthenCompanyViewController alloc] init];
+        authenCompanyVC.responseModel = response;
+        authenCompanyVC.typeAuthen = @"1";
+        authenCompanyVC.categoryString = self.categoryString;
+        [self.navigationController pushViewController:authenCompanyVC animated:YES];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

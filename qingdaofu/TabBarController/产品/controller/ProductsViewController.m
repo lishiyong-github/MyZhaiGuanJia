@@ -94,9 +94,9 @@
             btn.selected = !btn.selected;
             if (btn.selected) {
                 
-                weakself.chooseView.squrebutton.selected = NO;
-                weakself.chooseView.stateButton.selected = NO;
-                weakself.chooseView.moneyButton.selected = NO;
+//                weakself.chooseView.squrebutton.selected = NO;
+//                weakself.chooseView.stateButton.selected = NO;
+//                weakself.chooseView.moneyButton.selected = NO;
                 
                 [weakself hiddenBlurView];
                 [weakself.tableView11 removeFromSuperview];
@@ -131,29 +131,23 @@
         [_chooseView setDidSelectedButton:^(UIButton *selectedButton) {
             switch (selectedButton.tag) {
                 case 201:{//区域
-                    selectedButton.selected = !selectedButton.selected;
-                    if (selectedButton.selected) {
+                        selectedButton.selected = YES;
+                        
                         [weakself hiddenBlurView];
                         [weakself.tableView11 removeFromSuperview];
                         [weakself.tableView12 removeFromSuperview];
                         [weakself.tableView13 removeFromSuperview];
-                        
+
                         [weakself.view addSubview: weakself.tableView11];
                         [weakself.tableView11 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:weakself.chooseView];
                         [weakself.tableView11 autoPinEdgeToSuperviewEdge:ALEdgeLeft];
                         [weakself.tableView11 autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kTabBarHeight];
-                        
+
 //                        [weakself.tableView11 autoSetDimension:ALDimensionHeight toSize:40*5];
                         
                         weakself.widthConstraints = [weakself.tableView11 autoSetDimension:ALDimensionWidth toSize:kScreenWidth];
                         
                         [weakself getProvinceList];
-                    }else{
-                        [weakself hiddenBlurView];
-                        [weakself.tableView11 removeFromSuperview];
-                        [weakself.tableView12 removeFromSuperview];
-                        [weakself.tableView13 removeFromSuperview];
-                    }
                 }
                     break;
                 case 202:{//状态
@@ -169,9 +163,13 @@
                         [weakself showBlurInView:weakself.view withArray:stateArray withTop:weakself.chooseView.height finishBlock:^(NSString *text, NSInteger row) {
                             [selectedButton setTitle:text forState:0];
                             
-                            NSString *value = [NSString stringWithFormat:@"%d",row];
-                            [selectedButton setTitle:text forState:0];
-                            [weakself.paramsDictionary setValue:value forKey:@"status"];
+                            if (row <= 2) {
+                                NSString *value = [NSString stringWithFormat:@"%d",row];
+                                [selectedButton setTitle:text forState:0];
+                                [weakself.paramsDictionary setValue:value forKey:@"status"];
+                            }else{
+                                [weakself.paramsDictionary setValue:@"4" forKey:@"status"];
+                            }
                             [weakself getProductsListWithPage:@"0"];
                         }];
                         
@@ -235,7 +233,7 @@
         _tableView11.delegate = self;
         _tableView11.dataSource = self;
         _tableView11.tableFooterView = [[UIView alloc] init];
-        _tableView11.backgroundColor = UIColorFromRGB1(0x333333, 0.6);
+        _tableView11.backgroundColor = UIColorFromRGB1(0x333333, 0.3);
         _tableView11.layer.borderColor = kSeparateColor.CGColor;
         _tableView11.layer.borderWidth = kLineWidth;
     }
@@ -386,6 +384,15 @@
         }
         
         cell.nameLabel.text = proModel.codeString;
+        
+        //typeButton
+        if([proModel.progress_status integerValue]  == 4){//结案
+            [cell.typeButton setHidden:NO];
+            [cell.typeButton setImage:[UIImage imageNamed:@"list_chapter"] forState:0];
+            
+        }else{
+            [cell.typeButton setHidden:YES];
+        }
                 
         return cell;
         

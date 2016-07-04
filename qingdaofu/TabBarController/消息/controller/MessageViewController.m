@@ -21,9 +21,17 @@
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *messageTableView;
 
+//json
+@property (nonatomic,strong) NSMutableDictionary *resultDic;
+
 @end
 
 @implementation MessageViewController
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self getMessageTypeAndNumber];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -59,10 +67,19 @@
     return _messageTableView;
 }
 
+- (NSMutableDictionary *)resultDic
+{
+    if (!_resultDic) {
+        _resultDic = [NSMutableDictionary dictionary];
+    }
+    return _resultDic;
+}
+
 #pragma mark - tabelView delegate and datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+//    return 2;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -70,7 +87,7 @@
     if (section == 0) {
         return 4;
     }
-    return 1;
+    return 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -78,13 +95,15 @@
     if (indexPath.section == 0) {
         return 60;
     }
-    return 68;
+//    return 68;
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier;
     
+    //分类消息
     if (indexPath.section == 0) {
         identifier = @"all";
         NSArray *titleArray = @[@"  发布消息",@"  接单消息",@"  评价消息",@"  系统消息"];
@@ -95,12 +114,21 @@
             cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         
-        [cell setSeparatorInset:UIEdgeInsetsMake(0, kBigPadding, 0, 0)];
+        NSDictionary *childDic;
+        if (self.resultDic) {
+            NSString *index = [NSString stringWithFormat:@"%d",indexPath.row+1];
+            childDic = self.resultDic[index];
+        }
         
         [cell.userNameButton setTitle:titleArray[indexPath.row] forState:0];
         [cell.userNameButton setImage:[UIImage imageNamed:imageArray[indexPath.row]] forState:0];
         cell.userNameButton.titleLabel.font = [UIFont systemFontOfSize:18];
+        
         [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        [cell.userActionButton setTitle:childDic[@"number"] forState:0];
+        [cell.userActionButton setTitleColor:kBlueColor forState:0];
+        cell.userActionButton.titleLabel.backgroundColor = kBlueColor;
+        [cell.userActionButton setTitleColor:kNavColor forState:0];
         
         cell.userNameButton.userInteractionEnabled = NO;
         cell.userActionButton.userInteractionEnabled = NO;
@@ -108,21 +136,23 @@
         return cell;
     }
     
-    identifier = @"newMessages";
-    
-    MessageCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    if (!cell) {
-        cell = [[MessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-    }
-    
-    [cell setSeparatorInset:UIEdgeInsetsMake(0, kBigPadding, 0, 0)];
-    
-    cell.userLabel.text = @"用户1234567888";
-    cell.timeLabel.text = @"2016-02-10 10:12";
-    cell.newsLabel.text = @"最新消息最新消息最新消息";
-    cell.countLabel.text = @"40";
-    
-    return cell;
+//    //最近消息
+//    identifier = @"newMessages";
+//    
+//    MessageCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+//    if (!cell) {
+//        cell = [[MessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+//    }
+//    
+//    [cell setSeparatorInset:UIEdgeInsetsMake(0, kBigPadding, 0, 0)];
+//    
+//    cell.userLabel.text = @"用户1234567888";
+//    cell.timeLabel.text = @"2016-02-10 10:12";
+//    cell.newsLabel.text = @"最新消息最新消息最新消息";
+//    cell.countLabel.text = @"40";
+//    
+//    return cell;
+    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -192,6 +222,23 @@
                 break;
         }
     }
+}
+
+#pragma mark - method
+- (void)getMessageTypeAndNumber
+{
+    NSString *messageTypeString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMessageTypeAndNumbersString];
+    NSDictionary *params = @{@"token" : [self getValidateToken]};
+    [self requestDataPostWithString:messageTypeString params:params successBlock:^(id responseObject) {
+        NSDictionary *opopo = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        NSLog(@"DGHHHHHHH %@",opopo);
+        
+        self.resultDic = [NSMutableDictionary dictionaryWithDictionary:opopo[@"result"]];
+        [self.messageTableView reloadData];
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
 }
 
 - (void)didReceiveMemoryWarning {

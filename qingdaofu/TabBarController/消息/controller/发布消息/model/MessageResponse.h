@@ -10,4 +10,6 @@
 
 @interface MessageResponse : BaseModel
 
+@property (nonatomic,strong) NSArray *message;  //消息
+
 @end

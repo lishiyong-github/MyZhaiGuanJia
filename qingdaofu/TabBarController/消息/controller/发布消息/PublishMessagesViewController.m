@@ -7,17 +7,30 @@
 //
 
 #import "PublishMessagesViewController.h"
+#import "MyPublishingViewController.h"  //发布中
 
 #import "NewsCell.h"
+
+#import "MessageResponse.h"
+#import "MessageModel.h"
+#import "CategoryModel.h"
 
 @interface PublishMessagesViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraits;
 @property (nonatomic,strong) UITableView *newsListTableView;
 
+@property (nonatomic,assign) NSInteger mesPage;
+@property (nonatomic,strong) NSMutableArray *messagePubArray;
+
 @end
 
 @implementation PublishMessagesViewController
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self headerRefreshWithMessageOfPublish];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -25,6 +38,9 @@
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
     [self.view addSubview:self.newsListTableView];
+    [self.view addSubview:self.baseRemindImageView];
+    [self.baseRemindImageView setHidden:YES];
+    
     [self.view setNeedsUpdateConstraints];
 }
 
@@ -42,21 +58,30 @@
 - (UITableView *)newsListTableView
 {
     if (!_newsListTableView) {
-//        _newsListTableView = [UITableView newAutoLayoutView];
         _newsListTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _newsListTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _newsListTableView.delegate = self;
         _newsListTableView.dataSource = self;
         _newsListTableView.backgroundColor = kBackColor;
         _newsListTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
+        [_newsListTableView addHeaderWithTarget:self action:@selector(headerRefreshWithMessageOfPublish)];
+        [_newsListTableView addFooterWithTarget:self action:@selector(footerRefreshWithMessageOfPublish)];
     }
     return _newsListTableView;
 }
 
-#pragma mark - 
+- (NSMutableArray *)messagePubArray
+{
+    if (!_messagePubArray) {
+        _messagePubArray = [NSMutableArray array];
+    }
+    return _messagePubArray;
+}
+
+#pragma mark - delegate datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 10;
+    return self.messagePubArray.count;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -79,9 +104,27 @@
     cell.selectedBackgroundView = [[UIView alloc] init];
     cell.selectedBackgroundView.backgroundColor = UIColorFromRGB(0xdee8ed);
     
-    [cell.typeButton setTitle:@"申请消息" forState:0];
-    cell.timeLabel.text = @"2016-12-12 10:10";
-    cell.contextLabel.text = @"您发布的融资RZ201601010001有心得申请记录";
+    MessageModel *model;
+    if (self.messagePubArray.count > 0) {
+        model = self.messagePubArray[indexPath.section];
+    }
+    
+    if ([model.isRead integerValue] == 0) {//未读
+        [cell.typeButton setImage:[UIImage imageNamed:@"tips"] forState:0];
+        [cell.typeButton setTitle:model.title forState:0];
+        [cell.typeButton setTitleEdgeInsets:UIEdgeInsetsMake(0, kSmallPadding, 0, 0)];
+    }else{//已读
+        [cell.typeButton setImage:[UIImage imageNamed:@"q"] forState:0];
+        [cell.typeButton setTitle:model.title forState:0];
+        [cell.typeButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    }
+    
+    cell.timeLabel.text = [NSDate getYMDhmFormatterTime:model.create_time];
+    cell.contextLabel.text = model.content;
+    
+//    [cell.typeButton setTitle:@"申请消息" forState:0];
+//    cell.timeLabel.text = @"2016-12-12 10:10";
+//    cell.contextLabel.text = @"您发布的融资RZ201601010001有心得申请记录";
     
     return cell;
 }
@@ -99,6 +142,88 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    if (self.messagePubArray.count > 0) {
+        MessageModel *meModel = self.messagePubArray[indexPath.section];
+        if ([meModel.type isEqualToString:@"2"]) {//发布中
+            [self messageIsReadWithIdStr:meModel.idStr andModel:meModel.category_id];
+        }
+    }
+}
+
+#pragma mark - method
+- (void)getPublishMessageListWithPage:(NSString *)page
+{
+    NSString *mesString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMessageOfPublishString];
+    NSDictionary *params = @{@"token" : [self getValidateToken],
+                             @"limit" : @"10",
+                             @"page" : page,
+                             @"type" : @"1"//发布1，接单2
+                             };
+    [self requestDataPostWithString:mesString params:params successBlock:^(id responseObject) {
+        NSDictionary *dddd = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        NSLog(@"^^^^^^^ %@",dddd);
+        
+        if ([page integerValue] == 0) {
+            [self.messagePubArray removeAllObjects];
+        }
+        
+        MessageResponse *response = [MessageResponse objectWithKeyValues:responseObject];
+        
+        for (MessageModel *mesModel in response.message) {
+            [self.messagePubArray addObject:mesModel];
+        }
+        
+        if (self.messagePubArray.count > 0) {
+            [self.baseRemindImageView setHidden:YES];
+        }else{
+            [self.baseRemindImageView setHidden:NO];
+            _mesPage--;
+        }
+        
+        [self.newsListTableView reloadData];
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
+- (void)headerRefreshWithMessageOfPublish
+{
+    [self getPublishMessageListWithPage:@"0"];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.newsListTableView headerEndRefreshing];
+    });
+}
+
+- (void)footerRefreshWithMessageOfPublish
+{
+    _mesPage++;
+    NSString *page = [NSString stringWithFormat:@"%d",_mesPage];
+    [self getPublishMessageListWithPage:page];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.newsListTableView footerEndRefreshing];
+    });
+}
+
+- (void)messageIsReadWithIdStr:(NSString *)idStr andModel:(CategoryModel *)categoryModel
+{
+    NSString *isReadString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMessageIsReadString];
+    NSDictionary *params = @{@"id" : idStr,
+                             @"token" : [self getValidateToken]
+                             };
+    [self requestDataPostWithString:isReadString params:params successBlock:^(id responseObject) {
+        BaseModel *aModel = [BaseModel objectWithKeyValues:responseObject];
+        if ([aModel.code isEqualToString:@"0000"]) {
+            MyPublishingViewController *myPublishingVC = [[MyPublishingViewController alloc] init];
+            myPublishingVC.idString = categoryModel.idString;
+            myPublishingVC.categaryString = categoryModel.category;
+            [self.navigationController pushViewController:myPublishingVC animated:YES];
+        }
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
 }
 
 - (void)didReceiveMemoryWarning {

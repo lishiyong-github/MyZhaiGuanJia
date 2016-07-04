@@ -8,6 +8,7 @@
 
 #import "TakePictureCell.h"
 #import "UIImageView+WebCache.h"
+#import "CollectionViewCell.h"
 
 @interface TakePictureCell ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
 
@@ -73,6 +74,12 @@
 {
     return self.collectionDataList.count;
 }
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+{
+    return 1;
+}
+
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier = @"UICollectionViewCell";
@@ -87,17 +94,16 @@
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
        [imageView sd_setImageWithURL:self.collectionDataList[indexPath.item] placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
         cell.contentView.backgroundColor = [UIColor colorWithPatternImage:imageView.image];
+//        [cell.cellImageView sd_setImageWithURL:self.collectionDataList[indexPath.item] placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
     }else{
         cell.contentView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:self.collectionDataList[indexPath.item]]];
+        
+//        [cell.cellImageView setImage:[UIImage imageNamed:self.collectionDataList[indexPath.item]]];
     }
     
     return cell;
 }
 
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
-{
-    return 1;
-}
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {

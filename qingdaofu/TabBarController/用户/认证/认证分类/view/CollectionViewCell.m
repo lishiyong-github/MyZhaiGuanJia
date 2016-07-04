@@ -10,4 +10,38 @@
 
 @implementation CollectionViewCell
 
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        
+        [self.contentView addSubview:self.cellImageView];
+        [self setNeedsUpdateConstraints];
+    }
+    return self;
+}
+
+- (void)updateConstraints
+{
+    if (!self.didSetupConstraints) {
+        
+//        [self.cellImageView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+        
+        [self.cellImageView autoPinEdgeToSuperviewEdge:ALEdgeTop];
+        [self.cellImageView autoPinEdgeToSuperviewEdge:ALEdgeLeft];
+        [self.cellImageView autoSetDimensionsToSize:CGSizeMake(50, 50)];
+        
+        self.didSetupConstraints = YES;
+    }
+    [super updateConstraints];
+}
+
+- (UIImageView *)cellImageView
+{
+    if (!_cellImageView) {
+        _cellImageView = [UIImageView newAutoLayoutView];
+    }
+    return _cellImageView;
+}
+
 @end

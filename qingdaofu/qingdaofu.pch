@@ -132,8 +132,7 @@
 #define kBrandAudiString  @"common/brandchild"  //车系
 #define kGuarantyString @"common/getsearch"   //小区
 
-/*修改发布*/
-#define k
+
 
 #define kIsLoginString  @"common/islogin"   //检验token与认证类型
 #define kSuggestionString @"public/opinion"    //意见反馈1
@@ -163,7 +162,11 @@
 #define kMyreleaseDealingEndString @"public/closed" ////我的发布处理中的申请结案
 
 
-
+#define kMessageTypeAndNumbersString @"message/type" //消息
+#define kMessageIsReadString @"message/read" //消息未读变已读
+#define kMessageOfPublishString @"message/index"  //发布消息
+//#define kMessageOfEvaluateString @"apply/userlists"  //评价列表
+//评价类型（evaluate(收到的评价) ／launchevaluation(给出的评级)）
 
 
 #define kAuthenString @"certification/add"   //认证

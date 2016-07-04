@@ -10,4 +10,7 @@
 
 @interface CollectionViewCell : UICollectionViewCell
 
+@property (nonatomic,assign) BOOL didSetupConstraints;
+@property (nonatomic,strong) UIImageView *cellImageView;
+
 @end

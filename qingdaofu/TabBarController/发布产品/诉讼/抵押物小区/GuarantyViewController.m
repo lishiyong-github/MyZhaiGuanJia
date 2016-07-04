@@ -70,9 +70,6 @@
         _guSearchBar = [[UISearchBar alloc] init];
         _guSearchBar.searchBarStyle = UISearchBarStyleProminent;
         _guSearchBar.delegate = self;
-//        [_guSearchBar setBarTintColor:kLightGrayColor];
-//        _guSearchBar.backgroundColor = kSelectedColor;
-//        [_guSearchBar setTintColor:kGrayColor];
     }
     return _guSearchBar;
 }
