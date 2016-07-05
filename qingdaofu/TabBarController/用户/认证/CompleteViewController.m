@@ -259,6 +259,10 @@
         [cell.comIDLabel setAttributedText:IDString];
         
         //图片
+        NSString *subString = [certificationModel.cardimg substringWithRange:NSMakeRange(1, certificationModel.cardimg.length-2)];
+        NSString *urlString = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subString];
+        NSURL *url = [NSURL URLWithString:urlString];
+        [cell.comPicButton sd_setBackgroundImageWithURL:url forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
         
         NSMutableAttributedString *mobileString = [cell.comIDLabel setAttributeString:@"联系方式：    " withColor:kBlackColor andSecond:certificationModel.mobile withColor:kLightGrayColor withFont:14];
         [cell.mobileLabel setAttributedText:mobileString];

@@ -6,10 +6,10 @@
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
-#import "RefreshViewController.h"
+//#import "RefreshViewController.h"
 #import "NetworkViewController.h"
 
-@interface MyOrderViewController : RefreshViewController
+@interface MyOrderViewController : NetworkViewController
 
 /*
  1.all -- 全部

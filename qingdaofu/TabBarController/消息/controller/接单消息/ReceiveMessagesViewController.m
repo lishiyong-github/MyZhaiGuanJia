@@ -51,6 +51,9 @@
         
         [self.receiveTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
         
+        [self.baseRemindImageView autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
+        [self.baseRemindImageView autoAlignAxisToSuperviewAxis:ALAxisVertical];
+        
         self.didSetupConstraints = YES;
     }
     [super updateViewConstraints];

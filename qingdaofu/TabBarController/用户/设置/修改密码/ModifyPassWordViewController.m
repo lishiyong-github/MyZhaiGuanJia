@@ -135,6 +135,7 @@
 
 - (void)modifyPassword
 {
+    [self.view endEditing:YES];
     NSString *modifyString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kModifyPasswordString];
     
     NSString *old_password = @"";

@@ -6,9 +6,9 @@
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
-#import "RefreshViewController.h"
+#import "NetworkViewController.h"
 
-@interface PaceViewController : RefreshViewController
+@interface PaceViewController : NetworkViewController
 
 @property (nonatomic,strong) NSString *idString;
 @property (nonatomic,strong) NSString *categoryString;

@@ -15,6 +15,7 @@
 
 #import "UIViewController+BlurView.h"
 #import "EvaTopSwitchView.h"
+#import "LoginView.h"
 
 #import "MineUserCell.h"
 #import "ReportSuccessCell.h"
@@ -231,6 +232,7 @@
         myReleaseVC.hidesBottomBarWhenPushed = YES;
         myReleaseVC.progreStatus = @"1";
         [weakself setSelectedIndex:4];
+        
 //        [nav pushViewController:myReleaseVC animated:NO];
     }];
     

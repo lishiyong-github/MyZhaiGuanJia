@@ -50,6 +50,9 @@
         
         [self.newsListTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
         
+        [self.baseRemindImageView autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
+        [self.baseRemindImageView autoAlignAxisToSuperviewAxis:ALAxisVertical];
+        
         self.didSetupConstraits = YES;
     }
     [super updateViewConstraints];

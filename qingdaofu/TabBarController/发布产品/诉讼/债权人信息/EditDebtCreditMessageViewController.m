@@ -128,8 +128,7 @@
                 }
             }];
             
-            
-        }else{//债务人信息
+        }else if([self.categoryString integerValue] == 2){//债务人信息
             if (indexPath.row == 0) {
                 cell.agentTextField.text = self.deModel.borrowingname?self.deModel.borrowingname:@"";
             }else if (indexPath.row == 1){
@@ -162,14 +161,13 @@
         cell.ediLabel.text = @"联系地址";
         cell.ediTextView.placeholder = @"请输入联系地址";
         
-        
         if ([self.categoryString  integerValue] == 1) {
             cell.ediTextView.text = self.deModel.creditoraddress?self.deModel.creditoraddress:@"";
             
             [cell setDidEndEditing:^(NSString *text) {
                 [self.editDictionary setValue:text forKey:@"creditoraddress"];
             }];
-        }else{
+        }else if([self.categoryString  integerValue] == 2){
             cell.ediTextView.text = self.deModel.borrowingaddress?self.deModel.borrowingaddress:@"";
             [cell setDidEndEditing:^(NSString *text) {
                 [self.editDictionary setValue:text forKey:@"borrowingaddress"];
@@ -221,14 +219,14 @@
             }
             [self.navigationController popViewControllerAnimated:YES];
         }
-    }else{//债务人信息
+    }else if([self.categoryString  integerValue] == 2){//债务人信息
         DebtModel *bModel = [[DebtModel alloc] init];
         bModel.borrowingname = self.editDictionary[@"borrowingname"]?self.editDictionary[@"borrowingname"]:self.deModel.borrowingname;
         bModel.borrowingmobile = self.editDictionary[@"borrowingmobile"]?self.editDictionary[@"borrowingmobile"]:self.deModel.borrowingmobile;
-        bModel.borrowingaddress = self.editDictionary[@"borrowingaddress"]?self.editDictionary[@"borrowingaddress"]:self.deModel.borrowingaddress;
         bModel.borrowingcardcode = self.editDictionary[@"borrowingcardcode"]?self.editDictionary[@"borrowingcardcode"]:self.deModel.borrowingcardcode;
+        bModel.borrowingaddress = self.editDictionary[@"borrowingaddress"]?self.editDictionary[@"borrowingaddress"]:self.deModel.borrowingaddress;
 
-        if ((bModel.borrowingname == nil || [bModel.borrowingname isEqualToString:@""]) && (bModel.borrowingmobile == nil || [bModel.borrowingmobile isEqualToString:@""]) && (bModel.borrowingcardcode == nil || [bModel.borrowingcardcode isEqualToString:@""]) && (bModel.borrowingaddress == nil || [bModel.borrowingaddress isEqualToString:@""])){
+        if ((!bModel.borrowingname || [bModel.borrowingname isEqualToString:@""]) && (!bModel.borrowingmobile || [bModel.borrowingmobile isEqualToString:@""]) && (!bModel.borrowingaddress || [bModel.borrowingaddress isEqualToString:@""]) && (!bModel.borrowingcardcode || [bModel.borrowingcardcode isEqualToString:@""])){
             [self showHint:@"信息填写不完整，请检查"];
         }else{
             if (self.didSaveMessage) {

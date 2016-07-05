@@ -6,9 +6,9 @@
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
-#import "RefreshViewController.h"
+#import "NetworkViewController.h"
 
-@interface MyReleaseViewController : RefreshViewController
+@interface MyReleaseViewController : NetworkViewController
 
 /*
  1.all -- 全部

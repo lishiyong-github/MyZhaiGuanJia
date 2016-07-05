@@ -6,9 +6,9 @@
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
-#import "RefreshViewController.h"
+#import "NetworkViewController.h"
 
-@interface CheckDetailPublishViewController : RefreshViewController
+@interface CheckDetailPublishViewController : NetworkViewController
 
 @property (nonatomic,strong) NSString *typeString;  //类别（接单方或发布方或申请人）
 

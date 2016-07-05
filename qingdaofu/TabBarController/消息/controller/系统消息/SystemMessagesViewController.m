@@ -7,6 +7,7 @@
 //
 
 #import "SystemMessagesViewController.h"
+#import "CompleteViewController.h"  //完成认证
 
 #import "NewsCell.h"
 
@@ -38,43 +39,10 @@
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
     [self.view addSubview:self.sysMessageTableView];
+    [self.view addSubview:self.baseRemindImageView];
+    [self.baseRemindImageView setHidden:YES];
+    
     [self.view setNeedsUpdateConstraints];
-}
-
-- (void)converseToJson
-{
-    NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
-    [dictionary setValue:@"Archy" forKey:@"First Name"];
-    [dictionary setValue:@"Robbins" forKey:@"Last Name"];
-    [dictionary setValue:[NSNumber numberWithUnsignedInteger:51] forKey:@"Age"];
-    
-    NSArray *arrayOfArchysChildren = [[NSArray alloc] initWithObjects:
-                                      @"Anthony's Son 1",
-                                      @"Anthony's Daughter 1",
-                                      @"Anthony's Son 2",
-                                      @"Anthony's Son 3",
-                                      @"Anthony's Daughter 2", nil];
-    
-    [dictionary setValue:arrayOfArchysChildren forKey:@"children"];
-    NSError *error = nil;
-    
-    NSData *jsonData = [NSJSONSerialization
-                        dataWithJSONObject:dictionary options:NSJSONWritingPrettyPrinted error:&error];
-    
-    if ([jsonData length] > 0 && error == nil){
-        NSLog(@"Successfully serialized the dictionary into data.");
-        //NSData转换为String
-        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-        NSLog(@"JSON String = %@", jsonString);
-    }
-    else if ([jsonData length] == 0 &&
-             error == nil){
-        NSLog(@"No data was returned after serialization.");
-    }
-    else if (error != nil){
-        NSLog(@"An error happened = %@", error);
-    }
-   
 }
 
 - (void)updateViewConstraints
@@ -82,6 +50,9 @@
     if (!self.didSetupConstraints) {
         
         [self.sysMessageTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+        
+        [self.baseRemindImageView autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
+        [self.baseRemindImageView autoAlignAxisToSuperviewAxis:ALAxisVertical];
         
         self.didSetupConstraints = YES;
     }
@@ -238,6 +209,7 @@
     });
 }
 
+#pragma mark - method
 - (void)messageIsReadWithIdStr:(NSString *)idStr andType:(NSString *)typeStr andModel:(CategoryModel *)categoryModel
 {
     NSString *isReadString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMessageIsReadString];
@@ -247,10 +219,19 @@
     [self requestDataPostWithString:isReadString params:params successBlock:^(id responseObject) {
         BaseModel *aModel = [BaseModel objectWithKeyValues:responseObject];
         if ([aModel.code isEqualToString:@"0000"]) {
-//            MyPublishingViewController *myPublishingVC = [[MyPublishingViewController alloc] init];
-//            myPublishingVC.idString = categoryModel.idString;
-//            myPublishingVC.categaryString = categoryModel.category;
-//            [self.navigationController pushViewController:myPublishingVC animated:YES];
+            if ([typeStr integerValue] == 10) {//认证
+                CompleteViewController *completeVC = [[CompleteViewController alloc] init];
+                [self.navigationController pushViewController:completeVC animated:YES];
+            }else if ([typeStr integerValue] == 20){//完善（融资）
+                
+            }else if ([typeStr integerValue] == 21){//完善（清收）
+                
+            }else if ([typeStr integerValue] == 22){//完善（诉讼）
+                
+            }
+            
+            
+            
         }
         
     } andFailBlock:^(NSError *error) {

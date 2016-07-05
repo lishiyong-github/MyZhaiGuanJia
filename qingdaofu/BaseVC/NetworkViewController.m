@@ -23,6 +23,7 @@
 
 - (void)requestDataPostWithString:(NSString *)string params:(NSDictionary *)params andImages:(NSDictionary *)images successBlock:(void (^)(id responseObject))successBlock andFailBlock:(void (^)(NSError *error))failBlock
 {
+    [self showHudInView:self.view hint:@"正在加载"];
     AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
     session.requestSerializer = [AFHTTPRequestSerializer serializer];
     session.responseSerializer = [AFHTTPResponseSerializer serializer];
@@ -38,8 +39,6 @@
                         
                         [formData appendPartWithFileData:[NSData dataWithContentsOfFile:obj] name:key fileName:KTimeStamp mimeType:@"image/png"];
                         
-                        
-                        
                         NSLog(@"******* %@",formData);
                         
                     }else if ([obj isKindOfClass:[UIImage class]]){
@@ -54,11 +53,13 @@
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (successBlock) {
+            [self hideHud];
             successBlock(responseObject);
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         if (failBlock) {
+            [self hideHud];
             failBlock(error);
         }
     }];

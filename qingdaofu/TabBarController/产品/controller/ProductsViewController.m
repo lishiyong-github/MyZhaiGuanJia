@@ -60,6 +60,8 @@
 
     [self.view addSubview:self.chooseView];
     [self.view addSubview:self.productsTableView];
+    [self.view addSubview:self.baseRemindImageView];
+    [self.baseRemindImageView setHidden:YES];
     
     [self.view setNeedsUpdateConstraints];
 }
@@ -76,6 +78,9 @@
         [self.productsTableView autoPinEdgeToSuperviewEdge:ALEdgeRight];
         [self.productsTableView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kTabBarHeight];
         
+        [self.baseRemindImageView autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
+        [self.baseRemindImageView autoAlignAxisToSuperviewAxis:ALAxisVertical];
+
         self.didSetupConstraints = YES;
     }
     [super updateViewConstraints];
@@ -91,28 +96,37 @@
         
         QDFWeakSelf;
         [_proTitleView addAction:^(UIButton *btn) {
-            btn.selected = !btn.selected;
-            if (btn.selected) {
-                
-//                weakself.chooseView.squrebutton.selected = NO;
-//                weakself.chooseView.stateButton.selected = NO;
-//                weakself.chooseView.moneyButton.selected = NO;
-                
-                [weakself hiddenBlurView];
-                [weakself.tableView11 removeFromSuperview];
-                [weakself.tableView12 removeFromSuperview];
-                [weakself.tableView13 removeFromSuperview];
-                
-                NSArray *titleArray = @[@"全部",@"融资",@"清收",@"诉讼"];
-                [weakself showBlurInView:weakself.view withArray:titleArray withTop:0 finishBlock:^(NSString *text, NSInteger row) {
-                    NSString *value = [NSString stringWithFormat:@"%d",row];
-                    [btn setTitle:text forState:0];
-                    [weakself.paramsDictionary setValue:value forKey:@"category"];
-                    [weakself getProductsListWithPage:@"0"];
-                }];
-            }else{
-                [weakself hiddenBlurView];
-            }
+            [weakself hiddenBlurView];
+            [weakself.tableView11 removeFromSuperview];
+            [weakself.tableView12 removeFromSuperview];
+            [weakself.tableView13 removeFromSuperview];
+            
+            NSArray *titleArray = @[@"全部",@"融资",@"清收",@"诉讼"];
+            [weakself showBlurInView:weakself.view withArray:titleArray withTop:0 finishBlock:^(NSString *text, NSInteger row) {
+                NSString *value = [NSString stringWithFormat:@"%d",row];
+                [btn setTitle:text forState:0];
+                [weakself.paramsDictionary setValue:value forKey:@"category"];
+                [weakself getProductsListWithPage:@"0"];
+            }];
+            
+            
+//            if (btn.selected) {
+//                [weakself hiddenBlurView];
+//                [weakself.tableView11 removeFromSuperview];
+//                [weakself.tableView12 removeFromSuperview];
+//                [weakself.tableView13 removeFromSuperview];
+//                
+//                NSArray *titleArray = @[@"全部",@"融资",@"清收",@"诉讼"];
+//                [weakself showBlurInView:weakself.view withArray:titleArray withTop:0 finishBlock:^(NSString *text, NSInteger row) {
+//                    NSString *value = [NSString stringWithFormat:@"%d",row];
+//                    [btn setTitle:text forState:0];
+//                    [weakself.paramsDictionary setValue:value forKey:@"category"];
+//                    [weakself getProductsListWithPage:@"0"];
+//                }];
+//            }else{
+//                [weakself hiddenBlurView];
+//                btn.selected = YES;
+//            }
         }];
     }
     return _proTitleView;
@@ -131,33 +145,39 @@
         [_chooseView setDidSelectedButton:^(UIButton *selectedButton) {
             switch (selectedButton.tag) {
                 case 201:{//区域
-                        selectedButton.selected = YES;
+                    selectedButton.selected = !selectedButton.selected;
+                    [weakself hiddenBlurView];
+                    [weakself.tableView11 removeFromSuperview];
+                    [weakself.tableView12 removeFromSuperview];
+                    [weakself.tableView13 removeFromSuperview];
+                    if (selectedButton.selected) {
+                        weakself.chooseView.stateButton.selected = NO;
+                        weakself.chooseView.moneyButton.selected = NO;
                         
-                        [weakself hiddenBlurView];
-                        [weakself.tableView11 removeFromSuperview];
-                        [weakself.tableView12 removeFromSuperview];
-                        [weakself.tableView13 removeFromSuperview];
-
                         [weakself.view addSubview: weakself.tableView11];
                         [weakself.tableView11 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:weakself.chooseView];
                         [weakself.tableView11 autoPinEdgeToSuperviewEdge:ALEdgeLeft];
                         [weakself.tableView11 autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kTabBarHeight];
-
-//                        [weakself.tableView11 autoSetDimension:ALDimensionHeight toSize:40*5];
+                        
+                        //                        [weakself.tableView11 autoSetDimension:ALDimensionHeight toSize:40*5];
                         
                         weakself.widthConstraints = [weakself.tableView11 autoSetDimension:ALDimensionWidth toSize:kScreenWidth];
                         
                         [weakself getProvinceList];
+                    }
                 }
                     break;
                 case 202:{//状态
                     
                     selectedButton.selected = !selectedButton.selected;
+                    [weakself hiddenBlurView];
+                    [weakself.tableView11 removeFromSuperview];
+                    [weakself.tableView12 removeFromSuperview];
+                    [weakself.tableView13 removeFromSuperview];
                     if (selectedButton.selected) {
-                        [weakself hiddenBlurView];
-                        [weakself.tableView11 removeFromSuperview];
-                        [weakself.tableView12 removeFromSuperview];
-                        [weakself.tableView13 removeFromSuperview];
+                        
+                        weakself.chooseView.squrebutton.selected = NO;
+                        weakself.chooseView.moneyButton.selected = NO;
                         
                         NSArray *stateArray = @[@"不限",@"发布中",@"处理中",@"已结案"];
                         [weakself showBlurInView:weakself.view withArray:stateArray withTop:weakself.chooseView.height finishBlock:^(NSString *text, NSInteger row) {
@@ -173,8 +193,6 @@
                             [weakself getProductsListWithPage:@"0"];
                         }];
                         
-                    }else{
-                        [weakself hiddenBlurView];
                     }
                 }
                     break;
@@ -182,11 +200,14 @@
                     
                     selectedButton.selected = !selectedButton.selected;
                     
+                    [weakself hiddenBlurView];
+                    [weakself.tableView11 removeFromSuperview];
+                    [weakself.tableView12 removeFromSuperview];
+                    [weakself.tableView13 removeFromSuperview];
                     if (selectedButton.selected) {
-                        [weakself hiddenBlurView];
-                        [weakself.tableView11 removeFromSuperview];
-                        [weakself.tableView12 removeFromSuperview];
-                        [weakself.tableView13 removeFromSuperview];
+                        weakself.chooseView.squrebutton.selected = NO;
+                        weakself.chooseView.stateButton.selected = NO;
+                        
                         
                         NSArray *moneyArray = @[@"不限",@"30万以下",@"30-100万",@"100-500万",@"500万以上"];
                         [weakself showBlurInView:weakself.view withArray:moneyArray withTop:selectedButton.height finishBlock:^(NSString *text, NSInteger row) {
@@ -197,10 +218,7 @@
                             [weakself.paramsDictionary setValue:value forKey:@"money"];
                             [weakself getProductsListWithPage:@"0"];
                         }];
-                    }else{
-                        [weakself hiddenBlurView];
                     }
-
                 }
                     break;
                 default:
@@ -247,7 +265,7 @@
         _tableView12.delegate = self;
         _tableView12.dataSource = self;
         _tableView12.tableFooterView = [[UIView alloc] init];
-        _tableView12.backgroundColor = UIColorFromRGB1(0x333333, 0.7);
+        _tableView12.backgroundColor = UIColorFromRGB1(0x333333, 0.3);
     }
     return _tableView12;
 }
@@ -259,7 +277,7 @@
         _tableView13.delegate = self;
         _tableView13.dataSource = self;
         _tableView13.tableFooterView = [[UIView alloc] init];
-        _tableView13.backgroundColor = UIColorFromRGB1(0x333333, 0.7);
+        _tableView13.backgroundColor = UIColorFromRGB1(0x333333, 0.3);
         _tableView13.layer.borderColor = kSeparateColor.CGColor;
         _tableView13.layer.borderWidth = kLineWidth;
     }
@@ -404,6 +422,8 @@
         }
         
         cell.oneButton.userInteractionEnabled = NO;
+        [cell.oneButton setTitleColor:kLightGrayColor forState:0];
+        [cell.oneButton setTitleColor:kBlueColor forState:UIControlStateSelected];
         [cell.oneButton setTitle:self.provinceDictionary.allValues[indexPath.row] forState:0];
         
         return cell;
@@ -416,7 +436,8 @@
         }
         
         cell.oneButton.userInteractionEnabled = NO;
-        [cell.oneButton setTitle:self.cityDcitionary.allValues[indexPath.row] forState:0];
+        [cell.oneButton setTitleColor:kLightGrayColor forState:0];
+        [cell.oneButton setTitleColor:kBlueColor forState:UIControlStateSelected];        [cell.oneButton setTitle:self.cityDcitionary.allValues[indexPath.row] forState:0];
 
         return cell;
     }else if (tableView == self.tableView13){//区
@@ -427,6 +448,8 @@
         }
         
         cell.oneButton.userInteractionEnabled = NO;
+        [cell.oneButton setTitleColor:kLightGrayColor forState:0];
+        [cell.oneButton setTitleColor:kBlueColor forState:UIControlStateSelected];
         [cell.oneButton setTitle:self.districtDictionary.allValues[indexPath.row] forState:0];
 
         return cell;
@@ -591,6 +614,12 @@
         
         for (NewProductListModel *model in response.result) {
             [self.allDataList addObject:model];
+        }
+        
+        if (self.allDataList.count == 0) {
+            [self.baseRemindImageView setHidden:NO];
+        }else{
+            [self.baseRemindImageView setHidden:YES];
         }
         
         [self.productsTableView reloadData];

@@ -358,12 +358,16 @@
      @"token" : [weakself getValidateToken]
      */
     
+    if (!self.comDataDictionary[@"mobile"]) {
+        self.comDataDictionary[@"mobile"] = self.responseModel.certification.mobile?self.responseModel.certification.mobile:[self getValidateMobile];
+    }
+
     self.comDataDictionary[@"name"] = self.comDataDictionary[@"name"]?self.comDataDictionary[@"name"]:self.responseModel.certification.name;
     self.comDataDictionary[@"cardno"] = self.comDataDictionary[@"cardno"]?self.comDataDictionary[@"cardno"]:self.responseModel.certification.cardno;
     self.comDataDictionary[@"contact"] = self.comDataDictionary[@"contact"]?self.comDataDictionary[@"contact"]:self.responseModel.certification.contact;
     self.comDataDictionary[@"address"] = self.comDataDictionary[@"address"]?self.comDataDictionary[@"address"]:self.responseModel.certification.address;
     self.comDataDictionary[@"enterprisewebsite"] = self.comDataDictionary[@"enterprisewebsite"]?self.comDataDictionary[@"enterprisewebsite"]:self.responseModel.certification.enterprisewebsite;
-    self.comDataDictionary[@"mobile"] = self.comDataDictionary[@"mobile"]?self.comDataDictionary[@"mobile"]:self.responseModel.certification.mobile;
+//    self.comDataDictionary[@"mobile"] = self.comDataDictionary[@"mobile"]?self.comDataDictionary[@"mobile"]:self.responseModel.certification.mobile;
     self.comDataDictionary[@"email"] = self.comDataDictionary[@"email"]?self.comDataDictionary[@"email"]:self.responseModel.certification.email;
     self.comDataDictionary[@"casedesc"] = self.comDataDictionary[@"casedesc"]?self.comDataDictionary[@"casedesc"]:self.responseModel.certification.casedesc;
     [self.comDataDictionary setValue:@"3" forKey:@"category"];

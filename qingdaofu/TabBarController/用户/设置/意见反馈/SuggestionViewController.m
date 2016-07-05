@@ -207,7 +207,8 @@
 
     NSDictionary *params = @{@"phone" : self.suggestsDictionary[@"phone"],
                              @"opinion" : self.suggestsDictionary[@"opinion"],
-                             @"token" : [self getValidateToken]
+                             @"token" : [self getValidateToken],
+                             @"picture" : @""
                              };
     
     [self requestDataPostWithString:suggestionString params:params andImages:nil successBlock:^(id responseObject) {

@@ -28,10 +28,10 @@
 
 @implementation MessageViewController
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [self getMessageTypeAndNumber];
-}
+//- (void)viewWillAppear:(BOOL)animated
+//{
+//    [self getMessageTypeAndNumber];
+//}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -56,7 +56,6 @@
 - (UITableView *)messageTableView
 {
     if (!_messageTableView) {
-//        _messageTableView = [UITableView newAutoLayoutView];
         _messageTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _messageTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _messageTableView.delegate = self;
@@ -188,10 +187,12 @@
     return nil;
 }
 
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
+    /*
     if (indexPath.section == 0) {
         switch (indexPath.row) {
             case 0:{//发布消息
@@ -222,6 +223,7 @@
                 break;
         }
     }
+     */
 }
 
 #pragma mark - method

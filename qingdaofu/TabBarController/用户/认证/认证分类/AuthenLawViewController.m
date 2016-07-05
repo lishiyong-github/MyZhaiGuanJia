@@ -374,10 +374,14 @@
      @"token" : [weakself getValidateToken]
      */
     
+    if (!self.lawDataDictionary[@"mobile"]) {
+        self.lawDataDictionary[@"mobile"] = self.responseModel.certification.mobile?self.responseModel.certification.mobile:[self getValidateMobile];
+    }
+    
     self.lawDataDictionary[@"name"] = self.lawDataDictionary[@"name"]?self.lawDataDictionary[@"name"]:self.responseModel.certification.name;
     self.lawDataDictionary[@"cardno"] = self.lawDataDictionary[@"cardno"]?self.lawDataDictionary[@"cardno"]:self.responseModel.certification.cardno;
     self.lawDataDictionary[@"contact"] = self.lawDataDictionary[@"contact"]?self.lawDataDictionary[@"contact"]:self.responseModel.certification.contact;
-    self.lawDataDictionary[@"mobile"] = self.lawDataDictionary[@"mobile"]?self.lawDataDictionary[@"mobile"]:self.responseModel.certification.mobile;
+//    self.lawDataDictionary[@"mobile"] = self.lawDataDictionary[@"mobile"]?self.lawDataDictionary[@"mobile"]:self.responseModel.certification.mobile;
     self.lawDataDictionary[@"email"] = self.lawDataDictionary[@"email"]?self.lawDataDictionary[@"email"]:self.responseModel.certification.email;
     self.lawDataDictionary[@"casedesc"] = self.lawDataDictionary[@"casedesc"]?self.lawDataDictionary[@"casedesc"]:self.responseModel.certification.casedesc;
     [self.lawDataDictionary setValue:@"2" forKey:@"category"];

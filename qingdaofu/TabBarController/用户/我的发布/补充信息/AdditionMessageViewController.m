@@ -149,7 +149,7 @@
             }
         }
         
-        NSArray *dataList1 = @[@"借款期限",@"借款期限类型",@"抵押物类型",@"抵押物状态",@"租金",@"抵押物面积",@"借款人年龄",@"权利人年龄"];
+        NSArray *dataList1 = @[@"借款期限",@"借款期限类型",@"抵押物类型",@"抵押物状态",@"租金(元)",@"抵押物面积(m²)",@"借款人年龄(岁)",@"权利人年龄"];
         NSArray *dataList2 = @[term,rateCatStr,mortgagecategory,status,rentmoney,mortgagearea,loanyear,obligeeyear];
         [cell.userNameButton setTitle:dataList1[indexPath.row] forState:0];
         [cell.userActionButton setTitle:dataList2[indexPath.row] forState:0];
@@ -206,7 +206,7 @@
         if (self.addMessageDataArray.count > 0) {
            meResponse = self.addMessageDataArray[0];
         }
-        NSString *creditorfile = @"查看";
+        NSString *creditorfile = @"无";
 //        meResponse.creditorfiles.count?@"查看":@"无";//债权文件
         
         DebtModel *sdModel = meResponse.creditorinfos[0];
@@ -224,7 +224,7 @@
             borrowinginfo = @"查看";
         }
         
-        NSArray *dataList1 = @[@"借款利率(%)",@"借款利率类型",@"借款期限",@"借款期限类型",@"还款方式",@"债务人主体",@"委托事项",@"委托代理期限(月)",@"已付本金",@"已付利息",@"合同履行地",@"债权文件",@"债权人信息",@"债务人信息"];
+        NSArray *dataList1 = @[@"借款利率(%)",@"借款利率类型",@"借款期限",@"借款期限类型",@"还款方式",@"债务人主体",@"委托事项",@"委托代理期限(月)",@"已付本金(元)",@"已付利息(元)",@"合同履行地",@"债权文件",@"债权人信息",@"债务人信息"];
         NSArray *dataList2 = @[rate,rate_cat,term,rate_cat,repaymethod,obligor,commitment,commissionperiod,paidmoney,interestpaid,performancecontract,creditorfile,creditorinfo,borrowinginfo];
         [cell.userNameButton setTitle:dataList1[indexPath.row] forState:0];
         [cell.userActionButton setTitle:dataList2[indexPath.row] forState:0];

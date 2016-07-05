@@ -10,6 +10,8 @@
 #import "DebtCell.h"
 #import "DebtModel.h"
 
+#import "UIImageView+WebCache.h"
+
 @interface ProductsCheckDetailViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupconstraints;
@@ -118,6 +120,10 @@
     }
     NSMutableAttributedString *IDStr = [cell.debtIDLabel setAttributeString:@"证件号        " withColor:kBlackColor andSecond:ID withColor:kLightGrayColor withFont:12];
     [cell.debtIDLabel setAttributedText:IDStr];
+    
+    [cell.debtImageView1 sd_setImageWithURL:nil placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+    [cell.debtImageView2 sd_setImageWithURL:nil placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+
     
     return cell;
 }
