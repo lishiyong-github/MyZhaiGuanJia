@@ -16,13 +16,14 @@
 #import "BaseCommitButton.h"
 
 #import "UIViewController+MutipleImageChoice.h"
-
+#import "ZYKeyboardUtil.h"
 
 @interface AuthenCompanyViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *companyAuTableView;
 @property (nonatomic,strong) BaseCommitButton *companyAuCommitButton;
+@property (strong, nonatomic) ZYKeyboardUtil *keyboardUtil;
 
 @property (nonatomic,strong) NSMutableDictionary *comDataDictionary;
 @property (nonatomic,strong) NSMutableArray *imageArray;
@@ -37,13 +38,52 @@
     [super viewDidLoad];
     self.navigationItem.title = @"认证公司";
     self.navigationItem.leftBarButtonItem = self.leftItem;
+    self.automaticallyAdjustsScrollViewInsets = NO;
     
     [self setupForDismissKeyboard];
     
     [self.view addSubview:self.companyAuTableView];
     [self.view addSubview:self.companyAuCommitButton];
     [self.view setNeedsUpdateConstraints];
+    
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
+
+- (void)configKeyBoardRespond {
+    self.keyboardUtil = [[ZYKeyboardUtil alloc] init];
+    
+    #pragma explain - 全自动键盘弹出/收起处理 (需调用keyboardUtil 的 adaptiveViewHandleWithController:adaptiveView:)
+    #pragma explain - use animateWhenKeyboardAppearBlock, animateWhenKeyboardAppearAutomaticAnimBlock will be invalid.
+        QDFWeakSelf;
+    [self.keyboardUtil setAnimateWhenKeyboardAppearAutomaticAnimBlock:^(ZYKeyboardUtil *keyboardUtil) {
+        [keyboardUtil adaptiveViewHandleWithController:weakself adaptiveView:weakself.companyAuTableView, nil];
+    }];
+    
+#pragma explain - 自定义键盘弹出处理(如配置，全自动键盘处理则失效)
+#pragma explain - use animateWhenKeyboardAppearAutomaticAnimBlock, animateWhenKeyboardAppearBlock must be nil.
+    /*
+     [_keyboardUtil setAnimateWhenKeyboardAppearBlock:^(int appearPostIndex, CGRect keyboardRect, CGFloat keyboardHeight, CGFloat keyboardHeightIncrement) {
+     NSLog(@"\n\n键盘弹出来第 %d 次了~  高度比上一次增加了%0.f  当前高度是:%0.f"  , appearPostIndex, keyboardHeightIncrement, keyboardHeight);
+     //do something
+     }];
+     */
+    
+#pragma explain - 自定义键盘收起处理(如不配置，则默认启动自动收起处理)
+#pragma explain - if not configure this Block, automatically itself.
+    /*
+     [_keyboardUtil setAnimateWhenKeyboardDisappearBlock:^(CGFloat keyboardHeight) {
+     NSLog(@"\n\n键盘在收起来~  上次高度为:+%f", keyboardHeight);
+     //do something
+     }];
+     */
+    
+#pragma explain - 获取键盘信息
+    [_keyboardUtil setPrintKeyboardInfoBlock:^(ZYKeyboardUtil *keyboardUtil, KeyboardInfo *keyboardInfo) {
+        NSLog(@"\n\n拿到键盘信息 和 ZYKeyboardUtil对象");
+    }];
+}
+
 
 - (void)updateViewConstraints
 {
@@ -166,9 +206,12 @@
             
             [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
                 
+                NSData *imgData = [NSData dataWithContentsOfFile:images[0]];
+                NSString *imgStr = [NSString stringWithFormat:@"%@",imgData];
+                [self.comDataDictionary setValue:imgStr forKey:@"cardimgs"];
+                
                 weakcell.collectionDataList = [NSMutableArray arrayWithArray:images];
                 [weakcell reloadData];
-//                [weakself.comDataDictionary setValue:images forKey:@"cardimg"];
             }];
         }];
         return cell;
@@ -183,7 +226,7 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         NSArray *perTextArray = @[@"|  基本信息",@"公司名称",@"营业执照号",@"联系人",@"联系方式"];
-        NSArray *perPlacaTextArray = @[@"",@"请输入您的公司名称",@"请输入您的营业执照号",@"请输入您的姓名",@"请输入您常用的手机号码"];
+        NSArray *perPlacaTextArray = @[@"",@"请输入您的公司名称",@"请输入17位营业执照号",@"请输入您的姓名",@"请输入您常用的手机号码"];
         
         cell.leftdAgentContraints.constant = 110;
         cell.agentLabel.text = perTextArray[indexPath.row];
@@ -280,8 +323,8 @@
             cell = [[EditDebtAddressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
         cell.leftTextViewConstraints.constant = 105;
+        
         cell.ediLabel.text = @"经典案例";
         cell.ediTextView.placeholder = @"关于公司在融资等方面的成功案例，有利于发布方更加青睐你";
         cell.ediTextView.font = kFirstFont;
@@ -338,6 +381,37 @@
     return nil;
 }
 
+//#pragma mark - 响应selector
+/////键盘显示事件
+//- (void) keyboardWillShow:(NSNotification *)notification {
+//    //获取键盘高度，在不同设备上，以及中英文下是不同的
+//    CGFloat kbHeight = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
+//    
+//    //计算出键盘顶端到inputTextView panel底端的距离(加上自定义的缓冲距离INTERVAL_KEYBOARD)
+//    CGFloat offset = (panelInputTextView.frame.origin.y+panelInputTextView.frame.size.height+INTERVAL_KEYBOARD) - (self.view.frame.size.height - kbHeight);
+//    
+//    // 取得键盘的动画时间，这样可以在视图上移的时候更连贯
+//    double duration = [[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+//    
+//    //将视图上移计算好的偏移
+//    if(offset > 0) {
+//        [UIView animateWithDuration:duration animations:^{
+//            self.view.frame = CGRectMake(0.0f, -offset, self.view.frame.size.width, self.view.frame.size.height);
+//        }];
+//    }
+//}
+//
+/////键盘消失事件
+//- (void) keyboardWillHide:(NSNotification *)notify {
+//    // 键盘动画时间
+//    double duration = [[notify.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+//    
+//    //视图下沉恢复原状
+//    [UIView animateWithDuration:duration animations:^{
+//        self.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+//    }];
+//}
+
 #pragma mark - commit messages
 - (void)goToAuthenCompanyMessages
 {
@@ -361,15 +435,19 @@
     if (!self.comDataDictionary[@"mobile"]) {
         self.comDataDictionary[@"mobile"] = self.responseModel.certification.mobile?self.responseModel.certification.mobile:[self getValidateMobile];
     }
+    if (!self.comDataDictionary[@"cardimgs"]) {
+        NSString *imgStr = self.responseModel.certification.cardimg?self.responseModel.certification.cardimg:@"";
+        [self.comDataDictionary setValue:imgStr forKey:@"cardimg"];
+    }
 
     self.comDataDictionary[@"name"] = self.comDataDictionary[@"name"]?self.comDataDictionary[@"name"]:self.responseModel.certification.name;
     self.comDataDictionary[@"cardno"] = self.comDataDictionary[@"cardno"]?self.comDataDictionary[@"cardno"]:self.responseModel.certification.cardno;
     self.comDataDictionary[@"contact"] = self.comDataDictionary[@"contact"]?self.comDataDictionary[@"contact"]:self.responseModel.certification.contact;
     self.comDataDictionary[@"address"] = self.comDataDictionary[@"address"]?self.comDataDictionary[@"address"]:self.responseModel.certification.address;
     self.comDataDictionary[@"enterprisewebsite"] = self.comDataDictionary[@"enterprisewebsite"]?self.comDataDictionary[@"enterprisewebsite"]:self.responseModel.certification.enterprisewebsite;
-//    self.comDataDictionary[@"mobile"] = self.comDataDictionary[@"mobile"]?self.comDataDictionary[@"mobile"]:self.responseModel.certification.mobile;
     self.comDataDictionary[@"email"] = self.comDataDictionary[@"email"]?self.comDataDictionary[@"email"]:self.responseModel.certification.email;
     self.comDataDictionary[@"casedesc"] = self.comDataDictionary[@"casedesc"]?self.comDataDictionary[@"casedesc"]:self.responseModel.certification.casedesc;
+
     [self.comDataDictionary setValue:@"3" forKey:@"category"];
     [self.comDataDictionary setValue:[self getValidateToken] forKey:@"token"];
     
@@ -380,8 +458,6 @@
     }
     
     NSDictionary *params = self.comDataDictionary;
-//    NSString *cardimg = self.comDataDictionary[@"cardimg"][0]?self.comDataDictionary[@"cardimg"][0]:self.responseModel.certification.cardimg;
-//    NSDictionary *imageParams = @{@"cardimg" : cardimg};
     
     [self requestDataPostWithString:comAuString params:params andImages:nil successBlock:^(id responseObject) {
         BaseModel *personModel = [BaseModel objectWithKeyValues:responseObject];
@@ -391,10 +467,11 @@
             UINavigationController *personNav = self.navigationController;
             [personNav popViewControllerAnimated:NO];
             [personNav popViewControllerAnimated:NO];
+            [personNav popViewControllerAnimated:NO];
             
             CompleteViewController *completeVC = [[CompleteViewController alloc] init];
             completeVC.hidesBottomBarWhenPushed = YES;
-            completeVC.categoryString = @"1";
+            completeVC.categoryString = self.categoryString;
             [personNav pushViewController:completeVC animated:NO];
         }
     } andFailBlock:^(NSError *error) {

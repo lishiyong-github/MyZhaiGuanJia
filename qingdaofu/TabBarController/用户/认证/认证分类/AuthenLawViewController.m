@@ -187,9 +187,15 @@
         QDFWeakSelf;
         [cell setDidSelectedItem:^(NSInteger item) {
             [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
+                
+                NSData *imgData = [NSData dataWithContentsOfFile:images[0]];
+                NSString *imgStr = [NSString stringWithFormat:@"%@",imgData];
+                [self.lawDataDictionary setValue:imgStr forKey:@"cardimgs"];
+                
                 weakcell.collectionDataList = [NSMutableArray arrayWithArray:images];
                 [weakcell reloadData];
-                [weakself.lawDataDictionary setValue:images forKey:@"cardimg"];
+                
+                
             }];
         }];
         
@@ -210,17 +216,6 @@
         cell.leftdAgentContraints.constant = 100;
         cell.agentLabel.text = perTextArray[indexPath.row];
         cell.agentTextField.placeholder = perPlacaTextArray[indexPath.row];
-        
-//        if (indexPath.row == 0) {
-//            cell.agentLabel.textColor = kBlueColor;
-//            cell.agentTextField.userInteractionEnabled = NO;
-//        }else if (indexPath.row == 1){
-//            cell.agentTextField.text = certificationModel.name;
-//        }else if (indexPath.row == 2){
-//            cell.agentTextField.text = certificationModel.cardno;
-//        }else if (indexPath.row == 3){
-//            cell.agentTextField.text = certificationModel.mobile;
-//        }
         
         if (indexPath.row == 0) {
             cell.agentLabel.textColor = kBlueColor;
@@ -377,6 +372,10 @@
     if (!self.lawDataDictionary[@"mobile"]) {
         self.lawDataDictionary[@"mobile"] = self.responseModel.certification.mobile?self.responseModel.certification.mobile:[self getValidateMobile];
     }
+    if (!self.lawDataDictionary[@"cardimgs"]) {
+        NSString *imgStr = self.responseModel.certification.cardimg?self.responseModel.certification.cardimg:@"";
+        [self.lawDataDictionary setValue:imgStr forKey:@"cardimg"];
+    }
     
     self.lawDataDictionary[@"name"] = self.lawDataDictionary[@"name"]?self.lawDataDictionary[@"name"]:self.responseModel.certification.name;
     self.lawDataDictionary[@"cardno"] = self.lawDataDictionary[@"cardno"]?self.lawDataDictionary[@"cardno"]:self.responseModel.certification.cardno;
@@ -395,9 +394,6 @@
     
     NSDictionary *params = self.lawDataDictionary;
     
-//    NSString *cardimg = self.lawDataDictionary[@"cardimg"][0]?self.lawDataDictionary[@"cardimg"][0]:self.responseModel.certification.cardimg;
-//    NSDictionary *imageParams = @{@"cardimg" : cardimg};
-    
     [self requestDataPostWithString:lawAuString params:params andImages:nil successBlock:^(id responseObject) {
         
         BaseModel *personModel = [BaseModel objectWithKeyValues:responseObject];
@@ -407,10 +403,11 @@
             UINavigationController *personNav = self.navigationController;
             [personNav popViewControllerAnimated:NO];
             [personNav popViewControllerAnimated:NO];
+            [personNav popViewControllerAnimated:NO];
             
             CompleteViewController *completeVC = [[CompleteViewController alloc] init];
             completeVC.hidesBottomBarWhenPushed = YES;
-            completeVC.categoryString = @"2";
+            completeVC.categoryString = self.categoryString;
             [personNav pushViewController:completeVC animated:NO];
         }
 

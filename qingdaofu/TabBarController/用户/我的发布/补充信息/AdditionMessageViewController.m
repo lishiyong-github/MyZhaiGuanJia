@@ -202,7 +202,6 @@
         }
         
         PublishingResponse *meResponse;
-//        = self.addMessageDataArray[0];
         if (self.addMessageDataArray.count > 0) {
            meResponse = self.addMessageDataArray[0];
         }

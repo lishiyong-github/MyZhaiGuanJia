@@ -284,6 +284,7 @@
 		A18F14161CF6D3C100B14318 /* CaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A18F14151CF6D3C100B14318 /* CaseViewController.m */; };
 		A18F14191CF6D6A100B14318 /* AllEvaluationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A18F14181CF6D6A100B14318 /* AllEvaluationViewController.m */; };
 		A18F141C1CF6EAA800B14318 /* ProPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = A18F141B1CF6EAA800B14318 /* ProPickerView.m */; };
+		A19266A21D2CDCA900DD7E9E /* ZYKeyboardUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = A19266A11D2CDCA900DD7E9E /* ZYKeyboardUtil.m */; };
 		A192B4B01CDAFAC60053FC4C /* MyScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A192B4AF1CDAFAC60053FC4C /* MyScheduleViewController.m */; };
 		A192B4B41CDB2CAF0053FC4C /* AdditionMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A192B4B31CDB2CAF0053FC4C /* AdditionMessageViewController.m */; };
 		A192B4B81CDB34030053FC4C /* PaceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A192B4B71CDB34030053FC4C /* PaceViewController.m */; };
@@ -925,6 +926,8 @@
 		A18F14181CF6D6A100B14318 /* AllEvaluationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllEvaluationViewController.m; sourceTree = "<group>"; };
 		A18F141A1CF6EAA800B14318 /* ProPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProPickerView.h; sourceTree = "<group>"; };
 		A18F141B1CF6EAA800B14318 /* ProPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProPickerView.m; sourceTree = "<group>"; };
+		A19266A01D2CDCA900DD7E9E /* ZYKeyboardUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZYKeyboardUtil.h; sourceTree = "<group>"; };
+		A19266A11D2CDCA900DD7E9E /* ZYKeyboardUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZYKeyboardUtil.m; sourceTree = "<group>"; };
 		A192B4AE1CDAFAC60053FC4C /* MyScheduleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyScheduleViewController.h; sourceTree = "<group>"; };
 		A192B4AF1CDAFAC60053FC4C /* MyScheduleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyScheduleViewController.m; sourceTree = "<group>"; };
 		A192B4B21CDB2CAF0053FC4C /* AdditionMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdditionMessageViewController.h; sourceTree = "<group>"; };
@@ -1938,6 +1941,15 @@
 			path = "启动页";
 			sourceTree = "<group>";
 		};
+		A192669F1D2CDCA900DD7E9E /* Keyboard */ = {
+			isa = PBXGroup;
+			children = (
+				A19266A01D2CDCA900DD7E9E /* ZYKeyboardUtil.h */,
+				A19266A11D2CDCA900DD7E9E /* ZYKeyboardUtil.m */,
+			);
+			path = Keyboard;
+			sourceTree = "<group>";
+		};
 		A192B4AD1CDAFAAC0053FC4C /* 填写进度 */ = {
 			isa = PBXGroup;
 			children = (
@@ -2703,6 +2715,7 @@
 		A1A017311C5B677200027134 /* 第三方 */ = {
 			isa = PBXGroup;
 			children = (
+				A192669F1D2CDCA900DD7E9E /* Keyboard */,
 				A163915A1D20194B0051F1D0 /* ImageBrowser */,
 				A1B0291C1D17CE6F00F32A09 /* AFNetworking */,
 				A1B028C81D1794DC00F32A09 /* SDWebImage */,
@@ -3382,6 +3395,7 @@
 				A1602E7A1CEDAF790053F850 /* BidMessageCell.m in Sources */,
 				A154B8F51CE1C14100884CA4 /* ReportSuitViewController.m in Sources */,
 				A1B0292B1D17CE6F00F32A09 /* AFNetworkReachabilityManager.m in Sources */,
+				A19266A21D2CDCA900DD7E9E /* ZYKeyboardUtil.m in Sources */,
 				A159F9621D0D67FA00A6A024 /* DelayResponse.m in Sources */,
 				A1A34C051CE2FE7500AD454A /* UserButton.m in Sources */,
 				A1B028E71D1794DC00F32A09 /* SDImageCache.m in Sources */,

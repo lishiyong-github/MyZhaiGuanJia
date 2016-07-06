@@ -60,6 +60,7 @@
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         if (failBlock) {
             [self hideHud];
+            [self showHint:@"网络错误"];
             failBlock(error);
         }
     }];

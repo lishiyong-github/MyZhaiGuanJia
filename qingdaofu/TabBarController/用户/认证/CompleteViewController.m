@@ -24,6 +24,7 @@
 #import "CertificationModel.h"
 
 #import "UIButton+WebCache.h"
+#import "NSString+Fram.h"
 
 @interface CompleteViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -173,30 +174,34 @@
     if (self.completeDataArray.count > 0) {
         response = self.completeDataArray[0];
     }
-    CertificationModel *model = response.certification;
     
-    CGSize titleSize = [model.casedesc boundingRectWithSize:CGSizeMake(kScreenWidth*0.5, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:kFirstFont} context:nil].size;
+    CGSize titleSize = CGSizeMake(0, MAXFLOAT);
+    NSDictionary *tdic = [NSDictionary dictionaryWithObjectsAndKeys:kFirstFont,NSFontAttributeName,nil];
+    CGSize  actualsize =[response.certification.casedesc boundingRectWithSize:titleSize options:NSStringDrawingUsesLineFragmentOrigin attributes:tdic context:nil].size;
+
+    NSLog(@"actualsize is %f",actualsize.height);
     
     if ([self.categoryString intValue] == 1) {//个人
         if (indexPath.row == 0) {
             return kCellHeight;
         }
-        return 245+titleSize.height;
+        return 245+actualsize.height;
         
     }else if ([self.categoryString intValue] == 2){//律所
         if (indexPath.row == 0) {
             return kCellHeight;
         }
         
-        return 245+titleSize.height;
+        return 260+actualsize.height;
     }
     
     //公司
     if (indexPath.row == 0) {
         return kCellHeight;
     }
+    return 310 + actualsize.height;
     
-    return 310+titleSize.height;
+//    return 310+actualsize.height;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -222,7 +227,9 @@
         
         if ([response.certification.canModify integerValue] == 0) {//canModify＝1可以修改，＝0不可修改
             [cell.userActionButton setHidden:YES];
-        }else{
+        }
+        
+        if ([response.completionRate floatValue] < 1) {
             [cell.userActionButton setHidden:NO];
             [cell.userActionButton setTitle:@"编辑" forState:0];
             [cell.userActionButton setTitleColor:kBlueColor forState:0];
@@ -235,6 +242,7 @@
         return cell;
     }
     
+    //具体信息
     CompleteResponse *response;
     CertificationModel *certificationModel;
     if (self.completeDataArray.count > 0) {
@@ -377,9 +385,6 @@
     NSDictionary *params = @{@"token" : [self getValidateToken]};
     [self requestDataPostWithString:completeString params:params successBlock:^(id responseObject){
         
-        NSDictionary *frfrf = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSLog(@"()()()( %@",frfrf);
-        
         CompleteResponse *response = [CompleteResponse objectWithKeyValues:responseObject];
         
         [self.completeDataArray addObject:response];
@@ -391,17 +396,13 @@
             [self.completeCommitButton setTitleColor:kBlackColor forState:0];
             self.completeCommitButton.userInteractionEnabled = NO;
         }
-        
     } andFailBlock:^(NSError *error){
         
     }];
 }
 
-
 - (void)showRemindMessage:(UIBarButtonItem *)barButton
 {
-//    NSLog(@"可发布融资清收诉讼");
-    
     UIButton *remindButton = [UIButton newAutoLayoutView];
     [self.view addSubview:remindButton];
     

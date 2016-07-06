@@ -29,7 +29,7 @@
         [self.contentView addSubview:self.comWebsiteLabel];
         [self.contentView addSubview:self.comExampleLabel];
         [self.contentView addSubview:self.comExampleLabel2];
-        
+                
         [self.contentView setNeedsUpdateConstraints];
     }
     return self;

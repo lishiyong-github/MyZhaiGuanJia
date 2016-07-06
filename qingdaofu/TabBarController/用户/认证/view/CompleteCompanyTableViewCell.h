@@ -26,9 +26,9 @@
 @property (nonatomic,strong) UILabel *comExampleLabel;  //案例
 @property (nonatomic,strong) UILabel *comExampleLabel2;//具体案例
 
-@property (nonatomic,strong) UIButton *comImageButton;
+@property (nonatomic,strong) UIButton *comImageButton;  //已认证
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
-
+@property (nonatomic,strong) NSLayoutConstraint *heightConstraints;
 
 @end

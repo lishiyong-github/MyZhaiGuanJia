@@ -346,7 +346,7 @@
             }
             
             DebtModel *infoModel2 = self.yyModel.borrowinginfos[0];
-            if (infoModel2.creditorname == nil) {
+            if (infoModel2.borrowingname == nil) {
                 borrowinginfo = @"无";
             }else{
                 borrowinginfo = @"查看";

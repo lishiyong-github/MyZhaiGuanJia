@@ -146,7 +146,6 @@
 #define kMyDelayRequestString @"public/delayapply"   //延期申请
 #define kCheckReleasePeople @"apply/users"   //查看发布方详情
 
-
 #define kMyReleaseString  @"apply/released"   //我的发布
 #define kMyReleaseDetailString @"public/wxreleaseinformationwidget"  //我的发布详情/我的接单详情
 #define kLookUpScheduleString @"public/wxspeedwidget"   //查看进度
@@ -169,7 +168,6 @@
 #define kMessageOfPublishString @"message/index"  //发布消息
 //#define kMessageOfEvaluateString @"apply/userlists"  //评价列表
 //评价类型（evaluate(收到的评价) ／launchevaluation(给出的评级)）
-
 
 #define kAuthenString @"certification/add"   //认证
 #define kIsCompleteString  @"certification/view"  //是否认证

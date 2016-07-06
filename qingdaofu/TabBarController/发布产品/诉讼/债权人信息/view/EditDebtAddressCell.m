@@ -13,7 +13,6 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    
     if (self) {
         [self.contentView addSubview:self.ediLabel];
         [self.contentView addSubview:self.ediTextView];
@@ -57,27 +56,44 @@
         _ediTextView = [PlaceHolderTextView newAutoLayoutView];
         _ediTextView.textColor = kBlackColor;
         _ediTextView.font = kFirstFont;
-        _ediTextView.delegate = self;
         _ediTextView.placeholder = @"请输入地址";
         _ediTextView.placeholderColor = kLightGrayColor;
         _ediTextView.returnKeyType = UIReturnKeyDone;
+        _ediTextView.delegate = self;
     }
     return _ediTextView;
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
+    if ([text isEqualToString:@"\n"]) {
+        [textView resignFirstResponder];
+        NSString *title = [textView.text stringByReplacingCharactersInRange:range withString:text];
+        if (self.didEndEditing) {
+            self.didEndEditing(title);
+        }
+        return NO;
+    }
+    
     NSString *title = [textView.text stringByReplacingCharactersInRange:range withString:text];
     if (self.didEndEditing) {
         self.didEndEditing(title);
     }
     
-    if ([text isEqualToString:@"\n"]) {
-        [textView resignFirstResponder];
-        return NO;
-    }
     return YES;
 }
+
+//-(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+//{
+//    if ([text isEqualToString:@"\n"]){
+//        [textView resignFirstResponder];
+//        return NO;
+//    }else if(range.location >= 500){//如果输入超过规定的字数20，就不再让输入
+//        return NO;
+//    }
+//    NSString *content = text;
+//    return YES;
+//}
 
 - (void)awakeFromNib {
     // Initialization code

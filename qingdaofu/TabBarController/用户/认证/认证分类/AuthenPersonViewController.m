@@ -163,16 +163,9 @@
         [cell setDidSelectedItem:^(NSInteger itemTag) {
             
             [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
-                
-                
-//                weakself.imageArray = [NSMutableArray arrayWithArray:images];
                 NSData *imgData = [NSData dataWithContentsOfFile:images[0]];
-                [imgData base64EncodedDataWithOptions:NSDataBase64Encoding76CharacterLineLength];
-                
                 NSString *imgStr = [NSString stringWithFormat:@"%@",imgData];
-                
                 [self.perDataDictionary setValue:imgStr forKey:@"cardimgs"];
-                
                 weakcell.collectionDataList = [NSMutableArray arrayWithArray:images];
                 [weakcell reloadData];
                 
@@ -331,12 +324,15 @@
     if (!self.perDataDictionary[@"mobile"]) {
         self.perDataDictionary[@"mobile"] = self.respnseModel.certification.mobile?self.respnseModel.certification.mobile:[self getValidateMobile];
     }
+    if (!self.perDataDictionary[@"cardimgs"]) {
+        NSString *imgStr = self.respnseModel.certification.cardimg?self.respnseModel.certification.cardimg:@"";
+        [self.perDataDictionary setValue:imgStr forKey:@"cardimg"];
+    }
     
     self.perDataDictionary[@"name"] = self.perDataDictionary[@"name"]?self.perDataDictionary[@"name"]:self.respnseModel.certification.name;
     self.perDataDictionary[@"cardno"] = self.perDataDictionary[@"cardno"]?self.perDataDictionary[@"cardno"]:self.respnseModel.certification.cardno;
     self.perDataDictionary[@"email"] = self.perDataDictionary[@"email"]?self.perDataDictionary[@"email"]:self.respnseModel.certification.email;
     self.perDataDictionary[@"casedesc"] = self.perDataDictionary[@"casedesc"]?self.perDataDictionary[@"casedesc"]:self.respnseModel.certification.casedesc;
-    self.perDataDictionary[@"cardimgs"] = self.perDataDictionary[@"cardimgs"]?self.perDataDictionary[@"cardimgs"]:self.respnseModel.certification.cardimg;
     
     [self.perDataDictionary setValue:@"1" forKey:@"category"];//认证类型
     [self.perDataDictionary setValue:[self getValidateToken] forKey:@"token"];
@@ -347,9 +343,6 @@
         [self.perDataDictionary setValue:@"add" forKey:@"type"];  //add为 首次添加
     }
     NSDictionary *params = self.perDataDictionary;
-    
-//    NSString *cardimg = self.perDataDictionary[@"cardimg"][0]?self.perDataDictionary[@"cardimg"][0]:self.respnseModel.certification.cardimg;
-//    NSDictionary *imageParams = @{@"cardimgs" : self.imageArray};
     [self requestDataPostWithString:personAuString params:params andImages:nil successBlock:^(id responseObject) {
 
         BaseModel *model = [BaseModel objectWithKeyValues:responseObject];
