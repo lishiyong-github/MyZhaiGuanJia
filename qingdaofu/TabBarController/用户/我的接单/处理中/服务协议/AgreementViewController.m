@@ -95,6 +95,7 @@
             [nav popViewControllerAnimated:NO];
             [nav popViewControllerAnimated:NO];
             MyReleaseViewController *myReleaseVC = [[MyReleaseViewController alloc] init];
+            myReleaseVC.hidesBottomBarWhenPushed = YES;
             myReleaseVC.progreStatus = @"2";
             [nav pushViewController:myReleaseVC animated:NO];
         }

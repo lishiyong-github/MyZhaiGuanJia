@@ -331,7 +331,7 @@
             }
             return cell;
             
-        }else if (indexPath.row == 1){
+        }else if (indexPath.row == 1){//具体进度
             
             identifier = @"processing31";
             BidMessageCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -359,13 +359,15 @@
                 }else{
                     auditStr = @"无";
                 }
-                
                 NSMutableAttributedString *caseTypestring = [cell.deadlineLabel setAttributeString:@"案号类型：" withColor:kBlackColor andSecond:auditStr withColor:kLightGrayColor withFont:12];
                 [cell.deadlineLabel setAttributedText:caseTypestring];
                 
+                //时间
                 cell.timeLabel.text = @"2016-05-30";
                 
-                NSMutableAttributedString *caseNoString = [cell.dateLabel setAttributeString:@"案        号：" withColor:kBlackColor andSecond:scheduleModel.caseString?scheduleModel.caseString:@"无" withColor:kLightGrayColor withFont:12];
+                //案号
+                NSString *caseStr = scheduleModel.caseString?scheduleModel.caseString:@"无";
+                NSMutableAttributedString *caseNoString = [cell.dateLabel setAttributeString:@"案        号：" withColor:kBlackColor andSecond:caseStr withColor:kLightGrayColor withFont:12];
                 [cell.dateLabel setAttributedText:caseNoString];
                 
                 NSArray *suitArr3 = @[@"债权人上传处置资产",@"律师接单",@"双方洽谈",@"向法院起诉(财产保全)",@"整理诉讼材料",@"法院立案",@"向当事人发出开庭传票",@"开庭前调解",@"开庭",@"判决",@"二次开庭",@"二次判决",@"移交执行局申请执行",@"执行中提供借款人的财产线索",@"调查(公告)",@"拍卖",@"流拍",@"拍卖成功",@"付费"];
@@ -382,12 +384,15 @@
                 }else{
                     dealTypeStr = suitArr3[number-1];
                 }
-                
+                //处置类型
                 NSMutableAttributedString *dealTypeString = [cell.areaLabel setAttributeString:@"处置类型：" withColor: kBlackColor andSecond:dealTypeStr withColor:kLightGrayColor withFont:12];
                 [cell.areaLabel setAttributedText:dealTypeString];
                 
-                NSMutableAttributedString *dealDeailString = [cell.addressLabel setAttributeString:@"详        情：" withColor:kBlackColor andSecond:scheduleModel.content?scheduleModel.content:@"无" withColor:kLightGrayColor withFont:12];
+                //详情
+                NSString *contentStr = scheduleModel.content?scheduleModel.content:@"无";
+                NSMutableAttributedString *dealDeailString = [cell.addressLabel setAttributeString:@"详        情：" withColor:kBlackColor andSecond:contentStr withColor:kLightGrayColor withFont:12];
                 [cell.addressLabel setAttributedText:dealDeailString];
+                
             }else{
                 [cell.remindImageButton setHidden:NO];
                 [cell.deadlineLabel setHidden:YES];

@@ -108,25 +108,6 @@
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         [self hideHud];
     }];
-    
-    /*
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    
-    NSString *validString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kTokenOverdue];
-    NSDictionary *params = @{@"token" : [self getValidateToken]?[self getValidateToken]:@""};
-    [manager POST:validString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        TokenModel *model = [TokenModel objectWithKeyValues:responseObject];
-        if (self.didTokenValid) {
-            self.didTokenValid(model);
-        }
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-
-    }];
-     */
 }
 
 /*

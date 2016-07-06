@@ -414,7 +414,9 @@
             if ([_number intValue] == 1) {//抵押物地址
                 cell.agentTextField.userInteractionEnabled = NO;
                 cell.agentTextField.text = suModel.mortorage_community?suModel.mortorage_community:self.suitDataDictionary[@"mortorage_community"];
+                
                 [cell.agentButton setHidden:NO];
+                cell.agentButton.userInteractionEnabled = YES;
                 [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
                 [cell.agentButton setTitle:@"请选择" forState:0];
                 
@@ -440,8 +442,10 @@
                 }
                 cell.agentTextField.text = self.suResponse.car?self.suResponse.car:carbr;
 
+                [cell.agentButton setHidden:NO];
                 [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
                 [cell.agentButton setTitle:@"请选择" forState:0];
+                cell.agentButton.userInteractionEnabled = YES;
 
                 QDFWeak(cell);
                 [cell.agentButton addAction:^(UIButton *btn) {
@@ -461,8 +465,12 @@
                 }];
             }else if ([_number intValue] == 2) {//应收帐款
                 cell.agentTextField.userInteractionEnabled = YES;
-                [cell.agentButton setTitle:@"万元" forState:0];
                 cell.agentTextField.text = suModel.accountr?suModel.accountr:self.suitDataDictionary[@"accountr"];
+                
+                [cell.agentButton setHidden:NO];
+                [cell.agentButton setTitle:@"万元" forState:0];
+                [cell.agentButton setImage:[UIImage imageNamed:@""] forState:0];
+                cell.agentButton.userInteractionEnabled = NO;
 
                 [cell setDidEndEditing:^(NSString *text) {
                     [self.suitDataDictionary setValue:text forKey:@"accountr"];

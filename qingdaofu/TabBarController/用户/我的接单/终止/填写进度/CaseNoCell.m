@@ -57,7 +57,7 @@
 {
     if (!_caseNoTextField) {
         _caseNoTextField = [UITextField newAutoLayoutView];
-        _caseNoTextField.textColor = kLightGrayColor;
+        _caseNoTextField.textColor = kBlackColor;
         _caseNoTextField.font = kFirstFont;
         _caseNoTextField.delegate = self;
     }

@@ -109,7 +109,10 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.backgroundColor = kNavColor;
     
-    PaceModel *model = self.paceDataArray[indexPath.row];
+    PaceModel *model;
+    if (self.paceDataArray.count > 0) {
+        model = self.paceDataArray[indexPath.section];
+    }
     
     cell.timeLabel.text = [NSDate getYMDFormatterTime:model.create_time];
     [cell.remindImageButton setHidden:YES];
@@ -122,9 +125,14 @@
         NSInteger a2 = [model.status intValue]-1;
         
         cell.deadlineLabel.text = [NSString stringWithFormat:@"案号类型：%@",array1[a1]];
-        cell.dateLabel.text = [NSString stringWithFormat:@"案        号：%@",model.caseString];
+        cell.dateLabel.text = [NSString stringWithFormat:@"案        号：%@",model.caseString?model.caseString:@"无"];
         cell.areaLabel.text = [NSString stringWithFormat:@"处置类型：%@",array2[a2]];
-        cell.addressLabel.text = [NSString stringWithFormat:@"详        情：%@",model.content];
+        if (model.content == nil || [model.content isEqualToString:@""]) {
+            cell.addressLabel.text = [NSString stringWithFormat:@"%@",@"详        情：无"];
+        }else{
+            cell.addressLabel.text = [NSString stringWithFormat:@"%@%@",@"详        情：",model.content];
+        }
+        
     }else if([self.categoryString intValue] == 1){//融资
         
         NSArray *array3 = @[@"尽职调查",@"公证",@"抵押",@"放款",@"返点",@"其他"];
@@ -133,14 +141,22 @@
         cell.deadlineLabel.text = [NSString stringWithFormat:@"案号类型：无"];
         cell.dateLabel.text = [NSString stringWithFormat:@"案        号：无"];
         cell.areaLabel.text = [NSString stringWithFormat:@"处置类型：%@",array3[a3]];
-        cell.addressLabel.text = [NSString stringWithFormat:@"详        情：%@",model.content];
-    }else{
+        if (model.content == nil || [model.content isEqualToString:@""]) {
+            cell.addressLabel.text = [NSString stringWithFormat:@"%@",@"详        情：无"];
+        }else{
+            cell.addressLabel.text = [NSString stringWithFormat:@"%@%@",@"详        情：",model.content];
+        }
+    }else{//清收
         NSArray *array4 = @[@"电话",@"上门",@"面谈"];
         NSInteger a4 = [model.status intValue]-1;
         cell.deadlineLabel.text = [NSString stringWithFormat:@"案号类型：无"];
         cell.dateLabel.text = [NSString stringWithFormat:@"案        号：无"];
         cell.areaLabel.text = [NSString stringWithFormat:@"处置类型：%@",array4[a4]];
-        cell.addressLabel.text = [NSString stringWithFormat:@"详        情：%@",model.content];
+        if (model.content == nil || [model.content isEqualToString:@""]) {
+            cell.addressLabel.text = [NSString stringWithFormat:@"%@",@"详        情：无"];
+        }else{
+            cell.addressLabel.text = [NSString stringWithFormat:@"%@%@",@"详        情：",model.content];
+        }
     }
     
     return cell;
@@ -166,7 +182,6 @@
                              @"page" : page
                              };
     [self requestDataPostWithString:paceString params:params successBlock:^(id responseObject) {
-        
         if ([page integerValue] == 0) {
             [self.paceDataArray removeAllObjects];
         }

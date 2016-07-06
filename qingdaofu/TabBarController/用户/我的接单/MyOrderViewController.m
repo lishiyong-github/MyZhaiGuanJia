@@ -501,7 +501,6 @@
     }
 }
 
-
 - (void)delayRequestWithID:(NSString *)idStr andCategary:(NSString *)categaryStr
 {
     NSString *deString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kIsDelayRequestString];
@@ -514,15 +513,16 @@
         DelayResponse *response = [DelayResponse objectWithKeyValues:responseObject];
         DelayModel *delayModel = response.delay;
         
-        if ((delayModel.is_agree == nil) && ([delayModel.delays intValue] <= 7)) {
+        if (![delayModel.is_agree isEqualToString:@""]) {//已申请
+            [self showHint:@"您已申请，不能重复申请"];
+        }else if ([delayModel.delays intValue] > 7){
+            [self showHint:@"大于7天才可申请延期"];
+        }else{
             DelayRequestsViewController *delayRequestsVC = [[DelayRequestsViewController alloc] init];
             delayRequestsVC.idString = idStr;
             delayRequestsVC.categoryString = categaryStr;
             [self.navigationController pushViewController:delayRequestsVC animated:YES];
-        }else{
-            [self showHint:@"您已申请过延期，不能重复申请"];
         }
-        
     } andFailBlock:^(NSError *error) {
 
     }];

@@ -26,7 +26,6 @@
 @property (nonatomic,strong) NSMutableDictionary *perImageDictionary;
 @property (nonatomic,strong) NSMutableArray *imageArray;
 
-
 @end
 
 @implementation AuthenPersonViewController
@@ -342,7 +341,13 @@
     }else{
         [self.perDataDictionary setValue:@"add" forKey:@"type"];  //add为 首次添加
     }
+    
+    NSString *completionRate = self.respnseModel.completionRate?self.respnseModel.completionRate:@"0";
+    [self.perDataDictionary setValue:completionRate forKey:@"completionRate"];
+    
     NSDictionary *params = self.perDataDictionary;
+    
+    
     [self requestDataPostWithString:personAuString params:params andImages:nil successBlock:^(id responseObject) {
 
         BaseModel *model = [BaseModel objectWithKeyValues:responseObject];

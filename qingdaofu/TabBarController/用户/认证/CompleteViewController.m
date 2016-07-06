@@ -185,7 +185,7 @@
         if (indexPath.row == 0) {
             return kCellHeight;
         }
-        return 245+actualsize.height;
+        return 230+actualsize.height;
         
     }else if ([self.categoryString intValue] == 2){//律所
         if (indexPath.row == 0) {
@@ -199,9 +199,7 @@
     if (indexPath.row == 0) {
         return kCellHeight;
     }
-    return 310 + actualsize.height;
-    
-//    return 310+actualsize.height;
+    return 345 + actualsize.height;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

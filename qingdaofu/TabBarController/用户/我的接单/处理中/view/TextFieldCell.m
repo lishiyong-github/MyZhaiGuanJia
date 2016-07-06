@@ -85,7 +85,15 @@
 
 - (BOOL)textViewShouldEndEditing:(UITextView *)textView
 {
-    [textView resignFirstResponder];
+    if ([textView.text isEqualToString:@"\n"]) {
+        [textView resignFirstResponder];
+        return NO;
+    }
+    
+    if (self.didEndEditing) {
+        self.didEndEditing(textView.text);
+    }
+    
     return YES;
 }
 

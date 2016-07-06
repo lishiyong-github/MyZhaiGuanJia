@@ -43,7 +43,10 @@
     [super viewDidLoad];
     self.navigationItem.title = [NSString stringWithFormat:@"%@信息",self.typeString];
     self.navigationItem.leftBarButtonItem = self.leftItem;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightBarBtn];
+    
+    if (![self.typeString isEqualToString:@"申请人"]) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightBarBtn];
+    }
 
     [self.view addSubview:self.checkDetailTableView];
     [self.view addSubview:self.appAgreeButton];

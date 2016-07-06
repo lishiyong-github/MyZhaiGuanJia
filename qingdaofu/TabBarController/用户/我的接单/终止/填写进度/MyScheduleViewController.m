@@ -105,7 +105,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier;
-    if ([self.categoryString intValue] == 3) {
+    if ([self.categoryString intValue] == 3) {//诉讼
         if (indexPath.row < 2) {
             identifier = @"schedule30";
             CaseNoCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -135,6 +135,7 @@
                 
                 //案号类型
                 [cell.caseGoButton addAction:^(UIButton *btn) {
+                    [self.view endEditing:YES];
                     [weakself showBlurInView:self.view withArray:suitNoArr andTitle:@"选择案号类型" finishBlock:^(NSString *text,NSInteger row) {
                         [weakcell.caseGoButton setTitle:text forState:0];
                         NSString *auditStr = [NSString stringWithFormat:@"%d",row-1];
@@ -145,7 +146,7 @@
             }else{//处置类型
                 cell.caseNoTextField.userInteractionEnabled = NO;
                 [cell.caseGoButton addAction:^(UIButton *btn) {
-                    
+                    [self.view endEditing:YES];
                     [weakself showBlurInView:self.view withArray:suitArr andTitle:@"选择处置类型" finishBlock:^(NSString *text,NSInteger row) {
                         [weakcell.caseGoButton setTitle:text forState:0];
                         
@@ -165,10 +166,15 @@
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.textField.placeholder = @"请填写进度";
+        [cell setDidEndEditing:^(NSString *text) {
+            [self.scheduleDictionary setValue:text forKey:@"content"];
+        }];
+        
 
         return cell;
     }
     
+    //融资或清收
     if (indexPath.row == 0) {
         identifier = @"schedule10";
         CaseNoCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -180,7 +186,6 @@
         [cell.caseNoButton setTitle:@"选择处置类型" forState:0];
         cell.caseNoTextField.userInteractionEnabled = NO;
         [cell.caseGoButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-        
         
         NSArray *financeArr = @[@"尽职调查",@"公证",@"放款",@"返点",@"其他"];
         NSArray *collectArr = @[@"电话",@"上门",@"面谈"];
@@ -229,6 +234,7 @@
 
 - (void)writeMySchedule
 {
+    [self.view endEditing:YES];
     NSString *myScheduleString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyscheduleString];
     /*
      status	状态	融资：
@@ -269,26 +275,10 @@
      19 => '付费',
      ];
      */
-    NSString *caseStr = @"";
-    NSString *auditStr = @"";
-    NSString *statusStr = @"";
-    NSString *contentStr = @"";
-
-    if (self.scheduleDictionary[@"case"]) {
-        caseStr = self.scheduleDictionary[@"case"];
-    }
-    
-    if (self.scheduleDictionary[@"audit"]) {
-        auditStr = self.scheduleDictionary[@"audit"];
-    }
-    
-    if (self.scheduleDictionary[@"status"]) {
-        statusStr = self.scheduleDictionary[@"status"];
-    }
-    
-    if (self.scheduleDictionary[@"content"]) {
-        contentStr = self.scheduleDictionary[@"content"];
-    }
+    NSString *caseStr = self.scheduleDictionary[@"case"]?self.scheduleDictionary[@"case"]:@"";
+    NSString *auditStr = self.scheduleDictionary[@"audit"]?self.scheduleDictionary[@"audit"]:@"";
+    NSString *statusStr = self.scheduleDictionary[@"status"]?self.scheduleDictionary[@"status"]:@"";
+    NSString *contentStr = self.scheduleDictionary[@"content"]?self.scheduleDictionary[@"content"]:@"";
 
     NSDictionary *params;
     if ([self.categoryString intValue] == 1) {//融资

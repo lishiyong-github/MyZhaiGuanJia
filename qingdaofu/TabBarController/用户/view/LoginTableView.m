@@ -199,9 +199,15 @@
                 cell.userInteractionEnabled = NO;
                 [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
                 [cell.userNameButton setTitle:@"  我的代理(个人用户不能添加代理)" forState:0];
+            }else{
+                cell.userInteractionEnabled = YES;
+                [cell.userNameButton setTitleColor:kBlackColor forState:0];
+                [cell.userNameButton setTitle:@"  我的代理" forState:0];
             }
         }else{
-            
+            cell.userInteractionEnabled = NO;
+            [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
+            [cell.userNameButton setTitle:@"  我的代理(代理人不能添加代理)" forState:0];
         }
     }
     

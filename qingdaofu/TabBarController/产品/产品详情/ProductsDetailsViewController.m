@@ -309,10 +309,6 @@
                              @"category" : self.categoryString
                              };
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
-        
-        NSDictionary *bcbwwsv = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSLog(@"+======= %@",bcbwwsv);
-        
         PublishingResponse *respModel = [PublishingResponse objectWithKeyValues:responseObject];
         
         self.navigationItem.title = respModel.product.codeString;

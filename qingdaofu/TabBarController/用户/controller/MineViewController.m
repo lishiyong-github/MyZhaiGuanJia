@@ -98,7 +98,6 @@
                                 myAgentListVC.typePid = @"本人";
                             }else{
                                 myAgentListVC.typePid = @"非本人";
-                                
                             }
                             
                             [weakself.navigationController pushViewController:myAgentListVC animated:YES];
@@ -181,7 +180,6 @@
                 }
                 
                 if ([tModel.code isEqualToString:@"3006"] || [tModel.code isEqualToString:@"0000"]) {
-                    
                     if (buttonTag == 12) {
                         MySettingsViewController *mySettingVC = [[MySettingsViewController alloc] init];
                         mySettingVC.hidesBottomBarWhenPushed = YES;
