@@ -89,41 +89,40 @@
     
     NSString *name;
     if ([self.categoryString  integerValue] == 1) {//债权人信息
-        name = deModel.creditorname?deModel.creditorname:@"未填写";
+        name = [NSString getValidStringFromString:deModel.creditorname];
     }else{//债务人信息
-        name = deModel.borrowingname?deModel.borrowingname:@"未填写";
+        name = [NSString getValidStringFromString:deModel.borrowingname];
     }
     NSMutableAttributedString *nameStr = [cell.debtNameLabel setAttributeString:@"姓        名    " withColor:kBlackColor andSecond:name withColor:kLightGrayColor withFont:12];
     [cell.debtNameLabel setAttributedText:nameStr];
     
     NSString *tel;
     if ([self.categoryString  integerValue] == 1) {
-        tel = deModel.creditormobile?deModel.creditormobile:@"未填写";
+        tel = [NSString getValidStringFromString:deModel.creditormobile];;
     }else{
-        tel = deModel.borrowingmobile?deModel.borrowingmobile:@"未填写";
+        tel = [NSString getValidStringFromString:deModel.borrowingmobile];;
     }
     NSMutableAttributedString *telStr = [cell.debtTelLabel setAttributeString:@"联系方式    " withColor:kBlackColor andSecond:tel withColor:kLightGrayColor withFont:12];
     [cell.debtTelLabel setAttributedText:telStr];
     
     cell.debtAddressLabel.text = @"联系地址";
     if ([self.categoryString integerValue] == 1) {
-        cell.debtAddressLabel1.text = deModel.creditoraddress?deModel.creditoraddress:@"未填写";
+        cell.debtAddressLabel1.text = [NSString getValidStringFromString:deModel.creditoraddress];
     }else{
-        cell.debtAddressLabel1.text = deModel.borrowingaddress?deModel.borrowingaddress:@"未填写";
+        cell.debtAddressLabel1.text = [NSString getValidStringFromString:deModel.borrowingaddress];
     }
     
     NSString *ID;
     if ([self.categoryString  integerValue] == 1) {
-        ID = deModel.creditorcardcode?deModel.creditorcardcode:@"未填写";
+        ID = [NSString getValidStringFromString:deModel.creditorcardcode];
     }else{
-        ID = deModel.borrowingcardcode?deModel.borrowingcardcode:@"未填写";
+        ID = [NSString getValidStringFromString:deModel.borrowingcardcode];
     }
     NSMutableAttributedString *IDStr = [cell.debtIDLabel setAttributeString:@"证件号        " withColor:kBlackColor andSecond:ID withColor:kLightGrayColor withFont:12];
     [cell.debtIDLabel setAttributedText:IDStr];
     
     [cell.debtImageView1 sd_setImageWithURL:nil placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
     [cell.debtImageView2 sd_setImageWithURL:nil placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
-
     
     return cell;
 }
@@ -137,7 +136,6 @@
 {
     return 0.1f;
 }
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

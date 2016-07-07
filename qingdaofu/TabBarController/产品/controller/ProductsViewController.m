@@ -420,10 +420,8 @@
         if (!cell) {
             cell = [[BidOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
-        
         cell.oneButton.userInteractionEnabled = NO;
-        [cell.oneButton setTitleColor:kLightGrayColor forState:0];
-        [cell.oneButton setTitleColor:kBlueColor forState:UIControlStateSelected];
+        [cell.oneButton setTitleColor:kBlueColor forState:0];
         [cell.oneButton setTitle:self.provinceDictionary.allValues[indexPath.row] forState:0];
         
         return cell;
@@ -436,8 +434,8 @@
         }
         
         cell.oneButton.userInteractionEnabled = NO;
-        [cell.oneButton setTitleColor:kLightGrayColor forState:0];
-        [cell.oneButton setTitleColor:kBlueColor forState:UIControlStateSelected];        [cell.oneButton setTitle:self.cityDcitionary.allValues[indexPath.row] forState:0];
+        [cell.oneButton setTitleColor:kBlueColor forState:0];
+        [cell.oneButton setTitle:self.cityDcitionary.allValues[indexPath.row] forState:0];
 
         return cell;
     }else if (tableView == self.tableView13){//区
@@ -448,8 +446,7 @@
         }
         
         cell.oneButton.userInteractionEnabled = NO;
-        [cell.oneButton setTitleColor:kLightGrayColor forState:0];
-        [cell.oneButton setTitleColor:kBlueColor forState:UIControlStateSelected];
+        [cell.oneButton setTitleColor:kBlueColor forState:0];
         [cell.oneButton setTitle:self.districtDictionary.allValues[indexPath.row] forState:0];
 
         return cell;
@@ -485,7 +482,6 @@
         [self.tableView12 autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.tableView11];
         [self.tableView12 autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.tableView11];
         
-        [self.paramsDictionary setValue:self.provinceDictionary.allKeys[indexPath.row] forKey:@"province"];
         [self getCityListWithProvinceID:self.provinceDictionary.allKeys[indexPath.row]];
         
     }else if (tableView == self.tableView12){
@@ -496,7 +492,6 @@
         [self.tableView13 autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.tableView11];
         [self.tableView13 autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.tableView11];
         
-        [self.paramsDictionary setValue:self.cityDcitionary.allKeys[indexPath.row] forKey:@"city"];
         [self getDistrictListWithCityID:self.cityDcitionary.allKeys[indexPath.row]];
         
     }else if (tableView == self.tableView13){
@@ -513,6 +508,8 @@
         
         self.widthConstraints.constant = kScreenWidth;
         
+        [self.paramsDictionary setValue:self.provinceDictionary.allKeys[indexPath.row] forKey:@"province"];
+        [self.paramsDictionary setValue:self.cityDcitionary.allKeys[indexPath.row] forKey:@"city"];
         [self.paramsDictionary setValue:self.districtDictionary.allKeys[indexPath.row] forKey:@"area"];
         [self getProductsListWithPage:@"0"];
     }

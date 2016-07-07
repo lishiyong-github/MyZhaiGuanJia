@@ -385,7 +385,7 @@
                 [cell.userActionButton setTitle:@"查看更多" forState:0];
                 [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
             }else{
-                [cell.userActionButton setTitle:@"无" forState:0];
+                [cell.userActionButton setTitle:@"暂无" forState:0];
             }
             
             return cell;
@@ -415,24 +415,25 @@
                     NSInteger auditInt = [scheduleModel.audit intValue];
                     auditStr = auditArray[auditInt];
                 }else{
-                    auditStr = @"无";
+                    auditStr = @"暂无";
                 }
-                
                 NSMutableAttributedString *caseTypestring = [cell.deadlineLabel setAttributeString:@"案号类型：" withColor:kBlackColor andSecond:auditStr withColor:kLightGrayColor withFont:12];
                 [cell.deadlineLabel setAttributedText:caseTypestring];
                 
+                //时间
                 cell.timeLabel.text = @"2016-05-30";
                 
-                NSMutableAttributedString *caseNoString = [cell.dateLabel setAttributeString:@"案        号：" withColor:kBlackColor andSecond:scheduleModel.caseString?scheduleModel.caseString:@"无" withColor:kLightGrayColor withFont:12];
+                //案号
+                NSString *cardnoStr = [NSString getValidStringFromString:scheduleModel.caseString];
+                NSMutableAttributedString *caseNoString = [cell.dateLabel setAttributeString:@"案        号：" withColor:kBlackColor andSecond:cardnoStr withColor:kLightGrayColor withFont:12];
                 [cell.dateLabel setAttributedText:caseNoString];
                 
+                //处置类型
                 NSArray *suitArr3 = @[@"债权人上传处置资产",@"律师接单",@"双方洽谈",@"向法院起诉(财产保全)",@"整理诉讼材料",@"法院立案",@"向当事人发出开庭传票",@"开庭前调解",@"开庭",@"判决",@"二次开庭",@"二次判决",@"移交执行局申请执行",@"执行中提供借款人的财产线索",@"调查(公告)",@"拍卖",@"流拍",@"拍卖成功",@"付费"];
                 NSArray *suitArray1 = @[@"尽职调查",@"公证",@"抵押",@"放款",@"返点",@"其他"];
                 NSArray *suitArray2 = @[@"电话",@"上门",@"面谈"];
-                
                 NSInteger number = [scheduleModel.status intValue];
                 NSString *dealTypeStr;
-                
                 if ([self.categaryString intValue] == 1) {
                     dealTypeStr = suitArray1[number-1];
                 }else if ([self.categaryString intValue] == 2){
@@ -440,11 +441,12 @@
                 }else{
                     dealTypeStr = suitArr3[number-1];
                 }
-                
                 NSMutableAttributedString *dealTypeString = [cell.areaLabel setAttributeString:@"处置类型：" withColor: kBlackColor andSecond:dealTypeStr withColor:kLightGrayColor withFont:12];
                 [cell.areaLabel setAttributedText:dealTypeString];
                 
-                NSMutableAttributedString *dealDeailString = [cell.addressLabel setAttributeString:@"详        情：" withColor:kBlackColor andSecond:scheduleModel.content?scheduleModel.content:@"无" withColor:kLightGrayColor withFont:12];
+                //详情
+                NSString *contentStr = [NSString getValidStringFromString:scheduleModel.content];
+                NSMutableAttributedString *dealDeailString = [cell.addressLabel setAttributeString:@"详        情：" withColor:kBlackColor andSecond:contentStr withColor:kLightGrayColor withFont:12];
                 [cell.addressLabel setAttributedText:dealDeailString];
             }else{
                 [cell.remindImageButton setHidden:NO];
@@ -492,13 +494,13 @@
                 if (self.evaluateArray.count > 0) {
                     [cell.userActionButton setTitle:@"查看更多" forState:0];
                 }else{
-                    [cell.userActionButton setTitle:@"无" forState:0];
+                    [cell.userActionButton setTitle:@"暂无" forState:0];
                 }
                 
                 [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
             }else{
                 [cell.userNameButton setTitle:@"|  收到的评价" forState:0];
-                [cell.userActionButton setTitle:@"无" forState:0];
+                [cell.userActionButton setTitle:@"暂无" forState:0];
             }
             
             return cell;

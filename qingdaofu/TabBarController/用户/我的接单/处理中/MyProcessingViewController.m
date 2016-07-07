@@ -327,7 +327,7 @@
                 [cell.userActionButton setTitle:@"查看更多" forState:0];
                 [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
             }else{
-                [cell.userActionButton setTitle:@"无" forState:0];
+                [cell.userActionButton setTitle:@"暂无" forState:0];
             }
             return cell;
             
@@ -357,7 +357,7 @@
                     NSInteger auditInt = [scheduleModel.audit intValue];
                     auditStr = auditArray[auditInt];
                 }else{
-                    auditStr = @"无";
+                    auditStr = @"暂无";
                 }
                 NSMutableAttributedString *caseTypestring = [cell.deadlineLabel setAttributeString:@"案号类型：" withColor:kBlackColor andSecond:auditStr withColor:kLightGrayColor withFont:12];
                 [cell.deadlineLabel setAttributedText:caseTypestring];
@@ -366,17 +366,16 @@
                 cell.timeLabel.text = @"2016-05-30";
                 
                 //案号
-                NSString *caseStr = scheduleModel.caseString?scheduleModel.caseString:@"无";
+                NSString *caseStr = [NSString getValidStringFromString:scheduleModel.caseString];
                 NSMutableAttributedString *caseNoString = [cell.dateLabel setAttributeString:@"案        号：" withColor:kBlackColor andSecond:caseStr withColor:kLightGrayColor withFont:12];
                 [cell.dateLabel setAttributedText:caseNoString];
                 
+                //处置类型
                 NSArray *suitArr3 = @[@"债权人上传处置资产",@"律师接单",@"双方洽谈",@"向法院起诉(财产保全)",@"整理诉讼材料",@"法院立案",@"向当事人发出开庭传票",@"开庭前调解",@"开庭",@"判决",@"二次开庭",@"二次判决",@"移交执行局申请执行",@"执行中提供借款人的财产线索",@"调查(公告)",@"拍卖",@"流拍",@"拍卖成功",@"付费"];
                 NSArray *suitArray1 = @[@"尽职调查",@"公证",@"抵押",@"放款",@"返点",@"其他"];
                 NSArray *suitArray2 = @[@"电话",@"上门",@"面谈"];
-                
                 NSInteger number = [scheduleModel.status intValue];
                 NSString *dealTypeStr;
-                
                 if ([self.categaryString intValue] == 1) {
                     dealTypeStr = suitArray1[number-1];
                 }else if ([self.categaryString intValue] == 2){
@@ -384,12 +383,11 @@
                 }else{
                     dealTypeStr = suitArr3[number-1];
                 }
-                //处置类型
                 NSMutableAttributedString *dealTypeString = [cell.areaLabel setAttributeString:@"处置类型：" withColor: kBlackColor andSecond:dealTypeStr withColor:kLightGrayColor withFont:12];
                 [cell.areaLabel setAttributedText:dealTypeString];
                 
                 //详情
-                NSString *contentStr = scheduleModel.content?scheduleModel.content:@"无";
+                NSString *contentStr = [NSString getValidStringFromString:scheduleModel.content];
                 NSMutableAttributedString *dealDeailString = [cell.addressLabel setAttributeString:@"详        情：" withColor:kBlackColor andSecond:contentStr withColor:kLightGrayColor withFont:12];
                 [cell.addressLabel setAttributedText:dealDeailString];
                 
@@ -430,6 +428,7 @@
     
     [cell.userNameButton setTitleColor:kBlueColor forState:0];
     [cell.userNameButton setTitle:@"|  申请延期" forState:0];
+    cell.userActionButton.userInteractionEnabled = NO;
     
     DelayResponse *delayResponss;
     DelayModel *delayModel;
@@ -440,12 +439,24 @@
         puModel = delayResponss.product;
     }
     
-    if (delayModel.is_agree == nil) {
+    //
+//    if ([response.product.progress_status integerValue] == 2 && ![response.uidString isEqualToString:response.product.uidInner]) {
+//        if ([response.product.applyclose integerValue] == 0)
+    
+    
+    
+    
+    if (delayModel.is_agree == nil || [delayModel.is_agree isEqualToString:@""]) {
         if (![puModel.applyclose isEqualToString:@"4"]) {
             if ([delayModel.delays integerValue] <= 7) {
                 [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
                 [cell.userActionButton setTitle:@"立即申请" forState:0];
+            }else{
+                [cell.userActionButton setTitle:@"不能申请延期" forState:0];
+                [self showHint:@"小于7天才可申请延期"];
+                cell.userInteractionEnabled = NO;
             }
+            
         }else{//由于双方申请了结案，故不能点击申请延期
             [cell.userActionButton setTitle:@"不能申请延期" forState:0];
             cell.userInteractionEnabled = NO;
@@ -491,18 +502,18 @@
             puModel = delayResponss.product;
         }
         
-        if (delayModel.is_agree == nil) {
+        if (delayModel.is_agree == nil || [delayModel.is_agree isEqualToString:@""]) {
             if (![puModel.applyclose isEqualToString:@"4"]) {
                 if ([delayModel.delays integerValue] <= 7) {
                     //未申请
                     [applyButton setImage:[UIImage imageNamed:@"conserve_tip_icon"] forState:0];
-                   NSString *delay = delayModel.delays>=0?delayModel.delays:@"0";
-                    NSString *de = [NSString stringWithFormat:@"距离案件处理结束日期还有%@天，可提前7天申请延期，只可申请一次",delay];
+                   NSString *delay = [delayModel.delays integerValue]>=0?delayModel.delays:@"0";
+                    NSString *de = [NSString stringWithFormat:@"  距离案件处理结束日期还有%@天，可提前7天申请延期，只可申请一次",delay];
                     [applyButton setTitle:de forState:0];
 
                 }
             }else{
-                [applyButton setTitle:@"结案申请中，不能申请延期" forState:0];
+                [applyButton setTitle:@"  结案申请中，不能申请延期" forState:0];
             }
         }else{
             [applyButton setImage:[UIImage imageNamed:@"conserve_wait_icon"] forState:0];

@@ -17,13 +17,12 @@
 #import "HomeCell.h"
 #import "FourCell.h"
 
-#import "UIImage+Color.h"
 
 #import "NewProductModel.h"
 #import "NewProductListModel.h"
 
+#import "UIImage+Color.h"
 #import "UIViewController+BlurView.h"
-#import "UIViewController+SelectedIndex.h"
 
 @interface NewProductViewController ()<UITableViewDataSource,UITableViewDelegate,UIScrollViewDelegate>
 

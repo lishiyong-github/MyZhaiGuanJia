@@ -76,22 +76,12 @@
         [_upCommitButton addAction:^(UIButton *btn) {
             [weakself addImageWithFinishBlock:^(NSArray *images) {
 
-                NSLog(@"选择图片");
-                
                 if (images.count > 0) {
-                    weakself.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:weakself.rightButton];
+//                    weakself.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:weakself.rightButton];
                     
                     TakePictureCell *cell = [weakself.upTableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
                     cell.pictureCollection.backgroundColor = kBackColor;
                     cell.collectionDataList = [NSMutableArray arrayWithArray:images];
-                    
-//                    weakself.allImage = images;
-                    NSString *str;
-                    for (int i=0; i<[images count]; i++) {
-                        str = [str stringByAppendingString:images[i]];
-                    }
-                    
-                    NSLog(@"str is %@",str);
                     
                     weakself.allImage = images;
                     
@@ -151,21 +141,15 @@
     }
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//    cell.pictureCollection.userInteractionEnabled = NO;
     
     //展示图片
     QDFWeakSelf;
     [cell setDidSelectedItem:^(NSInteger itemTag) {
         
         NSMutableArray *imgArray = [NSMutableArray array];
-        
         for (NSString *filePath in weakself.allImage) {
-            
-            NSLog(@"###### %@",filePath);
-            
             FSBasicImage *basicImage = [[FSBasicImage alloc] initWithImage:[UIImage imageWithContentsOfFile:filePath]];
             [imgArray addObject:basicImage];
-            
         }
         
         FSBasicImageSource *photoSource = [[FSBasicImageSource alloc] initWithImages:imgArray];
@@ -185,9 +169,10 @@
 
 - (void)back
 {
-//    if (self.uploadImages) {
-//        self.uploadImages(self.allImage[0]);
-//    }
+    if (self.uploadImages) {
+        self.uploadImages(self.allImage);
+    }
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

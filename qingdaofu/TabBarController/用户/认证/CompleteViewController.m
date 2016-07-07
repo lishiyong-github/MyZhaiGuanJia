@@ -255,13 +255,14 @@
         if (!cell) {
             cell = [[CompleteCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
-        
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        NSMutableAttributedString *nameString = [cell.comNameLabel setAttributeString:@"姓名：            " withColor:kBlackColor andSecond:certificationModel.name withColor:kLightGrayColor withFont:14];
+        NSString *nameStr = [NSString getValidStringFromString:certificationModel.name];
+        NSMutableAttributedString *nameString = [cell.comNameLabel setAttributeString:@"姓名：            " withColor:kBlackColor andSecond:nameStr withColor:kLightGrayColor withFont:14];
         [cell.comNameLabel setAttributedText:nameString];
         
-        NSMutableAttributedString *IDString = [cell.comIDLabel setAttributeString:@"身份证号码：" withColor:kBlackColor andSecond:certificationModel.cardno withColor:kLightGrayColor withFont:14];
+        NSString *IDStr = [NSString getValidStringFromString:certificationModel.cardno];
+        NSMutableAttributedString *IDString = [cell.comIDLabel setAttributeString:@"身份证号码：" withColor:kBlackColor andSecond:IDStr withColor:kLightGrayColor withFont:14];
         [cell.comIDLabel setAttributedText:IDString];
         
         //图片
@@ -270,14 +271,16 @@
         NSURL *url = [NSURL URLWithString:urlString];
         [cell.comPicButton sd_setBackgroundImageWithURL:url forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
         
-        NSMutableAttributedString *mobileString = [cell.comIDLabel setAttributeString:@"联系方式：    " withColor:kBlackColor andSecond:certificationModel.mobile withColor:kLightGrayColor withFont:14];
+        NSString *mobileStr = [NSString getValidStringFromString:certificationModel.mobile];
+        NSMutableAttributedString *mobileString = [cell.comIDLabel setAttributeString:@"联系方式：    " withColor:kBlackColor andSecond:mobileStr withColor:kLightGrayColor withFont:14];
         [cell.mobileLabel setAttributedText:mobileString];
         
-        NSMutableAttributedString *mailString = [cell.comMailLabel setAttributeString:@"邮箱：            " withColor:kBlackColor andSecond:certificationModel.email?certificationModel.email:@"未填写" withColor:kLightGrayColor withFont:14];
+        NSString *emailStr = [NSString getValidStringFromString:certificationModel.email];
+        NSMutableAttributedString *mailString = [cell.comMailLabel setAttributeString:@"邮箱：            " withColor:kBlackColor andSecond:emailStr withColor:kLightGrayColor withFont:14];
         [cell.comMailLabel setAttributedText:mailString];
         
         cell.comExampleLabel.text = @"经典案例：   ";
-        cell.comExampleLabel2.text = certificationModel.casedesc?certificationModel.casedesc:@"未填写";
+        cell.comExampleLabel2.text = [NSString getValidStringFromString:certificationModel.casedesc];
         
         return cell;
         
@@ -291,10 +294,12 @@
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        NSMutableAttributedString *nameString = [cell.comNameLabel setAttributeString:@"律所名称：" withColor:kBlackColor andSecond:certificationModel.name withColor:kLightGrayColor withFont:14];
+        NSString *nameStr = [NSString getValidStringFromString:certificationModel.name];
+        NSMutableAttributedString *nameString = [cell.comNameLabel setAttributeString:@"律所名称：" withColor:kBlackColor andSecond:nameStr withColor:kLightGrayColor withFont:14];
         [cell.comNameLabel setAttributedText:nameString];
         
-        NSMutableAttributedString *IDString = [cell.comIDLabel setAttributeString:@"执业证号：" withColor:kBlackColor andSecond:certificationModel.cardno withColor:kLightGrayColor withFont:14];
+        NSString *IDStr = [NSString getValidStringFromString:certificationModel.cardno];
+        NSMutableAttributedString *IDString = [cell.comIDLabel setAttributeString:@"执业证号：" withColor:kBlackColor andSecond:IDStr withColor:kLightGrayColor withFont:14];
         [cell.comIDLabel setAttributedText:IDString];
         
         //图片
@@ -303,17 +308,20 @@
         NSURL *url = [NSURL URLWithString:urlString];
         [cell.comPicButton sd_setBackgroundImageWithURL:url forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
         
-        NSMutableAttributedString *personNameString = [cell.comPersonNameLabel setAttributeString:@"联系人：    " withColor:kBlackColor andSecond:certificationModel.contact withColor:kLightGrayColor withFont:14];
+        NSString *contactStr = [NSString getValidStringFromString:certificationModel.contact];
+        NSMutableAttributedString *personNameString = [cell.comPersonNameLabel setAttributeString:@"联系人：    " withColor:kBlackColor andSecond:contactStr withColor:kLightGrayColor withFont:14];
         [cell.comPersonNameLabel setAttributedText:personNameString];
         
-        NSMutableAttributedString *personTelString = [cell.comPersonTelLabel setAttributeString:@"联系方式：" withColor:kBlackColor andSecond:certificationModel.mobile withColor:kLightGrayColor withFont:14];
+        NSString *mobileStr = [NSString getValidStringFromString:certificationModel.mobile];
+        NSMutableAttributedString *personTelString = [cell.comPersonTelLabel setAttributeString:@"联系方式：" withColor:kBlackColor andSecond:mobileStr withColor:kLightGrayColor withFont:14];
         [cell.comPersonTelLabel setAttributedText:personTelString];
         
-        NSMutableAttributedString *mailString = [cell.comMailLabel setAttributeString:@"邮箱：        " withColor:kBlackColor andSecond:certificationModel.email withColor:kLightGrayColor withFont:14];
+        NSString *emailStr = [NSString getValidStringFromString:certificationModel.email];
+        NSMutableAttributedString *mailString = [cell.comMailLabel setAttributeString:@"邮箱：        " withColor:kBlackColor andSecond:emailStr withColor:kLightGrayColor withFont:14];
         [cell.comMailLabel setAttributedText:mailString];
         
         cell.comExampleLabel.text = @"经典案例：";
-        cell.comExampleLabel2.text = certificationModel.casedesc;
+        cell.comExampleLabel2.text = [NSString getValidStringFromString:certificationModel.casedesc];
         
         return cell;
 
@@ -327,10 +335,12 @@
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        NSMutableAttributedString *nameString = [cell.comNameLabel setAttributeString:@"公司名称：        " withColor:kBlackColor andSecond:certificationModel.name withColor:kLightGrayColor withFont:14];
+        NSString *nameStr = [NSString getValidStringFromString:certificationModel.name];
+        NSMutableAttributedString *nameString = [cell.comNameLabel setAttributeString:@"公司名称：        " withColor:kBlackColor andSecond:nameStr withColor:kLightGrayColor withFont:14];
         [cell.comNameLabel setAttributedText:nameString];
         
-        NSMutableAttributedString *IDString = [cell.comIDLabel setAttributeString:@"营业执照号：    " withColor:kBlackColor andSecond:certificationModel.cardno withColor:kLightGrayColor withFont:14];
+        NSString *IDStr = [NSString getValidStringFromString:certificationModel.cardno];
+        NSMutableAttributedString *IDString = [cell.comIDLabel setAttributeString:@"营业执照号：    " withColor:kBlackColor andSecond:IDStr withColor:kLightGrayColor withFont:14];
         [cell.comIDLabel setAttributedText:IDString];
         
         //图片
@@ -339,23 +349,28 @@
         NSURL *url = [NSURL URLWithString:urlString];
         [cell.comPicButton sd_setBackgroundImageWithURL:url forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
         
-        NSMutableAttributedString *personNameString = [cell.comPersonNameLabel setAttributeString:@"联系人：            " withColor:kBlackColor andSecond:certificationModel.contact withColor:kLightGrayColor withFont:14];
+        NSString *contactStr = [NSString getValidStringFromString:certificationModel.contact];
+        NSMutableAttributedString *personNameString = [cell.comPersonNameLabel setAttributeString:@"联系人：            " withColor:kBlackColor andSecond:contactStr withColor:kLightGrayColor withFont:14];
         [cell.comPersonNameLabel setAttributedText:personNameString];
         
-        NSMutableAttributedString *personTelString = [cell.comPersonTelLabel setAttributeString:@"联系方式：        " withColor:kBlackColor andSecond:certificationModel.mobile withColor:kLightGrayColor withFont:14];
+        NSString *mobileStr = [NSString getValidStringFromString:certificationModel.mobile];
+        NSMutableAttributedString *personTelString = [cell.comPersonTelLabel setAttributeString:@"联系方式：        " withColor:kBlackColor andSecond:mobileStr withColor:kLightGrayColor withFont:14];
         [cell.comPersonTelLabel setAttributedText:personTelString];
         
-        NSMutableAttributedString *mailString = [cell.comMailLabel setAttributeString:@"企业邮箱：        " withColor:kBlackColor andSecond:certificationModel.email withColor:kLightGrayColor withFont:14];
+        NSString *emailStr = [NSString getValidStringFromString:certificationModel.email];
+        NSMutableAttributedString *mailString = [cell.comMailLabel setAttributeString:@"企业邮箱：        " withColor:kBlackColor andSecond:emailStr withColor:kLightGrayColor withFont:14];
         [cell.comMailLabel setAttributedText:mailString];
         
-        NSMutableAttributedString *addressString = [cell.comAddressLabel setAttributeString:@"企业经营地址：" withColor:kBlackColor andSecond:certificationModel.address withColor:kLightGrayColor withFont:14];
+        NSString *addressStr = [NSString getValidStringFromString:certificationModel.address];
+        NSMutableAttributedString *addressString = [cell.comAddressLabel setAttributeString:@"企业经营地址：" withColor:kBlackColor andSecond:addressStr withColor:kLightGrayColor withFont:14];
         [cell.comAddressLabel setAttributedText:addressString];
         
-        NSMutableAttributedString *websiteString = [cell.comWebsiteLabel setAttributeString:@"公司网站：        " withColor:kBlackColor andSecond:certificationModel.enterprisewebsite withColor:kLightGrayColor withFont:14];
+        NSString *enterprisewebsiteStr = [NSString getValidStringFromString:certificationModel.enterprisewebsite];
+        NSMutableAttributedString *websiteString = [cell.comWebsiteLabel setAttributeString:@"公司网站：        " withColor:kBlackColor andSecond:enterprisewebsiteStr withColor:kLightGrayColor withFont:14];
         [cell.comWebsiteLabel setAttributedText:websiteString];
         
         cell.comExampleLabel.text = @"经典案例：";
-        cell.comExampleLabel2.text = certificationModel.casedesc;
+        cell.comExampleLabel2.text = [NSString getValidStringFromString:certificationModel.casedesc];
         
         return cell;
     }

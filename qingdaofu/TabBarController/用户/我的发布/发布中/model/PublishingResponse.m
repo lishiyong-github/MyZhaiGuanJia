@@ -16,6 +16,7 @@
             @"product" : @"result.product",
              @"uidString" : @"uid",
              @"car" : @"result.car",
+             @"license" : @"result.license",
              @"borrowinginfos" : @"result.borrowinginfos",
              @"creditorfiles" : @"result.creditorfiles",
              @"creditorinfos" : @"result.creditorinfos",

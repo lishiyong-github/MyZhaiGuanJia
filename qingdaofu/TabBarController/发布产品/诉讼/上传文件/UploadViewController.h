@@ -11,7 +11,7 @@
 @interface UploadViewController : BaseViewController
 
 //选取图片
-@property (nonatomic,strong) void (^uploadImages)(NSString *);
+@property (nonatomic,strong) void (^uploadImages)(NSArray *images);
 
 //0.公证书；1.借款合同；2.他项权证；3.收款凭证；4.收据；5.还款凭证
 @property (nonatomic,assign) NSInteger typeUpInt;

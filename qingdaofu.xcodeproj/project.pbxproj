@@ -255,6 +255,9 @@
 		A1882F511D2DF6200064BD38 /* RegisterAgreementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1882F501D2DF6200064BD38 /* RegisterAgreementViewController.m */; };
 		A1882F551D2DF9F30064BD38 /* banner2.png in Resources */ = {isa = PBXBuildFile; fileRef = A1882F531D2DF9F30064BD38 /* banner2.png */; };
 		A1882F571D2DFB230064BD38 /* banner1.png in Resources */ = {isa = PBXBuildFile; fileRef = A1882F561D2DFB230064BD38 /* banner1.png */; };
+		A1882F5A1D2E012C0064BD38 /* ProductsCheckFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1882F591D2E012C0064BD38 /* ProductsCheckFilesViewController.m */; };
+		A1882F5D1D2E015C0064BD38 /* ProductsCheckFileDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1882F5C1D2E015C0064BD38 /* ProductsCheckFileDetailsViewController.m */; };
+		A1882F601D2E2AE40064BD38 /* NSString+ValidString.m in Sources */ = {isa = PBXBuildFile; fileRef = A1882F5F1D2E2AE40064BD38 /* NSString+ValidString.m */; };
 		A18B26481CEAA699005526C5 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A18B26471CEAA699005526C5 /* MainViewController.m */; };
 		A18C675C1CD06C2E00C7B070 /* UIButton+Block.m in Sources */ = {isa = PBXBuildFile; fileRef = A18C675B1CD06C2E00C7B070 /* UIButton+Block.m */; };
 		A18C675F1CD087C500C7B070 /* UIView+Fram.m in Sources */ = {isa = PBXBuildFile; fileRef = A18C675E1CD087C500C7B070 /* UIView+Fram.m */; };
@@ -893,6 +896,12 @@
 		A1882F501D2DF6200064BD38 /* RegisterAgreementViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterAgreementViewController.m; sourceTree = "<group>"; };
 		A1882F531D2DF9F30064BD38 /* banner2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = banner2.png; sourceTree = "<group>"; };
 		A1882F561D2DFB230064BD38 /* banner1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = banner1.png; sourceTree = "<group>"; };
+		A1882F581D2E012C0064BD38 /* ProductsCheckFilesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductsCheckFilesViewController.h; sourceTree = "<group>"; };
+		A1882F591D2E012C0064BD38 /* ProductsCheckFilesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductsCheckFilesViewController.m; sourceTree = "<group>"; };
+		A1882F5B1D2E015C0064BD38 /* ProductsCheckFileDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductsCheckFileDetailsViewController.h; sourceTree = "<group>"; };
+		A1882F5C1D2E015C0064BD38 /* ProductsCheckFileDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductsCheckFileDetailsViewController.m; sourceTree = "<group>"; };
+		A1882F5E1D2E2AE40064BD38 /* NSString+ValidString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+ValidString.h"; sourceTree = "<group>"; };
+		A1882F5F1D2E2AE40064BD38 /* NSString+ValidString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+ValidString.m"; sourceTree = "<group>"; };
 		A18B26461CEAA699005526C5 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		A18B26471CEAA699005526C5 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		A18C675A1CD06C2E00C7B070 /* UIButton+Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+Block.h"; sourceTree = "<group>"; };
@@ -1603,6 +1612,10 @@
 				A168567F1CE99358006A0887 /* ProductsDetailsProViewController.m */,
 				A116300C1D2107F000E2D321 /* ProductsCheckDetailViewController.h */,
 				A116300D1D2107F000E2D321 /* ProductsCheckDetailViewController.m */,
+				A1882F581D2E012C0064BD38 /* ProductsCheckFilesViewController.h */,
+				A1882F591D2E012C0064BD38 /* ProductsCheckFilesViewController.m */,
+				A1882F5B1D2E015C0064BD38 /* ProductsCheckFileDetailsViewController.h */,
+				A1882F5C1D2E015C0064BD38 /* ProductsCheckFileDetailsViewController.m */,
 			);
 			path = "产品信息";
 			sourceTree = "<group>";
@@ -2717,6 +2730,8 @@
 				A159F94A1D0C497300A6A024 /* UIViewController+BlurView.m */,
 				9C8B97E11D21788B008B760B /* UIViewController+SelectedIndex.h */,
 				9C8B97E21D21788B008B760B /* UIViewController+SelectedIndex.m */,
+				A1882F5E1D2E2AE40064BD38 /* NSString+ValidString.h */,
+				A1882F5F1D2E2AE40064BD38 /* NSString+ValidString.m */,
 			);
 			path = "工具类";
 			sourceTree = "<group>";
@@ -3431,6 +3446,7 @@
 				A19B8E4D1CCF531900F8EBF2 /* MessageViewController.m in Sources */,
 				A1718DDD1CFD3FA00007DA6F /* ReleaseEndViewController.m in Sources */,
 				A1602E771CEDA9F50053F850 /* CompletePhotoView.m in Sources */,
+				A1882F601D2E2AE40064BD38 /* NSString+ValidString.m in Sources */,
 				A10D7B871CEB1BE000422D7D /* UIView+UITextColor.m in Sources */,
 				A1A34BFF1CE2F63F00AD454A /* MineCell.m in Sources */,
 				A1A97E5F1CDC8AED00EDE320 /* EvaTopSwitchView.m in Sources */,
@@ -3539,6 +3555,7 @@
 				A1A0174E1C5B696A00027134 /* MJDictionaryCache.m in Sources */,
 				A17691171CD97E30004289DD /* MyApplyingViewController.m in Sources */,
 				A16FF58E1D05050F00C50A0B /* BaseModel.m in Sources */,
+				A1882F5D1D2E015C0064BD38 /* ProductsCheckFileDetailsViewController.m in Sources */,
 				A16391731D20194B0051F1D0 /* FSImageLoader.m in Sources */,
 				A1B0292A1D17CE6F00F32A09 /* AFHTTPSessionManager.m in Sources */,
 				A154B8EA1CE1B47B00884CA4 /* ReportFiSucViewController.m in Sources */,
@@ -3567,6 +3584,7 @@
 				A19D296D1CD208FB00DAAEA7 /* CompleteViewController.m in Sources */,
 				A17691421CD9DA0B004289DD /* AnotherHomeCell.m in Sources */,
 				A17EE3891CD86B3E00ECC631 /* AboutViewController.m in Sources */,
+				A1882F5A1D2E012C0064BD38 /* ProductsCheckFilesViewController.m in Sources */,
 				A1882F511D2DF6200064BD38 /* RegisterAgreementViewController.m in Sources */,
 				A1A017551C5B696A00027134 /* NSObject+MJCoding.m in Sources */,
 				A1B028F21D1794DC00F32A09 /* UIImageView+WebCache.m in Sources */,

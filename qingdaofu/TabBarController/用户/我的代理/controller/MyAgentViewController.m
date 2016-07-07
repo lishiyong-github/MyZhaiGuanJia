@@ -74,6 +74,7 @@
             [_myAgentCommitButton setTitle:@"已停用" forState:0];
             _myAgentCommitButton.backgroundColor = kSelectedColor;
             _myAgentCommitButton.userInteractionEnabled = NO;
+            [_myAgentCommitButton setTitleColor:kBlackColor forState:0];
         }
         
         QDFWeakSelf;
@@ -116,22 +117,25 @@
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    NSMutableAttributedString *str1 = [cell.agentNameLabel setAttributeString:@"姓        名：" withColor:kBlackColor andSecond:self.agentModel.username withColor:kLightGrayColor withFont:12];
+    NSString *nameStr = [NSString getValidStringFromString:self.agentModel.username];
+    NSMutableAttributedString *str1 = [cell.agentNameLabel setAttributeString:@"姓        名：" withColor:kBlackColor andSecond:nameStr withColor:kLightGrayColor withFont:12];
     [cell.agentNameLabel setAttributedText:str1];
     
-    NSMutableAttributedString *str2 = [cell.agentTelLabel setAttributeString:@"联系方式：" withColor:kBlackColor andSecond:self.agentModel.mobile withColor:kLightGrayColor withFont:12];
+    NSString *mobileStr = [NSString getValidStringFromString:self.agentModel.mobile];
+    NSMutableAttributedString *str2 = [cell.agentTelLabel setAttributeString:@"联系方式：" withColor:kBlackColor andSecond:mobileStr withColor:kLightGrayColor withFont:12];
     [cell.agentTelLabel setAttributedText:str2];
     
-    NSMutableAttributedString *str3 = [cell.agentIDLabel setAttributeString:@"身份证号：" withColor:kBlackColor andSecond:self.agentModel.cardno withColor:kLightGrayColor withFont:12];
+    NSString *cardnoStr = [NSString getValidStringFromString:self.agentModel.cardno];
+    NSMutableAttributedString *str3 = [cell.agentIDLabel setAttributeString:@"身份证号：" withColor:kBlackColor andSecond:cardnoStr withColor:kLightGrayColor withFont:12];
     [cell.agentIDLabel setAttributedText:str3];
     
-    NSString *zycardno = self.agentModel.zycardno?self.agentModel.zycardno:@"无";
+    
+    NSString *zycardno = [NSString getValidStringFromString:self.agentModel.zycardno];
     NSMutableAttributedString *str4 = [cell.agentCerLabel setAttributeString:@"执业证号：" withColor:kBlackColor andSecond:zycardno withColor:kLightGrayColor withFont:12];
     [cell.agentCerLabel setAttributedText:str4];
     
     NSMutableAttributedString *str5 = [cell.agentPassLabel setAttributeString:@"登录密码：" withColor:kBlackColor andSecond:@"******" withColor:kLightGrayColor withFont:12];
     [cell.agentPassLabel setAttributedText:str5];
-    
     
     if ([self.agentModel.isstop intValue] == 0) {//正常
         [cell.agentEditButton setTitle:@"编辑" forState:0];

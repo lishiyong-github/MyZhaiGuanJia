@@ -123,40 +123,33 @@
         NSArray *array2 = @[@"一审",@"二审",@"再审",@"执行"];
         NSInteger a1 = [model.audit intValue];
         NSInteger a2 = [model.status intValue]-1;
+        NSString *caseString = [NSString getValidStringFromString:model.caseString];
+        NSString *content = [NSString getValidStringFromString:model.content];
         
         cell.deadlineLabel.text = [NSString stringWithFormat:@"案号类型：%@",array1[a1]];
-        cell.dateLabel.text = [NSString stringWithFormat:@"案        号：%@",model.caseString?model.caseString:@"无"];
+        cell.dateLabel.text = [NSString stringWithFormat:@"案        号：%@",caseString];
         cell.areaLabel.text = [NSString stringWithFormat:@"处置类型：%@",array2[a2]];
-        if (model.content == nil || [model.content isEqualToString:@""]) {
-            cell.addressLabel.text = [NSString stringWithFormat:@"%@",@"详        情：无"];
-        }else{
-            cell.addressLabel.text = [NSString stringWithFormat:@"%@%@",@"详        情：",model.content];
-        }
-        
+        cell.addressLabel.text = [NSString stringWithFormat:@"%@%@",@"详        情：",content];
+
     }else if([self.categoryString intValue] == 1){//融资
         
         NSArray *array3 = @[@"尽职调查",@"公证",@"抵押",@"放款",@"返点",@"其他"];
         NSInteger a3 = [model.status intValue]-1;
+        NSString *content = [NSString getValidStringFromString:model.content];
         
-        cell.deadlineLabel.text = [NSString stringWithFormat:@"案号类型：无"];
-        cell.dateLabel.text = [NSString stringWithFormat:@"案        号：无"];
+        cell.deadlineLabel.text = [NSString stringWithFormat:@"案号类型：暂无"];
+        cell.dateLabel.text = [NSString stringWithFormat:@"案        号：暂无"];
         cell.areaLabel.text = [NSString stringWithFormat:@"处置类型：%@",array3[a3]];
-        if (model.content == nil || [model.content isEqualToString:@""]) {
-            cell.addressLabel.text = [NSString stringWithFormat:@"%@",@"详        情：无"];
-        }else{
-            cell.addressLabel.text = [NSString stringWithFormat:@"%@%@",@"详        情：",model.content];
-        }
+        cell.addressLabel.text = [NSString stringWithFormat:@"%@%@",@"详        情：",content];
     }else{//清收
         NSArray *array4 = @[@"电话",@"上门",@"面谈"];
         NSInteger a4 = [model.status intValue]-1;
-        cell.deadlineLabel.text = [NSString stringWithFormat:@"案号类型：无"];
-        cell.dateLabel.text = [NSString stringWithFormat:@"案        号：无"];
+        NSString *content = [NSString getValidStringFromString:model.content];
+        
+        cell.deadlineLabel.text = [NSString stringWithFormat:@"案号类型：暂无"];
+        cell.dateLabel.text = [NSString stringWithFormat:@"案        号：暂无"];
         cell.areaLabel.text = [NSString stringWithFormat:@"处置类型：%@",array4[a4]];
-        if (model.content == nil || [model.content isEqualToString:@""]) {
-            cell.addressLabel.text = [NSString stringWithFormat:@"%@",@"详        情：无"];
-        }else{
-            cell.addressLabel.text = [NSString stringWithFormat:@"%@%@",@"详        情：",model.content];
-        }
+        cell.addressLabel.text = [NSString stringWithFormat:@"%@%@",@"详        情：",content];
     }
     
     return cell;

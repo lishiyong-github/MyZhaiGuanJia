@@ -274,7 +274,7 @@
             [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
         }else{
             [cell.userNameButton setTitle:@"|  收到的评价" forState:0];
-            [cell.userActionButton setTitle:@"无" forState:0];
+            [cell.userActionButton setTitle:@"暂无" forState:0];
         }
         return cell;
     }

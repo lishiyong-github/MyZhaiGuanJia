@@ -848,7 +848,7 @@
                 }
 //
                 self.creditorInfos = [NSMutableArray arrayWithArray:arrays];
-                [self.suitDataDictionary setValue:endStr forKey:@"creditorinfo"];
+                [self.suitDataDictionary setValue:endStr forKey:@"creditorinfos"];
             }];
             [self.navigationController pushViewController:debtCreditMessageVC animated:YES];
             
@@ -865,7 +865,7 @@
                     endStr = [NSString stringWithFormat:@"%@,%@",endStr,ppp];
                 }
                 self.borrowinginfos = [NSMutableArray arrayWithArray:arrays];
-                [self.suitDataDictionary setValue:endStr forKey:@"borrowinginfo"];
+                [self.suitDataDictionary setValue:endStr forKey:@"borrowinginfos"];
             }];
                 [self.navigationController pushViewController:debtCreditMessageVC animated:YES];
         }

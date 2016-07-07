@@ -109,20 +109,19 @@
     uploadVC.typeUpInt = indexPath.row;
     
     QDFWeakSelf;
-    [uploadVC setUploadImages:^(NSString *imageArr) {
-
+    [uploadVC setUploadImages:^(NSArray *imageArr) {
         if (indexPath.row == 0) {//公证书
-            [weakself.imagesDictionaty setValue:imageArr forKey:@"imgnotarization"];
-        }else if (indexPath.row == 1){
-            [weakself.imagesDictionaty setValue:imageArr forKey:@"imgcontract"];
-        }else if (indexPath.row == 2){
-            [weakself.imagesDictionaty setValue:imageArr forKey:@"imgcreditor"];
-        }else if (indexPath.row == 3){
-            [weakself.imagesDictionaty setValue:imageArr forKey:@"imgpick"];
-        }else if (indexPath.row == 4){
-            [weakself.imagesDictionaty setValue:imageArr forKey:@"imgshouju"];
-        }else if (indexPath.row == 5){
-            [weakself.imagesDictionaty setValue:imageArr forKey:@"imgbenjin"];
+            [weakself.imagesDictionaty setValue:imageArr forKey:@"imgnotarizations"];
+        }else if (indexPath.row == 1){//借款合同
+            [weakself.imagesDictionaty setValue:imageArr forKey:@"imgcontracts"];
+        }else if (indexPath.row == 2){//他项权证
+            [weakself.imagesDictionaty setValue:imageArr forKey:@"imgcreditors"];
+        }else if (indexPath.row == 3){//收款凭证
+            [weakself.imagesDictionaty setValue:imageArr forKey:@"imgpicks"];
+        }else if (indexPath.row == 4){//收据
+            [weakself.imagesDictionaty setValue:imageArr forKey:@"imgshoujus"];
+        }else if (indexPath.row == 5){//还款凭证
+            [weakself.imagesDictionaty setValue:imageArr forKey:@"imgbenjins"];
         }
     }];
     

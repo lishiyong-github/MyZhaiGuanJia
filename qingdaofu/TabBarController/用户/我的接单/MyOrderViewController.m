@@ -516,7 +516,7 @@
         if (![delayModel.is_agree isEqualToString:@""]) {//已申请
             [self showHint:@"您已申请，不能重复申请"];
         }else if ([delayModel.delays intValue] > 7){
-            [self showHint:@"大于7天才可申请延期"];
+            [self showHint:@"小于7天才可申请延期"];
         }else{
             DelayRequestsViewController *delayRequestsVC = [[DelayRequestsViewController alloc] init];
             delayRequestsVC.idString = idStr;

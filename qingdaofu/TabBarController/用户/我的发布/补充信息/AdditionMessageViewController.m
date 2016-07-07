@@ -76,12 +76,6 @@
 #pragma mark - 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    
-//    if ([self.categoryString intValue] == 1) {//融资
-//        return 8;
-//    }
-//    return 14;//清收，诉讼
-    
     if (self.addMessageDataArray.count > 0) {
         if ([self.categoryString intValue] == 1) {
             return 8;
@@ -111,13 +105,13 @@
     
     if ([messageModel.category intValue] == 1) {//融资
         NSString *rateCatStr; //借款期限类型
-        NSString *term = messageModel.term?messageModel.term:@"无";   //借款期限
-        NSString *mortgagecategory = @"无";//抵押物类型
-        NSString *status = @"无";  //抵押物状态
-        NSString *rentmoney = messageModel.rentmoney?messageModel.rentmoney:@"无"; //租金
-        NSString *mortgagearea = messageModel.mortgagearea?messageModel.mortgagearea:@"无";  //抵押物面积
-        NSString *loanyear = messageModel.loanyear?messageModel.loanyear:@"无";   //借款人年龄
-        NSString *obligeeyear = @"无";  //权利人年龄
+        NSString *term = [NSString getValidStringFromString:messageModel.term];   //借款期限
+        NSString *mortgagecategory = @"暂无";//抵押物类型
+        NSString *status = @"暂无";  //抵押物状态
+        NSString *rentmoney = [NSString getValidStringFromString:messageModel.rentmoney]; //租金
+        NSString *mortgagearea = [NSString getValidStringFromString:messageModel.mortgagearea];  //抵押物面积
+        NSString *loanyear = [NSString getValidStringFromString:messageModel.loanyear];   //借款人年龄
+        NSString *obligeeyear = @"暂无";  //权利人年龄
         
         if ([messageModel.rate_cat intValue] == 1) {
             rateCatStr = @"天";
@@ -156,16 +150,16 @@
         
     }else{//催收，诉讼
         
-        NSString *rate = messageModel.rate?messageModel.rate:@"无"; //借款利率
-        NSString *rate_cat = @"无"; //借款期限类型
-        NSString *term = messageModel.term?messageModel.term:@"无";   //借款期限
-        NSString *repaymethod = @"无";//还款方式
-        NSString *obligor = @"无";  //债务人主体
-        NSString *commitment = @"无";  //委托事项
-        NSString *commissionperiod = messageModel.commissionperiod?messageModel.commissionperiod:@"无";   //委托代理期限
-        NSString *paidmoney = messageModel.paidmoney?messageModel.paidmoney:@"无";  //已付本金
-        NSString *interestpaid = messageModel.interestpaid?messageModel.interestpaid:@"无";  //已付利息
-        NSString *performancecontract = messageModel.performancecontract?messageModel.performancecontract:@"无";  //合同履行地
+        NSString *rate = [NSString getValidStringFromString:messageModel.rate]; //借款利率
+        NSString *rate_cat = @"暂无"; //借款期限类型
+        NSString *term = [NSString getValidStringFromString:messageModel.term];   //借款期限
+        NSString *repaymethod = @"暂无";//还款方式
+        NSString *obligor = @"暂无";  //债务人主体
+        NSString *commitment = @"暂无";  //委托事项
+        NSString *commissionperiod = [NSString getValidStringFromString:messageModel.commissionperiod];   //委托代理期限
+        NSString *paidmoney = [NSString getValidStringFromString:messageModel.paidmoney];  //已付本金
+        NSString *interestpaid = [NSString getValidStringFromString:messageModel.interestpaid];  //已付利息
+        NSString *performancecontract = [NSString getValidStringFromString:messageModel.performancecontract];  //合同履行地
         
         if (messageModel.rate_cat) {
             if ([messageModel.rate_cat intValue] == 1) {
@@ -206,22 +200,20 @@
            meResponse = self.addMessageDataArray[0];
         }
         
-        NSString *creditorfile = @"无";
+        NSString *creditorfile = @"暂无";
         
-        DebtModel *sdModel = meResponse.creditorinfos[0];
         NSString *creditorinfo;//债权人信息
-        if (sdModel.creditorname == nil || [sdModel.creditorname isEqualToString:@""]) {
-            creditorinfo = @"无";
-        }else{
+        if (meResponse.creditorinfos.count > 0) {
             creditorinfo = @"查看";
+        }else{
+            creditorinfo = @"暂无";
         }
         
         NSString *borrowinginfo;
-        DebtModel *seModel = meResponse.borrowinginfos[0];
-        if (seModel.borrowingname == nil || [seModel.borrowingname isEqualToString:@""]) {//债务人信息
-            borrowinginfo = @"无";
-        }else{
+        if (meResponse.borrowinginfos.count > 0) {//债务人信息
             borrowinginfo = @"查看";
+        }else{
+            borrowinginfo = @"暂无";
         }
         
         NSArray *dataList1 = @[@"借款利率(%)",@"借款利率类型",@"借款期限",@"借款期限类型",@"还款方式",@"债务人主体",@"委托事项",@"委托代理期限(月)",@"已付本金(元)",@"已付利息(元)",@"合同履行地",@"债权文件",@"债权人信息",@"债务人信息"];
