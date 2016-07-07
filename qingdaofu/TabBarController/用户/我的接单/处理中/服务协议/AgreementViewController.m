@@ -41,7 +41,6 @@
         
         [self.agreementWebView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
         
-        
         if ([self.flagString integerValue] == 1) {
             [self.agreeButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:5];
             [self.agreeButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:5];

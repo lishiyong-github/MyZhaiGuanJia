@@ -862,7 +862,6 @@
                 for (NSInteger i=0; i<arrays.count; i++) {
                     DebtModel *model = arrays[i];
                     ppp = [NSString stringWithFormat:@"borrowingname-%d=%@,borrowingmobile-%d=%@,borrowingaddress-%d=%@,borrowingcardcode-%d=%@",i,model.borrowingname,i,model.borrowingmobile,i,model.borrowingaddress,i,model.borrowingcardcode];
-                    
                     endStr = [NSString stringWithFormat:@"%@,%@",endStr,ppp];
                 }
                 self.borrowinginfos = [NSMutableArray arrayWithArray:arrays];

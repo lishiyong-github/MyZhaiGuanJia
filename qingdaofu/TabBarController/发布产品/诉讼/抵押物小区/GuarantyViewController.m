@@ -68,8 +68,11 @@
 {
     if (!_guSearchBar) {
         _guSearchBar = [[UISearchBar alloc] init];
-        _guSearchBar.searchBarStyle = UISearchBarStyleProminent;
+        _guSearchBar.searchBarStyle = UISearchBarStyleMinimal;
         _guSearchBar.delegate = self;
+        _guSearchBar.placeholder = @"请输入小区/写字楼/商铺等";
+        [_guSearchBar setTintColor:kLightGrayColor];
+        _guSearchBar.showsCancelButton = YES;
     }
     return _guSearchBar;
 }
@@ -154,7 +157,10 @@
 {
     return YES;
 }
-
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    searchBar.text = nil;
+}
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     if (searchText) {

@@ -16,6 +16,7 @@
 #import "AdditionMessageViewController.h"  //补充信息
 #import "ApplyRecordsViewController.h"     //查看申请
 #import "PaceViewController.h"          //查看进度
+#import "CheckDetailPublishViewController.h"  //联系接单方
 #import "AdditionalEvaluateViewController.h"  //去评价
 
 #import "AnotherHomeCell.h"
@@ -428,6 +429,9 @@
                              };
     [self requestDataPostWithString:myReleaseString params:params successBlock:^(id responseObject) {
         
+        NSDictionary *dicccc = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        NSLog(@"#$#$#$$#  %@",dicccc);
+        
         if ([page intValue] == 0) {
             [self.releaseDataArray removeAllObjects];
             [self.releaseDic removeAllObjects];
@@ -501,7 +505,12 @@
        paceVC.categoryString = model.category;
         [self.navigationController pushViewController:paceVC animated:YES];
     }else if ([string isEqualToString:@"联系接单方"]){
-        
+        CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+        checkDetailPublishVC.typeString = @"接单方";
+        checkDetailPublishVC.idString = model.idString;
+        checkDetailPublishVC.categoryString = model.category;
+        checkDetailPublishVC.pidString = model.pid;
+        [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
     }else if ([string isEqualToString:@"评价"]){
         AdditionalEvaluateViewController *additionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
         additionalEvaluateVC.idString = model.idString;

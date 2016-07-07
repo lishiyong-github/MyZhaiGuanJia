@@ -571,6 +571,7 @@
     checkDetailPublishVC.categoryString = self.categaryString;
     checkDetailPublishVC.pidString = self.pidString;
     checkDetailPublishVC.typeString = @"发布方";
+    checkDetailPublishVC.typeDegreeString = @"处理中";
     [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
 }
 

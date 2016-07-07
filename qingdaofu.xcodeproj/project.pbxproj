@@ -252,6 +252,9 @@
 		A17F7BE91CE578EB00E882A3 /* JKCountDownButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A17F7BE81CE578EB00E882A3 /* JKCountDownButton.m */; };
 		A17F7BF51CE5C52700E882A3 /* NewPublishCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A17F7BF41CE5C52700E882A3 /* NewPublishCell.m */; };
 		A17F7BFC1CE5DDDA00E882A3 /* ApplyRecordsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A17F7BFB1CE5DDDA00E882A3 /* ApplyRecordsViewController.m */; };
+		A1882F511D2DF6200064BD38 /* RegisterAgreementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1882F501D2DF6200064BD38 /* RegisterAgreementViewController.m */; };
+		A1882F551D2DF9F30064BD38 /* banner2.png in Resources */ = {isa = PBXBuildFile; fileRef = A1882F531D2DF9F30064BD38 /* banner2.png */; };
+		A1882F571D2DFB230064BD38 /* banner1.png in Resources */ = {isa = PBXBuildFile; fileRef = A1882F561D2DFB230064BD38 /* banner1.png */; };
 		A18B26481CEAA699005526C5 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A18B26471CEAA699005526C5 /* MainViewController.m */; };
 		A18C675C1CD06C2E00C7B070 /* UIButton+Block.m in Sources */ = {isa = PBXBuildFile; fileRef = A18C675B1CD06C2E00C7B070 /* UIButton+Block.m */; };
 		A18C675F1CD087C500C7B070 /* UIView+Fram.m in Sources */ = {isa = PBXBuildFile; fileRef = A18C675E1CD087C500C7B070 /* UIView+Fram.m */; };
@@ -886,6 +889,10 @@
 		A17F7BF41CE5C52700E882A3 /* NewPublishCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewPublishCell.m; sourceTree = "<group>"; };
 		A17F7BFA1CE5DDDA00E882A3 /* ApplyRecordsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplyRecordsViewController.h; sourceTree = "<group>"; };
 		A17F7BFB1CE5DDDA00E882A3 /* ApplyRecordsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplyRecordsViewController.m; sourceTree = "<group>"; };
+		A1882F4F1D2DF6200064BD38 /* RegisterAgreementViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterAgreementViewController.h; sourceTree = "<group>"; };
+		A1882F501D2DF6200064BD38 /* RegisterAgreementViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterAgreementViewController.m; sourceTree = "<group>"; };
+		A1882F531D2DF9F30064BD38 /* banner2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = banner2.png; sourceTree = "<group>"; };
+		A1882F561D2DFB230064BD38 /* banner1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = banner1.png; sourceTree = "<group>"; };
 		A18B26461CEAA699005526C5 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		A18B26471CEAA699005526C5 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		A18C675A1CD06C2E00C7B070 /* UIButton+Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+Block.h"; sourceTree = "<group>"; };
@@ -1986,6 +1993,8 @@
 		A192B4BC1CDB45EB0053FC4C /* images */ = {
 			isa = PBXGroup;
 			children = (
+				A1882F561D2DFB230064BD38 /* banner1.png */,
+				A1882F531D2DF9F30064BD38 /* banner2.png */,
 				A13EA5791D2A3D67001B83A7 /* tips@2x.png */,
 				A13EA57A1D2A3D67001B83A7 /* tips@3x.png */,
 				A17B80191D221C500071405F /* btn_close@2x.png */,
@@ -2800,6 +2809,8 @@
 				A1A34C361CE32C8000AD454A /* RegisterViewController.m */,
 				A1A34C381CE32C9300AD454A /* ForgetPassViewController.h */,
 				A1A34C391CE32C9300AD454A /* ForgetPassViewController.m */,
+				A1882F4F1D2DF6200064BD38 /* RegisterAgreementViewController.h */,
+				A1882F501D2DF6200064BD38 /* RegisterAgreementViewController.m */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -3145,6 +3156,7 @@
 				A1718DCC1CFD25D20007DA6F /* anonymous@2x.png in Resources */,
 				A18DC9F31D25120D0021B0BF /* icon@2x.png in Resources */,
 				A18DC9E41D25120D0021B0BF /* Icon-60@2x.png in Resources */,
+				A1882F571D2DFB230064BD38 /* banner1.png in Resources */,
 				A196CDF31CFBDF4000AC6C87 /* btn_litigation@2x.png in Resources */,
 				A192B4C01CDB46020053FC4C /* list_more@3x.png in Resources */,
 				A1718DFC1CFD6C5A0007DA6F /* list_icon_treatment@3x.png in Resources */,
@@ -3252,6 +3264,7 @@
 				A18DC9EA1D25120D0021B0BF /* icon-Small-40.png in Resources */,
 				A145B2A01CEEDB0D003A93B7 /* list_financing_nor@2x.png in Resources */,
 				A1A97E451CDC666400EDE320 /* news_publish_icon@3x.png in Resources */,
+				A1882F551D2DF9F30064BD38 /* banner2.png in Resources */,
 				A1770E2E1CFEAFE5003579E1 /* evaluate_star@2x.png in Resources */,
 				A17B80171D221C3A0071405F /* list_collection@2x.png in Resources */,
 				A1A97E1E1CDC3F8000EDE320 /* nav_tip@2x.png in Resources */,
@@ -3554,6 +3567,7 @@
 				A19D296D1CD208FB00DAAEA7 /* CompleteViewController.m in Sources */,
 				A17691421CD9DA0B004289DD /* AnotherHomeCell.m in Sources */,
 				A17EE3891CD86B3E00ECC631 /* AboutViewController.m in Sources */,
+				A1882F511D2DF6200064BD38 /* RegisterAgreementViewController.m in Sources */,
 				A1A017551C5B696A00027134 /* NSObject+MJCoding.m in Sources */,
 				A1B028F21D1794DC00F32A09 /* UIImageView+WebCache.m in Sources */,
 				A16BA1541CEC757900A7010C /* AllProView.m in Sources */,

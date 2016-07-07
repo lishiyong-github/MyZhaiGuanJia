@@ -11,6 +11,7 @@
 @interface CheckDetailPublishViewController : NetworkViewController
 
 @property (nonatomic,strong) NSString *typeString;  //类别（接单方或发布方或申请人）
+@property (nonatomic,strong) NSString *typeDegreeString;  //发布方（申请中，处理中，终止，结案）、接单方（发布中，处理中，终止，结案）
 
 @property (nonatomic,strong) NSString *idString;
 @property (nonatomic,strong) NSString *categoryString;

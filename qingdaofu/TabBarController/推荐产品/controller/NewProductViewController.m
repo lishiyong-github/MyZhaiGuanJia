@@ -10,7 +10,6 @@
 
 #import "ReportFinanceViewController.h"  //发布融资
 #import "ReportSuitViewController.h"   //发布诉讼
-//#import "ReportCollectViewController.h" //发布请收
 #import "ProductsDetailsViewController.h" //详细信息
 #import "MarkingViewController.h"
 
@@ -107,10 +106,10 @@
         _mainHeaderScrollView.scrollEnabled = YES;
         _mainHeaderScrollView.showsHorizontalScrollIndicator = NO;
         
-        NSArray *colorArray = @[kYellowColor,kRedColor,kLightGrayColor];
-        for (int t=0; t<3; t++) {
+        NSArray *colorArray = @[[UIImage imageNamed:@"banner2"],[UIImage imageNamed:@"banner1"]];
+        for (NSInteger t=0; t<colorArray.count; t++) {
             UIButton *imageButton = [[UIButton alloc] initWithFrame:CGRectMake(kScreenWidth*t, 0, kScreenWidth, 100)];
-            [imageButton setBackgroundColor:colorArray[t]];
+            [imageButton setImage:colorArray[t] forState:0];
             [_mainHeaderScrollView addSubview:imageButton];
             
             QDFWeakSelf;
@@ -128,7 +127,7 @@
 {
     if (!_pageControl) {
         _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(-kScreenWidth/2, 80, kScreenWidth, 10)];
-        _pageControl.numberOfPages = 3;
+        _pageControl.numberOfPages = 2;
         _pageControl.currentPage = 0;
         _pageControl.pageIndicatorTintColor = UIColorFromRGB1(0xffffff, 0.5);
         _pageControl.currentPageIndicatorTintColor = kBlueColor;

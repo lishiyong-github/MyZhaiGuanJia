@@ -112,10 +112,33 @@
                 agreementVC.pidString = weakself.pidString;
                 [weakself.navigationController pushViewController:agreementVC animated:YES];
             }];
-        }else if ([self.typeString isEqualToString:@"发布方"]){
-            [_appAgreeButton setHidden:YES];
-        }else if ([self.typeString isEqualToString:@"接单方"]){
-            [_appAgreeButton setHidden:YES];
+        }else{
+            //1.处理中
+            if ([self.typeDegreeString isEqualToString:@"处理中"]) {
+                [_appAgreeButton setTitle:@"已同意" forState:0];
+                [_appAgreeButton setBackgroundColor:kSelectedColor];
+                [_appAgreeButton setTitleColor:kBlackColor forState:0];
+                
+                //添加电话按钮
+                UIButton *phoneButton = [UIButton newAutoLayoutView];
+                [phoneButton setImage:[UIImage imageNamed:@"phone"] forState:0];
+                phoneButton.backgroundColor = kBlueColor;
+                [phoneButton addAction:^(UIButton *btn) {
+                    if (weakself.certifiDataArray.count > 0) {
+                        CertificationModel *model = weakself.certifiDataArray[0];
+                        NSString *phoneStr = [NSString stringWithFormat:@"telprompt://%@",model.mobile];
+                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
+                    }
+                }];
+                [self.appAgreeButton addSubview:phoneButton];
+                
+                [phoneButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.appAgreeButton];
+                [phoneButton autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.appAgreeButton];
+                [phoneButton autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.appAgreeButton];
+                [phoneButton autoSetDimension:ALDimensionWidth toSize:kTabBarHeight];
+            }else{
+                [_appAgreeButton setHidden:YES];
+            }
         }
     }
     return _appAgreeButton;
@@ -403,8 +426,9 @@
         
         if (response.certification) {
             [self.certifiDataArray addObject:response.certification];
-            [self.checkDetailTableView reloadData];
         }
+        
+        [self.checkDetailTableView reloadData];
         
         [self getAllEvaluationListWithPage:@"0"];
         

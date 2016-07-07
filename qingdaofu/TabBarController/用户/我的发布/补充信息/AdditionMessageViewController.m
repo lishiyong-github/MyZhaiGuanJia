@@ -205,19 +205,20 @@
         if (self.addMessageDataArray.count > 0) {
            meResponse = self.addMessageDataArray[0];
         }
+        
         NSString *creditorfile = @"无";
-//        meResponse.creditorfiles.count?@"查看":@"无";//债权文件
         
         DebtModel *sdModel = meResponse.creditorinfos[0];
         NSString *creditorinfo;//债权人信息
-        if (sdModel.creditorname == nil) {
+        if (sdModel.creditorname == nil || [sdModel.creditorname isEqualToString:@""]) {
             creditorinfo = @"无";
         }else{
             creditorinfo = @"查看";
         }
         
         NSString *borrowinginfo;
-        if (sdModel.borrowingname == nil) {//债务人信息
+        DebtModel *seModel = meResponse.borrowinginfos[0];
+        if (seModel.borrowingname == nil || [seModel.borrowingname isEqualToString:@""]) {//债务人信息
             borrowinginfo = @"无";
         }else{
             borrowinginfo = @"查看";

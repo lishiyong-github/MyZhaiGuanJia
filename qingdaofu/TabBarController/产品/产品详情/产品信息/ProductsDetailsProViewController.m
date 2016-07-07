@@ -24,7 +24,6 @@
 @property (nonatomic,strong) ProdLeftView *leftTableView;
 @property (nonatomic,strong) ProdRightView *rightTableView;
 
-
 @end
 
 @implementation ProductsDetailsProViewController
@@ -145,7 +144,7 @@
                 [_leftTableView.leftDataArray2 addObjectsFromArray:@[leftModel.money,leftModel.agencycommission,loanTypeStr,leftModel.mortorage_community,leftModel.seatmortgage]];
             }else if ([leftModel.loan_type intValue] == 3){//机动车抵押
                 [_leftTableView.leftDataArray1 addObjectsFromArray:@[@"借款本金(万元)",@"代理费用(%)",@"债权类型",@"机动车抵押",@"车牌类型"]];
-                [_leftTableView.leftDataArray2 addObjectsFromArray:@[leftModel.money,leftModel.agencycommission,loanTypeStr,self.yyModel.car,leftModel.licenseplate]];
+                [_leftTableView.leftDataArray2 addObjectsFromArray:@[leftModel.money,leftModel.agencycommission,loanTypeStr,self.yyModel.car,self.yyModel.license]];
             }else if ([leftModel.loan_type intValue] == 2){//应收帐款
                 [_leftTableView.leftDataArray1 addObjectsFromArray:@[@"借款本金(万元)",@"代理费用(%)",@"债权类型",@"应收帐款(万元)"]];
                 [_leftTableView.leftDataArray2 addObjectsFromArray:@[leftModel.money,leftModel.agencycommission,loanTypeStr,leftModel.accountr]];
@@ -220,22 +219,18 @@
         if ([rightModel.category intValue] == 1) {//融资
             
             NSString *rateCatStr; //借款期限类型
-            NSString *term = @"无";   //借款期限
+            NSString *term = rightModel.term?rightModel.term:@"无";   //借款期限
             NSString *mortgagecategory = @"无";//抵押物类型
             NSString *status = @"无";  //抵押物状态
-            NSString *rentmoney = @"无"; //租金
-            NSString *mortgagearea = @"无";  //抵押物面积
-            NSString *loanyear = @"无";   //借款人年龄
+            NSString *rentmoney = rightModel.rentmoney?rightModel.rentmoney:@"无"; //租金
+            NSString *mortgagearea = rightModel.mortgagearea?rightModel.mortgagearea:@"无";  //抵押物面积
+            NSString *loanyear = rightModel.loanyear?rightModel.loanyear:@"无";   //借款人年龄
             NSString *obligeeyear = @"无";  //权利人年龄
             
             if ([rightModel.rate_cat intValue] == 1) {
                 rateCatStr = @"天";
             }else if ([rightModel.rate_cat intValue] == 2){
                 rateCatStr = @"月";
-            }
-            
-            if (rightModel.term) {
-                term = rightModel.term;
             }
             
             if (rightModel.mortgagecategory) {
@@ -248,12 +243,6 @@
                 }
             }
             
-            if (rightModel.mortgagearea) {
-                mortgagearea = rightModel.mortgagearea;
-            }
-            if (rightModel.loanyear) {
-                loanyear = rightModel.loanyear;
-            }
             if (rightModel.obligeeyear) {
                 if ([rightModel.obligeeyear intValue] == 1) {
                     obligeeyear = @"65岁以上";
@@ -262,21 +251,19 @@
                 }
          }
             
-        if (rightModel.status) {
-            if ([rightModel.status intValue] == 2){
+            
+            if ([rightModel.status integerValue] == 1) {
                 status = @"自住";
                 _rightTableView.dataList1 = [NSMutableArray arrayWithArray:@[@"借款期限",@"借款期限类型",@"抵押物类型",@"抵押物状态",@"抵押物面积(m²)",@"借款人年龄(岁)",@"权利人年龄"]];
                 _rightTableView.dataList2 = [NSMutableArray arrayWithArray:@[term,rateCatStr,mortgagecategory,status,mortgagearea,loanyear,obligeeyear]];
-            }else{
+            }else if([rightModel.status integerValue] == 2){//出租
                 status = @"出租";
-                rentmoney = rightModel.rentmoney?rightModel.rentmoney:@"0";
                 _rightTableView.dataList1 = [NSMutableArray arrayWithArray:@[@"借款期限",@"借款期限类型",@"抵押物类型",@"抵押物状态",@"租金(元)",@"抵押物面积(m²)",@"借款人年龄(岁)",@"权利人年龄"]];
                 _rightTableView.dataList2 = [NSMutableArray arrayWithArray:@[term,rateCatStr,mortgagecategory,status,rentmoney,mortgagearea,loanyear,obligeeyear]];
+            }else{
+                _rightTableView.dataList1 = [NSMutableArray arrayWithArray:@[@"借款期限",@"借款期限类型",@"抵押物类型",@"抵押物状态",@"抵押物面积(m²)",@"借款人年龄(岁)",@"权利人年龄"]];
+                _rightTableView.dataList2 = [NSMutableArray arrayWithArray:@[term,rateCatStr,mortgagecategory,status,mortgagearea,loanyear,obligeeyear]];
             }
-        }
-            
-            
-            
         }else{//清收，诉讼
             
             NSString *rate = @"无"; //借款利率
@@ -349,14 +336,14 @@
 //            }
             
             DebtModel *infoModel1 = self.yyModel.creditorinfos[0];
-            if (infoModel1.creditorname == nil) {
+            if (infoModel1.creditorname == nil || [infoModel1.creditorname isEqualToString:@""]) {
                 creditorinfo = @"无";
             }else{
                 creditorinfo = @"查看";
             }
             
             DebtModel *infoModel2 = self.yyModel.borrowinginfos[0];
-            if (infoModel2.borrowingname == nil) {
+            if (infoModel2.borrowingname == nil || [infoModel2.creditorname isEqualToString:@""]) {
                 borrowinginfo = @"无";
             }else{
                 borrowinginfo = @"查看";

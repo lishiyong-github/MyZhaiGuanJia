@@ -7,6 +7,7 @@
 //
 
 #import "RegisterViewController.h"
+#import "RegisterAgreementViewController.h"
 
 #import "LoginCell.h"
 #import "JKCountDownButton.h"
@@ -163,7 +164,6 @@
     [deButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:chButton];
     [deButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:chButton withOffset:kSmallPadding];
     
-    
     QDFWeakSelf;
     [registerCommitButton addAction:^(UIButton *btn) {
         if (!chButton.selected) {
@@ -179,14 +179,12 @@
     
     [deButton addAction:^(UIButton *btn) {
         NSLog(@"注册协议");
+        RegisterAgreementViewController *registerAgreementVC = [[RegisterAgreementViewController alloc] init];
+        [weakself.navigationController pushViewController:registerAgreementVC animated:YES];
     }];
-
-    
-    
     
     return footerRegisterView;
 }
-
 
 #pragma mark - method
 - (void)getCode:(JKCountDownButton *)sender
