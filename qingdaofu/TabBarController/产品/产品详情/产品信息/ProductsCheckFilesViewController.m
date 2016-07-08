@@ -11,10 +11,15 @@
 
 #import "MineUserCell.h"
 
+#import "DebtModel.h"
+#import "UIViewController+ImageBrowser.h"
+
 @interface ProductsCheckFilesViewController ()<UITableViewDataSource,UITableViewDelegate>
 
-@property (nonatomic,strong) UITableView *fileTableView;
 @property (nonatomic,assign) BOOL didSetupConstraints;
+@property (nonatomic,strong) UITableView *fileTableView;
+
+@property (nonatomic,strong) NSMutableArray *imaDataArray;
 
 @end
 
@@ -22,7 +27,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = @"查看债权文件";
+    self.navigationItem.title = @"债权文件";
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
     [self.view addSubview:self.fileTableView];
@@ -55,6 +60,14 @@
     return _fileTableView;
 }
 
+- (NSMutableArray *)imaDataArray
+{
+    if (!_imaDataArray) {
+        _imaDataArray = [NSMutableArray array];
+    }
+    return _imaDataArray;
+}
+
 #pragma makr - tableView datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -82,10 +95,11 @@
     [cell.userNameButton setImage:[UIImage imageNamed:arr1[indexPath.row]] forState:0];
     [cell.userNameButton setTitle:arr2[indexPath.row] forState:0];
     
-    [cell.userActionButton setTitle:@"上传" forState:0];
+    [cell.userActionButton setTitle:@"查看" forState:0];
     [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
     cell.userActionButton.titleLabel.font = kSecondFont;
     [cell.userActionButton setTitleColor:kBlueColor forState:0];
+    cell.userActionButton.userInteractionEnabled = NO;
     
     return cell;
 }
@@ -94,8 +108,103 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    ProductsCheckFileDetailsViewController *productsCheckFileDetailsVC = [[ProductsCheckFileDetailsViewController alloc] init];
-    [self.navigationController pushViewController:productsCheckFileDetailsVC animated:YES];
+    [self.imaDataArray removeAllObjects];
+    DebtModel *zModel = self.fileResponse.creditorfiles;
+
+    switch (indexPath.row) {
+        case 0:{
+            if (zModel.imgnotarization == nil || [zModel.imgnotarization isEqualToArray:@[@""]]) {//未上传
+                [self showHint:@"未上传公证书"];
+            }else{
+                for (NSInteger k=0; k<zModel.imgnotarization.count; k++) {
+                    NSString *aaaaa = zModel.imgnotarization[k];
+                    NSString *subStr = [aaaaa substringWithRange:NSMakeRange(1, aaaaa.length-2)];
+                    NSString *str = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subStr];
+                    NSURL *subUrl = [NSURL URLWithString:str];
+                    [self.imaDataArray addObject:subUrl];
+                }
+                [self showImages:self.imaDataArray];
+            }
+        }
+            break;
+        case 1:{
+            if (zModel.imgcontract == nil || [zModel.imgcontract isEqualToArray:@[@""]]) {//未上传
+                [self showHint:@"未上传借款合同"];
+            }else{
+                for (NSInteger k=0; k<zModel.imgcontract.count; k++) {
+                    NSString *aaaaa = zModel.imgcontract[k];
+                    NSString *subStr = [aaaaa substringWithRange:NSMakeRange(1, aaaaa.length-2)];
+                    NSString *str = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subStr];
+                    NSURL *subUrl = [NSURL URLWithString:str];
+                    [self.imaDataArray addObject:subUrl];
+                }
+                [self showImages:self.imaDataArray];
+            }
+        }
+            break;
+        case 2:{
+            if (zModel.imgcreditor == nil || [zModel.imgcreditor isEqualToArray:@[@""]]) {//未上传
+                [self showHint:@"未上传他项权证"];
+            }else{
+                for (NSInteger k=0; k<zModel.imgcreditor.count; k++) {
+                    NSString *aaaaa = zModel.imgcreditor[k];
+                    NSString *subStr = [aaaaa substringWithRange:NSMakeRange(1, aaaaa.length-2)];
+                    NSString *str = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subStr];
+                    NSURL *subUrl = [NSURL URLWithString:str];
+                    [self.imaDataArray addObject:subUrl];
+                }
+                [self showImages:self.imaDataArray];
+            }
+        }
+            break;
+        case 3:{
+            if (zModel.imgpick == nil || [zModel.imgpick isEqualToArray:@[@""]]) {//未上传
+                [self showHint:@"未上传收款凭证"];
+            }else{
+                for (NSInteger k=0; k<zModel.imgpick.count; k++) {
+                    NSString *aaaaa = zModel.imgpick[k];
+                    NSString *subStr = [aaaaa substringWithRange:NSMakeRange(1, aaaaa.length-2)];
+                    NSString *str = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subStr];
+                    NSURL *subUrl = [NSURL URLWithString:str];
+                    [self.imaDataArray addObject:subUrl];
+                }
+                [self showImages:self.imaDataArray];
+            }
+        }
+            break;
+        case 4:{
+            if (zModel.imgbenjin == nil || [zModel.imgbenjin isEqualToArray:@[@""]]) {//未上传
+                [self showHint:@"未上传收据"];
+            }else{
+                for (NSInteger k=0; k<zModel.imgbenjin.count; k++) {
+                    NSString *aaaaa = zModel.imgbenjin[k];
+                    NSString *subStr = [aaaaa substringWithRange:NSMakeRange(1, aaaaa.length-2)];
+                    NSString *str = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subStr];
+                    NSURL *subUrl = [NSURL URLWithString:str];
+                    [self.imaDataArray addObject:subUrl];
+                }
+                [self showImages:self.imaDataArray];
+            }
+        }
+            break;
+        case 5:{
+            if (zModel.imgshouju == nil || [zModel.imgshouju isEqualToArray:@[@""]]) {//未上传
+                [self showHint:@"未上传还款凭证"];
+            }else{
+                for (NSInteger k=0; k<zModel.imgshouju.count; k++) {
+                    NSString *aaaaa = zModel.imgshouju[k];
+                    NSString *subStr = [aaaaa substringWithRange:NSMakeRange(1, aaaaa.length-2)];
+                    NSString *str = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subStr];
+                    NSURL *subUrl = [NSURL URLWithString:str];
+                    [self.imaDataArray addObject:subUrl];
+                }
+                [self showImages:self.imaDataArray];
+            }
+        }
+            break;
+        default:
+            break;
+    }
 }
 
 - (void)didReceiveMemoryWarning {

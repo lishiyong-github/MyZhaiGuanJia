@@ -95,7 +95,6 @@
             EditDebtCreditMessageViewController *editDebtCreditMessageVC = [[EditDebtCreditMessageViewController alloc] init];
             editDebtCreditMessageVC.categoryString = weakself.categoryString;
             [editDebtCreditMessageVC setDidSaveMessage:^(DebtModel *deModel) {
-                
                 [weakself.debtArray addObject:deModel];
                 [weakself.debtCreditTableView reloadData];
                 [weakself.debtCreditCommitButton setTitle:@"继续添加" forState:0];
@@ -143,54 +142,58 @@
     [cell.debtEditButton setTitle:@"编辑" forState:0];
     
     DebtModel *deModel = self.debtArray[indexPath.section];
-//    NSArray *deArray = self.debtArray[indexPath.section];
-//    DebtModel *deModel = [[DebtModel alloc] init];
-
-//    if ([self.categoryString integerValue] == 1) {
-//        deModel.creditorname = deArray[0];
-//        deModel.creditormobile = deArray[1];
-//        deModel.creditorcardcode = deArray[2];
-//        deModel.creditoraddress = deArray[3];
-//    }else{
-//        deModel.borrowingname = deArray[0];
-//        deModel.borrowingmobile = deArray[1];
-//        deModel.borrowingcardcode = deArray[2];
-//        deModel.borrowingaddress = deArray[3];
-//    }
     
+    //姓名
     NSString *name;
     if ([self.categoryString  integerValue] == 1) {
-        name = deModel.creditorname?deModel.creditorname:@"未填写";
+        name = [NSString getValidStringFromString:deModel.creditorname];
     }else{
-        name = deModel.borrowingname?deModel.borrowingname:@"未填写";
+        name = [NSString getValidStringFromString:deModel.borrowingname];
     }
     NSMutableAttributedString *nameStr = [cell.debtNameLabel setAttributeString:@"姓        名    " withColor:kBlackColor andSecond:name withColor:kLightGrayColor withFont:12];
     [cell.debtNameLabel setAttributedText:nameStr];
     
+    //联系方式
     NSString *tel;
     if ([self.categoryString  integerValue] == 1) {
-        tel = deModel.creditormobile?deModel.creditormobile:@"未填写";
+        tel = [NSString getValidStringFromString:deModel.creditormobile];
     }else{
-        tel = deModel.borrowingmobile?deModel.borrowingmobile:@"未填写";
+        tel = [NSString getValidStringFromString:deModel.borrowingmobile];
     }
     NSMutableAttributedString *telStr = [cell.debtTelLabel setAttributeString:@"联系方式    " withColor:kBlackColor andSecond:tel withColor:kLightGrayColor withFont:12];
     [cell.debtTelLabel setAttributedText:telStr];
     
+    //联系地址
     cell.debtAddressLabel.text = @"联系地址";
     if ([self.categoryString integerValue] == 1) {
-        cell.debtAddressLabel1.text = deModel.creditoraddress?deModel.creditoraddress:@"未填写";
+        cell.debtAddressLabel1.text = [NSString getValidStringFromString:deModel.creditoraddress];
     }else{
-        cell.debtAddressLabel1.text = deModel.borrowingaddress?deModel.borrowingaddress:@"未填写";
+        cell.debtAddressLabel1.text = [NSString getValidStringFromString:deModel.borrowingaddress];
     }
 
+    //证件号
     NSString *ID;
     if ([self.categoryString  integerValue] == 1) {
-        ID = deModel.creditorcardcode?deModel.creditorcardcode:@"未填写";
+        ID = [NSString getValidStringFromString:deModel.creditorcardcode];
     }else{
-        ID = deModel.borrowingcardcode?deModel.borrowingcardcode:@"未填写";
+        ID = [NSString getValidStringFromString:deModel.borrowingcardcode];
     }
     NSMutableAttributedString *IDStr = [cell.debtIDLabel setAttributeString:@"证件号        " withColor:kBlackColor andSecond:ID withColor:kLightGrayColor withFont:12];
     [cell.debtIDLabel setAttributedText:IDStr];
+    
+    //图片
+    NSArray *imgs;
+    if ([self.categoryString integerValue] == 1) {
+        imgs = deModel.creditorcardimage;
+    }else{
+        imgs = deModel.borrowingcardimage;;
+    }
+    if (imgs.count == 1) {
+        [cell.debtImageView1 setImage:[UIImage imageNamed:imgs[0]]];
+    }else if(imgs.count == 2){        
+        [cell.debtImageView1 setImage:[UIImage imageWithContentsOfFile:imgs[0]]];
+        [cell.debtImageView2 setImage:[UIImage imageWithContentsOfFile:imgs[1]]];
+    }
     
     QDFWeakSelf;
     [cell.debtEditButton addAction:^(UIButton *btn) {

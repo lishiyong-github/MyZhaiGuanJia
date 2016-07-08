@@ -44,7 +44,7 @@
     self.navigationItem.title = [NSString stringWithFormat:@"%@信息",self.typeString];
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
-    if (![self.typeString isEqualToString:@"申请人"]) {
+    if ([self.typeString isEqualToString:@"发布方"]) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightBarBtn];
     }
 

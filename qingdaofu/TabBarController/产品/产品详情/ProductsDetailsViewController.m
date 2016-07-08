@@ -256,8 +256,13 @@
         if (indexPath.row == 1) {
             [cell setSeparatorInset:UIEdgeInsetsZero];
             [cell.userActionButton setTitleColor:kYellowColor forState:0];
-            [cell.userActionButton setTitle:@"已认证" forState:0];
             cell.userActionButton.titleLabel.font = kFirstFont;
+            
+            if ([ewModel.state isEqualToString:@"1"]) {
+                [cell.userActionButton setTitle:@"已认证" forState:0];
+            }else{
+                [cell.userActionButton setTitle:@"未认证" forState:0];
+            }
         }
         
         return cell;
@@ -289,12 +294,18 @@
             productsDetailsProVC.yyModel = qModel;
             [self.navigationController pushViewController:productsDetailsProVC animated:YES];
         }else{
-            CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
-            checkDetailPublishVC.idString = self.idString;
-            checkDetailPublishVC.categoryString = self.categoryString;
-            checkDetailPublishVC.pidString = pModel.uidInner;
-            checkDetailPublishVC.typeString = @"发布方";
-            [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
+            
+            if ([qModel.state isEqualToString:@"1"]) {
+                CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+                checkDetailPublishVC.idString = self.idString;
+                checkDetailPublishVC.categoryString = self.categoryString;
+                checkDetailPublishVC.pidString = pModel.uidInner;
+                checkDetailPublishVC.typeString = @"发布方";
+                [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
+            }else{
+                [self showHint:@"发布方未认证，不能查看相关信息"];
+            }
+            
         }
     }
     }
@@ -310,9 +321,8 @@
                              };
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
         
-        NSDictionary *bchjwvbwe = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSLog(@"#$#$##$ %@",bchjwvbwe);
-        
+        NSDictionary *asewe = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        NSLog(@"-=-=-=-=-=-= %@",asewe);
         
         PublishingResponse *respModel = [PublishingResponse objectWithKeyValues:responseObject];
         
@@ -334,6 +344,10 @@
                              @"token" : [self getValidateToken]
                              };
     [self requestDataPostWithString:houseString params:params successBlock:^(id responseObject) {
+        
+        NSDictionary *dicnvv = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        NSLog(@"opopopopo   %@",dicnvv);
+        
         
         ApplicationStateModel *stateModel = [ApplicationStateModel objectWithKeyValues:responseObject];
         PublishingResponse *rModel = self.recommendDataArray[0];

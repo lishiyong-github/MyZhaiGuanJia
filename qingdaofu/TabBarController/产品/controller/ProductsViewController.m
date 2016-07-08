@@ -511,6 +511,7 @@
         [self.paramsDictionary setValue:self.provinceDictionary.allKeys[indexPath.row] forKey:@"province"];
         [self.paramsDictionary setValue:self.cityDcitionary.allKeys[indexPath.row] forKey:@"city"];
         [self.paramsDictionary setValue:self.districtDictionary.allKeys[indexPath.row] forKey:@"area"];
+        
         [self getProductsListWithPage:@"0"];
     }
 }

@@ -18,4 +18,12 @@
     return string;
 }
 
++ (NSString *)getValidStringFromString:(NSString *)string toString:(NSString *)toString
+{
+    if ([string isEqualToString:@""] || !string || [string isEqualToString:@"(null)"]) {
+        string = toString;
+    }
+    return string;
+}
+
 @end

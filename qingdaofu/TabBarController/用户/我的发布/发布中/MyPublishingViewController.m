@@ -275,12 +275,16 @@
 #pragma mark - method
 - (void)getDetailMessages
 {
-    NSString *detailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseDetailString];
+    NSString *detailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProdutsDetailString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"id" : self.idString,
                              @"category" : self.categaryString
                              };
-    [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){        
+    [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
+        
+        NSDictionary *fwejfbu = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        NSLog(@"&*&*&*&* %@",fwejfbu);
+        
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
         [self.publishingDataArray addObject:response];
         [self.publishingTableView reloadData];

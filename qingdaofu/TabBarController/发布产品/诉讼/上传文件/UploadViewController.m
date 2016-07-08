@@ -8,6 +8,7 @@
 
 #import "UploadViewController.h"
 
+#import "DebtModel.h"
 #import "TakePictureCell.h"
 #import "BaseCommitButton.h"
 #import "UIViewController+MutipleImageChoice.h"
@@ -141,6 +142,10 @@
     }
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    cell.collectionDataList = [NSMutableArray arrayWithArray:self.filesModel.imgnotarization];
+    self.allImage = self.filesModel.imgnotarization;
+    [cell reloadData];
     
     //展示图片
     QDFWeakSelf;

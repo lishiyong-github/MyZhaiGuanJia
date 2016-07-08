@@ -7,7 +7,10 @@
 //
 
 #import "NetworkViewController.h"
+#import "PublishingResponse.h"
 
 @interface ProductsCheckFilesViewController : NetworkViewController
+
+@property (nonatomic,strong) PublishingResponse *fileResponse;
 
 @end

@@ -94,11 +94,14 @@
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
        [imageView sd_setImageWithURL:self.collectionDataList[indexPath.item] placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
         cell.contentView.backgroundColor = [UIColor colorWithPatternImage:imageView.image];
-//        [cell.cellImageView sd_setImageWithURL:self.collectionDataList[indexPath.item] placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
     }else{
-        cell.contentView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:self.collectionDataList[indexPath.item]]];
         
-//        [cell.cellImageView setImage:[UIImage imageNamed:self.collectionDataList[indexPath.item]]];
+        
+//        NSString *imageStr = self.collectionDataList[indexPath.item];
+        
+//        NSString *subStr = [imageStr substringWithRange:NSMakeRange(1, imageStr.length-2)];
+        
+        cell.contentView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:self.collectionDataList[indexPath.item]]];
     }
     
     return cell;

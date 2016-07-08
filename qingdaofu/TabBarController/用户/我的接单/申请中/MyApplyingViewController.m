@@ -264,17 +264,26 @@
 #pragma mark - method
 - (void)checkDetails
 {
-    CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
-    checkDetailPublishVC.idString = self.idString;
-    checkDetailPublishVC.categoryString = self.categaryString;
-    checkDetailPublishVC.pidString = self.pidString;
-    checkDetailPublishVC.typeString = @"发布方";
-    [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
+    PublishingResponse *responde;
+    if (self.myApplyArray.count > 0) {
+        responde = self.myApplyArray[0];
+    }
+    
+    if ([responde.state isEqualToString:@"1"]) {
+        CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+        checkDetailPublishVC.idString = self.idString;
+        checkDetailPublishVC.categoryString = self.categaryString;
+        checkDetailPublishVC.pidString = self.pidString;
+        checkDetailPublishVC.typeString = @"发布方";
+        [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
+    }else{
+        [self showHint:@"发布方未认证，不能查看相关信息"];
+    }
 }
 
 - (void)getDetailMessageOfApplying
 {
-    NSString *detailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseDetailString];
+    NSString *detailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProdutsDetailString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"id" : self.idString,
                              @"category" : self.categaryString

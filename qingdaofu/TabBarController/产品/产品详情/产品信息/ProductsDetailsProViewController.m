@@ -121,6 +121,7 @@
                 rateCatStr = @"月(%)";
             }
             
+            //抵押物地址
             [_leftTableView.leftDataArray1 addObjectsFromArray:@[@"借款金额",@"返点",@"借款利率",@"借款利率类型",@"抵押物地址",@"详细地址"]];
             [_leftTableView.leftDataArray2 addObjectsFromArray:@[moneyStr,rebateStr,rateStr,rateCatStr,leftModel.mortorage_community,leftModel.seatmortgage]];
         }else if ([leftModel.category intValue] == 2){//清收
@@ -160,7 +161,7 @@
             }else if ([leftModel.loan_type intValue] == 3){
                 loan_typeStr = @"机动车抵押";
             }else if ([leftModel.loan_type intValue] == 4){
-                loan_typeStr = @"暂无抵押";
+                loan_typeStr = @"无抵押";
             }
             
             NSString *obligorStr;  //债务人主体
@@ -329,12 +330,11 @@
         [_rightTableView setDidSelectedRow:^(NSInteger row) {
             switch (row) {
                 case 11:{//债权文件
-//                    ProductsCheckFilesViewController *productsCheckFilesVC = [[ProductsCheckFilesViewController alloc] init];
-//                    [weakself.navigationController pushViewController:productsCheckFilesVC animated:YES];
+                    ProductsCheckFilesViewController *productsCheckFilesVC = [[ProductsCheckFilesViewController alloc] init];
+                    [weakself.navigationController pushViewController:productsCheckFilesVC animated:YES];
                 }
                     break;
                 case 12:{//债权人信息
-                    
                     if (weakself.yyModel.creditorinfos.count > 0) {
                         ProductsCheckDetailViewController *productsCheckDetailVC = [[ProductsCheckDetailViewController alloc] init];
                         productsCheckDetailVC.listArray = weakself.yyModel.creditorinfos;

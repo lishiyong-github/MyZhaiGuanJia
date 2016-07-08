@@ -21,7 +21,8 @@
              @"creditorfiles" : @"result.creditorfiles",
              @"creditorinfos" : @"result.creditorinfos",
              @"guaranteemethods" : @"result.guaranteemethods",
-             @"user" : @"result.user"
+             @"user" : @"result.user",
+             @"state" : @"result.state"
            };
 }
 
@@ -30,7 +31,6 @@
     return @{@"uidString" : @"uid",
              @"user" : @"UserModel",
              @"borrowinginfos" : @"DebtModel",
-             @"creditorinfos" : @"DebtModel",
              @"creditorinfos" : @"DebtModel"
              };
 }

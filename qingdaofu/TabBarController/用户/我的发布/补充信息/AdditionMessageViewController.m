@@ -8,9 +8,8 @@
 
 #import "AdditionMessageViewController.h"
 
-//#import "UploadFilesViewController.h"  //债权文件
-//#import "DebtCreditMessageViewController.h" //债权人信息
 #import "ProductsCheckDetailViewController.h"   //债权人信息，债务人信息
+#import "ProductsCheckFilesViewController.h"  //债权文件
 
 #import "MineUserCell.h"
 
@@ -200,7 +199,7 @@
            meResponse = self.addMessageDataArray[0];
         }
         
-        NSString *creditorfile = @"暂无";
+        NSString *creditorfile = @"查看";
         
         NSString *creditorinfo;//债权人信息
         if (meResponse.creditorinfos.count > 0) {
@@ -234,19 +233,24 @@
 //
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.row == 11) {//债权人件
-//        UploadFilesViewController *uploabFilesVC = [[UploadFilesViewController alloc] init];
-//        [self.navigationController pushViewController:uploabFilesVC animated:YES];
-    }else if (indexPath.row == 12){//债权人信息
-        ProductsCheckDetailViewController *productsCheckDetailVC = [[ProductsCheckDetailViewController alloc] init];
-        productsCheckDetailVC.categoryString = @"1";
-        productsCheckDetailVC.listArray = response.creditorinfos;
-        [self.navigationController pushViewController:productsCheckDetailVC animated:YES];
+        ProductsCheckFilesViewController *productsCheckFilesVC = [[ProductsCheckFilesViewController alloc] init];
+        productsCheckFilesVC.fileResponse = response;
+        [self.navigationController pushViewController:productsCheckFilesVC animated:YES];
         
+    }else if (indexPath.row == 12){//债权人信息
+        if (response.creditorinfos.count > 0) {
+            ProductsCheckDetailViewController *productsCheckDetailVC = [[ProductsCheckDetailViewController alloc] init];
+            productsCheckDetailVC.categoryString = @"1";
+            productsCheckDetailVC.listArray = response.creditorinfos;
+            [self.navigationController pushViewController:productsCheckDetailVC animated:YES];
+        }
     }else if (indexPath.row == 13){//债务人信息
-        ProductsCheckDetailViewController *productsCheckDetailVC = [[ProductsCheckDetailViewController alloc] init];
-        productsCheckDetailVC.categoryString = @"2";
-        productsCheckDetailVC.listArray = response.borrowinginfos;
-        [self.navigationController pushViewController:productsCheckDetailVC animated:YES];
+        if (response.borrowinginfos.count > 0) {
+            ProductsCheckDetailViewController *productsCheckDetailVC = [[ProductsCheckDetailViewController alloc] init];
+            productsCheckDetailVC.categoryString = @"2";
+            productsCheckDetailVC.listArray = response.borrowinginfos;
+            [self.navigationController pushViewController:productsCheckDetailVC animated:YES];
+        }
     }
 }
 
@@ -264,6 +268,8 @@
                              @"category" : self.categoryString
                              };
     [self requestDataPostWithString:messageString params:params successBlock:^(id responseObject){
+        
+//        NSDictionary *ftgyftgy = [NSJSONSerialization JSONObjectWithData:<#(nonnull NSData *)#> options:<#(NSJSONReadingOptions)#> error:<#(NSError * _Nullable __autoreleasing * _Nullable)#>];
         
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
         

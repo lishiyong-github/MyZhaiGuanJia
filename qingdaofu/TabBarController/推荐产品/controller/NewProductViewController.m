@@ -7,6 +7,7 @@
 //
 
 #import "NewProductViewController.h"
+#import "UploadFilesViewController.h"
 
 #import "ReportFinanceViewController.h"  //发布融资
 #import "ReportSuitViewController.h"   //发布诉讼
@@ -44,7 +45,7 @@
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:kBlackColor,NSFontAttributeName:kNavFont}];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:kNavColor] forBarMetrics:UIBarMetricsDefault];
     
-    [self getRecommendProductslistWithPage:@"0"];
+    [self getRecommendProductslist];
 }
 
 - (void)viewDidLoad {
@@ -88,7 +89,6 @@
         _mainTableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 110)];
         [_mainTableView.tableHeaderView addSubview:self.mainHeaderScrollView];
         [_mainTableView addSubview:self.pageControl];
-        [_mainTableView addFooterWithTarget:self action:@selector(footerRefreshOfRecommend)];
         _mainTableView.separatorColor = kSeparateColor;
     }
     return _mainTableView;
@@ -99,7 +99,7 @@
     if (!_mainHeaderScrollView) {
         _mainHeaderScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 100)];
         _mainHeaderScrollView.backgroundColor = kBackColor;
-        _mainHeaderScrollView.contentSize = CGSizeMake(kScreenWidth*3, 100);
+        _mainHeaderScrollView.contentSize = CGSizeMake(kScreenWidth*2, 100);
         _mainHeaderScrollView.pagingEnabled = YES;//分页
         _mainHeaderScrollView.delegate = self;
         _mainHeaderScrollView.scrollEnabled = YES;
@@ -185,7 +185,7 @@
                         case 11:{//融资
                             ReportFinanceViewController *reportFinanceVC = [[ReportFinanceViewController alloc] init];
                             reportFinanceVC.hidesBottomBarWhenPushed = YES;
-                            [weakself.navigationController pushViewController:reportFinanceVC animated:YES];
+                            [weakself.navigationController pushViewController:reportFinanceVC animated:YES];                            
                         }
                             break;
                         case 12:{//清收
@@ -358,6 +358,7 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     self.pageControl.currentPage = scrollView.contentOffset.x/kScreenWidth;
+    NSLog(@"currentPage is %d",self.pageControl.currentPage);
 }
 
 - (void)pageTurn:(UIPageControl *)page
@@ -370,7 +371,7 @@
 //        
 //    }
     self.mainHeaderScrollView.contentOffset = CGPointMake([page currentPage]*kScreenWidth, 0);
-    
+    NSLog(@"contentOffset is %f",self.mainHeaderScrollView.contentOffset.x);
     
 //    CATransition *transition;
 //    int secondPage = [pageControl currentPage];
@@ -388,20 +389,14 @@
 }
 
 #pragma mark - method
-- (void)getRecommendProductslistWithPage:(NSString *)page
+- (void)getRecommendProductslist
 {
     NSString *recommendString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductsRecommendListString];
-    NSDictionary *params = @{@"page" : page};
+    NSDictionary *params = @{@"limit" : @"6"};
     
     [self requestDataPostWithString:recommendString params:params successBlock:^(id responseObject) {
         
-        
-        NSDictionary *jnjckwbw = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSLog(@"$$$$$$ %@",jnjckwbw);
-        
-        if ([page intValue] == 0) {
-            [self.productsDataListArray removeAllObjects];
-        }
+        [self.productsDataListArray removeAllObjects];
         
         NewProductModel *model = [NewProductModel objectWithKeyValues:responseObject];
         
@@ -419,16 +414,6 @@
     } andFailBlock:^(NSError *error) {
         
     }];
-}
-
-- (void)footerRefreshOfRecommend
-{
-    _newPage++;
-    NSString *page = [NSString stringWithFormat:@"%d",_newPage];
-    [self getRecommendProductslistWithPage:page];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.mainTableView footerEndRefreshing];
-    });
 }
 
 - (void)didReceiveMemoryWarning {

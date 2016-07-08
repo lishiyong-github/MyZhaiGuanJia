@@ -826,27 +826,26 @@
     if (indexPath.section == 1) {
         if (indexPath.row == 10) {//债权文件
             UploadFilesViewController *uploadFilesVC = [[UploadFilesViewController alloc] init];
-            
             QDFWeakSelf;
             [uploadFilesVC setChooseImages:^(NSDictionary *imageDic) {                weakself.suitImageDictionary = [NSMutableDictionary dictionaryWithDictionary:imageDic];
             }];
-            
             [self.navigationController pushViewController:uploadFilesVC animated:YES];
         }else if (indexPath.row == 11){//债权人信息
             DebtCreditMessageViewController *debtCreditMessageVC = [[DebtCreditMessageViewController alloc] init];
             debtCreditMessageVC.categoryString = @"1";
             debtCreditMessageVC.debtArray = self.creditorInfos;
             [debtCreditMessageVC setDidEndEditting:^(NSArray *arrays) {
+                //参数拼接
                 NSString *qqq = @"";
                 NSString *endStr = @"";
                 for (NSInteger i=0; i<arrays.count; i++) {
                     DebtModel *model = arrays[i];
-
-                    qqq = [NSString stringWithFormat:@"creditorname-%d=%@,creditormobile-%d=%@,creditorcardcode-%d=%@,creditoraddress-%d=%@",i,model.creditorname,i,model.creditormobile,i,model.creditorcardcode,i,model.creditoraddress];
+                    
+                    qqq = [NSString stringWithFormat:@"creditorname-%d=%@,creditormobile-%d=%@,creditorcardcode-%d=%@,creditoraddress-%d=%@,creditorcardimage-%d=%@",i,model.creditorname,i,model.creditormobile,i,model.creditorcardcode,i,model.creditoraddress,i,model.creditorcardimages];
                     
                     endStr = [NSString stringWithFormat:@"%@,%@",endStr,qqq];
                 }
-//
+
                 self.creditorInfos = [NSMutableArray arrayWithArray:arrays];
                 [self.suitDataDictionary setValue:endStr forKey:@"creditorinfos"];
             }];
@@ -861,7 +860,7 @@
                 NSString *endStr = @"";
                 for (NSInteger i=0; i<arrays.count; i++) {
                     DebtModel *model = arrays[i];
-                    ppp = [NSString stringWithFormat:@"borrowingname-%d=%@,borrowingmobile-%d=%@,borrowingaddress-%d=%@,borrowingcardcode-%d=%@",i,model.borrowingname,i,model.borrowingmobile,i,model.borrowingaddress,i,model.borrowingcardcode];
+                    ppp = [NSString stringWithFormat:@"borrowingname-%d=%@,borrowingmobile-%d=%@,borrowingaddress-%d=%@,borrowingcardcode-%d=%@,borrowingcardimage-%d=%@",i,model.borrowingname,i,model.borrowingmobile,i,model.borrowingaddress,i,model.borrowingcardcode,i,model.borrowingcardimages];
                     endStr = [NSString stringWithFormat:@"%@,%@",endStr,ppp];
                 }
                 self.borrowinginfos = [NSMutableArray arrayWithArray:arrays];
@@ -1022,7 +1021,7 @@
     
     NSDictionary *params = self.suitDataDictionary;
     
-    [self requestDataPostWithString:reFinanceString params:params andImages:self.suitImageDictionary successBlock:^(id responseObject) {
+    [self requestDataPostWithString:reFinanceString params:params andImages:nil successBlock:^(id responseObject) {
         
         BaseModel *suitModel = [BaseModel objectWithKeyValues:responseObject];
         
@@ -1051,24 +1050,6 @@
         
     }];
 }
-
-/*
-- (void)reportSuitActionWithTypeString1:(NSString *)typeString
-{
-    NSString *rrrString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMySavePublishEditString];
-    NSDictionary *params = @{@"id":self.suResponse.product.idString,
-                             @"category" : self.suResponse.product.category,
-                             @"token" : [self getValidateToken]
-                             };
-    [self requestDataPostWithString:rrrString params:params successBlock:^(id responseObject) {
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSLog(@"******** %@",dic);
-        
-    } andFailBlock:^(NSError *error) {
-        
-    }];
-}
- */
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

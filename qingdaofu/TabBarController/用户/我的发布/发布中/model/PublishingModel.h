@@ -61,20 +61,4 @@
 @property (nonatomic,copy) NSString *loanyear;  //借款人年龄
 @property (nonatomic,copy) NSString *obligeeyear;  //权利人年龄
 
-
-///////
-//债权人信息
-@property (nonatomic,copy) NSString *creditorname;
-@property (nonatomic,copy) NSString *creditormobile;
-@property (nonatomic,copy) NSString *creditoraddress;
-@property (nonatomic,copy) NSString *creditorcardcode;
-//@property (nonatomic,copy) NSString *creditorname;  //图片
-
-//债务人信息
-@property (nonatomic,copy) NSString *borrowingname;
-@property (nonatomic,copy) NSString *borrowingmobile;
-@property (nonatomic,copy) NSString *borrowingaddress;
-@property (nonatomic,copy) NSString *borrowingcardcode;
-//@property (nonatomic,copy) NSString *borrowingcardimage; //图片
-
 @end

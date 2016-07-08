@@ -10,4 +10,9 @@
 
 @implementation DebtModel
 
+//+ (NSDictionary *)replacedKeyFromPropertyName
+//{
+//    return @{@""};
+//}
+
 @end

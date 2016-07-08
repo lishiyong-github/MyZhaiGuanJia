@@ -85,7 +85,7 @@
 
 - (void)dealloc {
     if (_image) {
-        [[FSImageLoader sharedInstance] cancelRequestForUrl:self.image.URL];
+//        [[FSImageLoader sharedInstance] cancelRequestForUrl:self.image.URL];
     }
 }
 

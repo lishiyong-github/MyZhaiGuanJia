@@ -183,13 +183,43 @@
         cell = [[TakePictureCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
     cell.collectionDataList = [NSMutableArray arrayWithObject:@"btn_camera"];
+    
+    if ([self.categoryString integerValue] == 1) {
+        if (self.deModel.creditorcardimage.count > 0) {
+            cell.collectionDataList = [NSMutableArray arrayWithArray:self.deModel.creditorcardimage];
+        }else{
+            cell.collectionDataList = [NSMutableArray arrayWithObject:@"btn_camera"];
+        }
+    }else if ([self.categoryString integerValue] == 2){
+        if (self.deModel.borrowingcardimage.count > 0) {
+            cell.collectionDataList = [NSMutableArray arrayWithArray:self.deModel.borrowingcardimage];
+        }else{
+            cell.collectionDataList = [NSMutableArray arrayWithObject:@"btn_camera"];
+        }
+    }
     
     QDFWeakSelf;
     QDFWeak(cell);
     [cell setDidSelectedItem:^(NSInteger tag) {
-        [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
+        [weakself addImageWithMaxSelection:5 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
+            NSData *tData;
+            NSString *ttt = @"";
+            NSString *tStr = @"";
+            for (int i=0; i<images.count; i++) {
+                tData = [NSData dataWithContentsOfFile:images[i]];
+                ttt = [NSString stringWithFormat:@"%@",tData];
+                tStr = [NSString stringWithFormat:@"%@:%@",tStr,ttt];
+            }
+            if ([weakself.categoryString integerValue] == 1) {//债权人信息
+                
+                [self.editDictionary setValue:tStr forKey:@"creditorcardimages"];
+                [self.editDictionary setValue:images forKey:@"creditorcardimage"];
+
+            }else if ([weakself.categoryString integerValue] == 2){//债务人信息
+                [self.editDictionary setValue:tStr forKey:@"borrowingcardimages"];
+                [self.editDictionary setValue:images forKey:@"borrowingcardimage"];
+            }
             weakcell.collectionDataList = [NSMutableArray arrayWithArray:images];
             [weakcell reloadData];
         }];
@@ -210,7 +240,9 @@
         cModel.creditormobile = self.editDictionary[@"creditormobile"]?self.editDictionary[@"creditormobile"]:self.deModel.creditormobile;
         cModel.creditoraddress = self.editDictionary[@"creditoraddress"]?self.editDictionary[@"creditoraddress"]:self.deModel.creditoraddress;
         cModel.creditorcardcode = self.editDictionary[@"creditorcardcode"]?self.editDictionary[@"creditorcardcode"]:self.deModel.creditorcardcode;
-
+        cModel.creditorcardimage = self.editDictionary[@"creditorcardimage"];
+        cModel.creditorcardimages = self.editDictionary[@"creditorcardimages"];
+        
         if ((cModel.creditoraddress == nil || [cModel.creditoraddress isEqualToString:@""]) || (cModel.creditorcardcode == nil || [cModel.creditorcardcode isEqualToString:@""]) || (cModel.creditormobile == nil || [cModel.creditormobile isEqualToString:@""]) || (cModel.creditorname == nil || [cModel.creditorname isEqualToString:@""])){
             [self showHint:@"信息填写不完整，请检查"];
         }else{
@@ -225,6 +257,8 @@
         bModel.borrowingmobile = self.editDictionary[@"borrowingmobile"]?self.editDictionary[@"borrowingmobile"]:self.deModel.borrowingmobile;
         bModel.borrowingcardcode = self.editDictionary[@"borrowingcardcode"]?self.editDictionary[@"borrowingcardcode"]:self.deModel.borrowingcardcode;
         bModel.borrowingaddress = self.editDictionary[@"borrowingaddress"]?self.editDictionary[@"borrowingaddress"]:self.deModel.borrowingaddress;
+        bModel.borrowingcardimage = self.editDictionary[@"borrowingcardimage"];
+        bModel.borrowingcardimages = self.editDictionary[@"borrowingcardimages"];
 
         if ((!bModel.borrowingname || [bModel.borrowingname isEqualToString:@""]) && (!bModel.borrowingmobile || [bModel.borrowingmobile isEqualToString:@""]) && (!bModel.borrowingaddress || [bModel.borrowingaddress isEqualToString:@""]) && (!bModel.borrowingcardcode || [bModel.borrowingcardcode isEqualToString:@""])){
             [self showHint:@"信息填写不完整，请检查"];

@@ -126,6 +126,8 @@
 #define kModifyPasswordString  @"user/modifypassword"  //修改密码1
 #define kResetPasswordString  @"user/resetpassword"     //重置密码
 #define kTokenOverdue  @"common/application"   //token是否过期
+#define kRegisterAgreement @"site/agreements" //注册协议
+#define kSettingProblems  @"site/question"  //常见问答
 
 
 /*发布产品*/

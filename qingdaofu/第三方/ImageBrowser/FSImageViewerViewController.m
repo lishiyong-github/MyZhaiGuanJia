@@ -67,7 +67,7 @@
 
 - (void)dealloc {
     _scrollView.delegate = nil;
-    [[FSImageLoader sharedInstance] cancelAllRequests];
+//    [[FSImageLoader sharedInstance] cancelAllRequests];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -132,8 +132,12 @@
     [super viewWillAppear:animated];
 
 //    shareButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_gengduo"] style:UIBarButtonItemStylePlain target:self action:@selector(share:)];
-    shareButton = [[UIBarButtonItem alloc]initWithTitle:@"保存" style:UIBarButtonItemStyleDone target:self action:@selector(share:)];
-    shareButton.enabled = YES;
+    
+    
+//    shareButton = [[UIBarButtonItem alloc]initWithTitle:@"保存" style:UIBarButtonItemStyleDone target:self action:@selector(share:)];
+//    shareButton.enabled = YES;
+    
+    
     if (self.presentingViewController && (self.modalPresentationStyle == UIModalPresentationFullScreen)) {
         UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:[self localizedStringForKey:@"返回" withDefault:@"返回"] style:UIBarButtonItemStyleDone target:self action:@selector(done:)];
         self.navigationItem.leftBarButtonItem = doneButton;

@@ -12,4 +12,6 @@
 
 + (NSString *)getValidStringFromString:(NSString *)string;
 
++ (NSString *)getValidStringFromString:(NSString *)string toString:(NSString *)toString;
+
 @end

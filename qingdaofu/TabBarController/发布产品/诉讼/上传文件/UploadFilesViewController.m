@@ -107,7 +107,9 @@
     
     UploadViewController *uploadVC = [[UploadViewController alloc] init];
     uploadVC.typeUpInt = indexPath.row;
-    
+    uploadVC.filesModel = self.filesResponse.creditorfiles;
+    [self.navigationController pushViewController:uploadVC animated:YES];
+
     QDFWeakSelf;
     [uploadVC setUploadImages:^(NSArray *imageArr) {
         if (indexPath.row == 0) {//公证书
@@ -124,8 +126,6 @@
             [weakself.imagesDictionaty setValue:imageArr forKey:@"imgbenjins"];
         }
     }];
-    
-    [self.navigationController pushViewController:uploadVC animated:YES];
 }
 
 #pragma mark - method

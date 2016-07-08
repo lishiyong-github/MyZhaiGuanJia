@@ -27,10 +27,12 @@
     AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
     session.requestSerializer = [AFHTTPRequestSerializer serializer];
     session.responseSerializer = [AFHTTPResponseSerializer serializer];
+    // 3.如果报接受类型不一致请替换一致text/html  或者 text/plain
+    session.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html",@"text/plain", nil];
     
     [session POST:string parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         if (images) {
-        
+            
             for (NSString *key in [images allKeys]) {
                 NSArray *uploadImages = images[key];
                 

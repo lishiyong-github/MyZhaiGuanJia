@@ -428,10 +428,6 @@
                              @"page" : page
                              };
     [self requestDataPostWithString:myReleaseString params:params successBlock:^(id responseObject) {
-        
-        NSDictionary *dicccc = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSLog(@"#$#$#$$#  %@",dicccc);
-        
         if ([page intValue] == 0) {
             [self.releaseDataArray removeAllObjects];
             [self.releaseDic removeAllObjects];
@@ -510,6 +506,7 @@
         checkDetailPublishVC.idString = model.idString;
         checkDetailPublishVC.categoryString = model.category;
         checkDetailPublishVC.pidString = model.pid;
+        checkDetailPublishVC.typeDegreeString = @"处理中";
         [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
     }else if ([string isEqualToString:@"评价"]){
         AdditionalEvaluateViewController *additionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
