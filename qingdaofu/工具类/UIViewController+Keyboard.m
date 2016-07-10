@@ -18,7 +18,16 @@
 
 - (void)setTouchPoint:(CGPoint)touchPoint
 {
-    objc_setAssociatedObject(self, @selector(touchPoint), NSStringFromCGPoint(touchPoint), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    CGFloat offset = 0.0;
+    for (UIView *view in self.view.subviews) {
+        if ([view isKindOfClass:[UITableView class]]) {
+            UITableView *tableView = (UITableView *)view;
+            offset = tableView.contentOffset.y;
+            break;
+        }
+    }
+    CGPoint point = CGPointMake(touchPoint.x, touchPoint.y - offset + 50);
+    objc_setAssociatedObject(self, @selector(touchPoint), NSStringFromCGPoint(point), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (void)addKeyboardObserver

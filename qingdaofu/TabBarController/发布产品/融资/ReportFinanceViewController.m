@@ -487,7 +487,6 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.leftdAgentContraints.constant = 100;
-
         [cell setTouchBeginPoint:^(CGPoint point) {
             weakself.touchPoint = point;
         }];
@@ -515,7 +514,6 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.leftdAgentContraints.constant = 100;
-
         [cell setTouchBeginPoint:^(CGPoint point) {
             weakself.touchPoint = point;
         }];
