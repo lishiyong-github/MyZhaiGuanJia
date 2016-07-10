@@ -175,9 +175,8 @@
         response = self.completeDataArray[0];
     }
     
-    CGSize titleSize = CGSizeMake(0, MAXFLOAT);
-    NSDictionary *tdic = [NSDictionary dictionaryWithObjectsAndKeys:kFirstFont,NSFontAttributeName,nil];
-    CGSize  actualsize =[response.certification.casedesc boundingRectWithSize:titleSize options:NSStringDrawingUsesLineFragmentOrigin attributes:tdic context:nil].size;
+    CGSize titleSize = CGSizeMake(kScreenWidth - 137, MAXFLOAT);
+    CGSize  actualsize =[response.certification.casedesc boundingRectWithSize:titleSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName :kFirstFont} context:nil].size;
 
     NSLog(@"actualsize is %f",actualsize.height);
     
@@ -199,7 +198,7 @@
     if (indexPath.row == 0) {
         return kCellHeight;
     }
-    return 345 + actualsize.height;
+    return 315 + MAX(actualsize.height, 33);
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -396,18 +395,20 @@
 {
     NSString *completeString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kIsCompleteString];
     NSDictionary *params = @{@"token" : [self getValidateToken]};
+    
+    QDFWeakSelf;
     [self requestDataPostWithString:completeString params:params successBlock:^(id responseObject){
         
         CompleteResponse *response = [CompleteResponse objectWithKeyValues:responseObject];
         
-        [self.completeDataArray addObject:response];
-        [self.completeTableView reloadData];
+        [weakself.completeDataArray addObject:response];
+        [weakself.completeTableView reloadData];
         
         if ([response.certification.canModify integerValue] == 0) {//canModify＝1可以修改，＝0不可修改
-            [self.completeCommitButton setBackgroundColor:kSelectedColor];
-            [self.completeCommitButton setTitle:@"不可修改认证" forState:0];
-            [self.completeCommitButton setTitleColor:kBlackColor forState:0];
-            self.completeCommitButton.userInteractionEnabled = NO;
+            [weakself.completeCommitButton setBackgroundColor:kSelectedColor];
+            [weakself.completeCommitButton setTitle:@"不可修改认证" forState:0];
+            [weakself.completeCommitButton setTitleColor:kBlackColor forState:0];
+            weakself.completeCommitButton.userInteractionEnabled = NO;
         }
     } andFailBlock:^(NSError *error){
         
