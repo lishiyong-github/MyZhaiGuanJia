@@ -19,10 +19,13 @@
 #import "ReportFootView.h"
 #import "EvaTopSwitchView.h"
 #import "UIViewController+BlurView.h"
+#import "UIViewController+Keyboard.h"
 
 #import "AgentCell.h"
 #import "EditDebtAddressCell.h"
 #import "SuitBaseCell.h"
+
+
 
 @interface ReportSuitViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -91,6 +94,13 @@
     [self.view addSubview:self.suitTableView];
     [self.view addSubview:self.repSuitSwitchView];
     [self.view setNeedsUpdateConstraints];
+    
+    [self addKeyboardObserver];
+}
+
+- (void)dealloc
+{
+    [self removeKeyboardObserver];
 }
 
 - (void)updateViewConstraints
@@ -268,7 +278,7 @@
     static NSString *identifier;
     
     PublishingModel *suModel = self.suResponse.product;
-    
+    QDFWeakSelf;
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {//基本信息
             identifier = @"suitSect00";
@@ -292,6 +302,9 @@
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.leftdAgentContraints.constant = 105;
+            [cell setTouchBeginPoint:^(CGPoint point) {
+                weakself.touchPoint = point;
+            }];
             
             cell.agentLabel.text = self.sTextArray[0][indexPath.row];
             cell.agentTextField.placeholder = self.sHolderArray[0][indexPath.row];
@@ -314,6 +327,9 @@
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.leftdAgentContraints.constant = 105;
+            [cell setTouchBeginPoint:^(CGPoint point) {
+                weakself.touchPoint = point;
+            }];
             
             cell.agentLabel.text = self.sTextArray[0][indexPath.row];
             cell.agentTextField.placeholder = self.sHolderArray[0][indexPath.row];
@@ -355,6 +371,7 @@
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.label.text = @"债权类型";
+            
             if ([_number integerValue] == 1 || [_number integerValue] == 4) {
                 cell.segment.selectedSegmentIndex = [_number integerValue]-1;
             }else if ([_number integerValue] == 3){
@@ -410,6 +427,9 @@
             cell.leftdAgentContraints.constant = 105;
             cell.agentLabel.text = self.sTextArray[0][indexPath.row];
             cell.agentTextField.placeholder = self.sHolderArray[0][indexPath.row];
+            [cell setTouchBeginPoint:^(CGPoint point) {
+                weakself.touchPoint = point;
+            }];
 
             if ([_number intValue] == 1) {//抵押物地址
                 cell.agentTextField.userInteractionEnabled = NO;
@@ -420,7 +440,6 @@
                 [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
                 [cell.agentButton setTitle:@"请选择" forState:0];
                 
-                QDFWeakSelf;
                 [cell.agentButton addAction:^(UIButton *btn) {
                     GuarantyViewController *guarantyVC = [[GuarantyViewController alloc] init];
                     [weakself.navigationController pushViewController:guarantyVC animated:YES];
@@ -486,6 +505,9 @@
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.leftTextViewConstraints.constant = 100;
+            [cell setTouchBeginPoint:^(CGPoint point) {
+                weakself.touchPoint = point;
+            }];
             
             cell.ediTextView.placeholder = @"详细地址";
             if (self.suitDataDictionary[@"seatmortgage"]) {
@@ -530,6 +552,10 @@
         cell.leftdAgentContraints.constant = 105;
         cell.agentLabel.text = self.sTextArray[1][indexPath.row];
         cell.agentTextField.placeholder = self.sHolderArray[1][indexPath.row];
+        [cell setTouchBeginPoint:^(CGPoint point) {
+            weakself.touchPoint = point;
+        }];
+        
         if (self.suitDataDictionary[@"rate"]) {
             cell.agentTextField.text = self.suitDataDictionary[@"rate"];
         }else{
@@ -564,6 +590,9 @@
         cell.leftdAgentContraints.constant = 105;
         cell.agentLabel.text = self.sTextArray[1][indexPath.row];
         cell.agentTextField.placeholder = self.sHolderArray[1][indexPath.row];
+        [cell setTouchBeginPoint:^(CGPoint point) {
+            weakself.touchPoint = point;
+        }];
         if (self.suitDataDictionary[@"term"]) {
             cell.agentTextField.text = self.suitDataDictionary[@"term"];
         }else{
@@ -694,6 +723,9 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.leftdAgentContraints.constant = 105;
+        [cell setTouchBeginPoint:^(CGPoint point) {
+            weakself.touchPoint = point;
+        }];
         
         cell.agentLabel.text = self.sTextArray[1][indexPath.row];
         cell.agentTextField.placeholder = self.sHolderArray[1][indexPath.row];
@@ -720,6 +752,9 @@
         cell.leftdAgentContraints.constant = 105;
         cell.agentLabel.text = self.sTextArray[1][indexPath.row];
         cell.agentTextField.placeholder = self.sHolderArray[1][indexPath.row];
+        [cell setTouchBeginPoint:^(CGPoint point) {
+            weakself.touchPoint = point;
+        }];
         if (self.suitDataDictionary[@"interestpaid"]) {
             cell.agentTextField.text = self.suitDataDictionary[@"interestpaid"];
         }else{
@@ -743,6 +778,9 @@
         cell.leftTextViewConstraints.constant = 100;
         cell.ediLabel.text = @"合同履行地";
         cell.ediTextView.placeholder = @"填写合同履行地";
+        [cell setTouchBeginPoint:^(CGPoint point) {
+            weakself.touchPoint = point;
+        }];
         if (self.suitDataDictionary[@"performancecontract"]) {
             cell.ediTextView.text = self.suitDataDictionary[@"performancecontract"];
         }else{

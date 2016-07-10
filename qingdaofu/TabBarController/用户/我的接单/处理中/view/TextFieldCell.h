@@ -15,7 +15,8 @@
 @property (nonatomic,strong) UILabel *countLabel;
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
-
+@property (nonatomic,assign) NSInteger charCount;
 @property (nonatomic,strong) void (^didEndEditing)(NSString *text);
+@property (nonatomic,copy) void (^touchBeginPoint)(CGPoint);
 
 @end

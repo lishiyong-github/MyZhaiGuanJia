@@ -27,6 +27,7 @@
 		A13EA57B1D2A3D67001B83A7 /* tips@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A13EA5791D2A3D67001B83A7 /* tips@2x.png */; };
 		A13EA57C1D2A3D67001B83A7 /* tips@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A13EA57A1D2A3D67001B83A7 /* tips@3x.png */; };
 		A13EA57F1D2A48A5001B83A7 /* CategoryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A13EA57E1D2A48A5001B83A7 /* CategoryModel.m */; };
+		A14190481D3228CC005DA20E /* UIViewController+Keyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = A14190471D3228CC005DA20E /* UIViewController+Keyboard.m */; };
 		A145B28D1CEEAE02003A93B7 /* conserve_tip_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A145B2891CEEAE02003A93B7 /* conserve_tip_icon@2x.png */; };
 		A145B28E1CEEAE02003A93B7 /* conserve_tip_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A145B28A1CEEAE02003A93B7 /* conserve_tip_icon@3x.png */; };
 		A145B28F1CEEAE02003A93B7 /* conserve_wait_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A145B28B1CEEAE02003A93B7 /* conserve_wait_icon@2x.png */; };
@@ -546,6 +547,8 @@
 		A13EA57A1D2A3D67001B83A7 /* tips@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tips@3x.png"; sourceTree = "<group>"; };
 		A13EA57D1D2A48A5001B83A7 /* CategoryModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryModel.h; sourceTree = "<group>"; };
 		A13EA57E1D2A48A5001B83A7 /* CategoryModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryModel.m; sourceTree = "<group>"; };
+		A14190461D3228CC005DA20E /* UIViewController+Keyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Keyboard.h"; sourceTree = "<group>"; };
+		A14190471D3228CC005DA20E /* UIViewController+Keyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Keyboard.m"; sourceTree = "<group>"; };
 		A145B2891CEEAE02003A93B7 /* conserve_tip_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conserve_tip_icon@2x.png"; sourceTree = "<group>"; };
 		A145B28A1CEEAE02003A93B7 /* conserve_tip_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conserve_tip_icon@3x.png"; sourceTree = "<group>"; };
 		A145B28B1CEEAE02003A93B7 /* conserve_wait_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conserve_wait_icon@2x.png"; sourceTree = "<group>"; };
@@ -2732,6 +2735,8 @@
 				9C8B97E21D21788B008B760B /* UIViewController+SelectedIndex.m */,
 				A1882F5E1D2E2AE40064BD38 /* NSString+ValidString.h */,
 				A1882F5F1D2E2AE40064BD38 /* NSString+ValidString.m */,
+				A14190461D3228CC005DA20E /* UIViewController+Keyboard.h */,
+				A14190471D3228CC005DA20E /* UIViewController+Keyboard.m */,
 			);
 			path = "工具类";
 			sourceTree = "<group>";
@@ -3427,6 +3432,7 @@
 				A159F9621D0D67FA00A6A024 /* DelayResponse.m in Sources */,
 				A1A34C051CE2FE7500AD454A /* UserButton.m in Sources */,
 				A1B028E71D1794DC00F32A09 /* SDImageCache.m in Sources */,
+				A14190481D3228CC005DA20E /* UIViewController+Keyboard.m in Sources */,
 				A16856AC1CE9CBA5006A0887 /* ProDetailHeadFootView.m in Sources */,
 				A159F9451D0BEE5E00A6A024 /* StandardPaths.m in Sources */,
 				A1B028A71D17766900F32A09 /* UploadViewController.m in Sources */,

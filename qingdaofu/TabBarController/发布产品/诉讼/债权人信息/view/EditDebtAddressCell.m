@@ -64,6 +64,13 @@
     return _ediTextView;
 }
 
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView
+{
+    if (self.touchBeginPoint) {
+        self.touchBeginPoint(CGPointMake(self.center.x, self.bottom + 10));
+    }
+    return YES;
+}
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     if ([text isEqualToString:@"\n"]) {
@@ -82,6 +89,8 @@
     
     return YES;
 }
+
+
 
 //-(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 //{

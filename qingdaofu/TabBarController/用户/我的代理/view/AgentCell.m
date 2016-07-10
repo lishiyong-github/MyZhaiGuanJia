@@ -61,6 +61,7 @@
         _agentTextField.textColor = kBlackColor;
         _agentTextField.font = kFirstFont;
         _agentTextField.delegate = self;
+        _agentTextField.returnKeyType = UIReturnKeyDone;
     }
     return _agentTextField;
 }
@@ -81,6 +82,14 @@
     if (self.didEndEditing) {
         self.didEndEditing(textField.text);
     }
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    if (self.touchBeginPoint) {
+        self.touchBeginPoint(CGPointMake(self.center.x, self.bottom + 10));
+    }
+    return YES;
 }
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {

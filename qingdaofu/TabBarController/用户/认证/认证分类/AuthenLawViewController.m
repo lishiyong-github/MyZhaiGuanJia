@@ -16,6 +16,7 @@
 #import "BaseCommitButton.h"
 
 #import "UIViewController+MutipleImageChoice.h"
+#import "UIViewController+Keyboard.h"
 
 @interface AuthenLawViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
@@ -47,6 +48,13 @@
     [self.view addSubview:self.lawAuTableView];
     [self.view addSubview:self.lawAuCommitButton];
     [self.view setNeedsUpdateConstraints];
+    
+    [self addKeyboardObserver];
+}
+
+- (void)dealloc
+{
+    [self removeKeyboardObserver];
 }
 
 - (void)updateViewConstraints
@@ -84,41 +92,6 @@
         _lawAuCommitButton = [BaseCommitButton newAutoLayoutView];
         [_lawAuCommitButton setTitle:@"立即认证" forState:0];
         [_lawAuCommitButton addTarget:self action:@selector(goToAuthenLawMessages) forControlEvents:UIControlEventTouchUpInside];
-        
-//        QDFWeakSelf;
-//        [_lawAuCommitButton addAction:^(UIButton *btn) {
-//            
-//            NSString *lawAuString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kAuthenString];
-//            NSDictionary *params = @{@"category" : @"2",
-//                                     @"name" : @"上海律所", //律所名称
-//                                     @"cardno" : @"8888888888888",   //执业证号
-//                                     @"contact" : @"律所律所",    //联系人
-//                                     @"mobile" : @"13052358968",  //联系方式
-//                                     @"email" : @"1234678@qq.com",    //邮箱
-//                                     @"casedesc" : @"",  //案例
-//                                     @"cardimg" : @"",  //证件图片
-//                                     @"type" : @"update",  //add=>’添加认证’。update=>’修改认证’。
-//                                     @"token" : [weakself getValidateToken]
-//                                     };
-//            
-//            [weakself requestDataPostWithString:lawAuString params:params successBlock:^(id responseObject){
-//                BaseModel *updateModel = [BaseModel objectWithKeyValues:responseObject];
-//                [weakself showHint:updateModel.msg];
-//                
-//                if ([updateModel.code intValue] == 0000) {
-//                    UINavigationController *lawNav = weakself.navigationController;
-//                    [lawNav popViewControllerAnimated:NO];
-//                    [lawNav popViewControllerAnimated:NO];
-//                    
-//                    CompleteViewController *completeVC = [[CompleteViewController alloc] init];
-//                    completeVC.hidesBottomBarWhenPushed = YES;
-//                    [lawNav pushViewController:completeVC animated:NO];
-//                }
-//                
-//            } andFailBlock:^(NSError *error){
-//                
-//            }];
-//        }];
     }
     return _lawAuCommitButton;
 }
@@ -190,12 +163,10 @@
                 
                 NSData *imgData = [NSData dataWithContentsOfFile:images[0]];
                 NSString *imgStr = [NSString stringWithFormat:@"%@",imgData];
-                [self.lawDataDictionary setValue:imgStr forKey:@"cardimgs"];
+                [weakself.lawDataDictionary setValue:imgStr forKey:@"cardimgs"];
                 
                 weakcell.collectionDataList = [NSMutableArray arrayWithArray:images];
                 [weakcell reloadData];
-                
-                
             }];
         }];
         
@@ -203,13 +174,16 @@
         
     }else if (indexPath.section == 1){
         identifier = @"authenLaw1";
+        QDFWeakSelf;
         AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         
         if (!cell) {
             cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
+        [cell setTouchBeginPoint:^(CGPoint point) {
+            weakself.touchPoint = point;
+        }];
         NSArray *perTextArray = @[@"|  基本信息",@"律所名称",@"执业证号",@"联系人",@"联系方式"];
         NSArray *perPlacaTextArray = @[@"",@"请输入您的律所名称",@"请输入17位执业证号",@"请输入联系人姓名",@"请输入您常用的手机号码"];
         
@@ -217,36 +191,33 @@
         cell.agentLabel.text = perTextArray[indexPath.row];
         cell.agentTextField.placeholder = perPlacaTextArray[indexPath.row];
         
+        QDFWeak(cell);
         if (indexPath.row == 0) {
             cell.agentLabel.textColor = kBlueColor;
             cell.agentTextField.userInteractionEnabled = NO;
         }else if (indexPath.row == 1){//律所名称
             cell.agentTextField.text = certificationModel.name;
-            QDFWeak(cell);
             [cell setDidEndEditing:^(NSString *text) {
                 weakcell.agentTextField.text = text;
-                [self.lawDataDictionary setValue:text forKey:@"name"];
+                [weakself.lawDataDictionary setValue:text forKey:@"name"];
             }];
         }else if (indexPath.row == 2){//执业证号
             cell.agentTextField.text = certificationModel.cardno;
-            QDFWeak(cell);
             [cell setDidEndEditing:^(NSString *text) {
                 weakcell.agentTextField.text = text;
-                [self.lawDataDictionary setValue:text forKey:@"cardno"];
+                [weakself.lawDataDictionary setValue:text forKey:@"cardno"];
             }];
         }else if (indexPath.row == 3){//联系人
             cell.agentTextField.text = certificationModel.contact;
-            QDFWeak(cell);
             [cell setDidEndEditing:^(NSString *text) {
                 weakcell.agentTextField.text = text;
-                [self.lawDataDictionary setValue:text forKey:@"contact"];
+                [weakself.lawDataDictionary setValue:text forKey:@"contact"];
             }];
         }else{//联系方式
             cell.agentTextField.text = certificationModel.mobile;
-            QDFWeak(cell);
             [cell setDidEndEditing:^(NSString *text) {
                 weakcell.agentTextField.text = text;
-                [self.lawDataDictionary setValue:text forKey:@"mobile"];
+                [weakself.lawDataDictionary setValue:text forKey:@"mobile"];
             }];
         }
         
@@ -255,14 +226,16 @@
         
         if (indexPath.row <2) {
             identifier = @"authenLaw2";
-            
+            QDFWeakSelf;
             AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
             
             if (!cell) {
                 cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
+            [cell setTouchBeginPoint:^(CGPoint point) {
+                weakself.touchPoint = point;
+            }];
             NSArray *perTesArray = @[@"补充信息",@"邮箱"];
             NSArray *perHolderArray = @[@"",@"请输入您常用邮箱"];
             
@@ -270,23 +243,23 @@
             cell.agentLabel.text = perTesArray[indexPath.row];
             cell.agentTextField.placeholder = perHolderArray[indexPath.row];
             
+            QDFWeak(cell);
             if (indexPath.row == 0) {
                 cell.agentTextField.userInteractionEnabled = NO;
                 NSMutableAttributedString *ttt = [cell.agentLabel setAttributeString:@"|  补充信息  " withColor:kBlueColor andSecond:@"(选填)" withColor:kLightGrayColor withFont:12];
                 [cell.agentLabel setAttributedText:ttt];
             }else { //邮箱
                 cell.agentTextField.text = certificationModel.email;
-                QDFWeak(cell);
                 [cell setDidEndEditing:^(NSString *text) {
                     weakcell.agentTextField.text = text;
-                    [self.lawDataDictionary setValue:text forKey:@"email"];
+                    [weakself.lawDataDictionary setValue:text forKey:@"email"];
                 }];
             }
             return cell;
         }
         
         identifier = @"authenLaw3";
-        
+        QDFWeakSelf;
         EditDebtAddressCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         
         if (!cell) {
@@ -299,11 +272,13 @@
         cell.ediTextView.placeholder = @"关于律所在融资等方面的成功案例，有利于发布方更加青睐你";
         cell.ediTextView.font = kFirstFont;
         cell.ediTextView.text = certificationModel.casedesc;
-        
+        [cell setTouchBeginPoint:^(CGPoint point) {
+            weakself.touchPoint = point;
+        }];
         QDFWeak(cell);
         [cell setDidEndEditing:^(NSString *text) {
             weakcell.ediTextView.text = text;
-            [self.lawDataDictionary setValue:text forKey:@"casedesc"];
+            [weakself.lawDataDictionary setValue:text forKey:@"casedesc"];
         }];
 
         return cell;

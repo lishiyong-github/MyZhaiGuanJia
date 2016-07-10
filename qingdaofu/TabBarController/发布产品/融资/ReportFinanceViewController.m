@@ -18,6 +18,7 @@
 #import "EvaTopSwitchView.h"
 
 #import "UIViewController+BlurView.h"
+#import "UIViewController+Keyboard.h"
 
 @interface ReportFinanceViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -52,6 +53,13 @@
     [self.view addSubview:self.repFiSwitchView];
     
     [self.view setNeedsUpdateConstraints];
+    
+    [self addKeyboardObserver];
+}
+
+- (void)dealloc
+{
+    [self removeKeyboardObserver];
 }
 
 - (void)updateViewConstraints
@@ -209,6 +217,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier;
+    QDFWeakSelf;
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {//基本信息
             identifier = @"finance00";
@@ -220,7 +229,7 @@
             cell.leftdAgentContraints.constant = 100;
             [cell.agentTextField setHidden:YES];
             [cell.agentButton setHidden:YES];
-            
+                        
             NSMutableAttributedString *dddd = [cell.agentLabel setAttributeString:@"|  基本信息" withColor:kBlueColor andSecond:@"(必填)" withColor:kBlackColor withFont:12];
             [cell.agentLabel setAttributedText:dddd];
             
@@ -243,8 +252,11 @@
             }
             [cell.agentButton setTitle:@"万元" forState:0];
             
+            [cell setTouchBeginPoint:^(CGPoint point) {
+                weakself.touchPoint = point;
+            }];
             [cell setDidEndEditing:^(NSString *text) {
-                [self.dataDictionary setValue:text forKey:@"money"];
+                [weakself.dataDictionary setValue:text forKey:@"money"];
             }];
             
             return cell;
@@ -256,6 +268,9 @@
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.leftdAgentContraints.constant = 100;
+            [cell setTouchBeginPoint:^(CGPoint point) {
+                weakself.touchPoint = point;
+            }];
             
             cell.agentLabel.text = self.finanTextArray[indexPath.section][indexPath.row];
             cell.agentTextField.placeholder = self.financeholderArray[indexPath.section][indexPath.row];
@@ -279,13 +294,17 @@
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.leftdAgentContraints.constant = 100;
+
+            [cell setTouchBeginPoint:^(CGPoint point) {
+                weakself.touchPoint = point;
+            }];
             
             cell.agentLabel.text = self.finanTextArray[indexPath.section][indexPath.row];
             cell.agentTextField.placeholder = self.financeholderArray[indexPath.section][indexPath.row];
             if (self.dataDictionary[@"rate"]) {
                 cell.agentTextField.text = self.dataDictionary[@"rate"];
             }else{
-                cell.agentTextField.text = self.fiModel.rate?self.fiModel.rate:@"";
+                cell.agentTextField.text = [NSString getValidStringFromString:self.fiModel.rate toString:@""];
             }
             
             [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
@@ -340,6 +359,9 @@
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.leftTextViewConstraints.constant = 95;
             cell.ediTextView.placeholder = @"详细地址";
+            [cell setTouchBeginPoint:^(CGPoint point) {
+                weakself.touchPoint = point;
+            }];
             
             if (self.dataDictionary[@"seatmortgage"]) {
                 cell.ediTextView.text = self.dataDictionary[@"seatmortgage"];
@@ -378,6 +400,9 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.leftdAgentContraints.constant = 100;
+        [cell setTouchBeginPoint:^(CGPoint point) {
+            weakself.touchPoint = point;
+        }];
         
         cell.agentLabel.text = self.finanTextArray[indexPath.section][indexPath.row];
         cell.agentTextField.placeholder = self.financeholderArray[indexPath.section][indexPath.row];
@@ -462,6 +487,10 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.leftdAgentContraints.constant = 100;
+
+        [cell setTouchBeginPoint:^(CGPoint point) {
+            weakself.touchPoint = point;
+        }];
         
         cell.agentLabel.text = self.finanTextArray[indexPath.section][indexPath.row];
         cell.agentTextField.placeholder = self.financeholderArray[indexPath.section][indexPath.row];
@@ -486,6 +515,10 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.leftdAgentContraints.constant = 100;
+
+        [cell setTouchBeginPoint:^(CGPoint point) {
+            weakself.touchPoint = point;
+        }];
         
         cell.agentLabel.text = self.finanTextArray[indexPath.section][indexPath.row];
         cell.agentTextField.placeholder = self.financeholderArray[indexPath.section][indexPath.row];
@@ -499,6 +532,7 @@
         [cell setDidEndEditing:^(NSString *text) {
             [self.dataDictionary setValue:text forKey:@"loanyear"];
         }];
+
         
         return cell;
     }else if(indexPath.row == [self.finanTextArray[1]count]-1){//权利人年龄
@@ -510,6 +544,10 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.leftdAgentContraints.constant = 100;
         [cell.agentTextField setHidden:YES];
+
+        [cell setTouchBeginPoint:^(CGPoint point) {
+            weakself.touchPoint = point;
+        }];
         
         cell.agentLabel.text = self.finanTextArray[indexPath.section][indexPath.row];
         [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
@@ -533,6 +571,9 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.leftdAgentContraints.constant = 100;
+        [cell setTouchBeginPoint:^(CGPoint point) {
+            weakself.touchPoint = point;
+        }];
         
         cell.agentLabel.text = self.finanTextArray[indexPath.section][indexPath.row];
         cell.agentTextField.placeholder = self.financeholderArray[indexPath.section][indexPath.row];
@@ -586,17 +627,18 @@
     NSArray *arr10 = @[@"自住",@"出租"];
     NSArray *arr13 = @[@"65岁以下",@"65岁以上"];
     
+    QDFWeakSelf;
     switch (btn.tag) {
         case 3:{//借款利率
             [self showBlurInView:self.view withArray:arr3 andTitle:@"选择借款利率类型" finishBlock:^(NSString *text,NSInteger row) {
                 [btn setTitle:text forState:0];
                 
                 NSString *value = [NSString stringWithFormat:@"%d",row];
-                [self.dataDictionary setValue:value forKey:@"rate_cat"];
-                [self.dataDictionary setValue:text forKey:@"rate_cat_str"];
+                [weakself.dataDictionary setValue:value forKey:@"rate_cat"];
+                [weakself.dataDictionary setValue:text forKey:@"rate_cat_str"];
                 
                 //借款期限
-                UIButton *elseBtn = [self.reportFinanceTableView viewWithTag:8];
+                UIButton *elseBtn = [weakself.reportFinanceTableView viewWithTag:8];
                 [elseBtn setTitle:text forState:0];
             }];
         }
@@ -605,7 +647,6 @@
             GuarantyViewController *guarantyVC =[[GuarantyViewController alloc] init];
             [self.navigationController pushViewController:guarantyVC animated:YES];
             
-            QDFWeakSelf;
             [guarantyVC setDidSelectedArea:^(NSString *mortorage_community,NSString *seatmortgage) {//小区名，详细地址
                 [weakself.dataDictionary setValue:mortorage_community forKey:@"mortorage_community"];
                 [weakself.dataDictionary setValue:seatmortgage forKey:@"seatmortgage"];
@@ -618,12 +659,11 @@
         case 8:{//借款期限
             [self showBlurInView:self.view withArray:arr3 andTitle:@"选择借款期限类型" finishBlock:^(NSString *text,NSInteger row) {
                 [btn setTitle:text forState:0];
-                
                 NSString *value = [NSString stringWithFormat:@"%d",row];
-                [self.dataDictionary setValue:value forKey:@"rate_cat"];
-                [self.dataDictionary setValue:text forKey:@"rate_cat_str"];
+                [weakself.dataDictionary setValue:value forKey:@"rate_cat"];
+                [weakself.dataDictionary setValue:text forKey:@"rate_cat_str"];
                
-                UIButton *elseBtn = [self.reportFinanceTableView viewWithTag:3];
+                UIButton *elseBtn = [weakself.reportFinanceTableView viewWithTag:3];
                 [elseBtn setTitle:text forState:0];
             }];
         }
@@ -631,10 +671,9 @@
         case 9:{//抵押物类型
             [self showBlurInView:self.view withArray:arr9 andTitle:@"选择抵押物类型" finishBlock:^(NSString *text,NSInteger row) {
                 [btn setTitle:text forState:0];
-                
                 NSString *value = [NSString stringWithFormat:@"%d",row];
-                [self.dataDictionary setValue:value forKey:@"mortgagecategory"];
-                [self.dataDictionary setValue:text forKey:@"mortgagecategory_str"];
+                [weakself.dataDictionary setValue:value forKey:@"mortgagecategory"];
+                [weakself.dataDictionary setValue:text forKey:@"mortgagecategory_str"];
             }];
         }
             break;
@@ -668,8 +707,8 @@
                     [btn setTitle:text forState:0];
                     
                     NSString *value = [NSString stringWithFormat:@"%d",row];
-                    [self.dataDictionary setValue:value forKey:@"obligeeyear"];
-                    [self.dataDictionary setValue:text forKey:@"obligeeyear_str"];
+                    [weakself.dataDictionary setValue:value forKey:@"obligeeyear"];
+                    [weakself.dataDictionary setValue:text forKey:@"obligeeyear_str"];
                     
                 }];
             }
@@ -682,8 +721,8 @@
                     [btn setTitle:text forState:0];
                     
                     NSString *value = [NSString stringWithFormat:@"%d",row];
-                    [self.dataDictionary setValue:value forKey:@"obligeeyear"];
-                    [self.dataDictionary setValue:text forKey:@"obligeeyear_str"];
+                    [weakself.dataDictionary setValue:value forKey:@"obligeeyear"];
+                    [weakself.dataDictionary setValue:text forKey:@"obligeeyear_str"];
                     
                 }];
             }

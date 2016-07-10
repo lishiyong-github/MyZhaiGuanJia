@@ -52,6 +52,7 @@
         [_textField setPlaceholderColor:kLightGrayColor];
         _textField.font = kBigFont;
         _textField.delegate = self;
+        _textField.returnKeyType = UIReturnKeyDone;
     }
     return _textField;
 }
@@ -76,6 +77,14 @@
     return _countLabel;
 }
 
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView
+{
+    if (self.touchBeginPoint) {
+        self.touchBeginPoint(CGPointMake(self.center.x, self.bottom + 10));
+    }
+    return YES;
+}
+
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
     if (self.didEndEditing) {
@@ -96,6 +105,24 @@
     
     return YES;
 }
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    if (range.location > 600) {
+        [textView resignFirstResponder];
+        return NO;
+    }
+    
+    if ([text isEqualToString:@"\n"]) {
+        [textView resignFirstResponder];
+    }
+    
+    _charCount= [[textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]length];
+    self.countLabel.text = [NSString stringWithFormat:@"%d/600",_charCount];
+    
+    return YES;
+}
+
 
 - (void)awakeFromNib {
     // Initialization code

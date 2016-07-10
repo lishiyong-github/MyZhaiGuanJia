@@ -19,5 +19,7 @@
 @property (nonatomic,strong) NSLayoutConstraint *leftTextViewConstraints;
 
 @property (nonatomic,strong) void (^didEndEditing)(NSString *);
+@property (nonatomic,copy) void (^touchBeginPoint)(CGPoint);
+
 
 @end

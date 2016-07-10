@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AgentCell : UITableViewCell<UITextFieldDelegate>
+@interface AgentCell : UITableViewCell<UITextFieldDelegate,UIGestureRecognizerDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UILabel *agentLabel;
@@ -17,5 +17,6 @@
 
 @property (nonatomic,strong) NSLayoutConstraint *leftdAgentContraints;
 @property (nonatomic,strong) void (^didEndEditing)(NSString *);
+@property (nonatomic,copy) void (^touchBeginPoint)(CGPoint);
 
 @end

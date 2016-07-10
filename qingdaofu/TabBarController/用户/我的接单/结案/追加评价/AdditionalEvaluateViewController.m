@@ -15,6 +15,7 @@
 #import "TakePictureCell.h"
 
 #import "UIViewController+MutipleImageChoice.h"
+#import "UIViewController+Keyboard.h"
 
 @interface AdditionalEvaluateViewController ()<UITableViewDataSource,UITableViewDelegate,UITextViewDelegate>
 
@@ -40,6 +41,13 @@
     [self.view addSubview:self.additionalTableView];
     [self.view addSubview:self.commitEvaButton];
     [self.view setNeedsUpdateConstraints];
+    
+    [self addKeyboardObserver];
+}
+
+- (void)dealloc
+{
+    [self removeKeyboardObserver];
 }
 
 - (void)updateViewConstraints
@@ -67,14 +75,6 @@
         _additionalTableView.dataSource = self;
         _additionalTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kCellHeight)];
         _additionalTableView.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
-        
-//        if ([_additionalTableView respondsToSelector:@selector(setSeparatorInset:)]) {
-//            [_additionalTableView setSeparatorInset:UIEdgeInsetsZero];
-//        }
-//        
-//        if ([_additionalTableView respondsToSelector:@selector(setLayoutMargins:)]) {
-//            [_additionalTableView setLayoutMargins:UIEdgeInsetsZero];
-//        }
     }
     return _additionalTableView;
 }
@@ -185,10 +185,15 @@
         
         cell.textField.placeholder = @"请输入您的真实感受，对接单方的帮助很大奥";
         cell.textField.font = kSecondFont;
-        cell.textField.delegate = self;
         cell.countLabel.text = [NSString stringWithFormat:@"%d/600",cell.textField.text.length];
+        
+        QDFWeakSelf;
+        [cell setTouchBeginPoint:^(CGPoint point) {
+            weakself.touchPoint = point;
+        }];
+        
         [cell setDidEndEditing:^(NSString *text) {
-            [self.evaDataDictionary setValue:text forKey:@"content"];
+            [weakself.evaDataDictionary setValue:text forKey:@"content"];
         }];
         
         return cell;
@@ -243,21 +248,6 @@
         }];
         
         return cell;
-}
-
-#pragma mark - textView delegate
-- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
-{
-    if (range.location > 600) {
-        return NO;
-    }
-    
-    _charCount= [[textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]length];
-    
-    TextFieldCell *cell = [self.additionalTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]];
-    cell.countLabel.text = [NSString stringWithFormat:@"%d/600",_charCount];
-
-    return YES;
 }
 
 #pragma mark - method

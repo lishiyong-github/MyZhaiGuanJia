@@ -12,7 +12,7 @@
 
 + (NSString *)getValidStringFromString:(NSString *)string
 {
-    if ([string isEqualToString:@""] || !string || [string isEqualToString:@"(null)"]) {
+    if ([string isEqualToString:@""] || !string || [string isEqualToString:@"(null)"] || [string isEqualToString:@"<null>"]) {
         string = @"暂无";
     }
     return string;
@@ -20,7 +20,7 @@
 
 + (NSString *)getValidStringFromString:(NSString *)string toString:(NSString *)toString
 {
-    if ([string isEqualToString:@""] || !string || [string isEqualToString:@"(null)"]) {
+    if ([string isEqualToString:@""] || !string || [string isEqualToString:@"(null)"] || [string isEqualToString:@"<null>"]) {
         string = toString;
     }
     return string;
