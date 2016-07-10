@@ -15,5 +15,5 @@
 @property (nonatomic,assign) BOOL didSetupConstraints;
 
 @property (nonatomic,strong) NSLayoutConstraint *widthActConstraints;
-
+- (void)swapUserName;
 @end

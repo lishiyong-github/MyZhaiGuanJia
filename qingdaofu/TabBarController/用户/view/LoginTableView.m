@@ -9,7 +9,6 @@
 #import "LoginTableView.h"
 #import "MineCell.h"
 #import "MineUserCell.h"
-
 @implementation LoginTableView
 - (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style
 {
@@ -53,12 +52,12 @@
     static NSString *identifier;
     
     if (indexPath.section == 0) {//认证
-        identifier = @"lFirst";
+        identifier = @"MineUserCell";
         
         MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         
         if (!cell) {
-            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier  ];
         }
         
         cell.userNameButton.userInteractionEnabled = NO;
@@ -80,7 +79,7 @@
             [cell.userNameButton setImage:[UIImage imageNamed:@"publish_list_authentication"] forState:0];
             [cell.userActionButton setTitle:@"已认证" forState:0];
         }
-        
+        [cell swapUserName];
         return cell;
         
     }else if (indexPath.section == 1){//我的发布

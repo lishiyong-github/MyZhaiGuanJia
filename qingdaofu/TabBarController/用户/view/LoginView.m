@@ -101,9 +101,9 @@
             [cell.userNameButton setTitle:@"未登录" forState:0];
             [cell.userActionButton setTitle:@"请登录" forState:0];
         }else{
-            [cell.userNameButton swapImage];
             [cell.userNameButton setTitle:self.model.mobile forState:0];
             [cell.userNameButton setImage:[UIImage imageNamed:@"publish_list_authentication"] forState:0];
+            [cell.userNameButton swapImage];
             [cell.userActionButton setTitle:@"已认证" forState:0];
         }
         
@@ -157,7 +157,7 @@
         return cell;
 
     }else if (indexPath.section == 2){//我的接单
-        identifier = @"lSecond";
+        identifier = @"lThird";
         MineCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         
         if (!cell) {

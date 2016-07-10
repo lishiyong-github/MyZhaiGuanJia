@@ -76,8 +76,8 @@
 - (LoginTableView *)loginView
 {
     if (!_loginView) {
-        _loginView.translatesAutoresizingMaskIntoConstraints = YES;
-        _loginView = [[LoginTableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
+        _loginView.translatesAutoresizingMaskIntoConstraints = NO;
+        _loginView = [[LoginTableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         
         QDFWeakSelf;
         [_loginView setDidSelectedButton:^(NSInteger buttonTag) {
