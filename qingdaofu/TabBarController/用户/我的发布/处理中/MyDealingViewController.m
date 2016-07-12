@@ -142,9 +142,6 @@
 {
     if (!_dealCommitButton) {
         _dealCommitButton = [BaseCommitButton newAutoLayoutView];
-        [_dealCommitButton setBackgroundColor:kLightGrayColor];
-        [_dealCommitButton setBackgroundColor:kSelectedColor];
-//        _dealCommitButton.userInteractionEnabled = NO;
     }
     return _dealCommitButton;
 }
@@ -255,7 +252,11 @@
                     string44 = dealModel.rebate;
                 }else if ([dealModel.category intValue] == 2){//清收
                     string22 = @"清收";
-                    string3 = @"  代理费用(万)";
+                    if ([dealModel.agencycommissiontype intValue] == 1) {
+                        string3 = @"  提成比例(%)";
+                    }else if ([dealModel.agencycommissiontype intValue] == 2){
+                        string3 = @"  固定费用(万)";
+                    }
                     imageString3 = @"conserve_fixed_icon";
                     string33 = dealModel.agencycommission;
                     string4 = @"  债权类型";
@@ -393,16 +394,18 @@
                              @"id" : self.idString,
                              @"category" : self.categaryString
                              };
+    
+    QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
         
-        [self.dealingDataList addObject:response];
-        [self.dealingTableView reloadData];
+        [weakself.dealingDataList addObject:response];
+        [weakself.dealingTableView reloadData];
         
         if ([response.product.progress_status integerValue] == 2 && [response.uidString isEqualToString:response.product.uidInner]) {
             if ([response.product.applyclose integerValue] == 0) {//终止／申请结案
-                [self.dealCommitButton setHidden:YES];
-                [self.dealFootView setHidden:NO];
+                [weakself.dealCommitButton setHidden:YES];
+                [weakself.dealFootView setHidden:NO];
                 QDFWeakSelf;
                 [_dealFootView setDidSelectedButton:^(NSInteger tag) {
                     if (tag == 33) {//终止
@@ -413,16 +416,19 @@
                 }];
                 
             }else if ([response.product.applyclose integerValue] == 4 && ![response.product.applyclosefrom isEqualToString:response.product.uidInner]){
-                [self.dealFootView setHidden:YES];
-                [self.dealCommitButton setHidden:NO];
-                [self.dealCommitButton setTitle:@"申请同意结案" forState:0];
-                [self endProductWithStatusString:@"4"];
+                [weakself.dealFootView setHidden:YES];
+                [weakself.dealCommitButton setHidden:NO];
+                [weakself.dealCommitButton setTitle:@"申请同意结案" forState:0];
+                [weakself.dealCommitButton addAction:^(UIButton *btn) {
+                    [weakself endProductWithStatusString:@"4"];
+                }];
             }else{
-                [self.dealFootView setHidden:YES];
-                [self.dealCommitButton setHidden:NO];
-                [self.dealCommitButton setTitle:@"结案申请中" forState:0];
-                [self.dealCommitButton setBackgroundColor:kSelectedColor];
-                self.dealCommitButton.userInteractionEnabled = NO;
+                [weakself.dealFootView setHidden:YES];
+                [weakself.dealCommitButton setHidden:NO];
+                [weakself.dealCommitButton setTitle:@"结案申请中" forState:0];
+                [weakself.dealCommitButton setBackgroundColor:kSelectedColor];
+                [weakself.dealCommitButton setTitleColor:kBlackColor forState:0];
+                weakself.dealCommitButton.userInteractionEnabled = NO;
             }
         }
 

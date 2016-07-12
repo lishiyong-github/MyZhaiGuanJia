@@ -19,7 +19,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = @"最新消息";
+    self.navigationItem.title = @"资讯";
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
     [self.view addSubview:self.markingWebView];
@@ -39,6 +39,9 @@
 {
     if (!_markingWebView) {
         _markingWebView = [UIWebView newAutoLayoutView];
+        NSString *urlString = [NSString stringWithFormat:@"http://%@",self.markString];
+        NSURL *markUrl = [NSURL URLWithString:urlString];
+        [_markingWebView loadRequest:[NSURLRequest requestWithURL:markUrl]];
     }
     return _markingWebView;
 }

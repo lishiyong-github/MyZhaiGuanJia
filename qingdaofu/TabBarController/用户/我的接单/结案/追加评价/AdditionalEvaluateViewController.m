@@ -211,8 +211,17 @@
         QDFWeakSelf;
         QDFWeak(cell);
         [cell setDidSelectedItem:^(NSInteger itemTag) {
-            [weakself addImageWithMaxSelection:4 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
+            [weakself addImageWithMaxSelection:2 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
                 
+                NSData *tData;
+                NSString *ttt = @"";
+                NSString *tStr = @"";
+                for (int i=0; i<images.count; i++) {
+                    tData = [NSData dataWithContentsOfFile:images[i]];
+                    ttt = [NSString stringWithFormat:@"%@",tData];
+                    tStr = [NSString stringWithFormat:@"%@,%@",tStr,ttt];
+                }
+                [weakself.evaDataDictionary setValue:tStr forKey:@"pictures"];
                 weakcell.collectionDataList = [NSMutableArray arrayWithArray:images];
                 [weakcell reloadData];
             }];
@@ -227,13 +236,6 @@
         }
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//        if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
-//            [cell setSeparatorInset:UIEdgeInsetsZero];
-//        }
-//        
-//        if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
-//            [cell setLayoutMargins:UIEdgeInsetsZero];
-//        }
         [cell.userActionButton setTitle:@"匿名评价  " forState:0];
         [cell.userActionButton setImage:[UIImage imageNamed:@"anonymous"] forState:0];
         [cell.userActionButton setImage:[UIImage imageNamed:@"real_name"] forState:UIControlStateSelected];
@@ -263,21 +265,22 @@
     //发布方：办事效率。接单方：响应度
     self.evaDataDictionary[@"workefficiency"] = self.evaDataDictionary[@"workefficiency"]?self.evaDataDictionary[@"workefficiency"]:@"";
     self.evaDataDictionary[@"content"] = self.evaDataDictionary[@"content"]?self.evaDataDictionary[@"content"]:@"";
-    self.evaDataDictionary[@"isHide"] = self.evaDataDictionary[@"isHide"]?self.evaDataDictionary[@"isHide"]:@"";
+    self.evaDataDictionary[@"isHide"] = self.evaDataDictionary[@"isHide"]?self.evaDataDictionary[@"isHide"]:@"0";
 
     self.evaDataDictionary[@"category"] = self.categoryString;
     self.evaDataDictionary[@"product_id"] = self.idString;
-    self.evaDataDictionary[@"picture"] = @"";
+    self.evaDataDictionary[@"pictures"] = self.evaDataDictionary[@"pictures"]?self.evaDataDictionary[@"pictures"]:@"";
     self.evaDataDictionary[@"type"] = self.evaString;
     self.evaDataDictionary[@"token"] = [self getValidateToken];
     
     NSDictionary *params = self.evaDataDictionary;
     
     [self requestDataPostWithString:evaluateString params:params successBlock:^(id responseObject) {
+        
         BaseModel *evaModel = [BaseModel objectWithKeyValues:responseObject];
-        [self showHint:evaModel.msg];
         
         if ([evaModel.code isEqualToString:@"0000"]) {
+            [self showHint:evaModel.msg];
             [self.navigationController popViewControllerAnimated:YES];
         }
     } andFailBlock:^(NSError *error) {

@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "MBResourceManager.h"
 #import "MainViewController.h"
+#import "IntroduceViewController.h"
 
 @interface AppDelegate ()  
 
@@ -22,9 +23,20 @@
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     
-    MainViewController *mainVC = [[MainViewController alloc] init];
-    UINavigationController *mainNav = [[UINavigationController alloc] initWithRootViewController:mainVC];
-    self.window.rootViewController = mainNav;
+    //判断是否是首次登录
+    NSUserDefaults *settings = [NSUserDefaults standardUserDefaults];
+    NSString *key = [NSString stringWithFormat:@"first"];
+    NSString *value = [settings objectForKey:key];
+
+    if (!value) {//首次登录
+        IntroduceViewController *introVC = [[IntroduceViewController alloc] init];
+        self.window.rootViewController = introVC;
+        [[NSUserDefaults standardUserDefaults] setObject:@"first" forKey:@"first"];
+    }else{
+        MainViewController *mainVC = [[MainViewController alloc] init];
+        UINavigationController *mainNav = [[UINavigationController alloc] initWithRootViewController:mainVC];
+        self.window.rootViewController = mainNav;
+    }
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [[MBResourceManager sharedInstance] removeUnusedResource];

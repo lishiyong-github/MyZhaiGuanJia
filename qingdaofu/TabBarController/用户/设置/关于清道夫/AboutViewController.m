@@ -40,11 +40,10 @@
 - (void)updateViewConstraints
 {
     if (!self.didSetupConstaints) {
-        [self.aboutTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
-        [self.aboutTableView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:115];
+        [self.aboutTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
         
         [self.aboutCommitButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [self.aboutCommitButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.aboutTableView];
+        [self.aboutCommitButton autoSetDimension:ALDimensionHeight toSize:80];
         
         self.didSetupConstaints = YES;
     }
@@ -93,20 +92,9 @@
         _aboutCommitButton.backgroundColor = kBackColor;
         _aboutCommitButton.titleLabel.numberOfLines = 0;
         _aboutCommitButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-        NSString *aString1  = @"官方网站";
-        NSString *aString2 = @"Copyright©2015-2016 直向资产管理有限公司　沪ICP备15055061号-1";
-        //@"Copyright©2015-2016 直向资产管理有限公司　沪ICP备15055061号-1";
-        NSString *aString = [NSString stringWithFormat:@"%@\n%@",aString1,aString2];
-        NSMutableAttributedString *aAttributeString = [[NSMutableAttributedString alloc] initWithString:aString];
-        [aAttributeString addAttributes:@{NSFontAttributeName:kSecondFont,NSForegroundColorAttributeName:kBlueColor} range:NSMakeRange(0, aString1.length)];
-        [aAttributeString addAttributes:@{NSFontAttributeName:kTabBarFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(aString1.length+1, aString2.length)];
-        [_aboutCommitButton setAttributedTitle:aAttributeString forState:0];
-        
-        QDFWeakSelf;
-        [_aboutCommitButton addAction:^(UIButton *btn) {
-            CompanyWebSiteViewController *companyWebSiteVc = [[CompanyWebSiteViewController alloc] init];
-            [weakself.navigationController pushViewController:companyWebSiteVc animated:YES];
-        }];
+        [_aboutCommitButton setTitle:@"Copyright©2015-2016 直向资产管理有限公司　沪ICP备15055061号-1" forState:0];
+        [_aboutCommitButton setTitleColor:kLightGrayColor forState:0];
+        _aboutCommitButton.titleLabel.font = kTabBarFont;
     }
     
     return _aboutCommitButton;
@@ -152,11 +140,11 @@
         SKStoreProductViewController *sKStoreProductViewController = [[SKStoreProductViewController alloc] init];
         [sKStoreProductViewController.view setFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
         [sKStoreProductViewController setDelegate:self];
-        [sKStoreProductViewController loadProductWithParameters:@{SKStoreProductParameterITunesItemIdentifier: @"1116869191"} completionBlock:^(BOOL result, NSError *error) {
+        [sKStoreProductViewController loadProductWithParameters:@{SKStoreProductParameterITunesItemIdentifier: AppID} completionBlock:^(BOOL result, NSError *error) {
             if (result) {
                 [self presentViewController:sKStoreProductViewController animated:YES completion:nil];
             }else{
-                NSLog(@"error:%@",error);
+//                NSLog(@"error:%@",error);
             }
         }];
     }

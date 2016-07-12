@@ -10,4 +10,6 @@
 
 @interface RegisterAgreementViewController : NetworkViewController
 
+@property (nonatomic,strong) NSString *agreeString;  //注册协议｜｜常见问答
+
 @end

@@ -18,10 +18,6 @@
         self.backgroundColor = kBlueColor;
         self.titleLabel.font = kBigFont;
         [self setTitleColor:kNavColor forState:0];
-        
-//        [self addSubview:self.phoneButton];
-//        [self.phoneButton setHidden:YES];
-//        [self setNeedsUpdateConstraints];
     }
     return self;
 }

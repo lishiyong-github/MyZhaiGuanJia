@@ -25,6 +25,7 @@
 
 #import "UIButton+WebCache.h"
 #import "NSString+Fram.h"
+#import "UIViewController+ImageBrowser.h"
 
 @interface CompleteViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -252,6 +253,7 @@
         certificationModel = response.certification;
     }
     
+    QDFWeakSelf;
     if ([self.categoryString intValue] == 1) {//个人
         identifier = @"complete11";
         CompleteCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -274,6 +276,9 @@
         NSString *urlString = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subString];
         NSURL *url = [NSURL URLWithString:urlString];
         [cell.comPicButton sd_setBackgroundImageWithURL:url forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+        [cell.comPicButton addAction:^(UIButton *btn) {
+            [weakself showImages:@[url] currentIndex:1];
+        }];
         
         NSString *mobileStr = [NSString getValidStringFromString:certificationModel.mobile];
         NSMutableAttributedString *mobileString = [cell.comIDLabel setAttributeString:@"联系方式：    " withColor:kBlackColor andSecond:mobileStr withColor:kLightGrayColor withFont:14];
@@ -311,6 +316,9 @@
         NSString *urlString = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subString];
         NSURL *url = [NSURL URLWithString:urlString];
         [cell.comPicButton sd_setBackgroundImageWithURL:url forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+        [cell.comPicButton addAction:^(UIButton *btn) {
+            [weakself showImages:@[url] currentIndex:1];
+        }];
         
         NSString *contactStr = [NSString getValidStringFromString:certificationModel.contact];
         NSMutableAttributedString *personNameString = [cell.comPersonNameLabel setAttributeString:@"联系人：    " withColor:kBlackColor andSecond:contactStr withColor:kLightGrayColor withFont:14];
@@ -352,6 +360,9 @@
         NSString *urlString = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subString];
         NSURL *url = [NSURL URLWithString:urlString];
         [cell.comPicButton sd_setBackgroundImageWithURL:url forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+        [cell.comPicButton addAction:^(UIButton *btn) {
+            [weakself showImages:@[url] currentIndex:1];
+        }];
         
         NSString *contactStr = [NSString getValidStringFromString:certificationModel.contact];
         NSMutableAttributedString *personNameString = [cell.comPersonNameLabel setAttributeString:@"联系人：            " withColor:kBlackColor andSecond:contactStr withColor:kLightGrayColor withFont:14];

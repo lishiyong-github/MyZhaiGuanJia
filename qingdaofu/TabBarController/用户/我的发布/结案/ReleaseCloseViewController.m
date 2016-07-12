@@ -24,6 +24,8 @@
 
 #import "BaseCommitButton.h"
 
+#import "UIButton+WebCache.h"
+
 //详细信息
 #import "PublishingResponse.h"
 #import "PublishingModel.h"
@@ -280,7 +282,11 @@
                 string44 = releaseModel.rebate;
             }else if ([releaseModel.category intValue] == 2){//清收
                 string22 = @"清收";
-                string3 = @"  代理费用(万)";
+                if ([releaseModel.agencycommissiontype intValue] == 1) {
+                    string3 = @"  提成比例(%)";
+                }else if ([releaseModel.agencycommissiontype intValue] == 2){
+                    string3 = @"  固定费用(万)";
+                }
                 imageString3 = @"conserve_fixed_icon";
                 string33 = releaseModel.agencycommission;
                 string4 = @"  债权类型";
@@ -528,7 +534,7 @@
             }
             
             //图片
-            if (launchModel.pictures.count == 1) {
+            if (launchModel.pictures.count == 1) {//1张图片
                 NSString *str1;
                 if ([launchModel.pictures[0] isEqualToString:@""]) {
                     str1 = launchModel.pictures[0];
@@ -537,17 +543,20 @@
                 }
                 NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str1];
                 NSURL *url1 = [NSURL URLWithString:imageStr1];
-                [cell.evaProImageView1 sd_setImageWithURL:url1 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
-                [cell.evaProImageView2 sd_setImageWithURL:nil placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
-            }else if (launchModel.pictures.count >= 2){
+                
+                [cell.evaProImageView1 sd_setImageWithURL:url1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+                [cell.evaProImageView2 sd_setImageWithURL:nil forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+            
+            }else if (launchModel.pictures.count >= 2){//两张图片
                 NSString *str1 = [launchModel.pictures[0] substringWithRange:NSMakeRange(1, [launchModel.pictures[0] length]-2)];
                 NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str1];
                 NSURL *url1 = [NSURL URLWithString:imageStr1];
-                [cell.evaProImageView1 sd_setImageWithURL:url1 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
                 NSString *str2 = [launchModel.pictures[1] substringWithRange:NSMakeRange(1, [launchModel.pictures[1] length]-2)];
                 NSString *imageStr2 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str2];
                 NSURL *url2 = [NSURL URLWithString:imageStr2];
-                [cell.evaProImageView2 sd_setImageWithURL:url2 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+                
+                [cell.evaProImageView1 sd_setImageWithURL:url1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+                [cell.evaProImageView2 sd_setImageWithURL:url2 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
             }
         }else{//无评价时布局
             

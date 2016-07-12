@@ -10,5 +10,6 @@
 #import "BaseViewController.h"
 
 @interface MarkingViewController : BaseViewController
+@property (nonatomic,strong) NSString *markString;
 
 @end

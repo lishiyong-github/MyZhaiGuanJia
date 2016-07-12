@@ -8,7 +8,7 @@
 
 #import "MyClosingViewController.h"
 
-#import "UIImageView+WebCache.h"
+#import "UIButton+WebCache.h"
 
 
 #import "CheckDetailPublishViewController.h"  //查看发布方
@@ -201,15 +201,6 @@
     }else if ((indexPath.section == 4) && (indexPath.row == 1)){
         
         return 170;
-//        LaunchEvaluateModel *model;
-//        if (self.evaluateArray.count > 0) {
-//            model = self.evaluateArray[0];
-//        }
-//        if ([model.picture isEqualToString:@""] || model.picture == nil) {
-//            return 110;
-//        }else{
-//            return 170;
-//        }
     }
     return kCellHeight;
 }
@@ -287,7 +278,11 @@
                 string44 = closeModel.rebate;
             }else if ([closeModel.category intValue] == 2){//清收
                 string22 = @"清收";
-                string3 = @"  代理费用(万)";
+                if ([closeModel.agencycommissiontype intValue] == 1) {
+                    string3 = @"  提成比例(%)";
+                }else if ([closeModel.agencycommissiontype intValue] == 2){
+                    string3 = @"  固定费用(万)";
+                }
                 imageString3 = @"conserve_fixed_icon";
                 string33 = closeModel.agencycommission;
                 string4 = @"  债权类型";
@@ -551,18 +546,20 @@
                     }
                     NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str1];
                     NSURL *url1 = [NSURL URLWithString:imageStr1];
-                    [cell.evaProImageView1 sd_setImageWithURL:url1 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
-                    [cell.evaProImageView2 sd_setImageWithURL:nil placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+                    
+                    [cell.evaProImageView1 sd_setImageWithURL:url1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+                    [cell.evaProImageView2 sd_setImageWithURL:nil forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
                     
                 }else if (launchModel.pictures.count >= 2){
                     NSString *str1 = [launchModel.pictures[0] substringWithRange:NSMakeRange(1, [launchModel.pictures[0] length]-2)];
                     NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str1];
                     NSURL *url1 = [NSURL URLWithString:imageStr1];
-                    [cell.evaProImageView1 sd_setImageWithURL:url1 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
                     NSString *str2 = [launchModel.pictures[1] substringWithRange:NSMakeRange(1, [launchModel.pictures[1] length]-2)];
                     NSString *imageStr2 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str2];
                     NSURL *url2 = [NSURL URLWithString:imageStr2];
-                    [cell.evaProImageView2 sd_setImageWithURL:url2 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+                    
+                    [cell.evaProImageView1 sd_setImageWithURL:url1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+                    [cell.evaProImageView2 sd_setImageWithURL:url2 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
                 }
             }else{
                 [cell.remindImageButton setHidden:NO];
@@ -685,10 +682,6 @@
                              @"page" : @"0"
                              };
     [self requestDataPostWithString:evaluateString params:params successBlock:^(id responseObject) {
-        
-        
-        NSDictionary *yyyyy = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSLog(@"^^^^^^^ %@",yyyyy);
         
         EvaluateResponse *response = [EvaluateResponse objectWithKeyValues:responseObject];
         [self.evaluateResponseArray addObject:response];

@@ -127,14 +127,6 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.backgroundColor = kNavColor1;
         
-        //            NSString *str1 = @"5.6";
-        //            NSString *str2 = @"%";
-        //            NSString *str = [NSString stringWithFormat:@"%@%@",str1,str2];
-        //            NSMutableAttributedString *attributeStr = [[NSMutableAttributedString alloc] initWithString:str];
-        //            [attributeStr addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:50],NSForegroundColorAttributeName:kNavColor} range:NSMakeRange(0, str1.length)];
-        //            [attributeStr addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:24],NSForegroundColorAttributeName:kNavColor} range:NSMakeRange(str1.length, str2.length)];
-        //            [cell.deRateLabel1 setAttributedText:attributeStr];
-        
         if ([proModel.category intValue] == 1) {//融资
             //上边
             cell.deRateLabel.text = @"返点(%)";
@@ -150,7 +142,11 @@
             
         }else if ([proModel.category intValue] == 2){//清收
             //上边
-            cell.deRateLabel.text = @"代理费率(%)";
+            if ([proModel.agencycommissiontype isEqualToString:@"1"]) {
+                cell.deRateLabel.text = @"提成比例(%)";
+            }else{
+                cell.deRateLabel.text = @"固定费用(万)";
+            }
             cell.deRateLabel1.text = proModel.agencycommission;
             
             //右边
@@ -294,6 +290,7 @@
             MyOrderViewController *myOrderVC = [[MyOrderViewController alloc] init];
             myOrderVC.status = @"0";
             myOrderVC.progresStatus = @"1";
+            myOrderVC.hidesBottomBarWhenPushed = YES;
             [nav pushViewController:myOrderVC animated:NO];
         }
         

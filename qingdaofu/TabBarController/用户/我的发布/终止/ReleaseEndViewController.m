@@ -77,8 +77,7 @@
 - (UITableView *)releaseEndTableView
 {
     if (!_releaseEndTableView) {
-//        _releaseEndTableView = [UITableView newAutoLayoutView];
-        _releaseEndTableView.translatesAutoresizingMaskIntoConstraints = NO;
+        _releaseEndTableView.translatesAutoresizingMaskIntoConstraints = YES;
         _releaseEndTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _releaseEndTableView.delegate = self;
         _releaseEndTableView.dataSource = self;
@@ -91,6 +90,7 @@
     if (!_releaseEndCommitButton) {
         _releaseEndCommitButton = [BaseCommitButton newAutoLayoutView];
         _releaseEndCommitButton.backgroundColor = kSelectedColor;
+        [_releaseEndCommitButton setTitleColor:kBlackColor forState:0];
         [_releaseEndCommitButton setTitle:@"已终止" forState:0];
     }
     return _releaseEndCommitButton;
@@ -214,7 +214,11 @@
                     string44 = endModel.rebate;
                 }else if ([endModel.category intValue] == 2){//清收
                     string22 = @"清收";
-                    string3 = @"  代理费用(万)";
+                    if ([endModel.agencycommissiontype intValue] == 1) {
+                        string3 = @"  提成比例(%)";
+                    }else if ([endModel.agencycommissiontype intValue] == 2){
+                        string3 = @"  固定费用(万)";
+                    }
                     imageString3 = @"conserve_fixed_icon";
                     string33 = endModel.agencycommission;
                     string4 = @"  债权类型";

@@ -119,18 +119,18 @@
     return _evaTextLabel;
 }
 
-- (UIImageView *)evaProImageView1
+- (UIButton *)evaProImageView1
 {
     if (!_evaProImageView1) {
-        _evaProImageView1 = [UIImageView newAutoLayoutView];
+        _evaProImageView1 = [UIButton newAutoLayoutView];
     }
     return _evaProImageView1;
 }
 
-- (UIImageView *)evaProImageView2
+- (UIButton *)evaProImageView2
 {
     if (!_evaProImageView2) {
-        _evaProImageView2 = [UIImageView newAutoLayoutView];
+        _evaProImageView2 = [UIButton newAutoLayoutView];
     }
     return _evaProImageView2;
 }

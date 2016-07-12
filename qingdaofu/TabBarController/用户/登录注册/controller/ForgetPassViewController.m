@@ -186,13 +186,51 @@
         [self showHint:forgetModel.msg];
         
         if ([forgetModel.code isEqualToString:@"0000"]) {
-            [self.navigationController popViewControllerAnimated:YES];
+            [self loginUser];
         }
         
     } andFailBlock:^(NSError *error){
         
     }];
 }
+
+- (void)loginUser
+{
+    NSString *loginString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kLoginString];
+    
+    NSString *mobile = self.forgetDictionay[@"mobile"];
+    NSString *password = self.forgetDictionay[@"new_password"];
+    
+    NSDictionary *params = @{@"mobile" : mobile,
+                             @"password" : password
+                             };
+    
+    //18221496879 123456 (xiaolou)
+    //13162521916 123456
+    //15000708849   123456
+    
+    [self requestDataPostWithString:loginString params:params successBlock:^( id responseObject){
+        
+        BaseModel *loginModel = [BaseModel objectWithKeyValues:responseObject];
+        [self showHint:loginModel.msg];
+        
+        if ([loginModel.code isEqualToString:@"0000"]) {
+            [[NSUserDefaults standardUserDefaults] setObject:loginModel.token forKey:@"token"];
+            [[NSUserDefaults standardUserDefaults] setObject:self.forgetDictionay[@"mobile"] forKey:@"mobile"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
+            UINavigationController *nav = self.navigationController;
+            [nav popViewControllerAnimated:NO];
+            [nav popViewControllerAnimated:NO];
+        }else{
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        
+    } andFailBlock:^(NSError *error){
+        [self.navigationController popViewControllerAnimated:YES];
+    }];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

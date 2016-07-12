@@ -23,6 +23,8 @@
 #import "EvaluateResponse.h"
 #import "EvaluateModel.h"
 
+
+#import "UIButton+WebCache.h"
 @interface CheckDetailPublishViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
@@ -187,16 +189,17 @@
 {
     if ((indexPath.section == 1) && (indexPath.row > 0)) {
         
-        if (self.allEvaDataArray.count > 0) {
-            EvaluateModel *model = self.allEvaDataArray[0];
-            if (model.picture == nil || [model.picture isEqualToString:@""]) {
-                return 105;
-            }else{
-                return 170;
-            }
-        }else{
-            return 105;
-        }
+        return 170;
+//        if (self.allEvaDataArray.count > 0) {
+//            EvaluateModel *model = self.allEvaDataArray[0];
+//            if (model.picture == nil || [model.picture isEqualToString:@""]) {
+//                return 105;
+//            }else{
+//                return 170;
+//            }
+//        }else{
+//            return 105;
+//        }
     }
     
     return kCellHeight;
@@ -238,11 +241,8 @@
                 [cell.userActionButton setTitle:@"已上传" forState:0];
             }
         }else if (indexPath.row == 4){
-            if ([cerModel.email isEqualToString:@""]) {
-                [cell.userActionButton setTitle:@"未填写" forState:0];
-            }else{
-                [cell.userActionButton setTitle:cerModel.email forState:0];
-            }
+            [cell.userActionButton setTitle:[NSString getValidStringFromString:cerModel.email] forState:0];
+            
         }else if (indexPath.row == 5){
             [cell.userActionButton setTitle:@"查看" forState:0];
             cell.userActionButton.userInteractionEnabled = NO;
@@ -296,17 +296,11 @@
         [cell.evaTimeLabel setHidden:NO];
         [cell.evaTextLabel setHidden:NO];
         [cell.evaStarImage setHidden:NO];
+        [cell.evaProImageView1 setHidden:NO];
+        [cell.evaProImageView2 setHidden:NO];
         
         EvaluateResponse *evaResponse = self.allEvaResponse[0];
         evaModel = self.allEvaDataArray[indexPath.row-1];
-        
-        if (evaModel.picture == nil || [evaModel.picture isEqualToString:@""]) {
-            [cell.evaProImageView1 setHidden:YES];
-            [cell.evaProImageView2 setHidden:YES];
-        }else{
-            [cell.evaProImageView1 setHidden:NO];
-            [cell.evaProImageView2 setHidden:NO];
-        }
         
         NSString *isHideStr = evaModel.isHide?@"匿名":evaModel.mobile;
         cell.evaNameLabel.text = isHideStr;
@@ -314,12 +308,36 @@
         cell.evaStarImage.currentIndex = [evaResponse.creditor intValue];
         cell.evaProImageView1.backgroundColor = kLightGrayColor;
         cell.evaProImageView2.backgroundColor = kLightGrayColor;
-        if (evaModel.content == nil || [evaModel.content isEqualToString:@""]) {
-            cell.evaTextLabel.text = @"未填写评价内容";
-        }else{
-            cell.evaTextLabel.text = evaModel.content;
-        }
+        cell.evaTextLabel.text = [NSString getValidStringFromString:evaModel.content toString:@"未填写评价内容"];
+        
+        
+       // 图片
+        if (evaModel.pictures.count == 1) {
+            if ([evaModel.pictures[0] isEqualToString:@""]) {//没有图片
+//                [cell.evaProImageView1 setHidden:YES];
+//                [cell.evaProImageView2 setHidden:YES];
+                [cell.evaProImageView1 setImage:[UIImage imageNamed:@"account_bitmap"] forState:0];
+                [cell.evaProImageView2 setImage:[UIImage imageNamed:@"account_bitmap"] forState:0];
 
+            }else{//有图片
+                NSString *str1 = [evaModel.pictures[0] substringWithRange:NSMakeRange(1, [evaModel.pictures[0] length]-2)];
+                NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str1];
+                NSURL *url1 = [NSURL URLWithString:imageStr1];
+
+                [cell.evaProImageView1 sd_setBackgroundImageWithURL:url1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+                [cell.evaProImageView2 setImage:[UIImage imageNamed:@"account_bitmap"] forState:0];
+            }
+        }else if (evaModel.pictures.count >= 2){
+            NSString *str1 = [evaModel.pictures[0] substringWithRange:NSMakeRange(1, [evaModel.pictures[0] length]-2)];
+            NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str1];
+            NSURL *url1 = [NSURL URLWithString:imageStr1];
+            NSString *str2 = [evaModel.pictures[1] substringWithRange:NSMakeRange(1, [evaModel.pictures[1] length]-2)];
+            NSString *imageStr2 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str2];
+            NSURL *url2 = [NSURL URLWithString:imageStr2];
+
+            [cell.evaProImageView1 sd_setBackgroundImageWithURL:url1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+            [cell.evaProImageView2 sd_setBackgroundImageWithURL:url2 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+        }
     }else{
         [cell.remindImageButton setHidden:NO];
         [cell.evaProductButton setHidden:YES];

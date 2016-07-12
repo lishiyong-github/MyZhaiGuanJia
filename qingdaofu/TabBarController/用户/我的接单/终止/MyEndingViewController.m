@@ -89,6 +89,7 @@
     if (!_endingCommitButton) {
         _endingCommitButton = [BaseCommitButton newAutoLayoutView];
         _endingCommitButton.backgroundColor = kSelectedColor;
+        [_endingCommitButton setTitleColor:kBlackColor forState:0];
         [_endingCommitButton setTitle:@"已终止" forState:0];
     }
     return _endingCommitButton;
@@ -212,7 +213,11 @@
                 string44 = endModel.rebate;
             }else if ([endModel.category intValue] == 2){//清收
                 string22 = @"清收";
-                string3 = @"  代理费用(万)";
+                if ([endModel.agencycommissiontype intValue] == 1) {
+                    string3 = @"  提成比例(%)";
+                }else if ([endModel.agencycommissiontype intValue] == 2){
+                    string3 = @"  固定费用(万)";
+                }
                 imageString3 = @"conserve_fixed_icon";
                 string33 = endModel.agencycommission;
                 string4 = @"  债权类型";

@@ -19,7 +19,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"注册协议";
+    
+    if ([self.agreeString isEqualToString:kRegisterAgreement]) {
+        self.title = @"注册协议";
+    }else{
+        self.title = @"常见问答";
+    }
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
     [self.view addSubview: self.registerWebview];
@@ -40,7 +45,8 @@
 {
     if (!_registerWebview) {
         _registerWebview = [UIWebView newAutoLayoutView];
-        NSURL *url = [NSURL URLWithString:@"http://wxtest.zcb2016.com/site/agreement"];
+        NSString *registerString = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,self.agreeString];
+        NSURL *url = [NSURL URLWithString:registerString];
         [_registerWebview loadRequest:[NSURLRequest requestWithURL:url]];
     }
     return _registerWebview;

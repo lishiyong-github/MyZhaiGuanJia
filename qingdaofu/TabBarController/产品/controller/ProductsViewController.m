@@ -50,14 +50,14 @@
     
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:kNavColor] forBarMetrics:UIBarMetricsDefault];
     
-    [self getProductsListWithPage:@"0"];
+    [self headerRefreshWithAllProducts];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.titleView = self.proTitleView;
 //    self.navigationItem.rightBarButtonItem  = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"nav_search"] style:UIBarButtonItemStylePlain target:self action:@selector(searchProducts)];
-
+    
     [self.view addSubview:self.chooseView];
     [self.view addSubview:self.productsTableView];
     [self.view addSubview:self.baseRemindImageView];
@@ -106,27 +106,8 @@
                 NSString *value = [NSString stringWithFormat:@"%d",row];
                 [btn setTitle:text forState:0];
                 [weakself.paramsDictionary setValue:value forKey:@"category"];
-                [weakself getProductsListWithPage:@"0"];
+                [weakself headerRefreshWithAllProducts];
             }];
-            
-            
-//            if (btn.selected) {
-//                [weakself hiddenBlurView];
-//                [weakself.tableView11 removeFromSuperview];
-//                [weakself.tableView12 removeFromSuperview];
-//                [weakself.tableView13 removeFromSuperview];
-//                
-//                NSArray *titleArray = @[@"全部",@"融资",@"清收",@"诉讼"];
-//                [weakself showBlurInView:weakself.view withArray:titleArray withTop:0 finishBlock:^(NSString *text, NSInteger row) {
-//                    NSString *value = [NSString stringWithFormat:@"%d",row];
-//                    [btn setTitle:text forState:0];
-//                    [weakself.paramsDictionary setValue:value forKey:@"category"];
-//                    [weakself getProductsListWithPage:@"0"];
-//                }];
-//            }else{
-//                [weakself hiddenBlurView];
-//                btn.selected = YES;
-//            }
         }];
     }
     return _proTitleView;
@@ -159,8 +140,6 @@
                         [weakself.tableView11 autoPinEdgeToSuperviewEdge:ALEdgeLeft];
                         [weakself.tableView11 autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kTabBarHeight];
                         
-                        //                        [weakself.tableView11 autoSetDimension:ALDimensionHeight toSize:40*5];
-                        
                         weakself.widthConstraints = [weakself.tableView11 autoSetDimension:ALDimensionWidth toSize:kScreenWidth];
                         
                         [weakself getProvinceList];
@@ -190,7 +169,7 @@
                             }else{
                                 [weakself.paramsDictionary setValue:@"4" forKey:@"status"];
                             }
-                            [weakself getProductsListWithPage:@"0"];
+                            [weakself headerRefreshWithAllProducts];
                         }];
                         
                     }
@@ -216,7 +195,7 @@
                             NSString *value = [NSString stringWithFormat:@"%d",row];
                             [selectedButton setTitle:text forState:0];
                             [weakself.paramsDictionary setValue:value forKey:@"money"];
-                            [weakself getProductsListWithPage:@"0"];
+                            [weakself headerRefreshWithAllProducts];
                         }];
                     }
                 }
@@ -362,7 +341,11 @@
             [cell.typeImageView setImage:[UIImage imageNamed:@"list_collection"]];
             
             cell.pointView.label1.text = proModel.agencycommission;
-            cell.pointView.label2.text = @"代理费用(%)";
+            if ([proModel.agencycommissiontype isEqualToString:@"1"]) {
+                cell.pointView.label2.text = @"提成比例(%)";
+            }else{
+                cell.pointView.label2.text = @"固定费用(万)";
+            }
             if ([proModel.loan_type isEqualToString:@"1"]) {
                 cell.rateView.label1.text = @"房产抵押";
                 cell.addressLabel.text = proModel.location;
@@ -599,7 +582,7 @@
     NSDictionary *params = self.paramsDictionary;
     [self requestDataPostWithString:allProString params:params successBlock:^(id responseObject) {
         
-        if ([page intValue] == 0) {
+        if ([page intValue] == 1) {
             [self.allDataList removeAllObjects];
         }
         
@@ -629,7 +612,8 @@
 
 - (void)headerRefreshWithAllProducts
 {
-    [self getProductsListWithPage:@"0"];
+    _page = 1;
+    [self getProductsListWithPage:@"1"];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.productsTableView headerEndRefreshing];

@@ -8,11 +8,11 @@
 
 #import "UploadViewController.h"
 
-#import "DebtModel.h"
 #import "TakePictureCell.h"
 #import "BaseCommitButton.h"
-#import "UIViewController+MutipleImageChoice.h"
 
+#import "UIViewController+MutipleImageChoice.h"
+#import "UIViewController+ImageBrowser.h"
 #import "FSBasicImage.h"
 #import "FSBasicImageSource.h"
 #import "FSImageViewerViewController.h"
@@ -22,9 +22,10 @@
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *upTableView;
 @property (nonatomic,strong) BaseCommitButton *upCommitButton;
-@property (nonatomic,strong) UIButton *rightButton;
 
-@property (nonatomic,strong) NSArray *allImage;
+@property (nonatomic,strong) DebtModel *allImageModel;
+@property (nonatomic,strong) NSArray *allImageArray;
+@property (nonatomic,strong) NSString *allImageStrings;
 
 @end
 
@@ -32,8 +33,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"上传";
+    self.title = [NSString stringWithFormat:@"上传%@",self.typeString];
     self.navigationItem.leftBarButtonItem = self.leftItem;
+    
+    self.allImageModel = [[DebtModel alloc] init];
     
     [self.view addSubview:self.upTableView];
     [self.view addSubview:self.upCommitButton];
@@ -78,47 +81,47 @@
             [weakself addImageWithFinishBlock:^(NSArray *images) {
 
                 if (images.count > 0) {
-//                    weakself.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:weakself.rightButton];
+                    NSData *tData;
+                    NSString *ttt = @"";
+                    NSString *tStr = @"";
+                    for (int i=0; i<images.count; i++) {
+                        tData = [NSData dataWithContentsOfFile:images[i]];
+                        ttt = [NSString stringWithFormat:@"%@",tData];
+                        tStr = [NSString stringWithFormat:@"%@,%@",tStr,ttt];
+                    }
+                    weakself.allImageStrings = tStr;
+                    weakself.allImageArray = images;
+                    
+                    //存储数据
+                    if (self.typeUpInt == 0) {
+                        weakself.allImageModel.imgnotarization = [NSMutableArray arrayWithArray:images];
+                        weakself.allImageModel.imgnotarizations = tStr;
+                    }else if (self.typeUpInt == 1){
+                        weakself.allImageModel.imgcontract = [NSMutableArray arrayWithArray:images];
+                        weakself.allImageModel.imgcontracts = tStr;
+                    }else if (self.typeUpInt == 2){
+                        weakself.allImageModel.imgcreditor = [NSMutableArray arrayWithArray:images];
+                        weakself.allImageModel.imgcreditors = tStr;
+                    }else if (self.typeUpInt == 3){
+                        weakself.allImageModel.imgpick = [NSMutableArray arrayWithArray:images];
+                        weakself.allImageModel.imgpicks = tStr;
+                    }else if (self.typeUpInt == 4){
+                        weakself.allImageModel.imgbenjin = [NSMutableArray arrayWithArray:images];
+                        weakself.allImageModel.imgbenjins = tStr;
+                    }else if (self.typeUpInt == 5){
+                        weakself.allImageModel.imgshouju = [NSMutableArray arrayWithArray:images];
+                        weakself.allImageModel.imgshoujus = tStr;
+                    }
                     
                     TakePictureCell *cell = [weakself.upTableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
                     cell.pictureCollection.backgroundColor = kBackColor;
                     cell.collectionDataList = [NSMutableArray arrayWithArray:images];
-                    
-                    weakself.allImage = images;
-                    
                     [cell reloadData];
                 }
-                
             }];
         }];
     }
     return _upCommitButton;
-}
-
-- (UIButton *)rightButton
-{
-    if (!_rightButton) {
-        _rightButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 44)];
-        [_rightButton setTitle:@"编辑" forState:0];
-        [_rightButton setTitle:@"取消" forState:UIControlStateSelected];
-        _rightButton.titleLabel.font = kBigFont;
-        [_rightButton setTitleColor:kBlueColor forState:0];
-        
-        QDFWeakSelf;
-        [_rightButton addAction:^(UIButton *btn) {
-            btn.selected = !btn.selected;
-            if (btn.selected) {
-                [weakself.upCommitButton setBackgroundColor:kNavColor];
-                [weakself.upCommitButton setTitle:@"删除" forState:0];
-                [weakself.upCommitButton setTitleColor:kRedColor forState:0];
-            }else{
-                [weakself.upCommitButton setBackgroundColor:kBlueColor];
-                [weakself.upCommitButton setTitle:@"上传" forState:0];
-                [weakself.upCommitButton setTitleColor:kNavColor forState:0];
-            }
-        }];
-    }
-    return _rightButton;
 }
 
 #pragma mark - delegate and datasource
@@ -143,8 +146,22 @@
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    cell.collectionDataList = [NSMutableArray arrayWithArray:self.filesModel.imgnotarization];
-    self.allImage = self.filesModel.imgnotarization;
+    if (self.typeUpInt == 0) {//公证书
+        self.allImageArray = self.filesModel.imgnotarization;
+    }else if (self.typeUpInt == 1){
+        self.allImageArray = self.filesModel.imgcontract;
+    }else if (self.typeUpInt == 2){
+        self.allImageArray = self.filesModel.imgcreditor;
+    }else if (self.typeUpInt == 3){
+        self.allImageArray = self.filesModel.imgpick;
+    }else if (self.typeUpInt == 4){
+        self.allImageArray = self.filesModel.imgbenjin;
+    }else{
+        self.allImageArray = self.filesModel.imgshouju;
+    }
+    self.allImageModel  = self.filesModel;
+    cell.collectionDataList = [NSMutableArray arrayWithArray:self.allImageArray];
+    
     [cell reloadData];
     
     //展示图片
@@ -152,7 +169,7 @@
     [cell setDidSelectedItem:^(NSInteger itemTag) {
         
         NSMutableArray *imgArray = [NSMutableArray array];
-        for (NSString *filePath in weakself.allImage) {
+        for (NSString *filePath in weakself.allImageArray) {
             FSBasicImage *basicImage = [[FSBasicImage alloc] initWithImage:[UIImage imageWithContentsOfFile:filePath]];
             [imgArray addObject:basicImage];
         }
@@ -167,16 +184,18 @@
 }
 
 #pragma mark - editImages
-- (void)editImages:(NSArray *)imageArray
-{
-    
-}
-
 - (void)back
 {
-    if (self.uploadImages) {
-        self.uploadImages(self.allImage);
+    if (self.allImageArray.count > 0) {
+        if (self.uploadImages) {
+            self.uploadImages(self.allImageArray,self.allImageStrings,self.allImageModel);
+        }
+    }else{
+        if (self.uploadImages) {
+            self.uploadImages(self.allImageArray,self.allImageStrings,self.filesModel);
+        }
     }
+    
     [self.navigationController popViewControllerAnimated:YES];
 }
 

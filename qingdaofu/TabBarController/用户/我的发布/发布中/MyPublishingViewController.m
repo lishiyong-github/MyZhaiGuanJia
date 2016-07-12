@@ -175,8 +175,11 @@
                 string44 = publishModel.rebate;
             }else if ([publishModel.category intValue] == 2){//清收
                 string22 = @"清收";
-                string3 = @"  代理费用(万)";
-                imageString3 = @"conserve_fixed_icon";
+                if ([publishModel.agencycommissiontype intValue] == 1) {
+                    string3 = @"  提成比例(%)";
+                }else if ([publishModel.agencycommissiontype intValue] == 2){
+                    string3 = @"  固定费用(万)";
+                }                imageString3 = @"conserve_fixed_icon";
                 string33 = publishModel.agencycommission;
                 string4 = @"  债权类型";
                 imageString4 = @"conserve_rights_icon";

@@ -109,7 +109,10 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     [self.imaDataArray removeAllObjects];
-    DebtModel *zModel = self.fileResponse.creditorfiles;
+    
+    
+    DebtModel *zModel = [[DebtModel alloc] init];
+    zModel = self.fileResponse.creditorfiles;
 
     switch (indexPath.row) {
         case 0:{

@@ -7,14 +7,14 @@
 //
 
 #import "BaseViewController.h"
-#import "PublishingResponse.h"
 #import "DebtModel.h"
 
 @interface UploadViewController : BaseViewController
 
 //选取图片
-@property (nonatomic,strong) void (^uploadImages)(NSArray *images);
+@property (nonatomic,strong) void (^uploadImages)(NSArray *images,NSString *imageStrings,DebtModel *filesModel);
 
+@property (nonatomic,strong) NSString *typeString;
 //0.公证书；1.借款合同；2.他项权证；3.收款凭证；4.收据；5.还款凭证
 @property (nonatomic,assign) NSInteger typeUpInt;
 @property (nonatomic,strong) DebtModel *filesModel;

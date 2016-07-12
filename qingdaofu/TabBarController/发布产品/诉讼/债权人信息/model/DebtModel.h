@@ -34,6 +34,11 @@
 @property (nonatomic,strong) NSArray *imgbenjin;//收据
 @property (nonatomic,strong) NSArray *imgshouju;//还款凭证
 @property (nonatomic,copy) NSString *imgnotarizations;
+@property (nonatomic,copy) NSString *imgcontracts;
+@property (nonatomic,copy) NSString *imgcreditors;
+@property (nonatomic,copy) NSString *imgpicks;
+@property (nonatomic,copy) NSString *imgbenjins;
+@property (nonatomic,copy) NSString *imgshoujus;
 
 
 @end

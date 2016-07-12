@@ -178,8 +178,8 @@
     }];
     
     [deButton addAction:^(UIButton *btn) {
-        NSLog(@"注册协议");
         RegisterAgreementViewController *registerAgreementVC = [[RegisterAgreementViewController alloc] init];
+        registerAgreementVC.agreeString = kRegisterAgreement;
         [weakself.navigationController pushViewController:registerAgreementVC animated:YES];
     }];
     
@@ -213,8 +213,6 @@
                 return @"获取验证码";
             }];
         }
-        
-        
     } andFailBlock:^(NSError *error){
         
     }];
@@ -276,7 +274,7 @@
         }
         
     } andFailBlock:^(NSError *error){
-        
+        [self.navigationController popViewControllerAnimated:YES];
     }];
 }
 

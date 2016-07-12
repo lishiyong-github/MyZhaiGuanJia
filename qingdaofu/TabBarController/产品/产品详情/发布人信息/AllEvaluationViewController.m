@@ -14,7 +14,8 @@
 #import "LaunchEvaluateModel.h"
 #import "EvaluateModel.h"
 
-#import "UIImageView+WebCache.h"
+#import "UIButton+WebCache.h"
+#import "UIViewController+ImageBrowser.h"
 
 @interface AllEvaluationViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -114,14 +115,14 @@
         if ([self.evaTypeString isEqualToString:@"evaluate"]) {
             EvaluateModel *model = self.allEvaluateArray[indexPath.section];
             if ([model.pictures[0] isEqualToString:@""]) {
-                return 110;
+                return 105;
             }else{
                 return 170;
             }
         }else if ([self.evaTypeString isEqualToString:@"launchevaluation"]){
             LaunchEvaluateModel *model = self.allEvaluateArray[indexPath.section];
             if ([model.pictures[0] isEqualToString:@""]) {
-                return 110;
+                return 105;
             }else{
                 return 170;
             }
@@ -149,6 +150,7 @@
         [cell.evaTextLabel setHidden:NO];
         [cell.evaStarImage setHidden:NO];
         
+        QDFWeakSelf;
         if ([self.evaTypeString isEqualToString:@"evaluate"]) {//收到的评价
             EvaluateModel *model = self.allEvaluateArray[indexPath.section];
             NSString *isHideStr = model.isHide?@"匿名":model.mobile;
@@ -175,8 +177,11 @@
                     NSString *str1 = [model.pictures[0] substringWithRange:NSMakeRange(1, [model.pictures[0] length]-2)];
                     NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str1];
                     NSURL *url1 = [NSURL URLWithString:imageStr1];
-                    [cell.evaProImageView1 sd_setImageWithURL:url1 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
-                    [cell.evaProImageView2 sd_setImageWithURL:nil placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+                    
+                    [cell.evaProImageView1 sd_setBackgroundImageWithURL:url1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+                    [cell.evaProImageView1 addAction:^(UIButton *btn) {
+                        [weakself showImages:@[url1]];
+                    }];
                 }
             }else if (model.pictures.count >= 2){
                 [cell.evaProImageView1 setHidden:NO];
@@ -184,11 +189,18 @@
                 NSString *str1 = [model.pictures[0] substringWithRange:NSMakeRange(1, [model.pictures[0] length]-2)];
                 NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str1];
                 NSURL *url1 = [NSURL URLWithString:imageStr1];
-                [cell.evaProImageView1 sd_setImageWithURL:url1 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
                 NSString *str2 = [model.pictures[1] substringWithRange:NSMakeRange(1, [model.pictures[1] length]-2)];
                 NSString *imageStr2 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str2];
                 NSURL *url2 = [NSURL URLWithString:imageStr2];
-                [cell.evaProImageView2 sd_setImageWithURL:url2 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+                
+                [cell.evaProImageView1 sd_setBackgroundImageWithURL:url1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+                [cell.evaProImageView2 sd_setBackgroundImageWithURL:url2 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+                [cell.evaProImageView1 addAction:^(UIButton *btn) {
+                    [weakself showImages:@[url1,url2]];
+                }];
+                [cell.evaProImageView2 addAction:^(UIButton *btn) {
+                    [weakself showImages:@[url1,url2]];
+                }];
             }
             
         }else if([self.evaTypeString isEqualToString:@"launchevaluation"]){//给出的评价
@@ -216,8 +228,10 @@
                     NSString *str1 = [model.pictures[0] substringWithRange:NSMakeRange(1, [model.pictures[0] length]-2)];
                     NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str1];
                     NSURL *url1 = [NSURL URLWithString:imageStr1];
-                    [cell.evaProImageView1 sd_setImageWithURL:url1 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
-                    [cell.evaProImageView2 sd_setImageWithURL:nil placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+                    [cell.evaProImageView1 sd_setBackgroundImageWithURL:url1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+                    [cell.evaProImageView1 addAction:^(UIButton *btn) {
+                        [weakself showImages:@[url1]];
+                    }];
                 }
             }else if (model.pictures.count >= 2){
                 [cell.evaProImageView1 setHidden:NO];
@@ -225,11 +239,15 @@
                 NSString *str1 = [model.pictures[0] substringWithRange:NSMakeRange(1, [model.pictures[0] length]-2)];
                 NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str1];
                 NSURL *url1 = [NSURL URLWithString:imageStr1];
-                [cell.evaProImageView1 sd_setImageWithURL:url1 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
                 NSString *str2 = [model.pictures[1] substringWithRange:NSMakeRange(1, [model.pictures[1] length]-2)];
                 NSString *imageStr2 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str2];
                 NSURL *url2 = [NSURL URLWithString:imageStr2];
-                [cell.evaProImageView2 sd_setImageWithURL:url2 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+                
+                [cell.evaProImageView1 sd_setBackgroundImageWithURL:url1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+                [cell.evaProImageView2 sd_setBackgroundImageWithURL:url2 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+                [cell.evaProImageView1 addAction:^(UIButton *btn) {
+                    [weakself showImages:@[url1,url2]];
+                }];
             }
         }
     }else{
@@ -281,7 +299,7 @@
     }
     
     [self requestDataPostWithString:evaluateString params:params successBlock:^(id responseObject) {        
-        if ([page integerValue] == 0) {
+        if ([page integerValue] == 1) {
             [self.allEvaluateArray removeAllObjects];
         }
         
@@ -318,8 +336,8 @@
 
 - (void)refreshHeaderOfAllEvaluation
 {
-    _pageEva = 0;
-    [self getEvaluateDetailListsWithPage:@"0"];
+    _pageEva = 1;
+    [self getEvaluateDetailListsWithPage:@"1"];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.allEvaTableView headerEndRefreshing];
     });

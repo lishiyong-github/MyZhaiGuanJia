@@ -56,7 +56,7 @@
 {
     if (!_agreementWebView) {
         _agreementWebView = [UIWebView newAutoLayoutView];
-        NSString *urlString = [NSString stringWithFormat:@"http://testq.zcb2016.com/protocol/mediacy?id=%@&category=%@",self.idString,self.categoryString];
+        NSString *urlString  = [NSString stringWithFormat:@"%@%@?id=%@&category=%@",kQDFTestImageString,kAgreementString,self.idString,self.categoryString];
         NSURL *url = [NSURL URLWithString:urlString];
         NSURLRequest *request = [NSURLRequest requestWithURL:url];
         [_agreementWebView loadRequest:request];

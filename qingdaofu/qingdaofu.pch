@@ -102,6 +102,10 @@
  */
 #define QDFWeakSelf QDFWeak(self)
 
+#define AppID @"1116869191"
+//@"1065452286" //财富
+//@"1116869191" //清道夫
+
 /**
  Application Programming Interface（API）
  */
@@ -110,10 +114,7 @@
 //#define kQDFTestImageString @"http://www.zcb2016.com"
 
 #define kQDFTestUrlString @"http://testq.zcb2016.com/wap/"
-//#define kQDFTestUrlString @"http://192.168.20.149/wap/"
-
 #define kQDFTestImageString @"http://testq.zcb2016.com"
-//#define kQDFTestImageString @"http://192.168.20.149"
 
 //post
 /*
@@ -126,8 +127,10 @@
 #define kModifyPasswordString  @"user/modifypassword"  //修改密码1
 #define kResetPasswordString  @"user/resetpassword"     //重置密码
 #define kTokenOverdue  @"common/application"   //token是否过期
-#define kRegisterAgreement @"site/agreements" //注册协议
-#define kSettingProblems  @"site/question"  //常见问答
+#define kRegisterAgreement @"/protocol/agreements" //注册协议
+#define kSettingProblems  @"/protocol/question"  //常见问答
+#define kIsLoginString  @"common/islogin"   //检验token与认证类型
+#define kSuggestionString @"public/opinion"    //意见反馈1
 
 
 /*发布产品*/
@@ -138,10 +141,6 @@
 #define kBrandAudiString  @"common/brandchild"  //车系
 #define kGuarantyString @"common/getsearch"   //小区
 
-
-
-#define kIsLoginString  @"common/islogin"   //检验token与认证类型
-#define kSuggestionString @"public/opinion"    //意见反馈1
 
 //我的接单 我的发布
 #define kMyOrdersString   @"apply/index"    //我的接单
@@ -158,7 +157,7 @@
 #define kMyRecordsMessageString @"apply/user"  //申请记录里的申请人详情
 #define kMyRecordsMessageAgreeString @"apply/agreeorder" //申请记录里的申请人详情的同意申请
 #define kEvaluateString @"public/evaluate"  //去评价
-#define kAgreementString @"apply/agereements"   //服务协议
+#define kAgreementString @"/protocol/mediacy"   //服务协议
 #define kMyEvaluateString @"apply/userlists"  //我的评价(给出的)
 #define kCheckOrderPeople @"apply/user"   //查看接单方详情
 #define kCheckOrderToEvaluationString @"apply/evaluatewidget"  //查看接单方详情里面的接单方评价信息(收到的)
@@ -201,6 +200,8 @@
 #define kMyAgentStopString @"certification/stopagent"  //停用代理
 #define kMyAgentAddString @"certification/addagent"  //添加代理
 #define kMyAgentModifyString @"certification/modifyagent"  //修改代理
+
+#define kPropagandaString  @"capital/picture"  //轮播图
 
 #endif
 

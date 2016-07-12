@@ -291,6 +291,15 @@
 		A18F14161CF6D3C100B14318 /* CaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A18F14151CF6D3C100B14318 /* CaseViewController.m */; };
 		A18F14191CF6D6A100B14318 /* AllEvaluationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A18F14181CF6D6A100B14318 /* AllEvaluationViewController.m */; };
 		A18F141C1CF6EAA800B14318 /* ProPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = A18F141B1CF6EAA800B14318 /* ProPickerView.m */; };
+		A18FC05D1D33937E00B1FCD4 /* IntroduceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A18FC05C1D33937E00B1FCD4 /* IntroduceViewController.m */; };
+		A18FC0661D33949F00B1FCD4 /* button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A18FC0601D33949F00B1FCD4 /* button@2x.png */; };
+		A18FC0671D33949F00B1FCD4 /* button@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A18FC0611D33949F00B1FCD4 /* button@3x.png */; };
+		A18FC0681D33949F00B1FCD4 /* image@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A18FC0621D33949F00B1FCD4 /* image@2x.png */; };
+		A18FC0691D33949F00B1FCD4 /* image@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A18FC0631D33949F00B1FCD4 /* image@3x.png */; };
+		A18FC06C1D3394C900B1FCD4 /* qing@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A18FC06A1D3394C900B1FCD4 /* qing@2x.png */; };
+		A18FC06D1D3394C900B1FCD4 /* qing@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A18FC06B1D3394C900B1FCD4 /* qing@3x.png */; };
+		A18FC0701D34C3AD00B1FCD4 /* banner_account_bitmap@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A18FC06E1D34C3AD00B1FCD4 /* banner_account_bitmap@2x.png */; };
+		A18FC0711D34C3AD00B1FCD4 /* banner_account_bitmap@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A18FC06F1D34C3AD00B1FCD4 /* banner_account_bitmap@3x.png */; };
 		A19266A21D2CDCA900DD7E9E /* ZYKeyboardUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = A19266A11D2CDCA900DD7E9E /* ZYKeyboardUtil.m */; };
 		A192B4B01CDAFAC60053FC4C /* MyScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A192B4AF1CDAFAC60053FC4C /* MyScheduleViewController.m */; };
 		A192B4B41CDB2CAF0053FC4C /* AdditionMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A192B4B31CDB2CAF0053FC4C /* AdditionMessageViewController.m */; };
@@ -945,6 +954,16 @@
 		A18F14181CF6D6A100B14318 /* AllEvaluationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllEvaluationViewController.m; sourceTree = "<group>"; };
 		A18F141A1CF6EAA800B14318 /* ProPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProPickerView.h; sourceTree = "<group>"; };
 		A18F141B1CF6EAA800B14318 /* ProPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProPickerView.m; sourceTree = "<group>"; };
+		A18FC05B1D33937E00B1FCD4 /* IntroduceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntroduceViewController.h; sourceTree = "<group>"; };
+		A18FC05C1D33937E00B1FCD4 /* IntroduceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntroduceViewController.m; sourceTree = "<group>"; };
+		A18FC0601D33949F00B1FCD4 /* button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button@2x.png"; sourceTree = "<group>"; };
+		A18FC0611D33949F00B1FCD4 /* button@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button@3x.png"; sourceTree = "<group>"; };
+		A18FC0621D33949F00B1FCD4 /* image@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "image@2x.png"; sourceTree = "<group>"; };
+		A18FC0631D33949F00B1FCD4 /* image@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "image@3x.png"; sourceTree = "<group>"; };
+		A18FC06A1D3394C900B1FCD4 /* qing@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "qing@2x.png"; sourceTree = "<group>"; };
+		A18FC06B1D3394C900B1FCD4 /* qing@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "qing@3x.png"; sourceTree = "<group>"; };
+		A18FC06E1D34C3AD00B1FCD4 /* banner_account_bitmap@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "banner_account_bitmap@2x.png"; sourceTree = "<group>"; };
+		A18FC06F1D34C3AD00B1FCD4 /* banner_account_bitmap@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "banner_account_bitmap@3x.png"; sourceTree = "<group>"; };
 		A19266A01D2CDCA900DD7E9E /* ZYKeyboardUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZYKeyboardUtil.h; sourceTree = "<group>"; };
 		A19266A11D2CDCA900DD7E9E /* ZYKeyboardUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZYKeyboardUtil.m; sourceTree = "<group>"; };
 		A192B4AE1CDAFAC60053FC4C /* MyScheduleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyScheduleViewController.h; sourceTree = "<group>"; };
@@ -2009,6 +2028,14 @@
 		A192B4BC1CDB45EB0053FC4C /* images */ = {
 			isa = PBXGroup;
 			children = (
+				A18FC06E1D34C3AD00B1FCD4 /* banner_account_bitmap@2x.png */,
+				A18FC06F1D34C3AD00B1FCD4 /* banner_account_bitmap@3x.png */,
+				A18FC06A1D3394C900B1FCD4 /* qing@2x.png */,
+				A18FC06B1D3394C900B1FCD4 /* qing@3x.png */,
+				A18FC0601D33949F00B1FCD4 /* button@2x.png */,
+				A18FC0611D33949F00B1FCD4 /* button@3x.png */,
+				A18FC0621D33949F00B1FCD4 /* image@2x.png */,
+				A18FC0631D33949F00B1FCD4 /* image@3x.png */,
 				A1882F561D2DFB230064BD38 /* banner1.png */,
 				A1882F531D2DF9F30064BD38 /* banner2.png */,
 				A13EA5791D2A3D67001B83A7 /* tips@2x.png */,
@@ -2621,6 +2648,8 @@
 				A1A016A61C5A0C0300027134 /* AppDelegate.m */,
 				A18B26461CEAA699005526C5 /* MainViewController.h */,
 				A18B26471CEAA699005526C5 /* MainViewController.m */,
+				A18FC05B1D33937E00B1FCD4 /* IntroduceViewController.h */,
+				A18FC05C1D33937E00B1FCD4 /* IntroduceViewController.m */,
 				A1A016AB1C5A0C0300027134 /* Main.storyboard */,
 				A1A016AE1C5A0C0300027134 /* Assets.xcassets */,
 				A18DC9CF1D250F810021B0BF /* Image.xcassets */,
@@ -3139,6 +3168,7 @@
 				A1A97E741CDCA2BF00EDE320 /* conserve_loan_icon@2x.png in Resources */,
 				A1770E361CFECCBA003579E1 /* publish_star@2x.png in Resources */,
 				A16486B71D001D9400B442C1 /* phone@2x.png in Resources */,
+				A18FC0691D33949F00B1FCD4 /* image@3x.png in Resources */,
 				A1982B321CFFD5D4001770A7 /* logo@2x.png in Resources */,
 				A1A34C251CE319C000AD454A /* bond_icon_contract@2x.png in Resources */,
 				A16486B21D00088B00B442C1 /* title_product_close@3x.png in Resources */,
@@ -3147,6 +3177,7 @@
 				A1A97E411CDC666400EDE320 /* news_evaluate_icon@3x.png in Resources */,
 				A1770E3B1CFEDEED003579E1 /* list_litigation@3x.png in Resources */,
 				A154B8DE1CE1913300884CA4 /* withdraw@3x.png in Resources */,
+				A18FC06D1D3394C900B1FCD4 /* qing@3x.png in Resources */,
 				A16E47C51D1A8EB200870B8A /* img_guarantee@2x.png in Resources */,
 				A1718DF21CFD6C490007DA6F /* list_icon_cutout@3x.png in Resources */,
 				A199853B1CE07CFD0055A572 /* tab_product@3x.png in Resources */,
@@ -3159,6 +3190,7 @@
 				A13EA57C1D2A3D67001B83A7 /* tips@3x.png in Resources */,
 				A154B8F21CE1B71D00884CA4 /* back@3x.png in Resources */,
 				A18DC9F01D25120D0021B0BF /* icon-small@2x.png in Resources */,
+				A18FC0701D34C3AD00B1FCD4 /* banner_account_bitmap@2x.png in Resources */,
 				A192B4C31CDB48C90053FC4C /* list_icon_collection@2x.png in Resources */,
 				A154B8E41CE1AFE600884CA4 /* publish@3x.png in Resources */,
 				A18DC9E81D25120D0021B0BF /* icon-76.png in Resources */,
@@ -3260,6 +3292,8 @@
 				A1522BF51D0FFFE000135C72 /* kong@3x.png in Resources */,
 				A145B2901CEEAE02003A93B7 /* conserve_wait_icon@3x.png in Resources */,
 				A16E47CA1D1A8EB200870B8A /* img_transfer@3x.png in Resources */,
+				A18FC06C1D3394C900B1FCD4 /* qing@2x.png in Resources */,
+				A18FC0661D33949F00B1FCD4 /* button@2x.png in Resources */,
 				A16856881CE994C9006A0887 /* nav_back@3x.png in Resources */,
 				A1A34C2E1CE319C000AD454A /* bond_icon_warrants@3x.png in Resources */,
 				A1A34BF81CE2DFB400AD454A /* tab_user@2x.png in Resources */,
@@ -3273,6 +3307,7 @@
 				A192B4BF1CDB46020053FC4C /* list_more@2x.png in Resources */,
 				A17B801B1D221C500071405F /* btn_close@2x.png in Resources */,
 				A16E47C81D1A8EB200870B8A /* img_litigation@3x.png in Resources */,
+				A18FC0711D34C3AD00B1FCD4 /* banner_account_bitmap@3x.png in Resources */,
 				A199853F1CE07CFD0055A572 /* tab_recommend@3x.png in Resources */,
 				A16E47C71D1A8EB200870B8A /* img_litigation@2x.png in Resources */,
 				A16486B81D001D9400B442C1 /* phone@3x.png in Resources */,
@@ -3332,6 +3367,7 @@
 				A13EA57B1D2A3D67001B83A7 /* tips@2x.png in Resources */,
 				A19985261CE071D40055A572 /* conserve_risk_icon@2x.png in Resources */,
 				A18DC9FC1D2514F60021B0BF /* 1334.png in Resources */,
+				A18FC0671D33949F00B1FCD4 /* button@3x.png in Resources */,
 				A1FB26661CF2E51500B66608 /* select_oepn_s@3x.png in Resources */,
 				A1A97E2F1CDC5C3A00EDE320 /* list_icon_company@3x.png in Resources */,
 				A1A97E1F1CDC3F8000EDE320 /* nav_tip@3x.png in Resources */,
@@ -3346,6 +3382,7 @@
 				A1718DEC1CFD6C3E0007DA6F /* list_icon_apply@3x.png in Resources */,
 				A1A97E1A1CDC388E00EDE320 /* information_nav_remind@2x.png in Resources */,
 				A1A34C281CE319C000AD454A /* bond_icon_receipt@3x.png in Resources */,
+				A18FC0681D33949F00B1FCD4 /* image@2x.png in Resources */,
 				A1770E1D1CFE8672003579E1 /* tip_image@3x.png in Resources */,
 				A154B8EF1CE1B71D00884CA4 /* add@2x.png in Resources */,
 				A1A34C261CE319C000AD454A /* bond_icon_contract@3x.png in Resources */,
@@ -3448,6 +3485,7 @@
 				A18C675C1CD06C2E00C7B070 /* UIButton+Block.m in Sources */,
 				A17964E51CD3436700B6AD47 /* AuthenCell.m in Sources */,
 				A16856761CE951EB006A0887 /* ApplyRecordsCell.m in Sources */,
+				A18FC05D1D33937E00B1FCD4 /* IntroduceViewController.m in Sources */,
 				A16FF59D1D05813900C50A0B /* NewProductModel.m in Sources */,
 				A19B8E4D1CCF531900F8EBF2 /* MessageViewController.m in Sources */,
 				A1718DDD1CFD3FA00007DA6F /* ReleaseEndViewController.m in Sources */,

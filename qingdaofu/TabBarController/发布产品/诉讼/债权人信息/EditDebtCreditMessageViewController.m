@@ -13,7 +13,6 @@
 #import "TakePictureCell.h"
 #import "UIViewController+MutipleImageChoice.h"
 
-
 @interface EditDebtCreditMessageViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
@@ -202,7 +201,7 @@
     QDFWeakSelf;
     QDFWeak(cell);
     [cell setDidSelectedItem:^(NSInteger tag) {
-        [weakself addImageWithMaxSelection:5 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
+        [weakself addImageWithMaxSelection:2 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
             NSData *tData;
             NSString *ttt = @"";
             NSString *tStr = @"";
@@ -212,7 +211,6 @@
                 tStr = [NSString stringWithFormat:@"%@:%@",tStr,ttt];
             }
             if ([weakself.categoryString integerValue] == 1) {//债权人信息
-                
                 [self.editDictionary setValue:tStr forKey:@"creditorcardimages"];
                 [self.editDictionary setValue:images forKey:@"creditorcardimage"];
 

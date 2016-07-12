@@ -17,8 +17,8 @@
 @property (nonatomic,strong) UILabel *evaTimeLabel;  //评价时间
 @property (nonatomic,strong) LEOStarView *evaStarImage;  //星级
 @property (nonatomic,strong) UILabel *evaTextLabel;  //内容
-@property (nonatomic,strong) UIImageView *evaProImageView1; //图片
-@property (nonatomic,strong) UIImageView *evaProImageView2; //图片
+@property (nonatomic,strong) UIButton *evaProImageView1; //图片
+@property (nonatomic,strong) UIButton *evaProImageView2; //图片
 
 @property (nonatomic,strong) UIButton *evaProductButton;
 @property (nonatomic,strong) UIButton *evaInnnerButton;

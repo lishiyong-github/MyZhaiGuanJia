@@ -159,7 +159,7 @@
                              @"limit" : @"10"
                              };
     [self requestDataPostWithString:mySaveString params:params successBlock:^(id responseObject){
-        if ([page integerValue] == 0) {
+        if ([page integerValue] == 1) {
             [self.mySaveDataList removeAllObjects];
         }
         
@@ -188,7 +188,8 @@
 
 - (void)refreshHeaderOfMySave
 {
-    [self getMySaveListWithPage:@"0"];
+    _pageSave = 1;
+    [self getMySaveListWithPage:@"1"];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.mySavetableView headerEndRefreshing];
     });

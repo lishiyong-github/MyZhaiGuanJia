@@ -11,7 +11,7 @@
 #import "UIImage+Color.h"
 
 
-@interface BaseViewController ()<UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+@interface BaseViewController ()<UINavigationControllerDelegate, UIImagePickerControllerDelegate,UIGestureRecognizerDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 
@@ -37,6 +37,9 @@
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:[UIColor whiteColor]] forBarMetrics:UIBarMetricsDefault];
         
     self.automaticallyAdjustsScrollViewInsets = NO;
+    
+    //右滑返回
+    self.navigationController.interactivePopGestureRecognizer.delegate = self;
 }
 
 - (void)viewDidAppear:(BOOL)animated

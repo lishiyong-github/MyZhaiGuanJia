@@ -254,7 +254,12 @@
         }
         
         cell.pointView.label1.text = rowModel.agencycommission;
-        cell.pointView.label2.text = @"代理费用(万元)";
+        if ([rowModel.agencycommissiontype isEqualToString:@"1"]) {
+            cell.pointView.label2.text = @"提成比例(%)";
+        }else{
+            cell.pointView.label2.text = @"固定费用(万)";
+        }
+
         if ([rowModel.loan_type isEqualToString:@"1"]) {
             cell.rateView.label1.text = @"房产抵押";
             cell.addressLabel.text = [NSString stringWithFormat:@"%@%@",rowModel.seatmortgage,rowModel.mortorage_community];
@@ -430,7 +435,8 @@
                              };
     
     [self requestDataPostWithString:myOrderString params:params successBlock:^(id responseObject) {
-        if ([page intValue] == 0) {
+        
+        if ([page intValue] == 1) {
             [self.myOrderDataList removeAllObjects];
             [self.myOrderResonseDic removeAllObjects];
         }
@@ -463,7 +469,8 @@
 
 - (void)refreshsHeaderOfMyOrder
 {
-    [self getOrderListWithPage:@"0"];
+    _pageOrder = 1;
+    [self getOrderListWithPage:@"1"];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.myOrderTableView headerEndRefreshing];
     });

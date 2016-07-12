@@ -7,13 +7,14 @@
 //
 
 #import "NetworkViewController.h"
-#import "PublishingResponse.h"
+#import "DebtModel.h"
 
 @interface UploadFilesViewController : NetworkViewController
 
 @property (nonatomic,strong) NSString *fileTypeString;  //判断image是本地还是返回的数据
-@property (nonatomic,strong) PublishingResponse *filesResponse;
+//@property (nonatomic,strong) DebtModel *filesDebtModel;
 
+@property (nonatomic,strong) NSMutableDictionary *filesDic;
 @property (nonatomic,strong) void (^chooseImages)(NSDictionary *);
 
 @end

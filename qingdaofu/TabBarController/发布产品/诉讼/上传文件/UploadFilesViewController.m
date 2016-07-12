@@ -107,23 +107,49 @@
     
     UploadViewController *uploadVC = [[UploadViewController alloc] init];
     uploadVC.typeUpInt = indexPath.row;
-    uploadVC.filesModel = self.filesResponse.creditorfiles;
+    uploadVC.filesModel = [[DebtModel alloc] init];
+    
+    if (indexPath.row == 0) {//公证书
+        uploadVC.filesModel.imgnotarization = [self.imagesDictionaty[@"imgnotarization"] count]?self.imagesDictionaty[@"imgnotarization"]:self.filesDic[@"imgnotarization"];
+        uploadVC.typeString = @"公证书";
+    }else if (indexPath.row == 1){
+        uploadVC.filesModel.imgcontract = [self.imagesDictionaty[@"imgcontract"] count]?self.imagesDictionaty[@"imgcontract"]:self.filesDic[@"imgcontract"];
+        uploadVC.typeString = @"借款合同";
+    }else if (indexPath.row == 2){
+        uploadVC.filesModel.imgcreditor = [self.imagesDictionaty[@"imgcreditor"] count]?self.imagesDictionaty[@"imgcreditor"]:self.filesDic[@"imgcreditor"];
+        uploadVC.typeString = @"他项权证";
+    }else if (indexPath.row == 3){
+        uploadVC.filesModel.imgpick = [self.imagesDictionaty[@"imgpick"] count]?self.imagesDictionaty[@"imgpick"]:self.filesDic[@"imgpick"];
+        uploadVC.typeString = @"收款凭证";
+    }else if (indexPath.row == 4){
+        uploadVC.filesModel.imgbenjin = [self.imagesDictionaty[@"imgbenjin"] count]?self.imagesDictionaty[@"imgbenjin"]:self.filesDic[@"imgbenjin"];
+        uploadVC.typeString = @"收据";
+    }else if (indexPath.row == 5){
+        uploadVC.filesModel.imgshouju = [self.imagesDictionaty[@"imgshouju"] count]?self.imagesDictionaty[@"imgshouju"]:self.filesDic[@"imgshouju"];
+        uploadVC.typeString = @"还款凭证";
+    }
     [self.navigationController pushViewController:uploadVC animated:YES];
 
     QDFWeakSelf;
-    [uploadVC setUploadImages:^(NSArray *imageArr) {
+    [uploadVC setUploadImages:^(NSArray *imageArr,NSString *imageString,DebtModel *imageModel) {
         if (indexPath.row == 0) {//公证书
-            [weakself.imagesDictionaty setValue:imageArr forKey:@"imgnotarizations"];
+            [weakself.imagesDictionaty setValue:imageModel.imgnotarization forKey:@"imgnotarization"];
+            [weakself.imagesDictionaty setValue:imageModel.imgnotarizations forKey:@"imgnotarizations"];
         }else if (indexPath.row == 1){//借款合同
-            [weakself.imagesDictionaty setValue:imageArr forKey:@"imgcontracts"];
+            [weakself.imagesDictionaty setValue:imageModel.imgcontract forKey:@"imgcontract"];
+            [weakself.imagesDictionaty setValue:imageModel.imgcontracts forKey:@"imgcontracts"];
         }else if (indexPath.row == 2){//他项权证
-            [weakself.imagesDictionaty setValue:imageArr forKey:@"imgcreditors"];
+            [weakself.imagesDictionaty setValue:imageModel.imgcreditor forKey:@"imgcreditor"];
+            [weakself.imagesDictionaty setValue:imageModel.imgcreditors forKey:@"imgcreditors"];
         }else if (indexPath.row == 3){//收款凭证
-            [weakself.imagesDictionaty setValue:imageArr forKey:@"imgpicks"];
+            [weakself.imagesDictionaty setValue:imageModel.imgpick forKey:@"imgpick"];
+            [weakself.imagesDictionaty setValue:imageModel.imgpicks forKey:@"imgpicks"];
         }else if (indexPath.row == 4){//收据
-            [weakself.imagesDictionaty setValue:imageArr forKey:@"imgshoujus"];
+            [weakself.imagesDictionaty setValue:imageModel.imgbenjin forKey:@"imgbenjin"];
+            [weakself.imagesDictionaty setValue:imageModel.imgbenjins forKey:@"imgbenjins"];
         }else if (indexPath.row == 5){//还款凭证
-            [weakself.imagesDictionaty setValue:imageArr forKey:@"imgbenjins"];
+            [weakself.imagesDictionaty setValue:imageModel.imgshouju forKey:@"imgshouju"];
+            [weakself.imagesDictionaty setValue:imageModel.imgshoujus forKey:@"imgshoujus"];
         }
     }];
 }

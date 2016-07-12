@@ -18,12 +18,12 @@
 #import "HomeCell.h"
 #import "FourCell.h"
 
-
 #import "NewProductModel.h"
 #import "NewProductListModel.h"
 
 #import "UIImage+Color.h"
 #import "UIViewController+BlurView.h"
+#import "UIButton+WebCache.h"
 
 @interface NewProductViewController ()<UITableViewDataSource,UITableViewDelegate,UIScrollViewDelegate>
 
@@ -34,8 +34,11 @@
 @property (nonatomic,strong) UIScrollView *mainHeaderScrollView;
 @property (nonatomic,strong) UIPageControl *pageControl;
 
+//json解析
 @property (nonatomic,strong) NSMutableArray *productsDataListArray;
-@property (nonatomic,assign) NSInteger newPage;
+@property (nonatomic,strong) NSMutableArray *propagandaDataArray;
+@property (nonatomic,strong) NSMutableDictionary *propagandaDic;
+@property (nonatomic,strong) NSString *trackViewUrl;
 @end
 
 @implementation NewProductViewController
@@ -55,6 +58,12 @@
     
     [self.view addSubview:self.mainTableView];
     [self.view setNeedsUpdateConstraints];
+    
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self chechAppNewVersion];
+        [self getPropagandaChar];
+    });
 }
 
 - (UIButton *)titleView
@@ -82,13 +91,11 @@
 {
     if (!_mainTableView) {
         _mainTableView.translatesAutoresizingMaskIntoConstraints = NO;
-        _mainTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
+        _mainTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _mainTableView.backgroundColor = kBackColor;
         _mainTableView.delegate = self;
         _mainTableView.dataSource = self;
         _mainTableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 110)];
-        [_mainTableView.tableHeaderView addSubview:self.mainHeaderScrollView];
-        [_mainTableView addSubview:self.pageControl];
         _mainTableView.separatorColor = kSeparateColor;
     }
     return _mainTableView;
@@ -99,22 +106,28 @@
     if (!_mainHeaderScrollView) {
         _mainHeaderScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 100)];
         _mainHeaderScrollView.backgroundColor = kBackColor;
-        _mainHeaderScrollView.contentSize = CGSizeMake(kScreenWidth*2, 100);
+        _mainHeaderScrollView.contentSize = CGSizeMake(kScreenWidth*self.propagandaDic.allKeys.count/2, 100);
         _mainHeaderScrollView.pagingEnabled = YES;//分页
         _mainHeaderScrollView.delegate = self;
         _mainHeaderScrollView.scrollEnabled = YES;
         _mainHeaderScrollView.showsHorizontalScrollIndicator = NO;
         
-        NSArray *colorArray = @[[UIImage imageNamed:@"banner2"],[UIImage imageNamed:@"banner1"]];
-        for (NSInteger t=0; t<colorArray.count; t++) {
+        for (NSInteger t=0; t<self.propagandaDic.allKeys.count/2; t++) {
+            
+            NSString *tyString = [NSString stringWithFormat:@"banner%dios",t+1];
+            NSString *urlString = [NSString stringWithFormat:@"http://%@",self.propagandaDic[tyString]];
+            NSURL *tyURL = [NSURL URLWithString:urlString];
+            
             UIButton *imageButton = [[UIButton alloc] initWithFrame:CGRectMake(kScreenWidth*t, 0, kScreenWidth, 100)];
-            [imageButton setImage:colorArray[t] forState:0];
+            [imageButton sd_setBackgroundImageWithURL:tyURL forState:0 placeholderImage:[UIImage imageNamed:@"banner_account_bitmap"]];
             [_mainHeaderScrollView addSubview:imageButton];
             
             QDFWeakSelf;
             [imageButton addAction:^(UIButton *btn) {
                 MarkingViewController *markingVC = [[MarkingViewController alloc] init];
                 markingVC.hidesBottomBarWhenPushed = YES;
+                NSString *wewe = [NSString stringWithFormat:@"banner%d",t+1];
+                markingVC.markString = weakself.propagandaDic[wewe];
                 [weakself.navigationController pushViewController:markingVC animated:YES];
             }];
         }
@@ -125,8 +138,8 @@
 - (UIPageControl *)pageControl
 {
     if (!_pageControl) {
-        _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(-kScreenWidth/2, 80, kScreenWidth, 10)];
-        _pageControl.numberOfPages = 2;
+        _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, 80, kScreenWidth, 10)];
+        _pageControl.numberOfPages = self.propagandaDic.allKeys.count/2;
         _pageControl.currentPage = 0;
         _pageControl.pageIndicatorTintColor = UIColorFromRGB1(0xffffff, 0.5);
         _pageControl.currentPageIndicatorTintColor = kBlueColor;
@@ -143,10 +156,26 @@
     return _productsDataListArray;
 }
 
+- (NSMutableArray *)propagandaDataArray
+{
+    if (!_propagandaDataArray) {
+        _propagandaDataArray = [NSMutableArray array];
+    }
+    return _propagandaDataArray;
+}
+
+- (NSMutableDictionary *)propagandaDic
+{
+    if (!_propagandaDic) {
+        _propagandaDic = [NSMutableDictionary dictionary];
+    }
+    return _propagandaDic;
+}
+
 #pragma mark - tableView delelagte and datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2+self.productsDataListArray.count;
+    return 1+self.productsDataListArray.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -158,9 +187,10 @@
 {
     if (indexPath.section == 0) {
         return 110;
-    }else if (indexPath.section == 1){
-        return 160;
     }
+//    else if (indexPath.section == 1){
+//        return 160;
+//    }
     return 156;
 }
 
@@ -216,39 +246,40 @@
         }];
         
         return cell;
-    }else if (indexPath.section == 1){
-        identifier = @"main1";
-        FourCell *cell = [tableView dequeueReusableCellWithIdentifier: identifier];
-        if (!cell) {
-            cell = [[FourCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        [cell setDidClickButton:^(NSInteger tag) {
-            switch (tag) {
-                case 11:{//房产评估
-                    NSLog(@"房产评估");
-                }
-                    break;
-                case 22:{//房屋产调
-                    NSLog(@"房屋产调");
-                }
-                    break;
-                case 33:{//诉讼保全
-                    NSLog(@"诉讼保全");
-                }
-                    break;
-                case 44:{//申请保函
-                    NSLog(@"申请保函");
-                }
-                    break;
-                default:
-                    break;
-            }
-        }];
-        
-        return cell;
     }
+//    else if (indexPath.section == 1){
+//        identifier = @"main1";
+//        FourCell *cell = [tableView dequeueReusableCellWithIdentifier: identifier];
+//        if (!cell) {
+//            cell = [[FourCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+//        }
+//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//        
+//        [cell setDidClickButton:^(NSInteger tag) {
+//            switch (tag) {
+//                case 11:{//房产评估
+//                    NSLog(@"房产评估");
+//                }
+//                    break;
+//                case 22:{//房屋产调
+//                    NSLog(@"房屋产调");
+//                }
+//                    break;
+//                case 33:{//诉讼保全
+//                    NSLog(@"诉讼保全");
+//                }
+//                    break;
+//                case 44:{//申请保函
+//                    NSLog(@"申请保函");
+//                }
+//                    break;
+//                default:
+//                    break;
+//            }
+//        }];
+//        
+//        return cell;
+//    }
     
     identifier = @"main2";
     HomeCell *cell = [tableView dequeueReusableCellWithIdentifier: identifier];
@@ -257,7 +288,7 @@
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    NewProductListModel *newModel = self.productsDataListArray[indexPath.section-2];
+    NewProductListModel *newModel = self.productsDataListArray[indexPath.section-1];
     
     cell.moneyView.label1.text = newModel.money;
     cell.moneyView.label2.text = @"借款本金(万元)";
@@ -277,7 +308,11 @@
         [cell.typeImageView setImage:[UIImage imageNamed:@"list_collection"]];
         
         cell.pointView.label1.text = newModel.agencycommission;
-        cell.pointView.label2.text = @"代理费用(%)";
+        if ([newModel.agencycommissiontype isEqualToString:@"1"]) {
+            cell.pointView.label2.text = @"提成比例(%)";
+        }else{
+            cell.pointView.label2.text = @"固定费用(万)";
+        }
         if ([newModel.loan_type isEqualToString:@"1"]) {
             cell.rateView.label1.text = @"房产抵押";
             cell.addressLabel.text = newModel.location;
@@ -343,7 +378,7 @@
             if ([model.code isEqualToString:@"0000"]) {//正常
                 ProductsDetailsViewController *productsDetailVC = [[ProductsDetailsViewController alloc] init];
                 productsDetailVC.hidesBottomBarWhenPushed = YES;
-                NewProductListModel *sModel = weakself.productsDataListArray[indexPath.section - 2];
+                NewProductListModel *sModel = weakself.productsDataListArray[indexPath.section - 1];
                 productsDetailVC.idString = sModel.idString;
                 productsDetailVC.categoryString = sModel.category;
                 [weakself.navigationController pushViewController:productsDetailVC animated:YES];
@@ -358,7 +393,6 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     self.pageControl.currentPage = scrollView.contentOffset.x/kScreenWidth;
-    NSLog(@"currentPage is %d",self.pageControl.currentPage);
 }
 
 - (void)pageTurn:(UIPageControl *)page
@@ -395,25 +429,68 @@
     NSDictionary *params = @{@"limit" : @"6"};
     
     [self requestDataPostWithString:recommendString params:params successBlock:^(id responseObject) {
-        
         [self.productsDataListArray removeAllObjects];
-        
         NewProductModel *model = [NewProductModel objectWithKeyValues:responseObject];
-        
-        if (model.result.count == 0) {
-            [self showHint:@"没有更多了"];
-            _newPage--;
-        }
-        
         for (NewProductListModel *listModel in model.result) {
             [self.productsDataListArray addObject:listModel];
         }
-        
         [self.mainTableView reloadData];
-
     } andFailBlock:^(NSError *error) {
         
     }];
+}
+
+//轮播图
+- (void)getPropagandaChar
+{
+    NSString *propagandaString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPropagandaString];
+    QDFWeakSelf;
+    [self requestDataPostWithString:propagandaString params:nil successBlock:^(id responseObject) {
+        NSDictionary *dedfr = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        weakself.propagandaDic = [NSMutableDictionary dictionaryWithDictionary:dedfr];
+        [weakself.mainTableView.tableHeaderView addSubview:self.mainHeaderScrollView];
+        [weakself.mainTableView addSubview:weakself.pageControl];
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
+#pragma mark - method
+-(void)chechAppNewVersion
+{
+    //最新版本
+    NSString *urlStr = [NSString stringWithFormat:@"http://itunes.apple.com/cn/lookup?id=%@",AppID];
+    NSURL *url = [NSURL URLWithString:urlStr];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    NSData *response = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+    NSDictionary *appInfoDic = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableContainers error:nil];
+    NSArray *resultArr = appInfoDic[@"results"];
+    if (![resultArr count]) {
+        return ;
+    }
+    
+    NSDictionary *infoDic1 = resultArr[0];
+    //需要version,trackViewUrl,trackName
+    NSString *latestVersion = infoDic1[@"version"];
+    _trackViewUrl = infoDic1[@"trackViewUrl"];
+    NSString *trackName = infoDic1[@"trackName"];
+    
+    //当前版本
+    NSDictionary *infoDic = [[NSBundle mainBundle] infoDictionary];
+    NSString *currentVersion = [infoDic objectForKey:@"CFBundleShortVersionString"];
+    
+    double doubleCurrentVersion = [currentVersion doubleValue];
+    double doubleLatestVersion = [latestVersion doubleValue];
+    
+    if (doubleCurrentVersion < doubleLatestVersion) {
+        NSString *titleStr = [NSString stringWithFormat:@"检查更新:%@",trackName];
+        NSString *messageStr = [NSString stringWithFormat:@"发现新版本(%@),是否升级?",latestVersion];
+        
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:titleStr message:messageStr delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"升级", nil];
+        alertView.delegate = self;
+        [alertView show];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

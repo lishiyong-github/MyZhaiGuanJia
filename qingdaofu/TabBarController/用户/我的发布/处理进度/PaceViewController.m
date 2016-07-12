@@ -175,7 +175,7 @@
                              @"page" : page
                              };
     [self requestDataPostWithString:paceString params:params successBlock:^(id responseObject) {
-        if ([page integerValue] == 0) {
+        if ([page integerValue] == 1) {
             [self.paceDataArray removeAllObjects];
         }
         
@@ -205,7 +205,8 @@
 
 - (void)headerRefreshOfPace
 {
-    [self getPaceMessagesListWithPage:@"0"];
+    _pagePace = 1;
+    [self getPaceMessagesListWithPage:@"1"];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.paceTableView headerEndRefreshing];
     });

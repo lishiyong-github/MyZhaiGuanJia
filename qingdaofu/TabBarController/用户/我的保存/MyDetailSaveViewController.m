@@ -186,7 +186,12 @@
                 string44 = saveModel.rebate;
             }else if ([saveModel.category intValue] == 2){//清收
                 string22 = @"清收";
-                string3 = @"  代理费用(万元)";
+//                string3 = @"  代理费用(万元)";
+                if ([saveModel.agencycommissiontype intValue] == 1) {
+                    string3 = @"  提成比例(%)";
+                }else if ([saveModel.agencycommissiontype intValue] == 2){
+                    string3 = @"  固定费用(万)";
+                }
                 imageString3 = @"conserve_fixed_icon";
                 string33 = saveModel.agencycommission;
                 string4 = @"  债权类型";
@@ -293,7 +298,7 @@
 #pragma mark - method
 - (void)getSaveDetailMessage
 {
-    NSString *sDetailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseDetailString];
+    NSString *sDetailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProdutsDetailString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"id" : self.idString,
                              @"category" : self.categaryString
@@ -342,6 +347,7 @@
             [nav popViewControllerAnimated:NO];
             
             MyReleaseViewController *myReleaseVC = [[MyReleaseViewController alloc] init];
+            myReleaseVC.hidesBottomBarWhenPushed = YES;
             myReleaseVC.progreStatus = @"1";
             [nav pushViewController:myReleaseVC animated:NO];
         }

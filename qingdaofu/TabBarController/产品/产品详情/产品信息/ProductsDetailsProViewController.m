@@ -124,34 +124,7 @@
             //抵押物地址
             [_leftTableView.leftDataArray1 addObjectsFromArray:@[@"借款金额",@"返点",@"借款利率",@"借款利率类型",@"抵押物地址",@"详细地址"]];
             [_leftTableView.leftDataArray2 addObjectsFromArray:@[moneyStr,rebateStr,rateStr,rateCatStr,leftModel.mortorage_community,leftModel.seatmortgage]];
-        }else if ([leftModel.category intValue] == 2){//清收
-            
-            NSString *loanTypeStr;//债权类型
-            if ([leftModel.loan_type intValue] == 1) {
-                loanTypeStr = @"房产抵押";
-            }else if ([leftModel.loan_type intValue] == 3){
-                loanTypeStr = @"机动车抵押";
-            }else if ([leftModel.loan_type intValue] == 2){
-                loanTypeStr = @"应收账款";
-            }else if ([leftModel.loan_type intValue] == 4){
-                loanTypeStr = @"无抵押";
-            }
-            
-            if ([leftModel.loan_type intValue] == 1) {//房产抵押
-                [_leftTableView.leftDataArray1 addObjectsFromArray:@[@"借款本金(万元)",@"代理费用(%)",@"债权类型",@"抵押物地址",@"详细地址"]];
-                [_leftTableView.leftDataArray2 addObjectsFromArray:@[leftModel.money,leftModel.agencycommission,loanTypeStr,leftModel.mortorage_community,leftModel.seatmortgage]];
-            }else if ([leftModel.loan_type intValue] == 3){//机动车抵押
-                [_leftTableView.leftDataArray1 addObjectsFromArray:@[@"借款本金(万元)",@"代理费用(%)",@"债权类型",@"机动车抵押",@"车牌类型"]];
-                [_leftTableView.leftDataArray2 addObjectsFromArray:@[leftModel.money,leftModel.agencycommission,loanTypeStr,self.yyModel.car,self.yyModel.license]];
-            }else if ([leftModel.loan_type intValue] == 2){//应收帐款
-                [_leftTableView.leftDataArray1 addObjectsFromArray:@[@"借款本金(万元)",@"代理费用(%)",@"债权类型",@"应收帐款(万元)"]];
-                [_leftTableView.leftDataArray2 addObjectsFromArray:@[leftModel.money,leftModel.agencycommission,loanTypeStr,leftModel.accountr]];
-            }else{
-                [_leftTableView.leftDataArray1 addObjectsFromArray:@[@"借款本金(万元)",@"代理费用(%)",@"债权类型"]];
-                [_leftTableView.leftDataArray2 addObjectsFromArray:@[leftModel.money,leftModel.agencycommission,loanTypeStr]];
-            }
-            
-        }else if ([leftModel.category intValue] == 3){//诉讼
+        }else{//清收,诉讼
             
             NSString *loan_typeStr;//债权类型
             if ([leftModel.loan_type intValue] == 1) {
@@ -164,29 +137,19 @@
                 loan_typeStr = @"无抵押";
             }
             
-            NSString *obligorStr;  //债务人主体
-            if ([leftModel.obligor intValue] == 1) {
-                obligorStr = @"自然人";
-            }else if ([leftModel.obligor intValue] == 2){
-                obligorStr = @"法人";
-            }else if ([leftModel.obligor intValue] == 3){
-                obligorStr = @"其他(未成年,外籍等)";
-            }
-            
-            NSString *commitmentStr;  //委托事项
-            if ([leftModel.commitment intValue] == 1) {
-                commitmentStr = @"代理诉讼";
-            }else if ([leftModel.commitment intValue] == 2){
-                commitmentStr = @"代理仲裁";
-            }else if ([leftModel.commitment intValue] == 3){
-                commitmentStr = @"代理执行";
-            }
-            
             NSString *agencycommissiontypeStr;  //代理费用类型
             if ([leftModel.agencycommissiontype intValue] == 1) {
-                agencycommissiontypeStr = @"固定费用(万)";
+                if ([leftModel.category integerValue] == 2) {
+                    agencycommissiontypeStr = @"提成比例(%)";
+                }else{
+                    agencycommissiontypeStr = @"固定费用(万)";
+                }
             }else if ([leftModel.agencycommissiontype intValue] ==2){
-                agencycommissiontypeStr = @"风险费率(%)";
+                if ([leftModel.category integerValue] == 2) {
+                    agencycommissiontypeStr = @"固定费用(万)";
+                }else{
+                    agencycommissiontypeStr = @"风险费率(%)";
+                }
             }
             
             if ([leftModel.loan_type intValue] == 1) {//房产抵押
@@ -287,8 +250,10 @@
             if (rightModel.repaymethod) {
                 if ([rightModel.repaymethod intValue] == 1) {
                     repaymethod = @"一次性到期还本付息";
-                }else{
+                }else if([rightModel.repaymethod intValue] == 2){
                     repaymethod = @"按月付息，到期还本";
+                }else{
+                    repaymethod = @"其他";
                 }
             }
             if (rightModel.obligor) {
@@ -331,6 +296,7 @@
             switch (row) {
                 case 11:{//债权文件
                     ProductsCheckFilesViewController *productsCheckFilesVC = [[ProductsCheckFilesViewController alloc] init];
+                    productsCheckFilesVC.fileResponse = weakself.yyModel;
                     [weakself.navigationController pushViewController:productsCheckFilesVC animated:YES];
                 }
                     break;

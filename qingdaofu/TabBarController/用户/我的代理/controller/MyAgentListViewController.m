@@ -43,6 +43,8 @@
     
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kBlueColor} forState:0];
 
+    _pageAgent = 1;
+    
     [self.view addSubview:self.myAgentListTableView];
     [self.view addSubview:self.baseRemindImageView];
     [self.baseRemindImageView setHidden:YES];
@@ -158,7 +160,7 @@
                              };
     [self requestDataPostWithString:agentListString params:params successBlock:^(id responseObject){
         
-        if ([page integerValue] == 0) {
+        if ([page integerValue] == 1) {
             [self.agentDataList removeAllObjects];
         }
         
@@ -190,8 +192,8 @@
 
 - (void)headerRefreshOfMyAgent
 {
-    _pageAgent = 0;
-    [self getMyagentListWithPage:@"0"];
+    _pageAgent = 1;
+    [self getMyagentListWithPage:@"1"];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.myAgentListTableView headerEndRefreshing];
     });

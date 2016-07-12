@@ -171,8 +171,10 @@
         if (messageModel.repaymethod) {
             if ([messageModel.repaymethod intValue] == 1) {
                 repaymethod = @"一次性到期还本付息";
-            }else{
+            }else if([messageModel.repaymethod intValue] == 2){
                 repaymethod = @"按月付息，到期还本";
+            }else{
+                repaymethod = @"其他";
             }
         }
         if (messageModel.obligor) {
@@ -230,7 +232,7 @@
     if (self.addMessageDataArray.count > 0) {
         response = self.addMessageDataArray[0];
     }
-//
+
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.row == 11) {//债权人件
         ProductsCheckFilesViewController *productsCheckFilesVC = [[ProductsCheckFilesViewController alloc] init];
@@ -255,21 +257,14 @@
 }
 
 #pragma mark - method
-- (void)saveMessage
-{
-    
-}
-
 - (void)getAdditionalMessages
 {
-    NSString *messageString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseDetailString];
+    NSString *messageString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProdutsDetailString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"id" : self.idString,
                              @"category" : self.categoryString
                              };
     [self requestDataPostWithString:messageString params:params successBlock:^(id responseObject){
-        
-//        NSDictionary *ftgyftgy = [NSJSONSerialization JSONObjectWithData:<#(nonnull NSData *)#> options:<#(NSJSONReadingOptions)#> error:<#(NSError * _Nullable __autoreleasing * _Nullable)#>];
         
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
         

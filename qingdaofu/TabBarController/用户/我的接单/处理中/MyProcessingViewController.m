@@ -36,7 +36,7 @@
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *myProcessingTableView;
-@property (nonatomic,strong) BaseCommitButton *processingCommitButton;
+@property (nonatomic,strong) BaseCommitButton *processinCommitButton;
 
 @property (nonatomic,strong) NSMutableArray *processArray;
 @property (nonatomic,strong) NSMutableArray *scheduleOrderProArray;
@@ -57,7 +57,7 @@
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kBlueColor} forState:0];
     
     [self.view addSubview:self.myProcessingTableView];
-    [self.view addSubview:self.processingCommitButton];
+    [self.view addSubview:self.processinCommitButton];
     [self.view setNeedsUpdateConstraints];
     
     [self getDetailMessageOfProcessing];
@@ -70,8 +70,8 @@
         [self.myProcessingTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
         [self.myProcessingTableView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kTabBarHeight];
         
-        [self.processingCommitButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [self.processingCommitButton autoSetDimension:ALDimensionHeight toSize:kTabBarHeight];
+        [self.processinCommitButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+        [self.processinCommitButton autoSetDimension:ALDimensionHeight toSize:kTabBarHeight];
         
         self.didSetupConstraints = YES;
     }
@@ -81,20 +81,19 @@
 - (UITableView *)myProcessingTableView
 {
     if (!_myProcessingTableView) {
-//        _myProcessingTableView = [UITableView newAutoLayoutView];
-        _myProcessingTableView.translatesAutoresizingMaskIntoConstraints = NO;
-        _myProcessingTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
+        _myProcessingTableView.translatesAutoresizingMaskIntoConstraints = YES;
+        _myProcessingTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _myProcessingTableView.delegate = self;
         _myProcessingTableView.dataSource = self;
     }
     return _myProcessingTableView;
 }
-- (BaseCommitButton *)processingCommitButton
+- (BaseCommitButton *)processinCommitButton
 {
-    if (!_processingCommitButton) {
-        _processingCommitButton = [BaseCommitButton newAutoLayoutView];
+    if (!_processinCommitButton) {
+        _processinCommitButton = [BaseCommitButton newAutoLayoutView];
     }
-    return _processingCommitButton;
+    return _processinCommitButton;
 }
 
 - (NSMutableArray *)processArray
@@ -225,7 +224,11 @@
                 string44 = processModel.rebate;
             }else if ([processModel.category intValue] == 2){//清收
                 string22 = @"清收";
-                string3 = @"  代理费用(万)";
+                if ([processModel.agencycommissiontype intValue] == 1) {
+                    string3 = @"  提成比例(%)";
+                }else if ([processModel.agencycommissiontype intValue] == 2){
+                    string3 = @"  固定费用(万)";
+                }
                 imageString3 = @"conserve_fixed_icon";
                 string33 = processModel.agencycommission;
                 string4 = @"  债权类型";
@@ -438,14 +441,7 @@
         delayModel = delayResponss.delay;
         puModel = delayResponss.product;
     }
-    
-    //
-//    if ([response.product.progress_status integerValue] == 2 && ![response.uidString isEqualToString:response.product.uidInner]) {
-//        if ([response.product.applyclose integerValue] == 0)
-    
-    
-    
-    
+        
     if (delayModel.is_agree == nil || [delayModel.is_agree isEqualToString:@""]) {
         if (![puModel.applyclose isEqualToString:@"4"]) {
             if ([delayModel.delays integerValue] <= 7) {
@@ -554,11 +550,13 @@
         [self.navigationController pushViewController:agreementVc animated:YES];
     }else if (indexPath.section == 3) {
         if (indexPath.row == 0) {//进度
-            PaceViewController *paceVC = [[PaceViewController alloc] init];
-            paceVC.idString = self.idString;
-            paceVC.categoryString = self.categaryString;
-            [self.navigationController pushViewController:paceVC animated:YES];
             
+            if (self.scheduleOrderProArray.count > 0) {
+                PaceViewController *paceVC = [[PaceViewController alloc] init];
+                paceVC.idString = self.idString;
+                paceVC.categoryString = self.categaryString;
+                [self.navigationController pushViewController:paceVC animated:YES];
+            }
         }else if (indexPath.row ==2){//填写进度
             MyScheduleViewController *myScheduleVC = [[MyScheduleViewController alloc] init];
             myScheduleVC.idString = self.idString;
@@ -601,16 +599,17 @@
         
         if ([response.product.progress_status integerValue] == 2 && ![response.uidString isEqualToString:response.product.uidInner]) {
             if ([response.product.applyclose integerValue] == 0) {
-                [self.processingCommitButton setTitle:@"申请结案" forState:0];
-                [self.processingCommitButton addTarget:self action:@selector(endProduct) forControlEvents:UIControlEventTouchUpInside];
+                [self.processinCommitButton setTitle:@"申请结案" forState:0];
+                [self.processinCommitButton addTarget:self action:@selector(endProduct) forControlEvents:UIControlEventTouchUpInside];
                 
             }else if ([response.product.applyclose integerValue] == 4 && [response.product.applyclosefrom isEqualToString:response.product.uidInner]){
-                [self.processingCommitButton setTitle:@"申请同意结案" forState:0];
-                [self.processingCommitButton addTarget:self action:@selector(endProduct) forControlEvents:UIControlEventTouchUpInside];
+                [self.processinCommitButton setTitle:@"申请同意结案" forState:0];
+                [self.processinCommitButton addTarget:self action:@selector(endProduct) forControlEvents:UIControlEventTouchUpInside];
             }else{
-                [self.processingCommitButton setTitle:@"结案申请中" forState:0];
-                [self.processingCommitButton setBackgroundColor:kSelectedColor];
-                self.processingCommitButton.userInteractionEnabled = NO;
+                [self.processinCommitButton setTitle:@"结案申请中" forState:0];
+                [self.processinCommitButton setBackgroundColor:kSelectedColor];
+                [self.processinCommitButton setTitleColor:kBlackColor forState:0];
+                self.processinCommitButton.userInteractionEnabled = NO;
             }
         }
         
@@ -627,7 +626,8 @@
     NSString *scheduleString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kLookUpScheduleString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"id" : self.idString,
-                             @"category" : self.categaryString
+                             @"category" : self.categaryString,
+                             @"page" : @"1"
                              };
     [self requestDataPostWithString:scheduleString params:params successBlock:^(id responseObject) {
         ScheduleResponse *scheduleResponse = [ScheduleResponse objectWithKeyValues:responseObject];
@@ -675,7 +675,7 @@
          [self showHint:sModel.msg];
         
         if ([sModel.code isEqualToString:@"0000"]) {//成功
-            [self.processingCommitButton setBackgroundColor:kSelectedColor];
+            [self.processinCommitButton setBackgroundColor:kSelectedColor];
             [self.navigationController popViewControllerAnimated:YES];
         }
         

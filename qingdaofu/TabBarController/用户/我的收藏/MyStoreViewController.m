@@ -159,7 +159,7 @@
                              };
     [self requestDataPostWithString:storeString params:params successBlock:^(id responseObject){
         
-        if ([page integerValue] == 0) {
+        if ([page integerValue] == 1) {
             [self.storeDataList removeAllObjects];
         }
         
@@ -189,8 +189,8 @@
 
 - (void)refreshHeaderOfMySave
 {
-    _pageStore = 0;
-    [self getMyStoreListWithPage:@"0"];
+    _pageStore = 1;
+    [self getMyStoreListWithPage:@"1"];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.myStoreTableView headerEndRefreshing];
     });

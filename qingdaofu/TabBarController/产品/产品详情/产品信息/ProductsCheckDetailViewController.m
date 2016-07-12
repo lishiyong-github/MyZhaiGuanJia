@@ -113,7 +113,7 @@
     }
     
     NSString *ID;
-    if ([self.categoryString  integerValue] == 1) {
+    if ([self.categoryString  integerValue] == 1) {//债权人
         ID = [NSString getValidStringFromString:deModel.creditorcardcode];
     }else{
         ID = [NSString getValidStringFromString:deModel.borrowingcardcode];
@@ -121,9 +121,37 @@
     NSMutableAttributedString *IDStr = [cell.debtIDLabel setAttributeString:@"证件号        " withColor:kBlackColor andSecond:ID withColor:kLightGrayColor withFont:12];
     [cell.debtIDLabel setAttributedText:IDStr];
     
-    
-    [cell.debtImageView1 sd_setImageWithURL:nil placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
-    [cell.debtImageView2 sd_setImageWithURL:nil placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+    if (deModel.creditorcardimage.count < 2) {
+        [cell.debtImageView1 setHidden:NO];
+        [cell.debtImageView2 setHidden:YES];
+        
+        NSString *subImgw;
+        if (deModel.creditorcardimage.count == 1) {
+            NSString *imgw = deModel.creditorcardimage[0];
+            subImgw = [imgw substringWithRange:NSMakeRange(1, imgw.length-2)];
+        }else{
+            subImgw = @"";
+        }
+        
+        NSString *urlImgw = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subImgw];
+        NSURL *Url = [NSURL URLWithString:urlImgw];
+        [cell.debtImageView1 sd_setImageWithURL:Url placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+    }else if(deModel.creditorcardimage.count == 2){
+        [cell.debtImageView1 setHidden:NO];
+        [cell.debtImageView2 setHidden:NO];
+        
+        NSString *imgw1 = deModel.creditorcardimage[0];
+        NSString *subImgw1 = [imgw1 substringWithRange:NSMakeRange(1, imgw1.length-2)];
+        NSString *urlImgw1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subImgw1];
+        NSURL *Url1 = [NSURL URLWithString:urlImgw1];
+        [cell.debtImageView1 sd_setImageWithURL:Url1 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+        
+        NSString *imgw2 = deModel.creditorcardimage[0];
+        NSString *subImgw2 = [imgw2 substringWithRange:NSMakeRange(1, imgw2.length-2)];
+        NSString *urlImgw2 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subImgw2];
+        NSURL *Url2 = [NSURL URLWithString:urlImgw2];
+        [cell.debtImageView1 sd_setImageWithURL:Url2 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+    }
     
     return cell;
 }

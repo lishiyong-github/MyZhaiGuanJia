@@ -8,7 +8,6 @@
 
 #import "TakePictureCell.h"
 #import "UIImageView+WebCache.h"
-#import "CollectionViewCell.h"
 
 @interface TakePictureCell ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
 
@@ -89,18 +88,14 @@
         cell = [[UICollectionViewCell alloc] init];
     }
     
-    if ( [self.collectionDataList[indexPath.item] isKindOfClass:[NSURL class]]) {
+    if ([self.collectionDataList[indexPath.item] isKindOfClass:[NSURL class]]) {
         //account_bitmap
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
        [imageView sd_setImageWithURL:self.collectionDataList[indexPath.item] placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
         cell.contentView.backgroundColor = [UIColor colorWithPatternImage:imageView.image];
-    }else{
-        
-        
-//        NSString *imageStr = self.collectionDataList[indexPath.item];
-        
-//        NSString *subStr = [imageStr substringWithRange:NSMakeRange(1, imageStr.length-2)];
-        
+    }else if([self.collectionDataList[indexPath.item] isKindOfClass:[UIImage class]]){
+        cell.contentView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:self.collectionDataList[indexPath.item]]];
+    }else if ([self.collectionDataList[indexPath.item] isKindOfClass:[NSString class]]){//从相册选取
         cell.contentView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:self.collectionDataList[indexPath.item]]];
     }
     
