@@ -317,7 +317,7 @@
         bModel.borrowingcardimage = self.editDictionary[@"borrowingcardimage"];
         bModel.borrowingcardimages = self.editDictionary[@"borrowingcardimages"];
 
-        if ((!bModel.borrowingname || [bModel.borrowingname isEqualToString:@""]) && (!bModel.borrowingmobile || [bModel.borrowingmobile isEqualToString:@""]) && (!bModel.borrowingaddress || [bModel.borrowingaddress isEqualToString:@""]) && (!bModel.borrowingcardcode || [bModel.borrowingcardcode isEqualToString:@""])){
+        if ((!bModel.borrowingname || [bModel.borrowingname isEqualToString:@""]) || (!bModel.borrowingmobile || [bModel.borrowingmobile isEqualToString:@""]) || (!bModel.borrowingaddress || [bModel.borrowingaddress isEqualToString:@""]) || (!bModel.borrowingcardcode || [bModel.borrowingcardcode isEqualToString:@""])){
             [self showHint:@"信息填写不完整，请检查"];
         }else{
             if (self.didSaveMessage) {

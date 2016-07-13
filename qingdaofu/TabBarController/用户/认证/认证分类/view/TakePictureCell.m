@@ -8,6 +8,7 @@
 
 #import "TakePictureCell.h"
 #import "UIImageView+WebCache.h"
+#import "CollectionViewCell.h"
 
 @interface TakePictureCell ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
 
@@ -47,7 +48,7 @@
         _pictureCollection.translatesAutoresizingMaskIntoConstraints = NO;
         _pictureCollection.delegate = self;
         _pictureCollection.dataSource = self;
-        [_pictureCollection registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"UICollectionViewCell"];
+        [_pictureCollection registerClass:[CollectionViewCell class] forCellWithReuseIdentifier:@"CollectionViewCell"];
         [_pictureCollection registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"picture"];
         [_pictureCollection setBackgroundColor:[UIColor whiteColor]];
     }
@@ -81,23 +82,26 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *identifier = @"UICollectionViewCell";
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
+    static NSString *identifier = @"CollectionViewCell";
+    CollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     
     if (!cell) {
-        cell = [[UICollectionViewCell alloc] init];
+        cell = [[CollectionViewCell alloc] init];
     }
     
     if ([self.collectionDataList[indexPath.item] isKindOfClass:[NSURL class]]) {
         //account_bitmap
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
-       [imageView sd_setImageWithURL:self.collectionDataList[indexPath.item] placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
-        cell.contentView.backgroundColor = [UIColor colorWithPatternImage:imageView.image];
-        
+        [cell.cellImageView sd_setImageWithURL:self.collectionDataList[indexPath.item] placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
     }else if([self.collectionDataList[indexPath.item] isKindOfClass:[UIImage class]]){
-        cell.contentView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:self.collectionDataList[indexPath.item]]];
+        cell.cellImageView.image = self.collectionDataList[indexPath.item];
+
     }else if ([self.collectionDataList[indexPath.item] isKindOfClass:[NSString class]]){
-        cell.contentView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:self.collectionDataList[indexPath.item]]];
+        NSString *file = self.collectionDataList[indexPath.item];
+        if ([file containsString:@"/"]) {
+            cell.cellImageView.image = [UIImage imageWithContentsOfFile:file];
+        }else{
+            cell.cellImageView.image = [UIImage imageNamed:file];
+        }
     }
     
     return cell;

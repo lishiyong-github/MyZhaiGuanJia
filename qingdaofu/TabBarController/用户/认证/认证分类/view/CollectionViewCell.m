@@ -25,12 +25,8 @@
 {
     if (!self.didSetupConstraints) {
         
-//        [self.cellImageView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
-        
-        [self.cellImageView autoPinEdgeToSuperviewEdge:ALEdgeTop];
-        [self.cellImageView autoPinEdgeToSuperviewEdge:ALEdgeLeft];
-        [self.cellImageView autoSetDimensionsToSize:CGSizeMake(50, 50)];
-        
+        [self.cellImageView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+                
         self.didSetupConstraints = YES;
     }
     [super updateConstraints];
