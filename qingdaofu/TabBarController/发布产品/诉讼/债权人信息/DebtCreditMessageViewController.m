@@ -172,9 +172,12 @@
     //联系地址
     cell.debtAddressLabel.text = @"联系地址";
     if ([self.categoryString integerValue] == 1) {
-        cell.debtAddressLabel1.text = [NSString getValidStringFromString:deModel.creditoraddress];
+        
+        NSString *rere = [NSString getValidStringFromString:deModel.creditoraddress];
+        cell.debtAddressLabel.text = [NSString stringWithFormat:@"联系地址    %@",rere];
     }else{
-        cell.debtAddressLabel1.text = [NSString getValidStringFromString:deModel.borrowingaddress];
+        NSString *rere = [NSString getValidStringFromString:deModel.borrowingaddress];
+        cell.debtAddressLabel.text = [NSString stringWithFormat:@"联系地址    %@",rere];
     }
 
     //证件号
@@ -198,11 +201,11 @@
     QDFWeakSelf;
     if ([self.tagString integerValue] == 1) {//首次添加
         if (imgs.count == 1) {
-            [cell.debtImageView1 setImage:[UIImage imageNamed:imgs[0]] forState:0];
+            [cell.debtImageView1 setImage:[UIImage imageWithContentsOfFile:imgs[0]] forState:0];
             [cell.debtImageView2 setImage:[UIImage imageNamed:@"account_bitmap"] forState:0];
         }else if(imgs.count == 2){
-            [cell.debtImageView1 setImage:[UIImage imageNamed:imgs[0]] forState:0];
-            [cell.debtImageView2 setImage:[UIImage imageNamed:imgs[1]] forState:0];
+            [cell.debtImageView1 setImage:[UIImage imageWithContentsOfFile:imgs[0]] forState:0];
+            [cell.debtImageView2 setImage:[UIImage imageWithContentsOfFile:imgs[1]] forState:0];
         }else{
             [cell.debtImageView1 setImage:[UIImage imageNamed:@"account_bitmap"] forState:0];
             [cell.debtImageView2 setImage:[UIImage imageNamed:@"account_bitmap"] forState:0];

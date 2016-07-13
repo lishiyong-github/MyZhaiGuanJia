@@ -935,6 +935,7 @@
             DebtCreditMessageViewController *debtCreditMessageVC = [[DebtCreditMessageViewController alloc] init];
             debtCreditMessageVC.categoryString = @"2";
             debtCreditMessageVC.debtArray = self.borrowinginfos;
+            debtCreditMessageVC.tagString = self.tagString;
             [self.navigationController pushViewController:debtCreditMessageVC animated:YES];
 
             [debtCreditMessageVC setDidEndEditting:^(NSArray *arrays) {

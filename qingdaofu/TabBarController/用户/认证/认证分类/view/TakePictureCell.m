@@ -91,7 +91,12 @@
     
     if ([self.collectionDataList[indexPath.item] isKindOfClass:[NSURL class]]) {
         //account_bitmap
-        [cell.cellImageView sd_setImageWithURL:self.collectionDataList[indexPath.item] placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+        NSURL *url = self.collectionDataList[indexPath.item];
+        if (url.fileURL) {
+            cell.cellImageView.image = [UIImage imageWithContentsOfFile:url.path];
+        }else{
+            [cell.cellImageView sd_setImageWithURL:self.collectionDataList[indexPath.item] placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+        }
     }else if([self.collectionDataList[indexPath.item] isKindOfClass:[UIImage class]]){
         cell.cellImageView.image = self.collectionDataList[indexPath.item];
 

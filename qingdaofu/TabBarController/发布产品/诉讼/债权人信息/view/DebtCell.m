@@ -18,7 +18,7 @@
         [self.contentView addSubview:self.debtEditButton];
         [self.contentView addSubview:self.debtTelLabel];
         [self.contentView addSubview:self.debtAddressLabel];
-        [self.contentView addSubview:self.debtAddressLabel1];
+//        [self.contentView addSubview:self.debtAddressLabel1];
         [self.contentView addSubview:self.debtIDLabel];
         [self.contentView addSubview:self.debtImageView1];
         [self.contentView addSubview:self.debtImageView2];
@@ -44,9 +44,9 @@
         [self.debtAddressLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.debtTelLabel withOffset:kSmallPadding];
         [self.debtAddressLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
         
-        [self.debtAddressLabel1 autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.debtAddressLabel];
-        [self.debtAddressLabel1 autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:90];
-        [self.debtAddressLabel1 autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
+//        [self.debtAddressLabel1 autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.debtAddressLabel];
+//        [self.debtAddressLabel1 autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:95];
+//        [self.debtAddressLabel1 autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         
         [self.debtIDLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
         [self.debtIDLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.debtAddressLabel withOffset:kSmallPadding];
@@ -105,17 +105,17 @@
     }
     return _debtAddressLabel;
 }
-
-- (UILabel *)debtAddressLabel1
-{
-    if (!_debtAddressLabel1) {
-        _debtAddressLabel1 = [UILabel newAutoLayoutView];
-        _debtAddressLabel1.font = kSecondFont;
-        _debtAddressLabel1.textColor = kLightGrayColor;
-//        _debtAddressLabel1.numberOfLines = 0;
-    }
-    return _debtAddressLabel1;
-}
+//
+//- (UILabel *)debtAddressLabel1
+//{
+//    if (!_debtAddressLabel1) {
+//        _debtAddressLabel1 = [UILabel newAutoLayoutView];
+//        _debtAddressLabel1.font = kSecondFont;
+//        _debtAddressLabel1.textColor = kLightGrayColor;
+////        _debtAddressLabel1.numberOfLines = 0;
+//    }
+//    return _debtAddressLabel1;
+//}
 
 - (UILabel *)debtIDLabel
 {

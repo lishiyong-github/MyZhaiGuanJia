@@ -108,9 +108,12 @@
     
     cell.debtAddressLabel.text = @"联系地址";
     if ([self.categoryString integerValue] == 1) {
-        cell.debtAddressLabel1.text = [NSString getValidStringFromString:deModel.creditoraddress];
+        
+        NSString *yuy = [NSString getValidStringFromString:deModel.creditoraddress];
+        cell.debtAddressLabel.text = [NSString stringWithFormat:@"联系地址    %@",yuy];
     }else{
-        cell.debtAddressLabel1.text = [NSString getValidStringFromString:deModel.borrowingaddress];
+        NSString *yuy = [NSString getValidStringFromString:deModel.borrowingaddress];
+        cell.debtAddressLabel.text = [NSString stringWithFormat:@"联系地址    %@",yuy];
     }
     
     NSString *ID;
