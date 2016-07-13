@@ -46,7 +46,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "602"
-            endingLineNumber = "602">
+            endingLineNumber = "602"
+            landmarkName = "-reportCollectionActionWithString:"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -60,7 +62,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "634"
-            endingLineNumber = "634">
+            endingLineNumber = "634"
+            landmarkName = "-didReceiveMemoryWarning"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -107,7 +111,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "523"
             endingLineNumber = "523"
-            landmarkName = "-reportCollectionActionWithString:"
+            landmarkName = "-showTitleOfUpwardView:"
             landmarkType = "5">
             <Locations>
                <Location
@@ -118,7 +122,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/lishiyong/Documents/App/MyZhaiGuanJia/qingdaofu/TabBarController/%E5%8F%91%E5%B8%83%E4%BA%A7%E5%93%81/%E5%82%AC%E6%94%B6/ReportCollectViewController.m"
-                  timestampString = "490117850.531225"
+                  timestampString = "490118681.813047"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "523"
@@ -133,7 +137,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/lishiyong/Documents/App/MyZhaiGuanJia/qingdaofu/TabBarController/%E5%8F%91%E5%B8%83%E4%BA%A7%E5%93%81/%E5%82%AC%E6%94%B6/ReportCollectViewController.m"
-                  timestampString = "490117850.531612"
+                  timestampString = "490118681.814043"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "523"
@@ -148,7 +152,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/lishiyong/Documents/App/MyZhaiGuanJia/qingdaofu/TabBarController/%E5%8F%91%E5%B8%83%E4%BA%A7%E5%93%81/%E5%82%AC%E6%94%B6/ReportCollectViewController.m"
-                  timestampString = "490117850.531929"
+                  timestampString = "490118681.814699"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "523"
@@ -217,69 +221,6 @@
                   startingLineNumber = "299"
                   endingLineNumber = "299"
                   offsetFromSymbolStart = "39">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "qingdaofu/TabBarController/&#x53d1;&#x5e03;&#x4ea7;&#x54c1;/&#x878d;&#x8d44;/ReportFinanceViewController.m"
-            timestampString = "487696183.530051"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "368"
-            endingLineNumber = "368"
-            landmarkName = "-showTextOfUpwardView:"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__63-[ReportFinanceViewController tableView:cellForRowAtIndexPath:]_block_invoke.341"
-                  moduleName = "qingdaofu"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/lishiyong/Documents/App/MyZhaiGuanJia/qingdaofu/TabBarController/%E5%8F%91%E5%B8%83%E4%BA%A7%E5%93%81/%E8%9E%8D%E8%B5%84/ReportFinanceViewController.m"
-                  timestampString = "490117850.53225"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "368"
-                  endingLineNumber = "368"
-                  offsetFromSymbolStart = "139">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__copy_helper_block_.342"
-                  moduleName = "qingdaofu"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/lishiyong/Documents/App/MyZhaiGuanJia/qingdaofu/TabBarController/%E5%8F%91%E5%B8%83%E4%BA%A7%E5%93%81/%E8%9E%8D%E8%B5%84/ReportFinanceViewController.m"
-                  timestampString = "490117850.532486"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "368"
-                  endingLineNumber = "368"
-                  offsetFromSymbolStart = "42">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__destroy_helper_block_.343"
-                  moduleName = "qingdaofu"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/lishiyong/Documents/App/MyZhaiGuanJia/qingdaofu/TabBarController/%E5%8F%91%E5%B8%83%E4%BA%A7%E5%93%81/%E8%9E%8D%E8%B5%84/ReportFinanceViewController.m"
-                  timestampString = "490117850.532709"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "368"
-                  endingLineNumber = "368"
-                  offsetFromSymbolStart = "26">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -371,7 +312,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/lishiyong/Documents/App/MyZhaiGuanJia/qingdaofu/TabBarController/%E4%BA%A7%E5%93%81/%E4%BA%A7%E5%93%81%E8%AF%A6%E6%83%85/%E5%8F%91%E5%B8%83%E4%BA%BA%E4%BF%A1%E6%81%AF/AllEvaluationViewController.m"
-                  timestampString = "490117850.533837"
+                  timestampString = "490118681.820552"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "200"
@@ -386,7 +327,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/lishiyong/Documents/App/MyZhaiGuanJia/qingdaofu/TabBarController/%E4%BA%A7%E5%93%81/%E4%BA%A7%E5%93%81%E8%AF%A6%E6%83%85/%E5%8F%91%E5%B8%83%E4%BA%BA%E4%BF%A1%E6%81%AF/AllEvaluationViewController.m"
-                  timestampString = "490117850.534042"
+                  timestampString = "490118681.821963"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "200"
@@ -401,7 +342,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/lishiyong/Documents/App/MyZhaiGuanJia/qingdaofu/TabBarController/%E4%BA%A7%E5%93%81/%E4%BA%A7%E5%93%81%E8%AF%A6%E6%83%85/%E5%8F%91%E5%B8%83%E4%BA%BA%E4%BF%A1%E6%81%AF/AllEvaluationViewController.m"
-                  timestampString = "490117850.534334"
+                  timestampString = "490118681.823007"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "200"
@@ -450,7 +391,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/lishiyong/Documents/App/MyZhaiGuanJia/qingdaofu/TabBarController/%E4%BA%A7%E5%93%81/%E4%BA%A7%E5%93%81%E8%AF%A6%E6%83%85/%E5%8F%91%E5%B8%83%E4%BA%BA%E4%BF%A1%E6%81%AF/AllEvaluationViewController.m"
-                  timestampString = "490117850.534872"
+                  timestampString = "490118681.825363"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "182"
@@ -465,7 +406,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/lishiyong/Documents/App/MyZhaiGuanJia/qingdaofu/TabBarController/%E4%BA%A7%E5%93%81/%E4%BA%A7%E5%93%81%E8%AF%A6%E6%83%85/%E5%8F%91%E5%B8%83%E4%BA%BA%E4%BF%A1%E6%81%AF/AllEvaluationViewController.m"
-                  timestampString = "490117850.535127"
+                  timestampString = "490118681.825948"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "182"
@@ -610,7 +551,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/lishiyong/Documents/App/MyZhaiGuanJia/qingdaofu/BaseVC/NetworkViewController.m"
-                  timestampString = "490117850.540201"
+                  timestampString = "490118681.831606"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "53"
@@ -625,7 +566,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/lishiyong/Documents/App/MyZhaiGuanJia/qingdaofu/BaseVC/NetworkViewController.m"
-                  timestampString = "490117850.540497"
+                  timestampString = "490118681.831998"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "53"
@@ -640,7 +581,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/lishiyong/Documents/App/MyZhaiGuanJia/qingdaofu/BaseVC/NetworkViewController.m"
-                  timestampString = "490117850.540794"
+                  timestampString = "490118681.832354"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "53"
@@ -655,7 +596,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/lishiyong/Documents/App/MyZhaiGuanJia/qingdaofu/BaseVC/NetworkViewController.m"
-                  timestampString = "490117850.54122"
+                  timestampString = "490118681.83269"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "55"
@@ -688,7 +629,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/lishiyong/Documents/App/MyZhaiGuanJia/qingdaofu/BaseVC/NetworkViewController.m"
-                  timestampString = "490117850.543035"
+                  timestampString = "490118681.833105"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "55"
@@ -703,7 +644,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/lishiyong/Documents/App/MyZhaiGuanJia/qingdaofu/BaseVC/NetworkViewController.m"
-                  timestampString = "490117850.544008"
+                  timestampString = "490118681.833609"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "55"
@@ -718,7 +659,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/lishiyong/Documents/App/MyZhaiGuanJia/qingdaofu/BaseVC/NetworkViewController.m"
-                  timestampString = "490117850.545645"
+                  timestampString = "490118681.833882"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "55"
@@ -751,7 +692,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/lishiyong/Documents/App/MyZhaiGuanJia/qingdaofu/BaseVC/NetworkViewController.m"
-                  timestampString = "490117850.546984"
+                  timestampString = "490118681.83417"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "55"
@@ -766,7 +707,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/lishiyong/Documents/App/MyZhaiGuanJia/qingdaofu/BaseVC/NetworkViewController.m"
-                  timestampString = "490117850.547951"
+                  timestampString = "490118681.834392"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "55"
@@ -781,7 +722,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/lishiyong/Documents/App/MyZhaiGuanJia/qingdaofu/BaseVC/NetworkViewController.m"
-                  timestampString = "490117850.548786"
+                  timestampString = "490118681.834607"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "55"
@@ -1322,11 +1263,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "qingdaofu/TabBarController/&#x63a8;&#x8350;&#x4ea7;&#x54c1;/controller/NewProductViewController.m"
-            timestampString = "488733255.609964"
+            timestampString = "490119219.125112"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "188"
-            endingLineNumber = "188"
+            startingLineNumber = "187"
+            endingLineNumber = "187"
             landmarkName = "-numberOfSectionsInTableView:"
             landmarkType = "5">
             <Locations>
@@ -1418,7 +1359,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/lishiyong/Documents/App/MyZhaiGuanJia/qingdaofu/%E5%B7%A5%E5%85%B7%E7%B1%BB/UIViewController+SelectedIndex.m"
-                  timestampString = "490117850.555223"
+                  timestampString = "490118681.839977"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "18"
@@ -1433,7 +1374,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/lishiyong/Documents/App/MyZhaiGuanJia/qingdaofu/%E5%B7%A5%E5%85%B7%E7%B1%BB/UIViewController+SelectedIndex.m"
-                  timestampString = "490117850.555451"
+                  timestampString = "490118681.840184"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "18"
@@ -1488,6 +1429,22 @@
             startingLineNumber = "280"
             endingLineNumber = "280"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "qingdaofu/TabBarController/&#x53d1;&#x5e03;&#x4ea7;&#x54c1;/&#x878d;&#x8d44;/ReportFinanceViewController.m"
+            timestampString = "490118415.975584"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "616"
+            endingLineNumber = "616"
+            landmarkName = "-openAndClose:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

@@ -175,7 +175,7 @@
     if (!_repSuitFootButton) {
         _repSuitFootButton = [[ReportFootView alloc] initWithFrame:CGRectMake(kBigPadding, 0, kScreenWidth-kBigPadding*2, 70)];
         _repSuitFootButton.backgroundColor = kBlueColor;
-        [_repSuitFootButton.footButton addTarget:self action:@selector(openAndClose:) forControlEvents:UIControlEventTouchUpInside];
+        [_repSuitFootButton addTarget:self action:@selector(openAndCloses:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _repSuitFootButton;
 }
@@ -954,14 +954,26 @@
 }
 
 #pragma mark - method
-- (void)openAndClose:(UIButton *)btn
+- (void)openAndCloses:(ReportFootView *)btn
 {
     btn.selected = !btn.selected;
     if (btn.selected) {
+        
+        NSMutableAttributedString *aStr2 = [[NSMutableAttributedString alloc] initWithString:@"收回补充信息(选填)"];
+        [aStr2 addAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kNavColor} range:NSMakeRange(0, aStr2.length)];
+        [btn.footButton setAttributedTitle:aStr2 forState:0];
+        [btn.footButton setImage:[UIImage imageNamed:@"open"] forState:0];
+        
         [self.suitDataList insertObject:@"大喊大叫" atIndex:1];
         NSIndexSet *set = [[NSIndexSet alloc] initWithIndex:1];
         [self.suitTableView insertSections:set withRowAnimation:UITableViewRowAnimationFade];
     }else{
+        
+        NSMutableAttributedString *aStr1 = [[NSMutableAttributedString alloc] initWithString:@"展开补充信息(选填)"];
+        [aStr1 addAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kNavColor} range:NSMakeRange(0, aStr1.length)];
+        [btn.footButton setAttributedTitle:aStr1 forState:0];
+        [btn.footButton setImage:[UIImage imageNamed:@"withdraw"] forState:0];
+        
         [self.suitDataList removeObjectAtIndex:1];
         NSIndexSet *set = [[NSIndexSet alloc] initWithIndex:1];
         [self.suitTableView deleteSections:set withRowAnimation:UITableViewRowAnimationFade];

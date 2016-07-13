@@ -97,7 +97,6 @@
         _mainTableView.backgroundColor = kBackColor;
         _mainTableView.delegate = self;
         _mainTableView.dataSource = self;
-        _mainTableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 110)];
         _mainTableView.separatorColor = kSeparateColor;
     }
     return _mainTableView;
@@ -106,7 +105,7 @@
 - (UIView *)mainHeaderView
 {
     if (!_mainHeaderView) {
-        _mainHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 100)];
+        _mainHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 110)];
         _mainHeaderView.backgroundColor = kBackColor;
         [_mainHeaderView addSubview:self.mainHeaderScrollView];
         [_mainHeaderView addSubview:self.pageControl];
@@ -483,7 +482,7 @@
     [self requestDataPostWithString:propagandaString params:nil successBlock:^(id responseObject) {
         NSDictionary *dedfr = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
         weakself.propagandaDic = [NSMutableDictionary dictionaryWithDictionary:dedfr];
-        [weakself.mainTableView.tableHeaderView addSubview:weakself.mainHeaderView];
+        weakself.mainTableView.tableHeaderView = weakself.mainHeaderView;
         
     } andFailBlock:^(NSError *error) {
         

@@ -105,7 +105,7 @@
     if (!_financeFooterView) {
         _financeFooterView = [[ReportFootView alloc] initWithFrame:CGRectMake(kBigPadding, kBigPadding, kScreenWidth-kBigPadding*2, 70)];
         _financeFooterView.backgroundColor = kBlueColor;
-        [_financeFooterView.footButton addTarget:self action:@selector(openAndClose:) forControlEvents:UIControlEventTouchUpInside];
+        [_financeFooterView addTarget:self action:@selector(openAndClose:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _financeFooterView;
 }
@@ -613,14 +613,26 @@
 
 #pragma mark - method
 //展开收起
-- (void)openAndClose:(UIButton *)btn
+- (void)openAndClose:(ReportFootView *)btn
 {
     btn.selected = !btn.selected;
     if (btn.selected) {
+
+        NSMutableAttributedString *aStr2 = [[NSMutableAttributedString alloc] initWithString:@"收回补充信息(选填)"];
+        [aStr2 addAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kNavColor} range:NSMakeRange(0, aStr2.length)];
+        [btn.footButton setAttributedTitle:aStr2 forState:0];
+        [btn.footButton setImage:[UIImage imageNamed:@"open"] forState:0];
+        
         [self.dataArray insertObject:@"大喊大叫" atIndex:1];
         NSIndexSet *set = [[NSIndexSet alloc] initWithIndex:1];
         [self.reportFinanceTableView insertSections:set withRowAnimation:UITableViewRowAnimationFade];
     }else{
+        
+        NSMutableAttributedString *aStr1 = [[NSMutableAttributedString alloc] initWithString:@"展开补充信息(选填)"];
+        [aStr1 addAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kNavColor} range:NSMakeRange(0, aStr1.length)];
+        [btn.footButton setAttributedTitle:aStr1 forState:0];
+        [btn.footButton setImage:[UIImage imageNamed:@"withdraw"] forState:0];
+        
         [self.dataArray removeObjectAtIndex:1];
         NSIndexSet *set = [[NSIndexSet alloc] initWithIndex:1];
         [self.reportFinanceTableView deleteSections:set withRowAnimation:UITableViewRowAnimationFade];

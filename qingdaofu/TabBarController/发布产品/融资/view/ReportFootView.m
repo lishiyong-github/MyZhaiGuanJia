@@ -44,15 +44,11 @@
     if (!_footButton) {
         _footButton = [UIButton newAutoLayoutView];
         [_footButton setImage:[UIImage imageNamed:@"open"] forState:0];
-        [_footButton setImage:[UIImage imageNamed:@"withdraw"] forState:UIControlStateSelected];
+        _footButton.userInteractionEnabled = NO;
         
         NSMutableAttributedString *aStr1 = [[NSMutableAttributedString alloc] initWithString:@"展开补充信息(选填)"];
         [aStr1 addAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kNavColor} range:NSMakeRange(0, aStr1.length)];
         [_footButton setAttributedTitle:aStr1 forState:0];
-
-        NSMutableAttributedString *aStr2 = [[NSMutableAttributedString alloc] initWithString:@"收回补充信息(选填)"];
-        [aStr2 addAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kNavColor} range:NSMakeRange(0, aStr2.length)];
-        [_footButton setAttributedTitle:aStr2 forState:UIControlStateSelected];
     }
     return _footButton;
 }

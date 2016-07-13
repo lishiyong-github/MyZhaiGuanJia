@@ -74,9 +74,9 @@
 
 //文字大小
 #define kNavFont [UIFont systemFontOfSize:18]  //标题
-#define kBigFont [UIFont systemFontOfSize:16]    //正文
-#define kFirstFont [UIFont systemFontOfSize:15]  //内容大一点
-#define kSecondFont [UIFont systemFontOfSize:13] //内容小一点
+#define kBigFont [UIFont systemFontOfSize:15]    //正文
+#define kFirstFont [UIFont systemFontOfSize:14]  //内容大一点
+#define kSecondFont [UIFont systemFontOfSize:12] //内容小一点
 #define kTabBarFont [UIFont systemFontOfSize:10]  //tabBar文字大小
 
 #define kAttributeFont1 [UIFont fontWithName:@"" size:12];
