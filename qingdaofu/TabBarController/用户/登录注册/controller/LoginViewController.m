@@ -171,16 +171,17 @@
     //13162521916 123456
     //15000708849   123456
 
+    QDFWeakSelf;
     [self requestDataPostWithString:loginString params:params successBlock:^( id responseObject){
                 
         BaseModel *loginModel = [BaseModel objectWithKeyValues:responseObject];
-        [self showHint:loginModel.msg];
+        [weakself showHint:loginModel.msg];
         
         if ([loginModel.code isEqualToString:@"0000"]) {
             [[NSUserDefaults standardUserDefaults] setObject:loginModel.token forKey:@"token"];
-            [[NSUserDefaults standardUserDefaults] setObject:self.loginDictionary[@"mobile"] forKey:@"mobile"];
+            [[NSUserDefaults standardUserDefaults] setObject:weakself.loginDictionary[@"mobile"] forKey:@"mobile"];
             [[NSUserDefaults standardUserDefaults] synchronize];
-            [self.navigationController popViewControllerAnimated:YES];
+            [weakself.navigationController popViewControllerAnimated:YES];
         }
         
     } andFailBlock:^(NSError *error){

@@ -158,29 +158,30 @@
                              @"page" : page,
                              @"limit" : @"10"
                              };
+    QDFWeakSelf;
     [self requestDataPostWithString:mySaveString params:params successBlock:^(id responseObject){
         if ([page integerValue] == 1) {
-            [self.mySaveDataList removeAllObjects];
+            [weakself.mySaveDataList removeAllObjects];
         }
         
         ReleaseResponse *responseModel = [ReleaseResponse objectWithKeyValues:responseObject];
         
         if (responseModel.rows.count == 0) {
-            [self showHint:@"没有更多了"];
+            [weakself showHint:@"没有更多了"];
             _pageSave--;
         }
         
         for (RowsModel *model in responseModel.rows) {
-            [self.mySaveDataList addObject:model];
+            [weakself.mySaveDataList addObject:model];
         }
         
-        if (self.mySaveDataList.count > 0) {
-            [self.baseRemindImageView setHidden:YES];
+        if (weakself.mySaveDataList.count > 0) {
+            [weakself.baseRemindImageView setHidden:YES];
         }else{
-            [self.baseRemindImageView setHidden:NO];
+            [weakself.baseRemindImageView setHidden:NO];
         }
         
-        [self.mySavetableView reloadData];
+        [weakself.mySavetableView reloadData];
     } andFailBlock:^(NSError *error){
         
     }];
@@ -216,12 +217,12 @@
                              @"category" : pubModel.category,
                              @"token" : [self getValidateToken]
                              };
-    
+    QDFWeakSelf;
     [self requestDataPostWithString:reportString params:params successBlock:^(id responseObject) {
         BaseModel *model = [BaseModel objectWithKeyValues:responseObject];
         
         if ([model.code isEqualToString:@"0000"]) {
-            [self showHint:@"发布成功"];
+            [weakself showHint:@"发布成功"];
             
             UINavigationController *nav = self.navigationController;
             [nav popViewControllerAnimated:NO];
@@ -246,18 +247,18 @@
                              @"category" : deleteModel.category,
                              @"token" : [self getValidateToken]
                              };
-    
+    QDFWeakSelf;
     [self requestDataPostWithString:deleteSaveString params:params successBlock:^(id responseObject){
         BaseModel *model = [BaseModel objectWithKeyValues:responseObject];
-        [self showHint:model.msg];
+        [weakself showHint:model.msg];
         if ([model.code isEqualToString:@"0000"]) {
-            [self.mySaveDataList removeObjectAtIndex:indexRow];
-            [self.mySavetableView reloadData];
+            [weakself.mySaveDataList removeObjectAtIndex:indexRow];
+            [weakself.mySavetableView reloadData];
             
-            if (self.mySaveDataList.count > 0) {
-                [self.baseRemindImageView setHidden:YES];
+            if (weakself.mySaveDataList.count > 0) {
+                [weakself.baseRemindImageView setHidden:YES];
             }else{
-                [self.baseRemindImageView setHidden:NO];
+                [weakself.baseRemindImageView setHidden:NO];
             }
         }
         

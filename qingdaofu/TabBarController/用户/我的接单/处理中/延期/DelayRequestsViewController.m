@@ -138,12 +138,13 @@
                              @"dalay_reason" : @"做不完做不完做不完",
                              @"day" : @"4"
                              };
+    QDFWeakSelf;
     [self requestDataPostWithString:delayString params:params successBlock:^(id responseObject) {
         BaseModel *delayModel = [BaseModel objectWithKeyValues:responseObject];
-        [self showHint:delayModel.msg];
+        [weakself showHint:delayModel.msg];
         
         if ([delayModel.code isEqualToString:@"0000"]) {
-            [self.navigationController popViewControllerAnimated:YES];
+            [weakself.navigationController popViewControllerAnimated:YES];
         }
         
     } andFailBlock:^(NSError *error) {

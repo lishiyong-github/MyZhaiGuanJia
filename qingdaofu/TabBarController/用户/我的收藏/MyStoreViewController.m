@@ -157,30 +157,31 @@
                              @"page" : page,
                              @"limit" : @"10"
                              };
+    QDFWeakSelf;
     [self requestDataPostWithString:storeString params:params successBlock:^(id responseObject){
         
         if ([page integerValue] == 1) {
-            [self.storeDataList removeAllObjects];
+            [weakself.storeDataList removeAllObjects];
         }
         
         ReleaseResponse *responseModel = [ReleaseResponse objectWithKeyValues:responseObject];
         
         if (responseModel.rows.count == 0) {
-            [self showHint:@"没有更多了"];
+            [weakself showHint:@"没有更多了"];
             _pageStore--;
         }
         
         for (RowsModel *storeModel in responseModel.rows) {
-            [self.storeDataList addObject:storeModel];
+            [weakself.storeDataList addObject:storeModel];
         }
         
-        if (self.storeDataList.count > 0) {
-            [self.baseRemindImageView setHidden:YES];
+        if (weakself.storeDataList.count > 0) {
+            [weakself.baseRemindImageView setHidden:YES];
         }else{
-            [self.baseRemindImageView setHidden:NO];
+            [weakself.baseRemindImageView setHidden:NO];
         }
         
-        [self.myStoreTableView reloadData];
+        [weakself.myStoreTableView reloadData];
         
     } andFailBlock:^(NSError *error){
         
@@ -215,12 +216,13 @@
                              @"category" : appModel.category,
                              @"token" : [self getValidateToken]
                              };
+    QDFWeakSelf;
     [self requestDataPostWithString:appString params:params successBlock:^(id responseObject) {
         BaseModel *appModel = [BaseModel objectWithKeyValues:responseObject];
-        [self showHint:appModel.msg];
+        [weakself showHint:appModel.msg];
         if ([appModel.code isEqualToString:@"0000"]) {
-            [self.storeDataList removeObjectAtIndex:row];
-            [self.myStoreTableView reloadData];
+            [weakself.storeDataList removeObjectAtIndex:row];
+            [weakself.myStoreTableView reloadData];
             
             UINavigationController *nav = self.navigationController;
             [nav popViewControllerAnimated:NO];
@@ -245,16 +247,17 @@
                              @"category" : deleteModel.category,
                              @"token" : [self getValidateToken]
                              };
+    QDFWeakSelf;
     [self requestDataPostWithString:deleteString params:params successBlock:^(id responseObject){
         BaseModel *deleteModel = [BaseModel objectWithKeyValues:responseObject];
-        [self showHint:deleteModel.msg];
+        [weakself showHint:deleteModel.msg];
         if ([deleteModel.code isEqualToString:@"0000"]) {
-            [self.storeDataList removeObjectAtIndex:indexRow];
-            [self.myStoreTableView reloadData];
-            if (self.storeDataList.count > 0) {
-                [self.baseRemindImageView setHidden:YES];
+            [weakself.storeDataList removeObjectAtIndex:indexRow];
+            [weakself.myStoreTableView reloadData];
+            if (weakself.storeDataList.count > 0) {
+                [weakself.baseRemindImageView setHidden:YES];
             }else{
-                [self.baseRemindImageView setHidden:NO];
+                [weakself.baseRemindImageView setHidden:NO];
             }
         }
     } andFailBlock:^(NSError *error){

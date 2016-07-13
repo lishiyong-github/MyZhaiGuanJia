@@ -174,29 +174,30 @@
                              @"category" : self.categoryString,
                              @"page" : page
                              };
+    QDFWeakSelf;
     [self requestDataPostWithString:paceString params:params successBlock:^(id responseObject) {
         if ([page integerValue] == 1) {
-            [self.paceDataArray removeAllObjects];
+            [weakself.paceDataArray removeAllObjects];
         }
         
         PaceResponse *response = [PaceResponse objectWithKeyValues:responseObject];
         
         if (response.disposing.count == 0) {
             _pagePace--;
-            [self showHint:@"没有更多了"];
+            [weakself showHint:@"没有更多了"];
         }
         
         for (PaceModel *paceModel in response.disposing) {
-            [self.paceDataArray addObject:paceModel];
+            [weakself.paceDataArray addObject:paceModel];
         }
         
-        if (self.paceDataArray.count > 0) {
-            [self.baseRemindImageView setHidden:YES];
+        if (weakself.paceDataArray.count > 0) {
+            [weakself.baseRemindImageView setHidden:YES];
         }else{
-            [self.baseRemindImageView setHidden:NO];
+            [weakself.baseRemindImageView setHidden:NO];
         }
         
-        [self.paceTableView reloadData];
+        [weakself.paceTableView reloadData];
         
     } andFailBlock:^(NSError *error) {
         

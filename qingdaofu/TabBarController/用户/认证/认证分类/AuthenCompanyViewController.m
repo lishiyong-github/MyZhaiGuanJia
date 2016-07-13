@@ -411,7 +411,8 @@
     self.comDataDictionary[@"enterprisewebsite"] = self.comDataDictionary[@"enterprisewebsite"]?self.comDataDictionary[@"enterprisewebsite"]:self.responseModel.certification.enterprisewebsite;
     self.comDataDictionary[@"email"] = self.comDataDictionary[@"email"]?self.comDataDictionary[@"email"]:self.responseModel.certification.email;
     self.comDataDictionary[@"casedesc"] = self.comDataDictionary[@"casedesc"]?self.comDataDictionary[@"casedesc"]:self.responseModel.certification.casedesc;
-
+    self.comDataDictionary[@"completionRate"] = self.responseModel.completionRate?self.responseModel.completionRate:@"";
+    
     [self.comDataDictionary setValue:@"3" forKey:@"category"];
     [self.comDataDictionary setValue:[self getValidateToken] forKey:@"token"];
     
@@ -423,19 +424,20 @@
     
     NSDictionary *params = self.comDataDictionary;
     
+    QDFWeakSelf;
     [self requestDataPostWithString:comAuString params:params andImages:nil successBlock:^(id responseObject) {
         BaseModel *personModel = [BaseModel objectWithKeyValues:responseObject];
-        [self showHint:personModel.msg];
+        [weakself showHint:personModel.msg];
         
         if ([personModel.code isEqualToString:@"0000"]) {
-            UINavigationController *personNav = self.navigationController;
+            UINavigationController *personNav = weakself.navigationController;
             [personNav popViewControllerAnimated:NO];
             [personNav popViewControllerAnimated:NO];
             [personNav popViewControllerAnimated:NO];
             
             CompleteViewController *completeVC = [[CompleteViewController alloc] init];
             completeVC.hidesBottomBarWhenPushed = YES;
-            completeVC.categoryString = self.categoryString;
+            completeVC.categoryString = weakself.categoryString;
             [personNav pushViewController:completeVC animated:NO];
         }
     } andFailBlock:^(NSError *error) {

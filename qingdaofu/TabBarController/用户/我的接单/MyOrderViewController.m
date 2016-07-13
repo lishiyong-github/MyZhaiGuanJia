@@ -433,37 +433,37 @@
                              @"page" : page,
                              @"status" : self.status
                              };
-    
+    QDFWeakSelf;
     [self requestDataPostWithString:myOrderString params:params successBlock:^(id responseObject) {
         
         if ([page intValue] == 1) {
-            [self.myOrderDataList removeAllObjects];
-            [self.myOrderResonseDic removeAllObjects];
+            [weakself.myOrderDataList removeAllObjects];
+            [weakself.myOrderResonseDic removeAllObjects];
         }
         
         ReleaseResponse *responceModel = [ReleaseResponse objectWithKeyValues:responseObject];
         
         if (responceModel.rows.count == 0) {
-            [self showHint:@"没有更多了"];
+            [weakself showHint:@"没有更多了"];
             _pageOrder -- ;
         }
         
-        [self.myOrderResonseDic setValuesForKeysWithDictionary:responceModel.creditor];
+        [weakself.myOrderResonseDic setValuesForKeysWithDictionary:responceModel.creditor];
         
         for (RowsModel *orderModel in responceModel.rows) {
-            [self.myOrderDataList addObject:orderModel];
+            [weakself.myOrderDataList addObject:orderModel];
         }
         
-        if (self.myOrderDataList.count > 0) {
-            [self.baseRemindImageView setHidden:YES];
+        if (weakself.myOrderDataList.count > 0) {
+            [weakself.baseRemindImageView setHidden:YES];
         }else{
-            [self.baseRemindImageView setHidden:NO];
+            [weakself.baseRemindImageView setHidden:NO];
         }
         
-        [self.myOrderTableView reloadData];
+        [weakself.myOrderTableView reloadData];
 
     } andFailBlock:^(NSError *error) {
-         [self.myOrderTableView reloadData];
+         [weakself.myOrderTableView reloadData];
     }];
 }
 
@@ -515,20 +515,21 @@
                              @"id" : idStr,
                              @"category" : categaryStr
                              };
+    QDFWeakSelf;
     [self requestDataPostWithString:deString params:params successBlock:^(id responseObject) {
 
         DelayResponse *response = [DelayResponse objectWithKeyValues:responseObject];
         DelayModel *delayModel = response.delay;
         
         if (![delayModel.is_agree isEqualToString:@""]) {//已申请
-            [self showHint:@"您已申请，不能重复申请"];
+            [weakself showHint:@"您已申请，不能重复申请"];
         }else if ([delayModel.delays intValue] > 7){
-            [self showHint:@"小于7天才可申请延期"];
+            [weakself showHint:@"小于7天才可申请延期"];
         }else{
             DelayRequestsViewController *delayRequestsVC = [[DelayRequestsViewController alloc] init];
             delayRequestsVC.idString = idStr;
             delayRequestsVC.categoryString = categaryStr;
-            [self.navigationController pushViewController:delayRequestsVC animated:YES];
+            [weakself.navigationController pushViewController:delayRequestsVC animated:YES];
         }
     } andFailBlock:^(NSError *error) {
 

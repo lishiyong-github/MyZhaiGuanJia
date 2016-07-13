@@ -168,13 +168,13 @@
                              @"token" : [self getValidateToken],
                              @"limit" : @"10"
                              };
+    QDFWeakSelf;
     [self requestDataPostWithString:stopString params:params successBlock:^(id responseObject) {
         BaseModel *reModel = [BaseModel objectWithKeyValues:responseObject];
-        [self showHint:reModel.msg];
+        [weakself showHint:reModel.msg];
         if ([reModel.code isEqualToString:@"0000"]) {
-            [self.navigationController popViewControllerAnimated:YES];
+            [weakself.navigationController popViewControllerAnimated:YES];
         }
-        
     } andFailBlock:^(NSError *error) {
         
     }];

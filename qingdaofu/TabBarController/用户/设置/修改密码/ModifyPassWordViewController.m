@@ -153,13 +153,13 @@
                              @"old_password" : old_password,
                              @"new_password" : new_password
                              };
-    
+    QDFWeakSelf;
     [self requestDataPostWithString:modifyString params:params successBlock:^(id responseObject){
         
         BaseModel *modifyModel = [BaseModel objectWithKeyValues:responseObject];
-        [self showHint:modifyModel.msg];
+        [weakself showHint:modifyModel.msg];
         if ([modifyModel.code isEqualToString:@"0000"]) {
-            [self.navigationController popViewControllerAnimated:YES];
+            [weakself.navigationController popViewControllerAnimated:YES];
         }
         
     } andFailBlock:^(NSError *error){

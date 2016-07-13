@@ -163,28 +163,26 @@
                              @"page" : page,
                              @"type" : @"1"//发布1，接单2
                              };
+    QDFWeakSelf;
     [self requestDataPostWithString:mesString params:params successBlock:^(id responseObject) {
-        NSDictionary *dddd = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSLog(@"^^^^^^^ %@",dddd);
         
         if ([page integerValue] == 0) {
-            [self.messagePubArray removeAllObjects];
+            [weakself.messagePubArray removeAllObjects];
         }
         
         MessageResponse *response = [MessageResponse objectWithKeyValues:responseObject];
-        
         for (MessageModel *mesModel in response.message) {
-            [self.messagePubArray addObject:mesModel];
+            [weakself.messagePubArray addObject:mesModel];
         }
         
-        if (self.messagePubArray.count > 0) {
-            [self.baseRemindImageView setHidden:YES];
+        if (weakself.messagePubArray.count > 0) {
+            [weakself.baseRemindImageView setHidden:YES];
         }else{
-            [self.baseRemindImageView setHidden:NO];
+            [weakself.baseRemindImageView setHidden:NO];
             _mesPage--;
         }
         
-        [self.newsListTableView reloadData];
+        [weakself.newsListTableView reloadData];
         
     } andFailBlock:^(NSError *error) {
         

@@ -158,32 +158,33 @@
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"page" : page
                              };
+    QDFWeakSelf;
     [self requestDataPostWithString:agentListString params:params successBlock:^(id responseObject){
         
         if ([page integerValue] == 1) {
-            [self.agentDataList removeAllObjects];
+            [weakself.agentDataList removeAllObjects];
         }
         
         PublishingResponse *resultModel = [PublishingResponse objectWithKeyValues:responseObject];
         
         if (resultModel.user.count > 0) {
-            [self.navigationItem.rightBarButtonItem setTitle:@"继续添加"];
+            [weakself.navigationItem.rightBarButtonItem setTitle:@"继续添加"];
         }else{
             _pageAgent--;
-            [self showHint:@"没有更多"];
+            [weakself showHint:@"没有更多"];
         }
         
         for (UserModel *userModel in resultModel.user) {
-            [self.agentDataList addObject:userModel];
+            [weakself.agentDataList addObject:userModel];
         }
         
-        if (self.agentDataList.count > 0) {
-            [self.baseRemindImageView setHidden:YES];
+        if (weakself.agentDataList.count > 0) {
+            [weakself.baseRemindImageView setHidden:YES];
         }else{
-            [self.baseRemindImageView setHidden:NO];
+            [weakself.baseRemindImageView setHidden:NO];
         }
         
-        [self.myAgentListTableView reloadData];
+        [weakself.myAgentListTableView reloadData];
         
     } andFailBlock:^(NSError *error){
         

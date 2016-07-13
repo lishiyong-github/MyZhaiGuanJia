@@ -576,9 +576,10 @@
     
     NSDictionary *params = self.coDataDictionary;
     
-    [self requestDataPostWithString:reFinanceString params:params andImages:self.coImageDictionary successBlock:^(id responseObject) {
+    QDFWeakSelf;
+    [self requestDataPostWithString:reFinanceString params:params andImages:nil successBlock:^(id responseObject) {
         BaseModel *suitModel = [BaseModel objectWithKeyValues:responseObject];
-        [self showHint:suitModel.msg];
+        [weakself showHint:suitModel.msg];
         if ([suitModel.code isEqualToString:@"0000"]) {
             
             if ([string intValue] == 0) {//保存
@@ -591,7 +592,7 @@
             }else{
                 ReportFiSucViewController *reportFiSucVC = [[ReportFiSucViewController alloc] init];
                 reportFiSucVC.reportType = @"诉讼";
-                [self.navigationController pushViewController:reportFiSucVC animated:YES];
+                [weakself.navigationController pushViewController:reportFiSucVC animated:YES];
             }
         }
 

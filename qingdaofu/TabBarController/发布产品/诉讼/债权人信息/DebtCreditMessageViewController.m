@@ -13,8 +13,11 @@
 #import "BaseCommitButton.h"
 #import "DebtCell.h"
 
-#import "UIView+UITextColor.h"
 #import "DebtModel.h"
+
+#import "UIView+UITextColor.h"
+#import "UIButton+WebCache.h"
+#import "UIViewController+ImageBrowser.h"
 
 @interface DebtCreditMessageViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -94,13 +97,16 @@
             
             EditDebtCreditMessageViewController *editDebtCreditMessageVC = [[EditDebtCreditMessageViewController alloc] init];
             editDebtCreditMessageVC.categoryString = weakself.categoryString;
-            [editDebtCreditMessageVC setDidSaveMessage:^(DebtModel *deModel) {
+            editDebtCreditMessageVC.tagString = weakself.tagString;
+            [weakself.navigationController pushViewController:editDebtCreditMessageVC animated:YES];
+            
+            [editDebtCreditMessageVC setDidSaveMessage:^(DebtModel *deModel,NSString *tagString) {
+                weakself.tagString = tagString;
                 [weakself.debtArray addObject:deModel];
                 [weakself.debtCreditTableView reloadData];
                 [weakself.debtCreditCommitButton setTitle:@"继续添加" forState:0];
             }];
             
-            [weakself.navigationController pushViewController:editDebtCreditMessageVC animated:YES];
         }];
     }
     return _debtCreditCommitButton;
@@ -173,9 +179,9 @@
 
     //证件号
     NSString *ID;
-    if ([self.categoryString  integerValue] == 1) {
+    if ([self.categoryString  integerValue] == 1) {//债权人
         ID = [NSString getValidStringFromString:deModel.creditorcardcode];
-    }else{
+    }else{//债务人
         ID = [NSString getValidStringFromString:deModel.borrowingcardcode];
     }
     NSMutableAttributedString *IDStr = [cell.debtIDLabel setAttributeString:@"证件号        " withColor:kBlackColor andSecond:ID withColor:kLightGrayColor withFont:12];
@@ -183,29 +189,95 @@
     
     //图片
     NSArray *imgs;
-    if ([self.categoryString integerValue] == 1) {
+    if ([self.categoryString integerValue] == 1) {//债权人
         imgs = deModel.creditorcardimage;
-    }else{
+    }else{//债务人
         imgs = deModel.borrowingcardimage;;
-    }
-    if (imgs.count == 1) {
-        [cell.debtImageView1 setImage:[UIImage imageNamed:imgs[0]]];
-    }else if(imgs.count == 2){        
-        [cell.debtImageView1 setImage:[UIImage imageWithContentsOfFile:imgs[0]]];
-        [cell.debtImageView2 setImage:[UIImage imageWithContentsOfFile:imgs[1]]];
     }
     
     QDFWeakSelf;
+    if ([self.tagString integerValue] == 1) {//首次添加
+        if (imgs.count == 1) {
+            [cell.debtImageView1 setImage:[UIImage imageNamed:imgs[0]] forState:0];
+            [cell.debtImageView2 setImage:[UIImage imageNamed:@"account_bitmap"] forState:0];
+        }else if(imgs.count == 2){
+            [cell.debtImageView1 setImage:[UIImage imageNamed:imgs[0]] forState:0];
+            [cell.debtImageView2 setImage:[UIImage imageNamed:imgs[1]] forState:0];
+        }else{
+            [cell.debtImageView1 setImage:[UIImage imageNamed:@"account_bitmap"] forState:0];
+            [cell.debtImageView2 setImage:[UIImage imageNamed:@"account_bitmap"] forState:0];
+        }
+        
+        [cell.debtImageView1 addAction:^(UIButton *btn) {
+            [weakself showImages:imgs];
+        }];
+    }else{//再次编辑添加（发布中的编辑）
+        
+        NSString *imhString1;
+        NSString *subString1;
+        
+        NSString *imhString2;
+        NSString *subString2;
+        
+        NSURL *subUrl1;
+        NSURL *subUrl2;
+        
+        if (imgs.count == 1) {
+            if ([imgs[0] isEqualToString:@""] || imgs[0] == nil) {//无图片
+                subUrl1 = [NSURL URLWithString:@""];
+                
+                [cell.debtImageView1 setImage:[UIImage imageNamed:@"account_bitmap"] forState:0];
+            }else{
+                imhString1 = imgs[0];
+                subString1 = [imhString1 substringWithRange:NSMakeRange(1, imhString1.length-2)];
+                subUrl1 = [NSURL URLWithString:subString1];
+                
+                [cell.debtImageView1 sd_setImageWithURL:subUrl1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+            }
+            
+            subUrl2 = [NSURL URLWithString:@""];
+            [cell.debtImageView2 setImage:[UIImage imageNamed:@"account_bitmap"] forState:0];
+            
+        }else if(imgs.count == 2){
+            
+            imhString1 = imgs[0];
+            subString1 = [imhString1 substringWithRange:NSMakeRange(1, imhString1.length-2)];
+            subUrl1 = [NSURL URLWithString:subString1];
+            
+            imhString2 = imgs[1];
+            subString2 = [imhString2 substringWithRange:NSMakeRange(1, imhString2.length-2)];
+            subUrl2 = [NSURL URLWithString:subString2];
+            
+            [cell.debtImageView1 sd_setImageWithURL:subUrl1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+            [cell.debtImageView2 sd_setImageWithURL:subUrl2 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+            
+        }else{
+            subUrl1 = [NSURL URLWithString:@""];
+            subUrl2 = [NSURL URLWithString:@""];
+            [cell.debtImageView1 setImage:[UIImage imageNamed:@"account_bitmap"] forState:0];
+            [cell.debtImageView2 setImage:[UIImage imageNamed:@"account_bitmap"] forState:0];
+        }
+        
+        [cell.debtImageView1 addAction:^(UIButton *btn) {
+            [weakself showImages:@[subUrl1,subUrl2]];
+        }];
+        [cell.debtImageView2 addAction:^(UIButton *btn) {
+            [weakself showImages:@[subUrl1,subUrl2]];
+        }];
+    }
+    
     [cell.debtEditButton addAction:^(UIButton *btn) {
         EditDebtCreditMessageViewController *editDebtCreditMessageVC = [[EditDebtCreditMessageViewController alloc] init];
         editDebtCreditMessageVC.deModel = deModel;
-        editDebtCreditMessageVC.categoryString = self.categoryString;
+        editDebtCreditMessageVC.categoryString = weakself.categoryString;
+        editDebtCreditMessageVC.tagString = weakself.tagString;
+        [weakself.navigationController pushViewController:editDebtCreditMessageVC animated:YES];
         
-        [editDebtCreditMessageVC setDidSaveMessage:^(DebtModel *model) {
+        [editDebtCreditMessageVC setDidSaveMessage:^(DebtModel *model,NSString *tagString) {
+            weakself.tagString = tagString;
            [weakself.debtArray replaceObjectAtIndex:indexPath.section withObject:model];
             [weakself.debtCreditTableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationFade];
         }];
-        [weakself.navigationController pushViewController:editDebtCreditMessageVC animated:YES];
     }];
     
     return cell;

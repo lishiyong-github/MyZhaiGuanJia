@@ -432,35 +432,36 @@
                              @"limit" : @"10",
                              @"page" : page
                              };
+    QDFWeakSelf;
     [self requestDataPostWithString:myReleaseString params:params successBlock:^(id responseObject) {
         if ([page intValue] == 1) {
-            [self.releaseDataArray removeAllObjects];
-            [self.releaseDic removeAllObjects];
+            [weakself.releaseDataArray removeAllObjects];
+            [weakself.releaseDic removeAllObjects];
         }
         
         ReleaseResponse *responseModel = [ReleaseResponse objectWithKeyValues:responseObject];
 
         if (responseModel.rows.count == 0) {
-            [self showHint:@"没有更多了"];
+            [weakself showHint:@"没有更多了"];
             _pageRelease --;
         }
         
-        [self.releaseDic setValuesForKeysWithDictionary:responseModel.creditor];
+        [weakself.releaseDic setValuesForKeysWithDictionary:responseModel.creditor];
         
         for (RowsModel *rowsModel in responseModel.rows) {
-            [self.releaseDataArray addObject:rowsModel];
+            [weakself.releaseDataArray addObject:rowsModel];
         }
         
-        if (self.releaseDataArray.count > 0) {
-            [self.baseRemindImageView setHidden:YES];
+        if (weakself.releaseDataArray.count > 0) {
+            [weakself.baseRemindImageView setHidden:YES];
         }else{
-            [self.baseRemindImageView setHidden:NO];
+            [weakself.baseRemindImageView setHidden:NO];
         }
         
-        [self.myReleaseTableView reloadData];
+        [weakself.myReleaseTableView reloadData];
         
     } andFailBlock:^(NSError *error) {
-        [self.myReleaseTableView reloadData];
+        [weakself.myReleaseTableView reloadData];
     }];
 }
 

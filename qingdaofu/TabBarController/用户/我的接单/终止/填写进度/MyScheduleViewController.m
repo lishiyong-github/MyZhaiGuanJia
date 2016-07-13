@@ -305,13 +305,13 @@
                    @"case" : caseStr//诉讼里面的暗号
                    };
     }
-    
+    QDFWeakSelf;
     [self requestDataPostWithString:myScheduleString params:params successBlock:^( id responseObject){
         BaseModel *scheduleModel = [BaseModel objectWithKeyValues:responseObject];
-        [self showHint:scheduleModel.msg];
+        [weakself showHint:scheduleModel.msg];
         
         if ([scheduleModel.code isEqualToString:@"0000"]) {
-            [self.navigationController popViewControllerAnimated:YES];
+            [weakself.navigationController popViewControllerAnimated:YES];
         }
     } andFailBlock:^(NSError *error){
         

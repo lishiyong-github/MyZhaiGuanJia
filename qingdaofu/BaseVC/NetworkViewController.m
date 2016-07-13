@@ -30,6 +30,7 @@
     // 3.如果报接受类型不一致请替换一致text/html  或者 text/plain
     session.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html",@"text/plain", nil];
     
+    QDFWeakSelf;
     [session POST:string parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         if (images) {
             
@@ -40,8 +41,6 @@
                     if ([obj isKindOfClass:[NSString class]]) {
                         
                         [formData appendPartWithFileData:[NSData dataWithContentsOfFile:obj] name:key fileName:KTimeStamp mimeType:@"image/png"];
-                        
-                        NSLog(@"******* %@",formData);
                         
                     }else if ([obj isKindOfClass:[UIImage class]]){
                         [formData appendPartWithFileData:UIImageJPEGRepresentation(obj, 0.7) name:key fileName:KTimeStamp mimeType:@"image/png"];
@@ -55,15 +54,14 @@
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (successBlock) {
-            [self hideHud];
+            [weakself hideHud];
             successBlock(responseObject);
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         if (failBlock) {
-            [self hideHud];
+            [weakself hideHud];
             [self showHint:@"网络错误"];
-            failBlock(error);
         }
     }];
 }
@@ -76,17 +74,18 @@
     session.responseSerializer = [AFHTTPResponseSerializer serializer];
     session.requestSerializer = [AFHTTPRequestSerializer serializer];
     
+    QDFWeakSelf;
     [session POST:string parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (successBlock) {
-            [self hideHud];
+            [weakself hideHud];
             successBlock(responseObject);
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         if (failBlock) {
-            [self hideHud];
-            failBlock(error);
+            [weakself hideHud];
+            [self showHint:@"网络错误"];
         }
     }];
 }

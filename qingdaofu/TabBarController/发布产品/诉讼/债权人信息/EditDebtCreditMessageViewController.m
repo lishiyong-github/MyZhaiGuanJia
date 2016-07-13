@@ -184,17 +184,70 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.collectionDataList = [NSMutableArray arrayWithObject:@"btn_camera"];
     
-    if ([self.categoryString integerValue] == 1) {
-        if (self.deModel.creditorcardimage.count > 0) {
-            cell.collectionDataList = [NSMutableArray arrayWithArray:self.deModel.creditorcardimage];
-        }else{
-            cell.collectionDataList = [NSMutableArray arrayWithObject:@"btn_camera"];
+    //图片
+    if ([self.categoryString integerValue] == 1) {//债权人
+        
+        if ([self.tagString integerValue] == 1) {//首次编辑
+            if (self.deModel.creditorcardimage.count > 0) {
+                cell.collectionDataList = [NSMutableArray arrayWithArray:self.deModel.creditorcardimage];
+            }else{
+                cell.collectionDataList = [NSMutableArray arrayWithObject:@"btn_camera"];
+            }
+            
+        }else{//再次编辑
+            if (self.deModel.creditorcardimage.count == 0) {
+                cell.collectionDataList = [NSMutableArray arrayWithObject:@"btn_camera"];
+            }else if (self.deModel.creditorcardimage.count == 1){
+                if ([self.deModel.creditorcardimage[0] isEqualToString:@""] || !self.deModel.creditorcardimage[0]) {//无图片
+                    cell.collectionDataList = [NSMutableArray arrayWithObject:@"btn_camera"];
+                }else{//有一张图片
+                    NSString *imhjStr1 = self.deModel.creditorcardimage[0];
+                    NSString *subStr1 = [imhjStr1 substringWithRange:NSMakeRange(1, imhjStr1.length-2)];
+                    NSURL *subUrl1 = [NSURL URLWithString:subStr1];
+                    cell.collectionDataList = [NSMutableArray arrayWithObject:subUrl1];
+                }
+            }else if (self.deModel.creditorcardimage.count == 2){
+                NSString *imhjStr1 = self.deModel.creditorcardimage[0];
+                NSString *subStr1 = [imhjStr1 substringWithRange:NSMakeRange(1, imhjStr1.length-2)];
+                NSURL *subUrl1 = [NSURL URLWithString:subStr1];
+                
+                NSString *imhjStr2 = self.deModel.creditorcardimage[1];
+                NSString *subStr2 = [imhjStr2 substringWithRange:NSMakeRange(1, imhjStr2.length-2)];
+                NSURL *subUrl2 = [NSURL URLWithString:subStr2];
+                cell.collectionDataList = [NSMutableArray arrayWithObjects:subUrl1,subUrl2, nil];
+            }
         }
-    }else if ([self.categoryString integerValue] == 2){
-        if (self.deModel.borrowingcardimage.count > 0) {
-            cell.collectionDataList = [NSMutableArray arrayWithArray:self.deModel.borrowingcardimage];
+        
+    }else if ([self.categoryString integerValue] == 2){//债务人
+        
+        if ([self.tagString integerValue] == 1) {
+            if (self.deModel.borrowingcardimage.count > 0) {
+                cell.collectionDataList = [NSMutableArray arrayWithArray:self.deModel.borrowingcardimage];
+            }else{
+                cell.collectionDataList = [NSMutableArray arrayWithObject:@"btn_camera"];
+            }
         }else{
-            cell.collectionDataList = [NSMutableArray arrayWithObject:@"btn_camera"];
+            if (self.deModel.borrowingcardimage.count == 0) {
+                cell.collectionDataList = [NSMutableArray arrayWithObject:@"btn_camera"];
+            }else if (self.deModel.borrowingcardimage.count == 1){
+                if ([self.deModel.borrowingcardimage[0] isEqualToString:@""] || !self.deModel.borrowingcardimage[0]) {//无图片
+                    cell.collectionDataList = [NSMutableArray arrayWithObject:@"btn_camera"];
+                }else{//有一张图片
+                    NSString *imhjStr1 = self.deModel.borrowingcardimage[0];
+                    NSString *subStr1 = [imhjStr1 substringWithRange:NSMakeRange(1, imhjStr1.length-2)];
+                    NSURL *subUrl1 = [NSURL URLWithString:subStr1];
+                    cell.collectionDataList = [NSMutableArray arrayWithObject:subUrl1];
+                }
+            }else if (self.deModel.borrowingcardimage.count == 2){
+                NSString *imhjStr1 = self.deModel.borrowingcardimage[0];
+                NSString *subStr1 = [imhjStr1 substringWithRange:NSMakeRange(1, imhjStr1.length-2)];
+                NSURL *subUrl1 = [NSURL URLWithString:subStr1];
+                
+                NSString *imhjStr2 = self.deModel.borrowingcardimage[1];
+                NSString *subStr2 = [imhjStr2 substringWithRange:NSMakeRange(1, imhjStr2.length-2)];
+                NSURL *subUrl2 = [NSURL URLWithString:subStr2];
+                cell.collectionDataList = [NSMutableArray arrayWithObjects:subUrl1,subUrl2, nil];
+            }
         }
     }
     
@@ -245,7 +298,7 @@
             [self showHint:@"信息填写不完整，请检查"];
         }else{
             if (self.didSaveMessage) {
-                self.didSaveMessage(cModel);
+                self.didSaveMessage(cModel,self.tagString);
             }
             [self.navigationController popViewControllerAnimated:YES];
         }
@@ -262,7 +315,7 @@
             [self showHint:@"信息填写不完整，请检查"];
         }else{
             if (self.didSaveMessage) {
-                self.didSaveMessage(bModel);
+                self.didSaveMessage(bModel,self.tagString);
             }
             [self.navigationController popViewControllerAnimated:YES];
         }

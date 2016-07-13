@@ -186,16 +186,15 @@
     saveModel.zycardno = params[@"zycardno"];
     saveModel.password_hash = params[@"password_hash"];
     
+    QDFWeakSelf;
     [self requestDataPostWithString:addAgentString params:params successBlock:^(id responseObject) {
         BaseModel *addModel = [BaseModel objectWithKeyValues:responseObject];
-        [self showHint:addModel.msg];
+        [weakself showHint:addModel.msg];
         if ([addModel.code isEqualToString:@"0000"]) {
-            
-            if (self.didSaveModel) {
-                self.didSaveModel(saveModel);
+            if (weakself.didSaveModel) {
+                weakself.didSaveModel(saveModel);
             }
-            
-            [self.navigationController popViewControllerAnimated:YES];
+            [weakself.navigationController popViewControllerAnimated:YES];
         }
         
     } andFailBlock:^(NSError *error) {

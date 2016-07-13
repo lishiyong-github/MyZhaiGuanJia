@@ -415,11 +415,10 @@
                              @"category" : self.categoryString,
                              @"pid" : self.pidString
                              };
+    QDFWeakSelf;
     [self requestDataPostWithString:warnString params:params successBlock:^(id responseObject) {
         BaseModel *warnModel = [BaseModel objectWithKeyValues:responseObject];
-        
-        [self showHint:warnModel.msg];
-        
+        [weakself showHint:warnModel.msg];
     } andFailBlock:^(NSError *error) {
         
     }];
@@ -439,16 +438,16 @@
                              @"pid" : self.pidString,
                              @"token" : [self getValidateToken]
                              };
+    QDFWeakSelf;
     [self requestDataPostWithString:yyyString params:params successBlock:^(id responseObject) {
         CompleteResponse *response = [CompleteResponse objectWithKeyValues:responseObject];
         
         if (response.certification) {
-            [self.certifiDataArray addObject:response.certification];
+            [weakself.certifiDataArray addObject:response.certification];
         }
         
-        [self.checkDetailTableView reloadData];
-        
-        [self getAllEvaluationListWithPage:@"0"];
+        [weakself.checkDetailTableView reloadData];
+        [weakself getAllEvaluationListWithPage:@"0"];
         
     } andFailBlock:^(NSError *error) {
         
@@ -462,15 +461,16 @@
                              @"page" : page,
                              @"pid" : self.pidString
                              };
+    QDFWeakSelf;
     [self requestDataPostWithString:evaluateString params:params successBlock:^(id responseObject) {
         
         EvaluateResponse *response = [EvaluateResponse objectWithKeyValues:responseObject];
-        [self.allEvaResponse addObject:response];
+        [weakself.allEvaResponse addObject:response];
         
         for (EvaluateModel *model in response.evaluate) {
-            [self.allEvaDataArray addObject:model];
+            [weakself.allEvaDataArray addObject:model];
         }
-        [self.checkDetailTableView reloadData];
+        [weakself.checkDetailTableView reloadData];
         
     } andFailBlock:^(NSError *error) {
         

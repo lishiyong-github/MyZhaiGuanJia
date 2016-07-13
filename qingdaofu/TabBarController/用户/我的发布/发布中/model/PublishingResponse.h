@@ -23,7 +23,7 @@
 @property (nonatomic,copy) NSString *guaranteemethods;
 @property (nonatomic,copy) NSString *car; //车信息
 @property (nonatomic,copy) NSString *license;//车牌类型
-@property (nonatomic,copy) NSString *state;  //判断有没有认证
+@property (nonatomic,copy) NSString *state;  //判断有没有认证(1-已认证，其他－未认证)
 
 /* 代理人详情 */
 @property (nonatomic,strong) NSMutableArray *user;

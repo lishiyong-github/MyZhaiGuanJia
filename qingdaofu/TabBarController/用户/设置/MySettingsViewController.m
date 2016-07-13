@@ -175,20 +175,18 @@
         
         NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:@"token"];
         NSDictionary *params = @{@"token" : token};
+        
+        QDFWeakSelf;
         [self requestDataPostWithString:exitString params:params successBlock:^(id responseObject){
-            
-            NSDictionary *duu = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-            NSLog(@"duu is %@",duu);
-            
             BaseModel *exitModel = [BaseModel objectWithKeyValues:responseObject];
-            [self showHint:exitModel.msg];
+            [weakself showHint:exitModel.msg];
             
             if ([exitModel.code isEqualToString:@"0000"]) {
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"token"];
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"mobile"];
                 [[NSUserDefaults standardUserDefaults] synchronize];
                 
-                [self.navigationController popViewControllerAnimated:YES];
+                [weakself.navigationController popViewControllerAnimated:YES];
             }
             
         } andFailBlock:^(NSError *error){

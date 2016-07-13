@@ -194,10 +194,11 @@
     self.registerDictionary[@"mobile"] = self.registerDictionary[@"mobile"]?self.registerDictionary[@"mobile"]:@"";
     NSDictionary *params = @{@"mobile" : self.registerDictionary[@"mobile"]};
     
+    QDFWeakSelf;
     [self requestDataPostWithString:codeString params:params successBlock:^(id responseObject){//成功
         
         BaseModel *codeModel = [BaseModel objectWithKeyValues:responseObject];
-        [self showHint:codeModel.msg];
+        [weakself showHint:codeModel.msg];
         if ([codeModel.code isEqualToString:@"0000"]) {
             [sender startWithSecond:60];
             [sender didChange:^NSString *(JKCountDownButton *countDownButton, int second) {
@@ -228,12 +229,13 @@
 
     NSDictionary *params = self.registerDictionary;
     
-    [self requestDataPostWithString:registerString params:params successBlock:^( id responseObject){
+    QDFWeakSelf;
+    [weakself requestDataPostWithString:registerString params:params successBlock:^( id responseObject){
         BaseModel *registerModel = [BaseModel objectWithKeyValues:responseObject];
-        [self showHint:registerModel.msg];
+        [weakself showHint:registerModel.msg];
         
         if ([registerModel.code isEqualToString:@"0000"]) {
-            [self loginUser];
+            [weakself loginUser];
         }
         
     } andFailBlock:^(NSError *error){
@@ -256,10 +258,11 @@
     //13162521916 123456
     //15000708849   123456
     
+    QDFWeakSelf;
     [self requestDataPostWithString:loginString params:params successBlock:^( id responseObject){
         
         BaseModel *loginModel = [BaseModel objectWithKeyValues:responseObject];
-        [self showHint:loginModel.msg];
+        [weakself showHint:loginModel.msg];
         
         if ([loginModel.code isEqualToString:@"0000"]) {
             [[NSUserDefaults standardUserDefaults] setObject:loginModel.token forKey:@"token"];
@@ -270,11 +273,11 @@
             [nav popViewControllerAnimated:NO];
             [nav popViewControllerAnimated:NO];
         }else{
-            [self.navigationController popViewControllerAnimated:YES];
+            [weakself.navigationController popViewControllerAnimated:YES];
         }
         
     } andFailBlock:^(NSError *error){
-        [self.navigationController popViewControllerAnimated:YES];
+        [weakself.navigationController popViewControllerAnimated:YES];
     }];
 }
 

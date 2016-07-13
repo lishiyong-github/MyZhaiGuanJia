@@ -446,14 +446,15 @@
                              @"status" : status,
                              @"token" : [self getValidateToken]
                              };
+    QDFWeakSelf;
     [self requestDataPostWithString:endpString params:params successBlock:^(id responseObject) {
         BaseModel *sModel = [BaseModel objectWithKeyValues:responseObject];
-        [self showHint:sModel.msg];
+        [weakself showHint:sModel.msg];
         
         if ([sModel.code isEqualToString:@"0000"]) {//成功
-            [self.dealFootView setHidden:YES];
-            [self.dealCommitButton setHidden:NO];
-            [self.navigationController popViewControllerAnimated:YES];
+            [weakself.dealFootView setHidden:YES];
+            [weakself.dealCommitButton setHidden:NO];
+            [weakself.navigationController popViewControllerAnimated:YES];
         }
         
     } andFailBlock:^(NSError *error) {

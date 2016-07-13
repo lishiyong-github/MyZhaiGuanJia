@@ -761,13 +761,14 @@
     
     NSDictionary *params = self.dataDictionary;
 
+    QDFWeakSelf;
     [self requestDataPostWithString:reFinanceString params:params successBlock:^(id responseObject){
         BaseModel *model = [BaseModel objectWithKeyValues:responseObject];
-        [self showHint:model.msg];
+        [weakself showHint:model.msg];
         
         if ([model.code isEqualToString:@"0000"]) {
             if ([type intValue] == 0) {//保存
-                UINavigationController *nav = self.navigationController;
+                UINavigationController *nav = weakself.navigationController;
                 [nav popViewControllerAnimated:NO];
                 
                 MySaveViewController *mySaveVC = [[MySaveViewController alloc] init];
@@ -776,7 +777,7 @@
             }else{
                 ReportFiSucViewController *reportFiSucVC = [[ReportFiSucViewController alloc] init];
                 reportFiSucVC.reportType = @"融资";
-                [self.navigationController pushViewController:reportFiSucVC animated:YES];
+                [weakself.navigationController pushViewController:reportFiSucVC animated:YES];
             }
         }
         

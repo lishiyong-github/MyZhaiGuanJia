@@ -187,11 +187,11 @@
     return nil;
 }
 
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
+    [self showHint:@"您未收到消息提醒"];
     /*
     if (indexPath.section == 0) {
         switch (indexPath.row) {
@@ -231,12 +231,12 @@
 {
     NSString *messageTypeString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMessageTypeAndNumbersString];
     NSDictionary *params = @{@"token" : [self getValidateToken]};
+    QDFWeakSelf;
     [self requestDataPostWithString:messageTypeString params:params successBlock:^(id responseObject) {
         NSDictionary *opopo = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSLog(@"DGHHHHHHH %@",opopo);
         
-        self.resultDic = [NSMutableDictionary dictionaryWithDictionary:opopo[@"result"]];
-        [self.messageTableView reloadData];
+        weakself.resultDic = [NSMutableDictionary dictionaryWithDictionary:opopo[@"result"]];
+        [weakself.messageTableView reloadData];
         
     } andFailBlock:^(NSError *error) {
         

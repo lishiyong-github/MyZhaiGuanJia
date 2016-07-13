@@ -283,15 +283,11 @@
                              @"id" : self.idString,
                              @"category" : self.categaryString
                              };
+    QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
-        
-        NSDictionary *fwejfbu = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSLog(@"&*&*&*&* %@",fwejfbu);
-        
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
-        [self.publishingDataArray addObject:response];
-        [self.publishingTableView reloadData];
-        
+        [weakself.publishingDataArray addObject:response];
+        [weakself.publishingTableView reloadData];  
     } andFailBlock:^(NSError *error){
         
     }];
@@ -321,6 +317,7 @@
             ReportSuitViewController *reportSuiVC = [[ReportSuitViewController alloc] init];
             reportSuiVC.categoryString = rModel.category;
             reportSuiVC.suResponse = response;
+            reportSuiVC.tagString = @"2";
             [self.navigationController pushViewController:reportSuiVC animated:YES];
         }
     }

@@ -1509,13 +1509,6 @@
 			path = MJRefresh;
 			sourceTree = "<group>";
 		};
-		A159F9881D0EE23600A6A024 /* 债务人信息 */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "债务人信息";
-			sourceTree = "<group>";
-		};
 		A15F61811D18DEC90060AF7B /* 抵押物小区 */ = {
 			isa = PBXGroup;
 			children = (
@@ -2314,7 +2307,6 @@
 			children = (
 				A15F61811D18DEC90060AF7B /* 抵押物小区 */,
 				A1522BE21D0F90BD00135C72 /* 机动车品牌 */,
-				A159F9881D0EE23600A6A024 /* 债务人信息 */,
 				A10D7B881CEB222A00422D7D /* 债权人信息 */,
 				A1A34C131CE313F300AD454A /* 上传文件 */,
 				A154B8F61CE1C49500884CA4 /* view */,
@@ -3106,6 +3098,7 @@
 				TargetAttributes = {
 					A1A0169E1C5A0C0300027134 = {
 						CreatedOnToolsVersion = 7.1;
+						DevelopmentTeam = Q7TBB3Z87T;
 						SystemCapabilities = {
 							com.apple.InAppPurchase = {
 								enabled = 1;
@@ -3796,7 +3789,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/qingdaofu/qingdaofu.pch";
 				INFOPLIST_FILE = qingdaofu/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -3826,7 +3819,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/qingdaofu/qingdaofu.pch";
 				INFOPLIST_FILE = qingdaofu/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"-ObjC",

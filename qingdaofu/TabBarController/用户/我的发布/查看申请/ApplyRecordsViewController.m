@@ -171,30 +171,31 @@
                              @"category" : self.categaryStr,
                              @"page" : page
                              };
+    QDFWeakSelf;
     [self requestDataPostWithString:listString params:params successBlock:^(id responseObject){
         
         if ([page integerValue] == 0) {
-            [self.recordsDataArray removeAllObjects];
+            [weakself.recordsDataArray removeAllObjects];
         }
         
         RecordResponse *response = [RecordResponse objectWithKeyValues:responseObject];
         
         if (response.user.count == 0) {
             _pageRecords--;
-            [self showHint:@"没有更多了"];
+            [weakself showHint:@"没有更多了"];
         }
         
         for (UserModel *model in response.user) {
-            [self.recordsDataArray addObject:model];
+            [weakself.recordsDataArray addObject:model];
         }
         
-        if (self.recordsDataArray.count > 0) {
-            [self.baseRemindImageView setHidden:YES];
+        if (weakself.recordsDataArray.count > 0) {
+            [weakself.baseRemindImageView setHidden:YES];
         }else{
-            [self.baseRemindImageView setHidden:NO];
+            [weakself.baseRemindImageView setHidden:NO];
         }
         
-        [self.applyRecordsTableView reloadData];
+        [weakself.applyRecordsTableView reloadData];
         
     } andFailBlock:^(id responseObject){
         

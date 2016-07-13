@@ -355,9 +355,10 @@
     self.lawDataDictionary[@"name"] = self.lawDataDictionary[@"name"]?self.lawDataDictionary[@"name"]:self.responseModel.certification.name;
     self.lawDataDictionary[@"cardno"] = self.lawDataDictionary[@"cardno"]?self.lawDataDictionary[@"cardno"]:self.responseModel.certification.cardno;
     self.lawDataDictionary[@"contact"] = self.lawDataDictionary[@"contact"]?self.lawDataDictionary[@"contact"]:self.responseModel.certification.contact;
-//    self.lawDataDictionary[@"mobile"] = self.lawDataDictionary[@"mobile"]?self.lawDataDictionary[@"mobile"]:self.responseModel.certification.mobile;
     self.lawDataDictionary[@"email"] = self.lawDataDictionary[@"email"]?self.lawDataDictionary[@"email"]:self.responseModel.certification.email;
     self.lawDataDictionary[@"casedesc"] = self.lawDataDictionary[@"casedesc"]?self.lawDataDictionary[@"casedesc"]:self.responseModel.certification.casedesc;
+    
+    self.lawDataDictionary[@"completionRate"] = self.responseModel.completionRate?self.responseModel.completionRate:@"";
     [self.lawDataDictionary setValue:@"2" forKey:@"category"];
     [self.lawDataDictionary setValue:[self getValidateToken] forKey:@"token"];
     
@@ -369,20 +370,21 @@
     
     NSDictionary *params = self.lawDataDictionary;
     
+    QDFWeakSelf;
     [self requestDataPostWithString:lawAuString params:params andImages:nil successBlock:^(id responseObject) {
         
         BaseModel *personModel = [BaseModel objectWithKeyValues:responseObject];
-        [self showHint:personModel.msg];
+        [weakself showHint:personModel.msg];
         
         if ([personModel.code isEqualToString:@"0000"]) {
-            UINavigationController *personNav = self.navigationController;
+            UINavigationController *personNav = weakself.navigationController;
             [personNav popViewControllerAnimated:NO];
             [personNav popViewControllerAnimated:NO];
             [personNav popViewControllerAnimated:NO];
             
             CompleteViewController *completeVC = [[CompleteViewController alloc] init];
             completeVC.hidesBottomBarWhenPushed = YES;
-            completeVC.categoryString = self.categoryString;
+            completeVC.categoryString = weakself.categoryString;
             [personNav pushViewController:completeVC animated:NO];
         }
 

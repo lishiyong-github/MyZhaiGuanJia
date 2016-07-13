@@ -255,11 +255,12 @@
                              @"id" : self.idString,
                              @"category" : self.categoryString
                              };
+    QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
         PublishingResponse *respModel = [PublishingResponse objectWithKeyValues:responseObject];
         
-        [self.detailStoreArray addObject:respModel];
-        [self.detailStoreTableView reloadData];
+        [weakself.detailStoreArray addObject:respModel];
+        [weakself.detailStoreTableView reloadData];
         
     } andFailBlock:^(NSError *error){
         
@@ -274,16 +275,17 @@
                              @"id" : self.idString,
                              @"category" : self.categoryString
                              };
+    QDFWeakSelf;
     [self requestDataPostWithString:applyString params:params successBlock:^(id responseObject) {
         BaseModel *appModel = [BaseModel objectWithKeyValues:responseObject];
-        [self showHint:appModel.msg];
+        [weakself showHint:appModel.msg];
         if ([appModel.code isEqualToString:@"0000"]) {
             [sender setBackgroundColor:kSelectedColor];
             [sender setTitle:@"申请中" forState:0];
             [sender setTitleColor:kBlackColor forState:0];
             sender.userInteractionEnabled = NO;
             
-            UINavigationController *nav = self.navigationController;
+            UINavigationController *nav = weakself.navigationController;
             [nav popViewControllerAnimated:NO];
             [nav popViewControllerAnimated:NO];
             

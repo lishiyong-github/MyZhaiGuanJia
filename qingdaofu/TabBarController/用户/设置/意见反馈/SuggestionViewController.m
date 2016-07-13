@@ -211,12 +211,13 @@
                              @"picture" : @""
                              };
     
+    QDFWeakSelf;
     [self requestDataPostWithString:suggestionString params:params andImages:nil successBlock:^(id responseObject) {
         BaseModel *suggestModel = [BaseModel objectWithKeyValues:responseObject];
-        [self showHint:suggestModel.msg];
+        [weakself showHint:suggestModel.msg];
         
         if ([suggestModel.code isEqualToString:@"0000"]) {
-            [self.navigationController popViewControllerAnimated:YES];
+            [weakself.navigationController popViewControllerAnimated:YES];
         }
     } andFailBlock:^(NSError *error) {
         

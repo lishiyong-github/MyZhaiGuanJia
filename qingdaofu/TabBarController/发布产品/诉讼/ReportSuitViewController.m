@@ -892,7 +892,6 @@
             
             [uploadFilesVC setChooseImages:^(NSDictionary *imageDic) {
                 weakself.suitDataDictionary = [NSMutableDictionary dictionaryWithDictionary:imageDic];
-                
                 weakself.creditorfiles = [NSMutableDictionary dictionaryWithDictionary:imageDic];
             }];
             
@@ -900,6 +899,7 @@
             DebtCreditMessageViewController *debtCreditMessageVC = [[DebtCreditMessageViewController alloc] init];
             debtCreditMessageVC.categoryString = @"1";
             debtCreditMessageVC.debtArray = self.creditorInfos;
+            debtCreditMessageVC.tagString = self.tagString;
             [self.navigationController pushViewController:debtCreditMessageVC animated:YES];
             
             [debtCreditMessageVC setDidEndEditting:^(NSArray *arrays) {
@@ -1098,15 +1098,16 @@
     
     NSDictionary *params = self.suitDataDictionary;
     
+    QDFWeakSelf;
     [self requestDataPostWithString:reFinanceString params:params andImages:nil successBlock:^(id responseObject) {
         
         BaseModel *suitModel = [BaseModel objectWithKeyValues:responseObject];
         
-        [self showHint:suitModel.msg];
+        [weakself showHint:suitModel.msg];
         
         if ([suitModel.code isEqualToString:@"0000"]) {
             if ([typeString intValue] == 0) {//保存
-                UINavigationController *nav = self.navigationController;
+                UINavigationController *nav = weakself.navigationController;
                 [nav popViewControllerAnimated:NO];
                 
                 MySaveViewController *mySaveVC = [[MySaveViewController alloc] init];
@@ -1114,12 +1115,12 @@
                 [nav pushViewController:mySaveVC animated:NO];
             }else{
                 ReportFiSucViewController *reportFiSucVC = [[ReportFiSucViewController alloc] init];
-                if ([self.categoryString integerValue] == 1) {
+                if ([weakself.categoryString integerValue] == 1) {
                     reportFiSucVC.reportType = @"清收";
                 }else{
                     reportFiSucVC.reportType = @"诉讼";
                 }
-                [self.navigationController pushViewController:reportFiSucVC animated:YES];
+                [weakself.navigationController pushViewController:reportFiSucVC animated:YES];
             }
         }
         

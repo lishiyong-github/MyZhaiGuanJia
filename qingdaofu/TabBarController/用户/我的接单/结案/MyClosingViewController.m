@@ -624,12 +624,21 @@
 #pragma mark - method
 - (void)checkClosingDetail
 {
-    CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
-    checkDetailPublishVC.idString = self.idString;
-    checkDetailPublishVC.categoryString = self.categaryString;
-    checkDetailPublishVC.pidString = self.pidString;
-    checkDetailPublishVC.typeString = @"发布方";
-    [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
+     PublishingResponse *responde;
+    if (self.orderCloseArray.count > 0) {
+        responde = self.orderCloseArray[0];
+    }
+    
+    if ([responde.state isEqualToString:@"1"]) {
+        CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+        checkDetailPublishVC.idString = self.idString;
+        checkDetailPublishVC.categoryString = self.categaryString;
+        checkDetailPublishVC.pidString = self.pidString;
+        checkDetailPublishVC.typeString = @"发布方";
+        [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
+    }else{
+        [self showHint:@"发布方未认证，不能查看相关信息"];
+    }
 }
 
 //详情
@@ -640,11 +649,12 @@
                              @"id" : self.idString,
                              @"category" : self.categaryString
                              };
+    QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
-        [self.orderCloseArray addObject:response];
-        [self.myClosingTableView reloadData];
-        [self lookUpSchedule];
+        [weakself.orderCloseArray addObject:response];
+        [weakself.myClosingTableView reloadData];
+        [weakself lookUpSchedule];
     } andFailBlock:^(NSError *error){
         
     }];
@@ -658,15 +668,15 @@
                              @"id" : self.idString,
                              @"category" : self.categaryString
                              };
+    QDFWeakSelf;
     [self requestDataPostWithString:schedule params:params successBlock:^(id responseObject) {
-        
         ScheduleResponse *scheduleResponse = [ScheduleResponse objectWithKeyValues:responseObject];
         
         for (ScheduleModel *scheduleModel in scheduleResponse.disposing) {
-            [self.scheduleOrderCloArray addObject:scheduleModel];
+            [weakself.scheduleOrderCloArray addObject:scheduleModel];
         }
-        [self.myClosingTableView reloadData];
-        [self getOrderEvaluateDetails];
+        [weakself.myClosingTableView reloadData];
+        [weakself getOrderEvaluateDetails];
     } andFailBlock:^(NSError *error) {
         
     }];
@@ -681,16 +691,17 @@
                              @"category" : self.categaryString,
                              @"page" : @"0"
                              };
+    QDFWeakSelf;
     [self requestDataPostWithString:evaluateString params:params successBlock:^(id responseObject) {
         
         EvaluateResponse *response = [EvaluateResponse objectWithKeyValues:responseObject];
-        [self.evaluateResponseArray addObject:response];
+        [weakself.evaluateResponseArray addObject:response];
         
         for (LaunchEvaluateModel *launchModel in response.launchevaluation) {
-            [self.evaluateArray addObject:launchModel];
+            [weakself.evaluateArray addObject:launchModel];
         }
         
-        [self.myClosingTableView reloadData];
+        [weakself.myClosingTableView reloadData];
         
     } andFailBlock:^(NSError *error) {
         

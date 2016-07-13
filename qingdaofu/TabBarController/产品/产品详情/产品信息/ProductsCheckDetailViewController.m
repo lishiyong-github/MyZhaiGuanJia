@@ -10,7 +10,8 @@
 #import "DebtCell.h"
 #import "DebtModel.h"
 
-#import "UIImageView+WebCache.h"
+#import "UIButton+WebCache.h"
+#import "UIViewController+ImageBrowser.h"
 
 @interface ProductsCheckDetailViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -121,22 +122,33 @@
     NSMutableAttributedString *IDStr = [cell.debtIDLabel setAttributeString:@"证件号        " withColor:kBlackColor andSecond:ID withColor:kLightGrayColor withFont:12];
     [cell.debtIDLabel setAttributedText:IDStr];
     
+    QDFWeakSelf;
     if (deModel.creditorcardimage.count < 2) {
         [cell.debtImageView1 setHidden:NO];
         [cell.debtImageView2 setHidden:YES];
         
         NSString *subImgw;
         if (deModel.creditorcardimage.count == 1) {
-            NSString *imgw = deModel.creditorcardimage[0];
-            subImgw = [imgw substringWithRange:NSMakeRange(1, imgw.length-2)];
+            NSString *gugug = deModel.creditorcardimage[0];
+            if ([gugug isEqualToString:@""]) {
+                subImgw = @"";
+            }else{
+                NSString *imgw = deModel.creditorcardimage[0];
+                subImgw = [imgw substringWithRange:NSMakeRange(1, imgw.length-2)];
+            }
         }else{
             subImgw = @"";
         }
         
         NSString *urlImgw = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subImgw];
         NSURL *Url = [NSURL URLWithString:urlImgw];
-        [cell.debtImageView1 sd_setImageWithURL:Url placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
-    }else if(deModel.creditorcardimage.count == 2){
+        [cell.debtImageView1 sd_setImageWithURL:Url forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+        
+        [cell.debtImageView1 addAction:^(UIButton *btn) {
+            [weakself showImages:@[Url]];
+        }];
+        
+    }else if(deModel.creditorcardimage.count >= 2){
         [cell.debtImageView1 setHidden:NO];
         [cell.debtImageView2 setHidden:NO];
         
@@ -144,15 +156,21 @@
         NSString *subImgw1 = [imgw1 substringWithRange:NSMakeRange(1, imgw1.length-2)];
         NSString *urlImgw1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subImgw1];
         NSURL *Url1 = [NSURL URLWithString:urlImgw1];
-        [cell.debtImageView1 sd_setImageWithURL:Url1 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+        [cell.debtImageView1 sd_setImageWithURL:Url1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
         
         NSString *imgw2 = deModel.creditorcardimage[0];
         NSString *subImgw2 = [imgw2 substringWithRange:NSMakeRange(1, imgw2.length-2)];
         NSString *urlImgw2 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subImgw2];
         NSURL *Url2 = [NSURL URLWithString:urlImgw2];
-        [cell.debtImageView1 sd_setImageWithURL:Url2 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+        [cell.debtImageView2 sd_setImageWithURL:Url2 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+        
+        [cell.debtImageView1 addAction:^(UIButton *btn) {
+            [weakself showImages:@[Url1,Url2]];
+        }];
+        [cell.debtImageView2 addAction:^(UIButton *btn) {
+            [weakself showImages:@[Url1,Url2]];
+        }];
     }
-    
     return cell;
 }
 

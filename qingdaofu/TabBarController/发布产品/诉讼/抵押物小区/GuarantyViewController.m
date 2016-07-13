@@ -134,21 +134,21 @@
 {
     NSString *guarantyString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kGuarantyString];
     NSDictionary *params = @{@"name" : predicate};
+    
+    QDFWeakSelf;
     [self requestDataPostWithString:guarantyString params:params successBlock:^(id responseObject) {
         
-        [self.guDataArray removeAllObjects];
-        
+        [weakself.guDataArray removeAllObjects];
         GuarantyResponse *response = [GuarantyResponse objectWithKeyValues:responseObject];
         
         for (GuarantyModel *model in response.result) {
-            [self.guDataArray addObject:model];
+            [weakself.guDataArray addObject:model];
         }
         
         // 刷新列表
-        [self.guTableView reloadData];
+        [weakself.guTableView reloadData];
         
     } andFailBlock:^(NSError *error) {
-        [self showHint:@"加载失败"];
     }];
 }
 

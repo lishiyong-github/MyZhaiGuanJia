@@ -250,7 +250,7 @@
                         ReportSuitViewController *reportSuitVC = [[ReportSuitViewController alloc] init];
                         reportSuitVC.suResponse = response;
                         reportSuitVC.categoryString = self.categaryString;
-//                        reportSuitVC.tagString = @"2";
+                        reportSuitVC.tagString = @"2";
                         [weakself.navigationController pushViewController:reportSuitVC animated:YES];
                     }
                     
@@ -303,16 +303,13 @@
                              @"id" : self.idString,
                              @"category" : self.categaryString
                              };
+    QDFWeakSelf;
     [self requestDataPostWithString:sDetailString params:params successBlock:^(id responseObject){
-        
-        
-        NSDictionary *cvdd = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSLog(@"^^^^^ %@",cvdd);
         
         PublishingResponse *responseModel = [PublishingResponse objectWithKeyValues:responseObject];
         
-        [self.saveDetailArray addObject:responseModel];
-        [self.detailSaveTableView reloadData];
+        [weakself.saveDetailArray addObject:responseModel];
+        [weakself.detailSaveTableView reloadData];
         
     } andFailBlock:^(NSError *error){
         
@@ -335,14 +332,14 @@
                              @"category" : saveModel.category,
                              @"token" : [self getValidateToken]
                              };
-    
+    QDFWeakSelf;
     [self requestDataPostWithString:reportString params:params successBlock:^(id responseObject) {
         BaseModel *model = [BaseModel objectWithKeyValues:responseObject];
         
         if ([model.code isEqualToString:@"0000"]) {
-            [self showHint:@"发布成功"];
+            [weakself showHint:@"发布成功"];
             
-            UINavigationController *nav = self.navigationController;
+            UINavigationController *nav = weakself.navigationController;
             [nav popViewControllerAnimated:NO];
             [nav popViewControllerAnimated:NO];
             

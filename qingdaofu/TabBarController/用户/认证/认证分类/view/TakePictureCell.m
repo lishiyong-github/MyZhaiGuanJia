@@ -95,7 +95,7 @@
         cell.contentView.backgroundColor = [UIColor colorWithPatternImage:imageView.image];
     }else if([self.collectionDataList[indexPath.item] isKindOfClass:[UIImage class]]){
         cell.contentView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:self.collectionDataList[indexPath.item]]];
-    }else if ([self.collectionDataList[indexPath.item] isKindOfClass:[NSString class]]){//从相册选取
+    }else if ([self.collectionDataList[indexPath.item] isKindOfClass:[NSString class]]){
         cell.contentView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:self.collectionDataList[indexPath.item]]];
     }
     

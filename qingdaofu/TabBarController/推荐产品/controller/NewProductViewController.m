@@ -31,6 +31,7 @@
 
 @property (nonatomic,strong) UIButton *titleView;
 @property (nonatomic,strong) UITableView *mainTableView;
+@property (nonatomic,strong) UIView *mainHeaderView;
 @property (nonatomic,strong) UIScrollView *mainHeaderScrollView;
 @property (nonatomic,strong) UIPageControl *pageControl;
 
@@ -59,10 +60,9 @@
     [self.view addSubview:self.mainTableView];
     [self.view setNeedsUpdateConstraints];
     
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self chechAppNewVersion];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self getPropagandaChar];
+        [self chechAppNewVersion];
     });
 }
 
@@ -101,11 +101,22 @@
     return _mainTableView;
 }
 
+- (UIView *)mainHeaderView
+{
+    if (!_mainHeaderView) {
+        _mainHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 100)];
+        _mainHeaderView.backgroundColor = kBackColor;
+        [_mainHeaderView addSubview:self.mainHeaderScrollView];
+        [_mainHeaderView addSubview:self.pageControl];
+        [self.mainHeaderScrollView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+    }
+    return _mainHeaderView;
+}
+
 - (UIScrollView *)mainHeaderScrollView
 {
     if (!_mainHeaderScrollView) {
-        _mainHeaderScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 100)];
-        _mainHeaderScrollView.backgroundColor = kBackColor;
+        _mainHeaderScrollView = [UIScrollView newAutoLayoutView];
         _mainHeaderScrollView.contentSize = CGSizeMake(kScreenWidth*self.propagandaDic.allKeys.count/2, 100);
         _mainHeaderScrollView.pagingEnabled = YES;//分页
         _mainHeaderScrollView.delegate = self;
@@ -222,7 +233,7 @@
                             ReportSuitViewController *reportCollectVC = [[ReportSuitViewController alloc] init];
                             reportCollectVC.hidesBottomBarWhenPushed = YES;
                             reportCollectVC.categoryString = @"2";
-//                            reportCollectVC.tagString = @"1";
+                            reportCollectVC.tagString = @"1";
                             [weakself.navigationController pushViewController:reportCollectVC animated:YES];
                         }
                             break;
@@ -230,7 +241,7 @@
                             ReportSuitViewController *reportSuitVC = [[ReportSuitViewController alloc] init];
                             reportSuitVC.hidesBottomBarWhenPushed = YES;
                             reportSuitVC.categoryString = @"3";
-//                            reportSuitVC.tagString = @"1";
+                            reportSuitVC.tagString = @"1";
                             [weakself.navigationController pushViewController:reportSuitVC animated:YES];
                         }
                             break;
@@ -428,13 +439,14 @@
     NSString *recommendString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductsRecommendListString];
     NSDictionary *params = @{@"limit" : @"6"};
     
+    QDFWeakSelf;
     [self requestDataPostWithString:recommendString params:params successBlock:^(id responseObject) {
-        [self.productsDataListArray removeAllObjects];
+        [weakself.productsDataListArray removeAllObjects];
         NewProductModel *model = [NewProductModel objectWithKeyValues:responseObject];
         for (NewProductListModel *listModel in model.result) {
-            [self.productsDataListArray addObject:listModel];
+            [weakself.productsDataListArray addObject:listModel];
         }
-        [self.mainTableView reloadData];
+        [weakself.mainTableView reloadData];
     } andFailBlock:^(NSError *error) {
         
     }];
@@ -448,8 +460,7 @@
     [self requestDataPostWithString:propagandaString params:nil successBlock:^(id responseObject) {
         NSDictionary *dedfr = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
         weakself.propagandaDic = [NSMutableDictionary dictionaryWithDictionary:dedfr];
-        [weakself.mainTableView.tableHeaderView addSubview:self.mainHeaderScrollView];
-        [weakself.mainTableView addSubview:weakself.pageControl];
+        [weakself.mainTableView.tableHeaderView addSubview:weakself.mainHeaderView];
         
     } andFailBlock:^(NSError *error) {
         

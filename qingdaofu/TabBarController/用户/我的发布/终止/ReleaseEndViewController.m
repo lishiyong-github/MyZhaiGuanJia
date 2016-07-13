@@ -464,13 +464,15 @@
                              @"category" : self.categaryString,
                              @"token" : [self getValidateToken]
                              };
+    
+    QDFWeakSelf;
     [self requestDataPostWithString:scheduleString params:params successBlock:^(id responseObject) {
         ScheduleResponse *scheduleResponse = [ScheduleResponse objectWithKeyValues:responseObject];
         
         for (ScheduleModel *scheduleModel in scheduleResponse.disposing) {
-            [self.scheduleReleaseEndArray addObject:scheduleModel];
+            [weakself.scheduleReleaseEndArray addObject:scheduleModel];
         }
-        [self.releaseEndTableView reloadData];
+        [weakself.releaseEndTableView reloadData];
         
     } andFailBlock:^(NSError *error) {
         

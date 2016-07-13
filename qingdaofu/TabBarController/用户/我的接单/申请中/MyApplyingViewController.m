@@ -292,10 +292,11 @@
                              @"id" : self.idString,
                              @"category" : self.categaryString
                              };
+    QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
-        [self.myApplyArray addObject:response];
-        [self.myApplyingTableView reloadData];
+        [weakself.myApplyArray addObject:response];
+        [weakself.myApplyingTableView reloadData];
         
     } andFailBlock:^(NSError *error){
         

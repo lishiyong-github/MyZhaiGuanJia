@@ -346,6 +346,7 @@
     self.perDataDictionary[@"email"] = self.perDataDictionary[@"email"]?self.perDataDictionary[@"email"]:self.respnseModel.certification.email;
     self.perDataDictionary[@"casedesc"] = self.perDataDictionary[@"casedesc"]?self.perDataDictionary[@"casedesc"]:self.respnseModel.certification.casedesc;
     
+    self.perDataDictionary[@"completionRate"] = self.respnseModel.completionRate?self.respnseModel.completionRate:@"";
     [self.perDataDictionary setValue:@"1" forKey:@"category"];//认证类型
     [self.perDataDictionary setValue:[self getValidateToken] forKey:@"token"];
     
@@ -360,48 +361,26 @@
     
     NSDictionary *params = self.perDataDictionary;
     
-    
+    QDFWeakSelf;
     [self requestDataPostWithString:personAuString params:params andImages:nil successBlock:^(id responseObject) {
 
         BaseModel *model = [BaseModel objectWithKeyValues:responseObject];
-        [self showHint:model.msg];
+        [weakself showHint:model.msg];
         
         if ([model.code isEqualToString:@"0000"]) {
-            UINavigationController *nav = self.navigationController;
+            UINavigationController *nav = weakself.navigationController;
             [nav popViewControllerAnimated:NO];
             [nav popViewControllerAnimated:NO];
             [nav popToRootViewControllerAnimated:NO];
             CompleteViewController *completeVC = [[CompleteViewController alloc] init];
-            completeVC.categoryString = self.categoryString;
+            completeVC.categoryString = weakself.categoryString;
             completeVC.hidesBottomBarWhenPushed = YES;
             [nav pushViewController:completeVC animated:NO];
         }
         
     } andFailBlock:^(NSError *error) {
-        NSLog(@"****** %@",error);
-    }];
     
-    /*
-    [self requestDataPostWithString:personAuString params:params successBlock:^(id responseObject){
-        
-        BaseModel *personModel = [BaseModel objectWithKeyValues:responseObject];
-        [self showHint:personModel.msg];
-        
-        if ([personModel.code isEqualToString:@"0000"]) {
-            UINavigationController *personNav = self.navigationController;
-            [personNav popViewControllerAnimated:NO];
-            [personNav popViewControllerAnimated:NO];
-            
-            CompleteViewController *completeVC = [[CompleteViewController alloc] init];
-            completeVC.hidesBottomBarWhenPushed = YES;
-            completeVC.categoryString = @"1";
-            [personNav pushViewController:completeVC animated:NO];
-        }
-        
-    } andFailBlock:^(NSError *error){
-        
     }];
-     */
 }
 
 - (void)didReceiveMemoryWarning {

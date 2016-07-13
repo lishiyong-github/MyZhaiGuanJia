@@ -575,13 +575,22 @@
 #pragma mark - method
 - (void)checkProcessingDetail
 {
-    CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
-    checkDetailPublishVC.idString = self.idString;
-    checkDetailPublishVC.categoryString = self.categaryString;
-    checkDetailPublishVC.pidString = self.pidString;
-    checkDetailPublishVC.typeString = @"发布方";
-    checkDetailPublishVC.typeDegreeString = @"处理中";
-    [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
+    PublishingResponse *responde;
+    if (self.processArray.count > 0) {
+        responde = self.processArray[0];
+    }
+    
+    if ([responde.state isEqualToString:@"1"]) {
+        CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+        checkDetailPublishVC.idString = self.idString;
+        checkDetailPublishVC.categoryString = self.categaryString;
+        checkDetailPublishVC.pidString = self.pidString;
+        checkDetailPublishVC.typeString = @"发布方";
+        checkDetailPublishVC.typeDegreeString = @"处理中";
+        [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
+    }else{
+        [self showHint:@"发布方未认证，不能查看相关信息"];
+    }
 }
 
 - (void)getDetailMessageOfProcessing
@@ -591,25 +600,26 @@
                              @"id" : self.idString,
                              @"category" : self.categaryString
                              };
+    QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
         
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
-        [self.processArray addObject:response];
-        [self.myProcessingTableView reloadData];
+        [weakself.processArray addObject:response];
+        [weakself.myProcessingTableView reloadData];
         
         if ([response.product.progress_status integerValue] == 2 && ![response.uidString isEqualToString:response.product.uidInner]) {
             if ([response.product.applyclose integerValue] == 0) {
-                [self.processinCommitButton setTitle:@"申请结案" forState:0];
-                [self.processinCommitButton addTarget:self action:@selector(endProduct) forControlEvents:UIControlEventTouchUpInside];
+                [weakself.processinCommitButton setTitle:@"申请结案" forState:0];
+                [weakself.processinCommitButton addTarget:self action:@selector(endProduct) forControlEvents:UIControlEventTouchUpInside];
                 
             }else if ([response.product.applyclose integerValue] == 4 && [response.product.applyclosefrom isEqualToString:response.product.uidInner]){
-                [self.processinCommitButton setTitle:@"申请同意结案" forState:0];
-                [self.processinCommitButton addTarget:self action:@selector(endProduct) forControlEvents:UIControlEventTouchUpInside];
+                [weakself.processinCommitButton setTitle:@"申请同意结案" forState:0];
+                [weakself.processinCommitButton addTarget:self action:@selector(endProduct) forControlEvents:UIControlEventTouchUpInside];
             }else{
-                [self.processinCommitButton setTitle:@"结案申请中" forState:0];
-                [self.processinCommitButton setBackgroundColor:kSelectedColor];
-                [self.processinCommitButton setTitleColor:kBlackColor forState:0];
-                self.processinCommitButton.userInteractionEnabled = NO;
+                [weakself.processinCommitButton setTitle:@"结案申请中" forState:0];
+                [weakself.processinCommitButton setBackgroundColor:kSelectedColor];
+                [weakself.processinCommitButton setTitleColor:kBlackColor forState:0];
+                weakself.processinCommitButton.userInteractionEnabled = NO;
             }
         }
         
@@ -629,14 +639,15 @@
                              @"category" : self.categaryString,
                              @"page" : @"1"
                              };
+    QDFWeakSelf;
     [self requestDataPostWithString:scheduleString params:params successBlock:^(id responseObject) {
         ScheduleResponse *scheduleResponse = [ScheduleResponse objectWithKeyValues:responseObject];
         
         for (ScheduleModel *scheduleModel in scheduleResponse.disposing) {
-            [self.scheduleOrderProArray addObject:scheduleModel];
+            [weakself.scheduleOrderProArray addObject:scheduleModel];
         }
-        [self.myProcessingTableView reloadData];
-        [self delayRequest];
+        [weakself.myProcessingTableView reloadData];
+        [weakself delayRequest];
         
     } andFailBlock:^(NSError *error) {
         
@@ -651,10 +662,11 @@
                              @"id" : self.idString,
                              @"category" : self.categaryString
                              };
+    QDFWeakSelf;
     [self requestDataPostWithString:deString params:params successBlock:^(id responseObject) {
         DelayResponse *response = [DelayResponse objectWithKeyValues:responseObject];
-        [self.delayArray addObject:response];
-        [self.myProcessingTableView reloadData];
+        [weakself.delayArray addObject:response];
+        [weakself.myProcessingTableView reloadData];
         
     } andFailBlock:^(NSError *error) {
         
@@ -670,13 +682,14 @@
                              @"token" : [self getValidateToken],
                              @"status" : @"4"
                              };
+    QDFWeakSelf;
     [self requestDataPostWithString:endpString params:params successBlock:^(id responseObject) {
         BaseModel *sModel = [BaseModel objectWithKeyValues:responseObject];
-         [self showHint:sModel.msg];
+         [weakself showHint:sModel.msg];
         
         if ([sModel.code isEqualToString:@"0000"]) {//成功
-            [self.processinCommitButton setBackgroundColor:kSelectedColor];
-            [self.navigationController popViewControllerAnimated:YES];
+            [weakself.processinCommitButton setBackgroundColor:kSelectedColor];
+            [weakself.navigationController popViewControllerAnimated:YES];
         }
         
     } andFailBlock:^(NSError *error) {

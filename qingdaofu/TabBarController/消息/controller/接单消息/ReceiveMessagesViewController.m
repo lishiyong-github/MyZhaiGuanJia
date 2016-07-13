@@ -163,28 +163,28 @@
                              @"page" : page,
                              @"type" : @"2"//发布1，接单2
                              };
+    
+    QDFWeakSelf;
     [self requestDataPostWithString:mesString params:params successBlock:^(id responseObject) {
-        NSDictionary *dddd = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSLog(@"^^^^^^^ %@",dddd);
         
         if ([page integerValue] == 0) {
-            [self.messageReceiveArray removeAllObjects];
+            [weakself.messageReceiveArray removeAllObjects];
         }
         
         MessageResponse *response = [MessageResponse objectWithKeyValues:responseObject];
         
         for (MessageModel *mesModel in response.message) {
-            [self.messageReceiveArray addObject:mesModel];
+            [weakself.messageReceiveArray addObject:mesModel];
         }
         
-        if (self.messageReceiveArray.count > 0) {
-            [self.baseRemindImageView setHidden:YES];
+        if (weakself.messageReceiveArray.count > 0) {
+            [weakself.baseRemindImageView setHidden:YES];
         }else{
-            [self.baseRemindImageView setHidden:NO];
+            [weakself.baseRemindImageView setHidden:NO];
             _rePage--;
         }
         
-        [self.receiveTableView reloadData];
+        [weakself.receiveTableView reloadData];
         
     } andFailBlock:^(NSError *error) {
         
@@ -215,13 +215,15 @@
     NSDictionary *params = @{@"id" : idStr,
                              @"token" : [self getValidateToken]
                              };
+    
+    QDFWeakSelf;
     [self requestDataPostWithString:isReadString params:params successBlock:^(id responseObject) {
         BaseModel *aModel = [BaseModel objectWithKeyValues:responseObject];
         if ([aModel.code isEqualToString:@"0000"]) {
             MyApplyingViewController *myApplyVC = [[MyApplyingViewController alloc] init];
             myApplyVC.idString = categoryModel.idString;
             myApplyVC.categaryString = categoryModel.category;
-            [self.navigationController pushViewController:myApplyVC animated:YES];
+            [weakself.navigationController pushViewController:myApplyVC animated:YES];
         }
         
     } andFailBlock:^(NSError *error) {

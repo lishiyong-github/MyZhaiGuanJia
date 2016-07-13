@@ -297,37 +297,37 @@
                    @"pid" : self.pidString,
                    };
     }
-    
+    QDFWeakSelf;
     [self requestDataPostWithString:evaluateString params:params successBlock:^(id responseObject) {        
         if ([page integerValue] == 1) {
-            [self.allEvaluateArray removeAllObjects];
+            [weakself.allEvaluateArray removeAllObjects];
         }
         
         EvaluateResponse *response = [EvaluateResponse objectWithKeyValues:responseObject];
-        [self.responseArray addObject:response];
+        [weakself.responseArray addObject:response];
         
         if (response.evaluate.count == 0) {
-            [self showHint:@"没有更多了"];
+            [weakself showHint:@"没有更多了"];
             _pageEva--;
         }
         
-        if ([self.evaTypeString isEqualToString:@"evaluate"]) {//收到的评价
+        if ([weakself.evaTypeString isEqualToString:@"evaluate"]) {//收到的评价
             for (EvaluateModel *model in response.evaluate) {
-                [self.allEvaluateArray addObject:model];
+                [weakself.allEvaluateArray addObject:model];
             }
-        }else if([self.evaTypeString isEqualToString:@"launchevaluation"]){//给出的评价
+        }else if([weakself.evaTypeString isEqualToString:@"launchevaluation"]){//给出的评价
             for (LaunchEvaluateModel *model in response.launchevaluation) {
-                [self.allEvaluateArray addObject:model];
+                [weakself.allEvaluateArray addObject:model];
             }
         }
         
-        if (self.allEvaluateArray.count > 0) {
-            [self .baseRemindImageView setHidden:YES];
+        if (weakself.allEvaluateArray.count > 0) {
+            [weakself .baseRemindImageView setHidden:YES];
         }else{
-            [self .baseRemindImageView setHidden:NO];
+            [weakself .baseRemindImageView setHidden:NO];
         }
         
-        [self.allEvaTableView reloadData];
+        [weakself.allEvaTableView reloadData];
         
     } andFailBlock:^(NSError *error) {
         

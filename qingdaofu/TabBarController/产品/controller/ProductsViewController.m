@@ -523,11 +523,12 @@
 - (void)getProvinceList
 {
     NSString *provinceString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProvinceString];
+    QDFWeakSelf;
     [self requestDataPostWithString:provinceString params:nil successBlock:^(id responseObject) {
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
         
-        self.provinceDictionary = dic;
-        [self.tableView11 reloadData];
+        weakself.provinceDictionary = dic;
+        [weakself.tableView11 reloadData];
         
     } andFailBlock:^(NSError *error) {
         
@@ -538,12 +539,13 @@
 {
     NSString *cityString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kCityString];
     NSDictionary *params = @{@"fatherID" : provinceId};
+    
+    QDFWeakSelf;
     [self requestDataPostWithString:cityString params:params successBlock:^(id responseObject) {
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
         
-        self.cityDcitionary = dic[provinceId];
-        
-        [self.tableView12 reloadData];
+        weakself.cityDcitionary = dic[provinceId];
+        [weakself.tableView12 reloadData];
         
     } andFailBlock:^(NSError *error) {
         
@@ -554,12 +556,13 @@
 {
     NSString *districtString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kDistrictString];
     NSDictionary *params = @{@"fatherID" : cityId};
+    
+    QDFWeakSelf;
     [self requestDataPostWithString:districtString params:params successBlock:^(id responseObject) {
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
         
-        self.districtDictionary = dic[cityId];
-        
-        [self.tableView13 reloadData];
+        weakself.districtDictionary = dic[cityId];
+        [weakself.tableView13 reloadData];
         
     } andFailBlock:^(NSError *error) {
         
@@ -580,30 +583,32 @@
     [self.paramsDictionary setValue:page forKey:@"page"];
     
     NSDictionary *params = self.paramsDictionary;
+    
+    QDFWeakSelf;
     [self requestDataPostWithString:allProString params:params successBlock:^(id responseObject) {
         
         if ([page intValue] == 1) {
-            [self.allDataList removeAllObjects];
+            [weakself.allDataList removeAllObjects];
         }
         
         NewProductModel *response = [NewProductModel objectWithKeyValues:responseObject];
         
         if (response.result.count == 0) {
-            [self showHint:@"没有更多了"];
+            [weakself showHint:@"没有更多了"];
             _page--;
         }
         
         for (NewProductListModel *model in response.result) {
-            [self.allDataList addObject:model];
+            [weakself.allDataList addObject:model];
         }
         
-        if (self.allDataList.count == 0) {
-            [self.baseRemindImageView setHidden:NO];
+        if (weakself.allDataList.count == 0) {
+            [weakself.baseRemindImageView setHidden:NO];
         }else{
-            [self.baseRemindImageView setHidden:YES];
+            [weakself.baseRemindImageView setHidden:YES];
         }
         
-        [self.productsTableView reloadData];
+        [weakself.productsTableView reloadData];
         
     } andFailBlock:^(NSError *error) {
         

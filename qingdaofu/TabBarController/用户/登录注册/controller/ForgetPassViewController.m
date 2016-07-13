@@ -146,10 +146,11 @@
     self.forgetDictionay[@"mobile"] = self.forgetDictionay[@"mobile"]?self.forgetDictionay[@"mobile"]:@"";
     NSDictionary *params = @{@"mobile" : self.forgetDictionay[@"mobile"]};
     
+    QDFWeakSelf;
     [self requestDataPostWithString:codeString params:params successBlock:^(id responseObject){//成功
         
         BaseModel *codeModel = [BaseModel objectWithKeyValues:responseObject];
-        [self showHint:codeModel.msg];
+        [weakself showHint:codeModel.msg];
         if ([codeModel.code isEqualToString:@"0000"]) {
             
             [sender startWithSecond:60];
@@ -181,12 +182,14 @@
     self.forgetDictionay[@"new_password"] = self.forgetDictionay[@"new_password"]?self.forgetDictionay[@"new_password"]:@"";
 
     NSDictionary *params = self.forgetDictionay;
+    
+    QDFWeakSelf;
     [self requestDataPostWithString:forgetString params:params successBlock:^(id responseObject){
         BaseModel *forgetModel = [BaseModel objectWithKeyValues:responseObject];
-        [self showHint:forgetModel.msg];
+        [weakself showHint:forgetModel.msg];
         
         if ([forgetModel.code isEqualToString:@"0000"]) {
-            [self loginUser];
+            [weakself loginUser];
         }
         
     } andFailBlock:^(NSError *error){
@@ -209,21 +212,22 @@
     //13162521916 123456
     //15000708849   123456
     
+    QDFWeakSelf;
     [self requestDataPostWithString:loginString params:params successBlock:^( id responseObject){
         
         BaseModel *loginModel = [BaseModel objectWithKeyValues:responseObject];
-        [self showHint:loginModel.msg];
+        [weakself showHint:loginModel.msg];
         
         if ([loginModel.code isEqualToString:@"0000"]) {
             [[NSUserDefaults standardUserDefaults] setObject:loginModel.token forKey:@"token"];
-            [[NSUserDefaults standardUserDefaults] setObject:self.forgetDictionay[@"mobile"] forKey:@"mobile"];
+            [[NSUserDefaults standardUserDefaults] setObject:weakself.forgetDictionay[@"mobile"] forKey:@"mobile"];
             [[NSUserDefaults standardUserDefaults] synchronize];
             
-            UINavigationController *nav = self.navigationController;
+            UINavigationController *nav = weakself.navigationController;
             [nav popViewControllerAnimated:NO];
             [nav popViewControllerAnimated:NO];
         }else{
-            [self.navigationController popViewControllerAnimated:YES];
+            [weakself.navigationController popViewControllerAnimated:YES];
         }
         
     } andFailBlock:^(NSError *error){

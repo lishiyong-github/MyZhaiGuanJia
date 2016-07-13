@@ -441,12 +441,21 @@
 #pragma mark - method
 - (void)checkOrderEndDetails
 {
-    CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
-    checkDetailPublishVC.idString = self.idString;
-    checkDetailPublishVC.categoryString = self.categaryString;
-    checkDetailPublishVC.pidString = self.pidString;
-    checkDetailPublishVC.typeString = @"发布方";
-    [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
+    PublishingResponse *responde;
+    if (self.endArray.count > 0) {
+        responde = self.endArray[0];
+    }
+    
+    if ([responde.state isEqualToString:@"1"]) {
+        CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+        checkDetailPublishVC.idString = self.idString;
+        checkDetailPublishVC.categoryString = self.categaryString;
+        checkDetailPublishVC.pidString = self.pidString;
+        checkDetailPublishVC.typeString = @"发布方";
+        [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
+    }else{
+        [self showHint:@"发布方未认证，不能查看相关信息"];
+    }
 }
 
 - (void)getDetailMessageOfEnding
@@ -456,11 +465,12 @@
                              @"id" : self.idString,
                              @"category" : self.categaryString
                              };
+    QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
-        [self.endArray addObject:response];
-        [self.myEndingTableView reloadData];
-        [self getScheduleDetails];
+        [weakself.endArray addObject:response];
+        [weakself.myEndingTableView reloadData];
+        [weakself getScheduleDetails];
     } andFailBlock:^(NSError *error){
         
     }];
@@ -473,13 +483,14 @@
                              @"category" : self.categaryString,
                              @"token" : [self getValidateToken]
                              };
+    QDFWeakSelf;
     [self requestDataPostWithString:scheduleString params:params successBlock:^(id responseObject) {
         
         ScheduleResponse *response = [ScheduleResponse objectWithKeyValues:responseObject];
         for (ScheduleModel *model in response.disposing) {
-            [self.scheduleOrderEndArray addObject:model];
+            [weakself.scheduleOrderEndArray addObject:model];
         }
-        [self.myEndingTableView reloadData];
+        [weakself.myEndingTableView reloadData];
         
     } andFailBlock:^(NSError *error) {
         

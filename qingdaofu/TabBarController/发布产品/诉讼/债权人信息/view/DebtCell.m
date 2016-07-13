@@ -127,19 +127,19 @@
     return _debtIDLabel;
 }
 
-- (UIImageView *)debtImageView1
+- (UIButton *)debtImageView1
 {
     if (!_debtImageView1) {
-        _debtImageView1 = [UIImageView newAutoLayoutView];
+        _debtImageView1 = [UIButton newAutoLayoutView];
         _debtImageView1.backgroundColor = kLightGrayColor;
     }
     return _debtImageView1;
 }
 
-- (UIImageView *)debtImageView2
+- (UIButton *)debtImageView2
 {
     if (!_debtImageView2) {
-        _debtImageView2 = [UIImageView newAutoLayoutView];
+        _debtImageView2 = [UIButton newAutoLayoutView];
         _debtImageView2.backgroundColor = kLightGrayColor;
     }
     return _debtImageView2;

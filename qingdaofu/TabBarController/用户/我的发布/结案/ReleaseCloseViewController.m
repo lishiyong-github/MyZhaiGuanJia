@@ -638,12 +638,13 @@
                              @"id" : self.idString,
                              @"category" : self.categaryString
                              };
+    QDFWeakSelf;
     [self requestDataPostWithString:releaseString params:params successBlock:^(id responseObject){
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
-        [self.releaseArray addObject:response];
-        [self.ReleaseCloseTableView reloadData];
+        [weakself.releaseArray addObject:response];
+        [weakself.ReleaseCloseTableView reloadData];
         
-        [self getPacesDetails];
+        [weakself getPacesDetails];
     } andFailBlock:^(NSError *error){
         
     }];
@@ -657,15 +658,17 @@
                              @"category" : self.categaryString,
                              @"token" : [self getValidateToken]
                              };
+    
+    QDFWeakSelf;
     [self requestDataPostWithString:scheduleString params:params successBlock:^(id responseObject) {
         
         ScheduleResponse *response = [ScheduleResponse objectWithKeyValues:responseObject];
         
         for (ScheduleModel *model in response.disposing) {
-            [self.scheduleReleaseCloArray addObject:model];
+            [weakself.scheduleReleaseCloArray addObject:model];
         }
-        [self.ReleaseCloseTableView reloadData];
-        [self getEvaluateDetails];
+        [weakself.ReleaseCloseTableView reloadData];
+        [weakself getEvaluateDetails];
 
     } andFailBlock:^(NSError *error) {
         
@@ -680,17 +683,19 @@
                              @"id" : self.idString,
                              @"category" : self.categaryString
                              };
+    
+    QDFWeakSelf;
     [self requestDataPostWithString:evaluateString params:params successBlock:^(id responseObject) {
         
         EvaluateResponse *response = [EvaluateResponse objectWithKeyValues:responseObject];
         
-        [self.evaluateResponseArray addObject:response];
+        [weakself.evaluateResponseArray addObject:response];
         
         for (LaunchEvaluateModel *launchModel in response.launchevaluation) {
-            [self.evaluateArray addObject:launchModel];
+            [weakself.evaluateArray addObject:launchModel];
         }
         
-        [self.ReleaseCloseTableView reloadData];
+        [weakself.ReleaseCloseTableView reloadData];
         
     } andFailBlock:^(NSError *error) {
         

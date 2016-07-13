@@ -217,18 +217,13 @@
 - (void)getBrandList
 {
     NSString *brandString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kBrandString];
+    
+    QDFWeakSelf;
     [self requestDataPostWithString:brandString params:nil successBlock:^(id responseObject) {
         
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSLog(@"@@@@@@@@@ %@",dic);
-        
-//        for (int i=0; i<[[dic allKeys] count]; i++) {
-//            [self.brandArray addObject:dic.allValues[i]];
-//        }
-        
-        self.brandDic = [NSMutableDictionary dictionaryWithDictionary:dic];
-        
-        [self.tableView1 reloadData];
+        weakself.brandDic = [NSMutableDictionary dictionaryWithDictionary:dic];
+        [weakself.tableView1 reloadData];
         
     } andFailBlock:^(NSError *error) {
         

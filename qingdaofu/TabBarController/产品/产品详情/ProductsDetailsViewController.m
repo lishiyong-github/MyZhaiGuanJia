@@ -315,17 +315,14 @@
                              @"id" : self.idString,
                              @"category" : self.categoryString
                              };
+    QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
-        
-        NSDictionary *asewe = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSLog(@"-=-=-=-=-=-= %@",asewe);
-        
         PublishingResponse *respModel = [PublishingResponse objectWithKeyValues:responseObject];
         
-        self.navigationItem.title = respModel.product.codeString;
-        [self.recommendDataArray addObject:respModel];
-        [self applicationForOrdersStates];
-        [self.productsDetailsTableView reloadData];
+        weakself.navigationItem.title = respModel.product.codeString;
+        [weakself.recommendDataArray addObject:respModel];
+        [weakself applicationForOrdersStates];
+        [weakself.productsDetailsTableView reloadData];
         
     } andFailBlock:^(NSError *error){
     }];
@@ -339,21 +336,17 @@
                              @"category" : self.categoryString,
                              @"token" : [self getValidateToken]
                              };
+    QDFWeakSelf;
     [self requestDataPostWithString:houseString params:params successBlock:^(id responseObject) {
-        
-        NSDictionary *dicnvv = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSLog(@"opopopopo   %@",dicnvv);
-        
-        
         ApplicationStateModel *stateModel = [ApplicationStateModel objectWithKeyValues:responseObject];
-        PublishingResponse *rModel = self.recommendDataArray[0];
+        PublishingResponse *rModel = weakself.recommendDataArray[0];
         
         if ((stateModel.app_id == nil || [stateModel.app_id intValue] == 2) && [rModel.product.progress_status integerValue] == 1) {
-            [self.proDetailsCommitButton setTitleColor:kNavColor forState:0];
-            [self.proDetailsCommitButton setTitle:@"立即申请" forState:0];
-            [self.proDetailsCommitButton addTarget: self action:@selector(applicationCommit) forControlEvents:UIControlEventTouchUpInside];
+            [weakself.proDetailsCommitButton setTitleColor:kNavColor forState:0];
+            [weakself.proDetailsCommitButton setTitle:@"立即申请" forState:0];
+            [weakself.proDetailsCommitButton addTarget: weakself action:@selector(applicationCommit) forControlEvents:UIControlEventTouchUpInside];
             
-            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightItemButton];
+            weakself.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:weakself.rightItemButton];
             
             if (stateModel.app_id == nil) {//未收藏
                 [_rightItemButton setImage:[UIImage imageNamed:@"nav_collection"] forState:0];
@@ -381,16 +374,16 @@
             }
             
         }else if (([stateModel.app_id intValue] == 0) && ([rModel.product.progress_status intValue] == 1)) {//已申请
-            [self.proDetailsCommitButton setTitleColor:kBlackColor forState:0];
-            [self.proDetailsCommitButton setTitle:@"已申请" forState:0];
-            [self.proDetailsCommitButton setBackgroundColor:kSelectedColor];
-            self.proDetailsCommitButton.userInteractionEnabled = NO;
+            [weakself.proDetailsCommitButton setTitleColor:kBlackColor forState:0];
+            [weakself.proDetailsCommitButton setTitle:@"已申请" forState:0];
+            [weakself.proDetailsCommitButton setBackgroundColor:kSelectedColor];
+            weakself.proDetailsCommitButton.userInteractionEnabled = NO;
         }else if ([rModel.product.progress_status intValue] == 2){//申请成功
             
             if ([stateModel.app_id integerValue] == 1) {//自己申请成功
-                [self.proDetailsCommitButton setTitleColor:kBlackColor forState:0];
-                [self.proDetailsCommitButton setTitle:@"申请成功" forState:0];
-                [self.proDetailsCommitButton setBackgroundColor:kSelectedColor];
+                [weakself.proDetailsCommitButton setTitleColor:kBlackColor forState:0];
+                [weakself.proDetailsCommitButton setTitle:@"申请成功" forState:0];
+                [weakself.proDetailsCommitButton setBackgroundColor:kSelectedColor];
                 
                 //添加电话按钮
                 UIButton *phoneButton = [UIButton newAutoLayoutView];
@@ -400,16 +393,16 @@
                     NSString *phoneStr = [NSString stringWithFormat:@"telprompt://%@",stateModel.mobile];
                     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
                 }];
-                [self.proDetailsCommitButton addSubview:phoneButton];
+                [weakself.proDetailsCommitButton addSubview:phoneButton];
                 
                 [phoneButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:_proDetailsCommitButton];
                 [phoneButton autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:_proDetailsCommitButton];
                 [phoneButton autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:_proDetailsCommitButton];
                 [phoneButton autoSetDimension:ALDimensionWidth toSize:kTabBarHeight];
             }else{//别人申请成功，自己显示被接单
-                [self.proDetailsCommitButton setTitleColor:kBlackColor forState:0];
-                [self.proDetailsCommitButton setTitle:@"已被接单" forState:0];
-                [self.proDetailsCommitButton setBackgroundColor:kSelectedColor];
+                [weakself.proDetailsCommitButton setTitleColor:kBlackColor forState:0];
+                [weakself.proDetailsCommitButton setTitle:@"已被接单" forState:0];
+                [weakself.proDetailsCommitButton setBackgroundColor:kSelectedColor];
             }
         }
     } andFailBlock:^(NSError *error) {
@@ -443,18 +436,19 @@
                    };
     }
     
+    QDFWeakSelf;
     [self requestDataPostWithString:rightString params:params successBlock:^(id responseObject){
         BaseModel *rightModel = [BaseModel objectWithKeyValues:responseObject];
-        [self showHint:rightModel.msg];
+        [weakself showHint:rightModel.msg];
         
         if ([rightModel.code isEqualToString:@"0000"]) {
          
             if ([type isEqualToString:@"1"]) {//未收藏 －－ 收藏
-                [self.rightItemButton setImage:[UIImage imageNamed:@"nav_collection_s"] forState:0];
-                self.typetString = @"2";
+                [weakself.rightItemButton setImage:[UIImage imageNamed:@"nav_collection_s"] forState:0];
+                weakself.typetString = @"2";
             }else{//收藏 －－ 取消收藏
-                [self.rightItemButton setImage:[UIImage imageNamed:@"nav_collection"] forState:0];
-                self.typetString = @"1";
+                [weakself.rightItemButton setImage:[UIImage imageNamed:@"nav_collection"] forState:0];
+                weakself.typetString = @"1";
             }
         }
         
@@ -471,14 +465,15 @@
                              @"category" : self.categoryString,
                              @"token" : [self getValidateToken]
                              };
+    QDFWeakSelf;
     [self requestDataPostWithString:appString params:params successBlock:^(id responseObject) {
         BaseModel *appModel = [BaseModel objectWithKeyValues:responseObject];
-        [self showHint:appModel.msg];
+        [weakself showHint:appModel.msg];
         
         if ([appModel.code isEqualToString:@"0000"]) {
-            [self.proDetailsCommitButton setBackgroundColor:kSelectedColor];
-            [self.proDetailsCommitButton setTitleColor:kBlackColor forState:0];
-            [self.proDetailsCommitButton setTitle:@"申请中" forState:0];
+            [weakself.proDetailsCommitButton setBackgroundColor:kSelectedColor];
+            [weakself.proDetailsCommitButton setTitleColor:kBlackColor forState:0];
+            [weakself.proDetailsCommitButton setTitle:@"申请中" forState:0];
         }
         
     } andFailBlock:^(NSError *error) {

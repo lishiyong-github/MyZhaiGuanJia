@@ -163,28 +163,28 @@
                              @"page" : page,
                              @"type" : @"4"//发布1，接单2
                              };
+    
+    QDFWeakSelf;
     [self requestDataPostWithString:mesString params:params successBlock:^(id responseObject) {
-        NSDictionary *dddd = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSLog(@"^^^^^^^ %@",dddd);
         
-        if ([page integerValue] == 0) {
-            [self.messageSysArray removeAllObjects];
+        if ([page integerValue] == 1) {
+            [weakself.messageSysArray removeAllObjects];
         }
         
         MessageResponse *response = [MessageResponse objectWithKeyValues:responseObject];
         
         for (MessageModel *mesModel in response.message) {
-            [self.messageSysArray addObject:mesModel];
+            [weakself.messageSysArray addObject:mesModel];
         }
         
-        if (self.messageSysArray.count > 0) {
-            [self.baseRemindImageView setHidden:YES];
+        if (weakself.messageSysArray.count > 0) {
+            [weakself.baseRemindImageView setHidden:YES];
         }else{
-            [self.baseRemindImageView setHidden:NO];
+            [weakself.baseRemindImageView setHidden:NO];
             _pageSys--;
         }
         
-        [self.sysMessageTableView reloadData];
+        [weakself.sysMessageTableView reloadData];
         
     } andFailBlock:^(NSError *error) {
         
@@ -193,7 +193,8 @@
 
 - (void)headerRefreshWithMessageOfSystem
 {
-    [self getSystemMessageListWithPage:@"0"];
+    _pageSys = 1;
+    [self getSystemMessageListWithPage:@"1"];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.sysMessageTableView headerEndRefreshing];
     });
@@ -204,6 +205,7 @@
     _pageSys++;
     NSString *page = [NSString stringWithFormat:@"%d",_pageSys];
     [self getSystemMessageListWithPage:page];
+    
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.sysMessageTableView footerEndRefreshing];
     });
@@ -216,12 +218,14 @@
     NSDictionary *params = @{@"id" : idStr,
                              @"token" : [self getValidateToken]
                              };
+    
+    QDFWeakSelf;
     [self requestDataPostWithString:isReadString params:params successBlock:^(id responseObject) {
         BaseModel *aModel = [BaseModel objectWithKeyValues:responseObject];
         if ([aModel.code isEqualToString:@"0000"]) {
             if ([typeStr integerValue] == 10) {//认证
                 CompleteViewController *completeVC = [[CompleteViewController alloc] init];
-                [self.navigationController pushViewController:completeVC animated:YES];
+                [weakself.navigationController pushViewController:completeVC animated:YES];
             }else if ([typeStr integerValue] == 20){//完善（融资）
                 
             }else if ([typeStr integerValue] == 21){//完善（清收）
@@ -229,9 +233,6 @@
             }else if ([typeStr integerValue] == 22){//完善（诉讼）
                 
             }
-            
-            
-            
         }
         
     } andFailBlock:^(NSError *error) {

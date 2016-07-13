@@ -16,8 +16,8 @@
 @property (nonatomic,strong) UILabel *debtAddressLabel;
 @property (nonatomic,strong) UILabel *debtAddressLabel1;
 @property (nonatomic,strong) UILabel *debtIDLabel;
-@property (nonatomic,strong) UIImageView *debtImageView1;
-@property (nonatomic,strong) UIImageView *debtImageView2;
+@property (nonatomic,strong) UIButton *debtImageView1;
+@property (nonatomic,strong) UIButton *debtImageView2;
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 

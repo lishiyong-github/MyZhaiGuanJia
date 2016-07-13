@@ -351,11 +351,10 @@
                              @"category" : self.yyModel.product.category,
                              @"pid" : self.yyModel.product.uidInner
                              };
+    QDFWeakSelf;
     [self requestDataPostWithString:warnString params:params successBlock:^(id responseObject) {
         BaseModel *warnModel = [BaseModel objectWithKeyValues:responseObject];
-        
-        [self showHint:warnModel.msg];
-        
+        [weakself showHint:warnModel.msg];
     } andFailBlock:^(NSError *error) {
         
     }];
