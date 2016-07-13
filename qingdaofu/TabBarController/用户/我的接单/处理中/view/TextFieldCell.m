@@ -35,7 +35,6 @@
         [self.textDeailButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.textDeailButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.textField];
         
-//        [self.countLabel autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.textField];
         [self.countLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.countLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:0];
         
@@ -49,7 +48,7 @@
     if (!_textField) {
         _textField = [PlaceHolderTextView newAutoLayoutView];
         _textField.textColor = kBlackColor;
-        [_textField setPlaceholderColor:kLightGrayColor];
+        _textField.placeholderColor = [UIColor colorWithRed:0.7922 green:0.7922 blue:0.7922 alpha:1];
         _textField.font = kBigFont;
         _textField.delegate = self;
         _textField.returnKeyType = UIReturnKeyDone;

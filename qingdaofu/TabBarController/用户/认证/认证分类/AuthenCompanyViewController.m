@@ -148,13 +148,13 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        if (certificationModel.cardimg) {
+        if ([certificationModel.cardimg isEqualToString:@""] || !certificationModel.cardimg) {
+            cell.collectionDataList = [NSMutableArray arrayWithObjects:@"btn_camera", nil];
+        }else{
             NSString *subString = [certificationModel.cardimg substringWithRange:NSMakeRange(1, certificationModel.cardimg.length-2)];
             NSString *urlString = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subString];
             NSURL *url = [NSURL URLWithString:urlString];
             cell.collectionDataList = [NSMutableArray arrayWithObject:url];
-        }else{
-            cell.collectionDataList = [NSMutableArray arrayWithObjects:@"btn_camera", nil];
         }
 
         QDFWeakSelf;
@@ -443,6 +443,25 @@
     } andFailBlock:^(NSError *error) {
         
     }];
+}
+
+- (void)back
+{
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:nil message:@"是否放弃保存？" preferredStyle:UIAlertControllerStyleAlert];
+    
+    QDFWeakSelf;
+    UIAlertAction *act1 = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [weakself.navigationController popViewControllerAnimated:YES];
+    }];
+    
+    UIAlertAction *act2 = [UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    
+    [alertVC addAction:act1];
+    [alertVC addAction:act2];
+    
+    [self presentViewController:alertVC animated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning {

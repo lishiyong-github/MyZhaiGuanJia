@@ -176,11 +176,11 @@
         }
             break;
         case 4:{
-            if (zModel.imgbenjin == nil || [zModel.imgbenjin isEqualToArray:@[@""]]) {//未上传
+            if (zModel.imgshouju == nil || [zModel.imgshouju isEqualToArray:@[@""]]) {//未上传
                 [self showHint:@"未上传收据"];
             }else{
-                for (NSInteger k=0; k<zModel.imgbenjin.count; k++) {
-                    NSString *aaaaa = zModel.imgbenjin[k];
+                for (NSInteger k=0; k<zModel.imgshouju.count; k++) {
+                    NSString *aaaaa = zModel.imgshouju[k];
                     NSString *subStr = [aaaaa substringWithRange:NSMakeRange(1, aaaaa.length-2)];
                     NSString *str = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subStr];
                     NSURL *subUrl = [NSURL URLWithString:str];
@@ -191,11 +191,11 @@
         }
             break;
         case 5:{
-            if (zModel.imgshouju == nil || [zModel.imgshouju isEqualToArray:@[@""]]) {//未上传
+            if (zModel.imgbenjin == nil || [zModel.imgbenjin isEqualToArray:@[@""]]) {//未上传
                 [self showHint:@"未上传还款凭证"];
             }else{
-                for (NSInteger k=0; k<zModel.imgshouju.count; k++) {
-                    NSString *aaaaa = zModel.imgshouju[k];
+                for (NSInteger k=0; k<zModel.imgbenjin.count; k++) {
+                    NSString *aaaaa = zModel.imgbenjin[k];
                     NSString *subStr = [aaaaa substringWithRange:NSMakeRange(1, aaaaa.length-2)];
                     NSString *str = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subStr];
                     NSURL *subUrl = [NSURL URLWithString:str];

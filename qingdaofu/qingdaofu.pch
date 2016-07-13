@@ -74,9 +74,9 @@
 
 //文字大小
 #define kNavFont [UIFont systemFontOfSize:18]  //标题
-#define kBigFont [UIFont systemFontOfSize:15]    //正文
-#define kFirstFont [UIFont systemFontOfSize:14]  //内容大一点
-#define kSecondFont [UIFont systemFontOfSize:12] //内容小一点
+#define kBigFont [UIFont systemFontOfSize:16]    //正文
+#define kFirstFont [UIFont systemFontOfSize:15]  //内容大一点
+#define kSecondFont [UIFont systemFontOfSize:13] //内容小一点
 #define kTabBarFont [UIFont systemFontOfSize:10]  //tabBar文字大小
 
 #define kAttributeFont1 [UIFont fontWithName:@"" size:12];
@@ -110,11 +110,11 @@
  Application Programming Interface（API）
  */
 
-//#define kQDFTestUrlString @"http://www.zcb2016.com/wap/"
-//#define kQDFTestImageString @"http://www.zcb2016.com"
+#define kQDFTestUrlString @"http://www.zcb2016.com/wap/"
+#define kQDFTestImageString @"http://www.zcb2016.com"
 
-#define kQDFTestUrlString @"http://testq.zcb2016.com/wap/"
-#define kQDFTestImageString @"http://testq.zcb2016.com"
+//#define kQDFTestUrlString @"http://testq.zcb2016.com/wap/"
+//#define kQDFTestImageString @"http://testq.zcb2016.com"
 
 //post
 /*
@@ -132,7 +132,6 @@
 #define kIsLoginString  @"common/islogin"   //检验token与认证类型
 #define kSuggestionString @"public/opinion"    //意见反馈1
 
-
 /*发布产品*/
 #define kPublishFinanceString @"publish/financing"  //发布融资
 #define kPublishCollection    @"publish/creditorcollection"  //发布清收
@@ -140,7 +139,6 @@
 #define kBrandString  @"common/brand"  //机动车品牌
 #define kBrandAudiString  @"common/brandchild"  //车系
 #define kGuarantyString @"common/getsearch"   //小区
-
 
 //我的接单 我的发布
 #define kMyOrdersString   @"apply/index"    //我的接单

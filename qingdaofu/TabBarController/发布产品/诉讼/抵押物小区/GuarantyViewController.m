@@ -192,7 +192,7 @@
     
     //构造AMapReGeocodeSearchRequest对象
     AMapReGeocodeSearchRequest *regeo = [[AMapReGeocodeSearchRequest alloc] init];
-    regeo.location = [AMapGeoPoint locationWithLatitude:latitude     longitude:longitude];
+    regeo.location = [AMapGeoPoint locationWithLatitude:latitude longitude:longitude];
     regeo.radius = 10000;
     regeo.requireExtension = YES;
     

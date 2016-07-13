@@ -320,6 +320,8 @@
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.leftdAgentContraints.constant = 105;
+            cell.agentTextField.keyboardType = UIKeyboardTypeNumberPad;
+            
             [cell setTouchBeginPoint:^(CGPoint point) {
                 weakself.touchPoint = point;
             }];
@@ -345,6 +347,8 @@
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.leftdAgentContraints.constant = 105;
+            cell.agentTextField.keyboardType = UIKeyboardTypeNumberPad;
+
             [cell setTouchBeginPoint:^(CGPoint point) {
                 weakself.touchPoint = point;
             }];
@@ -572,6 +576,8 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.leftdAgentContraints.constant = 105;
+        cell.agentTextField.keyboardType = UIKeyboardTypeNumberPad;
+
         cell.agentLabel.text = self.sTextArray[1][indexPath.row];
         cell.agentTextField.placeholder = self.sHolderArray[1][indexPath.row];
         [cell setTouchBeginPoint:^(CGPoint point) {
@@ -610,6 +616,8 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.leftdAgentContraints.constant = 105;
+        cell.agentTextField.keyboardType = UIKeyboardTypeNumberPad;
+
         cell.agentLabel.text = self.sTextArray[1][indexPath.row];
         cell.agentTextField.placeholder = self.sHolderArray[1][indexPath.row];
         [cell setTouchBeginPoint:^(CGPoint point) {
@@ -745,6 +753,8 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.leftdAgentContraints.constant = 105;
+        cell.agentTextField.keyboardType = UIKeyboardTypeNumberPad;
+
         [cell setTouchBeginPoint:^(CGPoint point) {
             weakself.touchPoint = point;
         }];
@@ -772,6 +782,8 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.leftdAgentContraints.constant = 105;
+        cell.agentTextField.keyboardType = UIKeyboardTypeNumberPad;
+
         cell.agentLabel.text = self.sTextArray[1][indexPath.row];
         cell.agentTextField.placeholder = self.sHolderArray[1][indexPath.row];
         [cell setTouchBeginPoint:^(CGPoint point) {
@@ -888,6 +900,7 @@
         if (indexPath.row == 10) {//债权文件
             UploadFilesViewController *uploadFilesVC = [[UploadFilesViewController alloc] init];
             uploadFilesVC.filesDic = self.creditorfiles;
+            uploadFilesVC.tagString = self.tagString;
             [self.navigationController pushViewController:uploadFilesVC animated:YES];
             
             [uploadFilesVC setChooseImages:^(NSDictionary *imageDic) {
@@ -1088,7 +1101,11 @@
     self.suitDataDictionary[@"paidmoney"] = self.suitDataDictionary[@"paidmoney"]?self.suitDataDictionary[@"paidmoney"]:self.suResponse.product.paidmoney;//已付本金
     self.suitDataDictionary[@"interestpaid"] = self.suitDataDictionary[@"interestpaid"]?self.suitDataDictionary[@"interestpaid"]:self.suResponse.product.interestpaid; //已付利息
     self.suitDataDictionary[@"performancecontract"] = self.suitDataDictionary[@"performancecontract"]?self.suitDataDictionary[@"performancecontract"]:self.suResponse.product.performancecontract; //合同履行地
-       
+    
+    //债权文件
+    //债权人信息
+    //债务人信息
+    
     [self.suitDataDictionary setValue:self.categoryString forKey:@"category"];
     [self.suitDataDictionary setValue:typeString forKey:@"progress_status"];
     [self.suitDataDictionary setValue:[self getValidateToken] forKey:@"token"];
@@ -1127,6 +1144,23 @@
     } andFailBlock:^(NSError *error) {
         
     }];
+}
+
+- (void)back
+{
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:nil message:@"是否放弃保存？" preferredStyle:UIAlertControllerStyleAlert];
+    
+    QDFWeakSelf;
+    UIAlertAction *act1 = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [weakself.navigationController popViewControllerAnimated:YES];
+    }];
+    
+    UIAlertAction *act2 = [UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    }];
+    [alertVC addAction:act1];
+    [alertVC addAction:act2];
+    
+    [self presentViewController:alertVC animated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning {

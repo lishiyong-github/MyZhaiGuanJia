@@ -175,11 +175,57 @@
                             break;
                     }
 
-                }else{
-                    [weakself showHint:tModel.msg];
+                }else if ([tModel.code isEqualToString:@"3001"] || [self getValidateToken] == nil) {//未登录
+                    LoginViewController *loginVC = [[LoginViewController alloc] init];
+                    loginVC.hidesBottomBarWhenPushed = YES;
+                    [weakself.navigationController pushViewController:loginVC animated:YES];
+                }else if ([tModel.code isEqualToString:@"3006"]){//未认证
+//                    AuthentyViewController *authentyVC = [[AuthentyViewController alloc] init];
+//                    authentyVC.hidesBottomBarWhenPushed = YES;
+//                    authentyVC.typeAuthty = @"0";
+//                    [weakself.navigationController pushViewController:authentyVC animated:YES];
+                    MyReleaseViewController *myReleaseVC = [[MyReleaseViewController alloc] init];
+                    myReleaseVC.hidesBottomBarWhenPushed = YES;
+                    
+                    switch (buttonTag) {
+                        case 10:{//我的保存
+                            MySaveViewController *mySaveVC = [[MySaveViewController alloc] init];
+                            mySaveVC.hidesBottomBarWhenPushed = YES;
+                            [weakself.navigationController pushViewController:mySaveVC animated:YES];
+                        }
+                            break;
+                        case 20:{//我的发布
+                            NSLog(@"全部");
+                            myReleaseVC.progreStatus = @"0";
+                            [weakself.navigationController pushViewController:myReleaseVC animated:YES];
+                        }
+                            break;
+                        case 21:{//发布中
+                            myReleaseVC.progreStatus = @"1";
+                            [weakself.navigationController pushViewController:myReleaseVC animated:YES];
+                        }
+                            break;
+                        case 22:{//处理中
+                            myReleaseVC.progreStatus = @"2";
+                            [weakself.navigationController pushViewController:myReleaseVC animated:YES];
+                        }
+                            break;
+                        case 23:{//终止
+                            myReleaseVC.progreStatus = @"3";
+                            [weakself.navigationController pushViewController:myReleaseVC animated:YES];
+                        }
+                            break;
+                        case 24:{//结案
+                            myReleaseVC.progreStatus = @"4";
+                            [weakself.navigationController pushViewController:myReleaseVC animated:YES];
+                        }
+                            break;
+                        default:
+                            break;
+                    }
                 }
                 
-                if ([tModel.code isEqualToString:@"3006"] || [tModel.code isEqualToString:@"0000"]) {
+                if ([tModel.code isEqualToString:@"3006"] || [tModel.code isEqualToString:@"0000"]) {//未登录
                     if (buttonTag == 12) {
                         MySettingsViewController *mySettingVC = [[MySettingsViewController alloc] init];
                         mySettingVC.hidesBottomBarWhenPushed = YES;
@@ -187,7 +233,6 @@
                     }
                 }
             }];
-        
         }];
         
         [_loginView setDidSelectedIndex:^(NSIndexPath *indexPath) {

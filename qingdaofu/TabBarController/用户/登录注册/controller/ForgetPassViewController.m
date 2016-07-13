@@ -95,12 +95,14 @@
     QDFWeakSelf;
     // @"validatecode" : @"1835", @"new_password"
     if (indexPath.row == 0) {
+        cell.loginTextField.keyboardType = UIKeyboardTypeNumberPad;
         [cell.getCodebutton setHidden:YES];
         [cell.loginButton setHidden:YES];
         [cell setFinishEditing:^(NSString *text) {
             [weakself.forgetDictionay setValue:text forKey:@"mobile"];
         }];
     }else if (indexPath.row == 1){
+        cell.loginTextField.keyboardType = UIKeyboardTypeNumberPad;
         [cell.loginButton setHidden:YES];
         [cell.getCodebutton setBackgroundColor:kBlueColor];
         [cell.getCodebutton setTitleColor:kNavColor forState:0];

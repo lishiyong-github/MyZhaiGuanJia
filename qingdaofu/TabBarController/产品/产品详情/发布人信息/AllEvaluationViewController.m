@@ -298,7 +298,12 @@
                    };
     }
     QDFWeakSelf;
-    [self requestDataPostWithString:evaluateString params:params successBlock:^(id responseObject) {        
+    [self requestDataPostWithString:evaluateString params:params successBlock:^(id responseObject) {
+        
+        NSDictionary *gtfdeyw = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
+        
+        
         if ([page integerValue] == 1) {
             [weakself.allEvaluateArray removeAllObjects];
         }

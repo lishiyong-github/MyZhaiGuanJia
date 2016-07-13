@@ -17,7 +17,7 @@
 @property (nonatomic,strong) UIImageView *typeImageView;
 @property (nonatomic,strong) UILabel *nameLabel;
 @property (nonatomic,strong) UIImageView *recommendimageView;
-//@property (nonatomic,strong) UILabel *typeLabel;
+
 @property (nonatomic,strong) UIButton *typeButton;
 @property (nonatomic,strong) UILabel *addressLabel;
 @property (nonatomic,strong) UILabel *grayLabel;

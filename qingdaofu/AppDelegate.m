@@ -43,7 +43,7 @@
     });
 //    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), )
 
-    [NSThread sleepForTimeInterval:0.3];//设置启动页面时间
+//    [NSThread sleepForTimeInterval:0.1];//设置启动页面时间
     
     return YES;
 }

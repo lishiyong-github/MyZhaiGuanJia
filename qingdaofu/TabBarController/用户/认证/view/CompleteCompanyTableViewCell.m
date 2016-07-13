@@ -125,7 +125,6 @@
 {
     if (!_comPicButton) {
         _comPicButton = [UIButton newAutoLayoutView];
-        [_comPicButton setBackgroundColor:kRedColor];
     }
     return _comPicButton;
 }

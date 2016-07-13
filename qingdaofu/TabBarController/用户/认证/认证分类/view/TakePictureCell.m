@@ -93,6 +93,7 @@
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
        [imageView sd_setImageWithURL:self.collectionDataList[indexPath.item] placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
         cell.contentView.backgroundColor = [UIColor colorWithPatternImage:imageView.image];
+        
     }else if([self.collectionDataList[indexPath.item] isKindOfClass:[UIImage class]]){
         cell.contentView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:self.collectionDataList[indexPath.item]]];
     }else if ([self.collectionDataList[indexPath.item] isKindOfClass:[NSString class]]){

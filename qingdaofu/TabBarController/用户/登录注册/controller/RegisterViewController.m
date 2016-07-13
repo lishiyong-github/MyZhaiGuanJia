@@ -97,10 +97,12 @@
     
     QDFWeakSelf;
     if (indexPath.row == 0) {
+        cell.loginTextField.keyboardType = UIKeyboardTypeNumberPad;
         [cell setFinishEditing:^(NSString *text) {
             [weakself.registerDictionary setValue:text forKey:@"mobile"];
         }];
     }else if (indexPath.row == 1) {
+        cell.loginTextField.keyboardType = UIKeyboardTypeNumberPad;
         [cell.loginButton setHidden:YES];
         [cell.getCodebutton setBackgroundColor:kBlueColor];
         [cell.getCodebutton setTitleColor:kNavColor forState:0];

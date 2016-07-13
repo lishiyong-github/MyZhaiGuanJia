@@ -13,6 +13,8 @@
 #import "ReportSuitViewController.h"   //发布诉讼
 #import "ProductsDetailsViewController.h" //详细信息
 #import "MarkingViewController.h"
+#import "LoginViewController.h" //登录
+#import "AuthentyViewController.h"
 
 #import "NewPublishCell.h"
 #import "HomeCell.h"
@@ -60,7 +62,7 @@
     [self.view addSubview:self.mainTableView];
     [self.view setNeedsUpdateConstraints];
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self getPropagandaChar];
         [self chechAppNewVersion];
     });
@@ -249,8 +251,17 @@
                             break;
                     }
 
-                }else{
+                }else if([tModel.code isEqualToString:@"3001"] || [self getValidateToken] == nil){//未登录
                     [self showHint:tModel.msg];
+                    LoginViewController *loginVC = [[LoginViewController alloc] init];
+                    loginVC.hidesBottomBarWhenPushed = YES;
+                    [weakself.navigationController pushViewController:loginVC animated:YES];
+                }else if([tModel.code isEqualToString:@"3006"]){//已登录，未认证
+                    [self showHint:tModel.msg];
+                    AuthentyViewController *authentyVC = [[AuthentyViewController alloc] init];
+                    authentyVC.hidesBottomBarWhenPushed = YES;
+                    authentyVC.typeAuthty = @"0";
+                    [weakself.navigationController pushViewController:authentyVC animated:YES];
                 }
             }];
             
@@ -393,9 +404,21 @@
                 productsDetailVC.idString = sModel.idString;
                 productsDetailVC.categoryString = sModel.category;
                 [weakself.navigationController pushViewController:productsDetailVC animated:YES];
-            }else {//token过期,或未认证（code=3001过期   code=3006未认证）
+            }else if([model.code isEqualToString:@"3001"] || [self getValidateToken] == nil){//未登录
                 [weakself showHint:model.msg];
+                LoginViewController *loginVC = [[LoginViewController alloc] init];
+                loginVC.hidesBottomBarWhenPushed = YES;
+                [weakself.navigationController pushViewController:loginVC animated:YES];
+            }else if([model.code isEqualToString:@"3006"]){//已登录，未认证
+                [weakself showHint:model.msg];
+                AuthentyViewController *authentyVC = [[AuthentyViewController alloc] init];
+                authentyVC.hidesBottomBarWhenPushed = YES;
+                authentyVC.typeAuthty = @"0";
+                [weakself.navigationController pushViewController:authentyVC animated:YES];
             }
+//            else {//token过期,或未认证（code=3001过期   code=3006未认证）
+//                [weakself showHint:model.msg];
+//            }
         }];
     }
 }

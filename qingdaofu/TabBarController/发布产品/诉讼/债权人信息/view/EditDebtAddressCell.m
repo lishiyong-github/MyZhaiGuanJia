@@ -57,7 +57,7 @@
         _ediTextView.textColor = kBlackColor;
         _ediTextView.font = kFirstFont;
         _ediTextView.placeholder = @"请输入地址";
-        _ediTextView.placeholderColor = kLightGrayColor;
+        _ediTextView.placeholderColor = [UIColor colorWithRed:0.7922 green:0.7922 blue:0.7922 alpha:1];
         _ediTextView.returnKeyType = UIReturnKeyDone;
         _ediTextView.delegate = self;
     }

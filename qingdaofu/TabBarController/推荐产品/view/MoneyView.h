@@ -9,14 +9,12 @@
 #import <UIKit/UIKit.h>
 
 
-//45+29+14
+//45+29+14=88
 @interface MoneyView : UIView
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 
 @property (nonatomic,strong) UILabel *label1;
 @property (nonatomic,strong) UILabel *label2;
-
-@property (nonatomic,assign) CGFloat aH;
 
 @end

@@ -18,7 +18,7 @@
         [self.contentView addSubview:self.collectionButton];
         [self.contentView addSubview:self.suitButton];
         
-        [self.contentView setNeedsUpdateConstraints];
+        [self setNeedsUpdateConstraints];
     }
     return self;
 }

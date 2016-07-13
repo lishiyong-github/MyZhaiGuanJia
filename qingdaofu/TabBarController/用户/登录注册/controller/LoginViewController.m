@@ -94,6 +94,7 @@
     [cell.loginTextField setAttributedPlaceholder:attriStr];
     
     if (indexPath.row == 0) {//手机号
+        cell.loginTextField.keyboardType = UIKeyboardTypeNumberPad;
         [cell setFinishEditing:^(NSString *text) {
             [self.loginDictionary setValue:text forKey:@"mobile"];
         }];

@@ -9,6 +9,8 @@
 #import "ProductsViewController.h"
 #import "SearchViewController.h"   //搜索
 #import "ProductsDetailsViewController.h"   //详细信息
+#import "LoginViewController.h"
+#import "AuthentyViewController.h"
 
 #import "HomeCell.h"
 #import "BidOneCell.h"
@@ -40,6 +42,10 @@
 @property (nonatomic,strong) NSMutableDictionary *paramsDictionary;
 @property (nonatomic,strong) NSMutableArray *allDataList;
 @property (nonatomic,assign) NSInteger page;
+
+//选中的省份市区
+@property (nonatomic,strong) NSString *proString;
+@property (nonatomic,strong) NSString *cityString;
 @end
 
 @implementation ProductsViewController
@@ -56,6 +62,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.titleView = self.proTitleView;
+    
 //    self.navigationItem.rightBarButtonItem  = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"nav_search"] style:UIBarButtonItemStylePlain target:self action:@selector(searchProducts)];
     
     [self.view addSubview:self.chooseView];
@@ -137,6 +144,7 @@
                         
                         [weakself.view addSubview: weakself.tableView11];
                         [weakself.tableView11 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:weakself.chooseView];
+                        
                         [weakself.tableView11 autoPinEdgeToSuperviewEdge:ALEdgeLeft];
                         [weakself.tableView11 autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kTabBarHeight];
                         
@@ -293,7 +301,7 @@
     if (tableView == self.productsTableView) {
         return 1;
     }else if (tableView == self.tableView11){
-        return self.provinceDictionary.allKeys.count;
+        return self.provinceDictionary.allKeys.count + 1;
     }else if (tableView == self.tableView12){
         return self.cityDcitionary.allKeys.count;
     }else if (tableView == self.tableView13){
@@ -390,7 +398,7 @@
         if([proModel.progress_status integerValue]  == 4){//结案
             [cell.typeButton setHidden:NO];
             [cell.typeButton setImage:[UIImage imageNamed:@"list_chapter"] forState:0];
-            
+
         }else{
             [cell.typeButton setHidden:YES];
         }
@@ -404,8 +412,13 @@
             cell = [[BidOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.oneButton.userInteractionEnabled = NO;
-        [cell.oneButton setTitleColor:kBlueColor forState:0];
-        [cell.oneButton setTitle:self.provinceDictionary.allValues[indexPath.row] forState:0];
+        [cell.oneButton setTitleColor:kLightGrayColor forState:0];
+
+        if (indexPath.row == 0) {
+            [cell.oneButton setTitle:@"不限" forState:0];
+        }else{
+            [cell.oneButton setTitle:self.provinceDictionary.allValues[indexPath.row-1] forState:0];
+        }
         
         return cell;
         
@@ -417,7 +430,9 @@
         }
         
         cell.oneButton.userInteractionEnabled = NO;
-        [cell.oneButton setTitleColor:kBlueColor forState:0];
+        [cell.oneButton setTitleColor:kLightGrayColor forState:0];
+        [cell.oneButton setTitleColor:kBlueColor forState:UIControlStateSelected];
+
         [cell.oneButton setTitle:self.cityDcitionary.allValues[indexPath.row] forState:0];
 
         return cell;
@@ -429,7 +444,8 @@
         }
         
         cell.oneButton.userInteractionEnabled = NO;
-        [cell.oneButton setTitleColor:kBlueColor forState:0];
+        [cell.oneButton setTitleColor:kLightGrayColor forState:0];
+        [cell.oneButton setTitleColor:kBlueColor forState:UIControlStateSelected];
         [cell.oneButton setTitle:self.districtDictionary.allValues[indexPath.row] forState:0];
 
         return cell;
@@ -443,7 +459,6 @@
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         
         [self tokenIsValid];
-        
         QDFWeakSelf;
         [self setDidTokenValid:^(TokenModel *model) {
             if ([model.code isEqualToString:@"0000"]) {//正常
@@ -453,21 +468,50 @@
                 productsDetailVC.idString = sModel.idString;
                 productsDetailVC.categoryString = sModel.category;
                 [weakself.navigationController pushViewController:productsDetailVC animated:YES];
-            }else {//token过期,或未认证（code=3001过期   code=3006未认证）
+            }else if([model.code isEqualToString:@"3001"] || [self getValidateToken] == nil){//未登录
                 [weakself showHint:model.msg];
+                LoginViewController *loginVC = [[LoginViewController alloc] init];
+                loginVC.hidesBottomBarWhenPushed = YES;
+                [weakself.navigationController pushViewController:loginVC animated:YES];
+            }else if([model.code isEqualToString:@"3006"]){//已登录，未认证
+                [weakself showHint:model.msg];
+                AuthentyViewController *authentyVC = [[AuthentyViewController alloc] init];
+                authentyVC.hidesBottomBarWhenPushed = YES;
+                authentyVC.typeAuthty = @"0";
+                [weakself.navigationController pushViewController:authentyVC animated:YES];
             }
         }];
     }else if (tableView == self.tableView11){
-        [self.view addSubview:self.tableView12];
-        self.widthConstraints.constant = kScreenWidth/2;
-        [self.tableView12 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.tableView11];
-        [self.tableView12 autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.tableView11];
-        [self.tableView12 autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.tableView11];
-        [self.tableView12 autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.tableView11];
         
-        [self getCityListWithProvinceID:self.provinceDictionary.allKeys[indexPath.row]];
-        
+        if (indexPath.row == 0) {
+            [self.tableView11 removeFromSuperview];
+            [self.tableView12 removeFromSuperview];
+            [self.tableView13 removeFromSuperview];
+            [self.paramsDictionary setValue:@"310000" forKey:@"province"];
+            [self.paramsDictionary setValue:@"310100" forKey:@"city"];
+            [self.paramsDictionary setValue:@"310100" forKey:@"area"];
+            [self headerRefreshWithAllProducts];
+        }else{
+            
+            BidOneCell *cell = [self.tableView11 cellForRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
+            [cell.oneButton setTitleColor:kBlueColor forState:0];
+            
+            [self.view addSubview:self.tableView12];
+            self.widthConstraints.constant = kScreenWidth/2;
+            [self.tableView12 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.tableView11];
+            [self.tableView12 autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.tableView11];
+            [self.tableView12 autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.tableView11];
+            [self.tableView12 autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.tableView11];
+            
+            _proString = self.provinceDictionary.allKeys[indexPath.row-1];
+            
+            [self getCityListWithProvinceID:self.provinceDictionary.allKeys[indexPath.row-1]];
+        }
     }else if (tableView == self.tableView12){
+        
+        BidOneCell *cell = [self.tableView12 cellForRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
+        [cell.oneButton setTitleColor:kBlueColor forState:0];
+        
         [self.view addSubview:self.tableView13];
         self.widthConstraints.constant = kScreenWidth/3;
         [self.tableView13 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.tableView12];
@@ -475,9 +519,15 @@
         [self.tableView13 autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.tableView11];
         [self.tableView13 autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.tableView11];
         
+        _cityString = self.cityDcitionary.allKeys[indexPath.row];
+
         [self getDistrictListWithCityID:self.cityDcitionary.allKeys[indexPath.row]];
         
     }else if (tableView == self.tableView13){
+    
+        BidOneCell *cell = [self.tableView13 cellForRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
+        [cell.oneButton setTitleColor:kBlueColor forState:0];
+    
         [self.tableView11 removeFromSuperview];
         [self.tableView12 removeFromSuperview];
         [self.tableView13 removeFromSuperview];
@@ -491,11 +541,11 @@
         
         self.widthConstraints.constant = kScreenWidth;
         
-        [self.paramsDictionary setValue:self.provinceDictionary.allKeys[indexPath.row] forKey:@"province"];
-        [self.paramsDictionary setValue:self.cityDcitionary.allKeys[indexPath.row] forKey:@"city"];
+        [self.paramsDictionary setValue:_proString forKey:@"province"];
+        [self.paramsDictionary setValue:_cityString forKey:@"city"];
         [self.paramsDictionary setValue:self.districtDictionary.allKeys[indexPath.row] forKey:@"area"];
         
-        [self getProductsListWithPage:@"0"];
+        [self headerRefreshWithAllProducts];
     }
 }
 

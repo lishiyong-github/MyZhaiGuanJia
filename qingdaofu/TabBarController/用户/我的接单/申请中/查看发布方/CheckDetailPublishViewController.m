@@ -310,12 +310,9 @@
         cell.evaProImageView2.backgroundColor = kLightGrayColor;
         cell.evaTextLabel.text = [NSString getValidStringFromString:evaModel.content toString:@"未填写评价内容"];
         
-        
        // 图片
         if (evaModel.pictures.count == 1) {
             if ([evaModel.pictures[0] isEqualToString:@""]) {//没有图片
-//                [cell.evaProImageView1 setHidden:YES];
-//                [cell.evaProImageView2 setHidden:YES];
                 [cell.evaProImageView1 setImage:[UIImage imageNamed:@"account_bitmap"] forState:0];
                 [cell.evaProImageView2 setImage:[UIImage imageNamed:@"account_bitmap"] forState:0];
 
@@ -447,7 +444,7 @@
         }
         
         [weakself.checkDetailTableView reloadData];
-        [weakself getAllEvaluationListWithPage:@"0"];
+        [weakself getAllEvaluationListWithPage:@"1"];
         
     } andFailBlock:^(NSError *error) {
         
@@ -463,6 +460,9 @@
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:evaluateString params:params successBlock:^(id responseObject) {
+        
+        NSDictionary *huhu = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
         
         EvaluateResponse *response = [EvaluateResponse objectWithKeyValues:responseObject];
         [weakself.allEvaResponse addObject:response];

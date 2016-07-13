@@ -21,10 +21,7 @@
 
 - (NSString *)getValidateToken;
 - (NSString *)getValidateMobile;
-
-- (void)back;
-
 - (void)tokenIsValid;
-
+- (void)back;
 
 @end

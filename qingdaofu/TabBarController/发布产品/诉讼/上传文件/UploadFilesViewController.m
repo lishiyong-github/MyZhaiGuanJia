@@ -108,6 +108,7 @@
     UploadViewController *uploadVC = [[UploadViewController alloc] init];
     uploadVC.typeUpInt = indexPath.row;
     uploadVC.filesModel = [[DebtModel alloc] init];
+    uploadVC.tagString = self.tagString;
     
     if (indexPath.row == 0) {//公证书
         uploadVC.filesModel.imgnotarization = [self.imagesDictionaty[@"imgnotarization"] count]?self.imagesDictionaty[@"imgnotarization"]:self.filesDic[@"imgnotarization"];
@@ -122,10 +123,10 @@
         uploadVC.filesModel.imgpick = [self.imagesDictionaty[@"imgpick"] count]?self.imagesDictionaty[@"imgpick"]:self.filesDic[@"imgpick"];
         uploadVC.typeString = @"收款凭证";
     }else if (indexPath.row == 4){
-        uploadVC.filesModel.imgbenjin = [self.imagesDictionaty[@"imgbenjin"] count]?self.imagesDictionaty[@"imgbenjin"]:self.filesDic[@"imgbenjin"];
+        uploadVC.filesModel.imgshouju = [self.imagesDictionaty[@"imgshouju"] count]?self.imagesDictionaty[@"imgshouju"]:self.filesDic[@"imgshouju"];
         uploadVC.typeString = @"收据";
     }else if (indexPath.row == 5){
-        uploadVC.filesModel.imgshouju = [self.imagesDictionaty[@"imgshouju"] count]?self.imagesDictionaty[@"imgshouju"]:self.filesDic[@"imgshouju"];
+        uploadVC.filesModel.imgbenjin = [self.imagesDictionaty[@"imgbenjin"] count]?self.imagesDictionaty[@"imgbenjin"]:self.filesDic[@"imgbenjin"];
         uploadVC.typeString = @"还款凭证";
     }
     [self.navigationController pushViewController:uploadVC animated:YES];
@@ -145,11 +146,11 @@
             [weakself.imagesDictionaty setValue:imageModel.imgpick forKey:@"imgpick"];
             [weakself.imagesDictionaty setValue:imageModel.imgpicks forKey:@"imgpicks"];
         }else if (indexPath.row == 4){//收据
-            [weakself.imagesDictionaty setValue:imageModel.imgbenjin forKey:@"imgbenjin"];
-            [weakself.imagesDictionaty setValue:imageModel.imgbenjins forKey:@"imgbenjins"];
+            [weakself.imagesDictionaty setValue:imageModel.imgbenjin forKey:@"imgshouju"];
+            [weakself.imagesDictionaty setValue:imageModel.imgbenjins forKey:@"imgshoujus"];
         }else if (indexPath.row == 5){//还款凭证
-            [weakself.imagesDictionaty setValue:imageModel.imgshouju forKey:@"imgshouju"];
-            [weakself.imagesDictionaty setValue:imageModel.imgshoujus forKey:@"imgshoujus"];
+            [weakself.imagesDictionaty setValue:imageModel.imgshouju forKey:@"imgbenjin"];
+            [weakself.imagesDictionaty setValue:imageModel.imgshoujus forKey:@"imgbenjins"];
         }
     }];
 }

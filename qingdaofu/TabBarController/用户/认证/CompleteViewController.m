@@ -190,21 +190,21 @@
         if (indexPath.row == 0) {
             return kCellHeight;
         }
-        return 230+actualsize.height;
+        return 220+MAX(actualsize.height, 33);
         
     }else if ([self.categoryString intValue] == 2){//律所
         if (indexPath.row == 0) {
             return kCellHeight;
         }
         
-        return 260+actualsize.height;
+        return 250+MAX(actualsize.height, 33);
     }
     
     //公司
     if (indexPath.row == 0) {
         return kCellHeight;
     }
-    return 315 + MAX(actualsize.height, 33);
+    return 320 + MAX(actualsize.height, 33);
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -272,13 +272,20 @@
         [cell.comIDLabel setAttributedText:IDString];
         
         //图片
-        NSString *subString = [certificationModel.cardimg substringWithRange:NSMakeRange(1, certificationModel.cardimg.length-2)];
-        NSString *urlString = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subString];
-        NSURL *url = [NSURL URLWithString:urlString];
-        [cell.comPicButton sd_setBackgroundImageWithURL:url forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
-        [cell.comPicButton addAction:^(UIButton *btn) {
-            [weakself showImages:@[url] currentIndex:1];
-        }];
+        if ([certificationModel.cardimg isEqualToString:@""] || !certificationModel.cardimg) {
+            [cell.comPicButton setImage:[UIImage imageNamed:@"account_bitmap"] forState:0];
+        }else{
+            NSString *subString = [certificationModel.cardimg substringWithRange:NSMakeRange(1, certificationModel.cardimg.length-2)];
+            NSString *urlString = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subString];
+            NSURL *url = [NSURL URLWithString:urlString];
+
+            [cell.comPicButton sd_setImageWithURL:url forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+            
+//            [cell.comPicButton sd_setBackgroundImageWithURL:url forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+            [cell.comPicButton addAction:^(UIButton *btn) {
+                [weakself showImages:@[url]];
+            }];
+        }
         
         NSString *mobileStr = [NSString getValidStringFromString:certificationModel.mobile];
         NSMutableAttributedString *mobileString = [cell.comIDLabel setAttributeString:@"联系方式：    " withColor:kBlackColor andSecond:mobileStr withColor:kLightGrayColor withFont:14];
@@ -312,13 +319,17 @@
         [cell.comIDLabel setAttributedText:IDString];
         
         //图片
-        NSString *subString = [certificationModel.cardimg substringWithRange:NSMakeRange(1, certificationModel.cardimg.length-2)];
-        NSString *urlString = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subString];
-        NSURL *url = [NSURL URLWithString:urlString];
-        [cell.comPicButton sd_setBackgroundImageWithURL:url forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
-        [cell.comPicButton addAction:^(UIButton *btn) {
-            [weakself showImages:@[url] currentIndex:1];
-        }];
+        if ([certificationModel.cardimg isEqualToString:@""] || !certificationModel.cardimg) {
+            [cell.comPicButton setImage:[UIImage imageNamed:@"account_bitmap"] forState:0];
+        }else{
+            NSString *subString = [certificationModel.cardimg substringWithRange:NSMakeRange(1, certificationModel.cardimg.length-2)];
+            NSString *urlString = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subString];
+            NSURL *url = [NSURL URLWithString:urlString];
+            [cell.comPicButton sd_setImageWithURL:url forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+            [cell.comPicButton addAction:^(UIButton *btn) {
+                [weakself showImages:@[url]];
+            }];
+        }
         
         NSString *contactStr = [NSString getValidStringFromString:certificationModel.contact];
         NSMutableAttributedString *personNameString = [cell.comPersonNameLabel setAttributeString:@"联系人：    " withColor:kBlackColor andSecond:contactStr withColor:kLightGrayColor withFont:14];
@@ -356,13 +367,18 @@
         [cell.comIDLabel setAttributedText:IDString];
         
         //图片
-        NSString *subString = [certificationModel.cardimg substringWithRange:NSMakeRange(1, certificationModel.cardimg.length-2)];
-        NSString *urlString = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subString];
-        NSURL *url = [NSURL URLWithString:urlString];
-        [cell.comPicButton sd_setBackgroundImageWithURL:url forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
-        [cell.comPicButton addAction:^(UIButton *btn) {
-            [weakself showImages:@[url] currentIndex:1];
-        }];
+        if ([certificationModel.cardimg isEqualToString:@""] || !certificationModel.cardimg) {
+            [cell.comPicButton setBackgroundImage:[UIImage imageNamed:@"account_bitmap"] forState:0];
+        }else{
+            NSString *subString = [certificationModel.cardimg substringWithRange:NSMakeRange(1, certificationModel.cardimg.length-2)];
+            NSString *urlString = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subString];
+            NSURL *url = [NSURL URLWithString:urlString];
+            [cell.comPicButton sd_setImageWithURL:url forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+            
+            [cell.comPicButton addAction:^(UIButton *btn) {
+                [weakself showImages:@[url]];
+            }];
+        }
         
         NSString *contactStr = [NSString getValidStringFromString:certificationModel.contact];
         NSMutableAttributedString *personNameString = [cell.comPersonNameLabel setAttributeString:@"联系人：            " withColor:kBlackColor andSecond:contactStr withColor:kLightGrayColor withFont:14];

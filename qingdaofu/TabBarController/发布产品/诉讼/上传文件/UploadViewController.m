@@ -79,7 +79,6 @@
         QDFWeakSelf;
         [_upCommitButton addAction:^(UIButton *btn) {
             [weakself addImageWithFinishBlock:^(NSArray *images) {
-
                 if (images.count > 0) {
                     NSData *tData;
                     NSString *ttt = @"";
@@ -155,12 +154,30 @@
     }else if (self.typeUpInt == 3){
         self.allImageArray = self.filesModel.imgpick;
     }else if (self.typeUpInt == 4){
-        self.allImageArray = self.filesModel.imgbenjin;
-    }else{
         self.allImageArray = self.filesModel.imgshouju;
+    }else{
+        self.allImageArray = self.filesModel.imgbenjin;
     }
     self.allImageModel  = self.filesModel;
-    cell.collectionDataList = [NSMutableArray arrayWithArray:self.allImageArray];
+    
+    if ([self.tagString integerValue] == 1) {//首次编辑
+        cell.collectionDataList = [NSMutableArray arrayWithArray:self.allImageArray];
+        
+    }else{//再次编辑
+        if (self.allImageArray.count == 0) {
+            cell.collectionDataList = [NSMutableArray arrayWithArray:@[]];
+        }else if ((self.allImageArray.count == 1) && [self.allImageArray[0] isEqualToString:@""]){
+            cell.collectionDataList = [NSMutableArray arrayWithArray:@[]];
+        }else{
+            for (int i=0; i<self.allImageArray.count; i++) {
+                NSString *huhStr = self.allImageArray[i];
+                NSString *subStr = [huhStr substringWithRange:NSMakeRange(1, huhStr.length-2)];
+                NSString *urlStr = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subStr];
+                NSURL *Url = [NSURL URLWithString:urlStr];
+                [cell.collectionDataList addObject:Url];
+            }
+        }
+    }
     
     [cell reloadData];
     

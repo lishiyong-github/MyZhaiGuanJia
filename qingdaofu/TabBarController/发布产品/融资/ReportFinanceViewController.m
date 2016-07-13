@@ -242,6 +242,7 @@
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.leftdAgentContraints.constant = 100;
+            cell.agentTextField.keyboardType = UIKeyboardTypeNumberPad;
             
             cell.agentLabel.text = self.finanTextArray[indexPath.section][indexPath.row];
             cell.agentTextField.placeholder = self.financeholderArray[indexPath.section][indexPath.row];
@@ -268,6 +269,8 @@
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.leftdAgentContraints.constant = 100;
+            cell.agentTextField.keyboardType = UIKeyboardTypeNumberPad;
+
             [cell setTouchBeginPoint:^(CGPoint point) {
                 weakself.touchPoint = point;
             }];
@@ -294,6 +297,7 @@
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.leftdAgentContraints.constant = 100;
+            cell.agentTextField.keyboardType = UIKeyboardTypeNumberPad;
 
             [cell setTouchBeginPoint:^(CGPoint point) {
                 weakself.touchPoint = point;
@@ -400,6 +404,8 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.leftdAgentContraints.constant = 100;
+        cell.agentTextField.keyboardType = UIKeyboardTypeNumberPad;
+        
         [cell setTouchBeginPoint:^(CGPoint point) {
             weakself.touchPoint = point;
         }];
@@ -487,6 +493,8 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.leftdAgentContraints.constant = 100;
+        cell.agentTextField.keyboardType = UIKeyboardTypeNumberPad;
+
         [cell setTouchBeginPoint:^(CGPoint point) {
             weakself.touchPoint = point;
         }];
@@ -514,6 +522,8 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.leftdAgentContraints.constant = 100;
+        cell.agentTextField.keyboardType = UIKeyboardTypeNumberPad;
+
         [cell setTouchBeginPoint:^(CGPoint point) {
             weakself.touchPoint = point;
         }];
@@ -569,6 +579,8 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.leftdAgentContraints.constant = 100;
+        cell.agentTextField.keyboardType = UIKeyboardTypeNumberPad;
+
         [cell setTouchBeginPoint:^(CGPoint point) {
             weakself.touchPoint = point;
         }];
@@ -784,6 +796,23 @@
     } andFailBlock:^(NSError *error){
         
     }];
+}
+
+- (void)back
+{
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:nil message:@"是否放弃保存？" preferredStyle:UIAlertControllerStyleAlert];
+    
+    QDFWeakSelf;
+    UIAlertAction *act1 = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [weakself.navigationController popViewControllerAnimated:YES];
+    }];
+    
+    UIAlertAction *act2 = [UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    }];
+    [alertVC addAction:act1];
+    [alertVC addAction:act2];
+    
+    [self presentViewController:alertVC animated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning {

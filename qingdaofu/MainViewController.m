@@ -18,6 +18,8 @@
 
 #import "ReportFinanceViewController.h"  //融资
 #import "ReportSuitViewController.h"     //诉讼
+#import "LoginViewController.h"
+#import "AuthentyViewController.h"
 
 #import "UIViewController+BlurView.h"
 
@@ -105,7 +107,12 @@
         
         [weakself tokenIsValid];
         [weakself setDidTokenValid:^(TokenModel *tokenModel) {
-            if ([tokenModel.code isEqualToString:@"0000"]) {
+            if ([tokenModel.code isEqualToString:@"3001"]) {//未登录
+                [weakself showHint:tokenModel.msg];
+                LoginViewController *loginVC = [[LoginViewController alloc] init];
+                loginVC.hidesBottomBarWhenPushed = YES;
+                [viewController pushViewController:loginVC animated:YES];
+            }else{//已登录或未认证
                 if (row == 11) {
                     ReportFinanceViewController *reportFinanceVC = [[ReportFinanceViewController alloc] init];
                     reportFinanceVC.hidesBottomBarWhenPushed = YES;
@@ -123,9 +130,6 @@
                     reportSuitVC.hidesBottomBarWhenPushed = YES;
                     [viewController pushViewController:reportSuitVC animated:YES];
                 }
-
-            }else{
-                [weakself showHint:tokenModel.msg];
             }
         }];
                 

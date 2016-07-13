@@ -19,7 +19,7 @@
         [self.contentView addSubview:self.typeImageView];
         [self.contentView addSubview:self.nameLabel];
         [self.contentView addSubview:self.recommendimageView];
-//        [self.contentView addSubview:self.typeLabel];
+        
         [self.contentView addSubview:self.typeButton];
         [self.contentView addSubview:self.addressLabel];
         [self.contentView addSubview:self.grayLabel];
@@ -59,16 +59,16 @@
         [self.grayLabel autoSetDimension:ALDimensionHeight toSize:1];
         
         NSArray *views = @[self.moneyView,self.pointView,self.rateView];
-        [views autoSetViewsDimensionsToSize:CGSizeMake(kScreenWidth/3, self.moneyView.aH)];
+        [views autoSetViewsDimensionsToSize:CGSizeMake(kScreenWidth/3, 88)];
         
         [self.moneyView autoPinEdgeToSuperviewEdge:ALEdgeLeft];
-        [self.moneyView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.grayLabel];
+        [self.moneyView autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.pointView];
         
         [self.pointView autoAlignAxisToSuperviewAxis:ALAxisVertical];
-        [self.pointView autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.moneyView];
+        [self.pointView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.grayLabel];
         
         [self.rateView autoPinEdgeToSuperviewEdge:ALEdgeRight];
-        [self.rateView autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.moneyView];
+        [self.rateView autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.pointView];
         
         self.didSetupConstraints = YES;
     }
@@ -104,16 +104,6 @@
     return _recommendimageView;
 }
 
-//- (UILabel *)typeLabel
-//{
-//    if (!_typeLabel) {
-//        _typeLabel = [UILabel newAutoLayoutView];
-//        _typeLabel.font = kSecondFont;
-//        _typeLabel.textColor = kBlueColor;
-//    }
-//    return _typeLabel;
-//}
-
 - (UIButton *)typeButton
 {
     if (!_typeButton) {
@@ -148,7 +138,8 @@
         _moneyView = [MoneyView newAutoLayoutView];
         _moneyView.label1.text = @"80";
         _moneyView.label1.textColor = kYellowColor;
-        _moneyView.label1.font = [UIFont fontWithName:@"Helvetica-Bold" size:24];
+//        _moneyView.label1.font = [UIFont fontWithName:@"Helvetica-Bold" size:24];
+        _moneyView.label1.font = [UIFont systemFontOfSize:22];
         _moneyView.label2.text = @"借款本金(万元)";
     }
     return _moneyView;
@@ -159,7 +150,7 @@
     if (!_pointView) {
         _pointView = [MoneyView newAutoLayoutView];
         _pointView.label1.text = @"5.0%";
-//        _pointView.label1.font = [UIFont fontWithName:@"Helvetica-Bold" size:24];
+        _pointView.label1.font = [UIFont systemFontOfSize:22];
         _pointView.label1.textColor = kBlackColor;
         _pointView.label2.text = @"风险代理";
     }
@@ -172,6 +163,7 @@
         _rateView = [MoneyView newAutoLayoutView];
         _rateView.label1.text = @"机动车";
         _rateView.label1.textColor = kBlueColor;
+        _rateView.label1.font = [UIFont systemFontOfSize:22];
         _rateView.label2.text = @"债券类型";
     }
     return _rateView;

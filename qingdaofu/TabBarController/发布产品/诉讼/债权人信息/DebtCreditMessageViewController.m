@@ -215,9 +215,11 @@
         
         NSString *imhString1;
         NSString *subString1;
+        NSString *urlString1;
         
         NSString *imhString2;
         NSString *subString2;
+        NSString *urlString2;
         
         NSURL *subUrl1;
         NSURL *subUrl2;
@@ -230,7 +232,8 @@
             }else{
                 imhString1 = imgs[0];
                 subString1 = [imhString1 substringWithRange:NSMakeRange(1, imhString1.length-2)];
-                subUrl1 = [NSURL URLWithString:subString1];
+                urlString1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subString1];
+                subUrl1 = [NSURL URLWithString:urlString1];
                 
                 [cell.debtImageView1 sd_setImageWithURL:subUrl1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
             }
@@ -242,11 +245,13 @@
             
             imhString1 = imgs[0];
             subString1 = [imhString1 substringWithRange:NSMakeRange(1, imhString1.length-2)];
-            subUrl1 = [NSURL URLWithString:subString1];
+             urlString1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subString1];
+            subUrl1 = [NSURL URLWithString:urlString1];
             
             imhString2 = imgs[1];
             subString2 = [imhString2 substringWithRange:NSMakeRange(1, imhString2.length-2)];
-            subUrl2 = [NSURL URLWithString:subString2];
+            urlString2 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subString2];
+            subUrl2 = [NSURL URLWithString:urlString2];
             
             [cell.debtImageView1 sd_setImageWithURL:subUrl1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
             [cell.debtImageView2 sd_setImageWithURL:subUrl2 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];

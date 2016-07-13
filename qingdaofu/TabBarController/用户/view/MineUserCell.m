@@ -47,6 +47,7 @@
         _userNameButton = [UIButton newAutoLayoutView];
         _userNameButton.titleLabel.font = kBigFont;
         [_userNameButton setTitleColor:kBlackColor forState:0];
+        _userNameButton.userInteractionEnabled = NO;
     }
     return _userNameButton;
 }
