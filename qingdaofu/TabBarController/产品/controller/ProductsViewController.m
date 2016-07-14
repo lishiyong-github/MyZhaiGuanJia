@@ -152,7 +152,7 @@
                         weakself.chooseView.stateButton.selected = NO;
                         weakself.chooseView.moneyButton.selected = NO;
                         
-                        [weakself.view addSubview: weakself.backBlurView];
+                        [weakself.view.window addSubview: weakself.backBlurView];
                         [weakself.backBlurView addSubview:weakself.tableView11];
                         
                         [weakself.tableView11 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:weakself.chooseView];
@@ -245,7 +245,7 @@
 - (UIView *)backBlurView
 {
     if (!_backBlurView) {
-        _backBlurView = [[UIView alloc] initWithFrame:CGRectMake(0, 40, kScreenWidth, kScreenHeight)];
+        _backBlurView = [[UIView alloc] initWithFrame:CGRectMake(0, 40+64, kScreenWidth, kScreenHeight)];
         _backBlurView.backgroundColor = UIColorFromRGB1(0x333333, 0.6);
     }
     return _backBlurView;
