@@ -35,6 +35,7 @@
         
         [self.userActionButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.userActionButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.userNameButton];
+//        
         
         self.didSetupConstraints = YES;
     }
@@ -60,6 +61,7 @@
         [_userActionButton setTitleColor:kLightGrayColor forState:0];
         _userActionButton.titleLabel.font = kSecondFont;
         _userActionButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        _userActionButton.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     }
     return _userActionButton;
 }

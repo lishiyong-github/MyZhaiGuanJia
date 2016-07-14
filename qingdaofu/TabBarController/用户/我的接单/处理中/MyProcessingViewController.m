@@ -341,7 +341,8 @@
                 }
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 cell.userActionButton.titleLabel.font = kSecondFont;
-                
+                [cell.userActionButton autoSetDimension:ALDimensionWidth toSize:kScreenWidth-150];
+
                 [cell.userNameButton setTitle:_loanTypeString1 forState:0];
                 [cell.userNameButton setImage:[UIImage imageNamed:_loanTypeImage] forState:0];
                 [cell.userActionButton setTitle:_loanTypeString2 forState:0];

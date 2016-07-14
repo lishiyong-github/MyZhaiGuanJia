@@ -402,6 +402,7 @@
                 }
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 cell.userActionButton.titleLabel.font = kSecondFont;
+                [cell.userActionButton autoSetDimension:ALDimensionWidth toSize:kScreenWidth-150];
                 
                 [cell.userNameButton setTitle:_loanTypeString1 forState:0];
                 [cell.userNameButton setImage:[UIImage imageNamed:_loanTypeImage] forState:0];
@@ -600,11 +601,7 @@
             cell.evaProImageView2.backgroundColor = kLightGrayColor;
             
             //评价内容
-            if (launchModel.content == nil || [launchModel.content isEqualToString:@""] || [launchModel.content isEqualToString:@"(null)"]) {
-                cell.evaTextLabel.text = @"未填写评价内容";
-            }else{
-                cell.evaTextLabel.text = launchModel.content;
-            }
+            cell.evaTextLabel.text = [NSString getValidStringFromString:launchModel.content toString:@"未填写评价内容"];
             
             //图片
             if (launchModel.pictures.count == 1) {//1张图片

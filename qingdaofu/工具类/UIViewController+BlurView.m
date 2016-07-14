@@ -73,6 +73,9 @@
         tagView = [UIView newAutoLayoutView];
         tagView.backgroundColor = UIColorFromRGB1(0x333333, 0.3);
         tagView.tag = 99999;
+        if (!view) {
+            view = self.view;
+        }
         [view addSubview:tagView];
         [tagView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
         [tagView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:top];
@@ -126,7 +129,6 @@
         [cell.collectionButton.label setTextColor:kNavColor];
         [cell.suitButton.label  setTextColor:kNavColor];
         [tagView addSubview:cell];
-        
         
         UIButton *cancelButton = [UIButton newAutoLayoutView];
         [cancelButton setImage:[UIImage imageNamed:@"btn_close"] forState:0];

@@ -164,7 +164,7 @@
         }else if ([proModel.category intValue] == 3){//诉讼
             //上边
             if ([proModel.agencycommissiontype isEqualToString:@"1"]) {
-                cell.deRateLabel.text = @"固定费用(万)";
+                cell.deRateLabel.text = @"固定费用(万元)";
             }else{
                 cell.deRateLabel.text = @"风险费率(%)";
             }
@@ -184,7 +184,7 @@
         }
         
         //左边－－－－通用
-        cell.deMoneyView.fLabel1.text = @"借款本金(万)";
+        cell.deMoneyView.fLabel1.text = @"借款本金(万元)";
         cell.deMoneyView.fLabel2.text = proModel.money;
         
         return cell;

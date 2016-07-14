@@ -392,7 +392,7 @@
         NSString *isHideStr = evaModel.isHide?@"匿名":evaModel.mobile;
         cell.evaNameLabel.text = isHideStr;
         cell.evaTimeLabel.text = [NSDate getYMDFormatterTime:evaModel.create_time];
-        cell.evaStarImage.currentIndex = [evaResponse.creditor intValue];
+        cell.evaStarImage.currentIndex = [evaResponse.creditor integerValue];
         cell.evaProImageView1.backgroundColor = kLightGrayColor;
         cell.evaProImageView2.backgroundColor = kLightGrayColor;
         cell.evaTextLabel.text = [NSString getValidStringFromString:evaModel.content toString:@"未填写评价内容"];
@@ -542,8 +542,6 @@
     QDFWeakSelf;
     [self requestDataPostWithString:yyyString params:params successBlock:^(id responseObject) {
         
-        NSDictionary *huhu = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        
         CompleteResponse *response = [CompleteResponse objectWithKeyValues:responseObject];
         
         if (response.certification) {
@@ -567,10 +565,6 @@
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:evaluateString params:params successBlock:^(id responseObject) {
-        
-        NSDictionary *huhu = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        
-        
         EvaluateResponse *response = [EvaluateResponse objectWithKeyValues:responseObject];
         [weakself.allEvaResponse addObject:response];
         
@@ -584,35 +578,6 @@
     }];
 }
 
-/*
-- (void)bottomMethod:(NSString *)nameString
-{
-    if ([nameString isEqualToString:@"同意申请"]) {//发布方同意接单方申请
-        NSString *dfdfString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyRecordsMessageAgreeString];
-        NSDictionary *params = @{@"id" : self.idString,
-                                 @"category" : self.categoryString,
-                                 @"token" : [self getValidateToken],
-                                 @"uid" : self.pidString
-                                 };
-        [self requestDataPostWithString:dfdfString params:params successBlock:^(id responseObject) {
-            BaseModel *dfdfModel = [BaseModel objectWithKeyValues:responseObject];
-            [self showHint:dfdfModel.msg];
-            
-            if ([dfdfModel.code isEqualToString:@"0000"]) {
-                [self.appAgreeButton setBackgroundColor:kSelectedColor];
-                [self.appAgreeButton setTitleColor:kBlackColor forState:0];
-                [self.appAgreeButton setTitle:@"已同意" forState:0];
-                self.appAgreeButton.userInteractionEnabled = NO;
-                
-            }
-            
-        } andFailBlock:^(NSError *error) {
-            
-        }];
-    }
-}
-
- */
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

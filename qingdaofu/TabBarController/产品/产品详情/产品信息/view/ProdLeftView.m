@@ -60,7 +60,7 @@
     }
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.widthActConstraints.constant = 200;
+    [cell.userActionButton autoSetDimension:ALDimensionWidth toSize:kScreenWidth-150];
     
     [cell.userNameButton setTitle:self.leftDataArray1[indexPath.row] forState:0];
     [cell.userActionButton setTitle:self.leftDataArray2[indexPath.row] forState:0];

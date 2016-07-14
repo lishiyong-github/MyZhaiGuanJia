@@ -16,7 +16,6 @@
 #import "BidOneCell.h"
 #import "UIImage+Color.h"
 #import "AllProView.h"
-#import "UpCell.h"
 
 #import "AllProductsChooseView.h"
 
@@ -31,22 +30,27 @@
 @property (nonatomic,strong) AllProductsChooseView *chooseView;  //头部选择栏
 @property (nonatomic,strong) UITableView *productsTableView;
 
+@property (nonatomic,strong) UIView *backBlurView;
 @property (nonatomic,strong) UITableView *tableView11;
 @property (nonatomic,strong) UITableView *tableView12;
 @property (nonatomic,strong) UITableView *tableView13;
 
+//json解析
 @property (nonatomic,strong) NSDictionary *provinceDictionary;
 @property (nonatomic,strong) NSDictionary *cityDcitionary;
 @property (nonatomic,strong) NSDictionary *districtDictionary;
 
-//参数
+//参数 json
 @property (nonatomic,strong) NSMutableDictionary *paramsDictionary;
 @property (nonatomic,strong) NSMutableArray *allDataList;
 @property (nonatomic,assign) NSInteger page;
 
-//选中的省份市区
+//记住选中的省份市区
 @property (nonatomic,strong) NSString *proString;
 @property (nonatomic,strong) NSString *cityString;
+@property (nonatomic,assign) NSInteger selectedRow1;
+@property (nonatomic,assign) NSInteger selectedRow2;
+
 @end
 
 @implementation ProductsViewController
@@ -65,6 +69,9 @@
     self.navigationItem.titleView = self.proTitleView;
     
 //    self.navigationItem.rightBarButtonItem  = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"nav_search"] style:UIBarButtonItemStylePlain target:self action:@selector(searchProducts)];
+    
+    _selectedRow1 = 1000;
+    _selectedRow2 = 1000;
     
     [self.view addSubview:self.chooseView];
     [self.view addSubview:self.productsTableView];
@@ -136,14 +143,18 @@
                 case 201:{//区域
                     selectedButton.selected = !selectedButton.selected;
                     [weakself hiddenBlurView];
-                    [weakself.tableView11 removeFromSuperview];
-                    [weakself.tableView12 removeFromSuperview];
-                    [weakself.tableView13 removeFromSuperview];
+                    
+                    [weakself.backBlurView removeFromSuperview];
+//                    [weakself.tableView11 removeFromSuperview];
+//                    [weakself.tableView12 removeFromSuperview];
+//                    [weakself.tableView13 removeFromSuperview];
                     if (selectedButton.selected) {
                         weakself.chooseView.stateButton.selected = NO;
                         weakself.chooseView.moneyButton.selected = NO;
                         
-                        [weakself.view addSubview: weakself.tableView11];
+                        [weakself.view addSubview: weakself.backBlurView];
+                        [weakself.backBlurView addSubview:weakself.tableView11];
+                        
                         [weakself.tableView11 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:weakself.chooseView];
                         
                         [weakself.tableView11 autoPinEdgeToSuperviewEdge:ALEdgeLeft];
@@ -231,6 +242,15 @@
     return _productsTableView;
 }
 
+- (UIView *)backBlurView
+{
+    if (!_backBlurView) {
+        _backBlurView = [[UIView alloc] initWithFrame:CGRectMake(0, 40, kScreenWidth, kScreenHeight)];
+        _backBlurView.backgroundColor = UIColorFromRGB1(0x333333, 0.6);
+    }
+    return _backBlurView;
+}
+
 - (UITableView *)tableView11
 {
     if (!_tableView11) {
@@ -238,7 +258,6 @@
         _tableView11.delegate = self;
         _tableView11.dataSource = self;
         _tableView11.tableFooterView = [[UIView alloc] init];
-//        _tableView11.backgroundColor = UIColorFromRGB1(0x333333, 0.3);
         _tableView11.layer.borderColor = kSeparateColor.CGColor;
         _tableView11.layer.borderWidth = kLineWidth;
         _tableView11.backgroundColor = kNavColor;
@@ -254,6 +273,8 @@
         _tableView12.dataSource = self;
         _tableView12.tableFooterView = [[UIView alloc] init];
         _tableView12.backgroundColor = kNavColor;
+        _tableView12.layer.borderColor = kSeparateColor.CGColor;
+        _tableView12.layer.borderWidth = kLineWidth;
     }
     return _tableView12;
 }
@@ -464,7 +485,6 @@
         
         cell.oneButton.userInteractionEnabled = NO;
         [cell.oneButton setTitleColor:kLightGrayColor forState:0];
-        [cell.oneButton setTitleColor:kBlueColor forState:UIControlStateSelected];
         [cell.oneButton setTitle:self.districtDictionary.allValues[indexPath.row] forState:0];
 
         return cell;
@@ -505,9 +525,12 @@
         if (indexPath.row == 0) {
             [self.chooseView.squrebutton setTitle:@"不限" forState:0];
             
-            [self.tableView11 removeFromSuperview];
-            [self.tableView12 removeFromSuperview];
-            [self.tableView13 removeFromSuperview];
+            self.widthConstraints.constant = kScreenWidth;
+            
+//            [self.tableView11 removeFromSuperview];
+//            [self.tableView12 removeFromSuperview];
+//            [self.tableView13 removeFromSuperview];
+            [self.backBlurView removeFromSuperview];
             
             [self.paramsDictionary setValue:@"0" forKey:@"province"];
             [self.paramsDictionary setValue:@"0" forKey:@"city"];
@@ -517,10 +540,16 @@
             
         }else{
             
-//            BidOneCell *cell = [self.tableView11 cellForRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
-//            [cell.oneButton setTitleColor:kBlueColor forState:0];
+            if (_selectedRow1 != 1000) {
+                BidOneCell *cell = [self.tableView11 cellForRowAtIndexPath:[NSIndexPath indexPathForRow:_selectedRow1 inSection:0]];
+                [cell.oneButton setTitleColor:kLightGrayColor forState:0];
+            }
             
-            [self.view addSubview:self.tableView12];
+            _selectedRow1 = indexPath.row;
+            BidOneCell *cell = [self.tableView11 cellForRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
+            [cell.oneButton setTitleColor:kBlueColor forState:0];
+            
+            [self.backBlurView addSubview:self.tableView12];
             self.widthConstraints.constant = kScreenWidth/2;
             [self.tableView12 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.tableView11];
             [self.tableView12 autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.tableView11];
@@ -533,10 +562,17 @@
         }
     }else if (tableView == self.tableView12){//市
         
-//        BidOneCell *cell = [self.tableView12 cellForRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
-//        [cell.oneButton setTitleColor:kBlueColor forState:0];
+        if (_selectedRow2 != 1000) {
+            BidOneCell *cell = [self.tableView12 cellForRowAtIndexPath:[NSIndexPath indexPathForRow:_selectedRow2 inSection:0]];
+            [cell.oneButton setTitleColor:kLightGrayColor forState:0];
+        }
         
-        [self.view addSubview:self.tableView13];
+        _selectedRow2 = indexPath.row;
+        
+        BidOneCell *cell = [self.tableView12 cellForRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
+        [cell.oneButton setTitleColor:kBlueColor forState:0];
+        
+        [self.backBlurView addSubview:self.tableView13];
         self.widthConstraints.constant = kScreenWidth/3;
         [self.tableView13 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.tableView12];
         [self.tableView13 autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.tableView11];
@@ -548,16 +584,11 @@
         [self getDistrictListWithCityID:self.cityDcitionary.allKeys[indexPath.row]];
         
     }else if (tableView == self.tableView13){//区
-    
-//        BidOneCell *cell = [self.tableView13 cellForRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
-//        [cell.oneButton setTitleColor:kBlueColor forState:0];
-//        
-//        cell.selectedBackgroundView = [[UIView alloc] init];
-//        cell.selectedBackgroundView.backgroundColor = kCellSelectedColor;
-    
-        [self.tableView11 removeFromSuperview];
-        [self.tableView12 removeFromSuperview];
-        [self.tableView13 removeFromSuperview];
+        
+//        [self.tableView11 removeFromSuperview];
+//        [self.tableView12 removeFromSuperview];
+//        [self.tableView13 removeFromSuperview];
+        [self.backBlurView removeFromSuperview];
         
         UIButton *but1 = [self.view viewWithTag:202];
         UIButton *but2 = [self.view viewWithTag:203];
@@ -595,6 +626,11 @@
     SearchViewController *searchVC = [[SearchViewController alloc] init];
     searchVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:searchVC animated:YES];
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [self.backBlurView removeFromSuperview];
 }
 
 /*

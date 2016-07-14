@@ -204,23 +204,23 @@
 
 - (void)back
 {
-    UIAlertController *agentAlertController = [UIAlertController alertControllerWithTitle:@"" message:@"未保存，是否保存？" preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction *agentAct1 = [UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        NSLog(@"放弃保存");
+    if (!self.model && !self.addAgentDictionary) {
+        UIAlertController *agentAlertController = [UIAlertController alertControllerWithTitle:@"" message:@"放弃保存？" preferredStyle:UIAlertControllerStyleAlert];
+        
+        QDFWeakSelf;
+        UIAlertAction *agentAct1 = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [weakself.navigationController popViewControllerAnimated:YES];
+        }];
+        
+        UIAlertAction *agentAct2 = [UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleDefault handler:nil];
+        
+        [agentAlertController addAction:agentAct1];
+        [agentAlertController addAction:agentAct2];
+        
+        [self presentViewController:agentAlertController animated:YES completion:nil];
+    }else{
         [self.navigationController popViewControllerAnimated:YES];
-    }];
-    
-    UIAlertAction *agentAct2 = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        NSLog(@"保存");
-
-        [self saveAgent];
-    }];
-    
-    [agentAlertController addAction:agentAct1];
-    [agentAlertController addAction:agentAct2];
-    
-    [self presentViewController:agentAlertController animated:YES completion:nil];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
