@@ -41,6 +41,12 @@
 @property (nonatomic,strong) NSMutableArray *processArray;
 @property (nonatomic,strong) NSMutableArray *scheduleOrderProArray;
 @property (nonatomic,strong) NSMutableArray *delayArray;
+
+
+@property (nonatomic,strong) NSString *loanTypeString1;  //债权类型
+@property (nonatomic,strong) NSString *loanTypeString2;  //债权类型内容
+@property (nonatomic,strong) NSString *loanTypeImage;//债权类型图片
+
 @end
 
 @implementation MyProcessingViewController
@@ -132,7 +138,11 @@
 {
     if (self.processArray.count > 0) {
         if (section == 1) {
-            return 6;
+            PublishingResponse *response = self.processArray[0];
+            if ([response.product.loan_type isEqualToString:@"4"]) {
+                return 6;
+            }
+            return 7;
         }else if (section == 3){
             return 3;
         }
@@ -213,58 +223,85 @@
             if ([processModel.category intValue] == 1) {//融资
                 string22 = @"融资";
                 if ([processModel.rate_cat intValue] == 1) {
-                    string3 = @"  借款利率(天)";
+                    string3 = @"  借款利率(%/天)";
                 }else if ([processModel.rate_cat intValue] == 2){
-                    string3 = @"  借款利率(月)";
+                    string3 = @"  借款利率(%/月)";
                 }
                 imageString3 = @"conserve_interest_icon";
                 string33 = processModel.rate;
-                string4 = @"  返点";
+                string4 = @"  返点(%)";
                 imageString4 = @"conserve_rebate_icon";
                 string44 = processModel.rebate;
+                
+                _loanTypeString1 = @"  抵押物地址";
+                _loanTypeString2 = [NSString stringWithFormat:@"%@",processModel.seatmortgage];
+                _loanTypeImage = @"conserve_seat_icon";
+                
             }else if ([processModel.category intValue] == 2){//清收
                 string22 = @"清收";
                 if ([processModel.agencycommissiontype intValue] == 1) {
                     string3 = @"  提成比例(%)";
+                    imageString3 =  @"conserve_rights_icon";
                 }else if ([processModel.agencycommissiontype intValue] == 2){
-                    string3 = @"  固定费用(万)";
+                    string3 = @"  固定费用(万元)";
+                    imageString3 =  @"conserve_fixed_icons";
                 }
-                imageString3 = @"conserve_fixed_icon";
                 string33 = processModel.agencycommission;
                 string4 = @"  债权类型";
-                imageString4 = @"conserve_rights_icon";
+                imageString4 = @"conserve_loantype_icon";
                 if ([processModel.loan_type intValue] == 1) {
                     string44 = @"房产抵押";
+                    _loanTypeString1 = [NSString stringWithFormat:@"  %@",string44];
+                    _loanTypeString2 = [NSString stringWithFormat:@"%@",processModel.seatmortgage];
+                    _loanTypeImage = @"conserve_seat_icon";
+                    
                 }else if ([processModel.loan_type intValue] == 2){
                     string44 = @"应收账款";
+                    _loanTypeString1 = [NSString stringWithFormat:@"  %@(万元)",string44];
+                    _loanTypeString2 = processModel.accountr;
+                    _loanTypeImage = @"conserve_account_icon";
                 }else if ([processModel.loan_type intValue] == 3){
                     string44 = @"机动车抵押";
+                    _loanTypeString1 = [NSString stringWithFormat:@"  %@",string44];
+                    _loanTypeString2 = [NSString stringWithFormat:@"%@/%@",response.car,response.license];
+                    _loanTypeImage = @"conserve_car_icon";
                 }else if ([processModel.loan_type intValue] == 4){
                     string44 = @"无抵押";
                 }
             }else if ([processModel.category intValue] == 3){//诉讼
                 string22 = @"诉讼";
                 if ([processModel.agencycommissiontype intValue] == 1) {
-                    string3 = @"  固定费用(万)";
+                    string3 = @"  固定费用(万元)";
+                    imageString3 =  @"conserve_fixed_icons";
                 }else if ([processModel.agencycommissiontype intValue] == 2){
                     string3 = @"  风险费率(%)";
+                    imageString3 =  @"conserve_fixed_icon";
                 }
                 imageString3 = @"conserve_fixed_icon";
                 string33 = processModel.agencycommission;
                 string4 = @"  债权类型";
-                imageString4 = @"conserve_rights_icon";
+                imageString4 = @"conserve_loantype_icon";
                 if ([processModel.loan_type intValue] == 1) {
                     string44 = @"房产抵押";
+                    _loanTypeString1 = [NSString stringWithFormat:@"  %@",string44];
+                    _loanTypeString2 = [NSString stringWithFormat:@"%@",processModel.seatmortgage];
+                    _loanTypeImage = @"conserve_seat_icon";
                 }else if ([processModel.loan_type intValue] == 2){
                     string44 = @"应收账款";
+                    _loanTypeString1 = [NSString stringWithFormat:@"  %@(万元)",string44];
+                    _loanTypeString2 = processModel.accountr;
+                    _loanTypeImage = @"conserve_account_icon";
                 }else if ([processModel.loan_type intValue] == 3){
                     string44 = @"机动车抵押";
+                    _loanTypeString1 = [NSString stringWithFormat:@"  %@",string44];
+                    _loanTypeString2 = [NSString stringWithFormat:@"%@/%@",response.car,response.license];
+                    _loanTypeImage = @"conserve_car_icon";
                 }else if ([processModel.loan_type intValue] == 4){
                     string44 = @"无抵押";
                 }
             }
             
-            NSArray *dataArray = @[@"|  基本信息",@"  投资类型",@"  借款本金(万)",string3,string4];
+            NSArray *dataArray = @[@"|  基本信息",@"  产品类型",@"  借款本金(万)",string3,string4];
             NSArray *imageArray = @[@"",@"conserve_investment_icon",@"conserve_loan_icon",imageString3,imageString4];
             NSArray *detailArray = @[@"",string22,processModel.money,string33,string44];
             
@@ -279,19 +316,55 @@
             return cell;
         }
         
-        identifier = @"processing11";
-        BidOneCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        
-        if (!cell) {
-            cell = [[BidOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        if ([processModel.loan_type isEqualToString:@"4"]) {//无抵押
+            //补充信息
+            identifier = @"detailSave4";
+            BidOneCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            
+            if (!cell) {
+                cell = [[BidOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            [cell.oneButton setTitle:@"查看补充信息" forState:0];
+            [cell.oneButton setImage:[UIImage imageNamed:@"more"] forState:0];
+            cell.oneButton.userInteractionEnabled = NO;
+            
+            return cell;
+        }else{
+            if (indexPath.row == 5) {
+                identifier = @"detailSave2";
+                MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+                
+                if (!cell) {
+                    cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+                }
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                cell.userActionButton.titleLabel.font = kSecondFont;
+                
+                [cell.userNameButton setTitle:_loanTypeString1 forState:0];
+                [cell.userNameButton setImage:[UIImage imageNamed:_loanTypeImage] forState:0];
+                [cell.userActionButton setTitle:_loanTypeString2 forState:0];
+                
+                return cell;
+            }else{
+                //补充信息
+                identifier = @"detailSave3";
+                BidOneCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+                
+                if (!cell) {
+                    cell = [[BidOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+                }
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                
+                [cell.oneButton setTitle:@"查看补充信息" forState:0];
+                [cell.oneButton setImage:[UIImage imageNamed:@"more"] forState:0];
+                cell.oneButton.userInteractionEnabled = NO;
+                
+                return cell;
+            }
+            
         }
-        
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        [cell.oneButton setTitle:@"查看补充信息" forState:0];
-        [cell.oneButton setImage:[UIImage imageNamed:@"more"] forState:0];
-        cell.oneButton.userInteractionEnabled = NO;
-        
-        return cell;
         
     }else if (indexPath.section == 2){
 
@@ -362,20 +435,20 @@
                 }else{
                     auditStr = @"暂无";
                 }
-                NSMutableAttributedString *caseTypestring = [cell.deadlineLabel setAttributeString:@"案号类型：" withColor:kBlackColor andSecond:auditStr withColor:kLightGrayColor withFont:12];
+                NSMutableAttributedString *caseTypestring = [cell.deadlineLabel setAttributeString:@"案号类型：" withColor:kBlackColor andSecond:auditStr withColor:kLightGrayColor withFont:14];
                 [cell.deadlineLabel setAttributedText:caseTypestring];
                 
                 //时间
-                cell.timeLabel.text = @"2016-05-30";
+                cell.timeLabel.text = [NSDate getYMDhmFormatterTime:scheduleModel.create_time];
                 
                 //案号
                 NSString *caseStr = [NSString getValidStringFromString:scheduleModel.caseString];
-                NSMutableAttributedString *caseNoString = [cell.dateLabel setAttributeString:@"案        号：" withColor:kBlackColor andSecond:caseStr withColor:kLightGrayColor withFont:12];
+                NSMutableAttributedString *caseNoString = [cell.dateLabel setAttributeString:@"案        号：" withColor:kBlackColor andSecond:caseStr withColor:kLightGrayColor withFont:14];
                 [cell.dateLabel setAttributedText:caseNoString];
                 
                 //处置类型
                 NSArray *suitArr3 = @[@"债权人上传处置资产",@"律师接单",@"双方洽谈",@"向法院起诉(财产保全)",@"整理诉讼材料",@"法院立案",@"向当事人发出开庭传票",@"开庭前调解",@"开庭",@"判决",@"二次开庭",@"二次判决",@"移交执行局申请执行",@"执行中提供借款人的财产线索",@"调查(公告)",@"拍卖",@"流拍",@"拍卖成功",@"付费"];
-                NSArray *suitArray1 = @[@"尽职调查",@"公证",@"抵押",@"放款",@"返点",@"其他"];
+                NSArray *suitArray1 = @[@"尽职调查",@"公证",@"抵押",@"放款",@"返点(%)",@"其他"];
                 NSArray *suitArray2 = @[@"电话",@"上门",@"面谈"];
                 NSInteger number = [scheduleModel.status intValue];
                 NSString *dealTypeStr;
@@ -386,12 +459,12 @@
                 }else{
                     dealTypeStr = suitArr3[number-1];
                 }
-                NSMutableAttributedString *dealTypeString = [cell.areaLabel setAttributeString:@"处置类型：" withColor: kBlackColor andSecond:dealTypeStr withColor:kLightGrayColor withFont:12];
+                NSMutableAttributedString *dealTypeString = [cell.areaLabel setAttributeString:@"处置类型：" withColor: kBlackColor andSecond:dealTypeStr withColor:kLightGrayColor withFont:14];
                 [cell.areaLabel setAttributedText:dealTypeString];
                 
                 //详情
                 NSString *contentStr = [NSString getValidStringFromString:scheduleModel.content];
-                NSMutableAttributedString *dealDeailString = [cell.addressLabel setAttributeString:@"详        情：" withColor:kBlackColor andSecond:contentStr withColor:kLightGrayColor withFont:12];
+                NSMutableAttributedString *dealDeailString = [cell.addressLabel setAttributeString:@"详        情：" withColor:kBlackColor andSecond:contentStr withColor:kLightGrayColor withFont:14];
                 [cell.addressLabel setAttributedText:dealDeailString];
                 
             }else{
@@ -449,7 +522,7 @@
                 [cell.userActionButton setTitle:@"立即申请" forState:0];
             }else{
                 [cell.userActionButton setTitle:@"不能申请延期" forState:0];
-                [self showHint:@"小于7天才可申请延期"];
+//                [self showHint:@"小于7天才可申请延期"];
                 cell.userInteractionEnabled = NO;
             }
             
@@ -537,12 +610,25 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 1 && indexPath.row == 5) {//补充信息
-        AdditionMessageViewController *additionalMessageVC = [[AdditionMessageViewController alloc] init];
-        additionalMessageVC.idString = self.idString;
-        additionalMessageVC.categoryString = self.categaryString;
-        [self.navigationController pushViewController:additionalMessageVC animated:YES];
-        
+    if (indexPath.section == 1) {
+        PublishingResponse *resModel = self.processArray[0];
+        PublishingModel *dealModel = resModel.product;
+
+        if ([dealModel.loan_type isEqualToString:@"4"]) {
+            if (indexPath.row == 5) {
+                AdditionMessageViewController *additionMessageVC = [[AdditionMessageViewController alloc] init];
+                additionMessageVC.idString = dealModel.idString;
+                additionMessageVC.categoryString = dealModel.category;
+                [self.navigationController pushViewController:additionMessageVC animated:YES];
+            }
+        }else{
+            if (indexPath.row == 6) {
+                AdditionMessageViewController *additionMessageVC = [[AdditionMessageViewController alloc] init];
+                additionMessageVC.idString = dealModel.idString;
+                additionMessageVC.categoryString = dealModel.category;
+                [self.navigationController pushViewController:additionMessageVC animated:YES];
+            }
+        }
     }else if (indexPath.section == 2) {//协议
         AgreementViewController *agreementVc = [[AgreementViewController alloc] init];
         agreementVc.idString = self.idString;

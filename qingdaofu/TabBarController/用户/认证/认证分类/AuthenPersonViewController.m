@@ -385,19 +385,25 @@
 
 - (void)back
 {
-    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:nil message:@"是否放弃保存？" preferredStyle:UIAlertControllerStyleAlert];
-    
-    QDFWeakSelf;
-    UIAlertAction *act1 = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [weakself.navigationController popViewControllerAnimated:YES];
-    }];
-    
-    UIAlertAction *act2 = [UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-    }];
-    [alertVC addAction:act1];
-    [alertVC addAction:act2];
-    
-    [self presentViewController:alertVC animated:YES completion:nil];
+    if (!self.respnseModel && !self.perDataDictionary) {
+        
+        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:nil message:@"是否放弃保存？" preferredStyle:UIAlertControllerStyleAlert];
+        
+        QDFWeakSelf;
+        UIAlertAction *act1 = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [weakself.navigationController popViewControllerAnimated:YES];
+        }];
+        
+        UIAlertAction *act2 = [UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        }];
+        [alertVC addAction:act1];
+        [alertVC addAction:act2];
+        
+        [self presentViewController:alertVC animated:YES completion:nil];
+        
+    }else{
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

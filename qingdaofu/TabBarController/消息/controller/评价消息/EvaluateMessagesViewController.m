@@ -200,13 +200,6 @@
     [self.evaluateTableView reloadData];
 }
 
-#pragma mark - method
-- (void)getEvaluateListWithPage:(NSString *)page
-{
-    NSString *messageEvaString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyEvaluateString];
-    
-}
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

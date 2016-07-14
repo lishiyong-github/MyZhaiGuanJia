@@ -16,6 +16,7 @@
 #import "BidOneCell.h"
 #import "UIImage+Color.h"
 #import "AllProView.h"
+#import "UpCell.h"
 
 #import "AllProductsChooseView.h"
 
@@ -146,8 +147,7 @@
                         [weakself.tableView11 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:weakself.chooseView];
                         
                         [weakself.tableView11 autoPinEdgeToSuperviewEdge:ALEdgeLeft];
-                        [weakself.tableView11 autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kTabBarHeight];
-                        
+                        [weakself.tableView11 autoSetDimension:ALDimensionHeight toSize:300];
                         weakself.widthConstraints = [weakself.tableView11 autoSetDimension:ALDimensionWidth toSize:kScreenWidth];
                         
                         [weakself getProvinceList];
@@ -238,9 +238,10 @@
         _tableView11.delegate = self;
         _tableView11.dataSource = self;
         _tableView11.tableFooterView = [[UIView alloc] init];
-        _tableView11.backgroundColor = UIColorFromRGB1(0x333333, 0.3);
+//        _tableView11.backgroundColor = UIColorFromRGB1(0x333333, 0.3);
         _tableView11.layer.borderColor = kSeparateColor.CGColor;
         _tableView11.layer.borderWidth = kLineWidth;
+        _tableView11.backgroundColor = kNavColor;
     }
     return _tableView11;
 }
@@ -252,7 +253,7 @@
         _tableView12.delegate = self;
         _tableView12.dataSource = self;
         _tableView12.tableFooterView = [[UIView alloc] init];
-        _tableView12.backgroundColor = UIColorFromRGB1(0x333333, 0.3);
+        _tableView12.backgroundColor = kNavColor;
     }
     return _tableView12;
 }
@@ -264,7 +265,7 @@
         _tableView13.delegate = self;
         _tableView13.dataSource = self;
         _tableView13.tableFooterView = [[UIView alloc] init];
-        _tableView13.backgroundColor = UIColorFromRGB1(0x333333, 0.3);
+        _tableView13.backgroundColor = kNavColor;
         _tableView13.layer.borderColor = kSeparateColor.CGColor;
         _tableView13.layer.borderWidth = kLineWidth;
     }
@@ -341,9 +342,9 @@
             cell.pointView.label2.text = @"返点(%)";
             cell.rateView.label1.text = proModel.rate;
             if ([proModel.rate_cat isEqualToString:@"1"]) {
-                cell.rateView.label2.text = @"借款利率(天)";
+                cell.rateView.label2.text = @"借款利率(%/天)";
             }else{
-                cell.rateView.label2.text = @"借款利率(月)";
+                cell.rateView.label2.text = @"借款利率(%/月)";
             }
         }else if ([proModel.category isEqualToString:@"2"]){//清收
             [cell.typeImageView setImage:[UIImage imageNamed:@"list_collection"]];
@@ -411,8 +412,25 @@
         if (!cell) {
             cell = [[BidOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
+        
+        cell.selectedBackgroundView = [[UIView alloc] init];
+        cell.selectedBackgroundView.backgroundColor = kCellSelectedColor;
+//
+//        if (indexPath.row == 0) {
+//            [cell.upButton setTitle:@"不限" forState:0];
+//        }else{
+//            [cell.upButton setTitle:self.provinceDictionary.allValues[indexPath.row-1] forState:0];
+//        }
+//        
+//        QDFWeakSelf;
+//        [cell.upButton addAction:^(UIButton *btn) {
+//            [weakself selectedCellButtonWithRow:indexPath.row withIdentifier:@"11" withButton:btn];
+//        }];
+        
         cell.oneButton.userInteractionEnabled = NO;
         [cell.oneButton setTitleColor:kLightGrayColor forState:0];
+        cell.selectedBackgroundView = [[UIView alloc] init];
+        cell.selectedBackgroundView.backgroundColor = kCellSelectedColor;
 
         if (indexPath.row == 0) {
             [cell.oneButton setTitle:@"不限" forState:0];
@@ -431,7 +449,8 @@
         
         cell.oneButton.userInteractionEnabled = NO;
         [cell.oneButton setTitleColor:kLightGrayColor forState:0];
-        [cell.oneButton setTitleColor:kBlueColor forState:UIControlStateSelected];
+        cell.selectedBackgroundView = [[UIView alloc] init];
+        cell.selectedBackgroundView.backgroundColor = kCellSelectedColor;
 
         [cell.oneButton setTitle:self.cityDcitionary.allValues[indexPath.row] forState:0];
 
@@ -481,20 +500,25 @@
                 [weakself.navigationController pushViewController:authentyVC animated:YES];
             }
         }];
-    }else if (tableView == self.tableView11){
+    } else if (tableView == self.tableView11){//省份
         
         if (indexPath.row == 0) {
+            [self.chooseView.squrebutton setTitle:@"不限" forState:0];
+            
             [self.tableView11 removeFromSuperview];
             [self.tableView12 removeFromSuperview];
             [self.tableView13 removeFromSuperview];
-            [self.paramsDictionary setValue:@"310000" forKey:@"province"];
-            [self.paramsDictionary setValue:@"310100" forKey:@"city"];
-            [self.paramsDictionary setValue:@"310100" forKey:@"area"];
+            
+            [self.paramsDictionary setValue:@"0" forKey:@"province"];
+            [self.paramsDictionary setValue:@"0" forKey:@"city"];
+            [self.paramsDictionary setValue:@"0" forKey:@"area"];
+            
             [self headerRefreshWithAllProducts];
+            
         }else{
             
-            BidOneCell *cell = [self.tableView11 cellForRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
-            [cell.oneButton setTitleColor:kBlueColor forState:0];
+//            BidOneCell *cell = [self.tableView11 cellForRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
+//            [cell.oneButton setTitleColor:kBlueColor forState:0];
             
             [self.view addSubview:self.tableView12];
             self.widthConstraints.constant = kScreenWidth/2;
@@ -507,10 +531,10 @@
             
             [self getCityListWithProvinceID:self.provinceDictionary.allKeys[indexPath.row-1]];
         }
-    }else if (tableView == self.tableView12){
+    }else if (tableView == self.tableView12){//市
         
-        BidOneCell *cell = [self.tableView12 cellForRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
-        [cell.oneButton setTitleColor:kBlueColor forState:0];
+//        BidOneCell *cell = [self.tableView12 cellForRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
+//        [cell.oneButton setTitleColor:kBlueColor forState:0];
         
         [self.view addSubview:self.tableView13];
         self.widthConstraints.constant = kScreenWidth/3;
@@ -523,10 +547,13 @@
 
         [self getDistrictListWithCityID:self.cityDcitionary.allKeys[indexPath.row]];
         
-    }else if (tableView == self.tableView13){
+    }else if (tableView == self.tableView13){//区
     
-        BidOneCell *cell = [self.tableView13 cellForRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
-        [cell.oneButton setTitleColor:kBlueColor forState:0];
+//        BidOneCell *cell = [self.tableView13 cellForRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
+//        [cell.oneButton setTitleColor:kBlueColor forState:0];
+//        
+//        cell.selectedBackgroundView = [[UIView alloc] init];
+//        cell.selectedBackgroundView.backgroundColor = kCellSelectedColor;
     
         [self.tableView11 removeFromSuperview];
         [self.tableView12 removeFromSuperview];
@@ -570,6 +597,71 @@
     [self.navigationController pushViewController:searchVC animated:YES];
 }
 
+/*
+- (void)selectedCellButtonWithRow:(NSInteger)indexRow withIdentifier:(NSString *)identifier withButton:(UIButton *)sender
+{
+    sender.selected = !sender.selected;
+    if ([identifier isEqualToString:@"11"]) {//省份
+        if (indexRow == 0) {
+            [self.chooseView.squrebutton setTitle:@"不限" forState:0];
+            
+            [self.tableView11 removeFromSuperview];
+            [self.tableView12 removeFromSuperview];
+            [self.tableView13 removeFromSuperview];
+            
+            [self.paramsDictionary setValue:@"0" forKey:@"province"];
+            [self.paramsDictionary setValue:@"0" forKey:@"city"];
+            [self.paramsDictionary setValue:@"0" forKey:@"area"];
+            
+            [self headerRefreshWithAllProducts];
+            
+        }else{
+            [self.view addSubview:self.tableView12];
+            self.widthConstraints.constant = kScreenWidth/2;
+            [self.tableView12 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.tableView11];
+            [self.tableView12 autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.tableView11];
+            [self.tableView12 autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.tableView11];
+            [self.tableView12 autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.tableView11];
+            
+            _proString = self.provinceDictionary.allKeys[indexRow-1];
+            
+            [self getCityListWithProvinceID:self.provinceDictionary.allKeys[indexRow-1]];
+        }
+    }else if ([identifier isEqualToString:@"12"]){
+        [self.view addSubview:self.tableView13];
+        self.widthConstraints.constant = kScreenWidth/3;
+        [self.tableView13 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.tableView12];
+        [self.tableView13 autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.tableView11];
+        [self.tableView13 autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.tableView11];
+        [self.tableView13 autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.tableView11];
+        
+        _cityString = self.cityDcitionary.allKeys[indexRow];
+        
+        [self getDistrictListWithCityID:self.cityDcitionary.allKeys[indexRow]];
+
+    }else{
+        [self.tableView11 removeFromSuperview];
+        [self.tableView12 removeFromSuperview];
+        [self.tableView13 removeFromSuperview];
+        
+        UIButton *but1 = [self.view viewWithTag:202];
+        UIButton *but2 = [self.view viewWithTag:203];
+        but1.userInteractionEnabled = YES;
+        but2.userInteractionEnabled = YES;
+        
+        [self.chooseView.squrebutton setTitle:self.districtDictionary.allValues[indexRow] forState:0];
+        self.widthConstraints.constant = kScreenWidth;
+        [self.paramsDictionary setValue:_proString forKey:@"province"];
+        [self.paramsDictionary setValue:_cityString forKey:@"city"];
+        [self.paramsDictionary setValue:self.districtDictionary.allKeys[indexRow] forKey:@"area"];
+        
+        [self headerRefreshWithAllProducts];
+
+    }
+}
+*/
+ 
+#pragma mark - get province city and dictrict
 - (void)getProvinceList
 {
     NSString *provinceString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProvinceString];
@@ -619,6 +711,7 @@
     }];
 }
 
+#pragma mark - refresh
 - (void)getProductsListWithPage:(NSString *)page
 {
     NSString *allProString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductsListString];

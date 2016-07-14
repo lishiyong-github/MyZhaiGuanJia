@@ -8,9 +8,7 @@
 
 #import "UpwardTableView.h"
 
-
 #import "BidOneCell.h"
-#import "MineUserCell.h"
 
 @implementation UpwardTableView
 
@@ -68,7 +66,7 @@
 {
     static NSString *identifier;
     
-    if ([self.tableType isEqualToString:@"有"]) {
+    if ([self.tableType isEqualToString:@"有"]) {//有title
         
         identifier = @"upward0";
         BidOneCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -102,14 +100,19 @@
         return cell;
     }
     
+    //无title（产品页面的状态、金额选择）
     identifier = @"upward1";
     BidOneCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
         cell = [[BidOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
     
+    cell.selectedBackgroundView = [[UIView alloc] init];
+    cell.selectedBackgroundView.backgroundColor = kCellSelectedColor;
+    
     cell.oneButton.userInteractionEnabled = NO;
     [cell.oneButton setTitle:self.upwardDataList[indexPath.row] forState:0];
+    [cell.oneButton setTitleColor:kLightGrayColor forState:0];
     
     return cell;
 }
@@ -122,7 +125,7 @@
                 self.didSelectedRow(self.upwardDataList[indexPath.row-1],indexPath.row);
             }
         }
-    }else{
+    }else{//无title
         if (self.didSelectedRow) {
             self.didSelectedRow(self.upwardDataList[indexPath.row],indexPath.row);
         }

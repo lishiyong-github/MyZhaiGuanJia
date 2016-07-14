@@ -52,7 +52,7 @@
 //        weakself.blueLabel.frame = CGRectMake(_getbutton.left+kScreenWidth/8,37, kScreenWidth/4, 2);
 
         [self.blueLabel autoSetDimensionsToSize:CGSizeMake(80, 2)];
-        [self.blueLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:2];
+        [self.blueLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom];
         
         [self.shortLineLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.getbutton];
         [self.shortLineLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kSmallPadding];
@@ -140,7 +140,7 @@
 - (UILabel *)blueLabel
 {
     if (!_blueLabel) {
-        _blueLabel = [[UILabel alloc] initWithFrame:CGRectMake(kScreenWidth/8,37, kScreenWidth/4, 2)];
+        _blueLabel = [UILabel newAutoLayoutView];
         _blueLabel.backgroundColor = kBlueColor;
     }
     

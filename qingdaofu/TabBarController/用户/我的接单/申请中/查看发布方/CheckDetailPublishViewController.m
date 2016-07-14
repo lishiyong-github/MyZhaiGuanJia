@@ -61,11 +61,15 @@
 {
     if (!self.didSetupConstraints) {
         
-        [self.checkDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
-        [self.checkDetailTableView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kTabBarHeight];
-        
-        [self.appAgreeButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [self.appAgreeButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.checkDetailTableView];
+        if ([self.typeString isEqualToString:@"申请人"]) {
+            [self.checkDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
+            [self.checkDetailTableView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kTabBarHeight];
+            
+            [self.appAgreeButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+            [self.appAgreeButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.checkDetailTableView];
+        }else{
+            [self.checkDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+        }
         
         self.didSetupConstraints = YES;
     }
@@ -179,7 +183,17 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == 0) {
-        return 6;
+        
+        if (self.certifiDataArray.count > 0) {
+            CertificationModel *model = self.certifiDataArray[0];
+            if ([model.category integerValue] == 1) {//个人
+                return 7;
+            }else if ([model.category integerValue] == 2){//律所
+                return 8;
+            }else if ([model.category integerValue] == 3){//公司
+                return 10;
+            }
+        }
     }
     
     return 2;
@@ -224,31 +238,104 @@
            cerModel = self.certifiDataArray[0];
         }
         
-        NSArray *pubArray = @[@"|  申请人信息",@"姓名",@"身份证号码",@"身份图片",@"邮箱",@"经典案例"];
-        [cell.userNameButton setTitle:pubArray[indexPath.row] forState:0];
-        
-        if (indexPath.row == 0) {
-            [cell.userNameButton setTitleColor:kBlueColor forState:0];
-            [cell.userActionButton setImage:[UIImage imageNamed:@"publish_list_authentication"] forState:0];
-        }else if (indexPath.row == 1){
-            [cell.userActionButton setTitle:cerModel.name forState:0];
-        }else if (indexPath.row == 2){
-            [cell.userActionButton setTitle:cerModel.cardno forState:0];
-        }else if(indexPath.row == 3){
-            if ([cerModel.cardimg isEqualToString:@"undefined"]) {
-                [cell.userActionButton setTitle:@"未上传" forState:0];
-            }else{
-                [cell.userActionButton setTitle:@"已上传" forState:0];
-            }
-        }else if (indexPath.row == 4){
-            [cell.userActionButton setTitle:[NSString getValidStringFromString:cerModel.email] forState:0];
+        if ([cerModel.category integerValue] == 1) {//个人
+            NSString *tytyString = [NSString stringWithFormat:@"|  %@信息",self.typeString];
+            NSArray *pubArray = @[tytyString,@"姓名",@"身份证号码",@"身份图片",@"联系电话",@"邮箱",@"经典案例"];
+            [cell.userNameButton setTitle:pubArray[indexPath.row] forState:0];
             
-        }else if (indexPath.row == 5){
-            [cell.userActionButton setTitle:@"查看" forState:0];
-            cell.userActionButton.userInteractionEnabled = NO;
-            [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            if (indexPath.row == 0) {
+                [cell.userNameButton setTitleColor:kBlueColor forState:0];
+                [cell.userActionButton setImage:[UIImage imageNamed:@"publish_list_authentication"] forState:0];
+            }else if (indexPath.row == 1){
+                [cell.userActionButton setTitle:cerModel.name forState:0];
+            }else if (indexPath.row == 2){
+                [cell.userActionButton setTitle:cerModel.cardno forState:0];
+            }else if(indexPath.row == 3){
+                if ([cerModel.cardimg isEqualToString:@"undefined"]) {
+                    [cell.userActionButton setTitle:@"未上传" forState:0];
+                }else{
+                    [cell.userActionButton setTitle:@"已上传" forState:0];
+                }
+            }else if (indexPath.row == 4){
+                [cell.userActionButton setTitle:[NSString getValidStringFromString:cerModel.mobile] forState:0];
+            }else if (indexPath.row == 5){
+                [cell.userActionButton setTitle:[NSString getValidStringFromString:cerModel.email] forState:0];
+                
+            }else if (indexPath.row == 6){
+                [cell.userActionButton setTitle:@"查看" forState:0];
+                cell.userActionButton.userInteractionEnabled = NO;
+                [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            }
+            return cell;
+        }else if ([cerModel.category integerValue] == 2){//律所
+            
+            NSString *tytyString = [NSString stringWithFormat:@"|  %@信息",self.typeString];
+            NSArray *pubArray = @[tytyString,@"律所名称",@"执业证号",@"图片",@"联系人",@"联系方式",@"邮箱",@"经典案例"];
+            [cell.userNameButton setTitle:pubArray[indexPath.row] forState:0];
+            
+            if (indexPath.row == 0) {
+                [cell.userNameButton setTitleColor:kBlueColor forState:0];
+                [cell.userActionButton setImage:[UIImage imageNamed:@"publish_list_authentication"] forState:0];
+            }else if (indexPath.row == 1){
+                [cell.userActionButton setTitle:cerModel.name forState:0];
+            }else if (indexPath.row == 2){
+                [cell.userActionButton setTitle:cerModel.cardno forState:0];
+            }else if(indexPath.row == 3){
+                if ([cerModel.cardimg isEqualToString:@"undefined"]) {
+                    [cell.userActionButton setTitle:@"未上传" forState:0];
+                }else{
+                    [cell.userActionButton setTitle:@"已上传" forState:0];
+                }
+            }else if (indexPath.row == 4){
+                [cell.userActionButton setTitle:[NSString getValidStringFromString:cerModel.contact] forState:0];
+            }else if (indexPath.row == 5){
+                [cell.userActionButton setTitle:[NSString getValidStringFromString:cerModel.mobile] forState:0];
+                
+            }else if (indexPath.row == 6){
+                [cell.userActionButton setTitle:[NSString getValidStringFromString:cerModel.email] forState:0];
+            }else if (indexPath.row == 7){
+                [cell.userActionButton setTitle:@"查看" forState:0];
+                cell.userActionButton.userInteractionEnabled = NO;
+                [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            }
+            return cell;
+        }else if ([cerModel.category integerValue] == 3){//公司
+            
+            NSString *tytyString = [NSString stringWithFormat:@"|  %@信息",self.typeString];
+            NSArray *pubArray = @[tytyString,@"公司名称",@"营业执照号",@"图片",@"联系人",@"联系方式",@"企业邮箱",@"公司经营地址",@"公司网站",@"经典案例"];
+            [cell.userNameButton setTitle:pubArray[indexPath.row] forState:0];
+            
+            if (indexPath.row == 0) {
+                [cell.userNameButton setTitleColor:kBlueColor forState:0];
+                [cell.userActionButton setImage:[UIImage imageNamed:@"publish_list_authentication"] forState:0];
+            }else if (indexPath.row == 1){
+                [cell.userActionButton setTitle:cerModel.name forState:0];
+            }else if (indexPath.row == 2){
+                [cell.userActionButton setTitle:cerModel.cardno forState:0];
+            }else if(indexPath.row == 3){
+                if ([cerModel.cardimg isEqualToString:@"undefined"]) {
+                    [cell.userActionButton setTitle:@"未上传" forState:0];
+                }else{
+                    [cell.userActionButton setTitle:@"已上传" forState:0];
+                }
+            }else if (indexPath.row == 4){
+                [cell.userActionButton setTitle:[NSString getValidStringFromString:cerModel.contact] forState:0];
+            }else if (indexPath.row == 5){
+                [cell.userActionButton setTitle:[NSString getValidStringFromString:cerModel.mobile] forState:0];
+                
+            }else if (indexPath.row == 6){
+                [cell.userActionButton setTitle:[NSString getValidStringFromString:cerModel.email] forState:0];
+            }else if (indexPath.row == 7){
+                [cell.userActionButton setTitle:[NSString getValidStringFromString:cerModel.address] forState:0];
+            }else if (indexPath.row == 8){
+                [cell.userActionButton setTitle:[NSString getValidStringFromString:cerModel.enterprisewebsite] forState:0];
+            }else if (indexPath.row == 9){
+                [cell.userActionButton setTitle:@"查看" forState:0];
+                cell.userActionButton.userInteractionEnabled = NO;
+                [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            }
+            return cell;
         }
-        return cell;
     }
     
     //评价
@@ -362,16 +449,33 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ((indexPath.section == 0) && (indexPath.row == 5)) {
+    if (indexPath.section == 0) {
         
         CertificationModel *cerModel;
         if (self.certifiDataArray.count > 0) {
             cerModel = self.certifiDataArray[0];
         }
+        
+        if ([cerModel.category integerValue] == 1) {
+            if (indexPath.row == 6) {
+                CaseViewController *caseVC = [[CaseViewController alloc] init];
+                caseVC.caseString = cerModel.casedesc;
+                [self.navigationController pushViewController:caseVC animated:YES];
+            }
+        }else if ([cerModel.category integerValue] == 2){
+            if (indexPath.row == 7) {
+                CaseViewController *caseVC = [[CaseViewController alloc] init];
+                caseVC.caseString = cerModel.casedesc;
+                [self.navigationController pushViewController:caseVC animated:YES];
+            }
+        }else if ([cerModel.category integerValue] == 3){
+            if (indexPath.row == 9) {
+                CaseViewController *caseVC = [[CaseViewController alloc] init];
+                caseVC.caseString = cerModel.casedesc;
+                [self.navigationController pushViewController:caseVC animated:YES];
+            }
+        }
 
-        CaseViewController *caseVC = [[CaseViewController alloc] init];
-        caseVC.caseString = cerModel.casedesc;
-        [self.navigationController pushViewController:caseVC animated:YES];
     }else if ((indexPath.section == 1) && (indexPath.row == 0)) {//全部评价
         
         if (self.allEvaDataArray.count > 0) {
@@ -437,6 +541,9 @@
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:yyyString params:params successBlock:^(id responseObject) {
+        
+        NSDictionary *huhu = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
         CompleteResponse *response = [CompleteResponse objectWithKeyValues:responseObject];
         
         if (response.certification) {

@@ -395,6 +395,8 @@
 
 - (void)back
 {
+    if (!self.responseModel && !self.lawDataDictionary) {
+
     UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:nil message:@"是否放弃保存？" preferredStyle:UIAlertControllerStyleAlert];
     
     QDFWeakSelf;
@@ -408,6 +410,10 @@
     [alertVC addAction:act2];
     
     [self presentViewController:alertVC animated:YES completion:nil];
+        
+    }else{
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

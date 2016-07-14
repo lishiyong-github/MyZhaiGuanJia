@@ -50,7 +50,7 @@
         
         [self.tBlueLabel autoSetDimension:ALDimensionWidth toSize:kScreenWidth/5];
         [self.tBlueLabel autoSetDimension:ALDimensionHeight toSize:2];
-        [self.tBlueLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:2];
+        [self.tBlueLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom];
         
         [self.tGrayLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom];
         [self.tGrayLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft];

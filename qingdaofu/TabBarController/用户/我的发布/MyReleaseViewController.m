@@ -227,9 +227,9 @@
             cell.pointView.label2.text = @"返点(%)";
             cell.rateView.label1.text = rowModel.rate;
             if ([rowModel.rate_cat integerValue] == 1) {
-                cell.rateView.label2.text = @"借款利率(天)";
+                cell.rateView.label2.text = @"借款利率(%/天)";
             }else{
-                cell.rateView.label2.text = @"借款利率(月)";
+                cell.rateView.label2.text = @"借款利率(%/月)";
             }
             
         }else if ([rowModel.category intValue] == 2){//清收

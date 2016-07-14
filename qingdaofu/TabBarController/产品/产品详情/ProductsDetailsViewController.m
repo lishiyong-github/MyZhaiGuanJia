@@ -50,7 +50,10 @@
     //去掉导航栏的边界黑线
 //    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
     
-    self.navigationController.navigationBar.translucent = NO;
+//    [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc]init] forBarMetrics:UIBarMetricsDefault];
+//    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc]init]];
+    
+//    self.navigationController.navigationBar.translucent = NO;
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.leftItemButton];
     
@@ -184,7 +187,7 @@
                 }else{
                     cell.deTypeView.fLabel1.text = @"借款利率(月)";
                 }
-                cell.deTypeView.fLabel2.text = proModel.rate;
+                cell.deTypeView.fLabel2.text = [NSString stringWithFormat:@"%@%@",proModel.rate,@"%"];
                 
             }else if ([proModel.category intValue] == 2){//清收
                 //上边
@@ -301,9 +304,8 @@
             }else{
                 [self showHint:@"发布方未认证，不能查看相关信息"];
             }
-            
         }
-    }
+      }
     }
 }
 

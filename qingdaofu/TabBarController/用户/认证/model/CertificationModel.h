@@ -23,9 +23,8 @@
 @property (nonatomic,copy) NSString *enterprisewebsite;   //公司网址
 @property (nonatomic,copy) NSString *idString;
 @property (nonatomic,copy) NSString *lang;
-@property (nonatomic,copy) NSString *law_cardno;
 @property (nonatomic,copy) NSString *managersnumber;
-@property (nonatomic,copy) NSString *mobile;
+@property (nonatomic,copy) NSString *mobile;//联系方式
 @property (nonatomic,copy) NSString *name;      //用户名
 @property (nonatomic,copy) NSString *professional_area;
 @property (nonatomic,copy) NSString *state;

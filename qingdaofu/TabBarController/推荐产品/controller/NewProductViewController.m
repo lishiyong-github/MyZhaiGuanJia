@@ -321,9 +321,9 @@
         cell.pointView.label2.text = @"返点(%)";
         cell.rateView.label1.text = newModel.rate;
         if ([newModel.rate_cat isEqualToString:@"1"]) {
-            cell.rateView.label2.text = @"借款利率(天)";
+            cell.rateView.label2.text = @"借款利率(%/天)";
         }else{
-            cell.rateView.label2.text = @"借款利率(月)";
+            cell.rateView.label2.text = @"借款利率(%/月)";
         }
     }else if ([newModel.category isEqualToString:@"2"]){//清收
         [cell.typeImageView setImage:[UIImage imageNamed:@"list_collection"]];

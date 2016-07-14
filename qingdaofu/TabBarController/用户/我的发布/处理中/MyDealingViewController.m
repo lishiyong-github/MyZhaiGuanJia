@@ -32,6 +32,11 @@
 
 @property (nonatomic,strong) NSMutableArray *dealingDataList;
 
+
+@property (nonatomic,strong) NSString *loanTypeString1;  //债权类型
+@property (nonatomic,strong) NSString *loanTypeString2;  //债权类型内容
+@property (nonatomic,strong) NSString *loanTypeImage;//债权类型图片
+
 @end
 
 @implementation MyDealingViewController
@@ -167,7 +172,11 @@
 {
     if (self.dealingDataList.count > 0) {
         if (section == 1){
-            return 6;
+            PublishingResponse *response = self.dealingDataList[0];
+            if ([response.product.loan_type isEqualToString:@"4"]) {
+                return 6;
+            }
+            return 7;
         }
         return 1;
     }
@@ -241,58 +250,91 @@
                 if ([dealModel.category intValue] == 1) {//融资
                     string22 = @"融资";
                     if ([dealModel.rate_cat intValue] == 1) {
-                        string3 = @"  借款利率(天)";
+                        string3 = @"  借款利率(%/天)";
                     }else if ([dealModel.rate_cat intValue] == 2){
-                        string3 = @"  借款利率(月)";
+                        string3 = @"  借款利率(%/月)";
                     }
                     imageString3 = @"conserve_interest_icon";
                     string33 = dealModel.rate;
-                    string4 = @"  返点";
+                    string4 = @"  返点(%)";
                     imageString4 = @"conserve_rebate_icon";
                     string44 = dealModel.rebate;
+                    
+                    _loanTypeString1 = @"  抵押物地址";
+                    _loanTypeString2 = [NSString stringWithFormat:@"%@",dealModel.seatmortgage];
+                    _loanTypeImage = @"conserve_seat_icon";
+                    
                 }else if ([dealModel.category intValue] == 2){//清收
                     string22 = @"清收";
                     if ([dealModel.agencycommissiontype intValue] == 1) {
                         string3 = @"  提成比例(%)";
+                        imageString3 =  @"conserve_rights_icon";
                     }else if ([dealModel.agencycommissiontype intValue] == 2){
-                        string3 = @"  固定费用(万)";
+                        string3 = @"  固定费用(万元)";
+                        imageString3 =  @"conserve_fixed_icons";
                     }
-                    imageString3 = @"conserve_fixed_icon";
                     string33 = dealModel.agencycommission;
                     string4 = @"  债权类型";
-                    imageString4 = @"conserve_rights_icon";
+                    imageString4 = @"conserve_loantype_icon";
                     if ([dealModel.loan_type intValue] == 1) {
                         string44 = @"房产抵押";
+                        _loanTypeString1 = [NSString stringWithFormat:@"  %@",string44];
+                        _loanTypeString2 = [NSString stringWithFormat:@"%@",dealModel.seatmortgage];
+                        _loanTypeImage = @"conserve_seat_icon";
+
                     }else if ([dealModel.loan_type intValue] == 2){
                         string44 = @"应收账款";
+                        _loanTypeString1 = [NSString stringWithFormat:@"  %@(万元)",string44];
+                        _loanTypeString2 = dealModel.accountr;
+                        _loanTypeImage = @"conserve_account_icon";
+                        
                     }else if ([dealModel.loan_type intValue] == 3){
                         string44 = @"机动车抵押";
+                        _loanTypeString1 = [NSString stringWithFormat:@"  %@",string44];
+                        _loanTypeString2 = [NSString stringWithFormat:@"%@/%@",resModel.car,resModel.license];
+                        _loanTypeImage = @"conserve_car_icon";
+                        
                     }else if ([dealModel.loan_type intValue] == 4){
                         string44 = @"无抵押";
                     }
                 }else if ([dealModel.category intValue] == 3){//诉讼
                     string22 = @"诉讼";
                     if ([dealModel.agencycommissiontype intValue] == 1) {
-                        string3 = @"  固定费用(万)";
+                        string3 = @"  固定费用(万元)";
+                        imageString3 =  @"conserve_fixed_icons";
+
                     }else if ([dealModel.agencycommissiontype intValue] == 2){
                         string3 = @"  风险费率(%)";
+                        imageString3 =  @"conserve_fixed_icon";
                     }
                     imageString3 = @"conserve_fixed_icon";
                     string33 = dealModel.agencycommission;
                     string4 = @"  债权类型";
-                    imageString4 = @"conserve_rights_icon";
+                    imageString4 = @"conserve_loantype_icon";
                     if ([dealModel.loan_type intValue] == 1) {
                         string44 = @"房产抵押";
+                        _loanTypeString1 = [NSString stringWithFormat:@"  %@",string44];
+                        _loanTypeString2 = [NSString stringWithFormat:@"%@",dealModel.seatmortgage];
+                        _loanTypeImage = @"conserve_seat_icon";
+
                     }else if ([dealModel.loan_type intValue] == 2){
                         string44 = @"应收账款";
+                        _loanTypeString1 = [NSString stringWithFormat:@"  %@(万元)",string44];
+                        _loanTypeString2 = dealModel.accountr;
+                        _loanTypeImage = @"conserve_account_icon";
+
                     }else if ([dealModel.loan_type intValue] == 3){
                         string44 = @"机动车抵押";
+                        _loanTypeString1 = [NSString stringWithFormat:@"  %@",string44];
+                        _loanTypeString2 = [NSString stringWithFormat:@"%@/%@",resModel.car,resModel.license];
+                        _loanTypeImage = @"conserve_car_icon";
+                        
                     }else if ([dealModel.loan_type intValue] == 4){
                         string44 = @"无抵押";
                     }
                 }
                 
-                NSArray *dataArray = @[@"|  基本信息",@"  投资类型",@"  借款本金(万)",string3,string4];
+                NSArray *dataArray = @[@"|  基本信息",@"  产品类型",@"  借款本金(万元)",string3,string4];
                 NSArray *imageArray = @[@"",@"conserve_investment_icon",@"conserve_loan_icon",imageString3,imageString4];
                 NSArray *detailArray = @[@"",string22,dealModel.money,string33,string44];
                 
@@ -307,36 +349,73 @@
                 return cell;
             }
             
-            identifier = @"dealing11";
-            BidOneCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if ([dealModel.loan_type isEqualToString:@"4"]) {//无抵押
+                //补充信息
+                identifier = @"detailSave4";
+                BidOneCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+                
+                if (!cell) {
+                    cell = [[BidOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+                }
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                
+                [cell.oneButton setTitle:@"查看补充信息" forState:0];
+                [cell.oneButton setImage:[UIImage imageNamed:@"more"] forState:0];
+                cell.oneButton.userInteractionEnabled = NO;
+                
+                return cell;
+            }else{
+                if (indexPath.row == 5) {
+                    identifier = @"detailSave2";
+                    MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+                    
+                    if (!cell) {
+                        cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+                    }
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    cell.userActionButton.titleLabel.font = kSecondFont;
+                    
+                    [cell.userNameButton setTitle:_loanTypeString1 forState:0];
+                    [cell.userNameButton setImage:[UIImage imageNamed:_loanTypeImage] forState:0];
+                    [cell.userActionButton setTitle:_loanTypeString2 forState:0];
+                    
+                    return cell;
+                }else{
+                    //补充信息
+                    identifier = @"detailSave3";
+                    BidOneCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+                    
+                    if (!cell) {
+                        cell = [[BidOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+                    }
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    
+                    [cell.oneButton setTitle:@"查看补充信息" forState:0];
+                    [cell.oneButton setImage:[UIImage imageNamed:@"more"] forState:0];
+                    cell.oneButton.userInteractionEnabled = NO;
+                    
+                    return cell;
+                }
+                
+            }
+        }else{//服务协议，进度详情
+            identifier = @"dealing23";
+            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
             
             if (!cell) {
-                cell = [[BidOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             
-            [cell.oneButton setTitle:@"查看补充信息" forState:0];
-            [cell.oneButton setImage:[UIImage imageNamed:@"more"] forState:0];
-            cell.oneButton.userInteractionEnabled = NO;
-
+            NSArray *pArray = @[@"|  服务协议",@"|  查看进度"];
+            [cell.userNameButton setTitle:pArray[indexPath.section-2] forState:0];
+            [cell.userNameButton setTitleColor:kBlueColor forState:0];
+            [cell.userActionButton setTitle:@"点击查看" forState:0];
+            [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            cell.userActionButton.userInteractionEnabled = NO;
+            
             return cell;
         }
-        identifier = @"dealing23";
-        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        
-        if (!cell) {
-            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        NSArray *pArray = @[@"|  服务协议",@"|  查看进度"];
-        [cell.userNameButton setTitle:pArray[indexPath.section-2] forState:0];
-        [cell.userNameButton setTitleColor:kBlueColor forState:0];
-        [cell.userActionButton setTitle:@"点击查看" forState:0];
-        [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-        cell.userActionButton.userInteractionEnabled = NO;
-        
-        return cell;
     }
     return nil;
 }
