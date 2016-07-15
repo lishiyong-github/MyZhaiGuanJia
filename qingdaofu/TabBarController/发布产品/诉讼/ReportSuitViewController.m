@@ -40,7 +40,7 @@
 //参数
 @property (nonatomic,strong) NSMutableDictionary *suitDataDictionary;
 @property (nonatomic,strong) NSString *rowString;    //债权类型
-@property (nonatomic,strong) NSString *number;
+@property (nonatomic,strong) NSString *number;//1.抵押物地址，2.应收帐款，3.机动车抵押，4.无抵押
 @property (nonatomic,strong) NSMutableArray *creditorInfos;
 @property (nonatomic,strong) NSMutableArray *borrowinginfos;
 //@property (nonatomic,strong) NSMutableArray *creditorfiles;
@@ -209,7 +209,7 @@
 - (NSMutableArray *)sHolderArray
 {
     if (!_sHolderArray) {
-        NSMutableArray *w1 = [NSMutableArray arrayWithArray:@[@"",@"填写借款本金",@"填写代理费用",@"",@"填写抵押物地址",@""]];
+        NSMutableArray *w1 = [NSMutableArray arrayWithArray:@[@"",@"填写借款本金",@"填写代理费用",@"",@"",@""]];
         NSMutableArray *w2 = [NSMutableArray arrayWithArray:@[@"",@"能够给到融资方的利息",@"输入借款期限",@"",@"",@"",@"",@"填写已付本金",@"填写已付利息",@"",@"",@"",@"",@""]];
         _sHolderArray = [NSMutableArray arrayWithObjects:w1,w2, nil];
     }
@@ -391,6 +391,35 @@
             return cell;
         }else if (indexPath.row == 3){//债权类型
             identifier = @"suitSect03";
+            
+            AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.agentLabel.text = @"债权类型";
+            cell.agentTextField.userInteractionEnabled = NO;
+            [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        
+            if ([_number integerValue] == 1) {
+                [cell.agentButton setTitle:@"房产抵押" forState:0];
+            }else if([_number integerValue] == 2){
+                [cell.agentButton setTitle:@"应收账款" forState:0];
+            }else if ([_number integerValue] == 3){
+                [cell.agentButton setTitle:@"机动车抵押" forState:0];
+            }else if ([_number integerValue] == 4){
+                [cell.agentButton setTitle:@"无抵押" forState:0];
+            }else{
+                [cell.agentButton setTitle:@"请选择" forState:0];
+            }
+            
+            cell.agentButton.tag = 3;
+            [cell.agentButton addTarget:self action:@selector(showTitleOfUpwardViews:) forControlEvents:UIControlEventTouchUpInside];
+            
+            return cell;
+            
+            
+            /*
             SuitBaseCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
             if (!cell) {
                 cell = [[SuitBaseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
@@ -443,6 +472,7 @@
             }];
             
             return cell;
+             */
         }else if (indexPath.row == 4){//抵押物地址
             identifier = @"suitSect04";
             AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -985,6 +1015,7 @@
 {
     [self.view endEditing:YES];
     NSArray *arr2 = @[@"固定费用(万元)",@"代理费率(%)"];
+    NSArray *arr3 = @[@"房产抵押",@"应收帐款",@"机动车抵押",@"无抵押"];
     NSArray *arr22 = @[@"提成比例(%)",@"固定费用(万元)"];
     NSArray *arr8 = @[@"%/天",@"%/月"];
     NSArray *arr10 = @[@"一次性到期还本付息",@"按月付息，到期还本",@"其他"];
@@ -1001,6 +1032,47 @@
                 NSString *value = [NSString stringWithFormat:@"%ld",(long)row];
                 [weakself.suitDataDictionary setValue:value forKey:@"agencycommissiontype"];
                 [weakself.suitDataDictionary setValue:text forKey:@"agencycommissiontype_str"];
+            }];
+        }
+            break;
+        case 3:{//债权类型
+            [self showBlurInView:self.view withArray:arr3 andTitle:@"选择债权类型" finishBlock:^(NSString *text, NSInteger row) {
+                
+                AgentCell *cell = [weakself.suitTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:4 inSection:0]];
+                cell.agentTextField.text = @"";
+                [self.view endEditing:YES];
+                
+                [btn setTitle:text forState:0];
+                NSString *value = [NSString stringWithFormat:@"%ld",(long)row];
+                [weakself.suitDataDictionary setValue:value forKey:@"loan_type"];
+                [weakself.suitTableView reloadData];
+                
+                if (row == 1) {//房产抵押
+                    self.rowString = @"6";
+                    [self.sTextArray[0] replaceObjectAtIndex:4 withObject:@"抵押物地址"];
+                    [self.sHolderArray[0] replaceObjectAtIndex:4 withObject:@""];
+                    _number = @"1";
+                    
+                }else if (row == 3){//机动车
+                    [cell.agentButton setHidden:NO];
+                    self.rowString = @"5";
+                    [self.sTextArray[0] replaceObjectAtIndex:4 withObject:@"机动车"];
+                    [self.sHolderArray[0] replaceObjectAtIndex:4 withObject:@""];
+                    _number = @"3";
+                }else if (row == 2){//应收帐款
+                    self.rowString = @"5";
+                    [self.sTextArray[0] replaceObjectAtIndex:4 withObject:@""];
+                    [self.sHolderArray[0] replaceObjectAtIndex:4 withObject:@"应收帐款"];
+                    _number = @"2";
+                    
+                }else{//无抵押
+                    self.rowString = @"4";
+                    [self.sTextArray[0] replaceObjectAtIndex:4 withObject:@"无抵押"];
+                    [self.sHolderArray[0] replaceObjectAtIndex:4 withObject:@"无抵押"];
+                    _number = @"4";
+                }
+                [weakself.suitTableView reloadData];
+                
             }];
         }
             break;

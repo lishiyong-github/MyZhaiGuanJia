@@ -198,13 +198,13 @@
     RowsModel *orderModel = self.myOrderDataList[indexPath.section];
     
     if (([orderModel.progress_status integerValue] == 1) || [orderModel.progress_status integerValue] == 3) {
-        return 156;
+        return 160;
     }else if ([orderModel.progress_status integerValue] == 4){
         
         NSString *id_category = [NSString stringWithFormat:@"%@_%@",orderModel.idString,orderModel.category];
         NSString *value = self.myOrderResonseDic[id_category];
         if ([value integerValue] >= 2) {//不能评价
-            return 156;
+            return 160;
         }
     }
     return 200;

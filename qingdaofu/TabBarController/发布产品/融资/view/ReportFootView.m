@@ -46,7 +46,7 @@
         [_footButton setImage:[UIImage imageNamed:@"open"] forState:0];
         _footButton.userInteractionEnabled = NO;
         
-        NSMutableAttributedString *aStr1 = [[NSMutableAttributedString alloc] initWithString:@"展开补充信息(选填)"];
+        NSMutableAttributedString *aStr1 = [[NSMutableAttributedString alloc] initWithString:@"展开选填信息(选填)"];
         [aStr1 addAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kNavColor} range:NSMakeRange(0, aStr1.length)];
         [_footButton setAttributedTitle:aStr1 forState:0];
     }

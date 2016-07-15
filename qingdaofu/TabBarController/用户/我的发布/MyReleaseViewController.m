@@ -185,12 +185,12 @@
 {
     RowsModel *rModel = self.releaseDataArray[indexPath.section];
     if ([rModel.progress_status intValue] == 3) {//终止
-        return 156;
+        return 160;
     }else if ([rModel.progress_status integerValue] == 4){//结案
         NSString *id_category = [NSString stringWithFormat:@"%@_%@",rModel.idString,rModel.category];
         NSString *value = self.releaseDic[id_category];
         if ([value integerValue] == 2) {//不能评价
-            return 156;
+            return 160;
         }
     }
     return 200;
