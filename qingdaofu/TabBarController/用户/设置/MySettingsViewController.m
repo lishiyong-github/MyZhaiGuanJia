@@ -170,7 +170,6 @@
                 break;
         }
     }else{
-        NSLog(@"退出");
         NSString *exitString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kExitString];
         
         NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:@"token"];

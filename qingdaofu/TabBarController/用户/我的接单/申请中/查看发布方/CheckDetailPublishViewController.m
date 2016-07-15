@@ -514,7 +514,6 @@
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"" message:ssss preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction *actionOK = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        NSLog(@"确认发布方信息");
         [self warnningMethod];
     }];
     

@@ -111,7 +111,6 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    NSLog( @" info is   %@",info);
     [picker dismissViewControllerAnimated:YES completion:^{
         
     }];

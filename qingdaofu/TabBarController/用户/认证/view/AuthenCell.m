@@ -27,7 +27,7 @@
         [self.contentView addSubview:self.dLabel];
         [self.contentView addSubview:self.AuthenButton];
         
-        [self.contentView setNeedsUpdateConstraints];
+        [self setNeedsUpdateConstraints];
     }
     return self;
 }
@@ -45,6 +45,7 @@
         
         [self.cLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.bLabel withOffset:20];
         [self.cLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.bLabel];
+        [self.cLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.AuthenButton withOffset:-5];
         
         [self.dLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.cLabel withOffset:10];
         [self.dLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.cLabel];
@@ -85,6 +86,7 @@
         _cLabel.textColor = kLightGrayColor;
         _cLabel.font = kFirstFont;
         _cLabel.text = @"可发布融资";
+        _cLabel.numberOfLines = 0;
     }
     return _cLabel;
 }
@@ -110,7 +112,6 @@
         _AuthenButton.titleLabel.font = kFirstFont;
         [_AuthenButton setTitleColor:kNavColor forState:0];
         [_AuthenButton addAction:^(UIButton *btn) {
-            NSLog(@"立即认证");
         }];
     }
     return _AuthenButton;

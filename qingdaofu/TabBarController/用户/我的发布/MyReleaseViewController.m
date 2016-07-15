@@ -297,9 +297,8 @@
             [cell.typeButton setHidden:YES];
             cell.typeLabel.text = @"发布中";
             [cell.firstButton setHidden:NO];
-            [cell.secondButton setHidden:NO];
+            [cell.secondButton setHidden:YES];
             [cell.thirdButton setHidden:NO];
-            [cell.secondButton setTitle:@"补充信息" forState:0];
             [cell.thirdButton setTitle:@"查看申请" forState:0];
             
             if ([rowModel.app_id isEqualToString:@"0"]) {
@@ -311,10 +310,6 @@
             }
             
             QDFWeakSelf;
-            [cell.secondButton addAction:^(UIButton *btn) {
-                [weakself goToCheckApplyRecordsOrAdditionMessage:@"补充信息" withRow:indexPath.section withEvaString:@""];
-            }];
-            
             [cell.thirdButton addAction:^(UIButton *btn) {
                 [weakself goToCheckApplyRecordsOrAdditionMessage:@"查看申请" withRow:indexPath.section withEvaString:@""];
             }];
@@ -478,7 +473,7 @@
 - (void)refreshFooterOfMyRelease
 {
     _pageRelease ++;
-    NSString *page = [NSString stringWithFormat:@"%d",_pageRelease];
+    NSString *page = [NSString stringWithFormat:@"%ld",(long)_pageRelease];
     [self getMyReleaseListWithPage:page];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -490,12 +485,7 @@
 {
     RowsModel *model = self.releaseDataArray[row];
     
-   if([string isEqualToString:@"补充信息"]){
-       AdditionMessageViewController *additionMessageVC = [[AdditionMessageViewController alloc] init];
-       additionMessageVC.categoryString = model.category;
-       additionMessageVC.idString = model.idString;
-       [self.navigationController pushViewController:additionMessageVC animated:YES];
-   }else if ([string isEqualToString:@"查看申请"]){
+   if ([string isEqualToString:@"查看申请"]){
       ApplyRecordsViewController *applyRecordsVC = [[ApplyRecordsViewController alloc] init];
        applyRecordsVC.idStr = model.idString;
        applyRecordsVC.categaryStr = model.category;

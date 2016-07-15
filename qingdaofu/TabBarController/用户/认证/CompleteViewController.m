@@ -62,11 +62,6 @@
     [self showCompleteMessages];
 }
 
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-{
-    NSLog(@"touch %@",touches);
-}
-
 - (void)updateViewConstraints
 {
     if (!self.didSetupConstraints) {
@@ -183,8 +178,6 @@
     
     CGSize titleSize = CGSizeMake(kScreenWidth - 137, MAXFLOAT);
     CGSize  actualsize =[response.certification.casedesc boundingRectWithSize:titleSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName :kFirstFont} context:nil].size;
-
-    NSLog(@"actualsize is %f",actualsize.height);
     
     if ([self.categoryString intValue] == 1) {//个人
         if (indexPath.row == 0) {

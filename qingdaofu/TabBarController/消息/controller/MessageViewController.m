@@ -115,7 +115,7 @@
         
         NSDictionary *childDic;
         if (self.resultDic) {
-            NSString *index = [NSString stringWithFormat:@"%d",indexPath.row+1];
+            NSString *index = [NSString stringWithFormat:@"%ld",indexPath.row+1];
             childDic = self.resultDic[index];
         }
         

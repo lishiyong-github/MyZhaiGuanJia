@@ -150,16 +150,16 @@
 - (NSMutableArray *)finanTextArray
 {
     if (!_finanTextArray) {
-        NSMutableArray *a1 = [NSMutableArray arrayWithArray:@[@"|  基本信息",@"金额",@"返点",@"借款利率",@"抵押物地址",@""]];
+        NSMutableArray *a1 = [NSMutableArray arrayWithArray:@[@"|  必填信息",@"金额",@"返点",@"借款利率",@"抵押物地址",@""]];
         NSMutableArray *a2;
         
         if ([self.fiModel.status integerValue] == 2) {//出租
-            a2 = [NSMutableArray arrayWithObjects:@"|  补充信息",@"借款期限",@"抵押物类型",@"抵押物状态",@"租金",@"抵押物面积",@"借款人年龄",@"权利人年龄", nil];
+            a2 = [NSMutableArray arrayWithObjects:@"|  选填信息",@"借款期限",@"抵押物类型",@"抵押物状态",@"租金",@"抵押物面积",@"借款人年龄",@"权利人年龄", nil];
         }else{
-            a2 = [NSMutableArray arrayWithObjects:@"|  补充信息",@"借款期限",@"抵押物类型",@"抵押物状态",@"抵押物面积",@"借款人年龄",@"权利人年龄", nil];
+            a2 = [NSMutableArray arrayWithObjects:@"|  选填信息",@"借款期限",@"抵押物类型",@"抵押物状态",@"抵押物面积",@"借款人年龄",@"权利人年龄", nil];
         }
         
-//        = [NSMutableArray arrayWithObjects:@"|  补充信息",@"借款期限",@"抵押物类型",@"抵押物状态",@"抵押物面积",@"借款人年龄",@"权利人年龄", nil];
+//        = [NSMutableArray arrayWithObjects:@"|  选填信息",@"借款期限",@"抵押物类型",@"抵押物状态",@"抵押物面积",@"借款人年龄",@"权利人年龄", nil];
         _finanTextArray = [NSMutableArray arrayWithArray:@[a1,a2]];
         
     }
@@ -219,18 +219,18 @@
     static NSString *identifier;
     QDFWeakSelf;
     if (indexPath.section == 0) {
-        if (indexPath.row == 0) {//基本信息
+        if (indexPath.row == 0) {//必填信息
             identifier = @"finance00";
             AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
             if (!cell) {
                 cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.leftdAgentContraints.constant = 100;
+            cell.leftdAgentContraints.constant = 105;
             [cell.agentTextField setHidden:YES];
             [cell.agentButton setHidden:YES];
                         
-            NSMutableAttributedString *dddd = [cell.agentLabel setAttributeString:@"|  基本信息" withColor:kBlueColor andSecond:@"(必填)" withColor:kBlackColor withFont:12];
+            NSMutableAttributedString *dddd = [cell.agentLabel setAttributeString:@"|  必填信息" withColor:kBlueColor andSecond:@"(必填)" withColor:kBlackColor withFont:12];
             [cell.agentLabel setAttributedText:dddd];
             
             return cell;
@@ -241,7 +241,7 @@
                 cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.leftdAgentContraints.constant = 100;
+            cell.leftdAgentContraints.constant = 105;
             cell.agentTextField.keyboardType = UIKeyboardTypeNumberPad;
             
             cell.agentLabel.text = self.finanTextArray[indexPath.section][indexPath.row];
@@ -268,7 +268,7 @@
                 cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.leftdAgentContraints.constant = 100;
+            cell.leftdAgentContraints.constant = 105;
             cell.agentTextField.keyboardType = UIKeyboardTypeNumberPad;
 
             [cell setTouchBeginPoint:^(CGPoint point) {
@@ -296,7 +296,7 @@
                 cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.leftdAgentContraints.constant = 100;
+            cell.leftdAgentContraints.constant = 105;
             cell.agentTextField.keyboardType = UIKeyboardTypeNumberPad;
 
             [cell setTouchBeginPoint:^(CGPoint point) {
@@ -335,7 +335,7 @@
                 cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.leftdAgentContraints.constant = 100;
+            cell.leftdAgentContraints.constant = 105;
             cell.agentTextField.userInteractionEnabled = NO;
             
             cell.agentLabel.text = self.finanTextArray[indexPath.section][indexPath.row];
@@ -361,7 +361,7 @@
                 cell = [[EditDebtAddressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.leftTextViewConstraints.constant = 95;
+            cell.leftTextViewConstraints.constant = 100;
             cell.ediTextView.placeholder = @"详细地址";
             [cell setTouchBeginPoint:^(CGPoint point) {
                 weakself.touchPoint = point;
@@ -381,18 +381,18 @@
     }
     
     //section == 1
-    if (indexPath.row == 0) {//补充信息
+    if (indexPath.row == 0) {//选填信息
         identifier = @"finance10";
         AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         if (!cell) {
             cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.leftdAgentContraints.constant = 100;
+        cell.leftdAgentContraints.constant = 105;
         [cell.agentTextField setHidden:YES];
         [cell.agentButton setHidden:YES];
         
-        NSMutableAttributedString *dddd = [cell.agentLabel setAttributeString:@"|  补充信息" withColor:kBlueColor andSecond:@"(选填)" withColor:kBlackColor withFont:12];
+        NSMutableAttributedString *dddd = [cell.agentLabel setAttributeString:@"|  选填信息" withColor:kBlueColor andSecond:@"(选填)" withColor:kBlackColor withFont:12];
         [cell.agentLabel setAttributedText:dddd];
         
         return cell;
@@ -403,7 +403,7 @@
             cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.leftdAgentContraints.constant = 100;
+        cell.leftdAgentContraints.constant = 105;
         cell.agentTextField.keyboardType = UIKeyboardTypeNumberPad;
         
         [cell setTouchBeginPoint:^(CGPoint point) {
@@ -442,7 +442,7 @@
             cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.leftdAgentContraints.constant = 100;
+        cell.leftdAgentContraints.constant = 105;
         [cell.agentTextField setHidden:YES];
         
         cell.agentLabel.text = self.finanTextArray[indexPath.section][indexPath.row];
@@ -467,7 +467,7 @@
             cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.leftdAgentContraints.constant = 100;
+        cell.leftdAgentContraints.constant = 105;
         [cell.agentTextField setHidden:YES];
         
         cell.agentLabel.text = self.finanTextArray[indexPath.section][indexPath.row];
@@ -492,7 +492,7 @@
             cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.leftdAgentContraints.constant = 100;
+        cell.leftdAgentContraints.constant = 105;
         cell.agentTextField.keyboardType = UIKeyboardTypeNumberPad;
 
         [cell setTouchBeginPoint:^(CGPoint point) {
@@ -521,7 +521,7 @@
             cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.leftdAgentContraints.constant = 100;
+        cell.leftdAgentContraints.constant = 105;
         cell.agentTextField.keyboardType = UIKeyboardTypeNumberPad;
 
         [cell setTouchBeginPoint:^(CGPoint point) {
@@ -550,7 +550,7 @@
             cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.leftdAgentContraints.constant = 100;
+        cell.leftdAgentContraints.constant = 105;
         [cell.agentTextField setHidden:YES];
 
         [cell setTouchBeginPoint:^(CGPoint point) {
@@ -578,7 +578,7 @@
             cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.leftdAgentContraints.constant = 100;
+        cell.leftdAgentContraints.constant = 105;
         cell.agentTextField.keyboardType = UIKeyboardTypeNumberPad;
 
         [cell setTouchBeginPoint:^(CGPoint point) {
@@ -618,7 +618,7 @@
     btn.selected = !btn.selected;
     if (btn.selected) {
 
-        NSMutableAttributedString *aStr2 = [[NSMutableAttributedString alloc] initWithString:@"收回补充信息(选填)"];
+        NSMutableAttributedString *aStr2 = [[NSMutableAttributedString alloc] initWithString:@"收回选填信息(选填)"];
         [aStr2 addAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kNavColor} range:NSMakeRange(0, aStr2.length)];
         [btn.footButton setAttributedTitle:aStr2 forState:0];
         [btn.footButton setImage:[UIImage imageNamed:@"open"] forState:0];
@@ -628,7 +628,7 @@
         [self.reportFinanceTableView insertSections:set withRowAnimation:UITableViewRowAnimationFade];
     }else{
         
-        NSMutableAttributedString *aStr1 = [[NSMutableAttributedString alloc] initWithString:@"展开补充信息(选填)"];
+        NSMutableAttributedString *aStr1 = [[NSMutableAttributedString alloc] initWithString:@"展开选填信息(选填)"];
         [aStr1 addAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kNavColor} range:NSMakeRange(0, aStr1.length)];
         [btn.footButton setAttributedTitle:aStr1 forState:0];
         [btn.footButton setImage:[UIImage imageNamed:@"withdraw"] forState:0];
@@ -655,7 +655,7 @@
             [self showBlurInView:self.view withArray:arr3 andTitle:@"选择借款利率类型" finishBlock:^(NSString *text,NSInteger row) {
                 [btn setTitle:text forState:0];
                 
-                NSString *value = [NSString stringWithFormat:@"%d",row];
+                NSString *value = [NSString stringWithFormat:@"%ld",(long)row];
                 [weakself.dataDictionary setValue:value forKey:@"rate_cat"];
                 [weakself.dataDictionary setValue:text forKey:@"rate_cat_str"];
                 
@@ -681,7 +681,7 @@
         case 8:{//借款期限
             [self showBlurInView:self.view withArray:arr3 andTitle:@"选择借款期限类型" finishBlock:^(NSString *text,NSInteger row) {
                 [btn setTitle:text forState:0];
-                NSString *value = [NSString stringWithFormat:@"%d",row];
+                NSString *value = [NSString stringWithFormat:@"%ld",(long)row];
                 [weakself.dataDictionary setValue:value forKey:@"rate_cat"];
                 [weakself.dataDictionary setValue:text forKey:@"rate_cat_str"];
                
@@ -693,7 +693,7 @@
         case 9:{//抵押物类型
             [self showBlurInView:self.view withArray:arr9 andTitle:@"选择抵押物类型" finishBlock:^(NSString *text,NSInteger row) {
                 [btn setTitle:text forState:0];
-                NSString *value = [NSString stringWithFormat:@"%d",row];
+                NSString *value = [NSString stringWithFormat:@"%ld",(long)row];
                 [weakself.dataDictionary setValue:value forKey:@"mortgagecategory"];
                 [weakself.dataDictionary setValue:text forKey:@"mortgagecategory_str"];
             }];
@@ -703,7 +703,7 @@
             [self showBlurInView:self.view withArray:arr10 andTitle:@"选择抵押物状态" finishBlock:^(NSString *text,NSInteger row) {
                 [btn setTitle:text forState:0];
                 
-                NSString *value = [NSString stringWithFormat:@"%d",row];
+                NSString *value = [NSString stringWithFormat:@"%ld",(long)row];
                 [self.dataDictionary setValue:value forKey:@"status"];
                 [self.dataDictionary setValue:text forKey:@"status_str"];
                 
@@ -728,7 +728,7 @@
                 [self showBlurInView:self.view withArray:arr13 andTitle:@"选择权利人年龄" finishBlock:^(NSString *text,NSInteger row) {
                     [btn setTitle:text forState:0];
                     
-                    NSString *value = [NSString stringWithFormat:@"%d",row];
+                    NSString *value = [NSString stringWithFormat:@"%ld",(long)row];
                     [weakself.dataDictionary setValue:value forKey:@"obligeeyear"];
                     [weakself.dataDictionary setValue:text forKey:@"obligeeyear_str"];
                     
@@ -742,7 +742,7 @@
                 [self showBlurInView:self.view withArray:arr13 andTitle:@"选择权利人年龄" finishBlock:^(NSString *text,NSInteger row) {
                     [btn setTitle:text forState:0];
                     
-                    NSString *value = [NSString stringWithFormat:@"%d",row];
+                    NSString *value = [NSString stringWithFormat:@"%ld",(long)row];
                     [weakself.dataDictionary setValue:value forKey:@"obligeeyear"];
                     [weakself.dataDictionary setValue:text forKey:@"obligeeyear_str"];
                     

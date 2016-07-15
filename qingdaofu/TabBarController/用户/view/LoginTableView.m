@@ -77,7 +77,16 @@
         }else{
             [cell.userNameButton setTitle:self.model.mobile forState:0];
             [cell.userNameButton setImage:[UIImage imageNamed:@"publish_list_authentication"] forState:0];
-            [cell.userActionButton setTitle:@"已认证" forState:0];
+            
+            NSString *ererStr;
+            if ([self.model.category integerValue] == 1) {
+                ererStr = @"已认证个人";
+            }else if ([self.model.category integerValue] == 2){
+                ererStr = @"已认证律所";
+            }else if ([self.model.category integerValue] == 3){
+                ererStr = @"已认证公司";
+            }
+            [cell.userActionButton setTitle:ererStr forState:0];
         }
         [cell swapUserName];
         return cell;

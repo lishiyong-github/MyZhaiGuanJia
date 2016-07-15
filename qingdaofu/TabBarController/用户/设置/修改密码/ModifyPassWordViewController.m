@@ -69,7 +69,6 @@
         
         QDFWeakSelf;
         [_modifyCommitButton addAction:^(UIButton *btn) {
-            NSLog(@"提交修改");
             [weakself modifyPassword];
         }];
     }
@@ -120,7 +119,6 @@
         
         QDFWeak(cell);
         [cell.agentButton addAction:^(UIButton *btn) {
-            NSLog(@"显示密码");
             if (!btn.selected) {
                 weakcell.agentTextField.secureTextEntry = NO;
             }else{

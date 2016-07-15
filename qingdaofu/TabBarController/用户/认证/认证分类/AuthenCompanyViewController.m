@@ -185,7 +185,7 @@
         NSArray *perTextArray = @[@"|  基本信息",@"公司名称",@"营业执照号",@"联系人",@"联系方式"];
         NSArray *perPlacaTextArray = @[@"",@"请输入您的公司名称",@"请输入17位营业执照号",@"请输入您的姓名",@"请输入您常用的手机号码"];
         
-        cell.leftdAgentContraints.constant = 110;
+        cell.leftdAgentContraints.constant = 120;
         cell.agentLabel.text = perTextArray[indexPath.row];
         cell.agentTextField.placeholder = perPlacaTextArray[indexPath.row];
         
@@ -241,7 +241,7 @@
             NSArray *perTesArray = @[@"补充信息",@"企业邮箱",@"企业经营地址  ",@"公司网站"];
             NSArray *perHolderArray = @[@"",@"请输入您的企业邮箱",@"请输入您的企业经营地址",@"请输入您的公司网站"];
             
-            cell.leftdAgentContraints.constant = 110;
+            cell.leftdAgentContraints.constant = 120;
             cell.agentLabel.text = perTesArray[indexPath.row];
             cell.agentTextField.placeholder = perHolderArray[indexPath.row];
             
@@ -287,7 +287,7 @@
             cell = [[EditDebtAddressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.leftTextViewConstraints.constant = 105;
+        cell.leftTextViewConstraints.constant = 115;
         
         cell.ediLabel.text = @"经典案例";
         cell.ediTextView.placeholder = @"关于公司在融资等方面的成功案例，有利于发布方更加青睐你";

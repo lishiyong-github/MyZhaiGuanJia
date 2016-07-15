@@ -174,7 +174,7 @@
     QDFWeakSelf;
     [self requestDataPostWithString:listString params:params successBlock:^(id responseObject){
         
-        if ([page integerValue] == 0) {
+        if ([page integerValue] == 1) {
             [weakself.recordsDataArray removeAllObjects];
         }
         
@@ -204,7 +204,8 @@
 
 - (void)headerRefreshOfRecords
 {
-    [self getApplyRecordsListWithPage:@"0"];
+    _pageRecords = 1;
+    [self getApplyRecordsListWithPage:@"1"];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.applyRecordsTableView headerEndRefreshing];
     });
@@ -213,7 +214,7 @@
 - (void)footerRefreshOfRecords
 {
     _pageRecords++;
-    NSString *page = [NSString stringWithFormat:@"%d",_pageRecords];
+    NSString *page = [NSString stringWithFormat:@"%ld",(long)_pageRecords];
     [self getApplyRecordsListWithPage:page];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.applyRecordsTableView footerEndRefreshing];

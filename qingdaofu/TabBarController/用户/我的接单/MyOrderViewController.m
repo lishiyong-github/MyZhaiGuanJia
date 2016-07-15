@@ -107,7 +107,7 @@
         QDFWeakSelf;
         [_orderHeadView setDidSelectedSeg:^(NSInteger segTag) {
             [weakself.myOrderDataList removeAllObjects];
-            _pageOrder = 0;
+            _pageOrder = 1;
             switch (segTag) {
                 case 111:{//全部
                     weakself.status = @"-1";
@@ -479,7 +479,7 @@
 - (void)refreshsFooterOfMyOrder
 {
     _pageOrder ++;
-    NSString *page = [NSString stringWithFormat:@"%d",_pageOrder];
+    NSString *page = [NSString stringWithFormat:@"%ld",(long)_pageOrder];
     [self getOrderListWithPage:page];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.myOrderTableView footerEndRefreshing];

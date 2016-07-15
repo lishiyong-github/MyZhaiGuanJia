@@ -193,7 +193,7 @@
         NSArray *perTextArray = @[@"|  基本信息",@"姓名",@"身份证",@"联系方式"];
         NSArray *perPlacaTextArray = @[@"",@"请输入您的姓名",@"请输入您的身份证号码",@"请输入您常用的手机号码"];
         
-        cell.leftdAgentContraints.constant = 100;
+        cell.leftdAgentContraints.constant = 110;
         cell.agentLabel.text = perTextArray[indexPath.row];
         cell.agentTextField.placeholder = perPlacaTextArray[indexPath.row];
         
@@ -240,7 +240,7 @@
             NSArray *perTesArray = @[@"补充信息",@"邮箱"];
             NSArray *perHolderArray = @[@"",@"请输入您常用邮箱"];
             
-            cell.leftdAgentContraints.constant = 100;
+            cell.leftdAgentContraints.constant = 110;
             cell.agentLabel.text = perTesArray[indexPath.row];
             cell.agentTextField.placeholder = perHolderArray[indexPath.row];
             
@@ -268,7 +268,7 @@
             cell = [[EditDebtAddressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.leftTextViewConstraints.constant = 95;
+        cell.leftTextViewConstraints.constant = 105;
         cell.ediLabel.text = @"经典案例";
         cell.ediTextView.placeholder = @"关于个人在融资等方面的成功案例，有利于发布方更加青睐你";
         cell.ediTextView.text = certificationModel.casedesc;

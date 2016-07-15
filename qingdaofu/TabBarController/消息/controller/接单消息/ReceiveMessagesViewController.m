@@ -167,7 +167,7 @@
     QDFWeakSelf;
     [self requestDataPostWithString:mesString params:params successBlock:^(id responseObject) {
         
-        if ([page integerValue] == 0) {
+        if ([page integerValue] == 1) {
             [weakself.messageReceiveArray removeAllObjects];
         }
         
@@ -193,7 +193,8 @@
 
 - (void)headerRefreshWithMessageOfOrder
 {
-    [self getOrderMessageListWithPage:@"0"];
+    _rePage = 1;
+    [self getOrderMessageListWithPage:@"1"];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.receiveTableView headerEndRefreshing];
     });
@@ -202,7 +203,7 @@
 - (void)footerRefreshWithMessageOfOrder
 {
     _rePage++;
-    NSString *page = [NSString stringWithFormat:@"%d",_rePage];
+    NSString *page = [NSString stringWithFormat:@"%ld",(long)_rePage];
     [self getOrderMessageListWithPage:page];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.receiveTableView footerEndRefreshing];

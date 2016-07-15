@@ -120,7 +120,7 @@
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    cell.leftFieldConstraints.constant = 130;
+    cell.leftFieldConstraints.constant = 135;
     [cell.caseNoButton setTitle:@"请填写延期天数" forState:0];
     cell.caseNoTextField.placeholder = @"天数";
     cell.caseNoTextField.keyboardType = UIKeyboardTypeNumberPad;

@@ -117,7 +117,7 @@
     }
     
     _charCount= [[textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]length];
-    self.countLabel.text = [NSString stringWithFormat:@"%d/600",_charCount];
+    self.countLabel.text = [NSString stringWithFormat:@"%ld/600",(long)_charCount];
     
     return YES;
 }

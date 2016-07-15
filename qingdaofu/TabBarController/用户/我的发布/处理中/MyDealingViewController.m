@@ -112,33 +112,6 @@
         [_dealFootView.sendButton setTitleColor:kBlueColor forState:0];
         [_dealFootView.sendButton setTitle:@" 申请结案" forState:0];
         [_dealFootView.sendButton setImage:[UIImage imageNamed:@"apply"] forState:0];
-
-        QDFWeakSelf;
-        [_dealFootView setDidSelectedButton:^(NSInteger tag) {
-            
-            NSString *messages;
-            if (tag == 33) {//终止
-                messages = @"确定选择终止?";
-            }else{//申请结案
-                messages = @"确定申请结案?";
-            }
-            
-            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"" message:messages preferredStyle:UIAlertControllerStyleAlert];
-            
-            UIAlertAction *act0 = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                if (tag == 33) {
-                    [weakself endProductWithStatusString:@"3"];
-                }else{
-                    [weakself endProductWithStatusString:@"4"];
-                }
-            }];
-            UIAlertAction *act1 = [UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleDefault handler:nil];
-            
-            [alertVC addAction:act0];
-            [alertVC addAction:act1];
-            [weakself presentViewController:alertVC animated:YES completion:nil];
-            
-        }];
     }
     return _dealFootView;
 }
@@ -486,15 +459,17 @@
             if ([response.product.applyclose integerValue] == 0) {//终止／申请结案
                 [weakself.dealCommitButton setHidden:YES];
                 [weakself.dealFootView setHidden:NO];
+                
                 QDFWeakSelf;
                 [_dealFootView setDidSelectedButton:^(NSInteger tag) {
+                    NSString *messages;
                     if (tag == 33) {//终止
-                        [weakself endProductWithStatusString:@"3"];
+                        messages = @"确认终止?";
                     }else{//申请结案
-                        [weakself endProductWithStatusString:@"4"];
+                        messages = @"确认申请结案?";
                     }
+                    [weakself showAlertRemindWithTitle:messages withTag:tag];
                 }];
-                
             }else if ([response.product.applyclose integerValue] == 4 && ![response.product.applyclosefrom isEqualToString:response.product.uidInner]){
                 [weakself.dealFootView setHidden:YES];
                 [weakself.dealCommitButton setHidden:NO];
@@ -540,6 +515,28 @@
     } andFailBlock:^(NSError *error) {
         
     }];
+}
+
+#pragma mark - alert
+- (void)showAlertRemindWithTitle:(NSString *)string withTag:(NSInteger)tag
+{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:string preferredStyle:UIAlertControllerStyleAlert];
+    
+    QDFWeakSelf;
+    UIAlertAction *ace1 = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        if (tag == 33) {
+            [weakself endProductWithStatusString:@"3"];
+        }else{
+            [weakself endProductWithStatusString:@"4"];
+        }
+
+    }];
+    UIAlertAction *ace2 = [UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleDefault handler:nil];
+    
+    [alert addAction:ace1];
+    [alert addAction:ace2];
+    
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning {

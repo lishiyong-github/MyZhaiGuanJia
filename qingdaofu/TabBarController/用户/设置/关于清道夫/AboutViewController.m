@@ -144,7 +144,6 @@
             if (result) {
                 [self presentViewController:sKStoreProductViewController animated:YES completion:nil];
             }else{
-//                NSLog(@"error:%@",error);
             }
         }];
     }

@@ -116,7 +116,6 @@
                         }
                             break;
                         case 20:{//我的发布
-                            NSLog(@"全部");
                             myReleaseVC.progreStatus = @"0";
                             [weakself.navigationController pushViewController:myReleaseVC animated:YES];
                         }
@@ -195,7 +194,6 @@
                         }
                             break;
                         case 20:{//我的发布
-                            NSLog(@"全部");
                             myReleaseVC.progreStatus = @"0";
                             [weakself.navigationController pushViewController:myReleaseVC animated:YES];
                         }

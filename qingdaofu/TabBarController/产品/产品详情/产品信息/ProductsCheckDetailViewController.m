@@ -94,7 +94,7 @@
     }else{//债务人信息
         name = [NSString getValidStringFromString:deModel.borrowingname];
     }
-    NSMutableAttributedString *nameStr = [cell.debtNameLabel setAttributeString:@"姓        名    " withColor:kBlackColor andSecond:name withColor:kLightGrayColor withFont:12];
+    NSMutableAttributedString *nameStr = [cell.debtNameLabel setAttributeString:@"姓        名    " withColor:kBlackColor andSecond:name withColor:kLightGrayColor withFont:14];
     [cell.debtNameLabel setAttributedText:nameStr];
     
     NSString *tel;
@@ -103,17 +103,18 @@
     }else{
         tel = [NSString getValidStringFromString:deModel.borrowingmobile];;
     }
-    NSMutableAttributedString *telStr = [cell.debtTelLabel setAttributeString:@"联系方式    " withColor:kBlackColor andSecond:tel withColor:kLightGrayColor withFont:12];
+    NSMutableAttributedString *telStr = [cell.debtTelLabel setAttributeString:@"联系方式    " withColor:kBlackColor andSecond:tel withColor:kLightGrayColor withFont:14];
     [cell.debtTelLabel setAttributedText:telStr];
     
-    cell.debtAddressLabel.text = @"联系地址";
+//    cell.debtAddressLabel.text = @"联系地址";
     if ([self.categoryString integerValue] == 1) {
-        
         NSString *yuy = [NSString getValidStringFromString:deModel.creditoraddress];
-        cell.debtAddressLabel.text = [NSString stringWithFormat:@"联系地址    %@",yuy];
+        NSMutableAttributedString *addressStr = [cell.debtTelLabel setAttributeString:@"联系地址    " withColor:kBlackColor andSecond:yuy withColor:kLightGrayColor withFont:14];
+        [cell.debtAddressLabel setAttributedText:addressStr];
     }else{
         NSString *yuy = [NSString getValidStringFromString:deModel.borrowingaddress];
-        cell.debtAddressLabel.text = [NSString stringWithFormat:@"联系地址    %@",yuy];
+        NSMutableAttributedString *addressStr = [cell.debtTelLabel setAttributeString:@"联系地址    " withColor:kBlackColor andSecond:yuy withColor:kLightGrayColor withFont:14];
+        [cell.debtAddressLabel setAttributedText:addressStr];
     }
     
     NSString *ID;
@@ -122,7 +123,7 @@
     }else{
         ID = [NSString getValidStringFromString:deModel.borrowingcardcode];
     }
-    NSMutableAttributedString *IDStr = [cell.debtIDLabel setAttributeString:@"证件号        " withColor:kBlackColor andSecond:ID withColor:kLightGrayColor withFont:12];
+    NSMutableAttributedString *IDStr = [cell.debtIDLabel setAttributeString:@"证件号        " withColor:kBlackColor andSecond:ID withColor:kLightGrayColor withFont:14];
     [cell.debtIDLabel setAttributedText:IDStr];
     
     QDFWeakSelf;

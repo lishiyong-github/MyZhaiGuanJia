@@ -194,7 +194,6 @@
         NSDateFormatter  *dateformatter=[[NSDateFormatter alloc] init];
         [dateformatter setDateFormat:@"YYYY-MM-dd hh:mm:ss"];
         NSString *locationString=[dateformatter stringFromDate:senddate];
-        NSLog(@"locationString:%@",locationString);
         
         cell.suTimeLabel.text = [NSString stringWithFormat:@"发布时间：%@",locationString];
         //@"发布时间：2016-05-10 17:40";

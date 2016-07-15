@@ -49,8 +49,6 @@
         [self.sendButton autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.getbutton];
         [self.sendButton autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.getbutton];
         
-//        weakself.blueLabel.frame = CGRectMake(_getbutton.left+kScreenWidth/8,37, kScreenWidth/4, 2);
-
         [self.blueLabel autoSetDimensionsToSize:CGSizeMake(80, 2)];
         [self.blueLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom];
         
@@ -81,18 +79,11 @@
         QDFWeakSelf;
         [_getbutton addAction:^(UIButton *btn) {
             [UIView animateWithDuration:0.3 animations:^{
-                
-//                [btn setTitleColor:kBlueColor forState:0];
-//                btn.titleLabel.font = kBigFont;
-//                [weakself.sendButton setTitleColor:kBlackColor forState:0];
-//                weakself.sendButton.titleLabel.font = kFirstFont;
-                
                 weakself.leftBlueConstraints.constant = (kScreenWidth/2-80)/2;
-                
-                if (weakself.didSelectedButton) {
-                    weakself.didSelectedButton(33);
-                }
             }];
+            if (weakself.didSelectedButton) {
+                weakself.didSelectedButton(33);
+            }
         }];
     }
     return _getbutton;
@@ -109,20 +100,11 @@
         QDFWeakSelf;
         [_sendButton addAction:^(UIButton *btn) {
             [UIView animateWithDuration:0.3 animations:^{
-                
-//                [btn setTitleColor:kBlueColor forState:0];
-//                btn.titleLabel.font = kBigFont;
-//                
-//                [weakself.getbutton setTitleColor:kBlackColor forState:0];
-//                weakself.getbutton.titleLabel.font = kFirstFont;
-                
                 weakself.leftBlueConstraints.constant = kScreenWidth*3/4-40;
-                //(kScreenWidth/2-80)/2+kScreenWidth/2;
-                
-                if (weakself.didSelectedButton) {
-                    weakself.didSelectedButton(34);
-                }
             }];
+            if (weakself.didSelectedButton) {
+                weakself.didSelectedButton(34);
+            }
         }];
     }
     return _sendButton;

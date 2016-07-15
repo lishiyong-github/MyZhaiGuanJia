@@ -158,11 +158,8 @@
     self = [super initWithCoder:aDecoder];
     if (self)
     {
-        NSString *InsureSolutionID = [aDecoder decodeObjectForKey:@"personName"];
-        NSString *InsureSolutionName = [aDecoder decodeObjectForKey:@"personAge"];
-        
-        NSLog(@"InsureSolutionID is %@",InsureSolutionID);
-        NSLog(@"InsureSolutionName is %@",InsureSolutionName);
+//        NSString *InsureSolutionID = [aDecoder decodeObjectForKey:@"personName"];
+//        NSString *InsureSolutionName = [aDecoder decodeObjectForKey:@"personAge"];
     }
     return self;
 }

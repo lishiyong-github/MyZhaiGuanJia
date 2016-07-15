@@ -199,7 +199,7 @@
 - (void)refreshFooterOfMySave
 {
     _pageSave ++;
-    NSString *page = [NSString stringWithFormat:@"%d",_pageSave];
+    NSString *page = [NSString stringWithFormat:@"%ld",(long)_pageSave];
     [self getMySaveListWithPage:page];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.mySavetableView footerEndRefreshing];

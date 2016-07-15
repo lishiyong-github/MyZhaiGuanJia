@@ -95,7 +95,12 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 125;
+    NSString *wtwt = @"可发布融资、清收、诉讼";
+    
+    CGSize titleSize = CGSizeMake(kScreenWidth - 175, MAXFLOAT);
+    CGSize  actualsize =[wtwt boundingRectWithSize:titleSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName :kFirstFont} context:nil].size;
+    
+    return 105 + MAX(actualsize.height, 16);
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -124,17 +129,17 @@
         if (indexPath.row == 0) {//认证个人
             AuthenPersonViewController *authenPersonVC = [[AuthenPersonViewController alloc] init];
             authenPersonVC.typeAuthen = self.typeAuthty;
-            authenPersonVC.categoryString = [NSString stringWithFormat:@"%d",indexPath.row+1];
+            authenPersonVC.categoryString = [NSString stringWithFormat:@"%ld",indexPath.row+1];
             [weakself.navigationController pushViewController:authenPersonVC animated:YES];
         }else if (indexPath.row == 1){//认证律所
             AuthenLawViewController *authenLawVC = [[AuthenLawViewController alloc] init];
             authenLawVC.typeAuthen = self.typeAuthty;
-            authenLawVC.categoryString = [NSString stringWithFormat:@"%d",indexPath.row+1];
+            authenLawVC.categoryString = [NSString stringWithFormat:@"%ld",indexPath.row+1];
             [weakself.navigationController pushViewController:authenLawVC animated:YES];
         }else{//认证公司
             AuthenCompanyViewController *authenCompanyVC = [[AuthenCompanyViewController alloc] init];
             authenCompanyVC.typeAuthen = self.typeAuthty;
-            authenCompanyVC.categoryString = [NSString stringWithFormat:@"%d",indexPath.row+1];
+            authenCompanyVC.categoryString = [NSString stringWithFormat:@"%ld",indexPath.row+1];
             [weakself.navigationController pushViewController:authenCompanyVC animated:YES];
         }
     }];

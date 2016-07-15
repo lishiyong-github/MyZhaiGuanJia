@@ -105,7 +105,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier;
-    if ([self.categoryString intValue] == 3) {//诉讼
+    if ([self.categoryString integerValue] == 3) {//诉讼
         if (indexPath.row < 2) {
             identifier = @"schedule30";
             CaseNoCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -122,7 +122,7 @@
             [cell.caseGoButton setTitle:arr3[indexPath.row] forState:0];
             [cell.caseGoButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
             
-            NSArray *suitArr = @[@"债权人上传处置资产",@"律师接单",@"双方洽谈",@"向法院起诉(财产保全)",@"整理诉讼材料",@"法院立案",@"向当事人发出开庭传票",@"开庭前调解",@"开庭",@"判决",@"二次开庭",@"二次判决",@"移交执行局申请执行",@"执行中提供借款人的财产线索",@"调查(公告)",@"拍卖",@"流拍",@"拍卖成功",@"付费"];
+//            NSArray *suitArr = @[@"债权人上传处置资产",@"律师接单",@"双方洽谈",@"向法院起诉(财产保全)",@"整理诉讼材料",@"法院立案",@"向当事人发出开庭传票",@"开庭前调解",@"开庭",@"判决",@"二次开庭",@"二次判决",@"移交执行局申请执行",@"执行中提供借款人的财产线索",@"调查(公告)",@"拍卖",@"流拍",@"拍卖成功",@"付费"];
             NSArray *suitNoArr = @[@"一审",@"二审",@"再审",@"执行"];
             
             QDFWeakSelf;
@@ -138,22 +138,23 @@
                     [self.view endEditing:YES];
                     [weakself showBlurInView:self.view withArray:suitNoArr andTitle:@"选择案号类型" finishBlock:^(NSString *text,NSInteger row) {
                         [weakcell.caseGoButton setTitle:text forState:0];
-                        NSString *auditStr = [NSString stringWithFormat:@"%d",row-1];
+                        NSString *auditStr = [NSString stringWithFormat:@"%ld",row-1];
                         [self.scheduleDictionary setValue:auditStr forKey:@"audit"];
                     }];
                 }];
                 
             }else{//处置类型
                 cell.caseNoTextField.userInteractionEnabled = NO;
-                [cell.caseGoButton addAction:^(UIButton *btn) {
-                    [self.view endEditing:YES];
-                    [weakself showBlurInView:self.view withArray:suitArr andTitle:@"选择处置类型" finishBlock:^(NSString *text,NSInteger row) {
-                        [weakcell.caseGoButton setTitle:text forState:0];
-                        
-                        NSString *statusStr = [NSString stringWithFormat:@"%d",row];
-                        [self.scheduleDictionary setValue:statusStr forKey:@"status"];
-                    }];
-                }];
+                cell.caseGoButton.userInteractionEnabled = NO;
+//                [cell.caseGoButton addAction:^(UIButton *btn) {
+//                    [self.view endEditing:YES];
+//                    [weakself showBlurInView:self.view withArray:suitArr andTitle:@"选择处置类型" finishBlock:^(NSString *text,NSInteger row) {
+//                        [weakcell.caseGoButton setTitle:text forState:0];
+//                        
+//                        NSString *statusStr = [NSString stringWithFormat:@"%ld",(long)row];
+//                        [self.scheduleDictionary setValue:statusStr forKey:@"status"];
+//                    }];
+//                }];
             }
             return cell;
         }
@@ -186,27 +187,28 @@
         [cell.caseNoButton setTitle:@"选择处置类型" forState:0];
         cell.caseNoTextField.userInteractionEnabled = NO;
         [cell.caseGoButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        cell.caseGoButton.userInteractionEnabled = NO;
         
-        NSArray *financeArr = @[@"尽职调查",@"公证",@"放款",@"返点",@"其他"];
-        NSArray *collectArr = @[@"电话",@"上门",@"面谈"];
+//        NSArray *financeArr = @[@"尽职调查",@"公证",@"放款",@"返点",@"其他"];
+//        NSArray *collectArr = @[@"电话",@"上门",@"面谈"];
         
-        QDFWeakSelf;
-        QDFWeak(cell);
-        [cell.caseGoButton addAction:^(UIButton *btn) {
-            if ([weakself.categoryString intValue] == 1) {//融资
-                [weakself showBlurInView:self.view withArray:financeArr andTitle:@"选择处置类型" finishBlock:^(NSString *text,NSInteger row) {
-                    [weakcell.caseGoButton setTitle:text forState:0];
-                    NSString *statusStr = [NSString stringWithFormat:@"%d",row];
-                    [self.scheduleDictionary setValue:statusStr forKey:@"status"];
-                }];
-            }else if ([weakself.categoryString intValue] == 2){//清收
-                [weakself showBlurInView:self.view withArray:collectArr andTitle:@"选择处置类型" finishBlock:^(NSString *text,NSInteger row) {
-                    [weakcell.caseGoButton setTitle:text forState:0];
-                    NSString *statusStr = [NSString stringWithFormat:@"%d",row];
-                    [self.scheduleDictionary setValue:statusStr forKey:@"status"];
-                }];
-            }
-        }];
+//        QDFWeakSelf;
+//        QDFWeak(cell);
+//        [cell.caseGoButton addAction:^(UIButton *btn) {
+//            if ([weakself.categoryString intValue] == 1) {//融资
+//                [weakself showBlurInView:self.view withArray:financeArr andTitle:@"选择处置类型" finishBlock:^(NSString *text,NSInteger row) {
+//                    [weakcell.caseGoButton setTitle:text forState:0];
+//                    NSString *statusStr = [NSString stringWithFormat:@"%ld",(long)row];
+//                    [self.scheduleDictionary setValue:statusStr forKey:@"status"];
+//                }];
+//            }else if ([weakself.categoryString intValue] == 2){//清收
+//                [weakself showBlurInView:self.view withArray:collectArr andTitle:@"选择处置类型" finishBlock:^(NSString *text,NSInteger row) {
+//                    [weakcell.caseGoButton setTitle:text forState:0];
+//                    NSString *statusStr = [NSString stringWithFormat:@"%ld",(long)row];
+//                    [self.scheduleDictionary setValue:statusStr forKey:@"status"];
+//                }];
+//            }
+//        }];
         
         return cell;
     }
@@ -224,6 +226,47 @@
     }];
     
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    QDFWeakSelf;
+    if ([self.categoryString integerValue] == 3) {//诉讼
+        
+        if (indexPath.row == 1) {
+            NSArray *suitArr = @[@"债权人上传处置资产",@"律师接单",@"双方洽谈",@"向法院起诉(财产保全)",@"整理诉讼材料",@"法院立案",@"向当事人发出开庭传票",@"开庭前调解",@"开庭",@"判决",@"二次开庭",@"二次判决",@"移交执行局申请执行",@"执行中提供借款人的财产线索",@"调查(公告)",@"拍卖",@"流拍",@"拍卖成功",@"付费"];
+            [self showBlurInView:self.view withArray:suitArr andTitle:@"选择处置类型" finishBlock:^(NSString *text,NSInteger row) {
+                CaseNoCell *cell = [weakself.scheduleTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+                [cell.caseGoButton setTitle:text forState:0];
+                
+                NSString *statusStr = [NSString stringWithFormat:@"%ld",(long)row];
+                [weakself.scheduleDictionary setValue:statusStr forKey:@"status"];
+            }];
+        }
+    }else if([self.categoryString integerValue] == 1){//融资
+        
+        NSArray *financeArr = @[@"尽职调查",@"公证",@"放款",@"返点",@"其他"];
+        if (indexPath.row == 0) {
+            [self showBlurInView:self.view withArray:financeArr andTitle:@"选择处置类型" finishBlock:^(NSString *text,NSInteger row) {
+                CaseNoCell *cell = [weakself.scheduleTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+                [cell.caseGoButton setTitle:text forState:0];
+                
+                NSString *statusStr = [NSString stringWithFormat:@"%ld",(long)row];
+                [weakself.scheduleDictionary setValue:statusStr forKey:@"status"];
+            }];
+        }
+    }else if ([self.categoryString integerValue] == 2){//清收
+        NSArray *collectArr = @[@"电话",@"上门",@"面谈"];
+        if (indexPath.row == 0) {
+            [self showBlurInView:self.view withArray:collectArr andTitle:@"选择处置类型" finishBlock:^(NSString *text,NSInteger row) {
+                CaseNoCell *cell = [weakself.scheduleTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+                [cell.caseGoButton setTitle:text forState:0];
+                
+                NSString *statusStr = [NSString stringWithFormat:@"%ld",(long)row];
+                [weakself.scheduleDictionary setValue:statusStr forKey:@"status"];
+            }];
+        }
+    }
 }
 
 #pragma mark - method

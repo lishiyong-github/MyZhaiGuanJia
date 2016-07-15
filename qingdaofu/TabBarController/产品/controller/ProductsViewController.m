@@ -117,7 +117,7 @@
             
             NSArray *titleArray = @[@"全部",@"融资",@"清收",@"诉讼"];
             [weakself showBlurInView:weakself.view withArray:titleArray withTop:0 finishBlock:^(NSString *text, NSInteger row) {
-                NSString *value = [NSString stringWithFormat:@"%d",row];
+                NSString *value = [NSString stringWithFormat:@"%ld",(long)row];
                 [btn setTitle:text forState:0];
                 [weakself.paramsDictionary setValue:value forKey:@"category"];
                 [weakself headerRefreshWithAllProducts];
@@ -178,7 +178,7 @@
                             [selectedButton setTitle:text forState:0];
                             
                             if (row <= 2) {
-                                NSString *value = [NSString stringWithFormat:@"%d",row];
+                                NSString *value = [NSString stringWithFormat:@"%ld",(long)row];
                                 [selectedButton setTitle:text forState:0];
                                 [weakself.paramsDictionary setValue:value forKey:@"status"];
                             }else{
@@ -205,7 +205,7 @@
                         [weakself showBlurInView:weakself.view withArray:moneyArray withTop:selectedButton.height finishBlock:^(NSString *text, NSInteger row) {
                             [selectedButton setTitle:text forState:0];
                             
-                            NSString *value = [NSString stringWithFormat:@"%d",row];
+                            NSString *value = [NSString stringWithFormat:@"%ld",(long)row];
                             [selectedButton setTitle:text forState:0];
                             [weakself.paramsDictionary setValue:value forKey:@"money"];
                             [weakself headerRefreshWithAllProducts];
@@ -731,7 +731,7 @@
 - (void)footerRefreshOfAllProducts
 {
     _page++;
-    NSString *pp = [NSString stringWithFormat:@"%d",_page];
+    NSString *pp = [NSString stringWithFormat:@"%ld",(long)_page];
     [self getProductsListWithPage:pp];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{

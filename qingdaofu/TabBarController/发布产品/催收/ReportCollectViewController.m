@@ -301,7 +301,6 @@
                 [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
                 [cell.agentButton setTitle:@"请选择" forState:0];
                 [cell.agentButton addAction:^(UIButton *btn) {
-                    NSLog(@"选择小区名");
                 }];
                 
             }else if ([_number intValue] == 3){//机动车抵押
@@ -310,7 +309,6 @@
                 [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
                 [cell.agentButton setTitle:@"请选择" forState:0];
                 [cell.agentButton addAction:^(UIButton *btn) {
-                    NSLog(@"选择机动车品牌");
                 }];
             }else if ([_number intValue] == 2) {//应收帐款
                 cell.agentTextField.userInteractionEnabled = YES;
@@ -467,7 +465,7 @@
         case 8:{//借款利率
             [self showBlurInView:self.view withArray:arr8 andTitle:@"选择借款利率类型" finishBlock:^(NSString *text,NSInteger row) {
                 [btn setTitle:text forState:0];
-                NSString *value = [NSString stringWithFormat:@"%d",row];
+                NSString *value = [NSString stringWithFormat:@"%ld",(long)row];
                 [self.coDataDictionary setValue:value forKey:@"rate_cat"];
                 UIButton *elseBtn = [self.collectionTableView viewWithTag:9];
                 [elseBtn setTitle:text forState:0];
@@ -479,7 +477,7 @@
             [self showBlurInView:self.view withArray:arr8 andTitle:@"选择借款期限类型" finishBlock:^(NSString *text,NSInteger row) {
                 [btn setTitle:text forState:0];
                 
-                NSString *value = [NSString stringWithFormat:@"%d",row];
+                NSString *value = [NSString stringWithFormat:@"%ld",(long)row];
                 [self.coDataDictionary setValue:value forKey:@"term"];
                 
                 UIButton *elseBtn = [self.collectionTableView viewWithTag:8];
@@ -491,7 +489,7 @@
             [self showBlurInView:self.view withArray:arr10 andTitle:@"选择还款方式" finishBlock:^(NSString *text,NSInteger row) {
                 [btn setTitle:text forState:0];
                 
-                NSString *value = [NSString stringWithFormat:@"%d",row];
+                NSString *value = [NSString stringWithFormat:@"%ld",(long)row];
                 [self.coDataDictionary setValue:value forKey:@"repaymethod"];
             }];
         }
@@ -500,7 +498,7 @@
             [self showBlurInView:self.view withArray:arr11 andTitle:@"选择债务人主体" finishBlock:^(NSString *text,NSInteger row) {
                 [btn setTitle:text forState:0];
                 
-                NSString *value = [NSString stringWithFormat:@"%d",row];
+                NSString *value = [NSString stringWithFormat:@"%ld",(long)row];
                 [self.coDataDictionary setValue:value forKey:@"obligor"];
             }];
         }
@@ -509,7 +507,7 @@
             [self showBlurInView:self.view withArray:arr12 andTitle:@"选择委托事项" finishBlock:^(NSString *text,NSInteger row) {
                 [btn setTitle:text forState:0];
                 
-                NSString *value = [NSString stringWithFormat:@"%d",row];
+                NSString *value = [NSString stringWithFormat:@"%ld",(long)row];
                 [self.coDataDictionary setValue:value forKey:@"commitment"];
             }];
         }
@@ -518,7 +516,7 @@
             [self showBlurInView:self.view withArray:arr13 andTitle:@"选择委托代理期限" finishBlock:^(NSString *text,NSInteger row) {
                 [btn setTitle:text forState:0];
                 
-                NSString *value = [NSString stringWithFormat:@"%d",row];
+                NSString *value = [NSString stringWithFormat:@"%ld",(long)row];
                 [self.coDataDictionary setValue:value forKey:@"commissionperiod"];
             }];
         }

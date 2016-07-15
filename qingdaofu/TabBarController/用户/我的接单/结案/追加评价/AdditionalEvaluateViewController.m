@@ -185,7 +185,7 @@
         
         cell.textField.placeholder = @"请输入您的真实感受，对接单方的帮助很大奥";
         cell.textField.font = kSecondFont;
-        cell.countLabel.text = [NSString stringWithFormat:@"%d/600",cell.textField.text.length];
+        cell.countLabel.text = [NSString stringWithFormat:@"%lu/600",(unsigned long)cell.textField.text.length];
         
         QDFWeakSelf;
         [cell setTouchBeginPoint:^(CGPoint point) {

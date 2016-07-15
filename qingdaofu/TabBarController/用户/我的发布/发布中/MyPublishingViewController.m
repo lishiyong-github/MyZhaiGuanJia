@@ -267,6 +267,7 @@
                 if ([publishModel.progress_status intValue] < 2) {
                     [cell.userActionButton setTitle:@"编辑" forState:0];
                     [cell.userActionButton setTitleColor:kBlueColor forState:0];
+                    [cell.userActionButton addTarget:self action:@selector(editAllMessages) forControlEvents:UIControlEventTouchUpInside];
                 }
             }
             return cell;
