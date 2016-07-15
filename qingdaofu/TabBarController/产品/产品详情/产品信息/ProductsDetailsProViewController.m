@@ -16,6 +16,7 @@
 #import "ProdRightView.h"
 
 #import "DebtModel.h"
+#import "UIImage+Color.h"
 
 @interface ProductsDetailsProViewController ()
 
@@ -30,6 +31,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.navigationController.navigationBar.translucent = NO;
+    [self.navigationController.navigationBar setShadowImage:[UIImage imageWithColor:kSeparateColor]];
+    
     self.navigationItem.title = @"产品信息";
     self.navigationItem.leftBarButtonItem = self.leftItem;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"information_nav_remind"] style:UIBarButtonItemStylePlain target:self action:@selector(remindPublisher)];
@@ -109,7 +114,7 @@
         PublishingModel *leftModel = self.yyModel.product;
         if ([leftModel.category intValue] == 1) {//融资
             
-            NSString *moneyStr = [NSString stringWithFormat:@"%@万",leftModel.money];
+            NSString *moneyStr = [NSString stringWithFormat:@"%@万元",leftModel.money];
             NSString *rebateStr = [NSString stringWithFormat:@"%@%@",leftModel.rebate,@"%"];
             NSString *rateStr = [NSString stringWithFormat:@"%@%@",leftModel.rate,@"%"];
             
@@ -142,11 +147,11 @@
                 if ([leftModel.category integerValue] == 2) {
                     agencycommissiontypeStr = @"提成比例(%)";
                 }else{
-                    agencycommissiontypeStr = @"固定费用(万)";
+                    agencycommissiontypeStr = @"固定费用(万元)";
                 }
             }else if ([leftModel.agencycommissiontype intValue] ==2){
                 if ([leftModel.category integerValue] == 2) {
-                    agencycommissiontypeStr = @"固定费用(万)";
+                    agencycommissiontypeStr = @"固定费用(万元)";
                 }else{
                     agencycommissiontypeStr = @"风险费率(%)";
                 }

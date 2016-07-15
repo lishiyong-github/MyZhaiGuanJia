@@ -365,9 +365,9 @@
             [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
             NSArray *dede;
             if ([self.categoryString integerValue] == 2) {
-                dede = @[@"提成比例(%)",@"固定费用(万)"];
+                dede = @[@"提成比例(%)",@"固定费用(万元)"];
             }else{
-                dede = @[@"固定费用(万)",@"代理费率(%)"];
+                dede = @[@"固定费用(万元)",@"代理费率(%)"];
             }
             
             if (suModel.agencycommissiontype) {
@@ -984,9 +984,9 @@
 - (void)showTitleOfUpwardViews:(UIButton *)btn
 {
     [self.view endEditing:YES];
-    NSArray *arr2 = @[@"固定费用(万)",@"代理费率(%)"];
-    NSArray *arr22 = @[@"提成比例(%)",@"固定费用(万)"];
-    NSArray *arr8 = @[@"天",@"月"];
+    NSArray *arr2 = @[@"固定费用(万元)",@"代理费率(%)"];
+    NSArray *arr22 = @[@"提成比例(%)",@"固定费用(万元)"];
+    NSArray *arr8 = @[@"%/天",@"%/月"];
     NSArray *arr10 = @[@"一次性到期还本付息",@"按月付息，到期还本",@"其他"];
     NSArray *arr11 = @[@"自然人",@"法人",@"其他"];
     NSArray *arr12 = @[@"代理诉讼",@"代理仲裁",@"代理执行"];

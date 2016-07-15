@@ -202,7 +202,7 @@
                 string3 = @"  提成比例(%)";
                 imageString3 =  @"conserve_rights_icon";
             }else if ([saveModel.agencycommissiontype intValue] == 2){
-                string3 = @"  固定费用(万)";
+                string3 = @"  固定费用(万元)";
                 imageString3 =  @"conserve_fixed_icons";
             }
             string33 = saveModel.agencycommission;

@@ -73,7 +73,6 @@
         _deRateLabel1 = [UILabel newAutoLayoutView];
         _deRateLabel1.textColor = kNavColor;
         _deRateLabel1.font = [UIFont systemFontOfSize:50];  //24
-//        _deRateLabel1.text = @"5.6%";
     }
     return _deRateLabel1;
 }
@@ -81,10 +80,7 @@
 - (ProDetailHeadFootView *)deMoneyView
 {
     if (!_deMoneyView) {
-        _deMoneyView = [ProDetailHeadFootView newAutoLayoutView];
-//        _deMoneyView.fLabel1.text = @"借款本金(元)";
-//        _deMoneyView.fLabel2.text = @"10000000";
-        _deMoneyView.backgroundColor = kDarkGrayColor;
+    _deMoneyView = [ProDetailHeadFootView newAutoLayoutView];        _deMoneyView.backgroundColor = kDarkGrayColor;
     }
     return _deMoneyView;
 }

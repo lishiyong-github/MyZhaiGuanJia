@@ -230,7 +230,7 @@
                     imageString3 =  @"conserve_rights_icon";
 
                 }else if ([endModel.agencycommissiontype intValue] == 2){
-                    string3 = @"  固定费用(万)";
+                    string3 = @"  固定费用(万元)";
                     imageString3 =  @"conserve_fixed_icons";
 
                 }
@@ -292,7 +292,7 @@
                 }
             }
             
-            NSArray *dataArray = @[@"|  基本信息",@"  产品类型",@"  借款本金(万)",string3,string4];
+            NSArray *dataArray = @[@"|  基本信息",@"  产品类型",@"  借款本金(万元)",string3,string4];
             NSArray *imageArray = @[@"",@"conserve_investment_icon",@"conserve_loan_icon",imageString3,imageString4];
             NSArray *detailArray = @[@"",string22,endModel.money,string33,string44];
             

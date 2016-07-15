@@ -139,9 +139,7 @@
         cell = [[EvaluatePhotoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    EvaluateResponse *response = self.responseArray[0];
-    
+        
     if (self.allEvaluateArray.count > 0 ) {
         [cell.remindImageButton setHidden:YES];
         [cell.evaProductButton setHidden:YES];
@@ -156,7 +154,7 @@
             NSString *isHideStr = model.isHide?@"匿名":model.mobile;
             cell.evaNameLabel.text = isHideStr;
             cell.evaTimeLabel.text = [NSDate getYMDFormatterTime:model.create_time];
-            cell.evaStarImage.currentIndex = [response.creditor intValue];
+            cell.evaStarImage.currentIndex = [model.creditor intValue];
             cell.evaProImageView1.backgroundColor = kLightGrayColor;
             cell.evaProImageView2.backgroundColor = kLightGrayColor;
             
@@ -208,7 +206,7 @@
             NSString *isHideStr = model.isHide?@"匿名":model.mobile;
             cell.evaNameLabel.text = isHideStr;
             cell.evaTimeLabel.text = [NSDate getYMDFormatterTime:model.create_time];
-            cell.evaStarImage.currentIndex = [response.creditor intValue];
+            cell.evaStarImage.currentIndex = [model.creditor intValue];
             cell.evaProImageView1.backgroundColor = kLightGrayColor;
             cell.evaProImageView2.backgroundColor = kLightGrayColor;
              if (model.content == nil || [model.content isEqualToString:@""]) {
@@ -299,10 +297,6 @@
     }
     QDFWeakSelf;
     [self requestDataPostWithString:evaluateString params:params successBlock:^(id responseObject) {
-        
-        NSDictionary *gtfdeyw = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        
-        
         
         if ([page integerValue] == 1) {
             [weakself.allEvaluateArray removeAllObjects];

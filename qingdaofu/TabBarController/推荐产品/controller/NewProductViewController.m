@@ -50,6 +50,7 @@
 {
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:kBlackColor,NSFontAttributeName:kNavFont}];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:kNavColor] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setShadowImage:[UIImage imageWithColor:kSelectedColor]];
     
     [self getRecommendProductslist];
 }
@@ -332,7 +333,7 @@
         if ([newModel.agencycommissiontype isEqualToString:@"1"]) {
             cell.pointView.label2.text = @"提成比例(%)";
         }else{
-            cell.pointView.label2.text = @"固定费用(万)";
+            cell.pointView.label2.text = @"固定费用(万元)";
         }
         if ([newModel.loan_type isEqualToString:@"1"]) {
             cell.rateView.label1.text = @"房产抵押";
@@ -352,7 +353,7 @@
         [cell.typeImageView setImage:[UIImage imageNamed:@"list_litigation"]];
         cell.pointView.label1.text = newModel.agencycommission;
         if ([newModel.agencycommissiontype isEqualToString:@"1"]) {
-            cell.pointView.label2.text = @"固定费用(万)";
+            cell.pointView.label2.text = @"固定费用(万元)";
         }else{
             cell.pointView.label2.text = @"风险费率(%)";
         }

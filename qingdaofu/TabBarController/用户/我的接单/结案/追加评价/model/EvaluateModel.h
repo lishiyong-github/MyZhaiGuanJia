@@ -10,6 +10,7 @@
 
 @interface EvaluateModel : NSObject  //收到的评价
 
+@property (nonatomic,copy) NSString *creditor;  //评价方得评价平均分数
 @property (nonatomic,copy) NSString *buid;  //
 @property (nonatomic,copy) NSString *category;  //产品类型
 @property (nonatomic,copy) NSString *codeString;  //产品编号

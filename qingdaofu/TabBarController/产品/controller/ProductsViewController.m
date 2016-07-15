@@ -61,14 +61,15 @@
     
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:kNavColor] forBarMetrics:UIBarMetricsDefault];
     
+    self.navigationController.navigationBar.translucent = NO;
+    [self.navigationController.navigationBar setShadowImage:[UIImage imageWithColor:kSelectedColor]];
+    
     [self headerRefreshWithAllProducts];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.titleView = self.proTitleView;
-    
-//    self.navigationItem.rightBarButtonItem  = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"nav_search"] style:UIBarButtonItemStylePlain target:self action:@selector(searchProducts)];
     
     _selectedRow1 = 1000;
     _selectedRow2 = 1000;
@@ -112,9 +113,7 @@
         QDFWeakSelf;
         [_proTitleView addAction:^(UIButton *btn) {
             [weakself hiddenBlurView];
-            [weakself.tableView11 removeFromSuperview];
-            [weakself.tableView12 removeFromSuperview];
-            [weakself.tableView13 removeFromSuperview];
+            [weakself.backBlurView removeFromSuperview];
             
             NSArray *titleArray = @[@"全部",@"融资",@"清收",@"诉讼"];
             [weakself showBlurInView:weakself.view withArray:titleArray withTop:0 finishBlock:^(NSString *text, NSInteger row) {
@@ -145,14 +144,12 @@
                     [weakself hiddenBlurView];
                     
                     [weakself.backBlurView removeFromSuperview];
-//                    [weakself.tableView11 removeFromSuperview];
-//                    [weakself.tableView12 removeFromSuperview];
-//                    [weakself.tableView13 removeFromSuperview];
+                    
                     if (selectedButton.selected) {
                         weakself.chooseView.stateButton.selected = NO;
                         weakself.chooseView.moneyButton.selected = NO;
                         
-                        [weakself.view.window addSubview: weakself.backBlurView];
+                        [weakself.view addSubview: weakself.backBlurView];
                         [weakself.backBlurView addSubview:weakself.tableView11];
                         
                         [weakself.tableView11 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:weakself.chooseView];
@@ -169,9 +166,8 @@
                     
                     selectedButton.selected = !selectedButton.selected;
                     [weakself hiddenBlurView];
-                    [weakself.tableView11 removeFromSuperview];
-                    [weakself.tableView12 removeFromSuperview];
-                    [weakself.tableView13 removeFromSuperview];
+                    [weakself.backBlurView removeFromSuperview];
+                    
                     if (selectedButton.selected) {
                         
                         weakself.chooseView.squrebutton.selected = NO;
@@ -199,9 +195,7 @@
                     selectedButton.selected = !selectedButton.selected;
                     
                     [weakself hiddenBlurView];
-                    [weakself.tableView11 removeFromSuperview];
-                    [weakself.tableView12 removeFromSuperview];
-                    [weakself.tableView13 removeFromSuperview];
+                    [weakself.backBlurView removeFromSuperview];
                     if (selectedButton.selected) {
                         weakself.chooseView.squrebutton.selected = NO;
                         weakself.chooseView.stateButton.selected = NO;
@@ -245,7 +239,7 @@
 - (UIView *)backBlurView
 {
     if (!_backBlurView) {
-        _backBlurView = [[UIView alloc] initWithFrame:CGRectMake(0, 40+64, kScreenWidth, kScreenHeight)];
+        _backBlurView = [[UIView alloc] initWithFrame:CGRectMake(0, 40, kScreenWidth, kScreenHeight)];
         _backBlurView.backgroundColor = UIColorFromRGB1(0x333333, 0.6);
     }
     return _backBlurView;
@@ -374,7 +368,7 @@
             if ([proModel.agencycommissiontype isEqualToString:@"1"]) {
                 cell.pointView.label2.text = @"提成比例(%)";
             }else{
-                cell.pointView.label2.text = @"固定费用(万)";
+                cell.pointView.label2.text = @"固定费用(万元)";
             }
             if ([proModel.loan_type isEqualToString:@"1"]) {
                 cell.rateView.label1.text = @"房产抵押";
@@ -394,7 +388,7 @@
             [cell.typeImageView setImage:[UIImage imageNamed:@"list_litigation"]];
             cell.pointView.label1.text = proModel.agencycommission;
             if ([proModel.agencycommissiontype isEqualToString:@"1"]) {
-                cell.pointView.label2.text = @"固定费用(万)";
+                cell.pointView.label2.text = @"固定费用(万元)";
             }else{
                 cell.pointView.label2.text = @"风险费率(%)";
             }
@@ -527,9 +521,6 @@
             
             self.widthConstraints.constant = kScreenWidth;
             
-//            [self.tableView11 removeFromSuperview];
-//            [self.tableView12 removeFromSuperview];
-//            [self.tableView13 removeFromSuperview];
             [self.backBlurView removeFromSuperview];
             
             [self.paramsDictionary setValue:@"0" forKey:@"province"];
@@ -585,9 +576,6 @@
         
     }else if (tableView == self.tableView13){//区
         
-//        [self.tableView11 removeFromSuperview];
-//        [self.tableView12 removeFromSuperview];
-//        [self.tableView13 removeFromSuperview];
         [self.backBlurView removeFromSuperview];
         
         UIButton *but1 = [self.view viewWithTag:202];
@@ -633,70 +621,6 @@
     [self.backBlurView removeFromSuperview];
 }
 
-/*
-- (void)selectedCellButtonWithRow:(NSInteger)indexRow withIdentifier:(NSString *)identifier withButton:(UIButton *)sender
-{
-    sender.selected = !sender.selected;
-    if ([identifier isEqualToString:@"11"]) {//省份
-        if (indexRow == 0) {
-            [self.chooseView.squrebutton setTitle:@"不限" forState:0];
-            
-            [self.tableView11 removeFromSuperview];
-            [self.tableView12 removeFromSuperview];
-            [self.tableView13 removeFromSuperview];
-            
-            [self.paramsDictionary setValue:@"0" forKey:@"province"];
-            [self.paramsDictionary setValue:@"0" forKey:@"city"];
-            [self.paramsDictionary setValue:@"0" forKey:@"area"];
-            
-            [self headerRefreshWithAllProducts];
-            
-        }else{
-            [self.view addSubview:self.tableView12];
-            self.widthConstraints.constant = kScreenWidth/2;
-            [self.tableView12 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.tableView11];
-            [self.tableView12 autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.tableView11];
-            [self.tableView12 autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.tableView11];
-            [self.tableView12 autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.tableView11];
-            
-            _proString = self.provinceDictionary.allKeys[indexRow-1];
-            
-            [self getCityListWithProvinceID:self.provinceDictionary.allKeys[indexRow-1]];
-        }
-    }else if ([identifier isEqualToString:@"12"]){
-        [self.view addSubview:self.tableView13];
-        self.widthConstraints.constant = kScreenWidth/3;
-        [self.tableView13 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.tableView12];
-        [self.tableView13 autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.tableView11];
-        [self.tableView13 autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.tableView11];
-        [self.tableView13 autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.tableView11];
-        
-        _cityString = self.cityDcitionary.allKeys[indexRow];
-        
-        [self getDistrictListWithCityID:self.cityDcitionary.allKeys[indexRow]];
-
-    }else{
-        [self.tableView11 removeFromSuperview];
-        [self.tableView12 removeFromSuperview];
-        [self.tableView13 removeFromSuperview];
-        
-        UIButton *but1 = [self.view viewWithTag:202];
-        UIButton *but2 = [self.view viewWithTag:203];
-        but1.userInteractionEnabled = YES;
-        but2.userInteractionEnabled = YES;
-        
-        [self.chooseView.squrebutton setTitle:self.districtDictionary.allValues[indexRow] forState:0];
-        self.widthConstraints.constant = kScreenWidth;
-        [self.paramsDictionary setValue:_proString forKey:@"province"];
-        [self.paramsDictionary setValue:_cityString forKey:@"city"];
-        [self.paramsDictionary setValue:self.districtDictionary.allKeys[indexRow] forKey:@"area"];
-        
-        [self headerRefreshWithAllProducts];
-
-    }
-}
-*/
- 
 #pragma mark - get province city and dictrict
 - (void)getProvinceList
 {

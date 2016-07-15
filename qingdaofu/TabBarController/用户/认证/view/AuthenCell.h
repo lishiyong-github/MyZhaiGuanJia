@@ -10,8 +10,6 @@
 
 @interface AuthenCell : UITableViewCell
 
-+(instancetype)cellWithTableView:(UITableView *)tableView;
-
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UIImageView *aImageView;
 @property (nonatomic,strong) UILabel *bLabel;

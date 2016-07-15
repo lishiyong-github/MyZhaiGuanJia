@@ -152,7 +152,7 @@
         _pointView.label1.text = @"5.0%";
         _pointView.label1.font = [UIFont systemFontOfSize:22];
         _pointView.label1.textColor = kBlackColor;
-        _pointView.label2.text = @"风险代理";
+        _pointView.label2.text = @"风险代理(%)";
     }
     return _pointView;
 }

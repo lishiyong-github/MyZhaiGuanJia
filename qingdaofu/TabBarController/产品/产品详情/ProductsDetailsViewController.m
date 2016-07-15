@@ -41,19 +41,15 @@
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:kNavColor,NSFontAttributeName:kNavFont}];
 
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:kNavColor1] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setShadowImage:[UIImage imageWithColor:kNavColor1]];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    //去掉导航栏的边界黑线
-//    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
-    
-//    [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc]init] forBarMetrics:UIBarMetricsDefault];
-//    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc]init]];
-    
-//    self.navigationController.navigationBar.translucent = NO;
+    self.navigationController.navigationBar.translucent = NO;
+//    [self.navigationController.navigationBar setShadowImage:[UIImage imageWithColor:kNavColor1]];
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.leftItemButton];
     
@@ -183,18 +179,18 @@
                 
                 //右边
                 if ([proModel.rate_cat integerValue] == 1) {
-                    cell.deTypeView.fLabel1.text = @"借款利率(天)";
+                    cell.deTypeView.fLabel1.text = @"借款利率(%/天)";
                 }else{
-                    cell.deTypeView.fLabel1.text = @"借款利率(月)";
+                    cell.deTypeView.fLabel1.text = @"借款利率(%/月)";
                 }
-                cell.deTypeView.fLabel2.text = [NSString stringWithFormat:@"%@%@",proModel.rate,@"%"];
+                cell.deTypeView.fLabel2.text = proModel.rate;
                 
             }else if ([proModel.category intValue] == 2){//清收
                 //上边
                 if ([proModel.agencycommissiontype isEqualToString:@"1"]) {
                     cell.deRateLabel.text = @"提成比例(%)";
                 }else{
-                    cell.deRateLabel.text = @"固定费用(万)";
+                    cell.deRateLabel.text = @"固定费用(万元)";
                 }
                 cell.deRateLabel1.text = proModel.agencycommission;
                 
@@ -213,7 +209,7 @@
             }else if ([proModel.category intValue] == 3){//诉讼
                 //上边
                 if ([proModel.agencycommissiontype isEqualToString:@"1"]) {
-                    cell.deRateLabel.text = @"固定费用(万)";
+                    cell.deRateLabel.text = @"固定费用(万元)";
                 }else{
                     cell.deRateLabel.text = @"风险费率(%)";
                 }
@@ -233,7 +229,7 @@
             }
             
             //左边－－－－通用
-            cell.deMoneyView.fLabel1.text = @"借款本金(万)";
+            cell.deMoneyView.fLabel1.text = @"借款本金(万元)";
             cell.deMoneyView.fLabel2.text = proModel.money;
             
             return cell;

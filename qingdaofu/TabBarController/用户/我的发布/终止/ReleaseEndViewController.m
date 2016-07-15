@@ -212,9 +212,9 @@
                 if ([endModel.category intValue] == 1) {//融资
                     string22 = @"融资";
                     if ([endModel.rate_cat intValue] == 1) {
-                        string3 = @"  借款利率(天)";
+                        string3 = @"  借款利率(%/天)";
                     }else if ([endModel.rate_cat intValue] == 2){
-                        string3 = @"  借款利率(月)";
+                        string3 = @"  借款利率(%/月)";
                     }
                     imageString3 = @"conserve_interest_icon";
                     string33 = endModel.rate;

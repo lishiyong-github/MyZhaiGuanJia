@@ -257,7 +257,7 @@
         if ([rowModel.agencycommissiontype isEqualToString:@"1"]) {
             cell.pointView.label2.text = @"提成比例(%)";
         }else{
-            cell.pointView.label2.text = @"固定费用(万)";
+            cell.pointView.label2.text = @"固定费用(万元)";
         }
 
         if ([rowModel.loan_type isEqualToString:@"1"]) {
@@ -282,7 +282,7 @@
         
         cell.pointView.label1.text = rowModel.agencycommission;
         if ([rowModel.agencycommissiontype isEqualToString:@"1"]) {
-            cell.pointView.label2.text = @"固定费用(万)";
+            cell.pointView.label2.text = @"固定费用(万元)";
         }else{
             cell.pointView.label2.text = @"风险费率(%)";
         }

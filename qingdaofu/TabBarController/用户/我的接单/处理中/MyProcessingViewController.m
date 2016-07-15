@@ -301,7 +301,7 @@
                 }
             }
             
-            NSArray *dataArray = @[@"|  基本信息",@"  产品类型",@"  借款本金(万)",string3,string4];
+            NSArray *dataArray = @[@"|  基本信息",@"  产品类型",@"  借款本金(万元)",string3,string4];
             NSArray *imageArray = @[@"",@"conserve_investment_icon",@"conserve_loan_icon",imageString3,imageString4];
             NSArray *detailArray = @[@"",string22,processModel.money,string33,string44];
             

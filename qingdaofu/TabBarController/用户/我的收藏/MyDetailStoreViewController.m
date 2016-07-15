@@ -134,9 +134,9 @@
             
             //右边
             if ([proModel.rate_cat integerValue] == 1) {
-                cell.deTypeView.fLabel1.text = @"借款利率(天)";
+                cell.deTypeView.fLabel1.text = @"借款利率(%/天)";
             }else{
-                cell.deTypeView.fLabel1.text = @"借款利率(月)";
+                cell.deTypeView.fLabel1.text = @"借款利率(%/月)";
             }
             cell.deTypeView.fLabel2.text = proModel.rate;
             
@@ -145,7 +145,7 @@
             if ([proModel.agencycommissiontype isEqualToString:@"1"]) {
                 cell.deRateLabel.text = @"提成比例(%)";
             }else{
-                cell.deRateLabel.text = @"固定费用(万)";
+                cell.deRateLabel.text = @"固定费用(万元)";
             }
             cell.deRateLabel1.text = proModel.agencycommission;
             

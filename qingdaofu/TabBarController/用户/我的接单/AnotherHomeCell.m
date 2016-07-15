@@ -173,7 +173,7 @@
         _pointView = [MoneyView newAutoLayoutView];
         _pointView.label1.text = @"5.0%";
         _pointView.label1.textColor = kBlackColor;
-        _pointView.label2.text = @"风险代理";
+        _pointView.label2.text = @"风险代理(%)";
     }
     return _pointView;
 }

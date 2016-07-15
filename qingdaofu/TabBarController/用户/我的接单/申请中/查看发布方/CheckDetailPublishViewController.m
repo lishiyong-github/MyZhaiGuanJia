@@ -23,8 +23,8 @@
 #import "EvaluateResponse.h"
 #import "EvaluateModel.h"
 
-
 #import "UIButton+WebCache.h"
+#import "UIImage+Color.h"
 @interface CheckDetailPublishViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
@@ -41,8 +41,18 @@
 
 @implementation CheckDetailPublishViewController
 
+- (void)viewDidDisappear:(BOOL)animated
+{
+    self.navigationController.navigationBar.translucent = NO;
+    [self.navigationController.navigationBar setShadowImage:[UIImage imageWithColor:kNavColor1]];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.navigationController.navigationBar.translucent = NO;
+    [self.navigationController.navigationBar setShadowImage:[UIImage imageWithColor:kSeparateColor]];
+    
     self.navigationItem.title = [NSString stringWithFormat:@"%@信息",self.typeString];
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
@@ -68,7 +78,16 @@
             [self.appAgreeButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
             [self.appAgreeButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.checkDetailTableView];
         }else{
-            [self.checkDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+            if ([self.typeDegreeString isEqualToString:@"处理中"]) {
+                
+                [self.checkDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
+                [self.checkDetailTableView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kTabBarHeight];
+                
+                [self.appAgreeButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+                [self.appAgreeButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.checkDetailTableView];
+            }else{
+                [self.checkDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+            }
         }
         
         self.didSetupConstraints = YES;
@@ -386,13 +405,12 @@
         [cell.evaProImageView1 setHidden:NO];
         [cell.evaProImageView2 setHidden:NO];
         
-        EvaluateResponse *evaResponse = self.allEvaResponse[0];
         evaModel = self.allEvaDataArray[indexPath.row-1];
         
         NSString *isHideStr = evaModel.isHide?@"匿名":evaModel.mobile;
         cell.evaNameLabel.text = isHideStr;
         cell.evaTimeLabel.text = [NSDate getYMDFormatterTime:evaModel.create_time];
-        cell.evaStarImage.currentIndex = [evaResponse.creditor integerValue];
+        cell.evaStarImage.currentIndex = [evaModel.creditor integerValue];
         cell.evaProImageView1.backgroundColor = kLightGrayColor;
         cell.evaProImageView2.backgroundColor = kLightGrayColor;
         cell.evaTextLabel.text = [NSString getValidStringFromString:evaModel.content toString:@"未填写评价内容"];

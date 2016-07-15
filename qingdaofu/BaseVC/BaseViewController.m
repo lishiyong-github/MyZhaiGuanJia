@@ -23,6 +23,17 @@
     [super viewDidLoad];
     
     self.view.backgroundColor = kBackColor;
+    
+    //修改导航栏的边界黑线
+//    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
+    
+//    [[UINavigationBar appearance] setShadowImage:[UIImage imageWithColor:[UIColor clearColor] size:CGSizeMake(320, 3)]];
+    
+//    self.navigationController.navigationBar.translucent = NO;
+//    [self.navigationController.navigationBar setShadowImage:[UIImage imageWithColor:kNavColor1]];
+
+
+    
 //    self.edgesForExtendedLayout = UIRectEdgeNone ;
 //    self.extendedLayoutIncludesOpaqueBars = NO ;
 //    self.automaticallyAdjustsScrollViewInsets = NO ;

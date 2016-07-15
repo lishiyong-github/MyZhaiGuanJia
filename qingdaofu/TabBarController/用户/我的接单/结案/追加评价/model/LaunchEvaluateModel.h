@@ -10,6 +10,7 @@
 
 @interface LaunchEvaluateModel : NSObject  //给出的评价
 
+@property (nonatomic,copy) NSString *creditor; //评分
 @property (nonatomic,copy) NSString *buid;  //
 @property (nonatomic,copy) NSString *category;  //产品类型
 @property (nonatomic,copy) NSString *code;  //产品编号
