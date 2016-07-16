@@ -31,10 +31,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    self.navigationController.navigationBar.translucent = NO;
-    [self.navigationController.navigationBar setShadowImage:[UIImage imageWithColor:kSeparateColor]];
-    
+        
     self.navigationItem.title = @"产品信息";
     self.navigationItem.leftBarButtonItem = self.leftItem;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"information_nav_remind"] style:UIBarButtonItemStylePlain target:self action:@selector(remindPublisher)];

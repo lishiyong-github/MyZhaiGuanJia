@@ -41,17 +41,8 @@
 
 @implementation CheckDetailPublishViewController
 
-- (void)viewDidDisappear:(BOOL)animated
-{
-    self.navigationController.navigationBar.translucent = NO;
-    [self.navigationController.navigationBar setShadowImage:[UIImage imageWithColor:kNavColor1]];
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    self.navigationController.navigationBar.translucent = NO;
-    [self.navigationController.navigationBar setShadowImage:[UIImage imageWithColor:kSeparateColor]];
     
     self.navigationItem.title = [NSString stringWithFormat:@"%@信息",self.typeString];
     self.navigationItem.leftBarButtonItem = self.leftItem;

@@ -87,7 +87,7 @@
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    NSArray *arr = @[@"手机号",@"验证码",@"输入新密码"];
+    NSArray *arr = @[@"手机号",@"验证码",@"设置新密码"];
     NSMutableAttributedString *attributeStr = [[NSMutableAttributedString alloc] initWithString:arr[indexPath.row]];
     [attributeStr addAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(0, attributeStr.length)];
     [cell.loginTextField setAttributedPlaceholder:attributeStr];

@@ -48,9 +48,9 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:kBlackColor,NSFontAttributeName:kNavFont}];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:kNavColor] forBarMetrics:UIBarMetricsDefault];
-    [self.navigationController.navigationBar setShadowImage:[UIImage imageWithColor:kSelectedColor]];
     
     [self getRecommendProductslist];
 }
@@ -111,6 +111,9 @@
         [_mainHeaderView addSubview:self.mainHeaderScrollView];
         [_mainHeaderView addSubview:self.pageControl];
         [self.mainHeaderScrollView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+        [self.pageControl autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:20];
+        [self.pageControl autoAlignAxisToSuperviewAxis:ALAxisVertical];
+        [self.pageControl autoSetDimensionsToSize:CGSizeMake(kScreenWidth, 10)];
     }
     return _mainHeaderView;
 }
@@ -151,7 +154,7 @@
 - (UIPageControl *)pageControl
 {
     if (!_pageControl) {
-        _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, 80, kScreenWidth, 10)];
+        _pageControl = [UIPageControl newAutoLayoutView];
         _pageControl.numberOfPages = self.propagandaDic.allKeys.count/2;
         _pageControl.currentPage = 0;
         _pageControl.pageIndicatorTintColor = UIColorFromRGB1(0xffffff, 0.5);
@@ -426,7 +429,9 @@
 #pragma mark - uiscrollViewdelegate and pageControlDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    self.pageControl.currentPage = scrollView.contentOffset.x/kScreenWidth;
+    if (_pageControl) {
+        self.pageControl.currentPage = scrollView.contentOffset.x/kScreenWidth;
+    }
 }
 
 - (void)pageTurn:(UIPageControl *)page

@@ -11,6 +11,7 @@
 
 @interface ReleaseResponse : BaseModel
 
+@property (nonatomic,strong) NSDictionary *delays;
 @property (nonatomic,strong) NSDictionary *creditor;
 @property (nonatomic,copy) NSString *page;
 @property (nonatomic,strong) NSMutableArray *rows;

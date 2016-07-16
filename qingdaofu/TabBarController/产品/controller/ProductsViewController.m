@@ -57,12 +57,12 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:kBlackColor,NSFontAttributeName:kNavFont}];
     
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:kNavColor] forBarMetrics:UIBarMetricsDefault];
     
     self.navigationController.navigationBar.translucent = NO;
-    [self.navigationController.navigationBar setShadowImage:[UIImage imageWithColor:kSelectedColor]];
     
     [self headerRefreshWithAllProducts];
 }

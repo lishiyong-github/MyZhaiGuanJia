@@ -52,17 +52,17 @@
     //右滑返回
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
 }
-//
-//- (void)viewDidAppear:(BOOL)animated
-//{
-//    [super viewDidAppear:animated];
-//    NSLog(@"=====%@===init==",NSStringFromClass([self class]));
-//}
-//
-//- (void)dealloc
-//{
-//    NSLog(@"=====%@===dealloc==",NSStringFromClass([self class]));
-//}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    NSLog(@"=====%@===init==",NSStringFromClass([self class]));
+}
+
+- (void)dealloc
+{
+    NSLog(@"=====%@===dealloc==",NSStringFromClass([self class]));
+}
 
 -(UIBarButtonItem *)leftItem
 {

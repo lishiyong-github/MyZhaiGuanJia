@@ -33,7 +33,8 @@
 
 //json解析
 @property (nonatomic,strong) NSMutableArray *myOrderDataList;
-@property (nonatomic,strong) NSMutableDictionary *myOrderResonseDic;
+@property (nonatomic,strong) NSMutableDictionary *myOrderResonseDic;  //评价
+@property (nonatomic,strong) NSMutableDictionary *myOrderDelaysDic;
 @property (nonatomic,assign) NSInteger pageOrder;//页数
 
 @end
@@ -180,6 +181,14 @@
         _myOrderResonseDic = [NSMutableDictionary dictionary];
     }
     return _myOrderResonseDic;
+}
+
+- (NSMutableDictionary *)myOrderDelaysDic
+{
+    if (!_myOrderDelaysDic) {
+        _myOrderDelaysDic = [NSMutableDictionary dictionary];
+    }
+    return _myOrderDelaysDic;
 }
 
 #pragma mark - tableView delegate and datasource
@@ -338,7 +347,11 @@
         [cell.firstButton setHidden:NO];
         [cell.secondButton setHidden:NO];
         [cell.thirdButton setHidden:NO];
-        NSString *deadString = [NSString stringWithFormat:@"截止日期：%@",[NSDate getYMDFormatterTime:rowModel.create_time]];
+        
+        
+        NSString *id_category = [NSString stringWithFormat:@"%@_%@",rowModel.idString,rowModel.category];
+        NSString *value11 = self.myOrderDelaysDic[id_category];
+        NSString *deadString = [NSString stringWithFormat:@"截止日期：%@",value11];
         [cell.firstButton setTitle:deadString forState:0];
         [cell.secondButton setTitle:@"申请延期" forState:0];
         [cell.thirdButton setTitle:@"填写进度" forState:0];
@@ -436,6 +449,8 @@
     QDFWeakSelf;
     [self requestDataPostWithString:myOrderString params:params successBlock:^(id responseObject) {
         
+        NSDictionary *qwwe = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
         if ([page intValue] == 1) {
             [weakself.myOrderDataList removeAllObjects];
             [weakself.myOrderResonseDic removeAllObjects];
@@ -449,6 +464,7 @@
         }
         
         [weakself.myOrderResonseDic setValuesForKeysWithDictionary:responceModel.creditor];
+        [weakself.myOrderDelaysDic setValuesForKeysWithDictionary:responceModel.delays];
         
         for (RowsModel *orderModel in responceModel.rows) {
             [weakself.myOrderDataList addObject:orderModel];

@@ -31,6 +31,7 @@
 
 @property (nonatomic,strong) NSMutableArray *recommendDataArray;
 @property (nonatomic,strong) NSString *typetString;
+@property (nonatomic,strong) UIImage *shadowImage;
 
 @end
 
@@ -38,11 +39,20 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:kNavColor,NSFontAttributeName:kNavFont}];
-
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:kNavColor1] forBarMetrics:UIBarMetricsDefault];
+    
+    self.shadowImage = self.navigationController.navigationBar.shadowImage;
     [self.navigationController.navigationBar setShadowImage:[UIImage imageWithColor:kNavColor1]];
 }
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self.navigationController.navigationBar setShadowImage:self.shadowImage];
+}
+
 
 - (void)viewDidLoad
 {
