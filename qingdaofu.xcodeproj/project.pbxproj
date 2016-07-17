@@ -11,7 +11,6 @@
 		9CEA216B1CE2140C002C5BA7 /* UIButton+Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CEA216A1CE2140C002C5BA7 /* UIButton+Addition.m */; };
 		9CEA216C1CE2140C002C5BA7 /* UIButton+Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CEA216A1CE2140C002C5BA7 /* UIButton+Addition.m */; };
 		9CF131751D1827FE00ADBA27 /* BrandsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF131741D1827FE00ADBA27 /* BrandsViewController.m */; };
-		9CF191401CEC445300CFEDA1 /* Reveal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CF1913F1CEC445300CFEDA1 /* Reveal.framework */; };
 		A1039F0C1C72C55400771747 /* RefreshViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1039F0B1C72C55400771747 /* RefreshViewController.m */; };
 		A10D7B751CEAF5EA00422D7D /* MyAgentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A10D7B741CEAF5EA00422D7D /* MyAgentViewController.m */; };
 		A10D7B781CEAF73C00422D7D /* MyAgentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A10D7B771CEAF73C00422D7D /* MyAgentCell.m */; };
@@ -538,7 +537,6 @@
 		9CEA216A1CE2140C002C5BA7 /* UIButton+Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+Addition.m"; sourceTree = "<group>"; };
 		9CF131731D1827FE00ADBA27 /* BrandsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrandsViewController.h; sourceTree = "<group>"; };
 		9CF131741D1827FE00ADBA27 /* BrandsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrandsViewController.m; sourceTree = "<group>"; };
-		9CF1913F1CEC445300CFEDA1 /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
 		A1039F0A1C72C55400771747 /* RefreshViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RefreshViewController.h; sourceTree = "<group>"; };
 		A1039F0B1C72C55400771747 /* RefreshViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RefreshViewController.m; sourceTree = "<group>"; };
 		A10D7B731CEAF5EA00422D7D /* MyAgentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAgentViewController.h; sourceTree = "<group>"; };
@@ -1305,7 +1303,6 @@
 				A16C1C361D23B2EF002CBCB0 /* AMapFoundationKit.framework in Frameworks */,
 				A1A017131C5B3BBE00027134 /* SystemConfiguration.framework in Frameworks */,
 				A1A017111C5B3BB300027134 /* CoreTelephony.framework in Frameworks */,
-				9CF191401CEC445300CFEDA1 /* Reveal.framework in Frameworks */,
 				A1A0170F1C5B3BAA00027134 /* CoreLocation.framework in Frameworks */,
 				A1A0170D1C5B3BA400027134 /* OpenGLES.framework in Frameworks */,
 				A1A0170B1C5B3B9B00027134 /* QuartzCore.framework in Frameworks */,
@@ -2732,7 +2729,6 @@
 				A16C1C381D23B2F8002CBCB0 /* MAMapKit.framework */,
 				A16C1C341D23B2EF002CBCB0 /* AMapFoundationKit.framework */,
 				A16C1C351D23B2EF002CBCB0 /* AMapSearchKit.framework */,
-				9CF1913F1CEC445300CFEDA1 /* Reveal.framework */,
 				A1A0171A1C5B3BFD00027134 /* Security.framework */,
 				A1A017181C5B3BF600027134 /* libc++.tbd */,
 				A1A017161C5B3BD600027134 /* libstdc++.6.0.9.tbd */,
@@ -3827,6 +3823,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = myLaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Xiguo Zheng (ZZYFN92NYR)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Xiguo Zheng (ZZYFN92NYR)";
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/qingdaofu/Framework",
@@ -3837,12 +3834,7 @@
 				INFOPLIST_FILE = qingdaofu/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-ObjC",
-					"-framework",
-					Reveal,
-				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.zhixiang.qingdaofu;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -3857,6 +3849,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = myLaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Direct Asset Management Co., Ltd. (Q7TBB3Z87T)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Direct Asset Management Co., Ltd. (Q7TBB3Z87T)";
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/qingdaofu/Framework",
@@ -3867,12 +3860,8 @@
 				INFOPLIST_FILE = qingdaofu/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-ObjC",
-					"-framework",
-					Reveal,
-				);
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.zhixiang.qingdaofu;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
