@@ -246,10 +246,12 @@
             cell.typeImageView.image = [UIImage imageNamed:@"list_financing_nor"];
         }
         
-        cell.addressLabel.text = [NSString stringWithFormat:@"%@%@",rowModel.seatmortgage,rowModel.mortorage_community];
-        cell.pointView.label1.text = rowModel.rebate;
+        NSString *seatmortgageS1 = [NSString getValidStringFromString:rowModel.seatmortgage];
+        NSString *mortorage_communityS1 = [NSString getValidStringFromString:rowModel.mortorage_community];
+        cell.addressLabel.text = [NSString stringWithFormat:@"%@%@",seatmortgageS1,mortorage_communityS1];
+        cell.pointView.label1.text = [NSString getValidStringFromString:rowModel.rebate toString:@"0"];
         cell.pointView.label2.text = @"返点(%)";
-        cell.rateView.label1.text = rowModel.rate;
+        cell.rateView.label1.text = [NSString getValidStringFromString:rowModel.rate toString:@"0"];
         if ([rowModel.rate_cat integerValue] == 1) {
             cell.rateView.label2.text = @"借款利率(%/天)";
         }else{
@@ -262,7 +264,7 @@
             cell.typeImageView.image = [UIImage imageNamed:@"list_collection_nor"];
         }
         
-        cell.pointView.label1.text = rowModel.agencycommission;
+        cell.pointView.label1.text = [NSString getValidStringFromString:rowModel.agencycommission toString:@"0"];
         if ([rowModel.agencycommissiontype isEqualToString:@"1"]) {
             cell.pointView.label2.text = @"提成比例(%)";
         }else{
@@ -271,14 +273,16 @@
 
         if ([rowModel.loan_type isEqualToString:@"1"]) {
             cell.rateView.label1.text = @"房产抵押";
-            cell.addressLabel.text = [NSString stringWithFormat:@"%@%@",rowModel.seatmortgage,rowModel.mortorage_community];
+            NSString *seatmortgageS2 = [NSString getValidStringFromString:rowModel.seatmortgage];
+            NSString *mortorage_communityS2 = [NSString getValidStringFromString:rowModel.mortorage_community];
+            cell.addressLabel.text = [NSString stringWithFormat:@"%@%@",seatmortgageS2,mortorage_communityS2];
         }else if ([rowModel.loan_type isEqualToString:@"2"]){
             cell.rateView.label1.text = @"应收账款";
             cell.addressLabel.text = @"无抵押物地址";
         }else if ([rowModel.loan_type isEqualToString:@"3"]){
             cell.rateView.label1.text = @"机动车抵押";
             cell.addressLabel.text = @"无抵押物地址";
-        }else if([rowModel.loan_type isEqualToString:@"4"]){
+        }else{
             cell.rateView.label1.text = @"无抵押";
             cell.addressLabel.text = @"无抵押物地址";
         }
@@ -289,7 +293,7 @@
             cell.typeImageView.image = [UIImage imageNamed:@"list_litigation_nor"];
         }
         
-        cell.pointView.label1.text = rowModel.agencycommission;
+        cell.pointView.label1.text = [NSString getValidStringFromString:rowModel.agencycommission toString:@"0"];
         if ([rowModel.agencycommissiontype isEqualToString:@"1"]) {
             cell.pointView.label2.text = @"固定费用(万元)";
         }else{
@@ -298,7 +302,9 @@
         
         if ([rowModel.loan_type isEqualToString:@"1"]) {
             cell.rateView.label1.text = @"房产抵押";
-            cell.addressLabel.text = [NSString stringWithFormat:@"%@%@",rowModel.seatmortgage,rowModel.mortorage_community];
+            NSString *seatmortgageS3 = [NSString getValidStringFromString:rowModel.seatmortgage];
+            NSString *mortorage_communityS3 = [NSString getValidStringFromString:rowModel.mortorage_community];
+            cell.addressLabel.text = [NSString stringWithFormat:@"%@%@",seatmortgageS3,mortorage_communityS3];
         }else if ([rowModel.loan_type isEqualToString:@"2"]){
             cell.rateView.label1.text = @"应收账款";
             cell.addressLabel.text = @"无抵押物地址";
@@ -336,7 +342,7 @@
         [cell.typeButton setImage:[UIImage imageNamed:@"list_chapter"] forState:0];
     }
 
-    cell.moneyView.label1.text = rowModel.money;
+    cell.moneyView.label1.text = [NSString getValidStringFromString:rowModel.money toString:@"0"];
     cell.moneyView.label2.text = @"借款本金(万元)";
     
     if (([rowModel.progress_status intValue] == 1) || ([rowModel.progress_status intValue] == 3)) {//申请中，终止

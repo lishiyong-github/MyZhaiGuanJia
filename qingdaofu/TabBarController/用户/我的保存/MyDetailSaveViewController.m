@@ -188,13 +188,13 @@
                 string3 = @"  借款利率(%/月)";
             }
             imageString3 = @"conserve_interest_icon";
-            string33 = saveModel.rate;
+            string33 = [NSString getValidStringFromString:saveModel.rate toString:@"0"];
             string4 = @"  返点(%)";
             imageString4 = @"conserve_rebate_icon";
-            string44 = saveModel.rebate;
+            string44 = [NSString getValidStringFromString:saveModel.rebate toString:@"0"];
             
             _loanTypeString1 = @"  抵押物地址";
-            _loanTypeString2 = [NSString stringWithFormat:@"%@",saveModel.seatmortgage];
+            _loanTypeString2 = [NSString getValidStringFromString:saveModel.seatmortgage toString:@"无抵押物地址"];
             _loanTypeImage = @"conserve_seat_icon";
         }else if ([saveModel.category intValue] == 2){//清收
             string22 = @"清收";
@@ -205,25 +205,27 @@
                 string3 = @"  固定费用(万元)";
                 imageString3 =  @"conserve_fixed_icons";
             }
-            string33 = saveModel.agencycommission;
+            string33 = [NSString getValidStringFromString:saveModel.agencycommission toString:@"0"];
             string4 = @"  债权类型";
             imageString4 = @"conserve_loantype_icon";
             if ([saveModel.loan_type intValue] == 1) {
                 string44 = @"房产抵押";
                 _loanTypeString1 = [NSString stringWithFormat:@"  %@",string44];
-                _loanTypeString2 = [NSString stringWithFormat:@"%@",saveModel.seatmortgage];
+                _loanTypeString2 = [NSString getValidStringFromString:saveModel.seatmortgage toString:@"无抵押物地址"];
                 _loanTypeImage = @"conserve_seat_icon";
             }else if ([saveModel.loan_type intValue] == 2){
                 string44 = @"应收账款";
                 _loanTypeString1 = [NSString stringWithFormat:@"  %@(万元)",string44];
-                _loanTypeString2 = saveModel.accountr;
+                _loanTypeString2 = [NSString getValidStringFromString:saveModel.accountr toString:@"0"];
                 _loanTypeImage = @"conserve_account_icon";
             }else if ([saveModel.loan_type intValue] == 3){
                 string44 = @"机动车抵押";
                 _loanTypeString1 = [NSString stringWithFormat:@"  %@",string44];
-                _loanTypeString2 = [NSString stringWithFormat:@"%@/%@",response.car,response.license];
+                NSString *carSt2 = [NSString getValidStringFromString:response.car];
+                NSString *licenseSt2 = [NSString getValidStringFromString:response.license];
+                _loanTypeString2 = [NSString stringWithFormat:@"%@/%@",carSt2,licenseSt2];
                 _loanTypeImage = @"conserve_car_icon";
-            }else if ([saveModel.loan_type intValue] == 4){
+            }else{
                 string44 = @"  无抵押";
             }
             
@@ -236,32 +238,35 @@
                 string3 = @"  风险费率(%)";
                 imageString3 =  @"conserve_fixed_icon";
             }
-            string33 = saveModel.agencycommission;
+            string33 = [NSString getValidStringFromString:saveModel.agencycommission toString:@"0"];
             string4 = @"  债权类型";
             imageString4 = @"conserve_loantype_icon";
             if ([saveModel.loan_type intValue] == 1) {
                 string44 = @"房产抵押";
                 _loanTypeString1 = [NSString stringWithFormat:@"  %@",string44];
-                _loanTypeString2 = [NSString stringWithFormat:@"%@",saveModel.seatmortgage];
+                _loanTypeString2 = [NSString getValidStringFromString:saveModel.seatmortgage toString:@"无抵押物地址"];
                 _loanTypeImage = @"conserve_seat_icon";
             }else if ([saveModel.loan_type intValue] == 2){
                 string44 = @"应收账款";
                 _loanTypeString1 = [NSString stringWithFormat:@"  %@(万元)",string44];
-                _loanTypeString2 = saveModel.accountr;
+                _loanTypeString2 = [NSString getValidStringFromString:saveModel.accountr toString:@"0"];
                 _loanTypeImage = @"conserve_account_icon";
             }else if ([saveModel.loan_type intValue] == 3){
                 string44 = @"机动车抵押";
                 _loanTypeString1 = [NSString stringWithFormat:@"  %@",string44];
-                _loanTypeString2 = [NSString stringWithFormat:@"%@/%@",response.car,response.license];
+                NSString *carSr3 = [NSString getValidStringFromString:response.car];
+                NSString *licenseSr3 = [NSString getValidStringFromString:response.license];
+                _loanTypeString2 = [NSString stringWithFormat:@"%@/%@",carSr3,licenseSr3];
                 _loanTypeImage = @"conserve_car_icon";
-            }else if ([saveModel.loan_type intValue] == 4){
+            }else{
                 string44 = @"无抵押";
             }
         }
         
+        NSString *moneySt1 = [NSString getValidStringFromString:saveModel.money toString:@"0"];
         NSArray *dataArray = @[@"|  基本信息",@"  产品类型",@"  借款本金(万元)",string3,string4];
         NSArray *imageArray = @[@"",@"conserve_investment_icon",@"conserve_loan_icon",imageString3,imageString4];
-        NSArray *detailArray = @[@"",string22,saveModel.money,string33,string44];
+        NSArray *detailArray = @[@"",string22,moneySt1,string33,string44];
         
         [cell.userNameButton setTitle:dataArray[indexPath.row] forState:0];
         [cell.userNameButton setImage:[UIImage imageNamed:imageArray[indexPath.row]] forState:0];

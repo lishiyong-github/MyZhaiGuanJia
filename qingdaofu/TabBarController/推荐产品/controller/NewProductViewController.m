@@ -313,15 +313,15 @@
     
     NewProductListModel *newModel = self.productsDataListArray[indexPath.section-2];
     
-    cell.moneyView.label1.text = newModel.money;
+    cell.moneyView.label1.text = [NSString getValidStringFromString:newModel.money toString:@"0"];
     cell.moneyView.label2.text = @"借款本金(万元)";
     
     if ([newModel.category isEqualToString:@"1"]) {//融资
         [cell.typeImageView setImage:[UIImage imageNamed:@"list_financing"]];
-        cell.addressLabel.text = newModel.location;
-        cell.pointView.label1.text = newModel.rebate;
+        cell.addressLabel.text = [NSString getValidStringFromString:newModel.location toString:@"无抵押物地址"];
+        cell.pointView.label1.text = [NSString getValidStringFromString:newModel.rebate toString:@"0"];
         cell.pointView.label2.text = @"返点(%)";
-        cell.rateView.label1.text = newModel.rate;
+        cell.rateView.label1.text = [NSString getValidStringFromString:newModel.rate toString:@"0"];
         if ([newModel.rate_cat isEqualToString:@"1"]) {
             cell.rateView.label2.text = @"借款利率(%/天)";
         }else{
@@ -330,7 +330,7 @@
     }else if ([newModel.category isEqualToString:@"2"]){//清收
         [cell.typeImageView setImage:[UIImage imageNamed:@"list_collection"]];
         
-        cell.pointView.label1.text = newModel.agencycommission;
+        cell.pointView.label1.text = [NSString getValidStringFromString:newModel.agencycommission toString:@"0"];
         if ([newModel.agencycommissiontype isEqualToString:@"1"]) {
             cell.pointView.label2.text = @"提成比例(%)";
         }else{
@@ -338,7 +338,7 @@
         }
         if ([newModel.loan_type isEqualToString:@"1"]) {
             cell.rateView.label1.text = @"房产抵押";
-            cell.addressLabel.text = newModel.location;
+            cell.addressLabel.text = [NSString getValidStringFromString:newModel.location toString:@"无抵押物地址"];
         }else if ([newModel.loan_type isEqualToString:@"2"]){
             cell.rateView.label1.text = @"应收账款";
             cell.addressLabel.text = @"无抵押物地址";
@@ -352,7 +352,7 @@
         cell.rateView.label2.text = @"债权类型";
     }else{//诉讼
         [cell.typeImageView setImage:[UIImage imageNamed:@"list_litigation"]];
-        cell.pointView.label1.text = newModel.agencycommission;
+        cell.pointView.label1.text = [NSString getValidStringFromString:newModel.agencycommission toString:@"0"];
         if ([newModel.agencycommissiontype isEqualToString:@"1"]) {
             cell.pointView.label2.text = @"固定费用(万元)";
         }else{
@@ -360,7 +360,7 @@
         }
         if ([newModel.loan_type isEqualToString:@"1"]) {
             cell.rateView.label1.text = @"房产抵押";
-            cell.addressLabel.text = newModel.location;
+            cell.addressLabel.text = [NSString getValidStringFromString:newModel.location toString:@"无抵押物地址"];
         }else if ([newModel.loan_type isEqualToString:@"2"]){
             cell.rateView.label1.text = @"应收账款";
             cell.addressLabel.text = @"无抵押物地址";
@@ -401,7 +401,7 @@
             if ([model.code isEqualToString:@"0000"]) {//正常
                 ProductsDetailsViewController *productsDetailVC = [[ProductsDetailsViewController alloc] init];
                 productsDetailVC.hidesBottomBarWhenPushed = YES;
-                NewProductListModel *sModel = weakself.productsDataListArray[indexPath.section - 1];
+                NewProductListModel *sModel = weakself.productsDataListArray[indexPath.section - 2];
                 productsDetailVC.idString = sModel.idString;
                 productsDetailVC.categoryString = sModel.category;
                 [weakself.navigationController pushViewController:productsDetailVC animated:YES];

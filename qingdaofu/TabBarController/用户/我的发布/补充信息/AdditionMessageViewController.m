@@ -103,7 +103,7 @@
     PublishingModel *messageModel = messageResonse.product;
     
     if ([messageModel.category intValue] == 1) {//融资
-        NSString *rateCatStr; //借款期限类型
+        NSString *rateCatStr = @"暂无"; //借款期限类型
         NSString *term = [NSString getValidStringFromString:messageModel.term];   //借款期限
         NSString *mortgagecategory = @"暂无";//抵押物类型
         NSString *status = @"暂无";  //抵押物状态
@@ -114,7 +114,7 @@
         
         if ([messageModel.rate_cat intValue] == 1) {
             rateCatStr = @"天";
-        }else if ([messageModel.rate_cat intValue] == 2){
+        }else{
             rateCatStr = @"月";
         }
         
@@ -136,9 +136,9 @@
         }
         if (messageModel.obligeeyear) {
             if ([messageModel.obligeeyear intValue] == 1) {
-                obligeeyear = @"65岁以上";
-            }else{
                 obligeeyear = @"65岁以下";
+            }else{
+                obligeeyear = @"65岁以上";
             }
         }
         

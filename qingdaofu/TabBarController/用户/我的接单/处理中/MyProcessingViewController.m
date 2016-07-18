@@ -224,17 +224,18 @@
                 string22 = @"融资";
                 if ([processModel.rate_cat intValue] == 1) {
                     string3 = @"  借款利率(%/天)";
-                }else if ([processModel.rate_cat intValue] == 2){
+                }else{
                     string3 = @"  借款利率(%/月)";
                 }
                 imageString3 = @"conserve_interest_icon";
-                string33 = processModel.rate;
+                string33 = [NSString getValidStringFromString:processModel.rate toString:@"0"];
                 string4 = @"  返点(%)";
                 imageString4 = @"conserve_rebate_icon";
-                string44 = processModel.rebate;
+                string44 = [NSString getValidStringFromString:processModel.rebate toString:@"0"];
                 
                 _loanTypeString1 = @"  抵押物地址";
-                _loanTypeString2 = [NSString stringWithFormat:@"%@",processModel.seatmortgage];
+                NSString *seatmortgageS1 = [NSString getValidStringFromString:processModel.seatmortgage toString:@"无抵押物地址"];
+                _loanTypeString2 = [NSString stringWithFormat:@"%@",seatmortgageS1];
                 _loanTypeImage = @"conserve_seat_icon";
                 
             }else if ([processModel.category intValue] == 2){//清收
@@ -242,30 +243,33 @@
                 if ([processModel.agencycommissiontype intValue] == 1) {
                     string3 = @"  提成比例(%)";
                     imageString3 =  @"conserve_rights_icon";
-                }else if ([processModel.agencycommissiontype intValue] == 2){
+                }else{
                     string3 = @"  固定费用(万元)";
                     imageString3 =  @"conserve_fixed_icons";
                 }
-                string33 = processModel.agencycommission;
+                string33 = [NSString getValidStringFromString:processModel.agencycommission toString:@"0"];
                 string4 = @"  债权类型";
                 imageString4 = @"conserve_loantype_icon";
                 if ([processModel.loan_type intValue] == 1) {
                     string44 = @"房产抵押";
                     _loanTypeString1 = [NSString stringWithFormat:@"  %@",string44];
-                    _loanTypeString2 = [NSString stringWithFormat:@"%@",processModel.seatmortgage];
+                    NSString *seatmortgageS2 = [NSString getValidStringFromString:processModel.seatmortgage toString:@"无抵押物地址"];
+                    _loanTypeString2 = [NSString stringWithFormat:@"%@",seatmortgageS2];
                     _loanTypeImage = @"conserve_seat_icon";
                     
                 }else if ([processModel.loan_type intValue] == 2){
                     string44 = @"应收账款";
                     _loanTypeString1 = [NSString stringWithFormat:@"  %@(万元)",string44];
-                    _loanTypeString2 = processModel.accountr;
+                    _loanTypeString2 = [NSString getValidStringFromString:processModel.accountr toString:@"0"];
                     _loanTypeImage = @"conserve_account_icon";
                 }else if ([processModel.loan_type intValue] == 3){
                     string44 = @"机动车抵押";
                     _loanTypeString1 = [NSString stringWithFormat:@"  %@",string44];
-                    _loanTypeString2 = [NSString stringWithFormat:@"%@/%@",response.car,response.license];
+                    NSString *carS2 = [NSString getValidStringFromString:response.car];
+                    NSString *licenseS2 = [NSString getValidStringFromString:response.license];
+                    _loanTypeString2 = [NSString stringWithFormat:@"%@/%@",carS2,licenseS2];
                     _loanTypeImage = @"conserve_car_icon";
-                }else if ([processModel.loan_type intValue] == 4){
+                }else{
                     string44 = @"无抵押";
                 }
             }else if ([processModel.category intValue] == 3){//诉讼
@@ -278,32 +282,36 @@
                     imageString3 =  @"conserve_fixed_icon";
                 }
                 imageString3 = @"conserve_fixed_icon";
-                string33 = processModel.agencycommission;
+                string33 = [NSString getValidStringFromString:processModel.agencycommission toString:@"0"];
                 string4 = @"  债权类型";
                 imageString4 = @"conserve_loantype_icon";
                 if ([processModel.loan_type intValue] == 1) {
                     string44 = @"房产抵押";
                     _loanTypeString1 = [NSString stringWithFormat:@"  %@",string44];
-                    _loanTypeString2 = [NSString stringWithFormat:@"%@",processModel.seatmortgage];
+                    NSString *seatmortgageS3 = [NSString getValidStringFromString:processModel.seatmortgage toString:@"无抵押物地址"];
+                    _loanTypeString2 = [NSString stringWithFormat:@"%@",seatmortgageS3];
                     _loanTypeImage = @"conserve_seat_icon";
                 }else if ([processModel.loan_type intValue] == 2){
                     string44 = @"应收账款";
                     _loanTypeString1 = [NSString stringWithFormat:@"  %@(万元)",string44];
-                    _loanTypeString2 = processModel.accountr;
+                    _loanTypeString2 = [NSString getValidStringFromString:processModel.accountr toString:@"0"];
                     _loanTypeImage = @"conserve_account_icon";
                 }else if ([processModel.loan_type intValue] == 3){
                     string44 = @"机动车抵押";
                     _loanTypeString1 = [NSString stringWithFormat:@"  %@",string44];
-                    _loanTypeString2 = [NSString stringWithFormat:@"%@/%@",response.car,response.license];
+                    NSString *carS3 = [NSString getValidStringFromString:response.car];
+                    NSString *licenseS3 = [NSString getValidStringFromString:response.license];
+                    _loanTypeString2 = [NSString stringWithFormat:@"%@/%@",carS3,licenseS3];
                     _loanTypeImage = @"conserve_car_icon";
-                }else if ([processModel.loan_type intValue] == 4){
+                }else{
                     string44 = @"无抵押";
                 }
             }
             
+            NSString *moneyS1 = [NSString getValidStringFromString:processModel.money toString:@"0"];
             NSArray *dataArray = @[@"|  基本信息",@"  产品类型",@"  借款本金(万元)",string3,string4];
             NSArray *imageArray = @[@"",@"conserve_investment_icon",@"conserve_loan_icon",imageString3,imageString4];
-            NSArray *detailArray = @[@"",string22,processModel.money,string33,string44];
+            NSArray *detailArray = @[@"",string22,moneyS1,string33,string44];
             
             [cell.userNameButton setTitle:dataArray[indexPath.row] forState:0];
             [cell.userNameButton setImage:[UIImage imageNamed:imageArray[indexPath.row]] forState:0];

@@ -320,7 +320,7 @@
                     _loanTypeString2 = [NSString stringWithFormat:@"%@/%@",responde.car,responde.license];
                     _loanTypeImage = @"conserve_car_icon";
                     
-                }else if ([closeModel.loan_type intValue] == 4){
+                }else{
                     string44 = @"无抵押";
                 }
             }else if ([closeModel.category intValue] == 3){//诉讼
@@ -352,7 +352,7 @@
                     _loanTypeString2 = [NSString stringWithFormat:@"%@/%@",responde.car,responde.license];
                     _loanTypeImage = @"conserve_car_icon";
 
-                }else if ([closeModel.loan_type intValue] == 4){
+                }else{
                     string44 = @"无抵押";
                 }
             }

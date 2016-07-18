@@ -185,7 +185,7 @@
             if ([proModel.category intValue] == 1) {//融资
                 //上边
                 cell.deRateLabel.text = @"返点(%)";
-                cell.deRateLabel1.text = proModel.rebate;
+                cell.deRateLabel1.text = [NSString getValidStringFromString:proModel.rebate toString:@"0"];
                 
                 //右边
                 if ([proModel.rate_cat integerValue] == 1) {
@@ -193,7 +193,7 @@
                 }else{
                     cell.deTypeView.fLabel1.text = @"借款利率(%/月)";
                 }
-                cell.deTypeView.fLabel2.text = proModel.rate;
+                cell.deTypeView.fLabel2.text = [NSString getValidStringFromString:proModel.rate toString:@"0"];
                 
             }else if ([proModel.category intValue] == 2){//清收
                 //上边
@@ -202,7 +202,7 @@
                 }else{
                     cell.deRateLabel.text = @"固定费用(万元)";
                 }
-                cell.deRateLabel1.text = proModel.agencycommission;
+                cell.deRateLabel1.text = [NSString getValidStringFromString:proModel.agencycommission toString:@"0"];
                 
                 //右边
                 cell.deTypeView.fLabel1.text = @"债权类型";
@@ -212,7 +212,7 @@
                     cell.deTypeView.fLabel2.text = @"应收账款";
                 }else if ([proModel.loan_type isEqualToString:@"3"]){
                     cell.deTypeView.fLabel2.text = @"机动车抵押";
-                }else if([proModel.loan_type isEqualToString:@"4"]){
+                }else{
                     cell.deTypeView.fLabel2.text = @"无抵押";
                 }
                 
@@ -223,7 +223,7 @@
                 }else{
                     cell.deRateLabel.text = @"风险费率(%)";
                 }
-                cell.deRateLabel1.text = proModel.agencycommission;
+                cell.deRateLabel1.text = [NSString getValidStringFromString:proModel.agencycommission toString:@"0"];
                 
                 //右边
                 cell.deTypeView.fLabel1.text = @"债权类型";
@@ -233,14 +233,14 @@
                     cell.deTypeView.fLabel2.text = @"应收账款";
                 }else if ([proModel.loan_type isEqualToString:@"3"]){
                     cell.deTypeView.fLabel2.text = @"机动车抵押";
-                }else if([proModel.loan_type isEqualToString:@"4"]){
+                }else{
                     cell.deTypeView.fLabel2.text = @"无抵押";
                 }
             }
             
             //左边－－－－通用
             cell.deMoneyView.fLabel1.text = @"借款本金(万元)";
-            cell.deMoneyView.fLabel2.text = proModel.money;
+            cell.deMoneyView.fLabel2.text = [NSString getValidStringFromString:proModel.money toString:@"0"];
             
             return cell;
         }
@@ -299,7 +299,6 @@
             productsDetailsProVC.yyModel = qModel;
             [self.navigationController pushViewController:productsDetailsProVC animated:YES];
         }else{
-            
             if ([qModel.state isEqualToString:@"1"]) {
                 CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
                 checkDetailPublishVC.idString = self.idString;

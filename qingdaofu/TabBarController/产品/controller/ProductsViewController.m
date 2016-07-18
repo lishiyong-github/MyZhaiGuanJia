@@ -343,19 +343,19 @@
             cell = [[HomeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         
-        NewProductListModel *proModel = self.allDataList[indexPath.section];
-
         [cell.recommendimageView setHidden:YES];
         
-        cell.moneyView.label1.text = proModel.money;
+        NewProductListModel *proModel = self.allDataList[indexPath.section];
+        
+        cell.moneyView.label1.text = [NSString getValidStringFromString:proModel.money toString:@"0"];
         cell.moneyView.label2.text = @"借款本金(万元)";
         
         if ([proModel.category isEqualToString:@"1"]) {//融资
             [cell.typeImageView setImage:[UIImage imageNamed:@"list_financing"]];
-            cell.addressLabel.text = proModel.location;
-            cell.pointView.label1.text = proModel.rebate;
+            cell.addressLabel.text = [NSString getValidStringFromString:proModel.location toString:@"无抵押物地址"];
+            cell.pointView.label1.text = [NSString getValidStringFromString:proModel.rebate toString:@"0"];
             cell.pointView.label2.text = @"返点(%)";
-            cell.rateView.label1.text = proModel.rate;
+            cell.rateView.label1.text = [NSString getValidStringFromString:proModel.rate toString:@"0"];
             if ([proModel.rate_cat isEqualToString:@"1"]) {
                 cell.rateView.label2.text = @"借款利率(%/天)";
             }else{
@@ -364,7 +364,7 @@
         }else if ([proModel.category isEqualToString:@"2"]){//清收
             [cell.typeImageView setImage:[UIImage imageNamed:@"list_collection"]];
             
-            cell.pointView.label1.text = proModel.agencycommission;
+            cell.pointView.label1.text = [NSString getValidStringFromString:proModel.agencycommission toString:@"0"];
             if ([proModel.agencycommissiontype isEqualToString:@"1"]) {
                 cell.pointView.label2.text = @"提成比例(%)";
             }else{
@@ -372,7 +372,7 @@
             }
             if ([proModel.loan_type isEqualToString:@"1"]) {
                 cell.rateView.label1.text = @"房产抵押";
-                cell.addressLabel.text = proModel.location;
+                cell.addressLabel.text = [NSString getValidStringFromString:proModel.location toString:@"无抵押物地址"];
             }else if ([proModel.loan_type isEqualToString:@"2"]){
                 cell.rateView.label1.text = @"应收账款";
                 cell.addressLabel.text = @"无抵押物地址";
@@ -386,7 +386,7 @@
             cell.rateView.label2.text = @"债权类型";
         }else{//诉讼
             [cell.typeImageView setImage:[UIImage imageNamed:@"list_litigation"]];
-            cell.pointView.label1.text = proModel.agencycommission;
+            cell.pointView.label1.text = [NSString getValidStringFromString:proModel.agencycommission toString:@"0"];
             if ([proModel.agencycommissiontype isEqualToString:@"1"]) {
                 cell.pointView.label2.text = @"固定费用(万元)";
             }else{
@@ -394,7 +394,7 @@
             }
             if ([proModel.loan_type isEqualToString:@"1"]) {
                 cell.rateView.label1.text = @"房产抵押";
-                cell.addressLabel.text = proModel.location;
+                cell.addressLabel.text = [NSString getValidStringFromString:proModel.location toString:@"无抵押物地址"];
             }else if ([proModel.loan_type isEqualToString:@"2"]){
                 cell.rateView.label1.text = @"应收账款";
                 cell.addressLabel.text = @"无抵押物地址";
@@ -430,17 +430,6 @@
         
         cell.selectedBackgroundView = [[UIView alloc] init];
         cell.selectedBackgroundView.backgroundColor = kCellSelectedColor;
-//
-//        if (indexPath.row == 0) {
-//            [cell.upButton setTitle:@"不限" forState:0];
-//        }else{
-//            [cell.upButton setTitle:self.provinceDictionary.allValues[indexPath.row-1] forState:0];
-//        }
-//        
-//        QDFWeakSelf;
-//        [cell.upButton addAction:^(UIButton *btn) {
-//            [weakself selectedCellButtonWithRow:indexPath.row withIdentifier:@"11" withButton:btn];
-//        }];
         
         cell.oneButton.userInteractionEnabled = NO;
         [cell.oneButton setTitleColor:kLightGrayColor forState:0];

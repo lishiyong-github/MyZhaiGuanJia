@@ -111,12 +111,12 @@
         PublishingModel *leftModel = self.yyModel.product;
         if ([leftModel.category intValue] == 1) {//融资
             
-            NSString *moneyStr = [NSString stringWithFormat:@"%@万元",leftModel.money];
+            NSString *moneyStr = [NSString stringWithFormat:@"%@",leftModel.money];
             NSString *rebateStr = [NSString stringWithFormat:@"%@%@",leftModel.rebate,@"%"];
             NSString *rateStr = [NSString stringWithFormat:@"%@%@",leftModel.rate,@"%"];
             
             //利率类型
-            NSString *rateCatStr;
+            NSString *rateCatStr = @"暂无";
             if ([leftModel.rate_cat intValue] == 1) {
                 rateCatStr = @"天(%)";
             }else if ([leftModel.rate_cat intValue] == 2){
@@ -124,22 +124,30 @@
             }
             
             //抵押物地址
-            [_leftTableView.leftDataArray1 addObjectsFromArray:@[@"借款金额",@"返点",@"借款利率",@"借款利率类型",@"抵押物地址",@"详细地址"]];
-            [_leftTableView.leftDataArray2 addObjectsFromArray:@[moneyStr,rebateStr,rateStr,rateCatStr,leftModel.mortorage_community,leftModel.seatmortgage]];
+            NSString *mortorage_communiStr = [NSString getValidStringFromString:leftModel.mortorage_community];
+            NSString *seatmortgageStr = [NSString getValidStringFromString:leftModel.seatmortgage];
+            
+            [_leftTableView.leftDataArray1 addObjectsFromArray:@[@"借款金额(万元)",@"返点",@"借款利率",@"借款利率类型",@"抵押物地址",@"详细地址"]];
+            [_leftTableView.leftDataArray2 addObjectsFromArray:@[moneyStr,rebateStr,rateStr,rateCatStr,mortorage_communiStr,seatmortgageStr]];
         }else{//清收,诉讼
             
-            NSString *loan_typeStr;//债权类型
+            //金额
+            NSString *moneyStr1 = [NSString getValidStringFromString:leftModel.money toString:@"0"];
+            //代理费用
+            NSString *agencycommissionStr1 = [NSString getValidStringFromString:leftModel.agencycommission toString:@"0"];
+            
+            NSString *loan_typeStr = @"暂无";//债权类型
             if ([leftModel.loan_type intValue] == 1) {
                 loan_typeStr = @"房产抵押";
             }else if ([leftModel.loan_type intValue] == 2){
                 loan_typeStr = @"应收账款";
             }else if ([leftModel.loan_type intValue] == 3){
                 loan_typeStr = @"机动车抵押";
-            }else if ([leftModel.loan_type intValue] == 4){
+            }else{
                 loan_typeStr = @"无抵押";
             }
             
-            NSString *agencycommissiontypeStr;  //代理费用类型
+            NSString *agencycommissiontypeStr = @"暂无";  //代理费用类型
             if ([leftModel.agencycommissiontype intValue] == 1) {
                 if ([leftModel.category integerValue] == 2) {
                     agencycommissiontypeStr = @"提成比例(%)";
@@ -155,17 +163,25 @@
             }
             
             if ([leftModel.loan_type intValue] == 1) {//房产抵押
+                NSString *mortorage_communityStr1 = [NSString getValidStringFromString:leftModel.mortorage_community];
+                NSString *seatmortgageStr1 = [NSString getValidStringFromString:leftModel.seatmortgage];
+                
                 [_leftTableView.leftDataArray1 addObjectsFromArray:@[@"借款本金(万元)",@"代理费用类型",@"代理费用",@"债权类型",@"抵押物地址",@"详细地址"]];
-                [_leftTableView.leftDataArray2 addObjectsFromArray:@[leftModel.money,agencycommissiontypeStr,leftModel.agencycommission,loan_typeStr,leftModel.mortorage_community,leftModel.seatmortgage]];
+                [_leftTableView.leftDataArray2 addObjectsFromArray:@[moneyStr1,agencycommissiontypeStr,agencycommissionStr1,loan_typeStr,mortorage_communityStr1,seatmortgageStr1]];
             }else if ([leftModel.loan_type intValue] == 3){//机动车抵押
+                NSString *carStr1 = [NSString getValidStringFromString:self.yyModel.car];
+                NSString *licenseStr1 = [NSString getValidStringFromString:self.yyModel.license];
+                
                 [_leftTableView.leftDataArray1 addObjectsFromArray:@[@"借款本金(万元)",@"代理费用类型",@"代理费用",@"债权类型",@"机动车抵押",@"车牌类型"]];
-                [_leftTableView.leftDataArray2 addObjectsFromArray:@[leftModel.money,agencycommissiontypeStr,leftModel.agencycommission,loan_typeStr,self.yyModel.car,self.yyModel.license]];
+                [_leftTableView.leftDataArray2 addObjectsFromArray:@[moneyStr1,agencycommissiontypeStr,agencycommissionStr1,loan_typeStr,carStr1,licenseStr1]];
             }else if ([leftModel.loan_type intValue] == 2){//应收帐款
+                NSString *accountrStr1 = [NSString getValidStringFromString:leftModel.accountr toString:@"0"];
+                
                 [_leftTableView.leftDataArray1 addObjectsFromArray:@[@"借款本金(万元)",@"代理费用类型",@"代理费用",@"债权类型",@"应收帐款(万元)"]];
-                [_leftTableView.leftDataArray2 addObjectsFromArray:@[leftModel.money,agencycommissiontypeStr,leftModel.agencycommission,loan_typeStr,leftModel.accountr]];
+                [_leftTableView.leftDataArray2 addObjectsFromArray:@[moneyStr1,agencycommissiontypeStr,agencycommissionStr1,loan_typeStr,accountrStr1]];
             }else{
                 [_leftTableView.leftDataArray1 addObjectsFromArray:@[@"借款本金(万元)",@"代理费用类型",@"代理费用",@"债权类型"]];
-                [_leftTableView.leftDataArray2 addObjectsFromArray:@[leftModel.money,agencycommissiontypeStr,leftModel.agencycommission,loan_typeStr]];
+                [_leftTableView.leftDataArray2 addObjectsFromArray:@[moneyStr1,agencycommissiontypeStr,agencycommissionStr1,loan_typeStr]];
             }
         }
         [_leftTableView reloadData];
