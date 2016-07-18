@@ -255,11 +255,11 @@
         if (self.suResponse.creditorfiles.imgpick) {
             [_creditorfiles setObject:self.suResponse.creditorfiles.imgpick forKey:@"imgpick"];
         }
-        if (self.suResponse.creditorfiles.imgbenjin) {
-            [_creditorfiles setObject:self.suResponse.creditorfiles.imgbenjin forKey:@"imgbenjin"];
-        }
         if (self.suResponse.creditorfiles.imgshouju) {
-            [_creditorfiles setObject:self.suResponse.creditorfiles.imgshouju forKey:@"imgshouju"];
+            [_creditorfiles setObject:self.suResponse.creditorfiles.imgbenjin forKey:@"imgshouju"];
+        }
+        if (self.suResponse.creditorfiles.imgbenjin) {
+            [_creditorfiles setObject:self.suResponse.creditorfiles.imgshouju forKey:@"imgbenjin"];
         }
     }
     return _creditorfiles;
@@ -515,7 +515,9 @@
                 if (self.suitDataDictionary[@"carbrandstr"]) {
                     carbr = [NSString stringWithFormat:@"%@%@%@",self.suitDataDictionary[@"carbrandstr"],self.suitDataDictionary[@"audistr"],self.suitDataDictionary[@"licenseplatestr"]];
                 }
-                cell.agentTextField.text = self.suResponse.car?self.suResponse.car:carbr;
+                
+                NSString *carLisenceStr = [NSString stringWithFormat:@"%@%@",self.suResponse.car,self.suResponse.license];
+                cell.agentTextField.text = carLisenceStr?carLisenceStr:carbr;
 
                 [cell.agentButton setHidden:NO];
                 [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
@@ -1176,6 +1178,8 @@
     self.suitDataDictionary[@"district_id"] = @"0";
     self.suitDataDictionary[@"carbrand"] = self.suitDataDictionary[@"carbrand"]?self.suitDataDictionary[@"carbrand"]:self.suResponse.product.carbrand;   //车品牌
     self.suitDataDictionary[@"audi"] = self.suitDataDictionary[@"audi"]?self.suitDataDictionary[@"audi"]:self.suResponse.product.audi;  //车系
+    self.suitDataDictionary[@"licenseplate"] = self.suitDataDictionary[@"licenseplate"]?self.suitDataDictionary[@"licenseplate"]:self.suResponse.product.licenseplate;  //车系
+    
     self.suitDataDictionary[@"accountr"] = self.suitDataDictionary[@"accountr"]?self.suitDataDictionary[@"accountr"]:self.suResponse.product.accountr; //应收帐款
     self.suitDataDictionary[@"rate"] = self.suitDataDictionary[@"rate"]?self.suitDataDictionary[@"rate"]:self.suResponse.product.rate;  //借款利率
     self.suitDataDictionary[@"rate_cat"] = self.suitDataDictionary[@"rate_cat"]?self.suitDataDictionary[@"rate_cat"]:self.suResponse.product.rate_cat;//借款利率单位

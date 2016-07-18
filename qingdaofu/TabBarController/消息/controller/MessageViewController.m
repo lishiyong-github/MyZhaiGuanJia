@@ -191,8 +191,8 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    [self showHint:@"您未收到消息提醒"];
-    /*
+//    [self showHint:@"您未收到消息提醒"];
+
     if (indexPath.section == 0) {
         switch (indexPath.row) {
             case 0:{//发布消息
@@ -223,7 +223,6 @@
                 break;
         }
     }
-     */
 }
 
 #pragma mark - method

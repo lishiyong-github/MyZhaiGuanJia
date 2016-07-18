@@ -191,7 +191,7 @@
 #pragma mark - tableView delelagte and datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1+self.productsDataListArray.count;
+    return 2+self.productsDataListArray.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -203,10 +203,9 @@
 {
     if (indexPath.section == 0) {
         return 110;
+    }else if (indexPath.section == 1){
+        return 160;
     }
-//    else if (indexPath.section == 1){
-//        return 160;
-//    }
     return 156;
 }
 
@@ -271,40 +270,39 @@
         }];
         
         return cell;
+    }else if (indexPath.section == 1){
+        identifier = @"main1";
+        FourCell *cell = [tableView dequeueReusableCellWithIdentifier: identifier];
+        if (!cell) {
+            cell = [[FourCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        [cell setDidClickButton:^(NSInteger tag) {
+            switch (tag) {
+                case 11:{//房产评估
+                    NSLog(@"房产评估");
+                }
+                    break;
+                case 22:{//房屋产调
+                    NSLog(@"房屋产调");
+                }
+                    break;
+                case 33:{//诉讼保全
+                    NSLog(@"诉讼保全");
+                }
+                    break;
+                case 44:{//申请保函
+                    NSLog(@"申请保函");
+                }
+                    break;
+                default:
+                    break;
+            }
+        }];
+        
+        return cell;
     }
-//    else if (indexPath.section == 1){
-//        identifier = @"main1";
-//        FourCell *cell = [tableView dequeueReusableCellWithIdentifier: identifier];
-//        if (!cell) {
-//            cell = [[FourCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-//        }
-//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//        
-//        [cell setDidClickButton:^(NSInteger tag) {
-//            switch (tag) {
-//                case 11:{//房产评估
-//                    NSLog(@"房产评估");
-//                }
-//                    break;
-//                case 22:{//房屋产调
-//                    NSLog(@"房屋产调");
-//                }
-//                    break;
-//                case 33:{//诉讼保全
-//                    NSLog(@"诉讼保全");
-//                }
-//                    break;
-//                case 44:{//申请保函
-//                    NSLog(@"申请保函");
-//                }
-//                    break;
-//                default:
-//                    break;
-//            }
-//        }];
-//        
-//        return cell;
-//    }
     
     identifier = @"main2";
     HomeCell *cell = [tableView dequeueReusableCellWithIdentifier: identifier];
@@ -313,7 +311,7 @@
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    NewProductListModel *newModel = self.productsDataListArray[indexPath.section-1];
+    NewProductListModel *newModel = self.productsDataListArray[indexPath.section-2];
     
     cell.moneyView.label1.text = newModel.money;
     cell.moneyView.label2.text = @"借款本金(万元)";

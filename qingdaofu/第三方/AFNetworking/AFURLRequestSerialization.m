@@ -879,7 +879,7 @@ NSTimeInterval const kAFUploadStream3GSuggestedDelay = 0.2;
 
 - (void)appendHTTPBodyPart:(AFHTTPBodyPart *)bodyPart {
     [self.HTTPBodyParts addObject:bodyPart];
-    NSLog(@"WWWWWWW  %@",self.HTTPBodyParts);
+//    NSLog(@"WWWWWWW  %@",self.HTTPBodyParts);
 }
 
 - (BOOL)isEmpty {

@@ -267,9 +267,6 @@
     QDFWeakSelf;
     [self requestDataPostWithString:messageString params:params successBlock:^(id responseObject){
         
-        NSDictionary *qfqfwy = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        
-        
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
         
         [weakself.addMessageDataArray addObject:response];

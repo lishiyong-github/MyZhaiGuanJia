@@ -358,11 +358,11 @@
         
         QDFWeakSelf;
         [cell.secondButton addAction:^(UIButton *btn) {
-            [weakself goToWriteScheduleOrEvaluate:@"申请延期" withRow:indexPath.row withString:@""];
+            [weakself goToWriteScheduleOrEvaluate:@"申请延期" withRow:indexPath.section withString:@""];
         }];
         
         [cell.thirdButton addAction:^(UIButton *btn) {
-            [weakself goToWriteScheduleOrEvaluate:@"填写进度" withRow:indexPath.row withString:@""];
+            [weakself goToWriteScheduleOrEvaluate:@"填写进度" withRow:indexPath.section withString:@""];
         }];
         
     }else {//结案
@@ -383,7 +383,7 @@
             }
             QDFWeakSelf;
             [cell.thirdButton addAction:^(UIButton *btn) {
-                [weakself goToWriteScheduleOrEvaluate:@"去评价" withRow:indexPath.row withString:value];
+                [weakself goToWriteScheduleOrEvaluate:@"去评价" withRow:indexPath.section withString:value];
             }];
         }
     }
@@ -448,8 +448,6 @@
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:myOrderString params:params successBlock:^(id responseObject) {
-        
-        NSDictionary *qwwe = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
         if ([page intValue] == 1) {
             [weakself.myOrderDataList removeAllObjects];
