@@ -28,10 +28,10 @@
 
 @implementation MessageViewController
 
-//- (void)viewWillAppear:(BOOL)animated
-//{
-//    [self getMessageTypeAndNumber];
-//}
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self getMessageTypeAndNumber];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -233,7 +233,6 @@
     QDFWeakSelf;
     [self requestDataPostWithString:messageTypeString params:params successBlock:^(id responseObject) {
         NSDictionary *opopo = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        
         weakself.resultDic = [NSMutableDictionary dictionaryWithDictionary:opopo[@"result"]];
         [weakself.messageTableView reloadData];
         

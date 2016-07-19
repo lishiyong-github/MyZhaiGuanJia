@@ -8,6 +8,9 @@
 
 #import "ReceiveMessagesViewController.h"
 #import "MyApplyingViewController.h"  //我的接单－申请中
+#import "MyProcessingViewController.h" //我的接单－处理中
+#import "MyClosingViewController.h" //我的接单－结案
+#import "PaceViewController.h"  //进度
 
 #import "NewsCell.h"
 
@@ -149,10 +152,10 @@
     if (self.messageReceiveArray.count > 0) {
         MessageModel *meModel = self.messageReceiveArray[indexPath.section];
         //接单的申请中---7接单申请中详情，89产品详情， 11(发布方结案) 12（接单方结案） 16
-        [self messageIsReadWithIdStr:meModel.idStr andTypeString:meModel.type andModel:meModel.category_id];
+//        [self messageIsReadWithIdStr:meModel.idStr andTypeString:meModel.type andContent:meModel.content andModel:meModel.category_id];
+        [self messageIsReadWithMessageModel:meModel];
     }
 }
-
 
 #pragma mark - method
 - (void)getOrderMessageListWithPage:(NSString *)page
@@ -210,7 +213,53 @@
     });
 }
 
-- (void)messageIsReadWithIdStr:(NSString *)idStr andTypeString:(NSString *)typeStr andModel:(CategoryModel *)categoryModel
+#pragma mark - method
+- (void)messageIsReadWithMessageModel:(MessageModel *)messageModel
+{
+    NSString *isReadString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMessageIsReadString];
+    NSDictionary *params = @{@"id" : messageModel.idStr,
+                             @"token" : [self getValidateToken]
+                             };
+    QDFWeakSelf;
+    [self requestDataPostWithString:isReadString params:params successBlock:^(id responseObject) {
+        BaseModel *aModel = [BaseModel objectWithKeyValues:responseObject];
+        if ([aModel.code isEqualToString:@"0000"]){
+            if ([messageModel.content isEqualToString:@"申请接单"]) {//申请接单
+                MyApplyingViewController *myApplyVC = [[MyApplyingViewController alloc] init];
+                myApplyVC.idString = messageModel.category_id.idString;
+                myApplyVC.categaryString = messageModel.category_id.category;
+                myApplyVC.pidString = messageModel.uidInner;
+                [weakself.navigationController pushViewController:myApplyVC animated:YES];
+            }else if([messageModel.content isEqualToString:@"有新进度"]){
+                
+                PaceViewController *paceVC = [[PaceViewController alloc] init];
+                paceVC.categoryString = messageModel.category_id.category;
+                paceVC.idString = messageModel.category_id.idString;
+                [weakself.navigationController pushViewController:paceVC animated:YES];
+            }else if ([messageModel.content isEqualToString:@"发布方已同意结案"]){
+                MyClosingViewController  *myClosingVC = [[MyClosingViewController alloc] init];
+                myClosingVC.idString = messageModel.category_id.idString;
+                myClosingVC.categaryString = messageModel.category_id.category;
+                myClosingVC.pidString = messageModel.uidInner;
+                myClosingVC.evaString = @"0";
+                [weakself.navigationController pushViewController:myClosingVC animated:YES];
+            }else{
+                MyProcessingViewController *myProcessingVC = [[MyProcessingViewController alloc] init];
+                myProcessingVC.idString = messageModel.category_id.idString;
+                myProcessingVC.categaryString = messageModel.category_id.category;
+                myProcessingVC.pidString = messageModel.uidInner;
+                [weakself.navigationController pushViewController:myProcessingVC animated:YES];
+            }
+        }
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+    
+}
+
+/*
+- (void)messageIsReadWithIdStr:(NSString *)idStr andTypeString:(NSString *)typeStr andContent:(NSString *)content andModel:(CategoryModel *)categoryModel
 {
     NSString *isReadString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMessageIsReadString];
     NSDictionary *params = @{@"id" : idStr,
@@ -221,16 +270,38 @@
     [self requestDataPostWithString:isReadString params:params successBlock:^(id responseObject) {
         BaseModel *aModel = [BaseModel objectWithKeyValues:responseObject];
         if ([aModel.code isEqualToString:@"0000"]) {
-            MyApplyingViewController *myApplyVC = [[MyApplyingViewController alloc] init];
-            myApplyVC.idString = categoryModel.idString;
-            myApplyVC.categaryString = categoryModel.category;
-            [weakself.navigationController pushViewController:myApplyVC animated:YES];
+            
+            if ([content isEqualToString:@"申请接单"]) {//申请接单
+                MyApplyingViewController *myApplyVC = [[MyApplyingViewController alloc] init];
+                myApplyVC.idString = categoryModel.idString;
+                myApplyVC.categaryString = categoryModel.category;
+                [weakself.navigationController pushViewController:myApplyVC animated:YES];
+            }else if([content isEqualToString:@"有新进度"]){
+                
+                PaceViewController *paceVC = [[PaceViewController alloc] init];
+                paceVC.categoryString = categoryModel.category;
+                paceVC.idString = categoryModel.idString;
+                paceVC.hidesBottomBarWhenPushed = YES;
+                [weakself.navigationController pushViewController:paceVC animated:YES];
+                
+//                MyProcessingViewController *myProcessingVC = [[MyProcessingViewController alloc] init];
+//                myProcessingVC.idString = categoryModel.idString;
+//                myProcessingVC.categaryString = categoryModel.category;
+//                [weakself.navigationController pushViewController:myProcessingVC animated:YES];
+            }else if([content isEqualToString:@"发布方已同意结案"]){
+                MyClosingViewController *myClosingVC = [[MyClosingViewController alloc] init];
+                myClosingVC.idString = .idString;
+                myClosingVC.categaryString = categoryModel.category;
+                [weakself.navigationController pushViewController:myClosingVC animated:YES];
+            }
+            
         }
         
     } andFailBlock:^(NSError *error) {
         
     }];
 }
+ */
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

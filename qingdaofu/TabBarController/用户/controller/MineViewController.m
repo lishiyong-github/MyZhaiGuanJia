@@ -179,10 +179,6 @@
                     loginVC.hidesBottomBarWhenPushed = YES;
                     [weakself.navigationController pushViewController:loginVC animated:YES];
                 }else if ([tModel.code isEqualToString:@"3006"]){//未认证
-//                    AuthentyViewController *authentyVC = [[AuthentyViewController alloc] init];
-//                    authentyVC.hidesBottomBarWhenPushed = YES;
-//                    authentyVC.typeAuthty = @"0";
-//                    [weakself.navigationController pushViewController:authentyVC animated:YES];
                     MyReleaseViewController *myReleaseVC = [[MyReleaseViewController alloc] init];
                     myReleaseVC.hidesBottomBarWhenPushed = YES;
                     

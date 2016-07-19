@@ -114,11 +114,11 @@
  Application Programming Interface（API）
  */
 
-#define kQDFTestUrlString @"http://www.zcb2016.com/wap/"
-#define kQDFTestImageString @"http://www.zcb2016.com"
+//#define kQDFTestUrlString @"http://www.zcb2016.com/wap/"
+//#define kQDFTestImageString @"http://www.zcb2016.com"
 
-//#define kQDFTestUrlString @"http://testq.zcb2016.com/wap/"
-//#define kQDFTestImageString @"http://testq.zcb2016.com"
+#define kQDFTestUrlString @"http://testq.zcb2016.com/wap/"
+#define kQDFTestImageString @"http://testq.zcb2016.com"
 
 //post
 /*
@@ -171,6 +171,8 @@
 #define kMessageTypeAndNumbersString @"message/type" //消息
 #define kMessageIsReadString @"message/read" //消息未读变已读
 #define kMessageOfPublishString @"message/index"  //发布消息
+#define kMessageOfEvaluateString @"apply/listdata" //评价消息
+
 //#define kMessageOfEvaluateString @"apply/userlists"  //评价列表
 //评价类型（evaluate(收到的评价) ／launchevaluation(给出的评级)）
 

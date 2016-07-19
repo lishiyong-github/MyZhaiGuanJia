@@ -8,6 +8,8 @@
 
 #import "SystemMessagesViewController.h"
 #import "CompleteViewController.h"  //完成认证
+#import "MyPublishingViewController.h"  //发布中
+#import "MyAgentListViewController.h" //我的代理
 
 #import "NewsCell.h"
 
@@ -165,8 +167,7 @@
                              };
     
     QDFWeakSelf;
-    [self requestDataPostWithString:mesString params:params successBlock:^(id responseObject) {
-        
+    [self requestDataPostWithString:mesString params:params successBlock:^(id responseObject) {        
         if ([page integerValue] == 1) {
             [weakself.messageSysArray removeAllObjects];
         }
@@ -221,16 +222,37 @@
     
     QDFWeakSelf;
     [self requestDataPostWithString:isReadString params:params successBlock:^(id responseObject) {
+        
         BaseModel *aModel = [BaseModel objectWithKeyValues:responseObject];
         if ([aModel.code isEqualToString:@"0000"]) {
             if ([typeStr integerValue] == 10) {//认证
-                CompleteViewController *completeVC = [[CompleteViewController alloc] init];
-                [weakself.navigationController pushViewController:completeVC animated:YES];
-            }else if ([typeStr integerValue] == 20){//完善（融资）
+                [weakself tokenIsValid];
+                [weakself setDidTokenValid:^(TokenModel *tModel) {
+                    NSString *categoryStr;
+                    if ([tModel.state intValue] == 1 && [tModel.category intValue] == 1) {//个人
+                        categoryStr = @"1";
+                    }else if ([tModel.state intValue] == 1 && [tModel.category intValue] == 2){//律所
+                        categoryStr = @"2";
+                    }else if ([tModel.state intValue] == 1 && [tModel.category intValue] == 3){//公司
+                        categoryStr = @"3";
+                    }
+                    CompleteViewController *completeVC = [[CompleteViewController alloc] init];
+                    completeVC.hidesBottomBarWhenPushed = YES;
+                    completeVC.categoryString = categoryStr;
+                    [weakself.navigationController pushViewController:completeVC animated:YES];
+                }];
                 
-            }else if ([typeStr integerValue] == 21){//完善（清收）
-                
-            }else if ([typeStr integerValue] == 22){//完善（诉讼）
+            }else if([typeStr integerValue] == 23){//完善（融资清收诉讼）发布中
+                MyAgentListViewController *myAgentListVC = [[MyAgentListViewController alloc] init];
+                myAgentListVC.hidesBottomBarWhenPushed = YES;
+                myAgentListVC.typePid = @"本人";
+                [weakself.navigationController pushViewController:myAgentListVC animated:YES];
+            }else{
+                MyPublishingViewController *myPublishVC = [[MyPublishingViewController alloc] init];
+                myPublishVC.idString = categoryModel.idString;
+                myPublishVC.categaryString = categoryModel.category;
+                myPublishVC.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:myPublishVC animated:YES];
                 
             }
         }

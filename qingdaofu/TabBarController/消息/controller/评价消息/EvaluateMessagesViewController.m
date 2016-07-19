@@ -15,6 +15,10 @@
 
 #import "EvaluateSendCell.h"  //发出评价
 
+#import "EvaluateResponse.h"
+#import "EvaluateModel.h"
+#import "LaunchEvaluateModel.h"
+
 @interface EvaluateMessagesViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
@@ -24,9 +28,19 @@
 @property (nonatomic,strong) NSString *tagString;
 @property (nonatomic,strong) NSMutableArray *dataList;
 
+//json
+@property (nonatomic,assign) NSInteger pageList;
+@property (nonatomic,strong) NSMutableArray *evaluateListArray;
+@property (nonatomic,strong) NSMutableArray *launchEvaListArray;
+
 @end
 
 @implementation EvaluateMessagesViewController
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self headerRefreshOfList];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -88,12 +102,14 @@
 {
     if (!_evaluateTableView) {
 //        _evaluateTableView = [UITableView newAutoLayoutView];
-        _evaluateTableView.translatesAutoresizingMaskIntoConstraints = NO;
+        _evaluateTableView.translatesAutoresizingMaskIntoConstraints = YES;
         _evaluateTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _evaluateTableView.delegate = self;
         _evaluateTableView.dataSource = self;
         _evaluateTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
         _evaluateTableView.backgroundColor = kBackColor;
+        [_evaluateTableView addFooterWithTarget:self action:@selector(footerRefreshOfList)];
+        [_evaluateTableView addHeaderWithTarget:self action:@selector(headerRefreshOfList)];
     }
     return _evaluateTableView;
 }
@@ -106,7 +122,23 @@
     return _dataList;
 }
 
-#pragma mark - 
+- (NSMutableArray *)evaluateListArray
+{
+    if (!_evaluateListArray) {
+        _evaluateListArray = [NSMutableArray array];
+    }
+    return _evaluateListArray;
+}
+
+- (NSMutableArray *)launchEvaListArray
+{
+    if (!_launchEvaListArray) {
+        _launchEvaListArray = [NSMutableArray array];
+    }
+    return _launchEvaListArray;
+}
+
+#pragma mark - delegate and datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return 1;
@@ -198,6 +230,42 @@
 - (void)deleteSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation
 {
     [self.evaluateTableView reloadData];
+}
+
+#pragma mark - refresh
+- (void)getListOfEvaluateListWithPage:(NSString *)page
+{
+    NSString *listString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMessageOfEvaluateString];
+    NSDictionary *params = @{@"token" : [self getValidateToken]};
+    [self requestDataPostWithString:listString params:params successBlock:^(id responseObject) {
+        
+        NSDictionary *fywec = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
+        NSString *ded;
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
+- (void)headerRefreshOfList
+{
+    _pageList = 1;
+    [self getListOfEvaluateListWithPage:@"1"];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.evaluateTableView headerEndRefreshing];
+    });
+}
+
+- (void)footerRefreshOfList
+{
+    _pageList++;
+    NSString *page = [NSString stringWithFormat:@"%ld",(long)_pageList];
+    [self getListOfEvaluateListWithPage:page];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.evaluateTableView footerEndRefreshing];
+    });
 }
 
 - (void)didReceiveMemoryWarning {

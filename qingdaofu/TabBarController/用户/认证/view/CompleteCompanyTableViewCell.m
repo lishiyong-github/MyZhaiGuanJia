@@ -51,7 +51,7 @@
         [self.comPicLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
         [self.comPicLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.comIDLabel withOffset:kBigPadding];
         
-        [self.comPicButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:122];
+        [self.comPicButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:128];
         [self.comPicButton autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.comPicLabel];
         [self.comPicButton autoSetDimensionsToSize:CGSizeMake(55, 55)];
         
@@ -73,7 +73,7 @@
         [self.comExampleLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.comWebsiteLabel withOffset:kBigPadding];
         [self.comExampleLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
         
-        [self.comExampleLabel2 autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:122];
+        [self.comExampleLabel2 autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:128];
         [self.comExampleLabel2 autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.comExampleLabel];
         [self.comExampleLabel2 autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         

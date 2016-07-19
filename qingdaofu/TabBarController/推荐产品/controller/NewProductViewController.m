@@ -191,7 +191,7 @@
 #pragma mark - tableView delelagte and datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2+self.productsDataListArray.count;
+    return 1+self.productsDataListArray.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -270,39 +270,40 @@
         }];
         
         return cell;
-    }else if (indexPath.section == 1){
-        identifier = @"main1";
-        FourCell *cell = [tableView dequeueReusableCellWithIdentifier: identifier];
-        if (!cell) {
-            cell = [[FourCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        [cell setDidClickButton:^(NSInteger tag) {
-            switch (tag) {
-                case 11:{//房产评估
-                    NSLog(@"房产评估");
-                }
-                    break;
-                case 22:{//房屋产调
-                    NSLog(@"房屋产调");
-                }
-                    break;
-                case 33:{//诉讼保全
-                    NSLog(@"诉讼保全");
-                }
-                    break;
-                case 44:{//申请保函
-                    NSLog(@"申请保函");
-                }
-                    break;
-                default:
-                    break;
-            }
-        }];
-        
-        return cell;
     }
+//    else if (indexPath.section == 1){
+//        identifier = @"main1";
+//        FourCell *cell = [tableView dequeueReusableCellWithIdentifier: identifier];
+//        if (!cell) {
+//            cell = [[FourCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+//        }
+//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//        
+//        [cell setDidClickButton:^(NSInteger tag) {
+//            switch (tag) {
+//                case 11:{//房产评估
+//                    NSLog(@"房产评估");
+//                }
+//                    break;
+//                case 22:{//房屋产调
+//                    NSLog(@"房屋产调");
+//                }
+//                    break;
+//                case 33:{//诉讼保全
+//                    NSLog(@"诉讼保全");
+//                }
+//                    break;
+//                case 44:{//申请保函
+//                    NSLog(@"申请保函");
+//                }
+//                    break;
+//                default:
+//                    break;
+//            }
+//        }];
+//        
+//        return cell;
+//    }
     
     identifier = @"main2";
     HomeCell *cell = [tableView dequeueReusableCellWithIdentifier: identifier];
@@ -311,7 +312,7 @@
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    NewProductListModel *newModel = self.productsDataListArray[indexPath.section-2];
+    NewProductListModel *newModel = self.productsDataListArray[indexPath.section-1];
     
     cell.moneyView.label1.text = [NSString getValidStringFromString:newModel.money toString:@"0"];
     cell.moneyView.label2.text = @"借款本金(万元)";
@@ -401,7 +402,7 @@
             if ([model.code isEqualToString:@"0000"]) {//正常
                 ProductsDetailsViewController *productsDetailVC = [[ProductsDetailsViewController alloc] init];
                 productsDetailVC.hidesBottomBarWhenPushed = YES;
-                NewProductListModel *sModel = weakself.productsDataListArray[indexPath.section - 2];
+                NewProductListModel *sModel = weakself.productsDataListArray[indexPath.section - 1];
                 productsDetailVC.idString = sModel.idString;
                 productsDetailVC.categoryString = sModel.category;
                 [weakself.navigationController pushViewController:productsDetailVC animated:YES];
@@ -417,9 +418,6 @@
                 authentyVC.typeAuthty = @"0";
                 [weakself.navigationController pushViewController:authentyVC animated:YES];
             }
-//            else {//token过期,或未认证（code=3001过期   code=3006未认证）
-//                [weakself showHint:model.msg];
-//            }
         }];
     }
 }

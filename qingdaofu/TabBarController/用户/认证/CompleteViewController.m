@@ -412,9 +412,6 @@
     return 0.1;
 }
 
-
-#pragma mark - method
-
 #pragma mark - method
 - (void)showCompleteMessages
 {

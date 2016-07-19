@@ -112,8 +112,8 @@
         if ([leftModel.category intValue] == 1) {//融资
             
             NSString *moneyStr = [NSString stringWithFormat:@"%@",leftModel.money];
-            NSString *rebateStr = [NSString stringWithFormat:@"%@%@",leftModel.rebate,@"%"];
-            NSString *rateStr = [NSString stringWithFormat:@"%@%@",leftModel.rate,@"%"];
+            NSString *rebateStr = [NSString stringWithFormat:@"%@",leftModel.rebate];
+            NSString *rateStr = [NSString stringWithFormat:@"%@",leftModel.rate];
             
             //利率类型
             NSString *rateCatStr = @"暂无";
@@ -127,7 +127,7 @@
             NSString *mortorage_communiStr = [NSString getValidStringFromString:leftModel.mortorage_community];
             NSString *seatmortgageStr = [NSString getValidStringFromString:leftModel.seatmortgage];
             
-            [_leftTableView.leftDataArray1 addObjectsFromArray:@[@"借款金额(万元)",@"返点",@"借款利率",@"借款利率类型",@"抵押物地址",@"详细地址"]];
+            [_leftTableView.leftDataArray1 addObjectsFromArray:@[@"借款金额(万元)",@"返点(%)",@"借款利率(%)",@"借款利率类型",@"抵押物地址",@"详细地址"]];
             [_leftTableView.leftDataArray2 addObjectsFromArray:@[moneyStr,rebateStr,rateStr,rateCatStr,mortorage_communiStr,seatmortgageStr]];
         }else{//清收,诉讼
             
@@ -224,9 +224,9 @@
             
             if (rightModel.obligeeyear) {
                 if ([rightModel.obligeeyear intValue] == 1) {
-                    obligeeyear = @"65岁以上";
-                }else{
                     obligeeyear = @"65岁以下";
+                }else{
+                    obligeeyear = @"65岁以上";
                 }
          }
             

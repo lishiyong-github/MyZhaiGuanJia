@@ -36,7 +36,6 @@
     self.navigationItem.title = @"代理人列表";
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
-    
     if ([self.typePid isEqualToString:@"本人"]) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"添加" style:UIBarButtonItemStylePlain target:self action:@selector(goToAddAgent)];
     }
