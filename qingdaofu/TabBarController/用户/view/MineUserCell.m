@@ -8,6 +8,7 @@
 
 #import "MineUserCell.h"
 #import "UIButton+Addition.h"
+
 @interface MineUserCell ()
 @property (nonatomic,assign) BOOL finishSwap;
 @end

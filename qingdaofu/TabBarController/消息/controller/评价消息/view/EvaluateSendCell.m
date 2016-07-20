@@ -18,13 +18,17 @@
         [self.contentView addSubview:self.evaTimeLabel];
         [self.contentView addSubview:self.evaStarImageView];
         [self.contentView addSubview:self.evaTextLabel];
-        [self.contentView addSubview:self.evaProImageView1];
-        [self.contentView addSubview:self.evaProImageView2];
+        
+        [self.contentView addSubview:self.evaProImageViews1];
+        [self.contentView addSubview:self.evaProImageViews2];
+        
         [self.contentView addSubview:self.evaProductButton];
         [self.contentView addSubview:self.evaDeleteButton];
         [self.contentView addSubview:self.evaAdditionButton];
         
-        [self.contentView setNeedsUpdateConstraints];
+        [self setNeedsUpdateConstraints];
+        
+        self.topProConstraints = [self.evaProductButton autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:150];
     }
     return self;
 }
@@ -34,30 +38,28 @@
     if (!self.didSetupConstraints) {
         
         [self.evaNameLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
-        [self.evaNameLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kBigPadding];
+        [self.evaNameLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kSmallPadding];
         
         [self.evaTimeLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.evaTimeLabel autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.evaNameLabel];
         
         [self.evaStarImageView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
         [self.evaStarImageView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.evaNameLabel withOffset:kSmallPadding];
-        [self.evaStarImageView autoSetDimensionsToSize:CGSizeMake(80, 15)];
+        [self.evaStarImageView autoSetDimensionsToSize:CGSizeMake(60, 12)];
         
-        [self.evaTextLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.evaStarImageView withOffset:kBigPadding];
+        [self.evaTextLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.evaStarImageView withOffset:kSmallPadding];
         [self.evaTextLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
         [self.evaTextLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         
-        [self.evaProImageView1 autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
-        [self.evaProImageView1 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.evaTextLabel withOffset:kBigPadding];
-        [self.evaProImageView1 autoSetDimensionsToSize:CGSizeMake(50, 50)];
+        [self.evaProImageViews1 autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
+        [self.evaProImageViews1 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.evaTextLabel withOffset:kSmallPadding];
+        [self.evaProImageViews1 autoSetDimensionsToSize:CGSizeMake(50, 50)];
         
-        [self.evaProImageView2 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.evaProImageView1 withOffset:kBigPadding];
-        [self.evaProImageView2 autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.evaProImageView1];
-        [self.evaProImageView2 autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.evaProImageView1];
-        [self.evaProImageView2 autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.evaProImageView1];
+        [self.evaProImageViews2 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.evaProImageViews1 withOffset:kBigPadding];
+        [self.evaProImageViews2 autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.evaProImageViews1];
+        [self.evaProImageViews2 autoSetDimensionsToSize:CGSizeMake(50, 50)];
         
         [self.evaProductButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
-        [self.evaProductButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.evaProImageView1 withOffset:kBigPadding];
         [self.evaProductButton autoSetDimension:ALDimensionHeight toSize:40];
         [self.evaProductButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         
@@ -100,11 +102,18 @@
     return _evaTimeLabel;
 }
 
-- (UIImageView *)evaStarImageView
+- (LEOStarView *)evaStarImageView
 {
     if (!_evaStarImageView) {
-        _evaStarImageView = [UIImageView newAutoLayoutView];
-        _evaStarImageView.backgroundColor = kYellowColor;
+        _evaStarImageView = [LEOStarView newAutoLayoutView];
+//        _evaStarImageView.backgroundColor = kYellowColor;
+        _evaStarImageView = [LEOStarView newAutoLayoutView];
+        _evaStarImageView.currentIndex = 4;
+        _evaStarImageView.starImage = [UIImage imageNamed:@"publish_star"];
+        _evaStarImageView.markType = EMarkTypeInteger;
+        _evaStarImageView.starFrontColor = kBlueColor;
+        _evaStarImageView.starBackgroundColor = UIColorFromRGB(0xeeeeee);
+        _evaStarImageView.userInteractionEnabled = NO;
     }
     return _evaStarImageView;
 }
@@ -119,22 +128,21 @@
     return _evaTextLabel;
 }
 
-- (UIImageView *)evaProImageView1
+- (UIButton *)evaProImageViews1
 {
-    if (!_evaProImageView1) {
-        _evaProImageView1 = [UIImageView newAutoLayoutView];
-        _evaProImageView1.backgroundColor = kLightGrayColor;
+    if (!_evaProImageViews1) {
+        _evaProImageViews1 = [UIButton newAutoLayoutView];
     }
-    return _evaProImageView1;
+    return _evaProImageViews1;
 }
 
-- (UIImageView *)evaProImageView2
+- (UIButton *)evaProImageViews2
 {
-    if (!_evaProImageView2) {
-        _evaProImageView2 = [UIImageView newAutoLayoutView];
-        _evaProImageView2.backgroundColor = kLightGrayColor;
+    if (!_evaProImageViews2) {
+        _evaProImageViews2 = [UIButton newAutoLayoutView];
+        [_evaProImageViews2 setBackgroundColor:kRedColor];
     }
-    return _evaProImageView2;
+    return _evaProImageViews2;
 }
 
 - (UIButton *)evaProductButton
@@ -142,7 +150,7 @@
     if (!_evaProductButton) {
         _evaProductButton = [UIButton newAutoLayoutView];
         _evaProductButton.layer.borderWidth = kLineWidth;
-        _evaProductButton.layer.borderColor = kGrayColor.CGColor;
+        _evaProductButton.layer.borderColor = kLightGrayColor.CGColor;
         
         [_evaProductButton addSubview:self.evaInnnerButton];
         [_evaProductButton addSubview:self.evaInnerImage];

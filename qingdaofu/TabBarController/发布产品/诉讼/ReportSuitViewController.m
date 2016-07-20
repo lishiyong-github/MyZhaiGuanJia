@@ -516,7 +516,10 @@
                     carbr = [NSString stringWithFormat:@"%@%@%@",self.suitDataDictionary[@"carbrandstr"],self.suitDataDictionary[@"audistr"],self.suitDataDictionary[@"licenseplatestr"]];
                 }
                 
-                NSString *carLisenceStr = [NSString stringWithFormat:@"%@%@",self.suResponse.car,self.suResponse.license];
+                NSString *carLisenceStr;
+                if (self.suResponse.car && self.suResponse.license) {
+                    carLisenceStr = [NSString stringWithFormat:@"%@%@",self.suResponse.car,self.suResponse.license];
+                }
                 cell.agentTextField.text = carLisenceStr?carLisenceStr:carbr;
 
                 [cell.agentButton setHidden:NO];

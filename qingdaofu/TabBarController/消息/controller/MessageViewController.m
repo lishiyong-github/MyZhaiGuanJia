@@ -12,9 +12,9 @@
 #import "EvaluateMessagesViewController.h"  //评价消息
 #import "SystemMessagesViewController.h"   //系统消息
 
-#import "MessageCell.h"
+//#import "MessageCell.h"
 
-#import "MineUserCell.h"
+#import "NewsTableViewCell.h"
 
 @interface MessageViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -107,10 +107,10 @@
         identifier = @"all";
         NSArray *titleArray = @[@"  发布消息",@"  接单消息",@"  评价消息",@"  系统消息"];
         NSArray *imageArray = @[@"news_publish_icon",@"news_order_icon",@"news_evaluate_icon",@"news_system_icon"];
-        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        NewsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         
         if (!cell) {
-            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            cell = [[NewsTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         
         NSDictionary *childDic;
@@ -119,19 +119,26 @@
             childDic = self.resultDic[index];
         }
         
-        [cell.userNameButton setTitle:titleArray[indexPath.row] forState:0];
-        [cell.userNameButton setImage:[UIImage imageNamed:imageArray[indexPath.row]] forState:0];
-        cell.userNameButton.titleLabel.font = [UIFont systemFontOfSize:18];
+        [cell.newsNameButton setTitle:titleArray[indexPath.row] forState:0];
+        [cell.newsNameButton setImage:[UIImage imageNamed:imageArray[indexPath.row]] forState:0];
+        cell.newsNameButton.titleLabel.font = [UIFont systemFontOfSize:18];
         
-        [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-        [cell.userActionButton setTitle:childDic[@"number"] forState:0];
-        [cell.userActionButton setTitleColor:kBlueColor forState:0];
-        cell.userActionButton.titleLabel.backgroundColor = kBlueColor;
-        [cell.userActionButton setTitleColor:kNavColor forState:0];
+        [cell.newsActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        [cell.newsActionButton setTitleColor:kBlueColor forState:0];
+        cell.newsActionButton.titleLabel.backgroundColor = kBlueColor;
+        [cell.newsActionButton setTitleColor:kNavColor forState:0];
         
-        cell.userNameButton.userInteractionEnabled = NO;
-        cell.userActionButton.userInteractionEnabled = NO;
         
+        if ([childDic[@"number"] integerValue] == 0) {
+            [cell.newsCountButton setHidden:YES];
+        }else{
+            [cell.newsCountButton setHidden:NO];
+            if ([childDic[@"number"] integerValue] > 99) {
+                [cell.newsCountButton setTitle:@"99+" forState:0];
+            }else{
+                [cell.newsCountButton setTitle:childDic[@"number"] forState:0];
+            }
+        }
         return cell;
     }
     

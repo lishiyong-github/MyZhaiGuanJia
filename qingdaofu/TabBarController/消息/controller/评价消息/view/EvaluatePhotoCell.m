@@ -99,7 +99,7 @@
 {
     if (!_evaStarImage) {
         _evaStarImage = [LEOStarView newAutoLayoutView];
-        _evaStarImage.currentIndex = 4;
+//        _evaStarImage.currentIndex = 4;
         _evaStarImage.starImage = [UIImage imageNamed:@"publish_star"];
         _evaStarImage.markType = EMarkTypeInteger;
         _evaStarImage.starFrontColor = kBlueColor;

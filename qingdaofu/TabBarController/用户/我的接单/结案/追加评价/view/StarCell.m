@@ -39,7 +39,6 @@
         [self.starView1 autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.starView1 autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.starLabel1];
         
-        
         [self.starLabel2 autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
         [self.starLabel2 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.starLabel1 withOffset:30];
         

@@ -13,7 +13,7 @@
 @property (nonatomic,copy) NSString *creditor;  //评价方得评价平均分数
 @property (nonatomic,copy) NSString *buid;  //
 @property (nonatomic,copy) NSString *category;  //产品类型
-@property (nonatomic,copy) NSString *codeString;  //产品编号
+@property (nonatomic,copy) NSString *code;  //产品编号
 @property (nonatomic,copy) NSString *content; //评价内容
 @property (nonatomic,copy) NSString *contents; //追加评价内容
 @property (nonatomic,copy) NSString *create_time;// 评价时间
@@ -23,7 +23,7 @@
 @property (nonatomic,copy) NSString *isHide;//
 @property (nonatomic,copy) NSString *kuaijie;//
 @property (nonatomic,copy) NSString *mobile;  //手机号
-@property (nonatomic,copy) NSString *picture;//评价图片
+//@property (nonatomic,copy) NSString *picture;//评价图片
 @property (nonatomic,strong) NSArray *pictures; //图片列表
 @property (nonatomic,copy) NSString *pid;//
 @property (nonatomic,copy) NSString *product_id;//

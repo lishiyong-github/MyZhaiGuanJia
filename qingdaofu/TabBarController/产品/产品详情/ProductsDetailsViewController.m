@@ -387,7 +387,6 @@
             [weakself.proDetailsCommitButton setBackgroundColor:kSelectedColor];
             weakself.proDetailsCommitButton.userInteractionEnabled = NO;
         }else if ([rModel.product.progress_status intValue] == 2){//申请成功
-            
             if ([stateModel.app_id integerValue] == 1) {//自己申请成功
                 [weakself.proDetailsCommitButton setTitleColor:kBlackColor forState:0];
                 [weakself.proDetailsCommitButton setTitle:@"申请成功" forState:0];
@@ -412,6 +411,11 @@
                 [weakself.proDetailsCommitButton setTitle:@"已被接单" forState:0];
                 [weakself.proDetailsCommitButton setBackgroundColor:kSelectedColor];
             }
+        }else{
+            [weakself.proDetailsCommitButton setTitleColor:kBlackColor forState:0];
+            [weakself.proDetailsCommitButton setTitle:@"已终止" forState:0];
+            [weakself.proDetailsCommitButton setBackgroundColor:kSelectedColor];
+            weakself.proDetailsCommitButton.userInteractionEnabled = NO;
         }
     } andFailBlock:^(NSError *error) {
         

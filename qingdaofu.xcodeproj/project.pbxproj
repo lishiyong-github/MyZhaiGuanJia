@@ -479,6 +479,7 @@
 		A1A97E5F1CDC8AED00EDE320 /* EvaTopSwitchView.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A97E5E1CDC8AED00EDE320 /* EvaTopSwitchView.m */; };
 		A1A97E6A1CDC989200EDE320 /* MyPublishingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A97E691CDC989200EDE320 /* MyPublishingViewController.m */; };
 		A1A97E6D1CDC98EB00EDE320 /* MyDealingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A97E6C1CDC98EB00EDE320 /* MyDealingViewController.m */; };
+		A1AEC97C1D3F7D870082813F /* NewsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1AEC97B1D3F7D870082813F /* NewsTableViewCell.m */; };
 		A1B028A71D17766900F32A09 /* UploadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1B028A61D17766900F32A09 /* UploadViewController.m */; };
 		A1B028E61D1794DC00F32A09 /* NSData+ImageContentType.m in Sources */ = {isa = PBXBuildFile; fileRef = A1B028CA1D1794DC00F32A09 /* NSData+ImageContentType.m */; };
 		A1B028E71D1794DC00F32A09 /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = A1B028CC1D1794DC00F32A09 /* SDImageCache.m */; };
@@ -1228,6 +1229,8 @@
 		A1A97E691CDC989200EDE320 /* MyPublishingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyPublishingViewController.m; sourceTree = "<group>"; };
 		A1A97E6B1CDC98EB00EDE320 /* MyDealingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyDealingViewController.h; sourceTree = "<group>"; };
 		A1A97E6C1CDC98EB00EDE320 /* MyDealingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyDealingViewController.m; sourceTree = "<group>"; };
+		A1AEC97A1D3F7D870082813F /* NewsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsTableViewCell.h; sourceTree = "<group>"; };
+		A1AEC97B1D3F7D870082813F /* NewsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsTableViewCell.m; sourceTree = "<group>"; };
 		A1B028A51D17766900F32A09 /* UploadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadViewController.h; sourceTree = "<group>"; };
 		A1B028A61D17766900F32A09 /* UploadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadViewController.m; sourceTree = "<group>"; };
 		A1B028C91D1794DC00F32A09 /* NSData+ImageContentType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+ImageContentType.h"; sourceTree = "<group>"; };
@@ -2491,6 +2494,8 @@
 			children = (
 				A19B8E551CCF640300F8EBF2 /* MessageCell.h */,
 				A19B8E561CCF640300F8EBF2 /* MessageCell.m */,
+				A1AEC97A1D3F7D870082813F /* NewsTableViewCell.h */,
+				A1AEC97B1D3F7D870082813F /* NewsTableViewCell.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -3506,6 +3511,7 @@
 				A1B028E71D1794DC00F32A09 /* SDImageCache.m in Sources */,
 				A14190481D3228CC005DA20E /* UIViewController+Keyboard.m in Sources */,
 				A16856AC1CE9CBA5006A0887 /* ProDetailHeadFootView.m in Sources */,
+				A1AEC97C1D3F7D870082813F /* NewsTableViewCell.m in Sources */,
 				A159F9451D0BEE5E00A6A024 /* StandardPaths.m in Sources */,
 				A1B028A71D17766900F32A09 /* UploadViewController.m in Sources */,
 				A1770E161CFE6AA3003579E1 /* CompleteLawCell.m in Sources */,

@@ -7,7 +7,8 @@
 //
 
 #import "EvaluateMessagesViewController.h"
-#import "MyClosingViewController.h"   //产品详情
+#import "MyClosingViewController.h"   //我的接单－结案
+#import "ReleaseCloseViewController.h"  //我的发布－结案
 #import "AdditionalEvaluateViewController.h"
 
 #import "EvaTopSwitchView.h"
@@ -18,6 +19,11 @@
 #import "EvaluateResponse.h"
 #import "EvaluateModel.h"
 #import "LaunchEvaluateModel.h"
+
+#import "MessageModel.h"
+
+#import "UIButton+WebCache.h"
+#import "UIViewController+ImageBrowser.h"
 
 @interface EvaluateMessagesViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -30,17 +36,13 @@
 
 //json
 @property (nonatomic,assign) NSInteger pageList;
-@property (nonatomic,strong) NSMutableArray *evaluateListArray;
-@property (nonatomic,strong) NSMutableArray *launchEvaListArray;
+@property (nonatomic,strong) NSString *uidString;
+@property (nonatomic,strong) NSMutableArray *evaluateListArray;  //收到的评价
+@property (nonatomic,strong) NSMutableArray *launchEvaListArray;  //发出的评价
 
 @end
 
 @implementation EvaluateMessagesViewController
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [self headerRefreshOfList];
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -52,6 +54,8 @@
     
     _tagString = @"get";
     [self.view setNeedsUpdateConstraints];
+    
+    [self headerRefreshOfList];
 }
 
 - (void)updateViewConstraints
@@ -101,7 +105,6 @@
 - (UITableView *)evaluateTableView
 {
     if (!_evaluateTableView) {
-//        _evaluateTableView = [UITableView newAutoLayoutView];
         _evaluateTableView.translatesAutoresizingMaskIntoConstraints = YES;
         _evaluateTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _evaluateTableView.delegate = self;
@@ -147,18 +150,32 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if ([_tagString isEqualToString:@"get"]) {
-        return 10;
+        return self.evaluateListArray.count;
     }
-    return self.dataList.count;
+    return self.launchEvaListArray.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([_tagString isEqualToString:@"send"]) {
-        return 265;
+        
+        LaunchEvaluateModel *model = self.launchEvaListArray[indexPath.section];
+        if ([model.pictures isEqualToArray:@[]] || [model.pictures[0] isEqualToString:@""]) {
+            return 185;
+        }else{
+            return 245;
+        }
     }
     
-    return 225;
+    EvaluateModel *model = self.evaluateListArray[indexPath.section];
+    if ([model.pictures isEqualToArray:@[]] || [model.pictures[0] isEqualToString:@""]) {
+        return 145;
+    }else{
+        return 205;
+    }
+    
+    return 0;
+//    return 225;
     
     //（收到）
 //    return 165;//无image
@@ -179,24 +196,77 @@
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    cell.evaNameLabel.text = self.dataList[indexPath.section];
-    //@"12345678900";
-    cell.evaTimeLabel.text = @"2016-10-10";
-//    [cell.evaStarImageView setBackgroundColor:kBlueColor];
-    cell.evaTextLabel.text = @"还行，还行，还行";
-    [cell.evaInnnerButton setImage:[UIImage imageNamed:@"list_financing"] forState:0];
-    [cell.evaInnnerButton setTitle:@"RZ201605200001" forState:0];
-    
     QDFWeakSelf;
-    [cell.evaProductButton addAction:^(UIButton *btn) {
-        MyClosingViewController *myCloseVC = [[MyClosingViewController alloc] init];
-        [weakself.navigationController pushViewController:myCloseVC animated:YES];
-    }];
-    
     if ([_tagString isEqualToString:@"get"]) {
+        EvaluateModel *evaModel = self.evaluateListArray[indexPath.section];
+        cell.evaNameLabel.text = evaModel.mobile;
+        cell.evaTimeLabel.text = [NSDate getYMDhmFormatterTime:evaModel.create_time];
+        cell.evaStarImageView.currentIndex = [evaModel.creditor integerValue];
+        cell.evaTextLabel.text = evaModel.content;
+        [cell.evaInnnerButton setTitle:evaModel.code forState:0];
         [cell.evaDeleteButton setHidden:YES];
         [cell.evaAdditionButton setHidden:YES];
-    }else if ([_tagString isEqualToString:@"send"]) {
+        
+        //图片
+        if (evaModel.pictures.count == 1) {
+            if ([evaModel.pictures[0] isEqualToString:@""]) {//没有图片
+                cell.topProConstraints.constant = 90;
+                [cell.evaProImageViews1 setHidden:YES];
+                [cell.evaProImageViews2 setHidden:YES];
+            }else{//有图片
+                cell.topProConstraints.constant = 150;
+                [cell.evaProImageViews1 setHidden:NO];
+                [cell.evaProImageViews2 setHidden:YES];
+                NSString *str1 = [evaModel.pictures[0] substringWithRange:NSMakeRange(1, [evaModel.pictures[0] length]-2)];
+                NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str1];
+                NSURL *url1 = [NSURL URLWithString:imageStr1];
+                
+                [cell.evaProImageViews1 sd_setBackgroundImageWithURL:url1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+                [cell.evaProImageViews1 addAction:^(UIButton *btn) {
+                    [weakself showImages:@[url1]];
+                }];
+            }
+        }else if (evaModel.pictures.count >= 2){
+            cell.topProConstraints.constant = 150;
+            [cell.evaProImageViews1 setHidden:NO];
+            [cell.evaProImageViews2 setHidden:NO];
+            NSString *str1 = [evaModel.pictures[0] substringWithRange:NSMakeRange(1, [evaModel.pictures[0] length]-2)];
+            NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str1];
+            NSURL *url1 = [NSURL URLWithString:imageStr1];
+            NSString *str2 = [evaModel.pictures[1] substringWithRange:NSMakeRange(1, [evaModel.pictures[1] length]-2)];
+            NSString *imageStr2 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str2];
+            NSURL *url2 = [NSURL URLWithString:imageStr2];
+            
+            [cell.evaProImageViews1 sd_setBackgroundImageWithURL:url1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+            [cell.evaProImageViews2 sd_setBackgroundImageWithURL:url2 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+            [cell.evaProImageViews1 addAction:^(UIButton *btn) {
+                [weakself showImages:@[url1,url2]];
+            }];
+            [cell.evaProImageViews2 addAction:^(UIButton *btn) {
+                [weakself showImages:@[url1,url2]];
+            }];
+        }
+        
+        //产品分类图片
+        if ([evaModel.category integerValue] == 1) {//list_financing
+            [cell.evaInnnerButton setImage:[UIImage imageNamed:@"list_financing"] forState:0];
+        }else if ([evaModel.category integerValue] == 2){//list_collection
+            [cell.evaInnnerButton setImage:[UIImage imageNamed:@"list_collection"] forState:0];
+        }else{//list_litigation
+            [cell.evaInnnerButton setImage:[UIImage imageNamed:@"list_litigation"] forState:0];
+        }
+        
+        [cell.evaProductButton addAction:^(UIButton *btn) {
+            [weakself messageIsReadWithId:evaModel.product_id andUid:evaModel.uidInner andCategory:evaModel.category];
+        }];
+        
+    }else{
+        LaunchEvaluateModel *launchEvaModel = self.launchEvaListArray[indexPath.section];
+        cell.evaNameLabel.text = launchEvaModel.mobile;
+        cell.evaTimeLabel.text = [NSDate getYMDhmFormatterTime:launchEvaModel.create_time];
+        cell.evaStarImageView.currentIndex = [launchEvaModel.creditor integerValue];
+        cell.evaTextLabel.text = launchEvaModel.content;
+        [cell.evaInnnerButton setTitle:launchEvaModel.code forState:0];
         [cell.evaDeleteButton setHidden:NO];
         [cell.evaAdditionButton setHidden:NO];
         [cell.evaDeleteButton setTitle:@"删除" forState:0];
@@ -212,8 +282,63 @@
                 [weakself.navigationController pushViewController:additionalEvaluateVC animated:YES];
             }
         }];
+        
+        //图片
+        if (launchEvaModel.pictures.count == 1) {
+            if ([launchEvaModel.pictures[0] isEqualToString:@""]) {//没有图片
+                cell.topProConstraints.constant = 90;
+                [cell.evaProImageViews1 setHidden:YES];
+                [cell.evaProImageViews2 setHidden:YES];
+            }else{//有图片
+                cell.topProConstraints.constant = 150;
+                [cell.evaProImageViews1 setHidden:NO];
+                [cell.evaProImageViews2 setHidden:YES];
+                NSString *str1 = [launchEvaModel.pictures[0] substringWithRange:NSMakeRange(1, [launchEvaModel.pictures[0] length]-2)];
+                NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str1];
+                NSURL *url1 = [NSURL URLWithString:imageStr1];
+                
+                [cell.evaProImageViews1 sd_setBackgroundImageWithURL:url1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+                [cell.evaProImageViews1 addAction:^(UIButton *btn) {
+                    [weakself showImages:@[url1]];
+                }];
+            }
+        }else if (launchEvaModel.pictures.count >= 2){
+            cell.topProConstraints.constant = 150;
+            [cell.evaProImageViews1 setHidden:NO];
+            [cell.evaProImageViews2 setHidden:NO];
+            NSString *str1 = [launchEvaModel.pictures[0] substringWithRange:NSMakeRange(1, [launchEvaModel.pictures[0] length]-2)];
+            NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str1];
+            NSURL *url1 = [NSURL URLWithString:imageStr1];
+            NSString *str2 = [launchEvaModel.pictures[1] substringWithRange:NSMakeRange(1, [launchEvaModel.pictures[1] length]-2)];
+            NSString *imageStr2 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str2];
+            NSURL *url2 = [NSURL URLWithString:imageStr2];
+            
+            [cell.evaProImageViews1 sd_setBackgroundImageWithURL:url1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+            [cell.evaProImageViews2 sd_setBackgroundImageWithURL:url2 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+            [cell.evaProImageViews1 addAction:^(UIButton *btn) {
+                [weakself showImages:@[url1,url2]];
+            }];
+            [cell.evaProImageViews2 addAction:^(UIButton *btn) {
+                [weakself showImages:@[url1,url2]];
+            }];
+        }
+
+        //产品分类图片
+        if ([launchEvaModel.category integerValue] == 1) {
+            [cell.evaInnnerButton setImage:[UIImage imageNamed:@"list_financing"] forState:0];
+        }else if ([launchEvaModel.category integerValue] == 2){//list_collection
+            [cell.evaInnnerButton setImage:[UIImage imageNamed:@"list_collection"] forState:0];
+        }else{//list_litigation
+            [cell.evaInnnerButton setImage:[UIImage imageNamed:@"list_litigation"] forState:0];
+        }
+        
+        [cell.evaProductButton addAction:^(UIButton *btn) {
+//            NSString *id_category = [NSString stringWithFormat:@"%@_%@",launchEvaModel.idString,launchEvaModel.category];
+//            NSString *value = self.releaseDic[id_category];
+            
+            [weakself messageIsReadWithId:launchEvaModel.product_id andUid:launchEvaModel.uidInner andCategory:launchEvaModel.category];
+        }];
     }
-    
     return cell;
 }
 
@@ -239,9 +364,41 @@
     NSDictionary *params = @{@"token" : [self getValidateToken]};
     [self requestDataPostWithString:listString params:params successBlock:^(id responseObject) {
         
-        NSDictionary *fywec = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        NSDictionary *jojoj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
-        NSString *ded;
+        
+        [self.evaluateListArray removeAllObjects];
+        [self.launchEvaListArray removeAllObjects];
+        
+        EvaluateResponse *response = [EvaluateResponse objectWithKeyValues:responseObject];
+        
+        _uidString = response.uid;
+        
+        for (EvaluateModel *evaModel in response.evaluate) {
+            [self.evaluateListArray addObject:evaModel];
+        }
+        
+        for (LaunchEvaluateModel *launchEvaModel in response.launchevaluation) {
+            [self.launchEvaListArray addObject:launchEvaModel];
+        }
+        
+        if ([_tagString isEqualToString:@"get"]) {
+            if (self.evaluateListArray.count > 0) {
+//                [self.baseRemindImageView setHidden:YES];
+            }else{
+                [self.baseRemindImageView setHidden:NO];
+                _pageList--;
+            }
+        }else{
+            if (self.launchEvaListArray.count > 0) {
+//                [self.baseRemindImageView setHidden:YES];
+            }else{
+                [self.baseRemindImageView setHidden:NO];
+                _pageList--;
+            }
+        }
+        
+        [self.evaluateTableView reloadData];
         
     } andFailBlock:^(NSError *error) {
         
@@ -266,6 +423,42 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.evaluateTableView footerEndRefreshing];
     });
+}
+
+#pragma mark - read
+- (void)messageIsReadWithId:(NSString *)idStr andUid:(NSString *)uidStr andCategory:(NSString *)categoryStr
+{
+    NSString *isReadString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMessageIsReadString];
+    NSDictionary *params = @{@"id" : idStr,
+                             @"token" : [self getValidateToken]
+                             };
+    QDFWeakSelf;
+    [self requestDataPostWithString:isReadString params:params successBlock:^(id responseObject) {
+        
+        BaseModel *aModel = [BaseModel objectWithKeyValues:responseObject];
+        if ([aModel.code isEqualToString:@"0000"]) {
+            if ([uidStr isEqualToString:_uidString]) {
+                ReleaseCloseViewController *releaseCloseVC = [[ReleaseCloseViewController alloc] init];
+                releaseCloseVC.evaString = @"0";
+                releaseCloseVC.idString = idStr;
+                releaseCloseVC.categaryString = categoryStr;
+                releaseCloseVC.pidString = uidStr;
+                [weakself.navigationController pushViewController:releaseCloseVC animated:YES];
+            }else{//接单
+                MyClosingViewController *myClosingVC = [[MyClosingViewController alloc] init];
+                myClosingVC.evaString = @"0";
+                myClosingVC.idString = idStr;
+                myClosingVC.categaryString = categoryStr;
+                myClosingVC.pidString = uidStr;
+                [weakself.navigationController pushViewController:myClosingVC animated:YES];
+            }
+        }else{
+            [weakself showHint:aModel.msg];
+        }
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
