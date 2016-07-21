@@ -602,7 +602,7 @@
                 NSString *isHideStr = launchModel.isHide?@"匿名":launchModel.mobile;
                 cell.evaNameLabel.text = isHideStr;
                 cell.evaTimeLabel.text = [NSDate getYMDFormatterTime:launchModel.create_time];
-                cell.evaStarImage.currentIndex = [response.creditor intValue];
+                cell.evaStarImage.currentIndex = [launchModel.creditor intValue];
                 cell.evaProImageView1.backgroundColor = kLightGrayColor;
                 cell.evaProImageView2.backgroundColor = kLightGrayColor;
                 

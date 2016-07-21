@@ -10,6 +10,12 @@
 
 @implementation EvaluateModel
 
++ (NSDictionary *)replacedKeyFromPropertyName
+{
+    return @{@"idString" : @"id",
+             @"uidInner" : @"uid"
+             };
+}
 
 
 @end

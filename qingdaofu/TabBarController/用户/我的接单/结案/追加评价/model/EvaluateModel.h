@@ -12,6 +12,7 @@
 
 @property (nonatomic,copy) NSString *creditor;  //评价方得评价平均分数
 @property (nonatomic,copy) NSString *buid;  //
+@property (nonatomic,copy) NSString *cuid;
 @property (nonatomic,copy) NSString *category;  //产品类型
 @property (nonatomic,copy) NSString *code;  //产品编号
 @property (nonatomic,copy) NSString *content; //评价内容
@@ -35,5 +36,7 @@
 @property (nonatomic,copy) NSString *workefficiency;//
 @property (nonatomic,copy) NSString *youzhi;//
 @property (nonatomic,copy) NSString *zhuanye;//
+
+@property (nonatomic,copy) NSString *frequency; //评价次数
 
 @end

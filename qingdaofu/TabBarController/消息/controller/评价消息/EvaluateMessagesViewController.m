@@ -36,7 +36,6 @@
 
 //json
 @property (nonatomic,assign) NSInteger pageList;
-@property (nonatomic,strong) NSString *uidString;
 @property (nonatomic,strong) NSMutableArray *evaluateListArray;  //收到的评价
 @property (nonatomic,strong) NSMutableArray *launchEvaListArray;  //发出的评价
 
@@ -79,7 +78,7 @@
         _evaTopSwitchView = [EvaTopSwitchView newAutoLayoutView];
         _evaTopSwitchView.backgroundColor = kNavColor;
         [_evaTopSwitchView.getbutton setTitle:@"收到的评价" forState:0];
-        [_evaTopSwitchView.sendButton setTitle:@"发出的评价" forState:0];
+        [_evaTopSwitchView.sendButton setTitle:@"给出的评价" forState:0];
         
         QDFWeakSelf;
         [_evaTopSwitchView setDidSelectedButton:^(NSInteger buttonTag) {
@@ -197,7 +196,7 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     QDFWeakSelf;
-    if ([_tagString isEqualToString:@"get"]) {
+    if ([_tagString isEqualToString:@"get"]) {//收到的评价
         EvaluateModel *evaModel = self.evaluateListArray[indexPath.section];
         cell.evaNameLabel.text = evaModel.mobile;
         cell.evaTimeLabel.text = [NSDate getYMDhmFormatterTime:evaModel.create_time];
@@ -257,10 +256,10 @@
         }
         
         [cell.evaProductButton addAction:^(UIButton *btn) {
-            [weakself messageIsReadWithId:evaModel.product_id andUid:evaModel.uidInner andCategory:evaModel.category];
+            [weakself messageIsReadWithId:evaModel.product_id andUid:evaModel.buid andCuid:evaModel.cuid andCategory:evaModel.category andFrequency:evaModel.frequency];
         }];
         
-    }else{
+    }else{//给出的评价
         LaunchEvaluateModel *launchEvaModel = self.launchEvaListArray[indexPath.section];
         cell.evaNameLabel.text = launchEvaModel.mobile;
         cell.evaTimeLabel.text = [NSDate getYMDhmFormatterTime:launchEvaModel.create_time];
@@ -268,20 +267,29 @@
         cell.evaTextLabel.text = launchEvaModel.content;
         [cell.evaInnnerButton setTitle:launchEvaModel.code forState:0];
         [cell.evaDeleteButton setHidden:NO];
-        [cell.evaAdditionButton setHidden:NO];
         [cell.evaDeleteButton setTitle:@"删除" forState:0];
-        [cell.evaAdditionButton setTitle:@"追加评论" forState:0];
-        
-        [cell setDidSelectedIndex:^(NSInteger btnTag) {
-            if (btnTag == 444) {
-                NSIndexSet *deleteIndexSet = [NSIndexSet indexSetWithIndex:indexPath.section];
-                [weakself.dataList removeObjectAtIndex:indexPath.section];
-                [weakself deleteSections:deleteIndexSet withRowAnimation:UITableViewRowAnimationLeft];
-            }else{
-                AdditionalEvaluateViewController *additionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
-                [weakself.navigationController pushViewController:additionalEvaluateVC animated:YES];
-            }
+        [cell.evaDeleteButton addAction:^(UIButton *btn) {
+            NSString *sid = [NSString getValidStringFromString:launchEvaModel.sid toString:@"0"];
+            [weakself deleteEvaluateWithSection:indexPath.section andId:launchEvaModel.idString andSid:sid];
         }];
+        
+        if ([launchEvaModel.frequency integerValue] >= 2) {
+            [cell.evaAdditionButton setHidden:YES];
+        }else{
+            [cell.evaAdditionButton setHidden:NO];
+            [cell.evaAdditionButton setTitle:@"追加评论" forState:0];
+            [cell.evaAdditionButton addAction:^(UIButton *btn) {
+                AdditionalEvaluateViewController *additionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
+                additionalEvaluateVC.idString = launchEvaModel.idString;
+                additionalEvaluateVC.categoryString = launchEvaModel.category;
+                additionalEvaluateVC.codeString = launchEvaModel.code;
+                additionalEvaluateVC.evaString = launchEvaModel.frequency;
+                if ([launchEvaModel.uidInner isEqualToString:launchEvaModel.cuid]) {
+                    additionalEvaluateVC.typeString = @"发布方";
+                }
+                [weakself.navigationController pushViewController:additionalEvaluateVC animated:YES];
+            }];
+        }
         
         //图片
         if (launchEvaModel.pictures.count == 1) {
@@ -333,10 +341,7 @@
         }
         
         [cell.evaProductButton addAction:^(UIButton *btn) {
-//            NSString *id_category = [NSString stringWithFormat:@"%@_%@",launchEvaModel.idString,launchEvaModel.category];
-//            NSString *value = self.releaseDic[id_category];
-            
-            [weakself messageIsReadWithId:launchEvaModel.product_id andUid:launchEvaModel.uidInner andCategory:launchEvaModel.category];
+            [weakself messageIsReadWithId:launchEvaModel.product_id andUid:launchEvaModel.uidInner andCuid:launchEvaModel.cuid andCategory:launchEvaModel.category andFrequency:launchEvaModel.frequency];
         }];
     }
     return cell;
@@ -366,13 +371,10 @@
         
         NSDictionary *jojoj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
-        
         [self.evaluateListArray removeAllObjects];
         [self.launchEvaListArray removeAllObjects];
         
         EvaluateResponse *response = [EvaluateResponse objectWithKeyValues:responseObject];
-        
-        _uidString = response.uid;
         
         for (EvaluateModel *evaModel in response.evaluate) {
             [self.evaluateListArray addObject:evaModel];
@@ -384,16 +386,14 @@
         
         if ([_tagString isEqualToString:@"get"]) {
             if (self.evaluateListArray.count > 0) {
-//                [self.baseRemindImageView setHidden:YES];
             }else{
-                [self.baseRemindImageView setHidden:NO];
+//                [self.baseRemindImageView setHidden:NO];
                 _pageList--;
             }
         }else{
             if (self.launchEvaListArray.count > 0) {
-//                [self.baseRemindImageView setHidden:YES];
             }else{
-                [self.baseRemindImageView setHidden:NO];
+//                [self.baseRemindImageView setHidden:NO];
                 _pageList--;
             }
         }
@@ -426,7 +426,7 @@
 }
 
 #pragma mark - read
-- (void)messageIsReadWithId:(NSString *)idStr andUid:(NSString *)uidStr andCategory:(NSString *)categoryStr
+- (void)messageIsReadWithId:(NSString *)idStr andUid:(NSString *)uidStr andCuid:(NSString *)cuidStr andCategory:(NSString *)categoryStr andFrequency:(NSString *)frequency
 {
     NSString *isReadString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMessageIsReadString];
     NSDictionary *params = @{@"id" : idStr,
@@ -437,16 +437,16 @@
         
         BaseModel *aModel = [BaseModel objectWithKeyValues:responseObject];
         if ([aModel.code isEqualToString:@"0000"]) {
-            if ([uidStr isEqualToString:_uidString]) {
+            if ([uidStr isEqualToString:cuidStr]) {//发布
                 ReleaseCloseViewController *releaseCloseVC = [[ReleaseCloseViewController alloc] init];
-                releaseCloseVC.evaString = @"0";
+                releaseCloseVC.evaString = frequency;
                 releaseCloseVC.idString = idStr;
                 releaseCloseVC.categaryString = categoryStr;
                 releaseCloseVC.pidString = uidStr;
                 [weakself.navigationController pushViewController:releaseCloseVC animated:YES];
             }else{//接单
                 MyClosingViewController *myClosingVC = [[MyClosingViewController alloc] init];
-                myClosingVC.evaString = @"0";
+                myClosingVC.evaString = frequency;
                 myClosingVC.idString = idStr;
                 myClosingVC.categaryString = categoryStr;
                 myClosingVC.pidString = uidStr;
@@ -454,6 +454,32 @@
             }
         }else{
             [weakself showHint:aModel.msg];
+        }
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
+#pragma mark - delete
+- (void)deleteEvaluateWithSection:(NSInteger)section andId:(NSString *)idStr andSid:(NSString *)sidStr
+{
+    NSString *deleteString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMessageOfDeleteString];
+    NSDictionary *params = @{@"token" : [self getValidateToken],
+                             @"id" : idStr,
+                             @"sid" : sidStr
+                             };
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:deleteString params:params successBlock:^(id responseObject) {
+        
+        BaseModel *yModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:yModel.msg];
+        if ([yModel.code isEqualToString:@"0000"]) {
+            NSIndexSet *deleteIndexSet = [NSIndexSet indexSetWithIndex:section];
+            [weakself.dataList removeObjectAtIndex:section];
+            [weakself deleteSections:deleteIndexSet withRowAnimation:UITableViewRowAnimationMiddle];
+            [weakself.launchEvaListArray removeObjectAtIndex:section];
         }
         
     } andFailBlock:^(NSError *error) {
