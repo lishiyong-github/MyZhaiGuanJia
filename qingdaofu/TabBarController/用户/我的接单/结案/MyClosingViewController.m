@@ -566,11 +566,10 @@
                 
                 if (self.evaluateArray.count > 0) {
                     [cell.userActionButton setTitle:@"查看更多" forState:0];
+                    [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
                 }else{
                     [cell.userActionButton setTitle:@"暂无" forState:0];
                 }
-                
-                [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
             }else{
                 [cell.userNameButton setTitle:@"|  收到的评价" forState:0];
                 [cell.userActionButton setTitle:@"暂无" forState:0];
@@ -700,7 +699,7 @@
             [self.navigationController pushViewController:paceVC animated:YES];
         }
     }else if ((indexPath.section == 4) && (indexPath.row == 0)){
-        if (self.evaluateResponseArray.count > 0) {
+        if (self.evaluateArray.count > 0) {
             AllEvaluationViewController *allEvaluationVC = [[AllEvaluationViewController alloc] init];
             allEvaluationVC.idString = dealModel.idString;
             allEvaluationVC.categoryString = dealModel.category;

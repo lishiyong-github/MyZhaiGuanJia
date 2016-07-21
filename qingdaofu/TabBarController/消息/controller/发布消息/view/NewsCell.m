@@ -54,6 +54,7 @@
         [_typeButton setTitleColor:kBlackColor forState:0];
         _typeButton.titleLabel.font = kBigFont;
         _typeButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        _typeButton.userInteractionEnabled = NO;
     }
     return _typeButton;
 }
@@ -83,8 +84,8 @@
     if (!_goTobutton) {
         _goTobutton = [UIButton newAutoLayoutView];
         [_goTobutton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-//        _goTobutton.titleLabel.font = kBigFont;
         _goTobutton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+        _goTobutton.userInteractionEnabled = NO;
     }
     return _goTobutton;
 }

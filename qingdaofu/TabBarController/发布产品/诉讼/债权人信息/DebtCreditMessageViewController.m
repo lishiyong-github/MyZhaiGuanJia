@@ -172,7 +172,6 @@
     //联系地址
     cell.debtAddressLabel.text = @"联系地址";
     if ([self.categoryString integerValue] == 1) {
-        
         NSString *rere = [NSString getValidStringFromString:deModel.creditoraddress];
         cell.debtAddressLabel.text = [NSString stringWithFormat:@"联系地址    %@",rere];
     }else{

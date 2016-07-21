@@ -166,7 +166,11 @@
                              };
     
     QDFWeakSelf;
-    [self requestDataPostWithString:mesString params:params successBlock:^(id responseObject) {        
+    [self requestDataPostWithString:mesString params:params successBlock:^(id responseObject) {
+        
+        NSDictionary *huhuhu = [NSJSONSerialization JSONObjectWithData:responseObject options:NSLinguisticTaggerJoinNames error:nil];
+        
+        
         if ([page integerValue] == 1) {
             [weakself.messageSysArray removeAllObjects];
         }

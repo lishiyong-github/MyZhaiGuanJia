@@ -1217,12 +1217,22 @@
         
         if ([suitModel.code isEqualToString:@"0000"]) {
             if ([typeString intValue] == 0) {//保存
-                UINavigationController *nav = weakself.navigationController;
-                [nav popViewControllerAnimated:NO];
-                
-                MySaveViewController *mySaveVC = [[MySaveViewController alloc] init];
-                mySaveVC.hidesBottomBarWhenPushed = YES;
-                [nav pushViewController:mySaveVC animated:NO];
+                if (self.suResponse) {
+                    ReportFiSucViewController *reportFiSucVC = [[ReportFiSucViewController alloc] init];
+                    if ([weakself.categoryString integerValue] == 1) {
+                        reportFiSucVC.reportType = @"清收";
+                    }else{
+                        reportFiSucVC.reportType = @"诉讼";
+                    }
+                    [weakself.navigationController pushViewController:reportFiSucVC animated:YES];
+                }else{
+                    UINavigationController *nav = weakself.navigationController;
+                    [nav popViewControllerAnimated:NO];
+                    
+                    MySaveViewController *mySaveVC = [[MySaveViewController alloc] init];
+                    mySaveVC.hidesBottomBarWhenPushed = YES;
+                    [nav pushViewController:mySaveVC animated:NO];
+                }
             }else{
                 ReportFiSucViewController *reportFiSucVC = [[ReportFiSucViewController alloc] init];
                 if ([weakself.categoryString integerValue] == 1) {

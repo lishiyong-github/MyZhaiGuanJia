@@ -32,7 +32,6 @@
 @property (nonatomic,strong) UITableView *evaluateTableView;
 
 @property (nonatomic,strong) NSString *tagString;
-@property (nonatomic,strong) NSMutableArray *dataList;
 
 //json
 @property (nonatomic,assign) NSInteger pageList;
@@ -114,14 +113,6 @@
         [_evaluateTableView addHeaderWithTarget:self action:@selector(headerRefreshOfList)];
     }
     return _evaluateTableView;
-}
-
-- (NSMutableArray *)dataList
-{
-    if (!_dataList) {
-        _dataList = [NSMutableArray arrayWithObjects:@"1111",@"2222",@"3333",@"4444",@"5555",@"6666",@"7777",@"8888",@"9999",@"00000", nil];
-    }
-    return _dataList;
 }
 
 - (NSMutableArray *)evaluateListArray
@@ -477,9 +468,8 @@
         [weakself showHint:yModel.msg];
         if ([yModel.code isEqualToString:@"0000"]) {
             NSIndexSet *deleteIndexSet = [NSIndexSet indexSetWithIndex:section];
-            [weakself.dataList removeObjectAtIndex:section];
-            [weakself deleteSections:deleteIndexSet withRowAnimation:UITableViewRowAnimationMiddle];
             [weakself.launchEvaListArray removeObjectAtIndex:section];
+            [weakself deleteSections:deleteIndexSet withRowAnimation:UITableViewRowAnimationMiddle];
         }
         
     } andFailBlock:^(NSError *error) {

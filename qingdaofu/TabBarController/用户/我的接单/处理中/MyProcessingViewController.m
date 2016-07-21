@@ -706,7 +706,6 @@
             if ([response.product.applyclose integerValue] == 0) {
                 [weakself.processinCommitButton setTitle:@"申请结案" forState:0];
                 [weakself.processinCommitButton addTarget:self action:@selector(endProduct) forControlEvents:UIControlEventTouchUpInside];
-                
             }else if ([response.product.applyclose integerValue] == 4 && [response.product.applyclosefrom isEqualToString:response.product.uidInner]){
                 [weakself.processinCommitButton setTitle:@"申请同意结案" forState:0];
                 [weakself.processinCommitButton addTarget:self action:@selector(endProduct) forControlEvents:UIControlEventTouchUpInside];

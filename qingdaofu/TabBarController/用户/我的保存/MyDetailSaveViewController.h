@@ -14,6 +14,6 @@
 @property (nonatomic,strong) NSString *idString;
 @property (nonatomic,strong) NSString *categaryString;
 
-@property (nonatomic,strong) RowsModel *wModel;
+//@property (nonatomic,strong) RowsModel *wModel;
 
 @end

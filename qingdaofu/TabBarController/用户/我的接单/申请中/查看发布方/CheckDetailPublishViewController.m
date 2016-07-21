@@ -573,6 +573,9 @@
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:evaluateString params:params successBlock:^(id responseObject) {
+        
+        NSDictionary *yuyuy = [NSJSONSerialization JSONObjectWithData:responseObject options:NSManagedObjectContextDidSaveNotification error:nil];
+        
         EvaluateResponse *response = [EvaluateResponse objectWithKeyValues:responseObject];
         [weakself.allEvaResponse addObject:response];
         

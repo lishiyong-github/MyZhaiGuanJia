@@ -7,7 +7,12 @@
 //
 
 #import "PublishMessagesViewController.h"
-#import "MyPublishingViewController.h"  //发布中
+#import "MyPublishingViewController.h"  //我的发布－发布中
+#import "MyDealingViewController.h"  //我的发布－处理中
+#import "ReleaseEndViewController.h"  //我的发布－终止
+#import "ReleaseCloseViewController.h"  //我的发布－结案
+#import "MyDetailSaveViewController.h" //我的保存 －详情
+
 
 #import "NewsCell.h"
 
@@ -148,8 +153,8 @@
     
     if (self.messagePubArray.count > 0) {
         MessageModel *meModel = self.messagePubArray[indexPath.section];
-        if ([meModel.type isEqualToString:@"2"]) {//发布中
-            [self messageIsReadWithIdStr:meModel.idStr andModel:meModel.category_id];
+        if ([meModel.type isEqualToString:@"2"] || [meModel.type isEqualToString:@"16"]) {//发布中
+            [self messageIsReadWithMessagesModel:meModel];
         }
     }
 }
@@ -165,7 +170,7 @@
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:mesString params:params successBlock:^(id responseObject) {
-                
+        
         if ([page integerValue] == 0) {
             [weakself.messagePubArray removeAllObjects];
         }
@@ -207,19 +212,46 @@
     });
 }
 
-- (void)messageIsReadWithIdStr:(NSString *)idStr andModel:(CategoryModel *)categoryModel
+#pragma mark - read
+- (void)messageIsReadWithMessagesModel:(MessageModel *)model
 {
     NSString *isReadString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMessageIsReadString];
-    NSDictionary *params = @{@"id" : idStr,
+    NSDictionary *params = @{@"id" : model.idStr,
                              @"token" : [self getValidateToken]
                              };
     [self requestDataPostWithString:isReadString params:params successBlock:^(id responseObject) {
         BaseModel *aModel = [BaseModel objectWithKeyValues:responseObject];
         if ([aModel.code isEqualToString:@"0000"]) {
-            MyPublishingViewController *myPublishingVC = [[MyPublishingViewController alloc] init];
-            myPublishingVC.idString = categoryModel.idString;
-            myPublishingVC.categaryString = categoryModel.category;
-            [self.navigationController pushViewController:myPublishingVC animated:YES];
+            if ([model.progress_status integerValue] == 1) {
+                MyPublishingViewController *myPublishingVC = [[MyPublishingViewController alloc] init];
+                myPublishingVC.idString = model.category_id.idString;
+                myPublishingVC.categaryString = model.category_id.category;
+                [self.navigationController pushViewController:myPublishingVC animated:YES];
+            }else if ([model.progress_status integerValue] == 2){
+                MyDealingViewController *myDealingVC = [[MyDealingViewController alloc] init];
+                myDealingVC.idString = model.category_id.idString;
+                myDealingVC.categaryString = model.category_id.category;
+                myDealingVC.pidString = model.uidInner;
+                [self.navigationController pushViewController:myDealingVC animated:YES];
+            }else if ([model.progress_status integerValue] == 3){
+                ReleaseEndViewController *releaseEndVC = [[ReleaseEndViewController alloc] init];
+                releaseEndVC.idString = model.category_id.idString;
+                releaseEndVC.categaryString = model.category_id.category;
+                releaseEndVC.pidString = model.uidInner;
+                [self.navigationController pushViewController:releaseEndVC animated:YES];
+            }else if ([model.progress_status integerValue] == 4){
+                ReleaseCloseViewController *releaseCloseVC = [[ReleaseCloseViewController alloc] init];
+                releaseCloseVC.idString = model.category_id.idString;
+                releaseCloseVC.categaryString = model.category_id.category;
+                releaseCloseVC.pidString = model.uidInner;
+                releaseCloseVC.evaString = model.frequency;
+                [self.navigationController pushViewController:releaseCloseVC animated:YES];
+            }else if ([model.progress_status integerValue] == 0){
+                MyDetailSaveViewController *mydetailSaveVC = [[MyDetailSaveViewController alloc] init];
+                mydetailSaveVC.idString = model.category_id.idString;
+                mydetailSaveVC.categaryString = model.category_id.category;
+                [self.navigationController pushViewController:mydetailSaveVC animated:YES];
+            }
         }
         
     } andFailBlock:^(NSError *error) {

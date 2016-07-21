@@ -699,7 +699,7 @@
         [self.navigationController pushViewController:paceVC animated:YES];
         }
     }else if ((indexPath.section == 4) && (indexPath.row == 0)){
-        if (self.evaluateResponseArray.count > 0) {
+        if (self.evaluateArray.count > 0) {
             AllEvaluationViewController *allEvaluationVC = [[AllEvaluationViewController alloc] init];
             allEvaluationVC.idString = dealModel.idString;
             allEvaluationVC.categoryString = dealModel.category;

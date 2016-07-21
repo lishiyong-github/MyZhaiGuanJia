@@ -792,12 +792,18 @@
         
         if ([model.code isEqualToString:@"0000"]) {
             if ([type intValue] == 0) {//保存
-                UINavigationController *nav = weakself.navigationController;
-                [nav popViewControllerAnimated:NO];
-                
-                MySaveViewController *mySaveVC = [[MySaveViewController alloc] init];
-                mySaveVC.hidesBottomBarWhenPushed = YES;
-                [nav pushViewController:mySaveVC animated:NO];
+                if (self.fiModel) {
+                    ReportFiSucViewController *reportFiSucVC = [[ReportFiSucViewController alloc] init];
+                    reportFiSucVC.reportType = @"融资";
+                    [weakself.navigationController pushViewController:reportFiSucVC animated:YES];
+                }else{
+                    UINavigationController *nav = weakself.navigationController;
+                    [nav popViewControllerAnimated:NO];
+                    
+                    MySaveViewController *mySaveVC = [[MySaveViewController alloc] init];
+                    mySaveVC.hidesBottomBarWhenPushed = YES;
+                    [nav pushViewController:mySaveVC animated:NO];
+                }
             }else{
                 ReportFiSucViewController *reportFiSucVC = [[ReportFiSucViewController alloc] init];
                 reportFiSucVC.reportType = @"融资";

@@ -99,8 +99,8 @@
 {
     if (!_debtAddressLabel) {
         _debtAddressLabel = [UILabel newAutoLayoutView];
-        _debtAddressLabel.font = kBigFont;
-        _debtAddressLabel.textColor = kBlackColor;
+        _debtAddressLabel.font = [UIFont systemFontOfSize:12];
+        _debtAddressLabel.textColor = kLightGrayColor;
         _debtAddressLabel.text = @"联系地址";
     }
     return _debtAddressLabel;

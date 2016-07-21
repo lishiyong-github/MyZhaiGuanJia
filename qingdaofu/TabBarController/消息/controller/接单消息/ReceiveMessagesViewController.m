@@ -9,6 +9,7 @@
 #import "ReceiveMessagesViewController.h"
 #import "MyApplyingViewController.h"  //我的接单－申请中
 #import "MyProcessingViewController.h" //我的接单－处理中
+#import "MyEndingViewController.h"  //我的接单－终止
 #import "MyClosingViewController.h" //我的接单－结案
 #import "PaceViewController.h"  //进度
 
@@ -224,32 +225,58 @@
     [self requestDataPostWithString:isReadString params:params successBlock:^(id responseObject) {
         BaseModel *aModel = [BaseModel objectWithKeyValues:responseObject];
         if ([aModel.code isEqualToString:@"0000"]){
-            if ([messageModel.content isEqualToString:@"申请接单"]) {//申请接单
+            if ([messageModel.progress_status integerValue] == 1) {//申请中
                 MyApplyingViewController *myApplyVC = [[MyApplyingViewController alloc] init];
                 myApplyVC.idString = messageModel.category_id.idString;
                 myApplyVC.categaryString = messageModel.category_id.category;
                 myApplyVC.pidString = messageModel.uidInner;
                 [weakself.navigationController pushViewController:myApplyVC animated:YES];
-            }else if([messageModel.content isEqualToString:@"有新进度"]){
-                
-                PaceViewController *paceVC = [[PaceViewController alloc] init];
-                paceVC.categoryString = messageModel.category_id.category;
-                paceVC.idString = messageModel.category_id.idString;
-                [weakself.navigationController pushViewController:paceVC animated:YES];
-            }else if ([messageModel.content isEqualToString:@"发布方已同意结案"]){
-                MyClosingViewController  *myClosingVC = [[MyClosingViewController alloc] init];
-                myClosingVC.idString = messageModel.category_id.idString;
-                myClosingVC.categaryString = messageModel.category_id.category;
-                myClosingVC.pidString = messageModel.uidInner;
-                myClosingVC.evaString = @"0";
-                [weakself.navigationController pushViewController:myClosingVC animated:YES];
-            }else{
+            }else if ([messageModel.progress_status integerValue] == 2){//处理中
                 MyProcessingViewController *myProcessingVC = [[MyProcessingViewController alloc] init];
                 myProcessingVC.idString = messageModel.category_id.idString;
                 myProcessingVC.categaryString = messageModel.category_id.category;
                 myProcessingVC.pidString = messageModel.uidInner;
                 [weakself.navigationController pushViewController:myProcessingVC animated:YES];
+            }else if ([messageModel.progress_status integerValue] == 3){//终止
+                MyEndingViewController *myEndingVC = [[MyEndingViewController alloc] init];
+                myEndingVC.idString = messageModel.category_id.idString;
+                myEndingVC.categaryString = messageModel.category_id.category;
+                myEndingVC.pidString = messageModel.uidInner;
+                [weakself.navigationController pushViewController:myEndingVC animated:YES];
+            }else if ([messageModel.progress_status integerValue] == 4){//结案
+                MyClosingViewController  *myClosingVC = [[MyClosingViewController alloc] init];
+                myClosingVC.idString = messageModel.category_id.idString;
+                myClosingVC.categaryString = messageModel.category_id.category;
+                myClosingVC.pidString = messageModel.uidInner;
+                myClosingVC.evaString = messageModel.frequency;
+                [weakself.navigationController pushViewController:myClosingVC animated:YES];
             }
+            
+//            if ([messageModel.content isEqualToString:@"申请接单"]) {//申请接单
+//                MyApplyingViewController *myApplyVC = [[MyApplyingViewController alloc] init];
+//                myApplyVC.idString = messageModel.category_id.idString;
+//                myApplyVC.categaryString = messageModel.category_id.category;
+//                myApplyVC.pidString = messageModel.uidInner;
+//                [weakself.navigationController pushViewController:myApplyVC animated:YES];
+//            }else if([messageModel.content isEqualToString:@"有新进度"]){
+//                PaceViewController *paceVC = [[PaceViewController alloc] init];
+//                paceVC.categoryString = messageModel.category_id.category;
+//                paceVC.idString = messageModel.category_id.idString;
+//                [weakself.navigationController pushViewController:paceVC animated:YES];
+//            }else if ([messageModel.content isEqualToString:@"发布方已同意结案"]){
+//                MyClosingViewController  *myClosingVC = [[MyClosingViewController alloc] init];
+//                myClosingVC.idString = messageModel.category_id.idString;
+//                myClosingVC.categaryString = messageModel.category_id.category;
+//                myClosingVC.pidString = messageModel.uidInner;
+//                myClosingVC.evaString = @"0";
+//                [weakself.navigationController pushViewController:myClosingVC animated:YES];
+//            }else{
+//                MyProcessingViewController *myProcessingVC = [[MyProcessingViewController alloc] init];
+//                myProcessingVC.idString = messageModel.category_id.idString;
+//                myProcessingVC.categaryString = messageModel.category_id.category;
+//                myProcessingVC.pidString = messageModel.uidInner;
+//                [weakself.navigationController pushViewController:myProcessingVC animated:YES];
+//            }
         }
         
     } andFailBlock:^(NSError *error) {

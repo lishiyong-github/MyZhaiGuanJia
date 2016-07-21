@@ -118,9 +118,10 @@
     [cell.remindImageButton setHidden:YES];
     
     if ([self.categoryString intValue] == 3) {//诉讼，有案号及案号类型
-        NSArray *array1 = @[@"债权人上传处置资产",@"律师接单",@"双方洽谈",@"向法院起诉(财产保全)",@"整理诉讼材料",@"法院立案",@"向当事人发出开庭传票",@"开庭前调解",@"开庭",@"判决",@"二次开庭",@"二次判决",@"移交执行局申请执行",@"执行中提供借款人的财产线索",@"调查(公告)",@"拍卖",@"流拍",@"拍卖成功",@"付费"];
+        
+        NSArray *array1 = @[@"一审",@"二审",@"再审",@"执行"];
+        NSArray *array2 = @[@"债权人上传处置资产",@"律师接单",@"双方洽谈",@"向法院起诉(财产保全)",@"整理诉讼材料",@"法院立案",@"向当事人发出开庭传票",@"开庭前调解",@"开庭",@"判决",@"二次开庭",@"二次判决",@"移交执行局申请执行",@"执行中提供借款人的财产线索",@"调查(公告)",@"拍卖",@"流拍",@"拍卖成功",@"付费"];
         //诉讼的案号状态：0=>一审,1=>二审,2=>再审,3=>执行
-        NSArray *array2 = @[@"一审",@"二审",@"再审",@"执行"];
         NSInteger a1 = [model.audit intValue];
         NSInteger a2 = [model.status intValue]-1;
         NSString *caseString = [NSString getValidStringFromString:model.caseString];

@@ -22,5 +22,7 @@
 @property (nonatomic,copy) NSString *uidInner;
 @property (nonatomic,copy) NSString *uri;
 @property (nonatomic,strong) CategoryModel *category_id;
+@property (nonatomic,copy) NSString *progress_status;  //状态
+@property (nonatomic,copy) NSString *frequency;  //评价次数
 
 @end
