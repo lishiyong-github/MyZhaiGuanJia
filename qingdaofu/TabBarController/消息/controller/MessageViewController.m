@@ -12,9 +12,11 @@
 #import "EvaluateMessagesViewController.h"  //评价消息
 #import "SystemMessagesViewController.h"   //系统消息
 
-//#import "MessageCell.h"
-
 #import "NewsTableViewCell.h"
+
+#import "TabBarItem.h"
+#import "UITabBar+Badge.h"
+
 
 @interface MessageViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -30,7 +32,15 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [self getMessageTypeAndNumber];
+    [self tokenIsValid];
+    QDFWeakSelf;
+    [self setDidTokenValid:^(TokenModel *model) {
+        if ([model.code integerValue] == 0000){//正常
+            [weakself getMessageTypeAndNumber];
+        }else{
+            [weakself showHint:model.msg];
+        }
+    }];
 }
 
 - (void)viewDidLoad {
@@ -127,16 +137,19 @@
         [cell.newsActionButton setTitleColor:kBlueColor forState:0];
         cell.newsActionButton.titleLabel.backgroundColor = kBlueColor;
         [cell.newsActionButton setTitleColor:kNavColor forState:0];
-        
-        
+                
         if ([childDic[@"number"] integerValue] == 0) {
             [cell.newsCountButton setHidden:YES];
         }else{
-            [cell.newsCountButton setHidden:NO];
-            if ([childDic[@"number"] integerValue] > 99) {
-                [cell.newsCountButton setTitle:@"99+" forState:0];
+            if (indexPath.row == 2) {
+                [cell.newsCountButton setHidden:YES];
             }else{
-                [cell.newsCountButton setTitle:childDic[@"number"] forState:0];
+                [cell.newsCountButton setHidden:NO];
+                if ([childDic[@"number"] integerValue] > 99) {
+                    [cell.newsCountButton setTitle:@"99+" forState:0];
+                }else{
+                    [cell.newsCountButton setTitle:childDic[@"number"] forState:0];
+                }
             }
         }
         return cell;
@@ -197,8 +210,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-//    [self showHint:@"您未收到消息提醒"];
 
     if (indexPath.section == 0) {
         switch (indexPath.row) {
@@ -242,6 +253,23 @@
         NSDictionary *opopo = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
         weakself.resultDic = [NSMutableDictionary dictionaryWithDictionary:opopo[@"result"]];
         [weakself.messageTableView reloadData];
+        
+        UIWindow *window = [UIApplication sharedApplication].keyWindow;
+        UITabBarController *tabBarController = (UITabBarController *)window.rootViewController;
+        
+        NSInteger n1 = [weakself.resultDic[@"1"][@"number"] integerValue];
+        NSInteger n2 = [weakself.resultDic[@"2"][@"number"] integerValue];
+        NSInteger n4 = [weakself.resultDic[@"4"][@"number"] integerValue];
+
+        NSString *all = [NSString stringWithFormat:@"%ld",n1+n2+n4];
+        
+        if ([all integerValue] == 0) {
+            //隐藏
+            [self.tabBarController.tabBar hideBadgeOnItemIndex:3];
+        }else{
+            //显示
+            [tabBarController.tabBar showBadgeOnItemIndex:3];
+        }
         
     } andFailBlock:^(NSError *error) {
         

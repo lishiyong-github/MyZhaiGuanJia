@@ -49,6 +49,8 @@
     
     [self.view addSubview:self.evaTopSwitchView];
     [self.view addSubview:self.evaluateTableView];
+    [self.view addSubview:self.baseRemindImageView];
+    [self.baseRemindImageView setHidden:YES];
     
     _tagString = @"get";
     [self.view setNeedsUpdateConstraints];
@@ -66,6 +68,9 @@
         [self.evaluateTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
         [self.evaluateTableView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.evaTopSwitchView];
         
+        [self.baseRemindImageView autoAlignAxisToSuperviewAxis:ALAxisVertical];
+        [self.baseRemindImageView autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
+
         self.didSetupConstraints = YES;
     }
     [super updateViewConstraints];
@@ -86,12 +91,24 @@
                 [weakself.evaTopSwitchView.getbutton setTitleColor:kBlueColor forState:0];
                 [weakself.evaTopSwitchView.sendButton setTitleColor:kBlackColor forState:0];
                 
+                if (self.evaluateListArray.count == 0) {
+                    [weakself.baseRemindImageView setHidden:NO];
+                }else{
+                    [weakself.baseRemindImageView setHidden:YES];
+                }
+                
                 [weakself.evaluateTableView reloadData];
                 
             }else{//发出的
                 _tagString = @"send";
                 [weakself.evaTopSwitchView.sendButton setTitleColor:kBlueColor forState:0];
                 [weakself.evaTopSwitchView.getbutton setTitleColor:kBlackColor forState:0];
+                
+                if (self.launchEvaListArray.count == 0) {
+                    [weakself.baseRemindImageView setHidden:NO];
+                }else{
+                    [weakself.baseRemindImageView setHidden:YES];
+                }
                 
                 [weakself.evaluateTableView reloadData];
             }
@@ -247,7 +264,7 @@
         }
         
         [cell.evaProductButton addAction:^(UIButton *btn) {
-            [weakself messageIsReadWithId:evaModel.product_id andUid:evaModel.buid andCuid:evaModel.cuid andCategory:evaModel.category andFrequency:evaModel.frequency];
+            [weakself messageIsReadWithId:evaModel.idString andUid:evaModel.buid andCuid:evaModel.cuid andCategory:evaModel.category andFrequency:evaModel.frequency];
         }];
         
     }else{//给出的评价
@@ -332,7 +349,7 @@
         }
         
         [cell.evaProductButton addAction:^(UIButton *btn) {
-            [weakself messageIsReadWithId:launchEvaModel.product_id andUid:launchEvaModel.uidInner andCuid:launchEvaModel.cuid andCategory:launchEvaModel.category andFrequency:launchEvaModel.frequency];
+            [weakself messageIsReadWithId:launchEvaModel.idString andUid:launchEvaModel.uidInner andCuid:launchEvaModel.cuid andCategory:launchEvaModel.category andFrequency:launchEvaModel.frequency];
         }];
     }
     return cell;
@@ -360,8 +377,6 @@
     NSDictionary *params = @{@"token" : [self getValidateToken]};
     [self requestDataPostWithString:listString params:params successBlock:^(id responseObject) {
         
-        NSDictionary *jojoj = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        
         [self.evaluateListArray removeAllObjects];
         [self.launchEvaListArray removeAllObjects];
         
@@ -377,14 +392,17 @@
         
         if ([_tagString isEqualToString:@"get"]) {
             if (self.evaluateListArray.count > 0) {
+                [self.baseRemindImageView setHidden:YES];
+
             }else{
-//                [self.baseRemindImageView setHidden:NO];
+                [self.baseRemindImageView setHidden:NO];
                 _pageList--;
             }
         }else{
             if (self.launchEvaListArray.count > 0) {
+                [self.baseRemindImageView setHidden:YES];
             }else{
-//                [self.baseRemindImageView setHidden:NO];
+                [self.baseRemindImageView setHidden:NO];
                 _pageList--;
             }
         }
@@ -419,37 +437,21 @@
 #pragma mark - read
 - (void)messageIsReadWithId:(NSString *)idStr andUid:(NSString *)uidStr andCuid:(NSString *)cuidStr andCategory:(NSString *)categoryStr andFrequency:(NSString *)frequency
 {
-    NSString *isReadString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMessageIsReadString];
-    NSDictionary *params = @{@"id" : idStr,
-                             @"token" : [self getValidateToken]
-                             };
-    QDFWeakSelf;
-    [self requestDataPostWithString:isReadString params:params successBlock:^(id responseObject) {
-        
-        BaseModel *aModel = [BaseModel objectWithKeyValues:responseObject];
-        if ([aModel.code isEqualToString:@"0000"]) {
-            if ([uidStr isEqualToString:cuidStr]) {//发布
-                ReleaseCloseViewController *releaseCloseVC = [[ReleaseCloseViewController alloc] init];
-                releaseCloseVC.evaString = frequency;
-                releaseCloseVC.idString = idStr;
-                releaseCloseVC.categaryString = categoryStr;
-                releaseCloseVC.pidString = uidStr;
-                [weakself.navigationController pushViewController:releaseCloseVC animated:YES];
-            }else{//接单
-                MyClosingViewController *myClosingVC = [[MyClosingViewController alloc] init];
-                myClosingVC.evaString = frequency;
-                myClosingVC.idString = idStr;
-                myClosingVC.categaryString = categoryStr;
-                myClosingVC.pidString = uidStr;
-                [weakself.navigationController pushViewController:myClosingVC animated:YES];
-            }
-        }else{
-            [weakself showHint:aModel.msg];
+        if ([uidStr isEqualToString:cuidStr]) {//发布
+            ReleaseCloseViewController *releaseCloseVC = [[ReleaseCloseViewController alloc] init];
+            releaseCloseVC.evaString = frequency;
+            releaseCloseVC.idString = idStr;
+            releaseCloseVC.categaryString = categoryStr;
+            releaseCloseVC.pidString = uidStr;
+            [self.navigationController pushViewController:releaseCloseVC animated:YES];
+        }else{//接单
+            MyClosingViewController *myClosingVC = [[MyClosingViewController alloc] init];
+            myClosingVC.evaString = frequency;
+            myClosingVC.idString = idStr;
+            myClosingVC.categaryString = categoryStr;
+            myClosingVC.pidString = uidStr;
+            [self.navigationController pushViewController:myClosingVC animated:YES];
         }
-        
-    } andFailBlock:^(NSError *error) {
-        
-    }];
 }
 
 #pragma mark - delete

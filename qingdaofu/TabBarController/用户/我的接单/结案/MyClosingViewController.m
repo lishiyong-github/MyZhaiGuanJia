@@ -739,6 +739,7 @@
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
+        
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
         [weakself.orderCloseArray addObject:response];
         [weakself.myClosingTableView reloadData];

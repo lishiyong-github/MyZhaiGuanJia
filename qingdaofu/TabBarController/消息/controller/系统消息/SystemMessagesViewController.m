@@ -167,10 +167,7 @@
     
     QDFWeakSelf;
     [self requestDataPostWithString:mesString params:params successBlock:^(id responseObject) {
-        
-        NSDictionary *huhuhu = [NSJSONSerialization JSONObjectWithData:responseObject options:NSLinguisticTaggerJoinNames error:nil];
-        
-        
+                
         if ([page integerValue] == 1) {
             [weakself.messageSysArray removeAllObjects];
         }
@@ -222,7 +219,6 @@
     NSDictionary *params = @{@"id" : idStr,
                              @"token" : [self getValidateToken]
                              };
-    
     QDFWeakSelf;
     [self requestDataPostWithString:isReadString params:params successBlock:^(id responseObject) {
         
@@ -244,19 +240,17 @@
                     completeVC.categoryString = categoryStr;
                     [weakself.navigationController pushViewController:completeVC animated:YES];
                 }];
-                
-            }else if([typeStr integerValue] == 23){//完善（融资清收诉讼）发布中
-                MyAgentListViewController *myAgentListVC = [[MyAgentListViewController alloc] init];
-                myAgentListVC.hidesBottomBarWhenPushed = YES;
-                myAgentListVC.typePid = @"本人";
-                [weakself.navigationController pushViewController:myAgentListVC animated:YES];
-            }else{
+            }else if([typeStr integerValue] == 21){//完善（融资清收诉讼）发布中
                 MyPublishingViewController *myPublishVC = [[MyPublishingViewController alloc] init];
                 myPublishVC.idString = categoryModel.idString;
                 myPublishVC.categaryString = categoryModel.category;
                 myPublishVC.hidesBottomBarWhenPushed = YES;
                 [self.navigationController pushViewController:myPublishVC animated:YES];
-                
+            }else{//代理人
+                MyAgentListViewController *myAgentListVC = [[MyAgentListViewController alloc] init];
+                myAgentListVC.hidesBottomBarWhenPushed = YES;
+                myAgentListVC.typePid = @"本人";
+                [weakself.navigationController pushViewController:myAgentListVC animated:YES];
             }
         }
         

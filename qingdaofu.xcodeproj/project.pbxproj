@@ -501,6 +501,7 @@
 		A1B0292D1D17CE6F00F32A09 /* AFURLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = A1B029251D17CE6F00F32A09 /* AFURLRequestSerialization.m */; };
 		A1B0292E1D17CE6F00F32A09 /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = A1B029271D17CE6F00F32A09 /* AFURLResponseSerialization.m */; };
 		A1B0292F1D17CE6F00F32A09 /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A1B029291D17CE6F00F32A09 /* AFURLSessionManager.m */; };
+		A1BC16661D40CA190008E2DE /* UITabBar+Badge.m in Sources */ = {isa = PBXBuildFile; fileRef = A1BC16651D40CA190008E2DE /* UITabBar+Badge.m */; };
 		A1E4AFB71CD0C674001A5E9E /* SingleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A1E4AFB61CD0C674001A5E9E /* SingleButton.m */; };
 		A1ECB66F1CED6CA70017EA10 /* PlaceHolderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = A1ECB66E1CED6CA70017EA10 /* PlaceHolderTextView.m */; };
 		A1FB26571CF2B41B00B66608 /* ReportSuccessCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1FB26561CF2B41B00B66608 /* ReportSuccessCell.m */; };
@@ -1275,6 +1276,8 @@
 		A1B029271D17CE6F00F32A09 /* AFURLResponseSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLResponseSerialization.m; sourceTree = "<group>"; };
 		A1B029281D17CE6F00F32A09 /* AFURLSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLSessionManager.h; sourceTree = "<group>"; };
 		A1B029291D17CE6F00F32A09 /* AFURLSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLSessionManager.m; sourceTree = "<group>"; };
+		A1BC16641D40CA190008E2DE /* UITabBar+Badge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITabBar+Badge.h"; sourceTree = "<group>"; };
+		A1BC16651D40CA190008E2DE /* UITabBar+Badge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITabBar+Badge.m"; sourceTree = "<group>"; };
 		A1E4AFB51CD0C674001A5E9E /* SingleButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SingleButton.h; sourceTree = "<group>"; };
 		A1E4AFB61CD0C674001A5E9E /* SingleButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SingleButton.m; sourceTree = "<group>"; };
 		A1ECB66D1CED6CA70017EA10 /* PlaceHolderTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceHolderTextView.h; sourceTree = "<group>"; };
@@ -2794,6 +2797,8 @@
 				A1882F5F1D2E2AE40064BD38 /* NSString+ValidString.m */,
 				A14190461D3228CC005DA20E /* UIViewController+Keyboard.h */,
 				A14190471D3228CC005DA20E /* UIViewController+Keyboard.m */,
+				A1BC16641D40CA190008E2DE /* UITabBar+Badge.h */,
+				A1BC16651D40CA190008E2DE /* UITabBar+Badge.m */,
 			);
 			path = "工具类";
 			sourceTree = "<group>";
@@ -3686,6 +3691,7 @@
 				A19D293E1CD1A32D00DAAEA7 /* NSString+Fram.m in Sources */,
 				A1718E0B1CFD84A40007DA6F /* AuthenLawViewController.m in Sources */,
 				A16391761D20194B0051F1D0 /* FSImageView.m in Sources */,
+				A1BC16661D40CA190008E2DE /* UITabBar+Badge.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

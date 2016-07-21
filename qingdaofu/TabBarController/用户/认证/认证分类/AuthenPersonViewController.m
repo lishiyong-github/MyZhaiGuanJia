@@ -10,7 +10,7 @@
 #import "CompleteViewController.h"   //认证成功
 
 #import "TakePictureCell.h"
-#import "EditDebtAddressCell.h"
+//#import "EditDebtAddressCell.h"
 #import "AgentCell.h"
 #import "BaseCommitButton.h"
 
@@ -126,18 +126,19 @@
     }else if (section == 1){
         return 4;
     }
-    return 3;
+    return 2;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
         return 80;
-    }else if (indexPath.section == 2){
-        if (indexPath.row == 2) {
-            return 70;
-        }
     }
+//    else if (indexPath.section == 2){
+//        if (indexPath.row == 2) {
+//            return 70;
+//        }
+//    }
     return kCellHeight;
 }
 
@@ -260,29 +261,29 @@
             return cell;
         }
         
-        identifier = @"authenPer3";
-        
-        EditDebtAddressCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        
-        if (!cell) {
-            cell = [[EditDebtAddressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.leftTextViewConstraints.constant = 105;
-        cell.ediLabel.text = @"经典案例";
-        cell.ediTextView.placeholder = @"关于个人在融资等方面的成功案例，有利于发布方更加青睐你";
-        cell.ediTextView.text = certificationModel.casedesc;
-        [cell setTouchBeginPoint:^(CGPoint point) {
-            weakself.touchPoint = point;
-        }];
-        
-        QDFWeak(cell);
-        [cell setDidEndEditing:^(NSString *text) {
-            weakcell.ediTextView.text = text;
-            [weakself.perDataDictionary setValue:text forKey:@"casedesc"];
-        }];
-        
-        return cell;
+//        identifier = @"authenPer3";
+//        
+//        EditDebtAddressCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+//        
+//        if (!cell) {
+//            cell = [[EditDebtAddressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+//        }
+//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//        cell.leftTextViewConstraints.constant = 105;
+//        cell.ediLabel.text = @"经典案例";
+//        cell.ediTextView.placeholder = @"关于个人在融资等方面的成功案例，有利于发布方更加青睐你";
+//        cell.ediTextView.text = certificationModel.casedesc;
+//        [cell setTouchBeginPoint:^(CGPoint point) {
+//            weakself.touchPoint = point;
+//        }];
+//        
+//        QDFWeak(cell);
+//        [cell setDidEndEditing:^(NSString *text) {
+//            weakcell.ediTextView.text = text;
+//            [weakself.perDataDictionary setValue:text forKey:@"casedesc"];
+//        }];
+//        
+//        return cell;
     }
     
     return nil;

@@ -22,8 +22,8 @@
         [self.contentView addSubview:self.comPicLabel];
         [self.contentView addSubview:self.comPicButton];
         [self.contentView addSubview:self.comMailLabel];
-        [self.contentView addSubview:self.comExampleLabel];
-        [self.contentView addSubview:self.comExampleLabel2];
+//        [self.contentView addSubview:self.comExampleLabel];
+//        [self.contentView addSubview:self.comExampleLabel2];
 
         [self.contentView setNeedsUpdateConstraints];
     }
@@ -56,12 +56,12 @@
         [self.comMailLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
         [self.comMailLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.comPicButton withOffset:kBigPadding];
 
-        [self.comExampleLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.comMailLabel withOffset:kBigPadding];
-        [self.comExampleLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
-
-        [self.comExampleLabel2 autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:110];
-        [self.comExampleLabel2 autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.comExampleLabel];
-        [self.comExampleLabel2 autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
+//        [self.comExampleLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.comMailLabel withOffset:kBigPadding];
+//        [self.comExampleLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
+//
+//        [self.comExampleLabel2 autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:110];
+//        [self.comExampleLabel2 autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.comExampleLabel];
+//        [self.comExampleLabel2 autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         
         self.didSetupConstraints = YES;
     }
@@ -132,26 +132,26 @@
     return _comMailLabel;
 }
 
-- (UILabel *)comExampleLabel
-{
-    if (!_comExampleLabel) {
-        _comExampleLabel = [UILabel newAutoLayoutView];
-        _comExampleLabel.font = kBigFont;
-        _comExampleLabel.textColor = kBlackColor;
-    }
-    return _comExampleLabel;
-}
-
-- (UILabel *)comExampleLabel2
-{
-    if (!_comExampleLabel2) {
-        _comExampleLabel2 = [UILabel newAutoLayoutView];
-        _comExampleLabel2.font = kFirstFont;
-        _comExampleLabel2.numberOfLines = 0;
-        _comExampleLabel2.textColor = kLightGrayColor;
-    }
-    return _comExampleLabel2;
-}
+//- (UILabel *)comExampleLabel
+//{
+//    if (!_comExampleLabel) {
+//        _comExampleLabel = [UILabel newAutoLayoutView];
+//        _comExampleLabel.font = kBigFont;
+//        _comExampleLabel.textColor = kBlackColor;
+//    }
+//    return _comExampleLabel;
+//}
+//
+//- (UILabel *)comExampleLabel2
+//{
+//    if (!_comExampleLabel2) {
+//        _comExampleLabel2 = [UILabel newAutoLayoutView];
+//        _comExampleLabel2.font = kFirstFont;
+//        _comExampleLabel2.numberOfLines = 0;
+//        _comExampleLabel2.textColor = kLightGrayColor;
+//    }
+//    return _comExampleLabel2;
+//}
 
 - (void)awakeFromNib {
     // Initialization code

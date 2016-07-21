@@ -193,11 +193,10 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == 0) {
-        
         if (self.certifiDataArray.count > 0) {
             CertificationModel *model = self.certifiDataArray[0];
             if ([model.category integerValue] == 1) {//个人
-                return 7;
+                return 6;
             }else if ([model.category integerValue] == 2){//律所
                 return 8;
             }else if ([model.category integerValue] == 3){//公司
@@ -573,8 +572,6 @@
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:evaluateString params:params successBlock:^(id responseObject) {
-        
-        NSDictionary *yuyuy = [NSJSONSerialization JSONObjectWithData:responseObject options:NSManagedObjectContextDidSaveNotification error:nil];
         
         EvaluateResponse *response = [EvaluateResponse objectWithKeyValues:responseObject];
         [weakself.allEvaResponse addObject:response];

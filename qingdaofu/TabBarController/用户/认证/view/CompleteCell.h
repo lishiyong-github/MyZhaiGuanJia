@@ -20,8 +20,8 @@
 
 @property (nonatomic,strong) UILabel *mobileLabel;  //联系方式
 @property (nonatomic,strong) UILabel *comMailLabel;  //邮箱
-@property (nonatomic,strong) UILabel *comExampleLabel;  //案例
-@property (nonatomic,strong) UILabel *comExampleLabel2;//具体案例
+//@property (nonatomic,strong) UILabel *comExampleLabel;  //案例
+//@property (nonatomic,strong) UILabel *comExampleLabel2;//具体案例
 
 @property (nonatomic,strong) UIButton *comImageButton;
 

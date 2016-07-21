@@ -114,12 +114,11 @@
  Application Programming Interface（API）
  */
 
-//#define kQDFTestUrlString @"http://www.zcb2016.com/wap/"
-//#define kQDFTestImageString @"http://www.zcb2016.com"
+#define kQDFTestUrlString @"http://www.zcb2016.com/wap/"
+#define kQDFTestImageString @"http://www.zcb2016.com"
 
-#define kQDFTestUrlString @"http://testq.zcb2016.com/wap/"
-#define kQDFTestImageString @"http://testq.zcb2016.com"
-
+//#define kQDFTestUrlString @"http://testq.zcb2016.com/wap/"
+//#define kQDFTestImageString @"http://testq.zcb2016.com"
 
 //post
 /*

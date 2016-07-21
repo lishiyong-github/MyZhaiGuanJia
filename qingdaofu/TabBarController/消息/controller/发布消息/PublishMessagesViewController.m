@@ -171,7 +171,7 @@
     QDFWeakSelf;
     [self requestDataPostWithString:mesString params:params successBlock:^(id responseObject) {
         
-        if ([page integerValue] == 0) {
+        if ([page integerValue] == 1) {
             [weakself.messagePubArray removeAllObjects];
         }
         
@@ -196,7 +196,8 @@
 
 - (void)headerRefreshWithMessageOfPublish
 {
-    [self getPublishMessageListWithPage:@"0"];
+    _mesPage = 1;
+    [self getPublishMessageListWithPage:@"1"];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.newsListTableView headerEndRefreshing];
     });

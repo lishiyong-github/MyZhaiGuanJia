@@ -40,6 +40,7 @@
         
         [self.newsCountButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.newsNameButton];
         [self.newsCountButton autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.newsActionButton withOffset:-2];
+        [self.newsCountButton autoSetDimensionsToSize:CGSizeMake(20, 20)];
         
         [self.newsActionButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.newsActionButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.newsNameButton];
@@ -67,8 +68,8 @@
         _newsCountButton = [UIButton newAutoLayoutView];
         _newsCountButton.backgroundColor = kBlueColor;
         [_newsCountButton setTitleColor:kNavColor forState:0];
-        _newsCountButton.titleLabel.font = kFirstFont;
-        _newsCountButton.layer.cornerRadius = 14;
+        _newsCountButton.titleLabel.font = kTabBarFont;
+        _newsCountButton.layer.cornerRadius = 10;
         _newsCountButton.userInteractionEnabled = NO;
     }
     return _newsCountButton;

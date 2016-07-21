@@ -96,8 +96,6 @@
             [_reportSucTableView setLayoutMargins:UIEdgeInsetsZero];
             
         }
-        
-
     }
     return _reportSucTableView;
 }

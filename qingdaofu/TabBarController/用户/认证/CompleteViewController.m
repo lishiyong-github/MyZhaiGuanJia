@@ -183,7 +183,7 @@
         if (indexPath.row == 0) {
             return kCellHeight;
         }
-        return 220+MAX(actualsize.height, 33);
+        return 215;
         
     }else if ([self.categoryString intValue] == 2){//律所
         if (indexPath.row == 0) {
@@ -287,10 +287,10 @@
         NSString *emailStr = [NSString getValidStringFromString:certificationModel.email];
         NSMutableAttributedString *mailString = [cell.comMailLabel setAttributeString:@"邮箱：            " withColor:kBlackColor andSecond:emailStr withColor:kLightGrayColor withFont:14];
         [cell.comMailLabel setAttributedText:mailString];
-        
-        cell.comExampleLabel.text = @"经典案例：   ";
-        cell.comExampleLabel2.text = [NSString getValidStringFromString:certificationModel.casedesc];
-        
+//        
+//        cell.comExampleLabel.text = @"经典案例：   ";
+//        cell.comExampleLabel2.text = [NSString getValidStringFromString:certificationModel.casedesc];
+//        
         return cell;
         
     }else if ([self.categoryString intValue] == 2){//律所
