@@ -24,5 +24,6 @@
 @property (nonatomic,strong) CategoryModel *category_id;
 @property (nonatomic,copy) NSString *progress_status;  //状态
 @property (nonatomic,copy) NSString *frequency;  //评价次数
+@property (nonatomic,copy) NSString *app_id;
 
 @end

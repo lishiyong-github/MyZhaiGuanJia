@@ -14,5 +14,5 @@
 //产品类型
 @property (nonatomic,strong) NSString *categoryString;
 //产品编号
-@property (nonatomic,strong) NSString *codeString;
+//@property (nonatomic,strong) NSString *codeString;
 @end

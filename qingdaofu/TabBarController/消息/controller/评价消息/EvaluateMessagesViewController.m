@@ -208,7 +208,7 @@
         EvaluateModel *evaModel = self.evaluateListArray[indexPath.section];
         cell.evaNameLabel.text = evaModel.mobile;
         cell.evaTimeLabel.text = [NSDate getYMDhmFormatterTime:evaModel.create_time];
-        cell.evaStarImageView.currentIndex = [evaModel.creditor integerValue];
+        cell.evaStarImageView.currentIndex = [evaModel.creditor intValue];
         cell.evaTextLabel.text = evaModel.content;
         [cell.evaInnnerButton setTitle:evaModel.code forState:0];
         [cell.evaDeleteButton setHidden:YES];
@@ -255,23 +255,23 @@
         }
         
         //产品分类图片
-        if ([evaModel.category integerValue] == 1) {//list_financing
+        if ([evaModel.category intValue] == 1) {//list_financing
             [cell.evaInnnerButton setImage:[UIImage imageNamed:@"list_financing"] forState:0];
-        }else if ([evaModel.category integerValue] == 2){//list_collection
+        }else if ([evaModel.category intValue] == 2){//list_collection
             [cell.evaInnnerButton setImage:[UIImage imageNamed:@"list_collection"] forState:0];
         }else{//list_litigation
             [cell.evaInnnerButton setImage:[UIImage imageNamed:@"list_litigation"] forState:0];
         }
         
         [cell.evaProductButton addAction:^(UIButton *btn) {
-            [weakself messageIsReadWithId:evaModel.idString andUid:evaModel.buid andCuid:evaModel.cuid andCategory:evaModel.category andFrequency:evaModel.frequency];
+            [weakself messageIsReadWithId:evaModel.product_id andUid:evaModel.buid andCuid:evaModel.cuid andCategory:evaModel.category andFrequency:evaModel.frequency];
         }];
         
     }else{//给出的评价
         LaunchEvaluateModel *launchEvaModel = self.launchEvaListArray[indexPath.section];
         cell.evaNameLabel.text = launchEvaModel.mobile;
         cell.evaTimeLabel.text = [NSDate getYMDhmFormatterTime:launchEvaModel.create_time];
-        cell.evaStarImageView.currentIndex = [launchEvaModel.creditor integerValue];
+        cell.evaStarImageView.currentIndex = [launchEvaModel.creditor intValue];
         cell.evaTextLabel.text = launchEvaModel.content;
         [cell.evaInnnerButton setTitle:launchEvaModel.code forState:0];
         [cell.evaDeleteButton setHidden:NO];
@@ -281,7 +281,7 @@
             [weakself deleteEvaluateWithSection:indexPath.section andId:launchEvaModel.idString andSid:sid];
         }];
         
-        if ([launchEvaModel.frequency integerValue] >= 2) {
+        if ([launchEvaModel.frequency intValue] >= 2) {
             [cell.evaAdditionButton setHidden:YES];
         }else{
             [cell.evaAdditionButton setHidden:NO];
@@ -340,16 +340,16 @@
         }
 
         //产品分类图片
-        if ([launchEvaModel.category integerValue] == 1) {
+        if ([launchEvaModel.category intValue] == 1) {
             [cell.evaInnnerButton setImage:[UIImage imageNamed:@"list_financing"] forState:0];
-        }else if ([launchEvaModel.category integerValue] == 2){//list_collection
+        }else if ([launchEvaModel.category intValue] == 2){//list_collection
             [cell.evaInnnerButton setImage:[UIImage imageNamed:@"list_collection"] forState:0];
         }else{//list_litigation
             [cell.evaInnnerButton setImage:[UIImage imageNamed:@"list_litigation"] forState:0];
         }
         
         [cell.evaProductButton addAction:^(UIButton *btn) {
-            [weakself messageIsReadWithId:launchEvaModel.idString andUid:launchEvaModel.uidInner andCuid:launchEvaModel.cuid andCategory:launchEvaModel.category andFrequency:launchEvaModel.frequency];
+            [weakself messageIsReadWithId:launchEvaModel.product_id andUid:launchEvaModel.uidInner andCuid:launchEvaModel.cuid andCategory:launchEvaModel.category andFrequency:launchEvaModel.frequency];
         }];
     }
     return cell;

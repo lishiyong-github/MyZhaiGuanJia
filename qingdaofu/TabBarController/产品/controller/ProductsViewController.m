@@ -61,9 +61,7 @@
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:kBlackColor,NSFontAttributeName:kNavFont}];
     
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:kNavColor] forBarMetrics:UIBarMetricsDefault];
-    
-    self.navigationController.navigationBar.translucent = NO;
-    
+        
     [self headerRefreshWithAllProducts];
 }
 

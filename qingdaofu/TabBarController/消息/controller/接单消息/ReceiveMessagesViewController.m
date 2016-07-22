@@ -11,13 +11,16 @@
 #import "MyProcessingViewController.h" //我的接单－处理中
 #import "MyEndingViewController.h"  //我的接单－终止
 #import "MyClosingViewController.h" //我的接单－结案
-#import "PaceViewController.h"  //进度
+#import "ProductsDetailsViewController.h" //产品详情
+#import "MyDetailStoreViewController.h"  //我的收藏
 
 #import "NewsCell.h"
 
 #import "MessageResponse.h"
 #import "MessageModel.h"
 #import "CategoryModel.h"
+
+#import "UIImage+Color.h"
 
 @interface ReceiveMessagesViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -34,6 +37,10 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:kBlackColor,NSFontAttributeName:kNavFont}];
+    
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:kNavColor] forBarMetrics:UIBarMetricsDefault];
+    
     [self headerRefreshWithMessageOfOrder];
 }
 
@@ -171,6 +178,8 @@
     QDFWeakSelf;
     [self requestDataPostWithString:mesString params:params successBlock:^(id responseObject) {
         
+        NSDictionary *uiuiu  = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
         if ([page integerValue] == 1) {
             [weakself.messageReceiveArray removeAllObjects];
         }
@@ -226,11 +235,31 @@
         BaseModel *aModel = [BaseModel objectWithKeyValues:responseObject];
         if ([aModel.code isEqualToString:@"0000"]){
             if ([messageModel.progress_status integerValue] == 1) {//申请中
-                MyApplyingViewController *myApplyVC = [[MyApplyingViewController alloc] init];
-                myApplyVC.idString = messageModel.category_id.idString;
-                myApplyVC.categaryString = messageModel.category_id.category;
-                myApplyVC.pidString = messageModel.uidInner;
-                [weakself.navigationController pushViewController:myApplyVC animated:YES];
+                if (!messageModel.app_id || [messageModel.app_id isEqualToString:@""] || [messageModel.app_id isEqualToString:@"<null>"] || [messageModel.app_id isEqualToString:@"(null)"]){
+                    ProductsDetailsViewController *productsDetailsVC = [[ProductsDetailsViewController alloc] init];
+                    productsDetailsVC.idString = messageModel.category_id.idString;
+                    productsDetailsVC.categoryString = messageModel.category_id.category;
+                    [weakself.navigationController pushViewController:productsDetailsVC animated:YES];
+                }else{
+                    if ([messageModel.app_id integerValue] == 0) {//申请中
+                        MyApplyingViewController *myApplyVC = [[MyApplyingViewController alloc] init];
+                        myApplyVC.idString = messageModel.category_id.idString;
+                        myApplyVC.categaryString = messageModel.category_id.category;
+                        myApplyVC.pidString = messageModel.uidInner;
+                        [weakself.navigationController pushViewController:myApplyVC animated:YES];
+                    }else if ([messageModel.app_id integerValue] == 2){//收藏
+                        
+                        ProductsDetailsViewController *productsDetailsVC = [[ProductsDetailsViewController alloc] init];
+                        productsDetailsVC.idString = messageModel.category_id.idString;
+                        productsDetailsVC.categoryString = messageModel.category_id.category;
+                        [weakself.navigationController pushViewController:productsDetailsVC animated:YES];
+                        
+//                        MyDetailStoreViewController *mydetailStoreVC = [[MyDetailStoreViewController alloc] init];
+//                        mydetailStoreVC.idString = messageModel.category_id.idString;
+//                        mydetailStoreVC.categoryString = messageModel.category_id.category;
+//                        [weakself.navigationController pushViewController:mydetailStoreVC animated:YES];
+                    }
+                }
             }else if ([messageModel.progress_status integerValue] == 2){//处理中
                 MyProcessingViewController *myProcessingVC = [[MyProcessingViewController alloc] init];
                 myProcessingVC.idString = messageModel.category_id.idString;
@@ -251,32 +280,14 @@
                 myClosingVC.evaString = messageModel.frequency;
                 [weakself.navigationController pushViewController:myClosingVC animated:YES];
             }
-            
-//            if ([messageModel.content isEqualToString:@"申请接单"]) {//申请接单
-//                MyApplyingViewController *myApplyVC = [[MyApplyingViewController alloc] init];
-//                myApplyVC.idString = messageModel.category_id.idString;
-//                myApplyVC.categaryString = messageModel.category_id.category;
-//                myApplyVC.pidString = messageModel.uidInner;
-//                [weakself.navigationController pushViewController:myApplyVC animated:YES];
-//            }else if([messageModel.content isEqualToString:@"有新进度"]){
-//                PaceViewController *paceVC = [[PaceViewController alloc] init];
-//                paceVC.categoryString = messageModel.category_id.category;
-//                paceVC.idString = messageModel.category_id.idString;
-//                [weakself.navigationController pushViewController:paceVC animated:YES];
-//            }else if ([messageModel.content isEqualToString:@"发布方已同意结案"]){
-//                MyClosingViewController  *myClosingVC = [[MyClosingViewController alloc] init];
-//                myClosingVC.idString = messageModel.category_id.idString;
-//                myClosingVC.categaryString = messageModel.category_id.category;
-//                myClosingVC.pidString = messageModel.uidInner;
-//                myClosingVC.evaString = @"0";
-//                [weakself.navigationController pushViewController:myClosingVC animated:YES];
-//            }else{
-//                MyProcessingViewController *myProcessingVC = [[MyProcessingViewController alloc] init];
-//                myProcessingVC.idString = messageModel.category_id.idString;
-//                myProcessingVC.categaryString = messageModel.category_id.category;
-//                myProcessingVC.pidString = messageModel.uidInner;
-//                [weakself.navigationController pushViewController:myProcessingVC animated:YES];
-//            }
+            /*
+            else{
+                ProductsDetailsViewController *productsDetailsVC = [[ProductsDetailsViewController alloc] init];
+                productsDetailsVC.idString = messageModel.category_id.idString;
+                productsDetailsVC.categoryString = messageModel.category_id.category;
+                [weakself.navigationController pushViewController:productsDetailsVC animated:YES];
+            }
+             */
         }
         
     } andFailBlock:^(NSError *error) {

@@ -53,7 +53,6 @@
     [self.navigationController.navigationBar setShadowImage:self.shadowImage];
 }
 
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];

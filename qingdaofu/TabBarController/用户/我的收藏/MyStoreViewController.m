@@ -9,6 +9,7 @@
 #import "MyStoreViewController.h"
 #import "MyDetailStoreViewController.h"    //收藏详细
 #import "MyOrderViewController.h" //我的接单
+#import "ProductsDetailsViewController.h" //详细
 
 #import "MyStoreCell.h"
 #import "MineUserCell.h"
@@ -142,10 +143,9 @@
     
     RowsModel *rowModel = self.storeDataList[indexPath.row];
     
-    MyDetailStoreViewController *myDetailStoreVC = [[MyDetailStoreViewController alloc] init];
+    ProductsDetailsViewController *myDetailStoreVC = [[ProductsDetailsViewController alloc] init];
     myDetailStoreVC.idString = rowModel.idString;
     myDetailStoreVC.categoryString = rowModel.category;
-    myDetailStoreVC.codeString = rowModel.codeString;
     [self.navigationController pushViewController:myDetailStoreVC animated:YES];
 }
 

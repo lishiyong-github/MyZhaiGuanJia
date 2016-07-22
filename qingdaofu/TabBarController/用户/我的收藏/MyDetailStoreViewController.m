@@ -33,7 +33,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = self.codeString;
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
     [self.view addSubview:self.detailStoreTableView];
@@ -259,6 +258,8 @@
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
         PublishingResponse *respModel = [PublishingResponse objectWithKeyValues:responseObject];
         
+        self.navigationItem.title = respModel.product.codeString;
+
         [weakself.detailStoreArray addObject:respModel];
         [weakself.detailStoreTableView reloadData];
         

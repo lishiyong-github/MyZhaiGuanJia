@@ -512,18 +512,23 @@
     
     //当前版本
     NSDictionary *infoDic = [[NSBundle mainBundle] infoDictionary];
-    NSString *currentVersion = [infoDic objectForKey:@"CFBundleShortVersionString"];
+    NSString *currentVersion = [infoDic objectForKey:@"CFBundleVersion"];
     
-    double doubleCurrentVersion = [currentVersion doubleValue];
-    double doubleLatestVersion = [latestVersion doubleValue];
-    
-    if (doubleCurrentVersion < doubleLatestVersion) {
-        NSString *titleStr = [NSString stringWithFormat:@"检查更新:%@",trackName];
-        NSString *messageStr = [NSString stringWithFormat:@"发现新版本(%@),是否升级?",latestVersion];
-        
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:titleStr message:messageStr delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"升级", nil];
-        alertView.delegate = self;
-        [alertView show];
+    //比较版本号
+    NSString *s1 = [currentVersion substringToIndex:1];//当前
+    NSString *s2 = [latestVersion substringToIndex:1];//最新
+    if ([s1 integerValue] <= [s2 integerValue]) {//第一位
+        NSString *s11 = [currentVersion substringWithRange:NSMakeRange(2,1)];
+        NSString *s12 = [latestVersion substringWithRange:NSMakeRange(2,1)];
+
+        if ([s11 intValue] < [s12 intValue]) {
+            NSString *titleStr = [NSString stringWithFormat:@"检查更新:%@",trackName];
+            NSString *messageStr = [NSString stringWithFormat:@"发现新版本(%@),是否升级?",latestVersion];
+            
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:titleStr message:messageStr delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"升级", nil];
+            alertView.delegate = self;
+            [alertView show];
+        }
     }
 }
 

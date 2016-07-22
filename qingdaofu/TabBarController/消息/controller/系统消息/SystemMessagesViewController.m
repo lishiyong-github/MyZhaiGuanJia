@@ -154,7 +154,6 @@
     }
 }
 
-
 #pragma mark - method
 - (void)getSystemMessageListWithPage:(NSString *)page
 {
