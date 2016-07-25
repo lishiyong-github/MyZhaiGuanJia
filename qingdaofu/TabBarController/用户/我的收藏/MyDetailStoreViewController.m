@@ -268,7 +268,6 @@
     }];
 }
 
-
 - (void)requestApply:(UIButton *)sender
 {
     NSString *applyString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductHouseString];

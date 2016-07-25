@@ -11,6 +11,7 @@
 #import "ReceiveMessagesViewController.h"  //接单消息
 #import "EvaluateMessagesViewController.h"  //评价消息
 #import "SystemMessagesViewController.h"   //系统消息
+#import "LoginViewController.h"  //登录
 
 #import "NewsTableViewCell.h"
 
@@ -32,15 +33,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [self tokenIsValid];
-    QDFWeakSelf;
-    [self setDidTokenValid:^(TokenModel *model) {
-        if ([model.code integerValue] == 0000){//正常
-            [weakself getMessageTypeAndNumber];
-        }else{
-            [weakself showHint:model.msg];
-        }
-    }];
+    [self getMessageTypeAndNumber];
 }
 
 - (void)viewDidLoad {
@@ -211,36 +204,47 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    if (indexPath.section == 0) {
-        switch (indexPath.row) {
-            case 0:{//发布消息
-                PublishMessagesViewController *pubMessagesVC = [[PublishMessagesViewController alloc] init];
-                pubMessagesVC.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:pubMessagesVC animated:YES];
+    [self tokenIsValid];
+    QDFWeakSelf;
+    [self setDidTokenValid:^(TokenModel *model) {
+        if ([model.code integerValue] == 0000){//正常
+            if (indexPath.section == 0) {
+                switch (indexPath.row) {
+                    case 0:{//发布消息
+                        PublishMessagesViewController *pubMessagesVC = [[PublishMessagesViewController alloc] init];
+                        pubMessagesVC.hidesBottomBarWhenPushed = YES;
+                        [weakself.navigationController pushViewController:pubMessagesVC animated:YES];
+                    }
+                        break;
+                    case 1:{//接单消息
+                        ReceiveMessagesViewController *receiveMessagesVC = [[ReceiveMessagesViewController alloc] init];
+                        receiveMessagesVC.hidesBottomBarWhenPushed = YES;
+                        [weakself.navigationController pushViewController:receiveMessagesVC animated:YES];
+                    }
+                        break;
+                    case 2:{//评价消息
+                        EvaluateMessagesViewController *evaluateMessagesVC = [[EvaluateMessagesViewController alloc] init];
+                        evaluateMessagesVC.hidesBottomBarWhenPushed = YES;
+                        [weakself.navigationController pushViewController:evaluateMessagesVC animated:YES];
+                    }
+                        break;
+                    case 3:{//系统消息
+                        SystemMessagesViewController *systemMessagesVC = [[SystemMessagesViewController alloc] init];
+                        systemMessagesVC.hidesBottomBarWhenPushed = YES;
+                        [weakself.navigationController pushViewController:systemMessagesVC animated:YES];
+                    }
+                        break;
+                    default:
+                        break;
+                }
             }
-                break;
-            case 1:{//接单消息
-                ReceiveMessagesViewController *receiveMessagesVC = [[ReceiveMessagesViewController alloc] init];
-                receiveMessagesVC.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:receiveMessagesVC animated:YES];
-            }
-                break;
-            case 2:{//评价消息
-                EvaluateMessagesViewController *evaluateMessagesVC = [[EvaluateMessagesViewController alloc] init];
-                evaluateMessagesVC.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:evaluateMessagesVC animated:YES];
-            }
-                break;
-            case 3:{//系统消息
-                SystemMessagesViewController *systemMessagesVC = [[SystemMessagesViewController alloc] init];
-                systemMessagesVC.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:systemMessagesVC animated:YES];
-            }
-                break;
-            default:
-                break;
+        }else{
+            [weakself showHint:model.msg];
+            LoginViewController *loginVC = [[LoginViewController alloc] init];
+            loginVC.hidesBottomBarWhenPushed = YES;
+            [weakself.navigationController pushViewController:loginVC animated:YES];
         }
-    }
+    }];
 }
 
 #pragma mark - method

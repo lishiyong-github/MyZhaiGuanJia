@@ -55,7 +55,15 @@
     tabBarController.viewControllers = @[newproductNav,productsNav,messageNav,mineNav];
     
     TabBar *tabBar = [[TabBar alloc] initWithFrame:tabBarController.tabBar.bounds];
-    
+//    [tabBar setClipsToBounds:YES];
+//    tabBar.opaque = YES;
+//    
+//    UITabBar *tabBars = [[UITabBar alloc] init];
+//    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+//    [tabBars setShadowImage:img];
+//    [tabBars setBackgroundImage:[[UIImage alloc]init]];
+
+
     CGFloat normalButtonWidth = kScreenWidth/5;
     CGFloat tabBarHeight = CGRectGetHeight(tabBar.frame);
     CGFloat publishItemWidth = kScreenWidth/5;
@@ -63,7 +71,9 @@
     TabBarItem *newProductItem = [self tabBarItemWithFram:CGRectMake(0, 0, normalButtonWidth, tabBarHeight) title:@"首页" normalImageName:@"tab_recommend" selectedImageName:@"tab_recommend_s" tabBarItemType:TabBarItemTypeNormal];
     TabBarItem *productsItem = [self tabBarItemWithFram:CGRectMake(normalButtonWidth, 0, normalButtonWidth, tabBarHeight) title:@"产品" normalImageName:@"tab_product" selectedImageName:@"tab_product_s" tabBarItemType:TabBarItemTypeNormal];
     
+//    TabBarItem *publishItem = [self tabBarItemWithFram:CGRectMake(normalButtonWidth * 2, 4.5, normalButtonWidth, tabBarHeight) title:@"" normalImageName:@"publishs" selectedImageName:@"" tabBarItemType:TabBarItemTypeRise];
     TabBarItem *publishItem = [self tabBarItemWithFram:CGRectMake(normalButtonWidth * 2, 4.5, normalButtonWidth, tabBarHeight) title:@"" normalImageName:@"publishs" selectedImageName:@"" tabBarItemType:TabBarItemTypeRise];
+
     
     TabBarItem *messageItem = [self tabBarItemWithFram:CGRectMake(normalButtonWidth * 2 + publishItemWidth, 0, normalButtonWidth, tabBarHeight) title:@"消息" normalImageName:@"news" selectedImageName:@"news_s" tabBarItemType:TabBarItemTypeNormal];
     TabBarItem *mineItem = [self tabBarItemWithFram:CGRectMake(normalButtonWidth * 3 + publishItemWidth, 0, normalButtonWidth, tabBarHeight) title:@"用户" normalImageName:@"tab_user" selectedImageName:@"tab_user_s" tabBarItemType:TabBarItemTypeNormal];

@@ -7,7 +7,7 @@
 //
 
 #import "MyStoreViewController.h"
-#import "MyDetailStoreViewController.h"    //收藏详细
+//#import "MyDetailStoreViewController.h"    //收藏详细
 #import "MyOrderViewController.h" //我的接单
 #import "ProductsDetailsViewController.h" //详细
 
@@ -16,6 +16,8 @@
 
 #import "ReleaseResponse.h"
 #import "RowsModel.h"
+
+#import "UIImage+Color.h"
 
 @interface MyStoreViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -30,6 +32,10 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:kBlackColor,NSFontAttributeName:kNavFont}];
+    
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:kNavColor] forBarMetrics:UIBarMetricsDefault];
+    
     [self refreshHeaderOfMySave];
 }
 - (void)viewDidLoad {

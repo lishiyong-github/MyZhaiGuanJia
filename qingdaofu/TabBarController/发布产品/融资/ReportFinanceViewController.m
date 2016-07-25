@@ -790,7 +790,7 @@
         BaseModel *model = [BaseModel objectWithKeyValues:responseObject];
         [weakself showHint:model.msg];
         
-        if ([model.code isEqualToString:@"0000"]) {
+        if ([model.code isEqualToString:@"0000"]) {//未认证也可发布
             if ([type intValue] == 0) {//保存
                 if (self.fiModel) {
                     ReportFiSucViewController *reportFiSucVC = [[ReportFiSucViewController alloc] init];
@@ -810,7 +810,6 @@
                 [weakself.navigationController pushViewController:reportFiSucVC animated:YES];
             }
         }
-        
     } andFailBlock:^(NSError *error){
         
     }];
@@ -820,7 +819,6 @@
 {
     if (!self.dataDictionary && !self.fiModel) {
         UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:nil message:@"是否放弃操作？" preferredStyle:UIAlertControllerStyleAlert];
-        
         QDFWeakSelf;
         UIAlertAction *act1 = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [weakself.navigationController popViewControllerAnimated:YES];

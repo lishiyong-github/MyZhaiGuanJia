@@ -42,13 +42,14 @@
 @property (nonatomic,strong) UITableView *myClosingTableView;
 @property (nonatomic,strong) BaseCommitButton *closingCommitButton;
 
+@property (nonatomic,assign) BOOL refresh;
+
 //json解析
 @property (nonatomic,strong) NSMutableArray *orderCloseArray; //详情response
 @property (nonatomic,strong) NSMutableArray *scheduleOrderCloArray;//进度model
 
 @property (nonatomic,strong) NSMutableArray *evaluateResponseArray; //评价response
 @property (nonatomic,strong) NSMutableArray *evaluateArray; //评价model
-
 
 @property (nonatomic,strong) NSString *loanTypeString1;  //债权类型
 @property (nonatomic,strong) NSString *loanTypeString2;  //债权类型内容
@@ -57,6 +58,13 @@
 @end
 
 @implementation MyClosingViewController
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    if (_refresh) {
+        [self getOrderEvaluateDetails];
+    }
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -74,7 +82,6 @@
     [self.view setNeedsUpdateConstraints];
     
     [self getDetailMessageOfClosing];
-
 }
 
 - (void)updateViewConstraints
@@ -115,7 +122,6 @@
                 
             }else if ([self.evaString integerValue] == 1){
                 [_closingCommitButton setTitle:@"再次评价" forState:0];
-
             }
             
             QDFWeakSelf;
@@ -125,6 +131,8 @@
                     PublishingResponse *response = weakself.orderCloseArray[0];
                     pubModel = response.product;
                 }
+                
+                _refresh = YES;
                 
                 AdditionalEvaluateViewController *additionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
                 additionalEvaluateVC.typeString = @"接单方";
@@ -598,7 +606,12 @@
                 EvaluateResponse *response = self.evaluateResponseArray[0];
                 LaunchEvaluateModel *launchModel = response.launchevaluation[0];
                 
-                NSString *isHideStr = launchModel.isHide?@"匿名":launchModel.mobile;
+                NSString *isHideStr;//0正常，1匿名
+                if ([launchModel.isHide integerValue] == 0) {
+                    isHideStr = [NSString getValidStringFromString:launchModel.mobiles toString:@"匿名"];
+                }else{
+                    isHideStr = @"匿名";
+                }
                 cell.evaNameLabel.text = isHideStr;
                 cell.evaTimeLabel.text = [NSDate getYMDFormatterTime:launchModel.create_time];
                 cell.evaStarImage.currentIndex = [launchModel.creditor intValue];

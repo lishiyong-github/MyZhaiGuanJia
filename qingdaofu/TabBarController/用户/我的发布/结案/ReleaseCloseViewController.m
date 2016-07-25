@@ -600,8 +600,12 @@
             
             EvaluateResponse *response = self.evaluateResponseArray[0];
             LaunchEvaluateModel *launchModel = response.launchevaluation[0];
-            
-            NSString *isHideStr = launchModel.isHide?@"匿名":launchModel.mobile;
+            NSString *isHideStr;//0正常，1匿名
+            if ([launchModel.isHide integerValue] == 0) {
+                isHideStr = [NSString getValidStringFromString:launchModel.mobiles toString:@"匿名"];
+            }else{
+                isHideStr = @"匿名";
+            }
             cell.evaNameLabel.text = isHideStr;
             cell.evaTimeLabel.text = [NSDate getYMDFormatterTime:launchModel.create_time];
             cell.evaStarImage.currentIndex = [launchModel.creditor intValue];

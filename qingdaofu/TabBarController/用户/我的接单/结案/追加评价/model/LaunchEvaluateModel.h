@@ -25,6 +25,7 @@
 @property (nonatomic,copy) NSString *isHide;//  
 @property (nonatomic,copy) NSString *kuaijie;//
 @property (nonatomic,copy) NSString *mobile;  //手机号
+@property (nonatomic,copy) NSString *mobiles;  //手机号
 //@property (nonatomic,copy) NSString *picture;//评价图片
 @property (nonatomic,strong) NSArray *pictures;  //图片列表
 @property (nonatomic,copy) NSString *pid;//

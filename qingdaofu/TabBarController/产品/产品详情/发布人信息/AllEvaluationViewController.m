@@ -151,7 +151,12 @@
         QDFWeakSelf;
         if ([self.evaTypeString isEqualToString:@"evaluate"]) {//收到的评价
             EvaluateModel *model = self.allEvaluateArray[indexPath.section];
-            NSString *isHideStr = model.isHide?@"匿名":model.mobile;
+            NSString *isHideStr;
+            if ([model.isHide integerValue] == 0) {
+                isHideStr = [NSString getValidStringFromString:model.mobiles toString:@"匿名"];
+            }else{
+                isHideStr = @"匿名";
+            }
             cell.evaNameLabel.text = isHideStr;
             cell.evaTimeLabel.text = [NSDate getYMDFormatterTime:model.create_time];
             cell.evaStarImage.currentIndex = [model.creditor intValue];
@@ -203,7 +208,12 @@
             
         }else if([self.evaTypeString isEqualToString:@"launchevaluation"]){//给出的评价
             LaunchEvaluateModel *model = self.allEvaluateArray[indexPath.section];
-            NSString *isHideStr = model.isHide?@"匿名":model.mobile;
+            NSString *isHideStr;//0正常，1匿名
+            if ([model.isHide integerValue] == 0) {
+                isHideStr = [NSString getValidStringFromString:model.mobiles toString:@"匿名"];
+            }else{
+                isHideStr = @"匿名";
+            }
             cell.evaNameLabel.text = isHideStr;
             cell.evaTimeLabel.text = [NSDate getYMDFormatterTime:model.create_time];
             cell.evaStarImage.currentIndex = [model.creditor intValue];
@@ -297,7 +307,6 @@
     }
     QDFWeakSelf;
     [self requestDataPostWithString:evaluateString params:params successBlock:^(id responseObject) {
-        
         if ([page integerValue] == 1) {
             [weakself.allEvaluateArray removeAllObjects];
         }

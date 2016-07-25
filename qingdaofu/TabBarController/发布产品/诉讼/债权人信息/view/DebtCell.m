@@ -43,6 +43,7 @@
         
         [self.debtAddressLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.debtTelLabel withOffset:kSmallPadding];
         [self.debtAddressLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
+        [self.debtAddressLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         
 //        [self.debtAddressLabel1 autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.debtAddressLabel];
 //        [self.debtAddressLabel1 autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:95];

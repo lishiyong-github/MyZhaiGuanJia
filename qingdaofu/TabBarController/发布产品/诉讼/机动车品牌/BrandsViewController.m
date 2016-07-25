@@ -144,7 +144,7 @@
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         
-        NSString *key = [NSString stringWithFormat:@"%ld",indexPath.row + 1];
+        NSString *key = [NSString stringWithFormat:@"%d",indexPath.row + 1];
         cell.textLabel.text = self.brandDic[key];
         
         return cell;
@@ -184,7 +184,7 @@
         [self.tableView2 autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.tableView1];
         [self.tableView2 autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.tableView1];
         
-        NSString *bb = [NSString stringWithFormat:@"%ld",indexPath.row+1];
+        NSString *bb = [NSString stringWithFormat:@"%d",indexPath.row+1];
         _string11 = self.brandDic[bb];
         _string1 = bb;
         [self getAudiListWithBrand:bb];
@@ -202,7 +202,7 @@
         
     }else{
         
-        _string3 = [NSString stringWithFormat:@"%ld",indexPath.row+1];
+        _string3 = [NSString stringWithFormat:@"%d",indexPath.row+1];
         _string33 = self.licenseplateArray[indexPath.row];
         
         if (self.didSelectedRow) {

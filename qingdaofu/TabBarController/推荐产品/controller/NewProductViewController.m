@@ -130,7 +130,7 @@
         
         for (NSInteger t=0; t<self.propagandaDic.allKeys.count/2; t++) {
             
-            NSString *tyString = [NSString stringWithFormat:@"banner%ldios",t+1];
+            NSString *tyString = [NSString stringWithFormat:@"banner%dios",t+1];
             NSString *urlString = [NSString stringWithFormat:@"http://%@",self.propagandaDic[tyString]];
             NSURL *tyURL = [NSURL URLWithString:urlString];
             
@@ -142,7 +142,7 @@
             [imageButton addAction:^(UIButton *btn) {
                 MarkingViewController *markingVC = [[MarkingViewController alloc] init];
                 markingVC.hidesBottomBarWhenPushed = YES;
-                NSString *wewe = [NSString stringWithFormat:@"banner%ld",t+1];
+                NSString *wewe = [NSString stringWithFormat:@"banner%d",t+1];
                 markingVC.markString = weakself.propagandaDic[wewe];
                 [weakself.navigationController pushViewController:markingVC animated:YES];
             }];

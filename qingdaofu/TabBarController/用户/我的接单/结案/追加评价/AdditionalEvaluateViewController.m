@@ -285,7 +285,6 @@
             [weakself showHint:evaModel.msg];
         }
     } andFailBlock:^(NSError *error) {
-        
     }];
 }
 

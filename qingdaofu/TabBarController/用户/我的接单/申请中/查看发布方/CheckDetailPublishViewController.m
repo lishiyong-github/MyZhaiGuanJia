@@ -396,8 +396,13 @@
         [cell.evaProImageView2 setHidden:NO];
         
         evaModel = self.allEvaDataArray[indexPath.row-1];
-        
-        NSString *isHideStr = evaModel.isHide?@"匿名":evaModel.mobile;
+        //0为正常评价。1为匿名评价
+        NSString *isHideStr;
+        if ([evaModel.isHide integerValue] == 0) {
+            isHideStr = [NSString getValidStringFromString:evaModel.mobiles toString:@"匿名"];
+        }else{
+            isHideStr = @"匿名";
+        }
         cell.evaNameLabel.text = isHideStr;
         cell.evaTimeLabel.text = [NSDate getYMDFormatterTime:evaModel.create_time];
         cell.evaStarImage.currentIndex = [evaModel.creditor integerValue];

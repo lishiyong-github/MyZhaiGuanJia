@@ -26,10 +26,10 @@
 {
     self.backgroundColor = kTabBarColor;
     
-//    UIImageView *topLine = [[UIImageView alloc] initWithFrame:CGRectMake(0, -5, kScreenWidth, 5)];
-//    topLine.image = [UIImage imageNamed:@""];
-//    topLine.backgroundColor = [UIColor redColor];
-//    [self addSubview:topLine];
+    UIImageView *topLine = [[UIImageView alloc] initWithFrame:CGRectMake(0, -1, kScreenWidth, 1)];
+    topLine.image = [UIImage imageNamed:@""];
+    topLine.backgroundColor = kCellSelectedColor;
+    [self addSubview:topLine];
 }
 
 - (void)setSelectedIndex:(NSInteger)index

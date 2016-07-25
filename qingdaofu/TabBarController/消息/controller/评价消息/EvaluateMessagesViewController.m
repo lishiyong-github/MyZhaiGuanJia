@@ -206,7 +206,13 @@
     QDFWeakSelf;
     if ([_tagString isEqualToString:@"get"]) {//收到的评价
         EvaluateModel *evaModel = self.evaluateListArray[indexPath.section];
-        cell.evaNameLabel.text = evaModel.mobile;
+        NSString *isHideStr;
+        if ([evaModel.isHide integerValue] == 0) {
+            isHideStr = [NSString getValidStringFromString:evaModel.mobiles toString:@"匿名"];
+        }else{
+            isHideStr = @"匿名";
+        }
+        cell.evaNameLabel.text = isHideStr;
         cell.evaTimeLabel.text = [NSDate getYMDhmFormatterTime:evaModel.create_time];
         cell.evaStarImageView.currentIndex = [evaModel.creditor intValue];
         cell.evaTextLabel.text = evaModel.content;
@@ -269,7 +275,13 @@
         
     }else{//给出的评价
         LaunchEvaluateModel *launchEvaModel = self.launchEvaListArray[indexPath.section];
-        cell.evaNameLabel.text = launchEvaModel.mobile;
+        NSString *isHideStr;
+        if ([launchEvaModel.isHide integerValue] == 0) {
+            isHideStr = [NSString getValidStringFromString:launchEvaModel.mobiles toString:@"匿名"];
+        }else{
+            isHideStr = @"匿名";
+        }
+        cell.evaNameLabel.text = isHideStr;
         cell.evaTimeLabel.text = [NSDate getYMDhmFormatterTime:launchEvaModel.create_time];
         cell.evaStarImageView.currentIndex = [launchEvaModel.creditor intValue];
         cell.evaTextLabel.text = launchEvaModel.content;

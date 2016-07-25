@@ -176,10 +176,7 @@
                              };
     
     QDFWeakSelf;
-    [self requestDataPostWithString:mesString params:params successBlock:^(id responseObject) {
-        
-        NSDictionary *uiuiu  = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        
+    [self requestDataPostWithString:mesString params:params successBlock:^(id responseObject) {        
         if ([page integerValue] == 1) {
             [weakself.messageReceiveArray removeAllObjects];
         }
