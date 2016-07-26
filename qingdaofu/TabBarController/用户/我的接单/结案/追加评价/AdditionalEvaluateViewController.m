@@ -265,6 +265,7 @@
     //发布方：办事效率。接单方：响应度
     self.evaDataDictionary[@"workefficiency"] = self.evaDataDictionary[@"workefficiency"]?self.evaDataDictionary[@"workefficiency"]:@"";
     self.evaDataDictionary[@"content"] = self.evaDataDictionary[@"content"]?self.evaDataDictionary[@"content"]:@"优质，专业，高效，快捷";
+    //优质，专业，高效，快捷
     self.evaDataDictionary[@"isHide"] = self.evaDataDictionary[@"isHide"]?self.evaDataDictionary[@"isHide"]:@"0";
 
     self.evaDataDictionary[@"category"] = self.categoryString;
@@ -278,11 +279,10 @@
     QDFWeakSelf;
     [self requestDataPostWithString:evaluateString params:params successBlock:^(id responseObject) {
         BaseModel *evaModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:evaModel.msg];
         if ([evaModel.code isEqualToString:@"0000"]) {
-            [weakself showHint:evaModel.msg];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"evaluate" object:nil];
             [weakself.navigationController popViewControllerAnimated:YES];
-        }else if (![evaModel.code isEqualToString:@"1014"]){
-            [weakself showHint:evaModel.msg];
         }
     } andFailBlock:^(NSError *error) {
     }];

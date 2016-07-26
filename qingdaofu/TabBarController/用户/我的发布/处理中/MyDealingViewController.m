@@ -187,17 +187,7 @@
              2为处理中（有人已接单发布方也已同意）。
              3为终止（只用发布方可以终止）。
              4为结案（双方都可以申请，一方申请一方同意*/
-            if ([dealModel.progress_status intValue] == 0) {
-                [cell.userActionButton setTitle:@"待发布" forState:0];
-            }else if ([dealModel.progress_status intValue] == 1){
-                [cell.userActionButton setTitle:@"发布中" forState:0];
-            }else if ([dealModel.progress_status intValue] == 2){
-                [cell.userActionButton setTitle:@"处理中" forState:0];
-            }else if ([dealModel.progress_status intValue] == 3){
-                [cell.userActionButton setTitle:@"终止" forState:0];
-            }else if ([dealModel.progress_status intValue] == 4){
-                [cell.userActionButton setTitle:@"结案" forState:0];
-            }
+            [cell.userActionButton setTitle:@"处理中" forState:0];
             [cell.userActionButton setTitleColor:kNavColor forState:0];
             cell.userActionButton.titleLabel.font = kBigFont;
             
@@ -417,11 +407,22 @@
     PublishingResponse *resModel = self.dealingDataList[0];
     PublishingModel *dealModel = resModel.product;
     
-    if ((indexPath.section == 1) && (indexPath.row == 5)) {//补充信息
-        AdditionMessageViewController *additionMessageVC = [[AdditionMessageViewController alloc] init];
-        additionMessageVC.categoryString = dealModel.category;
-        additionMessageVC.idString = dealModel.idString;
-        [self.navigationController pushViewController:additionMessageVC animated:YES];
+    if (indexPath.section == 1) {//补充信息
+        if ([dealModel.loan_type integerValue] == 4) {
+            if (indexPath.row == 5) {
+                AdditionMessageViewController *additionMessageVC = [[AdditionMessageViewController alloc] init];
+                additionMessageVC.categoryString = dealModel.category;
+                additionMessageVC.idString = dealModel.idString;
+                [self.navigationController pushViewController:additionMessageVC animated:YES];
+            }
+        }else{
+            if (indexPath.row == 6) {
+                AdditionMessageViewController *additionMessageVC = [[AdditionMessageViewController alloc] init];
+                additionMessageVC.categoryString = dealModel.category;
+                additionMessageVC.idString = dealModel.idString;
+                [self.navigationController pushViewController:additionMessageVC animated:YES];
+            }
+        }
     }else if (indexPath.section == 2) {//协议
         AgreementViewController *agreementVC = [[AgreementViewController alloc] init];
         agreementVC.idString = dealModel.idString;

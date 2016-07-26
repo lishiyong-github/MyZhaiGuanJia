@@ -61,9 +61,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    if (_refresh) {
-        [self getOrderEvaluateDetails];
-    }
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getOrderEvaluateDetails) name:@"evaluate" object:nil];
 }
 
 - (void)viewDidLoad {
@@ -115,38 +113,6 @@
 {
     if (!_closingCommitButton) {
         _closingCommitButton = [BaseCommitButton newAutoLayoutView];
-        
-        if ([self.evaString integerValue] < 2) {
-            if ([self.evaString integerValue] == 0) {
-                [_closingCommitButton setTitle:@"评价" forState:0];
-                
-            }else if ([self.evaString integerValue] == 1){
-                [_closingCommitButton setTitle:@"再次评价" forState:0];
-            }
-            
-            QDFWeakSelf;
-            [_closingCommitButton addAction:^(UIButton *btn) {
-                PublishingModel *pubModel;
-                if (self.orderCloseArray.count > 0) {
-                    PublishingResponse *response = weakself.orderCloseArray[0];
-                    pubModel = response.product;
-                }
-                
-                _refresh = YES;
-                
-                AdditionalEvaluateViewController *additionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
-                additionalEvaluateVC.typeString = @"接单方";
-                additionalEvaluateVC.evaString = weakself.evaString;
-                additionalEvaluateVC.idString = weakself.idString;
-                additionalEvaluateVC.categoryString = weakself.categaryString;
-                additionalEvaluateVC.codeString = pubModel.codeString;
-                [weakself.navigationController pushViewController:additionalEvaluateVC animated:YES];
-            }];
-        }else{
-            [_closingCommitButton setTitle:@"已结案" forState:0];
-            _closingCommitButton.backgroundColor = kSelectedColor;
-            [_closingCommitButton setTitleColor:kBlackColor forState:0];
-        }
     }
     return _closingCommitButton;
 }
@@ -216,8 +182,16 @@
     if ((indexPath.section == 3) && (indexPath.row == 1)){
         return 145;
     }else if ((indexPath.section == 4) && (indexPath.row == 1)){
-        
-        return 170;
+        if (self.evaluateArray.count > 0) {
+            LaunchEvaluateModel *model = self.evaluateArray[0];
+            if ([model.pictures[0] isEqualToString:@""]) {
+                return 105;
+            }else{
+                return 170;
+            }
+        }else{
+            return 145;
+        }
     }
     return kCellHeight;
 }
@@ -248,17 +222,7 @@
          2为处理中（有人已接单发布方也已同意）。
          3为终止（只用发布方可以终止）。
          4为结案（双方都可以申请，一方申请一方同意*/
-        if ([closeModel.progress_status intValue] == 0) {
-            [cell.userActionButton setTitle:@"待发布" forState:0];
-        }else if ([closeModel.progress_status intValue] == 1){
-            [cell.userActionButton setTitle:@"申请中" forState:0];
-        }else if ([closeModel.progress_status intValue] == 2){
-            [cell.userActionButton setTitle:@"处理中" forState:0];
-        }else if ([closeModel.progress_status intValue] == 3){
-            [cell.userActionButton setTitle:@"终止" forState:0];
-        }else if ([closeModel.progress_status intValue] == 4){
-            [cell.userActionButton setTitle:@"结案" forState:0];
-        }
+        [cell.userActionButton setTitle:@"结案" forState:0];
         [cell.userActionButton setTitleColor:kNavColor forState:0];
         cell.userActionButton.titleLabel.font = kBigFont;
         
@@ -600,8 +564,8 @@
                 [cell.evaStarImage setHidden:NO];
                 [cell.evaTimeLabel setHidden:NO];
                 [cell.evaTextLabel setHidden:NO];
-                [cell.evaProImageView1 setHidden:NO];
-                [cell.evaProImageView2 setHidden:NO];
+//                [cell.evaProImageView1 setHidden:NO];
+//                [cell.evaProImageView2 setHidden:NO];
                 
                 EvaluateResponse *response = self.evaluateResponseArray[0];
                 LaunchEvaluateModel *launchModel = response.launchevaluation[0];
@@ -615,8 +579,8 @@
                 cell.evaNameLabel.text = isHideStr;
                 cell.evaTimeLabel.text = [NSDate getYMDFormatterTime:launchModel.create_time];
                 cell.evaStarImage.currentIndex = [launchModel.creditor intValue];
-                cell.evaProImageView1.backgroundColor = kLightGrayColor;
-                cell.evaProImageView2.backgroundColor = kLightGrayColor;
+//                cell.evaProImageView1.backgroundColor = kLightGrayColor;
+//                cell.evaProImageView2.backgroundColor = kLightGrayColor;
                 
                 //内容
                 if (launchModel.content == nil || [launchModel.content isEqualToString:@""]) {
@@ -627,20 +591,20 @@
                 
                 //图片
                 if (launchModel.pictures.count == 1) {
-                    
-                    NSString *str1;
                     if ([launchModel.pictures[0] isEqualToString:@""]) {
-                       str1 = launchModel.pictures[0];
+                        [cell.evaProImageView1 setHidden:YES];
+                        [cell.evaProImageView2 setHidden:YES];
                     }else{
-                        str1 = [launchModel.pictures[0] substringWithRange:NSMakeRange(1, [launchModel.pictures[0] length]-2)];
+                        NSString *str1 = [launchModel.pictures[0] substringWithRange:NSMakeRange(1, [launchModel.pictures[0] length]-2)];
+                        [cell.evaProImageView1 setHidden:NO];
+                        [cell.evaProImageView2 setHidden:YES];
+                        NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str1];
+                        NSURL *url1 = [NSURL URLWithString:imageStr1];
+                        [cell.evaProImageView1 sd_setImageWithURL:url1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
                     }
-                    NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str1];
-                    NSURL *url1 = [NSURL URLWithString:imageStr1];
-                    
-                    [cell.evaProImageView1 sd_setImageWithURL:url1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
-                    [cell.evaProImageView2 sd_setImageWithURL:nil forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
-                    
                 }else if (launchModel.pictures.count >= 2){
+                    [cell.evaProImageView1 setHidden:NO];
+                    [cell.evaProImageView2 setHidden:NO];
                     NSString *str1 = [launchModel.pictures[0] substringWithRange:NSMakeRange(1, [launchModel.pictures[0] length]-2)];
                     NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str1];
                     NSURL *url1 = [NSURL URLWithString:imageStr1];
@@ -796,6 +760,9 @@
     QDFWeakSelf;
     [self requestDataPostWithString:evaluateString params:params successBlock:^(id responseObject) {
         
+        [weakself.evaluateResponseArray removeAllObjects];
+        [weakself.evaluateArray removeAllObjects];
+        
         EvaluateResponse *response = [EvaluateResponse objectWithKeyValues:responseObject];
         [weakself.evaluateResponseArray addObject:response];
         
@@ -803,6 +770,37 @@
             [weakself.evaluateArray addObject:launchModel];
         }
         
+        //再次评价信息
+        if ([response.evalua integerValue] < 2) {
+            if ([response.evalua integerValue] == 0) {
+                [weakself.closingCommitButton setTitle:@"评价" forState:0];
+                
+            }else{
+                [weakself.closingCommitButton setTitle:@"再次评价" forState:0];
+            }
+            
+            QDFWeakSelf;
+            [weakself.closingCommitButton addAction:^(UIButton *btn) {
+                PublishingModel *pubModel;
+                if (weakself.orderCloseArray.count > 0) {
+                    PublishingResponse *response = weakself.orderCloseArray[0];
+                    pubModel = response.product;
+                }
+                
+                AdditionalEvaluateViewController *additionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
+                additionalEvaluateVC.typeString = @"接单方";
+                additionalEvaluateVC.evaString = response.evalua;
+                additionalEvaluateVC.idString = weakself.idString;
+                additionalEvaluateVC.categoryString = weakself.categaryString;
+                additionalEvaluateVC.codeString = pubModel.codeString;
+                [weakself.navigationController pushViewController:additionalEvaluateVC animated:YES];
+            }];
+        }else{
+            [weakself.closingCommitButton setTitle:@"已结案" forState:0];
+            weakself.closingCommitButton.backgroundColor = kSelectedColor;
+            [weakself.closingCommitButton setTitleColor:kBlackColor forState:0];
+        }
+
         [weakself.myClosingTableView reloadData];
         
     } andFailBlock:^(NSError *error) {

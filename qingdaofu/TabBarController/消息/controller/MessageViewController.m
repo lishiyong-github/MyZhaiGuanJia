@@ -207,7 +207,7 @@
     [self tokenIsValid];
     QDFWeakSelf;
     [self setDidTokenValid:^(TokenModel *model) {
-        if ([model.code integerValue] == 0000){//正常
+        if ([model.code integerValue] == 0000 || [model.code integerValue] == 3006){//正常
             if (indexPath.section == 0) {
                 switch (indexPath.row) {
                     case 0:{//发布消息
@@ -238,7 +238,7 @@
                         break;
                 }
             }
-        }else{
+        }else {
             [weakself showHint:model.msg];
             LoginViewController *loginVC = [[LoginViewController alloc] init];
             loginVC.hidesBottomBarWhenPushed = YES;

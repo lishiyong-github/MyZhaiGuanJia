@@ -319,7 +319,7 @@
                              @"category" : self.categoryString
                              };
     QDFWeakSelf;
-    [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
+    [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){        
         
         PublishingResponse *respModel = [PublishingResponse objectWithKeyValues:responseObject];
         

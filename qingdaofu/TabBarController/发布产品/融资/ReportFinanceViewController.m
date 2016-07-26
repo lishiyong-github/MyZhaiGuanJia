@@ -129,18 +129,19 @@
         QDFWeakSelf;
         [_repFiSwitchView setDidSelectedButton:^(NSInteger tag) {
             
-            [weakself tokenIsValid];
-            [weakself setDidTokenValid:^(TokenModel *model) {
-                if ([model.code isEqualToString:@"0000"]) {
-                    if (tag == 33) {// 保存
-                        [weakself reportFinanceActionWithType:@"0"];
-                    }else{//发布
-                        [weakself reportFinanceActionWithType:@"1"];
-                    }
-                }else{
-                    [weakself showHint:model.msg];
-                }
-            }];
+            if (tag == 33) {// 保存
+                [weakself reportFinanceActionWithType:@"0"];
+            }else{//发布
+                [weakself reportFinanceActionWithType:@"1"];
+            }
+            
+//            [weakself tokenIsValid];
+//            [weakself setDidTokenValid:^(TokenModel *model) {
+//                if ([model.code isEqualToString:@"0000"] || [model.code isEqualToString:@"3006"]) {
+//                }else{
+//                    [weakself showHint:model.msg];
+//                }
+//            }];
             
         }];
     }

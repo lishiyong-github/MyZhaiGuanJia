@@ -13,7 +13,6 @@
 #import "ReleaseEndViewController.h"   //终止
 #import "ReleaseCloseViewController.h"  //结案
 
-#import "AdditionMessageViewController.h"  //补充信息
 #import "ApplyRecordsViewController.h"     //查看申请
 #import "PaceViewController.h"          //查看进度
 #import "CheckDetailPublishViewController.h"  //联系接单方

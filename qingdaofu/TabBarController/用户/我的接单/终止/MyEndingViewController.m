@@ -174,17 +174,7 @@
          2为处理中（有人已接单发布方也已同意）。
          3为终止（只用发布方可以终止）。
          4为结案（双方都可以申请，一方申请一方同意*/
-        if ([endModel.progress_status intValue] == 0) {
-            [cell.userActionButton setTitle:@"待发布" forState:0];
-        }else if ([endModel.progress_status intValue] == 1){
-            [cell.userActionButton setTitle:@"申请中" forState:0];
-        }else if ([endModel.progress_status intValue] == 2){
-            [cell.userActionButton setTitle:@"处理中" forState:0];
-        }else if ([endModel.progress_status intValue] == 3){
-            [cell.userActionButton setTitle:@"终止" forState:0];
-        }else if ([endModel.progress_status intValue] == 4){
-            [cell.userActionButton setTitle:@"结案" forState:0];
-        }
+        [cell.userActionButton setTitle:@"终止" forState:0];
         [cell.userActionButton setTitleColor:kNavColor forState:0];
         cell.userActionButton.titleLabel.font = kBigFont;
         

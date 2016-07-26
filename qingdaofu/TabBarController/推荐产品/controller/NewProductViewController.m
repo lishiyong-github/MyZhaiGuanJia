@@ -63,8 +63,10 @@
     [self.view addSubview:self.mainTableView];
     [self.view setNeedsUpdateConstraints];
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self getPropagandaChar];
+    });
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self chechAppNewVersion];
     });
 }
@@ -225,7 +227,7 @@
         [cell setDidSelectedItem:^(NSInteger item) {
             [weakself tokenIsValid];
             [weakself setDidTokenValid:^(TokenModel *tModel) {
-                if ([tModel.code isEqualToString:@"0000"]) {
+                if ([tModel.code isEqualToString:@"0000"] || [tModel.code isEqualToString:@"3006"]) {
                     switch (item) {
                         case 11:{//融资
                             ReportFinanceViewController *reportFinanceVC = [[ReportFinanceViewController alloc] init];
@@ -258,13 +260,14 @@
                     LoginViewController *loginVC = [[LoginViewController alloc] init];
                     loginVC.hidesBottomBarWhenPushed = YES;
                     [weakself.navigationController pushViewController:loginVC animated:YES];
-                }else if([tModel.code isEqualToString:@"3006"]){//已登录，未认证
-                    [self showHint:tModel.msg];
-                    AuthentyViewController *authentyVC = [[AuthentyViewController alloc] init];
-                    authentyVC.hidesBottomBarWhenPushed = YES;
-                    authentyVC.typeAuthty = @"0";
-                    [weakself.navigationController pushViewController:authentyVC animated:YES];
                 }
+//                else if([tModel.code isEqualToString:@"3006"]){//已登录，未认证
+//                    [self showHint:tModel.msg];
+//                    AuthentyViewController *authentyVC = [[AuthentyViewController alloc] init];
+//                    authentyVC.hidesBottomBarWhenPushed = YES;
+//                    authentyVC.typeAuthty = @"0";
+//                    [weakself.navigationController pushViewController:authentyVC animated:YES];
+//                }
             }];
             
         }];
@@ -464,6 +467,7 @@
     
     QDFWeakSelf;
     [self requestDataPostWithString:recommendString params:params successBlock:^(id responseObject) {
+        
         [weakself.productsDataListArray removeAllObjects];
         NewProductModel *model = [NewProductModel objectWithKeyValues:responseObject];
         for (NewProductListModel *listModel in model.result) {
@@ -525,9 +529,16 @@
             NSString *titleStr = [NSString stringWithFormat:@"检查更新:%@",trackName];
             NSString *messageStr = [NSString stringWithFormat:@"发现新版本(%@),是否升级?",latestVersion];
             
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:titleStr message:messageStr delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"升级", nil];
-            alertView.delegate = self;
-            [alertView show];
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:titleStr message:messageStr preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleDefault handler:nil];
+            
+            UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/us/app/qing-dao-fu-zhai-guan-jia/id1116869191?l=zh&ls=1&mt=8"]];
+            }];
+            
+            [alertController addAction:action1];
+            [alertController addAction:action2];
+            [self presentViewController:alertController animated:YES completion:nil];
         }
     }
 }

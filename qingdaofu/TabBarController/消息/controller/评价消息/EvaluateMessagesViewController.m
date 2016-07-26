@@ -42,6 +42,11 @@
 
 @implementation EvaluateMessagesViewController
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self headerRefreshOfList];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @"评价消息";
@@ -54,8 +59,6 @@
     
     _tagString = @"get";
     [self.view setNeedsUpdateConstraints];
-    
-    [self headerRefreshOfList];
 }
 
 - (void)updateViewConstraints
@@ -165,7 +168,6 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([_tagString isEqualToString:@"send"]) {
-        
         LaunchEvaluateModel *model = self.launchEvaListArray[indexPath.section];
         if ([model.pictures isEqualToArray:@[]] || [model.pictures[0] isEqualToString:@""]) {
             return 185;
@@ -386,11 +388,16 @@
 - (void)getListOfEvaluateListWithPage:(NSString *)page
 {
     NSString *listString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMessageOfEvaluateString];
-    NSDictionary *params = @{@"token" : [self getValidateToken]};
+    NSDictionary *params = @{@"token" : [self getValidateToken],
+                             @"page" : page};
     [self requestDataPostWithString:listString params:params successBlock:^(id responseObject) {
         
-        [self.evaluateListArray removeAllObjects];
-        [self.launchEvaListArray removeAllObjects];
+        NSDictionary *ioioi = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
+        if (_pageList == 1) {
+            [self.evaluateListArray removeAllObjects];
+            [self.launchEvaListArray removeAllObjects];
+        }
         
         EvaluateResponse *response = [EvaluateResponse objectWithKeyValues:responseObject];
         
@@ -449,14 +456,14 @@
 #pragma mark - read
 - (void)messageIsReadWithId:(NSString *)idStr andUid:(NSString *)uidStr andCuid:(NSString *)cuidStr andCategory:(NSString *)categoryStr andFrequency:(NSString *)frequency
 {
-        if ([uidStr isEqualToString:cuidStr]) {//发布
+        if ([uidStr isEqualToString:cuidStr]) {//发布结案
             ReleaseCloseViewController *releaseCloseVC = [[ReleaseCloseViewController alloc] init];
             releaseCloseVC.evaString = frequency;
             releaseCloseVC.idString = idStr;
             releaseCloseVC.categaryString = categoryStr;
             releaseCloseVC.pidString = uidStr;
             [self.navigationController pushViewController:releaseCloseVC animated:YES];
-        }else{//接单
+        }else{//接单结案
             MyClosingViewController *myClosingVC = [[MyClosingViewController alloc] init];
             myClosingVC.evaString = frequency;
             myClosingVC.idString = idStr;

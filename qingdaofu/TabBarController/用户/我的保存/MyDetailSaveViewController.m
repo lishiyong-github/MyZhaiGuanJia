@@ -364,6 +364,7 @@
 {
     if (self.saveDetailArray.count > 0) {
         PublishingResponse *responseModel = self.saveDetailArray[0];
+                
         if ([responseModel.product.loan_type isEqualToString:@"4"]) {
             if ((indexPath.section == 1) && (indexPath.row == 5)) {//查看补充信息
                 AdditionMessageViewController *additionMessage = [[AdditionMessageViewController alloc] init];

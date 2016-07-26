@@ -59,7 +59,10 @@
 @end
 
 @implementation ReleaseCloseViewController
-
+- (void)viewWillAppear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getEvaluateDetails) name:@"evaluate" object:nil];
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @"产品详情";
@@ -207,9 +210,17 @@
     if ((indexPath.section == 3) && (indexPath.row == 1)){
         return 145;
     }else if ((indexPath.section == 4) && (indexPath.row == 1)){
-        return 170;
+        if (self.evaluateArray.count > 0) {
+            LaunchEvaluateModel *model = self.evaluateArray[0];
+            if ([model.pictures[0] isEqualToString:@""]) {
+                return 105;
+            }else{
+                return 170;
+            }
+        }else{
+            return 145;
+        }
     }
-    
     return kCellHeight;
 }
 
@@ -243,17 +254,7 @@
          2为处理中（有人已接单发布方也已同意）。
          3为终止（只用发布方可以终止）。
          4为结案（双方都可以申请，一方申请一方同意*/
-        if ([releaseModel.progress_status intValue] == 0) {
-            [cell.userActionButton setTitle:@"待发布" forState:0];
-        }else if ([releaseModel.progress_status intValue] == 1){
-            [cell.userActionButton setTitle:@"发布中" forState:0];
-        }else if ([releaseModel.progress_status intValue] == 2){
-            [cell.userActionButton setTitle:@"处理中" forState:0];
-        }else if ([releaseModel.progress_status intValue] == 3){
-            [cell.userActionButton setTitle:@"终止" forState:0];
-        }else if ([releaseModel.progress_status intValue] == 4){
-            [cell.userActionButton setTitle:@"结案" forState:0];
-        }
+        [cell.userActionButton setTitle:@"结案" forState:0];
         [cell.userActionButton setTitleColor:kNavColor forState:0];
         cell.userActionButton.titleLabel.font = kBigFont;
         
@@ -595,8 +596,8 @@
             [cell.evaStarImage setHidden:NO];
             [cell.evaTimeLabel setHidden:NO];
             [cell.evaTextLabel setHidden:NO];
-            [cell.evaProImageView1 setHidden:NO];
-            [cell.evaProImageView2 setHidden:NO];
+//            [cell.evaProImageView1 setHidden:NO];
+//            [cell.evaProImageView2 setHidden:NO];
             
             EvaluateResponse *response = self.evaluateResponseArray[0];
             LaunchEvaluateModel *launchModel = response.launchevaluation[0];
@@ -617,19 +618,20 @@
             
             //图片
             if (launchModel.pictures.count == 1) {//1张图片
-                NSString *str1;
                 if ([launchModel.pictures[0] isEqualToString:@""]) {
-                    str1 = launchModel.pictures[0];
+                    [cell.evaProImageView1 setHidden:YES];
+                    [cell.evaProImageView2 setHidden:YES];
                 }else{
-                    str1 = [launchModel.pictures[0] substringWithRange:NSMakeRange(1, [launchModel.pictures[0] length]-2)];
+                    [cell.evaProImageView1 setHidden:NO];
+                    [cell.evaProImageView2 setHidden:YES];
+                    NSString *str1 = [launchModel.pictures[0] substringWithRange:NSMakeRange(1, [launchModel.pictures[0] length]-2)];
+                    NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str1];
+                    NSURL *url1 = [NSURL URLWithString:imageStr1];
+                    [cell.evaProImageView1 sd_setImageWithURL:url1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
                 }
-                NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str1];
-                NSURL *url1 = [NSURL URLWithString:imageStr1];
-                
-                [cell.evaProImageView1 sd_setImageWithURL:url1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
-                [cell.evaProImageView2 sd_setImageWithURL:nil forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
-            
             }else if (launchModel.pictures.count >= 2){//两张图片
+                [cell.evaProImageView1 setHidden:NO];
+                [cell.evaProImageView2 setHidden:NO];
                 NSString *str1 = [launchModel.pictures[0] substringWithRange:NSMakeRange(1, [launchModel.pictures[0] length]-2)];
                 NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str1];
                 NSURL *url1 = [NSURL URLWithString:imageStr1];
@@ -651,7 +653,6 @@
             [cell.evaProImageView1 setHidden:YES];
             [cell.evaProImageView2 setHidden:YES];
         }
-        
             return cell;
     }
     return nil;
@@ -673,7 +674,6 @@
     PublishingModel *dealModel = resModel.product;
     
     if (indexPath.section == 1) {
-        
         if ([dealModel.loan_type isEqualToString:@"4"]) {
             if (indexPath.row == 5) {
                 AdditionMessageViewController *additionMessageVC = [[AdditionMessageViewController alloc] init];
@@ -777,9 +777,12 @@
                              @"id" : self.idString,
                              @"category" : self.categaryString
                              };
-    
     QDFWeakSelf;
     [self requestDataPostWithString:evaluateString params:params successBlock:^(id responseObject) {
+        
+        [weakself.evaluateResponseArray removeAllObjects];
+        [weakself.evaluateArray removeAllObjects];
+        
         EvaluateResponse *response = [EvaluateResponse objectWithKeyValues:responseObject];
         
         [weakself.evaluateResponseArray addObject:response];

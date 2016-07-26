@@ -111,7 +111,6 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (self.allEvaluateArray.count > 0) {
-        
         if ([self.evaTypeString isEqualToString:@"evaluate"]) {
             EvaluateModel *model = self.allEvaluateArray[indexPath.section];
             if ([model.pictures[0] isEqualToString:@""]) {

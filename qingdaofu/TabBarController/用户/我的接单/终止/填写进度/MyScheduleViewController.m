@@ -188,28 +188,6 @@
         cell.caseNoTextField.userInteractionEnabled = NO;
         [cell.caseGoButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
         cell.caseGoButton.userInteractionEnabled = NO;
-        
-//        NSArray *financeArr = @[@"尽职调查",@"公证",@"放款",@"返点",@"其他"];
-//        NSArray *collectArr = @[@"电话",@"上门",@"面谈"];
-        
-//        QDFWeakSelf;
-//        QDFWeak(cell);
-//        [cell.caseGoButton addAction:^(UIButton *btn) {
-//            if ([weakself.categoryString intValue] == 1) {//融资
-//                [weakself showBlurInView:self.view withArray:financeArr andTitle:@"选择处置类型" finishBlock:^(NSString *text,NSInteger row) {
-//                    [weakcell.caseGoButton setTitle:text forState:0];
-//                    NSString *statusStr = [NSString stringWithFormat:@"%ld",(long)row];
-//                    [self.scheduleDictionary setValue:statusStr forKey:@"status"];
-//                }];
-//            }else if ([weakself.categoryString intValue] == 2){//清收
-//                [weakself showBlurInView:self.view withArray:collectArr andTitle:@"选择处置类型" finishBlock:^(NSString *text,NSInteger row) {
-//                    [weakcell.caseGoButton setTitle:text forState:0];
-//                    NSString *statusStr = [NSString stringWithFormat:@"%ld",(long)row];
-//                    [self.scheduleDictionary setValue:statusStr forKey:@"status"];
-//                }];
-//            }
-//        }];
-        
         return cell;
     }
     
@@ -232,7 +210,6 @@
 {
     QDFWeakSelf;
     if ([self.categoryString integerValue] == 3) {//诉讼
-        
         if (indexPath.row == 1) {
             NSArray *suitArr = @[@"债权人上传处置资产",@"律师接单",@"双方洽谈",@"向法院起诉(财产保全)",@"整理诉讼材料",@"法院立案",@"向当事人发出开庭传票",@"开庭前调解",@"开庭",@"判决",@"二次开庭",@"二次判决",@"移交执行局申请执行",@"执行中提供借款人的财产线索",@"调查(公告)",@"拍卖",@"流拍",@"拍卖成功",@"付费"];
             [self showBlurInView:self.view withArray:suitArr andTitle:@"选择处置类型" finishBlock:^(NSString *text,NSInteger row) {
@@ -348,12 +325,14 @@
                    @"case" : caseStr//诉讼里面的暗号
                    };
     }
+    
     QDFWeakSelf;
     [self requestDataPostWithString:myScheduleString params:params successBlock:^( id responseObject){
         BaseModel *scheduleModel = [BaseModel objectWithKeyValues:responseObject];
         [weakself showHint:scheduleModel.msg];
         
         if ([scheduleModel.code isEqualToString:@"0000"]) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"schedule" object:nil];
             [weakself.navigationController popViewControllerAnimated:YES];
         }
     } andFailBlock:^(NSError *error){

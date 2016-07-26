@@ -152,19 +152,19 @@
         
         QDFWeakSelf;
         [_repSuitSwitchView setDidSelectedButton:^(NSInteger tag) {
+            if (tag == 33) {//保存
+                [weakself reportSuitActionWithTypeString:@"0"];
+            }else{
+                [weakself reportSuitActionWithTypeString:@"1"];
+            }
             
-            [weakself tokenIsValid];
-            [weakself setDidTokenValid:^(TokenModel *model) {
-                if ([model.code isEqualToString:@"0000"]) {
-                    if (tag == 33) {//保存
-                        [weakself reportSuitActionWithTypeString:@"0"];
-                    }else{
-                        [weakself reportSuitActionWithTypeString:@"1"];
-                    }
-                }else{//发布
-                    [weakself showHint:model.msg];
-                }
-            }];
+//            [weakself tokenIsValid];
+//            [weakself setDidTokenValid:^(TokenModel *model) {
+//                if ([model.code isEqualToString:@"0000"] || [model.code isEqualToString:@"3006"]) {
+//                }else{//发布
+//                    [weakself showHint:model.msg];
+//                }
+//            }];
         }];
     }
     return _repSuitSwitchView;

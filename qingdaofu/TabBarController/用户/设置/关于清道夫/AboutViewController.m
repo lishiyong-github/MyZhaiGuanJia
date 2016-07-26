@@ -136,7 +136,6 @@
     Class isAllow = NSClassFromString(@"SKStoreProductViewController");
     
     if (isAllow != nil) {
-        
         SKStoreProductViewController *sKStoreProductViewController = [[SKStoreProductViewController alloc] init];
         [sKStoreProductViewController.view setFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
         [sKStoreProductViewController setDelegate:self];
