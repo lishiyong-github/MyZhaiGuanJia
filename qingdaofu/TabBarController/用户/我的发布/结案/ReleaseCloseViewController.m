@@ -112,39 +112,6 @@
 {
     if (!_ReleaseCloseCommitButton) {
         _ReleaseCloseCommitButton = [BaseCommitButton newAutoLayoutView];
-        
-        if ([self.evaString integerValue] < 2) {
-            if ([self.evaString integerValue] == 0) {
-                [_ReleaseCloseCommitButton setTitle:@"评价" forState:0];
-                
-            }else if ([self.evaString integerValue] == 1){
-                [_ReleaseCloseCommitButton setTitle:@"再次评价" forState:0];
-                
-            }
-            
-            QDFWeakSelf;
-            [_ReleaseCloseCommitButton addAction:^(UIButton *btn) {
-                
-                PublishingModel *clModel;
-                if (self.releaseArray.count > 0) {
-                    PublishingResponse *clResponse = weakself.releaseArray[0];
-                    clModel = clResponse.product;
-                }
-                
-                AdditionalEvaluateViewController *additionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
-                additionalEvaluateVC.typeString = @"发布方";
-                additionalEvaluateVC.evaString = weakself.evaString;
-                additionalEvaluateVC.idString = weakself.idString;
-                additionalEvaluateVC.categoryString = weakself.categaryString;
-                additionalEvaluateVC.codeString = clModel.codeString;
-                [weakself.navigationController pushViewController:additionalEvaluateVC animated:YES];
-            }];
-            
-        }else{
-            [_ReleaseCloseCommitButton setTitle:@"已结案" forState:0];
-            _ReleaseCloseCommitButton.backgroundColor = kSelectedColor;
-            [_ReleaseCloseCommitButton setTitleColor:kBlackColor forState:0];
-        }
     }
     return _ReleaseCloseCommitButton;
 }
@@ -789,6 +756,38 @@
         
         for (LaunchEvaluateModel *launchModel in response.launchevaluation) {
             [weakself.evaluateArray addObject:launchModel];
+        }
+        
+        if ([response.evalua integerValue] < 2) {
+            if ([response.evalua integerValue] == 0) {
+                [weakself.ReleaseCloseCommitButton setTitle:@"评价" forState:0];
+                
+            }else{
+                [weakself.ReleaseCloseCommitButton setTitle:@"再次评价" forState:0];
+            }
+            
+            QDFWeakSelf;
+            [weakself.ReleaseCloseCommitButton addAction:^(UIButton *btn) {
+                
+                PublishingModel *clModel;
+                if (weakself.releaseArray.count > 0) {
+                    PublishingResponse *clResponse = weakself.releaseArray[0];
+                    clModel = clResponse.product;
+                }
+                
+                AdditionalEvaluateViewController *additionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
+                additionalEvaluateVC.typeString = @"发布方";
+                additionalEvaluateVC.evaString = weakself.evaString;
+                additionalEvaluateVC.idString = weakself.idString;
+                additionalEvaluateVC.categoryString = weakself.categaryString;
+                additionalEvaluateVC.codeString = clModel.codeString;
+                [weakself.navigationController pushViewController:additionalEvaluateVC animated:YES];
+            }];
+            
+        }else{
+            [weakself.ReleaseCloseCommitButton setTitle:@"已结案" forState:0];
+            weakself.ReleaseCloseCommitButton.backgroundColor = kSelectedColor;
+            [weakself.ReleaseCloseCommitButton setTitleColor:kBlackColor forState:0];
         }
         
         [weakself.ReleaseCloseTableView reloadData];
