@@ -60,8 +60,8 @@
 - (UITableView *)paceTableView
 {
     if (!_paceTableView) {
-        _paceTableView.translatesAutoresizingMaskIntoConstraints = YES;
-        _paceTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
+        _paceTableView.translatesAutoresizingMaskIntoConstraints = NO;
+        _paceTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _paceTableView.delegate = self;
         _paceTableView.dataSource = self;
         _paceTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];

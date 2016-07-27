@@ -87,8 +87,8 @@
 - (UITableView *)dealingTableView
 {
     if (!_dealingTableView) {
-        _dealingTableView.translatesAutoresizingMaskIntoConstraints = YES;
-        _dealingTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
+        _dealingTableView.translatesAutoresizingMaskIntoConstraints = NO;
+        _dealingTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _dealingTableView.delegate = self;
         _dealingTableView.dataSource = self;
         _dealingTableView.backgroundColor = kBackColor;

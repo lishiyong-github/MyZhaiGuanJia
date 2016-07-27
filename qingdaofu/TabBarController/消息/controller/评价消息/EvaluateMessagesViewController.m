@@ -123,7 +123,7 @@
 - (UITableView *)evaluateTableView
 {
     if (!_evaluateTableView) {
-        _evaluateTableView.translatesAutoresizingMaskIntoConstraints = YES;
+        _evaluateTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _evaluateTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _evaluateTableView.delegate = self;
         _evaluateTableView.dataSource = self;

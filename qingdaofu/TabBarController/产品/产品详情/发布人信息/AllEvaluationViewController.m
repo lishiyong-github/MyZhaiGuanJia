@@ -62,7 +62,7 @@
 - (UITableView *)allEvaTableView
 {
     if (!_allEvaTableView) {
-        _allEvaTableView.translatesAutoresizingMaskIntoConstraints = YES;
+        _allEvaTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _allEvaTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _allEvaTableView.delegate = self;
         _allEvaTableView.dataSource = self;

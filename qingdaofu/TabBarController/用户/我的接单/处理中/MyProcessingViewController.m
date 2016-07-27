@@ -91,7 +91,7 @@
 - (UITableView *)myProcessingTableView
 {
     if (!_myProcessingTableView) {
-        _myProcessingTableView.translatesAutoresizingMaskIntoConstraints = YES;
+        _myProcessingTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _myProcessingTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _myProcessingTableView.delegate = self;
         _myProcessingTableView.dataSource = self;
@@ -709,6 +709,11 @@
                 [weakself.processinCommitButton setTitleColor:kBlackColor forState:0];
                 weakself.processinCommitButton.userInteractionEnabled = NO;
             }
+        }else{
+//            [weakself.processinCommitButton setTitle:@"已结案" forState:0];
+//            [weakself.processinCommitButton setBackgroundColor:kSelectedColor];
+//            [weakself.processinCommitButton setTitleColor:kBlackColor forState:0];
+//            weakself.processinCommitButton.userInteractionEnabled = NO;
         }
         
         [self lookUpProcessingSchedule];

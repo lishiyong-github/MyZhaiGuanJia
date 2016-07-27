@@ -53,8 +53,8 @@
 - (UITableView *)suggestTableView
 {
     if (!_suggestTableView) {
-        _suggestTableView.translatesAutoresizingMaskIntoConstraints = YES;
-        _suggestTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
+        _suggestTableView.translatesAutoresizingMaskIntoConstraints = NO;
+        _suggestTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _suggestTableView.backgroundColor = kBackColor;
         _suggestTableView.delegate = self;
         _suggestTableView.dataSource = self;

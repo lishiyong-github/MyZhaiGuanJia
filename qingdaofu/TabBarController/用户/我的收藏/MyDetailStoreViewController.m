@@ -60,8 +60,8 @@
 - (UITableView *)detailStoreTableView
 {
     if (!_detailStoreTableView) {
-        _detailStoreTableView.translatesAutoresizingMaskIntoConstraints = YES;
-        _detailStoreTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
+        _detailStoreTableView.translatesAutoresizingMaskIntoConstraints = NO;
+        _detailStoreTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _detailStoreTableView.delegate = self;
         _detailStoreTableView.dataSource = self;
         _detailStoreTableView.backgroundColor = kBackColor;

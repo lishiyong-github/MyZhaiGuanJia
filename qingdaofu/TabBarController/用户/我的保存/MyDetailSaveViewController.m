@@ -71,8 +71,8 @@
 {
     if (!_detailSaveTableView) {
 
-        _detailSaveTableView.translatesAutoresizingMaskIntoConstraints = YES;
-        _detailSaveTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
+        _detailSaveTableView.translatesAutoresizingMaskIntoConstraints = NO;
+        _detailSaveTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _detailSaveTableView.delegate = self;
         _detailSaveTableView.dataSource = self;
         _detailSaveTableView.tableFooterView = [[UIView alloc] init];

@@ -49,7 +49,7 @@
 - (UITableView *)listTableView
 {
     if (!_listTableView) {
-        _listTableView.translatesAutoresizingMaskIntoConstraints = YES;
+        _listTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _listTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight) style:UITableViewStyleGrouped];
         _listTableView.delegate = self;
         _listTableView.dataSource = self;

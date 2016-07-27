@@ -243,15 +243,19 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    if (indexPath.section > 1) {//我的代理收藏保存设置
-        if (self.didSelectedButton) {
-            self.didSelectedButton(indexPath.section*3+indexPath.row);
-        }
-    }else if(indexPath.section == 0){//登录
-        if (self.didSelectedIndex) {
-            self.didSelectedIndex(indexPath);
-        }
+    
+    if (self.didSelectedButton) {
+        self.didSelectedButton(indexPath.section*3+indexPath.row);
     }
+    
+    
+    
+//    if (indexPath.section > 1) {//我的代理收藏保存设置
+//    }else if(indexPath.section == 0){//登录
+//        if (self.didSelectedIndex) {
+//            self.didSelectedIndex(indexPath);
+//        }
+//    }
     
 }
 

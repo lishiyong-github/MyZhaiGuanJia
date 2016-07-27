@@ -258,11 +258,13 @@
                     }
                 }
             }else if ([messageModel.progress_status integerValue] == 2){//处理中
+                
                 MyProcessingViewController *myProcessingVC = [[MyProcessingViewController alloc] init];
                 myProcessingVC.idString = messageModel.category_id.idString;
                 myProcessingVC.categaryString = messageModel.category_id.category;
                 myProcessingVC.pidString = messageModel.uidInner;
                 [weakself.navigationController pushViewController:myProcessingVC animated:YES];
+                
             }else if ([messageModel.progress_status integerValue] == 3){//终止
                 MyEndingViewController *myEndingVC = [[MyEndingViewController alloc] init];
                 myEndingVC.idString = messageModel.category_id.idString;
@@ -277,14 +279,6 @@
                 myClosingVC.evaString = messageModel.frequency;
                 [weakself.navigationController pushViewController:myClosingVC animated:YES];
             }
-            /*
-            else{
-                ProductsDetailsViewController *productsDetailsVC = [[ProductsDetailsViewController alloc] init];
-                productsDetailsVC.idString = messageModel.category_id.idString;
-                productsDetailsVC.categoryString = messageModel.category_id.category;
-                [weakself.navigationController pushViewController:productsDetailsVC animated:YES];
-            }
-             */
         }
         
     } andFailBlock:^(NSError *error) {

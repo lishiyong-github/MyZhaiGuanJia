@@ -196,7 +196,6 @@
         }
         
         [weakself.applyRecordsTableView reloadData];
-        
     } andFailBlock:^(id responseObject){
         
     }];

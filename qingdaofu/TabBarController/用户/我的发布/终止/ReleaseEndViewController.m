@@ -82,8 +82,8 @@
 - (UITableView *)releaseEndTableView
 {
     if (!_releaseEndTableView) {
-        _releaseEndTableView.translatesAutoresizingMaskIntoConstraints = YES;
-        _releaseEndTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
+        _releaseEndTableView.translatesAutoresizingMaskIntoConstraints = NO;
+        _releaseEndTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _releaseEndTableView.delegate = self;
         _releaseEndTableView.dataSource = self;
     }

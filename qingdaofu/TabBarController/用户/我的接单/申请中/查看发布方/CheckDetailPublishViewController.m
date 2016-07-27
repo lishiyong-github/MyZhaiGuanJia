@@ -10,6 +10,8 @@
 #import "AllEvaluationViewController.h"  //所有评价
 #import "CaseViewController.h"  //经典案例
 #import "AgreementViewController.h"  //服务协议
+#import "LoginViewController.h" 
+#import "AuthentyViewController.h"
 
 #import "MineUserCell.h"
 #import "EvaluatePhotoCell.h"
@@ -121,12 +123,26 @@
         if ([self.typeString isEqualToString:@"申请人"]) {
             [_appAgreeButton setTitle:@"同意申请" forState:0];
             [_appAgreeButton addAction:^(UIButton *btn) {
-                AgreementViewController *agreementVC = [[AgreementViewController alloc] init];
-                agreementVC.flagString = @"1";
-                agreementVC.idString = weakself.idString;
-                agreementVC.categoryString = weakself.categoryString;
-                agreementVC.pidString = weakself.pidString;
-                [weakself.navigationController pushViewController:agreementVC animated:YES];
+                [weakself tokenIsValid];
+                [weakself setDidTokenValid:^(TokenModel *tModel) {
+                    if ([tModel.code integerValue] == 0000) {
+                        AgreementViewController *agreementVC = [[AgreementViewController alloc] init];
+                        agreementVC.flagString = @"1";
+                        agreementVC.idString = weakself.idString;
+                        agreementVC.categoryString = weakself.categoryString;
+                        agreementVC.pidString = weakself.pidString;
+                        [weakself.navigationController pushViewController:agreementVC animated:YES];
+                    }else if ([tModel.code integerValue] == 3006){
+                        [weakself showHint:tModel.msg];
+                        AuthentyViewController *authentyVC = [[AuthentyViewController alloc] init];
+                        authentyVC.typeAuthty = @"0";
+                        [weakself.navigationController pushViewController:authentyVC animated:YES];
+                    }else{
+                        [weakself showHint:tModel.msg];
+                        LoginViewController *loginVC = [[LoginViewController alloc] init];
+                        [weakself.navigationController pushViewController:loginVC animated:YES];
+                    }
+                }];
             }];
         }else{
             //1.处理中
