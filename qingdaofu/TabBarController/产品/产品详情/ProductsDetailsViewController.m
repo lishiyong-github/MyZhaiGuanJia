@@ -411,7 +411,6 @@
             [weakself.proDetailsCommitButton setTitleColor:kBlackColor forState:0];
             [weakself.proDetailsCommitButton setTitle:@"已终止" forState:0];
             [weakself.proDetailsCommitButton setBackgroundColor:kSelectedColor];
-            weakself.proDetailsCommitButton.userInteractionEnabled = NO;
         }
     } andFailBlock:^(NSError *error) {
         
@@ -450,7 +449,6 @@
         [weakself showHint:rightModel.msg];
         
         if ([rightModel.code isEqualToString:@"0000"]) {
-         
             if ([type isEqualToString:@"1"]) {//未收藏 －－ 收藏
                 [weakself.rightItemButton setImage:[UIImage imageNamed:@"nav_collection_s"] forState:0];
                 weakself.typetString = @"2";

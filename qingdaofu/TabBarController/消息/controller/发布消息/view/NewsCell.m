@@ -37,7 +37,7 @@
         
         [self.contextLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.typeButton withOffset:5];
         [self.contextLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
-        [self.contextLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:60];
+        [self.contextLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:40];
         
         [self.goTobutton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.goTobutton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.contextLabel];
@@ -75,6 +75,7 @@
         _contextLabel = [UILabel newAutoLayoutView];
         _contextLabel.textColor = kLightGrayColor;
         _contextLabel.font = kSecondFont;
+        _contextLabel.numberOfLines = 0;
     }
     return _contextLabel;
 }

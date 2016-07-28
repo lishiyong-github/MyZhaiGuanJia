@@ -11,5 +11,7 @@
 @interface MessageResponse : BaseModel
 
 @property (nonatomic,strong) NSArray *message;  //消息
+@property (nonatomic,copy) NSString *cuid; //登录人uid
+
 
 @end

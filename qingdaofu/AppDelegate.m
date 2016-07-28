@@ -9,6 +9,8 @@
 #import "AppDelegate.h"
 #import "MBResourceManager.h"
 #import "MainViewController.h"
+#import "TabBarViewController.h"
+
 #import "IntroduceViewController.h"
 
 @interface AppDelegate ()  
@@ -36,6 +38,10 @@
         MainViewController *mainVC = [[MainViewController alloc] init];
         UINavigationController *mainNav = [[UINavigationController alloc] initWithRootViewController:mainVC];
         self.window.rootViewController = mainNav;
+        
+//        TabBarViewController *tabBarVC = [[TabBarViewController alloc] init];
+//        UINavigationController *tabBarNav = [[UINavigationController alloc] initWithRootViewController:tabBarVC];
+//        self.window.rootViewController = tabBarNav;
     }
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{

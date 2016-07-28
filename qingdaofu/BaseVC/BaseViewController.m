@@ -33,7 +33,6 @@
 //    [self.navigationController.navigationBar setShadowImage:[UIImage imageWithColor:kNavColor1]];
 
 
-    
 //    self.edgesForExtendedLayout = UIRectEdgeNone ;
 //    self.extendedLayoutIncludesOpaqueBars = NO ;
 //    self.automaticallyAdjustsScrollViewInsets = NO ;
@@ -45,8 +44,8 @@
     self.navigationController.navigationBar.translucent = NO;
     
     //设置导航栏颜色
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:[UIColor whiteColor]] forBarMetrics:UIBarMetricsDefault];
-        
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:kNavColor] forBarMetrics:UIBarMetricsDefault];
+    
     self.automaticallyAdjustsScrollViewInsets = NO;
     
     //右滑返回

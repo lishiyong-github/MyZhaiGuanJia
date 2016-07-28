@@ -11,8 +11,17 @@
 #import "MyProcessingViewController.h" //我的接单－处理中
 #import "MyEndingViewController.h"  //我的接单－终止
 #import "MyClosingViewController.h" //我的接单－结案
+#import "MyPublishingViewController.h"//我的发布－发布中
+#import "MyDealingViewController.h"//我的发布－处理中
+#import "ReleaseEndViewController.h"//我的发布－终止
+#import "ReleaseCloseViewController.h"//我的发布－结案
+
+#import "ApplyRecordsViewController.h"  //申请记录
+#import "PaceViewController.h"
+
 #import "ProductsDetailsViewController.h" //产品详情
 #import "MyDetailStoreViewController.h"  //我的收藏
+#import "PaceViewController.h"
 
 #import "NewsCell.h"
 
@@ -38,7 +47,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:kBlackColor,NSFontAttributeName:kNavFont}];
-    
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:kNavColor] forBarMetrics:UIBarMetricsDefault];
     
     [self headerRefreshWithMessageOfOrder];
@@ -105,7 +113,21 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 75;
+    if (self.messageReceiveArray.count > 0) {
+        MessageModel *model = self.messageReceiveArray[indexPath.section];
+        
+        CGSize titleSize = CGSizeMake(kScreenWidth - 60, MAXFLOAT);
+        CGSize actualsize = [model.content boundingRectWithSize:titleSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName :kFirstFont} context:nil].size;
+        
+        return 45 + MAX(actualsize.height, 30);
+//        CGSize titleSize = CGSizeMake(kScreenWidth - 175, MAXFLOAT);
+//        CGSize  actualsize =[wtwt boundingRectWithSize:titleSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName :kFirstFont} context:nil].size;
+        
+//        return 105 + MAX(actualsize.height, 16);
+        
+    }
+//    return 75;
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -159,8 +181,6 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (self.messageReceiveArray.count > 0) {
         MessageModel *meModel = self.messageReceiveArray[indexPath.section];
-        //接单的申请中---7接单申请中详情，89产品详情， 11(发布方结案) 12（接单方结案） 16
-//        [self messageIsReadWithIdStr:meModel.idStr andTypeString:meModel.type andContent:meModel.content andModel:meModel.category_id];
         [self messageIsReadWithMessageModel:meModel];
     }
 }
@@ -174,9 +194,9 @@
                              @"page" : page,
                              @"type" : @"2"//发布1，接单2
                              };
-    
     QDFWeakSelf;
-    [self requestDataPostWithString:mesString params:params successBlock:^(id responseObject) {        
+    [self requestDataPostWithString:mesString params:params successBlock:^(id responseObject) {
+        
         if ([page integerValue] == 1) {
             [weakself.messageReceiveArray removeAllObjects];
         }
@@ -239,45 +259,78 @@
                     [weakself.navigationController pushViewController:productsDetailsVC animated:YES];
                 }else{
                     if ([messageModel.app_id integerValue] == 0) {//申请中
-                        MyApplyingViewController *myApplyVC = [[MyApplyingViewController alloc] init];
-                        myApplyVC.idString = messageModel.category_id.idString;
-                        myApplyVC.categaryString = messageModel.category_id.category;
-                        myApplyVC.pidString = messageModel.uidInner;
-                        [weakself.navigationController pushViewController:myApplyVC animated:YES];
+                        if ([messageModel.fuid isEqualToString:messageModel.belonguid]) {//发布方
+                            ApplyRecordsViewController *applyRecordsVC = [[ApplyRecordsViewController alloc] init];
+                            applyRecordsVC.idStr = messageModel.category_id.idString;
+                            applyRecordsVC.categaryStr = messageModel.category_id.category;
+                            [weakself.navigationController pushViewController:applyRecordsVC animated:YES];
+                        }else{
+                            MyApplyingViewController *myApplyVC = [[MyApplyingViewController alloc] init];
+                            myApplyVC.idString = messageModel.category_id.idString;
+                            myApplyVC.categaryString = messageModel.category_id.category;
+                            myApplyVC.pidString = messageModel.uidInner;
+                            [weakself.navigationController pushViewController:myApplyVC animated:YES];
+                        }
                     }else if ([messageModel.app_id integerValue] == 2){//收藏
-                        
                         ProductsDetailsViewController *productsDetailsVC = [[ProductsDetailsViewController alloc] init];
                         productsDetailsVC.idString = messageModel.category_id.idString;
                         productsDetailsVC.categoryString = messageModel.category_id.category;
                         [weakself.navigationController pushViewController:productsDetailsVC animated:YES];
-                        
-//                        MyDetailStoreViewController *mydetailStoreVC = [[MyDetailStoreViewController alloc] init];
-//                        mydetailStoreVC.idString = messageModel.category_id.idString;
-//                        mydetailStoreVC.categoryString = messageModel.category_id.category;
-//                        [weakself.navigationController pushViewController:mydetailStoreVC animated:YES];
                     }
                 }
             }else if ([messageModel.progress_status integerValue] == 2){//处理中
-                
-                MyProcessingViewController *myProcessingVC = [[MyProcessingViewController alloc] init];
-                myProcessingVC.idString = messageModel.category_id.idString;
-                myProcessingVC.categaryString = messageModel.category_id.category;
-                myProcessingVC.pidString = messageModel.uidInner;
-                [weakself.navigationController pushViewController:myProcessingVC animated:YES];
-                
+                if ([messageModel.fuid isEqualToString:messageModel.belonguid]) {//发布
+                    if ([messageModel.type integerValue] == 14) {//进度列表
+                        PaceViewController *paceVC = [[PaceViewController alloc] init];
+                        paceVC.idString = messageModel.category_id.idString;
+                        paceVC.categoryString = messageModel.category_id.category;
+                        [weakself.navigationController pushViewController:paceVC animated:YES];
+                    }else if ([messageModel.type integerValue] == 19){//申请延期
+                        
+                    }else{
+                        MyDealingViewController *myDealingVC = [[MyDealingViewController alloc] init];
+                        myDealingVC.idString = messageModel.category_id.idString;
+                        myDealingVC.categaryString = messageModel.category_id.category;
+                        myDealingVC.pidString = messageModel.uidInner;
+                        [weakself.navigationController pushViewController:myDealingVC animated:YES];
+                    }
+                }else{
+                    MyProcessingViewController *myProcessingVC = [[MyProcessingViewController alloc] init];
+                    myProcessingVC.idString = messageModel.category_id.idString;
+                    myProcessingVC.categaryString = messageModel.category_id.category;
+                    myProcessingVC.pidString = messageModel.uidInner;
+                    [weakself.navigationController pushViewController:myProcessingVC animated:YES];
+                }
             }else if ([messageModel.progress_status integerValue] == 3){//终止
-                MyEndingViewController *myEndingVC = [[MyEndingViewController alloc] init];
-                myEndingVC.idString = messageModel.category_id.idString;
-                myEndingVC.categaryString = messageModel.category_id.category;
-                myEndingVC.pidString = messageModel.uidInner;
-                [weakself.navigationController pushViewController:myEndingVC animated:YES];
+                if ([messageModel.fuid isEqualToString:messageModel.belonguid]) {
+                    ReleaseEndViewController *releaseEndVC = [[ReleaseEndViewController alloc] init];
+                    releaseEndVC.idString = messageModel.category_id.idString;
+                    releaseEndVC.categaryString = messageModel.category_id.category;
+                    releaseEndVC.pidString = messageModel.uidInner;
+                    [weakself.navigationController pushViewController:releaseEndVC animated:YES];
+                }else{
+                    MyEndingViewController *myEndingVC = [[MyEndingViewController alloc] init];
+                    myEndingVC.idString = messageModel.category_id.idString;
+                    myEndingVC.categaryString = messageModel.category_id.category;
+                    myEndingVC.pidString = messageModel.uidInner;
+                    [weakself.navigationController pushViewController:myEndingVC animated:YES];
+                }
             }else if ([messageModel.progress_status integerValue] == 4){//结案
-                MyClosingViewController  *myClosingVC = [[MyClosingViewController alloc] init];
-                myClosingVC.idString = messageModel.category_id.idString;
-                myClosingVC.categaryString = messageModel.category_id.category;
-                myClosingVC.pidString = messageModel.uidInner;
-                myClosingVC.evaString = messageModel.frequency;
-                [weakself.navigationController pushViewController:myClosingVC animated:YES];
+                if ([messageModel.fuid isEqualToString:messageModel.belonguid]) {
+                    ReleaseCloseViewController *releaseCloseVC = [[ReleaseCloseViewController alloc] init];
+                    releaseCloseVC.idString = messageModel.category_id.idString;
+                    releaseCloseVC.categaryString = messageModel.category_id.category;
+                    releaseCloseVC.pidString = messageModel.uidInner;
+                    releaseCloseVC.evaString = messageModel.frequency;
+                    [weakself.navigationController pushViewController:releaseCloseVC animated:YES];
+                }else{
+                    MyClosingViewController  *myClosingVC = [[MyClosingViewController alloc] init];
+                    myClosingVC.idString = messageModel.category_id.idString;
+                    myClosingVC.categaryString = messageModel.category_id.category;
+                    myClosingVC.pidString = messageModel.uidInner;
+                    myClosingVC.evaString = messageModel.frequency;
+                    [weakself.navigationController pushViewController:myClosingVC animated:YES];
+                }
             }
         }
         

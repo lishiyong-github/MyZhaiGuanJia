@@ -220,7 +220,11 @@
             }
         }
     }
-    return 2;
+    
+    if (self.allEvaDataArray.count > 0) {
+        return 2;
+    }
+    return 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -569,13 +573,16 @@
         
         CompleteResponse *response = [CompleteResponse objectWithKeyValues:responseObject];
         
-        if (response.certification) {
-            [weakself.certifiDataArray addObject:response.certification];
+        if ([response.code isEqualToString:@"0000"]) {
+            if (response.certification) {
+                [weakself.certifiDataArray addObject:response.certification];
+            }
+            
+            [weakself.checkDetailTableView reloadData];
+            [weakself getAllEvaluationListWithPage:@"1"];
+        }else{
+            [weakself showHint:response.msg];
         }
-        
-        [weakself.checkDetailTableView reloadData];
-        [weakself getAllEvaluationListWithPage:@"1"];
-        
     } andFailBlock:^(NSError *error) {
         
     }];
@@ -592,12 +599,14 @@
     [self requestDataPostWithString:evaluateString params:params successBlock:^(id responseObject) {
         
         EvaluateResponse *response = [EvaluateResponse objectWithKeyValues:responseObject];
+        
         [weakself.allEvaResponse addObject:response];
         
         for (EvaluateModel *model in response.evaluate) {
             [weakself.allEvaDataArray addObject:model];
         }
         [weakself.checkDetailTableView reloadData];
+        
         
     } andFailBlock:^(NSError *error) {
         

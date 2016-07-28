@@ -390,10 +390,7 @@
     NSString *listString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMessageOfEvaluateString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"page" : page};
-    [self requestDataPostWithString:listString params:params successBlock:^(id responseObject) {
-        
-        NSDictionary *ioioi = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        
+    [self requestDataPostWithString:listString params:params successBlock:^(id responseObject) {        
         if (_pageList == 1) {
             [self.evaluateListArray removeAllObjects];
             [self.launchEvaListArray removeAllObjects];
@@ -474,7 +471,7 @@
 }
 
 #pragma mark - delete
-- (void)deleteEvaluateWithSection:(NSInteger)section andId:(NSString *)idStr andSid:(NSString *)sidStr
+- (void)deleteEvaluateWithSection:(NSInteger)sectionInt andId:(NSString *)idStr andSid:(NSString *)sidStr
 {
     NSString *deleteString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMessageOfDeleteString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
@@ -488,8 +485,8 @@
         BaseModel *yModel = [BaseModel objectWithKeyValues:responseObject];
         [weakself showHint:yModel.msg];
         if ([yModel.code isEqualToString:@"0000"]) {
-            NSIndexSet *deleteIndexSet = [NSIndexSet indexSetWithIndex:section];
-            [weakself.launchEvaListArray removeObjectAtIndex:section];
+            NSIndexSet *deleteIndexSet = [NSIndexSet indexSetWithIndex:sectionInt];
+            [weakself.launchEvaListArray removeObjectAtIndex:sectionInt];
             [weakself deleteSections:deleteIndexSet withRowAnimation:UITableViewRowAnimationMiddle];
         }
         
