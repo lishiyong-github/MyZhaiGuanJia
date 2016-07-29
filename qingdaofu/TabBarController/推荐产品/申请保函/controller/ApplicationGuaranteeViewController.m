@@ -223,12 +223,17 @@
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
-    return @"省市区";
+    if (component == 0) {
+        return @"省";
+    }else if (component == 1){
+        return @"市";
+    }
+    return @"区";
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
-    
+    NSLog(@"选择");
 }
 
 - (void)dealloc
