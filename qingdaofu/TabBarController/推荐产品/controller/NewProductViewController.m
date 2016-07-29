@@ -7,14 +7,13 @@
 //
 
 #import "NewProductViewController.h"
-#import "UploadFilesViewController.h"
+#import "HouseAssessViewController.h"  //房产评估
+#import "ApplicationGuaranteeViewController.h" //申请保函
 
-#import "ReportFinanceViewController.h"  //发布融资
-#import "ReportSuitViewController.h"   //发布诉讼
 #import "ProductsDetailsViewController.h" //详细信息
 #import "MarkingViewController.h"
 #import "LoginViewController.h" //登录
-#import "AuthentyViewController.h"
+#import "AuthentyViewController.h"//认证
 
 #import "NewPublishCell.h"
 #import "HomeCell.h"
@@ -204,11 +203,9 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        return 110;
-    }else if (indexPath.section == 1){
-        return 160;
+        return 140;
     }
-    return 156;
+    return 156;//产品列表
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -216,99 +213,45 @@
     static NSString *identifier;
     if (indexPath.section == 0){
         identifier = @"main0";
-        NewPublishCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        FourCell *cell = [tableView dequeueReusableCellWithIdentifier: identifier];
         if (!cell) {
-            cell = [[NewPublishCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            cell = [[FourCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
-        
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-        QDFWeakSelf;
-        [cell setDidSelectedItem:^(NSInteger item) {
-            [weakself tokenIsValid];
-            [weakself setDidTokenValid:^(TokenModel *tModel) {
-                if ([tModel.code isEqualToString:@"0000"] || [tModel.code isEqualToString:@"3006"]) {
-                    switch (item) {
-                        case 11:{//融资
-                            ReportFinanceViewController *reportFinanceVC = [[ReportFinanceViewController alloc] init];
-                            reportFinanceVC.hidesBottomBarWhenPushed = YES;
-                            [weakself.navigationController pushViewController:reportFinanceVC animated:YES];                            
-                        }
-                            break;
-                        case 12:{//清收
-                            ReportSuitViewController *reportCollectVC = [[ReportSuitViewController alloc] init];
-                            reportCollectVC.hidesBottomBarWhenPushed = YES;
-                            reportCollectVC.categoryString = @"2";
-                            reportCollectVC.tagString = @"1";
-                            [weakself.navigationController pushViewController:reportCollectVC animated:YES];
-                        }
-                            break;
-                        case 13:{//诉讼
-                            ReportSuitViewController *reportSuitVC = [[ReportSuitViewController alloc] init];
-                            reportSuitVC.hidesBottomBarWhenPushed = YES;
-                            reportSuitVC.categoryString = @"3";
-                            reportSuitVC.tagString = @"1";
-                            [weakself.navigationController pushViewController:reportSuitVC animated:YES];
-                        }
-                            break;
-                        default:
-                            break;
-                    }
-
-                }else if([tModel.code isEqualToString:@"3001"] || [self getValidateToken] == nil){//未登录
-                    [self showHint:tModel.msg];
-                    LoginViewController *loginVC = [[LoginViewController alloc] init];
-                    loginVC.hidesBottomBarWhenPushed = YES;
-                    [weakself.navigationController pushViewController:loginVC animated:YES];
-                }
-//                else if([tModel.code isEqualToString:@"3006"]){//已登录，未认证
-//                    [self showHint:tModel.msg];
-//                    AuthentyViewController *authentyVC = [[AuthentyViewController alloc] init];
-//                    authentyVC.hidesBottomBarWhenPushed = YES;
-//                    authentyVC.typeAuthty = @"0";
-//                    [weakself.navigationController pushViewController:authentyVC animated:YES];
-//                }
-            }];
-            
-        }];
         
+        QDFWeakSelf;
+        [cell setDidClickButton:^(NSInteger tag) {
+            switch (tag) {
+                case 11:{//房产评估
+                    NSLog(@"房产评估");
+                    HouseAssessViewController *houseAssessVC = [[HouseAssessViewController alloc] init];
+                    houseAssessVC.hidesBottomBarWhenPushed = YES;
+                    [weakself.navigationController pushViewController:houseAssessVC animated:YES];
+                }
+                    break;
+                case 22:{//房屋产调
+                    NSLog(@"房屋产调");
+                }
+                    break;
+                case 33:{//诉讼保全
+                    NSLog(@"诉讼保全");
+                }
+                    break;
+                case 44:{//申请保函
+                    NSLog(@"申请保函");
+                    ApplicationGuaranteeViewController *applicationGuaranteeVC = [[ApplicationGuaranteeViewController alloc] init];
+                    applicationGuaranteeVC.hidesBottomBarWhenPushed = YES;
+                    [weakself.navigationController pushViewController:applicationGuaranteeVC animated:YES];
+                }
+                    break;
+                default:
+                    break;
+            }
+        }];
         return cell;
     }
-//    else if (indexPath.section == 1){
-//        identifier = @"main1";
-//        FourCell *cell = [tableView dequeueReusableCellWithIdentifier: identifier];
-//        if (!cell) {
-//            cell = [[FourCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-//        }
-//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//        
-//        [cell setDidClickButton:^(NSInteger tag) {
-//            switch (tag) {
-//                case 11:{//房产评估
-//                    NSLog(@"房产评估");
-//                }
-//                    break;
-//                case 22:{//房屋产调
-//                    NSLog(@"房屋产调");
-//                }
-//                    break;
-//                case 33:{//诉讼保全
-//                    NSLog(@"诉讼保全");
-//                }
-//                    break;
-//                case 44:{//申请保函
-//                    NSLog(@"申请保函");
-//                }
-//                    break;
-//                default:
-//                    break;
-//            }
-//        }];
-//        
-//        return cell;
-//    }
     
-    identifier = @"main2";
+    identifier = @"main1";
     HomeCell *cell = [tableView dequeueReusableCellWithIdentifier: identifier];
     if (!cell) {
         cell = [[HomeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
@@ -390,9 +333,8 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return kBigPadding;
+    return kSmallPadding;
 }
-
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {

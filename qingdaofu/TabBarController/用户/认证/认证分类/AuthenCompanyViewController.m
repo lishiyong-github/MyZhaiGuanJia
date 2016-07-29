@@ -16,7 +16,6 @@
 #import "BaseCommitButton.h"
 
 #import "UIViewController+MutipleImageChoice.h"
-#import "UIViewController+Keyboard.h"
 
 @interface AuthenCompanyViewController ()<UITableViewDataSource,UITableViewDelegate>
 

@@ -30,6 +30,7 @@
 #import "UIButton+Block.h"
 #import "NSString+Fram.h"
 #import "UIViewController+DismissKeyboard.h"
+#import "UIViewController+Keyboard.h"
 #import "UIButton+Addition.h"
 #import "UIView+UITextColor.h"
 #import "UIViewController+HUD.h"
@@ -79,8 +80,8 @@
 //文字大小
 #define kNavFont [UIFont systemFontOfSize:18]  //标题
 #define kBigFont [UIFont systemFontOfSize:16]    //正文
-#define kFirstFont [UIFont systemFontOfSize:14]  //内容大一点
-#define kSecondFont [UIFont systemFontOfSize:14] //内容小一点
+#define kFirstFont [UIFont systemFontOfSize:15]  //内容大一点
+#define kSecondFont [UIFont systemFontOfSize:12] //内容小一点
 #define kTabBarFont [UIFont systemFontOfSize:10]  //tabBar文字大小
 
 #define kAttributeFont1 [UIFont fontWithName:@"" size:12];

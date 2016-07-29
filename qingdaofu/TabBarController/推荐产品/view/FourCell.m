@@ -29,7 +29,7 @@
     if (!self.didSetupConstraints) {
         
         NSArray *views = @[self.button1,self.button2,self.button3,self.button4];
-        [views autoSetViewsDimensionsToSize:CGSizeMake(kScreenWidth/2, 80)];
+        [views autoSetViewsDimensionsToSize:CGSizeMake(kScreenWidth/2, 70)];
         
         [self.button1 autoPinEdgeToSuperviewEdge:ALEdgeTop];
         [self.button1 autoPinEdgeToSuperviewEdge:ALEdgeLeft];

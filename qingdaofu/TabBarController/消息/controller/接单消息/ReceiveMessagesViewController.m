@@ -118,7 +118,7 @@
         MessageModel *model = self.messageReceiveArray[indexPath.section];
         
         CGSize titleSize = CGSizeMake(kScreenWidth - 55, MAXFLOAT);
-        CGSize actualsize = [model.content boundingRectWithSize:titleSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName :kFirstFont} context:nil].size;
+        CGSize actualsize = [model.contents boundingRectWithSize:titleSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName :kFirstFont} context:nil].size;
         
         return 50 + MAX(actualsize.height, 17);
     }
@@ -152,7 +152,7 @@
     }
     
     cell.timeLabel.text = [NSDate getYMDhmFormatterTime:model.create_time];
-    cell.contextLabel.text = model.content;
+    cell.contextLabel.text = model.contents;
     
     return cell;
 }
@@ -332,7 +332,7 @@
 }
 
 /*
-- (void)messageIsReadWithIdStr:(NSString *)idStr andTypeString:(NSString *)typeStr andContent:(NSString *)content andModel:(CategoryModel *)categoryModel
+- (void)messageIsReadWithIdStr:(NSString *)idStr andTypeString:(NSString *)typeStr andcontents:(NSString *)contents andModel:(CategoryModel *)categoryModel
 {
     NSString *isReadString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMessageIsReadString];
     NSDictionary *params = @{@"id" : idStr,
@@ -344,12 +344,12 @@
         BaseModel *aModel = [BaseModel objectWithKeyValues:responseObject];
         if ([aModel.code isEqualToString:@"0000"]) {
             
-            if ([content isEqualToString:@"申请接单"]) {//申请接单
+            if ([contents isEqualToString:@"申请接单"]) {//申请接单
                 MyApplyingViewController *myApplyVC = [[MyApplyingViewController alloc] init];
                 myApplyVC.idString = categoryModel.idString;
                 myApplyVC.categaryString = categoryModel.category;
                 [weakself.navigationController pushViewController:myApplyVC animated:YES];
-            }else if([content isEqualToString:@"有新进度"]){
+            }else if([contents isEqualToString:@"有新进度"]){
                 
                 PaceViewController *paceVC = [[PaceViewController alloc] init];
                 paceVC.categoryString = categoryModel.category;
@@ -361,7 +361,7 @@
 //                myProcessingVC.idString = categoryModel.idString;
 //                myProcessingVC.categaryString = categoryModel.category;
 //                [weakself.navigationController pushViewController:myProcessingVC animated:YES];
-            }else if([content isEqualToString:@"发布方已同意结案"]){
+            }else if([contents isEqualToString:@"发布方已同意结案"]){
                 MyClosingViewController *myClosingVC = [[MyClosingViewController alloc] init];
                 myClosingVC.idString = .idString;
                 myClosingVC.categaryString = categoryModel.category;

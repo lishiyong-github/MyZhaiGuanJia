@@ -19,7 +19,6 @@
 #import "ReportFootView.h"
 #import "EvaTopSwitchView.h"
 #import "UIViewController+BlurView.h"
-#import "UIViewController+Keyboard.h"
 
 #import "AgentCell.h"
 #import "EditDebtAddressCell.h"

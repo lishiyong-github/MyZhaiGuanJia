@@ -15,7 +15,6 @@
 #import "BaseCommitButton.h"
 
 #import "UIViewController+MutipleImageChoice.h"
-#import "UIViewController+Keyboard.h"
 
 @interface AuthenPersonViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 

@@ -103,7 +103,7 @@
         MessageModel *model = self.messagePubArray[indexPath.section];
         
         CGSize titleSize = CGSizeMake(kScreenWidth - 55, MAXFLOAT);
-        CGSize actualsize = [model.content boundingRectWithSize:titleSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName :kFirstFont} context:nil].size;
+        CGSize actualsize = [model.contents boundingRectWithSize:titleSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName :kFirstFont} context:nil].size;
         
         return 50 + MAX(actualsize.height, 17);
     }
@@ -139,7 +139,7 @@
     }
     
     cell.timeLabel.text = [NSDate getYMDhmFormatterTime:model.create_time];
-    cell.contextLabel.text = model.content;
+    cell.contextLabel.text = model.contents;
     
 //    [cell.typeButton setTitle:@"申请消息" forState:0];
 //    cell.timeLabel.text = @"2016-12-12 10:10";

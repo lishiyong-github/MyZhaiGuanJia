@@ -14,6 +14,7 @@
 @property (nonatomic,copy) NSString *belonguid;
 @property (nonatomic,copy) NSString *fuid;
 @property (nonatomic,copy) NSString *content;
+@property (nonatomic,copy) NSString *contents;
 @property (nonatomic,copy) NSString *create_time;
 @property (nonatomic,copy) NSString *idStr;
 @property (nonatomic,copy) NSString *isRead;

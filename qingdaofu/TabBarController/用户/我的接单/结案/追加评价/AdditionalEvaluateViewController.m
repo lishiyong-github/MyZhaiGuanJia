@@ -15,7 +15,6 @@
 #import "TakePictureCell.h"
 
 #import "UIViewController+MutipleImageChoice.h"
-#import "UIViewController+Keyboard.h"
 
 @interface AdditionalEvaluateViewController ()<UITableViewDataSource,UITableViewDelegate,UITextViewDelegate>
 

@@ -289,7 +289,6 @@
 		A18DC9FE1D2514F60021B0BF /* 960.png in Resources */ = {isa = PBXBuildFile; fileRef = A18DC9FA1D2514F60021B0BF /* 960.png */; };
 		A18F14161CF6D3C100B14318 /* CaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A18F14151CF6D3C100B14318 /* CaseViewController.m */; };
 		A18F14191CF6D6A100B14318 /* AllEvaluationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A18F14181CF6D6A100B14318 /* AllEvaluationViewController.m */; };
-		A18F141C1CF6EAA800B14318 /* ProPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = A18F141B1CF6EAA800B14318 /* ProPickerView.m */; };
 		A18FC05D1D33937E00B1FCD4 /* IntroduceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A18FC05C1D33937E00B1FCD4 /* IntroduceViewController.m */; };
 		A18FC0661D33949F00B1FCD4 /* button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A18FC0601D33949F00B1FCD4 /* button@2x.png */; };
 		A18FC0671D33949F00B1FCD4 /* button@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A18FC0611D33949F00B1FCD4 /* button@3x.png */; };
@@ -398,6 +397,13 @@
 		A1A017561C5B696A00027134 /* NSObject+MJKeyValue.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A017491C5B696A00027134 /* NSObject+MJKeyValue.m */; };
 		A1A017571C5B696A00027134 /* NSObject+MJProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A0174B1C5B696A00027134 /* NSObject+MJProperty.m */; };
 		A1A017581C5B696A00027134 /* NSString+MJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A0174D1C5B696A00027134 /* NSString+MJExtension.m */; };
+		A1A0C8C41D4B046B00BC63C6 /* HouseAssessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A0C8C31D4B046B00BC63C6 /* HouseAssessViewController.m */; };
+		A1A0C8C71D4B061B00BC63C6 /* AssessCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A0C8C61D4B061B00BC63C6 /* AssessCell.m */; };
+		A1A0C8CA1D4B21FF00BC63C6 /* HouseChooseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A0C8C91D4B21FF00BC63C6 /* HouseChooseViewController.m */; };
+		A1A0C8CD1D4B2FC500BC63C6 /* AssessSuccessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A0C8CC1D4B2FC500BC63C6 /* AssessSuccessViewController.m */; };
+		A1A0C8D31D4B442D00BC63C6 /* ApplicationGuaranteeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A0C8D21D4B442D00BC63C6 /* ApplicationGuaranteeViewController.m */; };
+		A1A0C8D61D4B514800BC63C6 /* ApplicationSuccessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A0C8D51D4B514800BC63C6 /* ApplicationSuccessViewController.m */; };
+		A1A0C8D91D4B540600BC63C6 /* ApplicationCourtViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A0C8D81D4B540600BC63C6 /* ApplicationCourtViewController.m */; };
 		A1A34BF61CE2DFB400AD454A /* tab_user_s@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A34BF21CE2DFB400AD454A /* tab_user_s@2x.png */; };
 		A1A34BF71CE2DFB400AD454A /* tab_user_s@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A34BF31CE2DFB400AD454A /* tab_user_s@3x.png */; };
 		A1A34BF81CE2DFB400AD454A /* tab_user@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A34BF41CE2DFB400AD454A /* tab_user@2x.png */; };
@@ -968,8 +974,6 @@
 		A18F14151CF6D3C100B14318 /* CaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CaseViewController.m; sourceTree = "<group>"; };
 		A18F14171CF6D6A100B14318 /* AllEvaluationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllEvaluationViewController.h; sourceTree = "<group>"; };
 		A18F14181CF6D6A100B14318 /* AllEvaluationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllEvaluationViewController.m; sourceTree = "<group>"; };
-		A18F141A1CF6EAA800B14318 /* ProPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProPickerView.h; sourceTree = "<group>"; };
-		A18F141B1CF6EAA800B14318 /* ProPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProPickerView.m; sourceTree = "<group>"; };
 		A18FC05B1D33937E00B1FCD4 /* IntroduceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntroduceViewController.h; sourceTree = "<group>"; };
 		A18FC05C1D33937E00B1FCD4 /* IntroduceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntroduceViewController.m; sourceTree = "<group>"; };
 		A18FC0601D33949F00B1FCD4 /* button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button@2x.png"; sourceTree = "<group>"; };
@@ -1137,6 +1141,20 @@
 		A1A0174B1C5B696A00027134 /* NSObject+MJProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJProperty.m"; sourceTree = "<group>"; };
 		A1A0174C1C5B696A00027134 /* NSString+MJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MJExtension.h"; sourceTree = "<group>"; };
 		A1A0174D1C5B696A00027134 /* NSString+MJExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MJExtension.m"; sourceTree = "<group>"; };
+		A1A0C8C21D4B046B00BC63C6 /* HouseAssessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HouseAssessViewController.h; sourceTree = "<group>"; };
+		A1A0C8C31D4B046B00BC63C6 /* HouseAssessViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HouseAssessViewController.m; sourceTree = "<group>"; };
+		A1A0C8C51D4B061B00BC63C6 /* AssessCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssessCell.h; sourceTree = "<group>"; };
+		A1A0C8C61D4B061B00BC63C6 /* AssessCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AssessCell.m; sourceTree = "<group>"; };
+		A1A0C8C81D4B21FF00BC63C6 /* HouseChooseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HouseChooseViewController.h; sourceTree = "<group>"; };
+		A1A0C8C91D4B21FF00BC63C6 /* HouseChooseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HouseChooseViewController.m; sourceTree = "<group>"; };
+		A1A0C8CB1D4B2FC500BC63C6 /* AssessSuccessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssessSuccessViewController.h; sourceTree = "<group>"; };
+		A1A0C8CC1D4B2FC500BC63C6 /* AssessSuccessViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AssessSuccessViewController.m; sourceTree = "<group>"; };
+		A1A0C8D11D4B442D00BC63C6 /* ApplicationGuaranteeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationGuaranteeViewController.h; sourceTree = "<group>"; };
+		A1A0C8D21D4B442D00BC63C6 /* ApplicationGuaranteeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplicationGuaranteeViewController.m; sourceTree = "<group>"; };
+		A1A0C8D41D4B514800BC63C6 /* ApplicationSuccessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationSuccessViewController.h; sourceTree = "<group>"; };
+		A1A0C8D51D4B514800BC63C6 /* ApplicationSuccessViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplicationSuccessViewController.m; sourceTree = "<group>"; };
+		A1A0C8D71D4B540600BC63C6 /* ApplicationCourtViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationCourtViewController.h; sourceTree = "<group>"; };
+		A1A0C8D81D4B540600BC63C6 /* ApplicationCourtViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplicationCourtViewController.m; sourceTree = "<group>"; };
 		A1A34BF21CE2DFB400AD454A /* tab_user_s@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_user_s@2x.png"; sourceTree = "<group>"; };
 		A1A34BF31CE2DFB400AD454A /* tab_user_s@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_user_s@3x.png"; sourceTree = "<group>"; };
 		A1A34BF41CE2DFB400AD454A /* tab_user@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_user@2x.png"; sourceTree = "<group>"; };
@@ -2439,6 +2457,8 @@
 		A19B8E411CCF52AC00F8EBF2 /* 推荐产品 */ = {
 			isa = PBXGroup;
 			children = (
+				A1A0C8CE1D4B43B100BC63C6 /* 申请保函 */,
+				A1A0C8BF1D4B03E800BC63C6 /* 房产评估 */,
 				A1E4AFA81CD0B046001A5E9E /* view */,
 				A19B8E461CCF52F500F8EBF2 /* controller */,
 			);
@@ -2533,8 +2553,6 @@
 				A16BA1531CEC757900A7010C /* AllProView.m */,
 				A1FB26601CF2D47B00B66608 /* AllProductsChooseView.h */,
 				A1FB26611CF2D47B00B66608 /* AllProductsChooseView.m */,
-				A18F141A1CF6EAA800B14318 /* ProPickerView.h */,
-				A18F141B1CF6EAA800B14318 /* ProPickerView.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -2884,6 +2902,66 @@
 				A1A0174D1C5B696A00027134 /* NSString+MJExtension.m */,
 			);
 			path = MJExtension;
+			sourceTree = "<group>";
+		};
+		A1A0C8BF1D4B03E800BC63C6 /* 房产评估 */ = {
+			isa = PBXGroup;
+			children = (
+				A1A0C8C11D4B042200BC63C6 /* view */,
+				A1A0C8C01D4B041300BC63C6 /* controller */,
+			);
+			path = "房产评估";
+			sourceTree = "<group>";
+		};
+		A1A0C8C01D4B041300BC63C6 /* controller */ = {
+			isa = PBXGroup;
+			children = (
+				A1A0C8C21D4B046B00BC63C6 /* HouseAssessViewController.h */,
+				A1A0C8C31D4B046B00BC63C6 /* HouseAssessViewController.m */,
+				A1A0C8C81D4B21FF00BC63C6 /* HouseChooseViewController.h */,
+				A1A0C8C91D4B21FF00BC63C6 /* HouseChooseViewController.m */,
+				A1A0C8CB1D4B2FC500BC63C6 /* AssessSuccessViewController.h */,
+				A1A0C8CC1D4B2FC500BC63C6 /* AssessSuccessViewController.m */,
+			);
+			path = controller;
+			sourceTree = "<group>";
+		};
+		A1A0C8C11D4B042200BC63C6 /* view */ = {
+			isa = PBXGroup;
+			children = (
+				A1A0C8C51D4B061B00BC63C6 /* AssessCell.h */,
+				A1A0C8C61D4B061B00BC63C6 /* AssessCell.m */,
+			);
+			path = view;
+			sourceTree = "<group>";
+		};
+		A1A0C8CE1D4B43B100BC63C6 /* 申请保函 */ = {
+			isa = PBXGroup;
+			children = (
+				A1A0C8D01D4B43C700BC63C6 /* view */,
+				A1A0C8CF1D4B43BF00BC63C6 /* controller */,
+			);
+			path = "申请保函";
+			sourceTree = "<group>";
+		};
+		A1A0C8CF1D4B43BF00BC63C6 /* controller */ = {
+			isa = PBXGroup;
+			children = (
+				A1A0C8D11D4B442D00BC63C6 /* ApplicationGuaranteeViewController.h */,
+				A1A0C8D21D4B442D00BC63C6 /* ApplicationGuaranteeViewController.m */,
+				A1A0C8D41D4B514800BC63C6 /* ApplicationSuccessViewController.h */,
+				A1A0C8D51D4B514800BC63C6 /* ApplicationSuccessViewController.m */,
+				A1A0C8D71D4B540600BC63C6 /* ApplicationCourtViewController.h */,
+				A1A0C8D81D4B540600BC63C6 /* ApplicationCourtViewController.m */,
+			);
+			path = controller;
+			sourceTree = "<group>";
+		};
+		A1A0C8D01D4B43C700BC63C6 /* view */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = view;
 			sourceTree = "<group>";
 		};
 		A1A34C131CE313F300AD454A /* 上传文件 */ = {
@@ -3514,6 +3592,7 @@
 				A17964FD1CD3682A00B6AD47 /* MyDetailStoreViewController.m in Sources */,
 				A1A97E5B1CDC74D800EDE320 /* NewsCell.m in Sources */,
 				A15F618C1D1906820060AF7B /* GuarantyModel.m in Sources */,
+				A1A0C8CD1D4B2FC500BC63C6 /* AssessSuccessViewController.m in Sources */,
 				A116300E1D2107F000E2D321 /* ProductsCheckDetailViewController.m in Sources */,
 				A1770E271CFEA314003579E1 /* StarCell.m in Sources */,
 				A16BA1571CED4A2500A7010C /* MyAgentListViewController.m in Sources */,
@@ -3535,6 +3614,7 @@
 				A17634161D065D9A00CD4623 /* CreditorModel.m in Sources */,
 				A1602E7A1CEDAF790053F850 /* BidMessageCell.m in Sources */,
 				A154B8F51CE1C14100884CA4 /* ReportSuitViewController.m in Sources */,
+				A1A0C8CA1D4B21FF00BC63C6 /* HouseChooseViewController.m in Sources */,
 				A1B0292B1D17CE6F00F32A09 /* AFNetworkReachabilityManager.m in Sources */,
 				A19266A21D2CDCA900DD7E9E /* ZYKeyboardUtil.m in Sources */,
 				A159F9621D0D67FA00A6A024 /* DelayResponse.m in Sources */,
@@ -3547,6 +3627,7 @@
 				A1B028A71D17766900F32A09 /* UploadViewController.m in Sources */,
 				A1770E161CFE6AA3003579E1 /* CompleteLawCell.m in Sources */,
 				A19B8E531CCF533B00F8EBF2 /* ProductsViewController.m in Sources */,
+				A1A0C8D31D4B442D00BC63C6 /* ApplicationGuaranteeViewController.m in Sources */,
 				A15F61841D18DF1F0060AF7B /* GuarantyViewController.m in Sources */,
 				A1522BF91D1005F000135C72 /* EvaluateResponse.m in Sources */,
 				A1982B361CFFD730001770A7 /* CompanyWebSiteViewController.m in Sources */,
@@ -3586,12 +3667,14 @@
 				A1A017271C5B421500027134 /* BaseViewController.m in Sources */,
 				A1AD9B961D499729001F3076 /* UIView+LBExtension.m in Sources */,
 				A10D7B751CEAF5EA00422D7D /* MyAgentViewController.m in Sources */,
+				A1A0C8D61D4B514800BC63C6 /* ApplicationSuccessViewController.m in Sources */,
 				A168569E1CE9B39D006A0887 /* ProdLeftView.m in Sources */,
 				A1A34C3A1CE32C9300AD454A /* ForgetPassViewController.m in Sources */,
 				A16391741D20194B0051F1D0 /* FSImageScrollView.m in Sources */,
 				A19D29471CD1B44D00DAAEA7 /* MoneyView.m in Sources */,
 				A159F95E1D0D66BC00A6A024 /* DelayRequestsViewController.m in Sources */,
 				A19B8E571CCF640300F8EBF2 /* MessageCell.m in Sources */,
+				A1A0C8C71D4B061B00BC63C6 /* AssessCell.m in Sources */,
 				A1A34C371CE32C8000AD454A /* RegisterViewController.m in Sources */,
 				A16175531D1291D5001BB200 /* TokenModel.m in Sources */,
 				A1A017501C5B696A00027134 /* MJFoundation.m in Sources */,
@@ -3620,6 +3703,7 @@
 				A19B8E501CCF532B00F8EBF2 /* NewProductViewController.m in Sources */,
 				A17F7BE91CE578EB00E882A3 /* JKCountDownButton.m in Sources */,
 				A1A017521C5B696A00027134 /* MJPropertyKey.m in Sources */,
+				A1A0C8D91D4B540600BC63C6 /* ApplicationCourtViewController.m in Sources */,
 				A159F97F1D0D727A00A6A024 /* UIScrollView+MJExtension.m in Sources */,
 				A159F97E1D0D727A00A6A024 /* MJRefreshHeaderView.m in Sources */,
 				A19B8E241CCF42E300F8EBF2 /* NSLayoutConstraint+PureLayout.m in Sources */,
@@ -3630,6 +3714,7 @@
 				A19D294E1CD1E04300DAAEA7 /* HomeCell.m in Sources */,
 				A159F9801D0D727A00A6A024 /* UIScrollView+MJRefresh.m in Sources */,
 				A16391711D20194B0051F1D0 /* FSBasicImage.m in Sources */,
+				A1A0C8C41D4B046B00BC63C6 /* HouseAssessViewController.m in Sources */,
 				A16175561D12A1CF001BB200 /* LoginTableView.m in Sources */,
 				A1B028EE1D1794DC00F32A09 /* UIButton+WebCache.m in Sources */,
 				A17964D51CD2EAB100B6AD47 /* AuthenBaseView.m in Sources */,
@@ -3655,7 +3740,6 @@
 				A13EA5711D2A1928001B83A7 /* MessageResponse.m in Sources */,
 				A16856A91CE9BF82006A0887 /* ProDetailHeadView.m in Sources */,
 				A1A0172A1C5B422700027134 /* NetworkViewController.m in Sources */,
-				A18F141C1CF6EAA800B14318 /* ProPickerView.m in Sources */,
 				A1A97E571CDC671000EDE320 /* SystemMessagesViewController.m in Sources */,
 				A159F9481D0BEE5E00A6A024 /* ZYQAssetPickerController.m in Sources */,
 				A1A017351C5B67D400027134 /* MBProgressHUD.m in Sources */,

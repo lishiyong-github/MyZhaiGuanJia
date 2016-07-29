@@ -51,9 +51,11 @@
 {
     if (!_oneButton) {
         _oneButton = [UIButton newAutoLayoutView];
-        _oneButton.titleLabel .font = kBigFont;
+        _oneButton.titleLabel.font = kBigFont;
         [_oneButton setTitleColor:kBlueColor forState:0];
         [_oneButton swapImage];
+        _oneButton.titleLabel.numberOfLines = 0;
+        _oneButton.titleLabel.textAlignment = NSTextAlignmentCenter;
     }
     return _oneButton;
 }
