@@ -35,9 +35,11 @@
         [self.timeLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.timeLabel autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.typeButton];
         
+//        [self.contextLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:40];
         [self.contextLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.typeButton withOffset:5];
         [self.contextLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
-        [self.contextLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:40];
+        [self.contextLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:30];
+//        [self.contextLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.goTobutton withOffset:-kSmallPadding];
         
         [self.goTobutton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.goTobutton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.contextLabel];

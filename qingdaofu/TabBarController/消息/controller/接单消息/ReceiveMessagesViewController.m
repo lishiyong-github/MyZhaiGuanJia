@@ -113,20 +113,15 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+//    return 75;
     if (self.messageReceiveArray.count > 0) {
         MessageModel *model = self.messageReceiveArray[indexPath.section];
         
-        CGSize titleSize = CGSizeMake(kScreenWidth - 60, MAXFLOAT);
+        CGSize titleSize = CGSizeMake(kScreenWidth - 55, MAXFLOAT);
         CGSize actualsize = [model.content boundingRectWithSize:titleSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName :kFirstFont} context:nil].size;
         
-        return 45 + MAX(actualsize.height, 30);
-//        CGSize titleSize = CGSizeMake(kScreenWidth - 175, MAXFLOAT);
-//        CGSize  actualsize =[wtwt boundingRectWithSize:titleSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName :kFirstFont} context:nil].size;
-        
-//        return 105 + MAX(actualsize.height, 16);
-        
+        return 50 + MAX(actualsize.height, 17);
     }
-//    return 75;
     return 0;
 }
 
@@ -151,17 +146,13 @@
         [cell.typeButton setTitle:model.title forState:0];
         [cell.typeButton setTitleEdgeInsets:UIEdgeInsetsMake(0, kSmallPadding, 0, 0)];
     }else{//已读
-        [cell.typeButton setImage:[UIImage imageNamed:@"q"] forState:0];
+        [cell.typeButton setImage:[UIImage imageNamed:@""] forState:0];
         [cell.typeButton setTitle:model.title forState:0];
         [cell.typeButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
     }
     
     cell.timeLabel.text = [NSDate getYMDhmFormatterTime:model.create_time];
     cell.contextLabel.text = model.content;
-    
-//    [cell.typeButton setTitle:@"申请消息" forState:0];
-//    cell.timeLabel.text = @"2016-12-12 10:10";
-//    cell.contextLabel.text = @"您发布的融资RZ201601010001有心得申请记录";
     
     return cell;
 }
@@ -286,7 +277,7 @@
                         paceVC.categoryString = messageModel.category_id.category;
                         [weakself.navigationController pushViewController:paceVC animated:YES];
                     }else if ([messageModel.type integerValue] == 19){//申请延期
-                        
+                        NSLog(@"申请延期");
                     }else{
                         MyDealingViewController *myDealingVC = [[MyDealingViewController alloc] init];
                         myDealingVC.idString = messageModel.category_id.idString;

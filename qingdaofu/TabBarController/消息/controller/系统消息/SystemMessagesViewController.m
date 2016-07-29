@@ -95,7 +95,16 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 75;
+//    return 75;
+    if (self.messageSysArray.count > 0) {
+        MessageModel *model = self.messageSysArray[indexPath.section];
+        
+        CGSize titleSize = CGSizeMake(kScreenWidth - 55, MAXFLOAT);
+        CGSize actualsize = [model.content boundingRectWithSize:titleSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName :kFirstFont} context:nil].size;
+        
+        return 50 + MAX(actualsize.height, 17);
+    }
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
