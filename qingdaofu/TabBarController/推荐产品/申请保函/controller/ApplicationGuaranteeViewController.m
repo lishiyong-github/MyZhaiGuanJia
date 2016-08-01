@@ -19,10 +19,16 @@
 
 @property (nonatomic,strong) UITableView *applicationTableView;
 @property (nonatomic,strong) BaseCommitButton *applicationFooterButton;
+@property (nonatomic,strong) UIView *pickerChooseView;
+@property (nonatomic,strong) UIButton *pickerButton;
 @property (nonatomic,strong) UIPickerView *applicationPickerView;
 @property (nonatomic,assign) BOOL didSetupConstraints;
 
+//json
 @property (nonatomic,strong) NSMutableDictionary *applicationDic;
+@property (nonatomic,strong) NSString *provinceStr;
+@property (nonatomic,strong) NSString *cityStr;
+@property (nonatomic,strong) NSString *districtStr;
 
 @end
 
@@ -35,9 +41,12 @@
     
     [self setupForDismissKeyboard];
     
+    _districtStr = @"请选择";
+    
     [self.view addSubview:self.applicationTableView];
-    [self.view addSubview:self.applicationPickerView];
-    [self.applicationPickerView setHidden:YES];
+    [self.view addSubview:self.pickerChooseView];
+    [self.pickerChooseView setHidden:YES];
+    
     [self.view setNeedsUpdateConstraints];
 }
 
@@ -47,8 +56,8 @@
         
         [self.applicationTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
         
-        [self.applicationPickerView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [self.applicationPickerView autoSetDimension:ALDimensionHeight toSize:200];
+        [self.pickerChooseView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+        [self.pickerChooseView autoSetDimension:ALDimensionHeight toSize:200];
         
         self.didSetupConstraints = YES;
     }
@@ -67,20 +76,45 @@
     return _applicationTableView;
 }
 
-- (BaseCommitButton *)applicationFooterButton
+- (UIView *)pickerChooseView
 {
-    if (!_applicationFooterButton) {
-        _applicationFooterButton = [BaseCommitButton newAutoLayoutView];
-        [_applicationFooterButton setTitle:@"立即申请" forState:0];
+    if (!_pickerChooseView) {
+        _pickerChooseView = [UIView newAutoLayoutView];
+        [_pickerChooseView addSubview:self.pickerButton];
+        [_pickerChooseView addSubview:self.applicationPickerView];
         
-        QDFWeakSelf;
-        [_applicationFooterButton addAction:^(UIButton *btn) {
-            ApplicationSuccessViewController *applicationSuccessVC = [[ApplicationSuccessViewController alloc] init];
-            [weakself.navigationController pushViewController:applicationSuccessVC animated:YES];
-        }];
+        [self.pickerButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
+        [self.pickerButton autoSetDimension:ALDimensionHeight toSize:40];
+        
+        [self.applicationPickerView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+        [self.applicationPickerView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.pickerButton];
     }
-    return _applicationFooterButton;
+    return _pickerChooseView;
 }
+
+- (UIButton *)pickerButton
+{
+    if (!_pickerButton) {
+        _pickerButton = [UIButton newAutoLayoutView];
+        [_pickerButton setTitle:@"完成" forState:0];
+        [_pickerButton setContentEdgeInsets:UIEdgeInsetsMake(0, 0, 0, kBigPadding)];
+        _pickerButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+        _pickerButton.titleLabel.font = kSecondFont;
+        [_pickerButton setTitleColor:kBlackColor forState:0];
+        _pickerButton.layer.borderColor = kLightGrayColor.CGColor;
+        _pickerButton.layer.borderWidth = kLineWidth;
+    
+        QDFWeakSelf;
+        [_pickerButton addAction:^(UIButton *btn) {
+            [weakself.pickerChooseView setHidden:YES];
+            MineUserCell *cell = [weakself.applicationTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+            [cell.userActionButton setTitle:weakself.districtStr forState:0];
+        }];
+        
+    }
+    return _pickerButton;
+}
+
 
 - (UIPickerView *)applicationPickerView
 {
@@ -88,8 +122,6 @@
         _applicationPickerView = [UIPickerView newAutoLayoutView];
         _applicationPickerView.delegate = self;
         _applicationPickerView.dataSource = self;
-        _applicationPickerView.layer.borderWidth = kLineWidth;
-        _applicationPickerView.layer.borderColor = kLightGrayColor.CGColor;
     }
     return _applicationPickerView;
 }
@@ -189,7 +221,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 0) {//选择区域
-        [self.applicationPickerView setHidden:NO];
+        [self.pickerChooseView setHidden:NO];
     }else if(indexPath.row == 1){//选择法院
         MineUserCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
         if ([cell.userActionButton.titleLabel.text isEqualToString:@"请选择"]) {
@@ -204,6 +236,22 @@
             }];
         }
     }
+}
+
+- (BaseCommitButton *)applicationFooterButton
+{
+    if (!_applicationFooterButton) {
+        _applicationFooterButton = [BaseCommitButton newAutoLayoutView];
+        [_applicationFooterButton setTitle:@"立即申请" forState:0];
+        
+        QDFWeakSelf;
+        [_applicationFooterButton addAction:^(UIButton *btn) {
+            ApplicationSuccessViewController *applicationSuccessVC = [[ApplicationSuccessViewController alloc] init];
+            applicationSuccessVC.successType = @"保函";
+            [weakself.navigationController pushViewController:applicationSuccessVC animated:YES];
+        }];
+    }
+    return _applicationFooterButton;
 }
 
 #pragma mark - pickerView delegate and datasource
@@ -234,6 +282,13 @@
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
     NSLog(@"选择");
+    if (component == 0) {
+        _provinceStr = @"上海市";
+    }else if (component == 1){
+        _cityStr = @"上海市";
+    }else if (component == 2) {
+        _districtStr = @"浦东新区";
+    }
 }
 
 - (void)dealloc

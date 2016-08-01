@@ -59,19 +59,21 @@
 
 
 //文字颜色
-#define kBlueColor UIColorFromRGB(0x0065b3)  //主色调
+#define kBlueColor UIColorFromRGB(0x0da3f9)  //主色调 //0065b3--0da3f9
 #define kBlackColor UIColorFromRGB(0x333333)  //黑色
 #define kGrayColor UIColorFromRGB(0x666666)  //灰色
 #define kLightGrayColor UIColorFromRGB(0x999999)//浅灰色
-#define kYellowColor UIColorFromRGB(0xff871f)  //黄色
-#define kRedColor UIColorFromRGB(0xff5959)  //红色
+#define kYellowColor UIColorFromRGB(0xff871f)  //黄色ff871f－－ff871f
+#define kRedColor UIColorFromRGB(0xf23838)  //红色  ff5959－－f23838
 #define kDarkGrayColor UIColorFromRGB(0x37485b) //深灰色
+#define kBorderColor UIColorFromRGB(0xcccccc)  //描边颜色
+
 
 //背景色
 #define kNavColor UIColorFromRGB(0xffffff)  //导航栏颜色1
 #define kNavColor1 UIColorFromRGB(0x42566d) //导航栏颜色2（产品详情界面）
 #define kCellSelectedColor UIColorFromRGB(0xeef3f6)  //单元格选中颜色
-#define kSelectedColor UIColorFromRGB(0xc6d3dc)  //按钮不可点击颜色
+#define kSelectedColor UIColorFromRGB(0xbecdd2)  //按钮不可点击颜色c6d3dc－－becdd2
 
 #define kTabBarColor UIColorFromRGB1(0xf9f9f9,0.95)  //tabBar颜色
 #define kBackColor UIColorFromRGB(0xf2f3f7)  //背景色
@@ -79,20 +81,21 @@
 
 //文字大小
 #define kNavFont [UIFont systemFontOfSize:18]  //标题
-#define kBigFont [UIFont systemFontOfSize:16]    //正文
-#define kFirstFont [UIFont systemFontOfSize:15]  //内容大一点
-#define kSecondFont [UIFont systemFontOfSize:14] //内容小一点
-#define kTabBarFont [UIFont systemFontOfSize:10]  //tabBar文字大小
+#define kBigFont [UIFont systemFontOfSize:16]    //正文15-16
+#define kFirstFont [UIFont systemFontOfSize:15]  //内容大一点14-15
+#define kSecondFont [UIFont systemFontOfSize:13] //内容小一点12-13
+#define kTabBarFont [UIFont systemFontOfSize:11]  //tabBar文字大小10-11
 
 #define kAttributeFont1 [UIFont fontWithName:@"" size:12];
 #define kAttributeFont2 [UIFont fontWithName:@"" size:15];
 
 
-#define corner 2
+#define corner 1.5
+#define corner1 2.5
 #define kLineWidth 0.5
 
 //边距
-#define kBigPadding 15    //较大间距
+#define kBigPadding 12    //较大间距15-12
 #define kSmallPadding 10  //较小间距
 #define kCellHeight 44    //一般单元格高度
 

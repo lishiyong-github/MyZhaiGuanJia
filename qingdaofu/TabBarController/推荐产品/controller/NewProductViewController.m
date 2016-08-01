@@ -9,6 +9,7 @@
 #import "NewProductViewController.h"
 #import "HouseAssessViewController.h"  //房产评估
 #import "ApplicationGuaranteeViewController.h" //申请保函
+#import "PowerProtectViewController.h" //诉讼保权
 
 #import "ProductsDetailsViewController.h" //详细信息
 #import "MarkingViewController.h"
@@ -62,7 +63,7 @@
     [self.view addSubview:self.mainTableView];
     [self.view setNeedsUpdateConstraints];
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self getPropagandaChar];
     });
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -233,8 +234,11 @@
                     NSLog(@"房屋产调");
                 }
                     break;
-                case 33:{//诉讼保全
-                    NSLog(@"诉讼保全");
+                case 33:{//诉讼保权
+                    NSLog(@"诉讼保权");
+                    PowerProtectViewController *powerProtectVC = [[PowerProtectViewController alloc] init];
+                    powerProtectVC.hidesBottomBarWhenPushed = YES;
+                    [weakself.navigationController pushViewController:powerProtectVC animated:YES];
                 }
                     break;
                 case 44:{//申请保函

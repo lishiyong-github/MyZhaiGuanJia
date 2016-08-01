@@ -512,6 +512,10 @@
 		A1B0292D1D17CE6F00F32A09 /* AFURLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = A1B029251D17CE6F00F32A09 /* AFURLRequestSerialization.m */; };
 		A1B0292E1D17CE6F00F32A09 /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = A1B029271D17CE6F00F32A09 /* AFURLResponseSerialization.m */; };
 		A1B0292F1D17CE6F00F32A09 /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A1B029291D17CE6F00F32A09 /* AFURLSessionManager.m */; };
+		A1B6FD4D1D4EEDDD0059690B /* ApplicationSuccessCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1B6FD4C1D4EEDDD0059690B /* ApplicationSuccessCell.m */; };
+		A1B6FD501D4EFA040059690B /* ApplicationListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1B6FD4F1D4EFA040059690B /* ApplicationListViewController.m */; };
+		A1B6FD561D4F1B7C0059690B /* PowerProtectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1B6FD551D4F1B7C0059690B /* PowerProtectViewController.m */; };
+		A1B6FD5C1D4F35240059690B /* PowerProtectListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1B6FD5B1D4F35240059690B /* PowerProtectListViewController.m */; };
 		A1BC16661D40CA190008E2DE /* UITabBar+Badge.m in Sources */ = {isa = PBXBuildFile; fileRef = A1BC16651D40CA190008E2DE /* UITabBar+Badge.m */; };
 		A1E4AFB71CD0C674001A5E9E /* SingleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A1E4AFB61CD0C674001A5E9E /* SingleButton.m */; };
 		A1ECB66F1CED6CA70017EA10 /* PlaceHolderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = A1ECB66E1CED6CA70017EA10 /* PlaceHolderTextView.m */; };
@@ -1309,6 +1313,14 @@
 		A1B029271D17CE6F00F32A09 /* AFURLResponseSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLResponseSerialization.m; sourceTree = "<group>"; };
 		A1B029281D17CE6F00F32A09 /* AFURLSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLSessionManager.h; sourceTree = "<group>"; };
 		A1B029291D17CE6F00F32A09 /* AFURLSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLSessionManager.m; sourceTree = "<group>"; };
+		A1B6FD4B1D4EEDDD0059690B /* ApplicationSuccessCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationSuccessCell.h; sourceTree = "<group>"; };
+		A1B6FD4C1D4EEDDD0059690B /* ApplicationSuccessCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplicationSuccessCell.m; sourceTree = "<group>"; };
+		A1B6FD4E1D4EFA040059690B /* ApplicationListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationListViewController.h; sourceTree = "<group>"; };
+		A1B6FD4F1D4EFA040059690B /* ApplicationListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplicationListViewController.m; sourceTree = "<group>"; };
+		A1B6FD541D4F1B7C0059690B /* PowerProtectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PowerProtectViewController.h; sourceTree = "<group>"; };
+		A1B6FD551D4F1B7C0059690B /* PowerProtectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PowerProtectViewController.m; sourceTree = "<group>"; };
+		A1B6FD5A1D4F35240059690B /* PowerProtectListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PowerProtectListViewController.h; sourceTree = "<group>"; };
+		A1B6FD5B1D4F35240059690B /* PowerProtectListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PowerProtectListViewController.m; sourceTree = "<group>"; };
 		A1BC16641D40CA190008E2DE /* UITabBar+Badge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITabBar+Badge.h"; sourceTree = "<group>"; };
 		A1BC16651D40CA190008E2DE /* UITabBar+Badge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITabBar+Badge.m"; sourceTree = "<group>"; };
 		A1E4AFB51CD0C674001A5E9E /* SingleButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SingleButton.h; sourceTree = "<group>"; };
@@ -2457,6 +2469,7 @@
 		A19B8E411CCF52AC00F8EBF2 /* 推荐产品 */ = {
 			isa = PBXGroup;
 			children = (
+				A1B6FD511D4F1B130059690B /* 保权 */,
 				A1A0C8CE1D4B43B100BC63C6 /* 申请保函 */,
 				A1A0C8BF1D4B03E800BC63C6 /* 房产评估 */,
 				A1E4AFA81CD0B046001A5E9E /* view */,
@@ -2953,6 +2966,8 @@
 				A1A0C8D51D4B514800BC63C6 /* ApplicationSuccessViewController.m */,
 				A1A0C8D71D4B540600BC63C6 /* ApplicationCourtViewController.h */,
 				A1A0C8D81D4B540600BC63C6 /* ApplicationCourtViewController.m */,
+				A1B6FD4E1D4EFA040059690B /* ApplicationListViewController.h */,
+				A1B6FD4F1D4EFA040059690B /* ApplicationListViewController.m */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -2960,6 +2975,8 @@
 		A1A0C8D01D4B43C700BC63C6 /* view */ = {
 			isa = PBXGroup;
 			children = (
+				A1B6FD4B1D4EEDDD0059690B /* ApplicationSuccessCell.h */,
+				A1B6FD4C1D4EEDDD0059690B /* ApplicationSuccessCell.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -3145,6 +3162,33 @@
 				A1B029291D17CE6F00F32A09 /* AFURLSessionManager.m */,
 			);
 			path = AFNetworking;
+			sourceTree = "<group>";
+		};
+		A1B6FD511D4F1B130059690B /* 保权 */ = {
+			isa = PBXGroup;
+			children = (
+				A1B6FD531D4F1B280059690B /* view */,
+				A1B6FD521D4F1B1F0059690B /* controller */,
+			);
+			path = "保权";
+			sourceTree = "<group>";
+		};
+		A1B6FD521D4F1B1F0059690B /* controller */ = {
+			isa = PBXGroup;
+			children = (
+				A1B6FD541D4F1B7C0059690B /* PowerProtectViewController.h */,
+				A1B6FD551D4F1B7C0059690B /* PowerProtectViewController.m */,
+				A1B6FD5A1D4F35240059690B /* PowerProtectListViewController.h */,
+				A1B6FD5B1D4F35240059690B /* PowerProtectListViewController.m */,
+			);
+			path = controller;
+			sourceTree = "<group>";
+		};
+		A1B6FD531D4F1B280059690B /* view */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = view;
 			sourceTree = "<group>";
 		};
 		A1E4AFA81CD0B046001A5E9E /* view */ = {
@@ -3673,6 +3717,7 @@
 				A16391741D20194B0051F1D0 /* FSImageScrollView.m in Sources */,
 				A19D29471CD1B44D00DAAEA7 /* MoneyView.m in Sources */,
 				A159F95E1D0D66BC00A6A024 /* DelayRequestsViewController.m in Sources */,
+				A1B6FD561D4F1B7C0059690B /* PowerProtectViewController.m in Sources */,
 				A19B8E571CCF640300F8EBF2 /* MessageCell.m in Sources */,
 				A1A0C8C71D4B061B00BC63C6 /* AssessCell.m in Sources */,
 				A1A34C371CE32C8000AD454A /* RegisterViewController.m in Sources */,
@@ -3685,6 +3730,7 @@
 				A1B028ED1D1794DC00F32A09 /* SDWebImagePrefetcher.m in Sources */,
 				A10D7B781CEAF73C00422D7D /* MyAgentCell.m in Sources */,
 				A17634271D06B6F500CD4623 /* CertificationModel.m in Sources */,
+				A1B6FD501D4EFA040059690B /* ApplicationListViewController.m in Sources */,
 				A1A016A71C5A0C0300027134 /* AppDelegate.m in Sources */,
 				A1AD9B8E1D499414001F3076 /* ZYPathButton.m in Sources */,
 				A10D7B7B1CEAFAFE00422D7D /* AddMyAgentViewController.m in Sources */,
@@ -3783,6 +3829,7 @@
 				A19B8E221CCF42E300F8EBF2 /* ALView+PureLayout.m in Sources */,
 				A1B028F11D1794DC00F32A09 /* UIImageView+HighlightedWebCache.m in Sources */,
 				A10D7B811CEB083300422D7D /* ReportCollectViewController.m in Sources */,
+				A1B6FD5C1D4F35240059690B /* PowerProtectListViewController.m in Sources */,
 				A1B028F01D1794DC00F32A09 /* UIImage+MultiFormat.m in Sources */,
 				A19D296D1CD208FB00DAAEA7 /* CompleteViewController.m in Sources */,
 				A17691421CD9DA0B004289DD /* AnotherHomeCell.m in Sources */,
@@ -3791,6 +3838,7 @@
 				A1882F511D2DF6200064BD38 /* RegisterAgreementViewController.m in Sources */,
 				A1AD9B901D499414001F3076 /* ZYTabBar.m in Sources */,
 				A1A017551C5B696A00027134 /* NSObject+MJCoding.m in Sources */,
+				A1B6FD4D1D4EEDDD0059690B /* ApplicationSuccessCell.m in Sources */,
 				A1B028F21D1794DC00F32A09 /* UIImageView+WebCache.m in Sources */,
 				A16BA1541CEC757900A7010C /* AllProView.m in Sources */,
 				A15F61891D1905940060AF7B /* GuarantyResponse.m in Sources */,

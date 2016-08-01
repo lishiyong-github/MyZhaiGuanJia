@@ -55,6 +55,12 @@
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(lookUpProcessingSchedule) name:@"schedule" object:nil];
 }
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"schedule" object:nil];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @"产品详情";
