@@ -10,6 +10,7 @@
 #import "HouseAssessViewController.h"  //房产评估
 #import "ApplicationGuaranteeViewController.h" //申请保函
 #import "PowerProtectViewController.h" //诉讼保权
+#import "HousePropertyViewController.h" //产调
 
 #import "ProductsDetailsViewController.h" //详细信息
 #import "MarkingViewController.h"
@@ -124,7 +125,7 @@
 {
     if (!_mainHeaderScrollView) {
         _mainHeaderScrollView = [UIScrollView newAutoLayoutView];
-        _mainHeaderScrollView.contentSize = CGSizeMake(kScreenWidth*self.propagandaDic.allKeys.count/2, 100);
+        _mainHeaderScrollView.contentSize = CGSizeMake(kScreenWidth*self.propagandaDic.allKeys.count/2, 110);
         _mainHeaderScrollView.pagingEnabled = YES;//分页
         _mainHeaderScrollView.delegate = self;
         _mainHeaderScrollView.scrollEnabled = YES;
@@ -136,7 +137,7 @@
             NSString *urlString = [NSString stringWithFormat:@"http://%@",self.propagandaDic[tyString]];
             NSURL *tyURL = [NSURL URLWithString:urlString];
             
-            UIButton *imageButton = [[UIButton alloc] initWithFrame:CGRectMake(kScreenWidth*t, 0, kScreenWidth, 100)];
+            UIButton *imageButton = [[UIButton alloc] initWithFrame:CGRectMake(kScreenWidth*t, 0, kScreenWidth, 110)];
             [imageButton sd_setBackgroundImageWithURL:tyURL forState:0 placeholderImage:[UIImage imageNamed:@"banner_account_bitmap"]];
             [_mainHeaderScrollView addSubview:imageButton];
             
@@ -232,6 +233,9 @@
                     break;
                 case 22:{//房屋产调
                     NSLog(@"房屋产调");
+                    HousePropertyViewController *housePropertyVC = [[HousePropertyViewController alloc] init];
+                    housePropertyVC.hidesBottomBarWhenPushed = YES;
+                    [weakself.navigationController pushViewController:housePropertyVC animated:YES];
                 }
                     break;
                 case 33:{//诉讼保权
@@ -332,12 +336,12 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 0.1f;
+    return kBigPadding;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return kSmallPadding;
+    return 0.1f;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

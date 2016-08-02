@@ -7,17 +7,19 @@
 //
 
 #import "PowerProtectListViewController.h"
-#import "PowerProtectViewController.h"
-#import "BaseCommitButton.h"
+
+#import "PowerProtectViewController.h" //申请保权
+#import "PowerDetailsViewController.h"  //保权详情
+
+#import "BaseCommitView.h"
 
 #import "MineUserCell.h"
-#import "MessageCell.h"
+#import "PowerCell.h"
 
 @interface PowerProtectListViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic,strong) UITableView *powerListTableView;
-@property (nonatomic,strong) UIView *powerListCommitView;
-@property (nonatomic,strong) BaseCommitButton *powerListCommitButton;
+@property (nonatomic,strong) BaseCommitView *powerListCommitView;
 @property (nonatomic,assign) BOOL didSetupConstraints;
 
 @end
@@ -70,28 +72,14 @@
     return _powerListTableView;
 }
 
-- (UIView *)powerListCommitView
+- (BaseCommitView *)powerListCommitView
 {
     if (!_powerListCommitView) {
-        _powerListCommitView = [UIView newAutoLayoutView];
-        _powerListCommitView.backgroundColor = kNavColor;
-        _powerListCommitView.layer.borderColor = kSeparateColor.CGColor;
-        _powerListCommitView.layer.borderWidth = kLineWidth;
-        [_powerListCommitView addSubview:self.powerListCommitButton];
-        
-        [self.powerListCommitButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
-    }
-    return _powerListCommitView;
-}
-
-- (BaseCommitButton *)powerListCommitButton
-{
-    if (!_powerListCommitButton) {
-        _powerListCommitButton = [BaseCommitButton newAutoLayoutView];
-        [_powerListCommitButton setTitle:@"申请保权" forState:0];
+        _powerListCommitView = [BaseCommitView newAutoLayoutView];
+        [_powerListCommitView.button setTitle:@"申请保权" forState:0];
         
         QDFWeakSelf;
-        [_powerListCommitButton addAction:^(UIButton *btn) {
+        [_powerListCommitView.button addAction:^(UIButton *btn) {
             UINavigationController *nav = weakself.navigationController;
             [nav popViewControllerAnimated:NO];
             [nav popViewControllerAnimated:NO];
@@ -102,7 +90,7 @@
             [nav pushViewController:powerProtectVC animated:NO];
         }];
     }
-    return _powerListCommitButton;
+    return _powerListCommitView;
 }
 
 #pragma mark -tableview delegate and datasoyrce
@@ -113,16 +101,15 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return 4;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row == 0) {
-        return kCellHeight;
+    if (indexPath.row == 1) {
+        return 60;
     }
-    
-    return 60;
+    return kCellHeight;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -136,27 +123,60 @@
             cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.userNameButton.userInteractionEnabled = NO;
+        cell.userActionButton.userInteractionEnabled = NO;
+
         [cell.userNameButton setTitle:@"BH20160928009" forState:0];
         [cell.userNameButton setTitleColor:kGrayColor forState:0];
         [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
         
         return cell;
-        
-    }else{
+    }else if(indexPath.row == 1){
         identifier = @"listas1";
-        MessageCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        PowerCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         if (!cell) {
-            cell = [[MessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            cell = [[PowerCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        cell.userLabel.text = [NSString stringWithFormat:@"保权金额：%@",@"1000万"];
-        cell.newsLabel.text = @"2014-09-09 12:12";
-        [cell.actButton setTitle:@"审核中" forState:0];
-//        [cell.actButton autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
+        NSString *moneyStr1 = [NSString stringWithFormat:@"保权金额：%@",@"1000万"];
+        NSString *moneyStr2 = @"2014-09-09 12:12";
+        NSString *moneyStr = [NSString stringWithFormat:@"%@\n%@",moneyStr1,moneyStr2];
+        NSMutableAttributedString *attributeMoneyStr = [[NSMutableAttributedString alloc] initWithString:moneyStr];
+        [attributeMoneyStr addAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kBlackColor} range:NSMakeRange(0, moneyStr1.length)];
+        [attributeMoneyStr addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(moneyStr1.length+1, moneyStr2.length)];
+        NSMutableParagraphStyle *paragraphStyle1 = [[NSMutableParagraphStyle alloc] init];
+        [paragraphStyle1 setLineSpacing:kSpacePadding];
+        [attributeMoneyStr addAttribute:NSParagraphStyleAttributeName value:paragraphStyle1 range:NSMakeRange(0, [moneyStr length])];
+        
+        [cell.powerMoneyLabel setAttributedText:attributeMoneyStr];
+        cell.powerStateLabel.text = @"审核中";//审核中－黑色；审核失败－红色；审核成功蓝色
         
         return cell;
     }
+    /*
+    else{
+        identifier = @"listas2";
+        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell) {
+            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        [cell.userNameButton setHidden:YES];
+        [cell.userActionButton setTitleColor:kBlackColor forState:0];
+        [cell.userActionButton setTitle:@"  查看进度  " forState:0];
+        cell.userActionButton.layer.borderColor = kBorderColor.CGColor;
+        cell.userActionButton.layer.borderWidth = kLineWidth;
+        
+        QDFWeakSelf;
+        [cell.userActionButton addAction:^(UIButton *btn) {
+            PowerPaceViewController *powerPaceVC = [[PowerPaceViewController alloc] init];
+            [weakself.navigationController pushViewController:powerPaceVC animated:YES];
+        }];
+        
+        return cell;
+    }
+     */
     
     return nil;
 }
@@ -169,6 +189,15 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     return 0.1f;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (indexPath.row == 0) {
+        PowerDetailsViewController *powerDetailsVC = [[PowerDetailsViewController alloc] init];
+        [self.navigationController pushViewController:powerDetailsVC animated:YES];
+    }
 }
 
 

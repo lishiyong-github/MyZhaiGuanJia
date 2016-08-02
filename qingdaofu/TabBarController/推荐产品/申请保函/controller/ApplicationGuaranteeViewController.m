@@ -247,7 +247,7 @@
         QDFWeakSelf;
         [_applicationFooterButton addAction:^(UIButton *btn) {
             ApplicationSuccessViewController *applicationSuccessVC = [[ApplicationSuccessViewController alloc] init];
-            applicationSuccessVC.successType = @"保函";
+            applicationSuccessVC.successType = @"1";
             [weakself.navigationController pushViewController:applicationSuccessVC animated:YES];
         }];
     }

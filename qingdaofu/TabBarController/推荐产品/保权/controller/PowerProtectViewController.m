@@ -9,15 +9,14 @@
 #import "PowerProtectViewController.h"
 #import "ApplicationSuccessViewController.h"  //提交成功
 
-#import "BaseCommitButton.h"
+#import "BaseCommitView.h"
 #import "AgentCell.h"
 #import "MineUserCell.h"
 
-@interface PowerProtectViewController ()<UITableViewDelegate,UITableViewDataSource,UIPickerViewDelegate,UIPickerViewDataSource>
+@interface PowerProtectViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic,strong) UITableView *powerTableView;
-@property (nonatomic,strong) UIView *powerCommitView;
-@property (nonatomic,strong) BaseCommitButton *powerCommitButton;
+@property (nonatomic,strong) BaseCommitView *powerCommitView;
 @property (nonatomic,assign) BOOL didSetupConstraints;
 
 @property (nonatomic,strong) NSMutableDictionary *powerDic;
@@ -70,31 +69,18 @@
 - (UIView *)powerCommitView
 {
     if (!_powerCommitView) {
-        _powerCommitView = [UIView newAutoLayoutView];
-        _powerCommitView.backgroundColor = kNavColor;
-        _powerCommitView.layer.borderWidth = kLineWidth;
-        _powerCommitView.layer.borderColor = kSeparateColor.CGColor;
-        [_powerCommitView addSubview:self.powerCommitButton];
+        _powerCommitView = [BaseCommitView newAutoLayoutView];
         
-        [self.powerCommitButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
-    }
-    return _powerCommitView;
-}
-
-- (BaseCommitButton *)powerCommitButton
-{
-    if (!_powerCommitButton) {
-        _powerCommitButton = [BaseCommitButton newAutoLayoutView];
-        [_powerCommitButton setTitle:@"确认提交" forState:0];
-        
+        [_powerCommitView.button setTitle:@"确认提交" forState:0];
         QDFWeakSelf;
-        [_powerCommitButton addAction:^(UIButton *btn) {
+        [_powerCommitView.button addAction:^(UIButton *btn) {
             ApplicationSuccessViewController *applicationSuccessVC = [[ApplicationSuccessViewController alloc] init];
-            applicationSuccessVC.successType = @"保权";
+            applicationSuccessVC.successType = @"2";
             [weakself.navigationController pushViewController:applicationSuccessVC animated:YES];
         }];
+
     }
-    return _powerCommitButton;
+    return _powerCommitView;
 }
 
 -(NSMutableDictionary *)powerDic

@@ -68,7 +68,6 @@
 #define kDarkGrayColor UIColorFromRGB(0x37485b) //深灰色
 #define kBorderColor UIColorFromRGB(0xcccccc)  //描边颜色
 
-
 //背景色
 #define kNavColor UIColorFromRGB(0xffffff)  //导航栏颜色1
 #define kNavColor1 UIColorFromRGB(0x42566d) //导航栏颜色2（产品详情界面）
@@ -84,6 +83,7 @@
 #define kBigFont [UIFont systemFontOfSize:16]    //正文15-16
 #define kFirstFont [UIFont systemFontOfSize:15]  //内容大一点14-15
 #define kSecondFont [UIFont systemFontOfSize:13] //内容小一点12-13
+#define kSmallFont [UIFont systemFontOfSize:12] //小标题
 #define kTabBarFont [UIFont systemFontOfSize:11]  //tabBar文字大小10-11
 
 #define kAttributeFont1 [UIFont fontWithName:@"" size:12];
@@ -98,6 +98,7 @@
 #define kBigPadding 12    //较大间距15-12
 #define kSmallPadding 10  //较小间距
 #define kCellHeight 44    //一般单元格高度
+#define kSpacePadding 6 //间距
 
 //使用block代替button点击事件
 #define QDFWeakWithNameAndObject(_obj, _name) __weak typeof(_obj) weak##_name = _obj

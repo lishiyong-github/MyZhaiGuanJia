@@ -10,6 +10,11 @@
 
 #import "ApplicationListViewController.h"//我的保函
 #import "PowerProtectListViewController.h" //我的保权
+#import "HousePropertyListViewController.h" //我的产调
+
+#import "PowerProtectViewController.h"
+#import "ApplicationGuaranteeViewController.h"
+#import "HousePropertyViewController.h"
 
 #import "ApplicationSuccessCell.h"
 
@@ -24,24 +29,48 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"提交成功";
+    
+    if ([self.successType integerValue] < 3) {
+        self.title = @"提交成功";
+    }else{
+        self.title = @"支付成功";
+    }
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"back" style:UIBarButtonItemStylePlain target:self action:nil];
     [self.navigationItem.leftBarButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName:kNavColor} forState:0];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStylePlain target:self action:@selector(finish)];
-    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:kSecondFont,NSForegroundColorAttributeName:kBlueColor} forState:0];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStylePlain target:self action:@selector(finishsd)];
+    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kBlueColor} forState:0];
     
     [self.view addSubview:self.appSuccessTableView];
     
     [self.view setNeedsUpdateConstraints];
 }
 
-- (void)finish
+- (void)finishsd
 {
     UINavigationController *nav = self.navigationController;
     [nav popViewControllerAnimated:NO];
     [nav popViewControllerAnimated:NO];
+    [nav popViewControllerAnimated:NO];
+    [nav popViewControllerAnimated:NO];
+    if ([self.successType integerValue] == 1) {//保函
+        ApplicationListViewController *applicationListVC = [[ApplicationListViewController alloc] init];
+        applicationListVC.hidesBottomBarWhenPushed = YES;
+        [nav pushViewController:applicationListVC animated:NO];
+    }else if ([self.successType integerValue] == 2) {//保权
+        PowerProtectListViewController *powerListVC = [[PowerProtectListViewController alloc] init];
+        powerListVC.hidesBottomBarWhenPushed = YES;
+        [nav pushViewController:powerListVC animated:NO];
+    }else if ([self.successType integerValue] == 3) {//产调
+        HousePropertyListViewController *housePropertyListVC = [[HousePropertyListViewController alloc] init];
+        housePropertyListVC.hidesBottomBarWhenPushed = YES;
+        [nav pushViewController:housePropertyListVC animated:NO];
+    }else if ([self.successType integerValue] == 4) {// 快递
+        PowerProtectListViewController *powerListVC = [[PowerProtectListViewController alloc] init];
+        powerListVC.hidesBottomBarWhenPushed = YES;
+        [nav pushViewController:powerListVC animated:NO];
+    }
 }
 
 - (void)updateViewConstraints
@@ -75,7 +104,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 230;
+    return 240;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -87,8 +116,32 @@
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    NSString *str1 = [NSString stringWithFormat:@"%@信息",self.successType];
-    NSString *str2 = [NSString stringWithFormat:@"您可以在我的%@里查看%@的处理状态",self.successType,self.successType];
+    if ([self.successType integerValue] < 3) {
+        cell.appLabel1.text = @"提交成功";
+    }else{
+        cell.appLabel1.text = @"支付成功";
+    }
+    
+    NSString *str1;
+    NSString *str2;
+    NSString *str3;
+    
+    if ([self.successType integerValue] < 4) {
+        if ([self.successType integerValue] == 1) {
+            str3 = @"保函";
+        }else if ([self.successType integerValue] == 2) {
+            str3 = @"保权";
+        }else if ([self.successType integerValue] == 3) {
+            str3 = @"产调";
+        }
+        str2 = [NSString stringWithFormat:@"您可以在我的%@里查看%@的处理状态",str3,str3];
+    }else{
+        
+        str3 = @"快递";
+        str2 = [NSString stringWithFormat:@"我们将尽快把产调原件邮递给您"];
+    }
+    
+    str1 = [NSString stringWithFormat:@"%@信息",str3];
     NSString *str = [NSString stringWithFormat:@"%@\n%@",str1,str2];
     NSMutableAttributedString *attributeStr = [[NSMutableAttributedString alloc] initWithString:str];
     [attributeStr addAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kBlackColor} range:NSMakeRange(0, str1.length)];
@@ -99,7 +152,12 @@
     [attributeStr addAttribute:NSParagraphStyleAttributeName value:paragraphStyle1 range:NSMakeRange(0, [str length])];
     [cell.appLabel2 setAttributedText:attributeStr];
     
-    NSString *appTitle = [NSString stringWithFormat:@"我的%@",self.successType];
+    NSString *appTitle;
+    if ([self.successType integerValue] < 4) {
+        appTitle = @"再次申请";
+    }else{
+        appTitle = @"申请产调";
+    }
     [cell.appButton2 setTitle:appTitle forState:0];
     
     QDFWeakSelf;
@@ -108,19 +166,35 @@
         UINavigationController *nav = self.navigationController;
         [nav popViewControllerAnimated:NO];
         [nav popViewControllerAnimated:NO];
+        [nav popViewControllerAnimated:NO];
+        [nav popViewControllerAnimated:NO];
     }];
     
     [cell.appButton2 addAction:^(UIButton *btn) {
         NSLog(@"我的保函");
-        if ([self.successType isEqualToString:@"保函"]) {
-            ApplicationListViewController *applicationListVC = [[ApplicationListViewController alloc] init];
-            [weakself.navigationController pushViewController:applicationListVC animated:YES];
-        }else{
-            NSLog(@"我的保权");
-//            PowerProtectListViewController
+        UINavigationController *nav = self.navigationController;
+        [nav popViewControllerAnimated:NO];
+        [nav popViewControllerAnimated:NO];
+        [nav popViewControllerAnimated:NO];
+        [nav popViewControllerAnimated:NO];
+        if ([weakself.successType integerValue] == 1) {//保函
+            ApplicationGuaranteeViewController *applicationGuaranteeVC = [[ApplicationGuaranteeViewController alloc] init];
+            applicationGuaranteeVC.hidesBottomBarWhenPushed = YES;
+            [nav pushViewController:applicationGuaranteeVC animated:NO];
+        }else if ([weakself.successType integerValue] == 2){//保权
+            PowerProtectViewController *powerProtectVC = [[PowerProtectViewController alloc] init];
+            powerProtectVC.hidesBottomBarWhenPushed = YES;
+            [nav pushViewController:powerProtectVC animated:NO];
+        }else if ([weakself.successType integerValue] == 3){//产调
+            HousePropertyViewController *housePropertyVC = [[HousePropertyViewController alloc] init];
+            housePropertyVC.hidesBottomBarWhenPushed = YES;
+            [nav pushViewController:housePropertyVC animated:NO];
+        }else if ([weakself.successType integerValue] == 4){//快递
             PowerProtectListViewController *powerListVC = [[PowerProtectListViewController alloc] init];
-            [weakself.navigationController pushViewController:powerListVC animated:YES];
+            powerListVC.hidesBottomBarWhenPushed = YES;
+            [nav pushViewController:powerListVC animated:NO];
         }
+
     }];
     
     return cell;

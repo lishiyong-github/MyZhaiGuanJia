@@ -10,6 +10,6 @@
 
 @interface ApplicationSuccessViewController : BaseViewController
 
-@property (nonatomic,strong) NSString *successType; //1-保函成功 2-保权成功
+@property (nonatomic,strong) NSString *successType; //1-保函成功 2-保权成功,3-产调支付成功 4-快递支付成功
 
 @end

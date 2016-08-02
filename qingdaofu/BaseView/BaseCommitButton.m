@@ -16,8 +16,9 @@
     
     if (self) {
         self.backgroundColor = kBlueColor;
-        self.titleLabel.font = kBigFont;
+        self.titleLabel.font = kFirstFont;
         [self setTitleColor:kNavColor forState:0];
+        self.layer.cornerRadius = corner1;
     }
     return self;
 }
