@@ -55,7 +55,6 @@
         [_oneButton setTitleColor:kBlueColor forState:0];
         [_oneButton swapImage];
         _oneButton.titleLabel.numberOfLines = 0;
-        _oneButton.titleLabel.textAlignment = NSTextAlignmentCenter;
     }
     return _oneButton;
 }

@@ -58,7 +58,7 @@
 #define KTimeStamp [NSString stringWithFormat:@"%.0f",[[NSDate new] timeIntervalSince1970] * 1000]
 
 
-//文字颜色
+//文字颜色  Helvetica-Bold加粗
 #define kBlueColor UIColorFromRGB(0x0da3f9)  //主色调 //0065b3--0da3f9
 #define kBlackColor UIColorFromRGB(0x333333)  //黑色
 #define kGrayColor UIColorFromRGB(0x666666)  //灰色

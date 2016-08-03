@@ -370,6 +370,7 @@
 		A19D296A1CD208E900DAAEA7 /* AuthentyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A19D29691CD208E900DAAEA7 /* AuthentyViewController.m */; };
 		A19D296D1CD208FB00DAAEA7 /* CompleteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A19D296C1CD208FB00DAAEA7 /* CompleteViewController.m */; };
 		A19D29741CD2158100DAAEA7 /* AuthenPersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A19D29731CD2158100DAAEA7 /* AuthenPersonViewController.m */; };
+		A19F88461D517ADE00D4EC92 /* HouseCopyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A19F88451D517ADE00D4EC92 /* HouseCopyViewController.m */; };
 		A1A016A41C5A0C0300027134 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A016A31C5A0C0300027134 /* main.m */; };
 		A1A016A71C5A0C0300027134 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A016A61C5A0C0300027134 /* AppDelegate.m */; };
 		A1A016AD1C5A0C0300027134 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1A016AB1C5A0C0300027134 /* Main.storyboard */; };
@@ -1109,6 +1110,8 @@
 		A19D296C1CD208FB00DAAEA7 /* CompleteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompleteViewController.m; sourceTree = "<group>"; };
 		A19D29721CD2158100DAAEA7 /* AuthenPersonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenPersonViewController.h; sourceTree = "<group>"; };
 		A19D29731CD2158100DAAEA7 /* AuthenPersonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenPersonViewController.m; sourceTree = "<group>"; };
+		A19F88441D517ADE00D4EC92 /* HouseCopyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HouseCopyViewController.h; sourceTree = "<group>"; };
+		A19F88451D517ADE00D4EC92 /* HouseCopyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HouseCopyViewController.m; sourceTree = "<group>"; };
 		A1A0169F1C5A0C0300027134 /* qingdaofu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = qingdaofu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1A016A31C5A0C0300027134 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A1A016A51C5A0C0300027134 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -2041,6 +2044,8 @@
 				A187B90E1D50885400A91A16 /* HousePayingEditViewController.m */,
 				A187B9101D508BAA00A91A16 /* HousePropertyListViewController.h */,
 				A187B9111D508BAA00A91A16 /* HousePropertyListViewController.m */,
+				A19F88441D517ADE00D4EC92 /* HouseCopyViewController.h */,
+				A19F88451D517ADE00D4EC92 /* HouseCopyViewController.m */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -3839,6 +3844,7 @@
 				A1A0C8C41D4B046B00BC63C6 /* HouseAssessViewController.m in Sources */,
 				A16175561D12A1CF001BB200 /* LoginTableView.m in Sources */,
 				A1B028EE1D1794DC00F32A09 /* UIButton+WebCache.m in Sources */,
+				A19F88461D517ADE00D4EC92 /* HouseCopyViewController.m in Sources */,
 				A17964D51CD2EAB100B6AD47 /* AuthenBaseView.m in Sources */,
 				A1FB26571CF2B41B00B66608 /* ReportSuccessCell.m in Sources */,
 				A176912A1CD9976D004289DD /* MyClosingViewController.m in Sources */,

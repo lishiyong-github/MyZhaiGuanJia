@@ -200,15 +200,18 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    UIView *footerView = [[UIView alloc] init];
-    [footerView addSubview:self.assessFooterButton];
-    
-    [self.assessFooterButton autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:30];
-    [self.assessFooterButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
-    [self.assessFooterButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
-    [self.assessFooterButton autoSetDimension:ALDimensionHeight toSize:40];
-    
-    return footerView;
+    if (section == 1) {
+        UIView *footerView = [[UIView alloc] init];
+        [footerView addSubview:self.assessFooterButton];
+        
+        [self.assessFooterButton autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:30];
+        [self.assessFooterButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
+        [self.assessFooterButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
+        [self.assessFooterButton autoSetDimension:ALDimensionHeight toSize:40];
+        
+        return footerView;
+    }
+    return nil;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

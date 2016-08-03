@@ -7,8 +7,8 @@
 //
 
 #import "HousePropertyListViewController.h"
-
-#import "HousePropertyViewController.h"
+#import "HouseCopyViewController.h"  //快递信息
+#import "HousePropertyViewController.h" //查询产调
 
 #import "BaseCommitView.h"
 
@@ -86,7 +86,8 @@
             [nav popViewControllerAnimated:NO];
             [nav popViewControllerAnimated:NO];
             [nav popViewControllerAnimated:NO];
-            
+//            [nav popViewControllerAnimated:NO];
+
             HousePropertyViewController *housePropertyVC = [[HousePropertyViewController alloc] init];
             housePropertyVC.hidesBottomBarWhenPushed = YES;
             [nav pushViewController:housePropertyVC animated:NO];
@@ -160,7 +161,8 @@
         [cell.actButton setTitle:@"已退款" forState:0];
         
         return cell;
-    }else{
+    }else{//row==2
+        
         identifier = @"listas2";
         PropertyListCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         if (!cell) {
@@ -177,6 +179,13 @@
         [cell.leftButton setAttributedTitle:kdTitle forState:0];
         
         [cell.rightButton setTitle:@"查看结果" forState:0];
+        
+        QDFWeakSelf;
+        [cell.leftButton addAction:^(UIButton *btn) {
+            HouseCopyViewController *houseCopyVC = [[HouseCopyViewController alloc] init];
+            [weakself.navigationController pushViewController:houseCopyVC animated:YES];
+        }];
+        
         
         return cell;
     }
