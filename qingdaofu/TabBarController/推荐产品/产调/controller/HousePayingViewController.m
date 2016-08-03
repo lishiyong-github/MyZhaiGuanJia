@@ -145,7 +145,7 @@
         
         [cell.userNameButton setTitle:@"服务时间" forState:0];
         [cell.userActionButton setTitle:@"工作日9:00-16:30  " forState:0];
-        [cell.userActionButton setImage:[UIImage imageNamed:@"conserve_tip_icon"] forState:0];
+        [cell.userActionButton setImage:[UIImage imageNamed:@"tipss"] forState:0];
         
         return cell;
     }else{//微信支付
@@ -158,9 +158,9 @@
         
         NSMutableAttributedString *title = [cell.userNameButton setAttributeString:@"  微信支付" withColor:kBlackColor andSecond:@"（仅支持微信支付）" withColor:kLightGrayColor withFont:13];
         [cell.userNameButton setAttributedTitle:title forState:0];
-        [cell.userNameButton setImage:[UIImage imageNamed:@"conserve_tip_icon"] forState:0];
+        [cell.userNameButton setImage:[UIImage imageNamed:@"wechat"] forState:0];
         
-        [cell.userActionButton setImage:[UIImage imageNamed:@"conserve_tip_icon"] forState:0];
+        [cell.userActionButton setImage:[UIImage imageNamed:@"choosed"] forState:0];
 
         return cell;
     }

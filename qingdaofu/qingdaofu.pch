@@ -69,7 +69,7 @@
 #define kBorderColor UIColorFromRGB(0xcccccc)  //描边颜色
 
 //背景色
-#define kNavColor UIColorFromRGB(0xffffff)  //导航栏颜色1
+#define kNavColor UIColorFromRGB(0xffffff)  //导航栏颜色1(白色)
 #define kNavColor1 UIColorFromRGB(0x42566d) //导航栏颜色2（产品详情界面）
 #define kCellSelectedColor UIColorFromRGB(0xeef3f6)  //单元格选中颜色
 #define kSelectedColor UIColorFromRGB(0xbecdd2)  //按钮不可点击颜色c6d3dc－－becdd2
@@ -79,6 +79,7 @@
 #define kSeparateColor UIColorFromRGB(0xdddddd)  //分割线颜色
 
 //文字大小
+#define kBoldFont(fontSize) [UIFont fontWithName:@"Helvetica-Bold" size:fontSize]
 #define kNavFont [UIFont systemFontOfSize:18]  //标题
 #define kBigFont [UIFont systemFontOfSize:16]    //正文15-16
 #define kFirstFont [UIFont systemFontOfSize:15]  //内容大一点14-15

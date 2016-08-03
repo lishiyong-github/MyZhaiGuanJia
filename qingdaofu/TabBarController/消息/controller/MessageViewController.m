@@ -251,7 +251,8 @@
 - (void)getMessageTypeAndNumber
 {
     NSString *messageTypeString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMessageTypeAndNumbersString];
-    NSDictionary *params = @{@"token" : [self getValidateToken]};
+    NSString *token = [self getValidateToken]?[self getValidateToken]:@"";
+    NSDictionary *params = @{@"token" : token};
     QDFWeakSelf;
     [self requestDataPostWithString:messageTypeString params:params successBlock:^(id responseObject) {
         NSDictionary *opopo = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];

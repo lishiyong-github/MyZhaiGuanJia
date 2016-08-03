@@ -28,7 +28,7 @@
     self.title = @"我的保函";
     
     self.navigationItem.leftBarButtonItem = self.leftItem;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshList)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"refresh"] style:UIBarButtonItemStylePlain target:self action:@selector(refreshList)];
     
     [self.view addSubview:self.appListTableView];
     [self.view addSubview:self.appListCommitView];
@@ -131,7 +131,8 @@
             cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        [cell.userNameButton setTitle:@"BH20160928009" forState:0];
+        [cell.userNameButton setTitle:@"  BH20160928009" forState:0];
+        [cell.userNameButton setImage:[UIImage imageNamed:@"Lette_of_guarantee"] forState:0];
         [cell.userNameButton setTitleColor:kGrayColor forState:0];
         [cell.userActionButton setTitle:@"审核中" forState:0];
         [cell.userActionButton setTitleColor:kBlackColor forState:0];
@@ -145,6 +146,28 @@
             cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        NSArray *lawArray = @[@"法院",@"申请人",@"电话号码",@"保权金额"];
+        
+        [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
+        cell.userNameButton.titleLabel.font = kFirstFont;
+        [cell.userNameButton setTitle:lawArray[indexPath.row-1] forState:0];
+        [cell.userActionButton setTitleColor:kGrayColor forState:0];
+        cell.userActionButton.titleLabel.font = kFirstFont;
+        
+        if (indexPath.row == 1) {
+            [cell.userActionButton setTitle:@"上海市浦东新区上海中级人民法院" forState:0];
+        }else if (indexPath.row == 2) {
+            [cell.userActionButton setTitle:@"意义" forState:0];
+        }else if (indexPath.row == 3) {
+            [cell.userActionButton setTitle:@"13289090099" forState:0];
+        }else if (indexPath.row == 4) {
+            [cell.userActionButton setTitle:@"999万" forState:0];
+        }
+        
+        return cell;
+        
+        /*
         [cell.userActionButton setHidden:YES];
         [cell.userNameButton setTitleColor:kGrayColor forState:0];
         cell.userNameButton.titleLabel.font = kFirstFont;
@@ -157,6 +180,7 @@
     
         [cell.userNameButton setTitle:rowArray[indexPath.row-1] forState:0];
         return cell;
+         */
     }
     
     return nil;

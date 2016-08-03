@@ -68,7 +68,7 @@
 {
     if (!_timeLabel) {
         _timeLabel = [UILabel newAutoLayoutView];
-        _timeLabel.font = [UIFont systemFontOfSize:10];
+        _timeLabel.font = [UIFont systemFontOfSize:13];
         _timeLabel.textColor = kLightGrayColor;
         _timeLabel.textAlignment = NSTextAlignmentRight;
     }

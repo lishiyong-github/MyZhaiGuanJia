@@ -9,19 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "MBProgressHUD.h"
 #import "AFNetworking.h"
-#import "TokenModel.h"
-
 
 @interface BaseViewController : UIViewController
 
 @property (nonatomic,strong) UIBarButtonItem *leftItem;
 @property (nonatomic,strong) UIImageView *baseRemindImageView;
 
-@property (nonatomic,strong) void (^didTokenValid)(TokenModel *tokenModel);
 
 - (NSString *)getValidateToken;
 - (NSString *)getValidateMobile;
-- (void)tokenIsValid;
 - (void)back;
 
 @end

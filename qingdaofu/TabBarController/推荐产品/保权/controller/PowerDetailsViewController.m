@@ -99,6 +99,7 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         [cell.countLabel setHidden:YES];
         [cell.actButton setHidden:YES];
+        cell.userLabel.font = kBoldFont(16);
         
         cell.userLabel.text = @"审核中";
         cell.timeLabel.text = @"2016-09-28 11:11";
@@ -115,7 +116,7 @@
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             [cell.userNameButton setTitle:@"保权信息" forState:0];
-            
+            cell.userNameButton.titleLabel.font = kBoldFont(16);
             return cell;
         }
         
@@ -125,6 +126,25 @@
             cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.userNameButton.titleLabel.font = kFirstFont;
+        [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
+        cell.userActionButton.titleLabel.font = kFirstFont;
+        [cell.userActionButton setTitleColor:kGrayColor forState:0];
+
+        NSArray *additionArray = @[@"姓名",@"身份证",@"联系方式",@"债权金额"];
+        [cell.userNameButton setTitle:additionArray[indexPath.row-1] forState:0];
+        
+        if (indexPath.row == 1) {
+            [cell.userActionButton setTitle:@"顾笙" forState:0];
+        }else if (indexPath.row == 2){
+            [cell.userActionButton setTitle:@"123321231212345678" forState:0];
+        }else if (indexPath.row == 3){
+            [cell.userActionButton setTitle:@"12345678987" forState:0];
+        }else if (indexPath.row == 4){
+            [cell.userActionButton setTitle:@"600万" forState:0];
+        }
+        
+        /*
         [cell.userActionButton setHidden:YES];
         [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
         cell.userNameButton.titleLabel.font = kSecondFont;
@@ -139,7 +159,7 @@
         
         [cell.userActionButton setTitle:@"添加图片" forState:0];
         [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-        
+        */
         return cell;
     }
     

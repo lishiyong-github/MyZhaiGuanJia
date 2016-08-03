@@ -25,18 +25,11 @@
     self.view.backgroundColor = kBackColor;
     
     //修改导航栏的边界黑线
-//    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
-    
-//    [[UINavigationBar appearance] setShadowImage:[UIImage imageWithColor:[UIColor clearColor] size:CGSizeMake(320, 3)]];
-    
-//    self.navigationController.navigationBar.translucent = NO;
-//    [self.navigationController.navigationBar setShadowImage:[UIImage imageWithColor:kNavColor1]];
-
 
 //    self.edgesForExtendedLayout = UIRectEdgeNone ;
 //    self.extendedLayoutIncludesOpaqueBars = NO ;
 //    self.automaticallyAdjustsScrollViewInsets = NO ;
-    
+        
     //设置导航条的字体颜色
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:kBlackColor,NSFontAttributeName:kNavFont}];
     
@@ -66,7 +59,7 @@
 -(UIBarButtonItem *)leftItem
 {
     if (!_leftItem) {
-        _leftItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"information_nav_back"] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
+        _leftItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"bar_nav_back"] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
     }
     return _leftItem;
 }
@@ -86,7 +79,6 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-
 - (NSString *)getValidateToken
 {
     NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:@"token"];
@@ -97,30 +89,6 @@
 {
     NSString *mobile = [[NSUserDefaults standardUserDefaults] objectForKey:@"mobile"];
     return mobile;
-}
-
-- (void)tokenIsValid
-{
-    [self showHudInView:self.view hint:@"请稍候"];
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer= [AFHTTPResponseSerializer serializer];
-   
-    NSString *validString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kTokenOverdue];
-    NSDictionary *params = @{@"token" : [self getValidateToken]?[self getValidateToken]:@""};
-    
-    [manager POST:validString parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
-        
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-            TokenModel *model = [TokenModel objectWithKeyValues:responseObject];
-            if (self.didTokenValid) {
-                [self hideHud];
-                self.didTokenValid(model);
-        }
-        
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        [self hideHud];
-    }];
 }
 
 - (void)didReceiveMemoryWarning {

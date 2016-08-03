@@ -31,7 +31,7 @@
     self.title = @"我的保权";
     
     self.navigationItem.leftBarButtonItem = self.leftItem;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshLists)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"refresh"] style:UIBarButtonItemStylePlain target:self action:@selector(refreshLists)];
     
     [self.view addSubview:self.powerListTableView];
     [self.view addSubview:self.powerListCommitView];
@@ -126,8 +126,9 @@
         cell.userNameButton.userInteractionEnabled = NO;
         cell.userActionButton.userInteractionEnabled = NO;
 
-        [cell.userNameButton setTitle:@"BH20160928009" forState:0];
+        [cell.userNameButton setTitle:@"  BH20160928009" forState:0];
         [cell.userNameButton setTitleColor:kGrayColor forState:0];
+        [cell.userNameButton setImage:[UIImage imageNamed:@"right"] forState:0];
         [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
         
         return cell;

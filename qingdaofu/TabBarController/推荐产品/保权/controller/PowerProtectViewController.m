@@ -8,6 +8,7 @@
 
 #import "PowerProtectViewController.h"
 #import "ApplicationSuccessViewController.h"  //提交成功
+#import "PowerProtectPictureViewController.h"  //选择材料
 
 #import "BaseCommitView.h"
 #import "AgentCell.h"
@@ -129,6 +130,7 @@
         QDFWeakSelf;
         if (indexPath.row == 0) {//基本信息
             cell.agentLabel.textColor = kBlueColor;
+            cell.agentLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
             [cell.agentTextField setHidden:YES];
             [cell.agentButton setHidden:YES];
         }else if (indexPath.row == 1){//姓名
@@ -185,8 +187,13 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        NSMutableAttributedString *title = [cell.userNameButton setAttributeString:@"|  补充信息" withColor:kBlueColor andSecond:@"（选填）" withColor:kBlackColor withFont:12];
-        [cell.userNameButton setAttributedTitle:title forState:0];
+        NSString *title1 = @"|  补充材料";
+        NSString *title2 = @"（选填）";
+        NSString *title = [NSString stringWithFormat:@"%@%@",title1,title2];
+        NSMutableAttributedString *titleAttribute = [[NSMutableAttributedString alloc] initWithString:title];
+        [titleAttribute addAttributes:@{NSFontAttributeName:[UIFont fontWithName:@"Helvetica-Bold" size:16],NSForegroundColorAttributeName:kBlueColor} range:NSMakeRange(0, title1.length)];
+        [titleAttribute addAttributes:@{NSFontAttributeName:kSecondFont,NSForegroundColorAttributeName:kBlackColor} range:NSMakeRange(title1.length, title2.length)];
+        [cell.userNameButton setAttributedTitle:titleAttribute forState:0];
         
         return cell;
     }
@@ -197,6 +204,8 @@
         cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.userNameButton.userInteractionEnabled = NO;
+    cell.userActionButton.userInteractionEnabled = NO;
     
     NSArray *additionArray = @[@"借条",@"银行转款凭证",@"担保合同",@"财产线索",@"其他线索"];
     [cell.userNameButton setTitle:additionArray[indexPath.row-1] forState:0];
@@ -221,7 +230,24 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    if (indexPath.section == 1) {
+        PowerProtectPictureViewController *powerProtectPictureVC = [[PowerProtectPictureViewController alloc] init];
+        NSArray *additionArray = @[@"借条",@"银行转款凭证",@"担保合同",@"财产线索",@"其他线索"];
+        powerProtectPictureVC.navTitleString = additionArray[indexPath.row-1];
+
+//        if (indexPath.row == 1) {
+//            powerProtectPictureVC.navTitleString = @"借条";
+//        }else if(indexPath.row == 2){
+//            powerProtectPictureVC.navTitleString = @"";
+//        }else if(indexPath.row == 3){
+//            powerProtectPictureVC.navTitleString = @"";
+//        }else if(indexPath.row == 4){
+//            powerProtectPictureVC.navTitleString = @"";
+//        }else if(indexPath.row == 5){
+//            powerProtectPictureVC.navTitleString = @"";
+//        }
+        [self.navigationController pushViewController:powerProtectPictureVC animated:YES];
+    }
 }
 
 

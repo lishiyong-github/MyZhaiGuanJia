@@ -25,9 +25,6 @@
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     
-    NSString* deviceName = [[UIDevice currentDevice] systemName];
-
-    
     //判断是否是首次登录
     NSUserDefaults *settings = [NSUserDefaults standardUserDefaults];
     NSString *key = [NSString stringWithFormat:@"first"];

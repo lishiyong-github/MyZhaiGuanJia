@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "BaseViewController.h"
+#import "NetworkViewController.h"
 
-@interface MainViewController : BaseViewController
+@interface MainViewController : NetworkViewController
 
 @end

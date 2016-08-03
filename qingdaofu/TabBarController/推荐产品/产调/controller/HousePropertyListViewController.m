@@ -32,7 +32,7 @@
     self.title = @"我的产调";
     
     self.navigationItem.leftBarButtonItem = self.leftItem;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshLists)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"refresh"] style:UIBarButtonItemStylePlain target:self action:@selector(refreshListsss)];
     
     [self.view addSubview:self.propertyListTableView];
     [self.view addSubview:self.propertyListCommitView];
@@ -40,7 +40,7 @@
     [self.view setNeedsUpdateConstraints];
 }
 
-- (void)refreshLists
+- (void)refreshListsss
 {
     
 }
@@ -134,9 +134,9 @@
         cell.userNameButton.userInteractionEnabled = NO;
         cell.userActionButton.userInteractionEnabled = NO;
         
-        [cell.userNameButton setTitle:@"12121212" forState:0];
+        [cell.userNameButton setTitle:@"  12121212" forState:0];
         [cell.userNameButton setTitleColor:kGrayColor forState:0];
-        
+        [cell.userNameButton setImage:[UIImage imageNamed:@"property_transfer"] forState:0];
         //等待处理黑，处理中黑－已用时110分钟，处理成功蓝－用时110分钟，处理失败红－已退款
         [cell.userActionButton setTitle:@"等待处理" forState:0];
         [cell.userActionButton setTitleColor:kBlackColor forState:0];

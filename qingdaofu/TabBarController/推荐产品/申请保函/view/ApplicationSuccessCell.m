@@ -29,17 +29,17 @@
 {
     if (!self.didSetupConstraints) {
         
-        [self.appImageView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kBigPadding];
+        [self.appImageView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:15];
         [self.appImageView autoAlignAxisToSuperviewAxis:ALAxisVertical];
-        [self.appImageView autoSetDimension:ALDimensionHeight toSize:60];
-        [self.appImageView autoSetDimension:ALDimensionWidth toSize:60];
+//        [self.appImageView autoSetDimension:ALDimensionHeight toSize:60];
+//        [self.appImageView autoSetDimension:ALDimensionWidth toSize:60];
         
         [self.appLabel1 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.appImageView withOffset:kBigPadding];
         [self.appLabel1 autoAlignAxis:ALAxisVertical toSameAxisOfView:self.appImageView];
         
         [self.appLine autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
         [self.appLine autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
-        [self.appLine autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.appLabel1 withOffset:kBigPadding];
+        [self.appLine autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.appLabel1 withOffset:15];
         [self.appLine autoSetDimension:ALDimensionHeight toSize:kLineWidth];
         
         [self.appLabel2 autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
@@ -65,7 +65,7 @@
     if (!_appImageView) {
         _appImageView = [UIImageView newAutoLayoutView];
         _appImageView.layer.masksToBounds = YES;
-        _appImageView.backgroundColor = kBlueColor;
+        [_appImageView setImage:[UIImage imageNamed:@"image_success"]];
     }
     return _appImageView;
 }
@@ -75,7 +75,7 @@
     if (!_appLabel1) {
         _appLabel1 = [UILabel newAutoLayoutView];
         _appLabel1.text = @"提交成功";
-        _appLabel1.font = [UIFont systemFontOfSize:20];
+        _appLabel1.font = [UIFont systemFontOfSize:22];
         _appLabel1.textColor = kBlueColor;
     }
     return _appLabel1;

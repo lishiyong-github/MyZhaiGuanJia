@@ -7,10 +7,12 @@
 //
 
 #import "HouseCopyViewController.h"
-#import "HouseChooseViewController.h"
+#import "HouseChooseViewController.h" //选择区域
+#import "CopyAddressListViewController.h" //收货地址
 
 #import "BaseCommitButton.h"
 
+#import "CopyCell.h"
 #import "MineUserCell.h"
 #import "EditDebtAddressCell.h"
 #import "AgentCell.h"
@@ -90,15 +92,20 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == 0) {
-        return 4;
+        return 1;
     }
+    return 2;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return 2;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0 && indexPath.row == 3) {
-        return 60;
+    if (indexPath.section == 0) {
+        return 68;
     }
     return kCellHeight;
 }
@@ -107,64 +114,36 @@
 {
     static NSString *identifier;
     if (indexPath.section == 0) {
-        if (indexPath.row < 2) {//联系人，电话
-            identifier = @"copy00";
-            AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-            if (!cell) {
-                cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-            }
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            [cell.agentButton setHidden:YES];
-            
-            NSArray *textArr = @[@"联系人",@"联系电话"];
-            NSArray *detailArr = @[@"收件人姓名",@"您手机号码"];
-            
-            cell.agentLabel.text = textArr[indexPath.row];
-            cell.agentTextField.placeholder = detailArr[indexPath.row];
-            
-            if (indexPath.row == 0) {//联系人
-                [cell setDidEndEditing:^(NSString *text) {
-                    
-                }];
-            }else{//电话
-                cell.agentTextField.text = [self getValidateMobile];
-                [cell setDidEndEditing:^(NSString *text) {
-                    
-                }];
-            }
-            
-            return cell;
-        }else if (indexPath.row == 2){//区域
-            identifier = @"copy02";
-            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-            if (!cell) {
-                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-            }
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.userActionButton.userInteractionEnabled = NO;
-            cell.userNameButton.userInteractionEnabled = NO;
-            
-            [cell.userNameButton setTitle:@"选择区域" forState:0];
-            [cell.userActionButton setTitle:@"请选择  " forState:0];
-            [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-            
-            return cell;
-            
-        }
-        //详细地址
-        identifier = @"copy03";
-        EditDebtAddressCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        identifier = @"copy00";
+        
+        /*
+        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         if (!cell) {
-            cell = [[EditDebtAddressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.ediLabel.text = @"详细地址";
-        cell.ediTextView.placeholder = @"请输入详细地址";
+        cell.userActionButton.userInteractionEnabled = NO;
+        cell.userNameButton.userInteractionEnabled = NO;
         
-        QDFWeakSelf;
-        [cell setDidEndEditing:^(NSString *text) {
-//            [weakself.propertyDic setObject:text forKey:@""];
-        }];
+        [cell.userNameButton setTitle:@"  请选择地址" forState:0];
+        [cell.userNameButton setImage:[UIImage imageNamed:@"address"] forState:0];
+        [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        
+        return cell;
+         */
+        
+        CopyCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell) {
+            cell = [[CopyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.soButton.userInteractionEnabled = NO;
+        
+        [cell.imageViewcc setImage:[UIImage imageNamed:@"address"]];
+        cell.nameLabel.text = @"李丽莉";
+        cell.phoneLabel.text = @"123456789909";
+        cell.addressLabel.text = @"上海市浦东新区浦东南路9855号世界广场34楼";
+        [cell.soButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
         
         return cell;
     }
@@ -195,9 +174,9 @@
         
         NSMutableAttributedString *title = [cell.userNameButton setAttributeString:@"  微信支付" withColor:kBlackColor andSecond:@"（仅支持微信支付）" withColor:kLightGrayColor withFont:13];
         [cell.userNameButton setAttributedTitle:title forState:0];
-        [cell.userNameButton setImage:[UIImage imageNamed:@"conserve_tip_icon"] forState:0];
+        [cell.userNameButton setImage:[UIImage imageNamed:@"wechat"] forState:0];
         
-        [cell.userActionButton setImage:[UIImage imageNamed:@"conserve_tip_icon"] forState:0];
+        [cell.userActionButton setImage:[UIImage imageNamed:@"choosed"] forState:0];
         
         return cell;
     }
@@ -233,17 +212,17 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0 && indexPath.row == 2) {
-        HouseChooseViewController *houseChooseVC = [[HouseChooseViewController alloc] init];
-        [self.navigationController pushViewController:houseChooseVC animated:YES];
+    if (indexPath.section == 0) {
+        CopyAddressListViewController *copyAddressListVC = [[CopyAddressListViewController alloc] init];
+        [self.navigationController pushViewController:copyAddressListVC animated:YES];
         
-        QDFWeakSelf;
-        [houseChooseVC setDidSelectedRow:^(NSString *text) {
-            MineUserCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-            [cell.userActionButton setTitle:text forState:0];
-            
-//            [weakself.propertyDic setObject:text forKey:@""];
-        }];
+//        QDFWeakSelf;
+//        [houseChooseVC setDidSelectedRow:^(NSString *text) {
+//            MineUserCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+//            [cell.userActionButton setTitle:text forState:0];
+//            
+////            [weakself.propertyDic setObject:text forKey:@""];
+//        }];
     }
 }
 

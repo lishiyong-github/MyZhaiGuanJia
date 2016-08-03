@@ -8,9 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "BaseViewController.h"
+#import "TokenModel.h"
 
 
 @interface NetworkViewController : BaseViewController
+
+@property (nonatomic,strong) void (^didTokenValid)(TokenModel *tokenModel);
+
+- (void)tokenIsValid;
 
 -(void)requestDataPostWithString:(NSString *)string params:(NSDictionary *)params successBlock:(void(^)(id responseObject))successBlock andFailBlock:(void(^)(NSError *error))failBlock;
 
