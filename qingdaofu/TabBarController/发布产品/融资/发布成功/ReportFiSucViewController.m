@@ -15,7 +15,6 @@
 
 #import "UIViewController+BlurView.h"
 #import "EvaTopSwitchView.h"
-#import "LoginView.h"
 
 #import "MineUserCell.h"
 #import "ReportSuccessCell.h"

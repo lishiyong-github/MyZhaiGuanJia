@@ -37,7 +37,7 @@
         [self.button autoSetDimensionsToSize:CGSizeMake(55, 55)];
         
         [self.label autoAlignAxis:ALAxisVertical toSameAxisOfView:self.button];
-        [self.label autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.button withOffset:5];
+        [self.label autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.button withOffset:20];
         
         self.didSetupConstraints = YES;
     }
@@ -59,9 +59,10 @@
 {
     if (!_label) {
         _label = [UILabel newAutoLayoutView];
-        _label.font = kBigFont;
+        _label.font = kSecondFont;
 //        _label.text = @"发布清收";
         _label.textAlignment = NSTextAlignmentCenter;
+        _label.textColor = kGrayColor;
     }
     return _label;
 }

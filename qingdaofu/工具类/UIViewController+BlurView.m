@@ -9,7 +9,8 @@
 #import "UIViewController+BlurView.h"
 #import <objc/runtime.h>
 #import "UpwardTableView.h"
-#import "NewPublishCell.h"
+//#import "NewPublishCell.h"
+#import "SingleButton.h"
 
 @implementation UIViewController (BlurView)
 
@@ -113,6 +114,60 @@
 {
     [self hiddenBlurView];
     UIView *tagView = [self.view viewWithTag:99999];
+    SingleButton *collectionButton;
+    SingleButton *suitButton;
+
+    if (!tagView) {
+        tagView = [UIView newAutoLayoutView];
+        tagView.backgroundColor = UIColorFromRGB1(0xffffff, 0.9);
+        tagView.tag = 99999;
+        if (!view) {
+            view = self.view;
+        }
+        [view addSubview:tagView];
+        [tagView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+        
+        //清收
+        collectionButton = [[SingleButton alloc] init];
+        collectionButton.center = CGPointMake((kScreenWidth/4), kScreenHeight/2);
+        [collectionButton.button setImage:[UIImage imageNamed:@"btn_collection"] forState:0];
+        collectionButton.label.text = @"发布清收";
+        [tagView addSubview:collectionButton];
+        
+        //诉讼
+        suitButton = [[SingleButton alloc] init];
+        suitButton.center = CGPointMake((kScreenWidth/4*3), kScreenHeight/2);
+        [suitButton.button setImage:[UIImage imageNamed:@"btn_litigation"] forState:0];
+        suitButton.label.text = @"发布诉讼";
+        [tagView addSubview:suitButton];
+        
+        //取消按钮
+        UIButton *cancelButton = [UIButton newAutoLayoutView];
+        [cancelButton setImage:[UIImage imageNamed:@"close"] forState:0];
+        [cancelButton addAction:^(UIButton *btn) {
+            [tagView removeFromSuperview];
+        }];
+        [tagView addSubview:cancelButton];
+        [cancelButton autoAlignAxisToSuperviewAxis:ALAxisVertical];
+        [cancelButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:40];
+        
+        [UIView animateWithDuration:0.3 animations:^{
+            collectionButton.frame = CGRectMake(0, 0, 80, kScreenWidth/4);
+            collectionButton.center = CGPointMake((kScreenWidth/4), kScreenHeight/2);
+            
+            suitButton.frame = CGRectMake(0, 0, 80, kScreenWidth/4);
+            suitButton.center = CGPointMake((kScreenWidth/4*3), kScreenHeight/2);
+        } completion:^(BOOL finished) {
+            
+        }];
+    }
+    
+    if (finishBlock) {
+        [self hiddenBlurView];
+    }
+
+    
+        /*
     NewPublishCell *cell;
     if (!tagView) {
         tagView = [UIView newAutoLayoutView];
@@ -158,6 +213,7 @@
             }
         }];
     }
+     */
 }
 
 

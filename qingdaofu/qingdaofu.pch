@@ -99,6 +99,8 @@
 #define kBigPadding 12    //较大间距15-12
 #define kSmallPadding 10  //较小间距
 #define kCellHeight 44    //一般单元格高度
+#define kCellHeight1 60    //单元格高度
+
 #define kSpacePadding 6 //间距
 
 //使用block代替button点击事件
