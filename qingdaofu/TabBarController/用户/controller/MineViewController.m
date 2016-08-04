@@ -17,9 +17,14 @@
 #import "MyReleaseViewController.h" //我的发布
 #import "MyOrderViewController.h"  //我的接单
 
-#import "MyAgentListViewController.h"  //我的代理
 #import "MySaveViewController.h"  //我的保存
 #import "MyStoreViewController.h"  //我的收藏
+
+#import "PowerProtectListViewController.h" //保权
+#import "ApplicationListViewController.h"  //保函
+#import "HousePropertyListViewController.h" //产调
+
+#import "MyAgentListViewController.h"  //我的代理
 
 #import "MySettingsViewController.h"  //设置
 
@@ -81,8 +86,10 @@
         
         QDFWeakSelf;
         [_loginView setDidSelectedButton:^(NSInteger buttonTag) {
-            if (buttonTag == 0|| buttonTag == 10 || buttonTag == 12 || buttonTag == 20 || buttonTag == 21 || buttonTag == 22 || buttonTag == 23 || buttonTag == 24) {//我的保存，我的设置，我的发布
-                [weakself tokenIsValid];
+            
+            [weakself tokenIsValid];
+            
+            if (buttonTag == 0|| buttonTag == 1 || buttonTag == 3 || buttonTag == 6 || buttonTag == 7 || buttonTag == 8 || buttonTag == 12) {//我的认证，发布，保存，保权，保函，产调，设置，
                 [weakself setDidTokenValid:^(TokenModel *tokenModel) {
                     if ([tokenModel.code integerValue] == 0000 || [tokenModel.code integerValue] == 3006) {
                         switch (buttonTag) {
@@ -109,51 +116,41 @@
                                 }
                             }
                                 break;
-                            case 10:{//我的保存
-                                MySaveViewController *mySaveVC = [[MySaveViewController alloc] init];
-                                mySaveVC.hidesBottomBarWhenPushed = YES;
-                                [weakself.navigationController pushViewController:mySaveVC animated:YES];
-                            }
-                                break;
-                            case 12:{//我的设置
-                                MySettingsViewController *mySettingVC = [[MySettingsViewController alloc] init];
-                                mySettingVC.hidesBottomBarWhenPushed = YES;
-                                [weakself.navigationController pushViewController:mySettingVC animated:YES];
-                            }
-                                break;
-                            case 20:{//我的发布－全部
+                            case 1:{//我的发布
                                 MyReleaseViewController *myReleaseVC = [[MyReleaseViewController alloc] init];
                                 myReleaseVC.hidesBottomBarWhenPushed = YES;
                                 myReleaseVC.progreStatus = @"0";
                                 [weakself.navigationController pushViewController:myReleaseVC animated:YES];
                             }
                                 break;
-                            case 21:{
-                                MyReleaseViewController *myReleaseVC = [[MyReleaseViewController alloc] init];
-                                myReleaseVC.hidesBottomBarWhenPushed = YES;
-                                myReleaseVC.progreStatus = @"1";
-                                [weakself.navigationController pushViewController:myReleaseVC animated:YES];
+                            case 3:{//我的保存
+                                MySaveViewController *mySaveVC = [[MySaveViewController alloc] init];
+                                mySaveVC.hidesBottomBarWhenPushed = YES;
+                                [weakself.navigationController pushViewController:mySaveVC animated:YES];
                             }
                                 break;
-                            case 22:{
-                                MyReleaseViewController *myReleaseVC = [[MyReleaseViewController alloc] init];
-                                myReleaseVC.hidesBottomBarWhenPushed = YES;
-                                myReleaseVC.progreStatus = @"2";
-                                [weakself.navigationController pushViewController:myReleaseVC animated:YES];
+                            case 6:{//我的保权
+                                PowerProtectListViewController *powerProtectListVC = [[PowerProtectListViewController alloc] init];
+                                powerProtectListVC.hidesBottomBarWhenPushed = YES;
+                                [weakself.navigationController pushViewController:powerProtectListVC animated:YES];
                             }
                                 break;
-                            case 23:{
-                                MyReleaseViewController *myReleaseVC = [[MyReleaseViewController alloc] init];
-                                myReleaseVC.hidesBottomBarWhenPushed = YES;
-                                myReleaseVC.progreStatus = @"3";
-                                [weakself.navigationController pushViewController:myReleaseVC animated:YES];
+                            case 7:{//我的保函
+                                ApplicationListViewController *applicationListVC = [[ApplicationListViewController alloc] init];
+                                applicationListVC.hidesBottomBarWhenPushed = YES;
+                                [weakself.navigationController pushViewController:applicationListVC animated:YES];
                             }
                                 break;
-                            case 24:{
-                                MyReleaseViewController *myReleaseVC = [[MyReleaseViewController alloc] init];
-                                myReleaseVC.hidesBottomBarWhenPushed = YES;
-                                myReleaseVC.progreStatus = @"4";
-                                [weakself.navigationController pushViewController:myReleaseVC animated:YES];
+                            case 8:{//我的产调
+                                HousePropertyListViewController *housePropertyListVC = [[HousePropertyListViewController alloc] init];
+                                housePropertyListVC.hidesBottomBarWhenPushed = YES;
+                                [weakself.navigationController pushViewController:housePropertyListVC animated:YES];
+                            }
+                                break;
+                            case 12:{//我的设置
+                                MySettingsViewController *mySettingVC = [[MySettingsViewController alloc] init];
+                                mySettingVC.hidesBottomBarWhenPushed = YES;
+                                [weakself.navigationController pushViewController:mySettingVC animated:YES];
                             }
                                 break;
                             default:
@@ -166,10 +163,23 @@
                     }
                 }];
             }else{
-                 [weakself tokenIsValid];
                 [weakself setDidTokenValid:^(TokenModel *tokenModel) {
                     if ([tokenModel.code integerValue] == 0000) {
                         switch (buttonTag) {
+                            case 2:{//我的接单
+                                MyOrderViewController *myOrderVC = [[MyOrderViewController alloc] init];
+                                myOrderVC.hidesBottomBarWhenPushed = YES;
+                                myOrderVC.status = @"-1";
+                                myOrderVC.progresStatus = @"0";
+                                [weakself.navigationController pushViewController:myOrderVC animated:YES];
+                            }
+                                break;
+                            case 4:{//我的收藏
+                                MyStoreViewController *myStoreVC = [[MyStoreViewController alloc] init];
+                                myStoreVC.hidesBottomBarWhenPushed = YES;
+                                [weakself.navigationController pushViewController:myStoreVC animated:YES];
+                            }
+                                break;
                             case 9:{//我的代理
                                 MyAgentListViewController *myAgentListVC = [[MyAgentListViewController alloc] init];
                                 myAgentListVC.hidesBottomBarWhenPushed = YES;
@@ -181,52 +191,6 @@
                                 }
                                 
                                 [weakself.navigationController pushViewController:myAgentListVC animated:YES];
-                            }
-                                break;
-                            case 11:{//我的收藏
-                                MyStoreViewController *myStoreVC = [[MyStoreViewController alloc] init];
-                                myStoreVC.hidesBottomBarWhenPushed = YES;
-                                [weakself.navigationController pushViewController:myStoreVC animated:YES];
-                            }
-                                break;
-                            case 30:{//我的接单－全部
-                                MyOrderViewController *myOrderVC = [[MyOrderViewController alloc] init];
-                                myOrderVC.hidesBottomBarWhenPushed = YES;
-                                myOrderVC.status = @"-1";
-                                myOrderVC.progresStatus = @"0";
-                                [weakself.navigationController pushViewController:myOrderVC animated:YES];
-                            }
-                                break;
-                            case 31:{//我的接单－申请中
-                                MyOrderViewController *myOrderVC = [[MyOrderViewController alloc] init];
-                                myOrderVC.hidesBottomBarWhenPushed = YES;
-                                myOrderVC.status = @"0";
-                                myOrderVC.progresStatus = @"1";
-                                [weakself.navigationController pushViewController:myOrderVC animated:YES];
-                            }
-                                break;
-                            case 32:{//我的接单－处理中
-                                MyOrderViewController *myOrderVC = [[MyOrderViewController alloc] init];
-                                myOrderVC.hidesBottomBarWhenPushed = YES;
-                                myOrderVC.status = @"1";
-                                myOrderVC.progresStatus = @"2";
-                                [weakself.navigationController pushViewController:myOrderVC animated:YES];
-                            }
-                                break;
-                            case 33:{//我的接单－终止
-                                MyOrderViewController *myOrderVC = [[MyOrderViewController alloc] init];
-                                myOrderVC.hidesBottomBarWhenPushed = YES;
-                                myOrderVC.status = @"1";
-                                myOrderVC.progresStatus = @"3";
-                                [weakself.navigationController pushViewController:myOrderVC animated:YES];
-                            }
-                                break;
-                            case 34:{//我的接单－结案
-                                MyOrderViewController *myOrderVC = [[MyOrderViewController alloc] init];
-                                myOrderVC.hidesBottomBarWhenPushed = YES;
-                                myOrderVC.status = @"1";
-                                myOrderVC.progresStatus = @"4";
-                                [weakself.navigationController pushViewController:myOrderVC animated:YES];
                             }
                                 break;
                             default:

@@ -31,7 +31,7 @@
         [self.fLabel1 autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kBigPadding];
         [self.fLabel1 autoAlignAxisToSuperviewAxis:ALAxisVertical];
         
-        [self.fLabel2 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.fLabel1 withOffset:kSmallPadding];
+        [self.fLabel2 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.fLabel1 withOffset:5];
         [self.fLabel2 autoAlignAxis:ALAxisVertical toSameAxisOfView:self.fLabel1];
         
         self.didSetupConstraints = YES;

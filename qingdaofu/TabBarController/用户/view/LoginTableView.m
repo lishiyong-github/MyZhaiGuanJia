@@ -8,6 +8,8 @@
 
 #import "LoginTableView.h"
 #import "MineUserCell.h"
+#import "UserPublishCell.h"
+
 @implementation LoginTableView
 - (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style
 {
@@ -55,11 +57,9 @@
         if (indexPath.row == 0) {
             identifier = @"MineUserCell00";
             MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-            
             if (!cell) {
                 cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier  ];
             }
-            
             cell.userNameButton.userInteractionEnabled = NO;
             cell.userActionButton.userInteractionEnabled = NO;
             [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
@@ -75,8 +75,9 @@
                 [cell.userNameButton setImage:[UIImage imageNamed:@""] forState:0];
                 [cell.userActionButton setTitle:@"请登录" forState:0];
             }else{
-                [cell.userNameButton setTitle:self.model.mobile forState:0];
-                [cell.userNameButton setImage:[UIImage imageNamed:@"publish_list_authentication"] forState:0];
+                NSString *mobile = [NSString stringWithFormat:@"%@ ",self.model.mobile];
+                [cell.userNameButton setTitle:mobile forState:0];
+                [cell.userNameButton setImage:[UIImage imageNamed:@"authentication_icon"] forState:0];
                 
                 NSString *ererStr;
                 if ([self.model.category integerValue] == 1) {
@@ -95,16 +96,34 @@
         
         //row==1(我的发布，我的接单)
         identifier = @"MineUserCell01";
-        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        UserPublishCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         
         if (!cell) {
-            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            cell = [[UserPublishCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
-        
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.backgroundColor = kRedColor;
+        
+        [cell.button1 setTitle:@"    我的发布" forState:0];
+        [cell.button1 setImage:[UIImage imageNamed:@"publishw"] forState:0];
+        
+        [cell.button2 setTitle:@"    我的接单" forState:0];
+        [cell.button2 setImage:[UIImage imageNamed:@"order"] forState:0];
+        
+        QDFWeakSelf;
+        [cell.button1 addAction:^(UIButton *btn) {
+            if (weakself.didSelectedButton) {
+                weakself.didSelectedButton(1);
+            }
+        }];
+        
+        [cell.button2 addAction:^(UIButton *btn) {
+            if (weakself.didSelectedButton) {
+                weakself.didSelectedButton(2);
+            }
+        }];
         
         return cell;
+        
     }else if (indexPath.section == 1){//我的保存，收藏
         
         identifier = @"MineUserCell1";
@@ -114,7 +133,7 @@
             cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         
-        NSArray *imageArray = @[@"list_icon_preservation",@"list_icon_collection"];
+        NSArray *imageArray = @[@"save",@"list_icon_collection"];
         NSArray *titileArray = @[@"    我的保存",@"    我的收藏"];
         
         NSString *imageStr = imageArray[indexPath.row];
@@ -132,7 +151,7 @@
             cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         
-        NSArray *imageArray = @[@"list_icon_preservation",@"list_icon_collection",@"list_icon_agent"];
+        NSArray *imageArray = @[@"right",@"Lette_of_guarantee",@"property_transfer"];
         NSArray *titileArray = @[@"    我的保权",@"    我的保函",@"    我的产调"];
         
         NSString *imageStr = imageArray[indexPath.row];
@@ -181,7 +200,7 @@
         cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
     
-    [cell.userNameButton setImage:[UIImage imageNamed:@"list_icon_agent"] forState:0];
+    [cell.userNameButton setImage:[UIImage imageNamed:@"list_icon_setting"] forState:0];
     [cell.userNameButton setTitle:@"    我的设置" forState:0];
     [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
     
@@ -209,11 +228,13 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    
-    if (self.didSelectedButton) {
-        self.didSelectedButton(indexPath.section*3+indexPath.row);
-    }
-    
+    if (indexPath.section == 0 && indexPath.section == 1) {
+        
+    }else{
+        if (self.didSelectedButton) {
+            self.didSelectedButton(indexPath.section*3+indexPath.row);
+        }
+    }    
     
     
 //    if (indexPath.section > 1) {//我的代理收藏保存设置

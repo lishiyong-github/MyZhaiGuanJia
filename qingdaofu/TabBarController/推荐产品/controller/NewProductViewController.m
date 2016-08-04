@@ -102,6 +102,7 @@
         _mainTableView.delegate = self;
         _mainTableView.dataSource = self;
         _mainTableView.separatorColor = kSeparateColor;
+        _mainTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
     }
     return _mainTableView;
 }

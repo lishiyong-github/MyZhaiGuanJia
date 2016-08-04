@@ -21,7 +21,7 @@
         [self.contentView addSubview:self.deTypeView];
         [self.contentView addSubview:self.deLineLabel];
         
-        [self.contentView setNeedsUpdateConstraints];
+        [self setNeedsUpdateConstraints];
     }
     return self;
 }
@@ -80,16 +80,17 @@
 - (ProDetailHeadFootView *)deMoneyView
 {
     if (!_deMoneyView) {
-    _deMoneyView = [ProDetailHeadFootView newAutoLayoutView];        _deMoneyView.backgroundColor = kDarkGrayColor;
+        _deMoneyView = [ProDetailHeadFootView newAutoLayoutView];
+        _deMoneyView.backgroundColor = kBlueColor;
     }
     return _deMoneyView;
 }
 
-- (LineLabel *)deLineLabel
+- (UILabel *)deLineLabel
 {
     if (!_deLineLabel) {
-        _deLineLabel = [LineLabel newAutoLayoutView];
-        _deLineLabel.backgroundColor = UIColorFromRGB(0x5d6d7c);
+        _deLineLabel = [UILabel newAutoLayoutView];
+        _deLineLabel.backgroundColor = kNavColor;
     }
     return _deLineLabel;
 }
@@ -98,7 +99,8 @@
 {
     if (!_deTypeView) {
         _deTypeView = [ProDetailHeadFootView newAutoLayoutView];
-        _deTypeView.backgroundColor = kDarkGrayColor;
+        _deTypeView.backgroundColor = kBlueColor;
+        _deTypeView.fLabel2.font = kBigFont;
 //        _deTypeView.fLabel1.text = @"债权类型";
 //        _deTypeView.fLabel2.text = @"应收帐款";
     }

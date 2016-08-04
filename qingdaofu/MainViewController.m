@@ -72,11 +72,10 @@
     TabBarItem *productsItem = [self tabBarItemWithFram:CGRectMake(normalButtonWidth, 0, normalButtonWidth, tabBarHeight) title:@"产品" normalImageName:@"tab_product" selectedImageName:@"tab_product_s" tabBarItemType:TabBarItemTypeNormal];
     
 //    TabBarItem *publishItem = [self tabBarItemWithFram:CGRectMake(normalButtonWidth * 2, 4.5, normalButtonWidth, tabBarHeight) title:@"" normalImageName:@"publishs" selectedImageName:@"" tabBarItemType:TabBarItemTypeRise];
-    TabBarItem *publishItem = [self tabBarItemWithFram:CGRectMake(normalButtonWidth * 2, 4.5, normalButtonWidth, tabBarHeight) title:@"" normalImageName:@"publishs" selectedImageName:@"" tabBarItemType:TabBarItemTypeRise];
+    TabBarItem *publishItem = [self tabBarItemWithFram:CGRectMake(normalButtonWidth * 2, 0, normalButtonWidth, tabBarHeight) title:@"发布" normalImageName:@"publishs" selectedImageName:nil tabBarItemType:TabBarItemTypeRise];
 
-    
-    TabBarItem *messageItem = [self tabBarItemWithFram:CGRectMake(normalButtonWidth * 2 + publishItemWidth, 0, normalButtonWidth, tabBarHeight) title:@"消息" normalImageName:@"news" selectedImageName:@"news_s" tabBarItemType:TabBarItemTypeNormal];
-    TabBarItem *mineItem = [self tabBarItemWithFram:CGRectMake(normalButtonWidth * 3 + publishItemWidth, 0, normalButtonWidth, tabBarHeight) title:@"用户" normalImageName:@"tab_user" selectedImageName:@"tab_user_s" tabBarItemType:TabBarItemTypeNormal];
+    TabBarItem *messageItem = [self tabBarItemWithFram:CGRectMake(normalButtonWidth * 3, 0, normalButtonWidth, tabBarHeight) title:@"消息" normalImageName:@"news" selectedImageName:@"news_s" tabBarItemType:TabBarItemTypeNormal];
+    TabBarItem *mineItem = [self tabBarItemWithFram:CGRectMake(normalButtonWidth * 4, 0, normalButtonWidth, tabBarHeight) title:@"用户" normalImageName:@"tab_user" selectedImageName:@"tab_user_s" tabBarItemType:TabBarItemTypeNormal];
     
     tabBar.tabBarItems = @[newProductItem,productsItem,publishItem,messageItem,mineItem];
     tabBar.delegate = self;
@@ -123,17 +122,13 @@
                 loginVC.hidesBottomBarWhenPushed = YES;
                 [viewController pushViewController:loginVC animated:YES];
             }else{//已登录或未认证
-                if (row == 11) {
-                    ReportFinanceViewController *reportFinanceVC = [[ReportFinanceViewController alloc] init];
-                    reportFinanceVC.hidesBottomBarWhenPushed = YES;
-                    [viewController pushViewController:reportFinanceVC animated:YES];
-                }else if (row == 12){
+               if (row == 12){
                     ReportSuitViewController *collectVC = [[ReportSuitViewController alloc] init];
                     collectVC.categoryString = @"2";
                     collectVC.tagString = @"1";
                     collectVC.hidesBottomBarWhenPushed = YES;
                     [viewController pushViewController:collectVC animated:YES];
-                }else{
+                }else if(row == 13){
                     ReportSuitViewController *reportSuitVC = [[ReportSuitViewController alloc] init];
                     reportSuitVC.categoryString = @"3";
                     reportSuitVC.tagString = @"1";

@@ -107,7 +107,7 @@
 #pragma mark -tableview delegate and datasoyrce
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 5;
+    return 6;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -147,7 +147,7 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        NSArray *lawArray = @[@"法院",@"申请人",@"电话号码",@"保权金额"];
+        NSArray *lawArray = @[@"法院",@"申请人",@"电话号码",@"保权金额",@"申请时间"];
         
         [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
         cell.userNameButton.titleLabel.font = kFirstFont;
@@ -163,6 +163,8 @@
             [cell.userActionButton setTitle:@"13289090099" forState:0];
         }else if (indexPath.row == 4) {
             [cell.userActionButton setTitle:@"999万" forState:0];
+        }else if (indexPath.row == 5){
+            [cell.userActionButton setTitle:@"2015-09-09 12:12" forState:0];
         }
         
         return cell;

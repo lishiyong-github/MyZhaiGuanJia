@@ -50,7 +50,7 @@
         [self.sendButton autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.getbutton];
         
         [self.blueLabel autoSetDimensionsToSize:CGSizeMake(80, 2)];
-        [self.blueLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom];
+        [self.blueLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:1];
         
         [self.shortLineLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.getbutton];
         [self.shortLineLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kSmallPadding];
@@ -81,6 +81,7 @@
             [UIView animateWithDuration:0.3 animations:^{
                 weakself.leftBlueConstraints.constant = (kScreenWidth/2-80)/2;
             }];
+            
             if (weakself.didSelectedButton) {
                 weakself.didSelectedButton(33);
             }

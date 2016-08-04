@@ -271,7 +271,7 @@
             
             if (indexPath.row == 0) {
                 [cell.userNameButton setTitleColor:kBlueColor forState:0];
-                [cell.userActionButton setImage:[UIImage imageNamed:@"publish_list_authentication"] forState:0];
+                [cell.userActionButton setImage:[UIImage imageNamed:@"authentication_icon"] forState:0];
             }else if (indexPath.row == 1){
                 [cell.userActionButton setTitle:cerModel.name forState:0];
             }else if (indexPath.row == 2){
@@ -301,7 +301,7 @@
             
             if (indexPath.row == 0) {
                 [cell.userNameButton setTitleColor:kBlueColor forState:0];
-                [cell.userActionButton setImage:[UIImage imageNamed:@"publish_list_authentication"] forState:0];
+                [cell.userActionButton setImage:[UIImage imageNamed:@"authentication_icon"] forState:0];
             }else if (indexPath.row == 1){
                 [cell.userActionButton setTitle:cerModel.name forState:0];
             }else if (indexPath.row == 2){
@@ -333,7 +333,7 @@
             
             if (indexPath.row == 0) {
                 [cell.userNameButton setTitleColor:kBlueColor forState:0];
-                [cell.userActionButton setImage:[UIImage imageNamed:@"publish_list_authentication"] forState:0];
+                [cell.userActionButton setImage:[UIImage imageNamed:@"authentication_icon"] forState:0];
             }else if (indexPath.row == 1){
                 [cell.userActionButton setTitle:cerModel.name forState:0];
             }else if (indexPath.row == 2){
