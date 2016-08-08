@@ -102,7 +102,7 @@
         CGSize titleSize = CGSizeMake(kScreenWidth - 55, MAXFLOAT);
         CGSize actualsize = [model.contents boundingRectWithSize:titleSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName :kFirstFont} context:nil].size;
         
-        return 50 + MAX(actualsize.height, 17);
+        return 40 + MAX(actualsize.height, 17);
     }
     return 0;
 }

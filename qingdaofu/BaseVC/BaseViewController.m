@@ -64,6 +64,14 @@
     return _leftItem;
 }
 
+-(UIBarButtonItem *)leftItemAnother
+{
+    if (!_leftItemAnother) {
+        _leftItemAnother = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"close"] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
+    }
+    return _leftItemAnother;
+}
+
 - (UIImageView *)baseRemindImageView
 {
     if (!_baseRemindImageView) {
@@ -78,6 +86,11 @@
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
+
+//- (void)backAnother
+//{
+//    [self.navigationController popViewControllerAnimated:YES];
+//}
 
 - (NSString *)getValidateToken
 {

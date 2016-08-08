@@ -9,7 +9,7 @@
 #import "ApplicationSuccessViewController.h"
 
 #import "ApplicationListViewController.h"//我的保函
-#import "PowerProtectListViewController.h" //我的保权
+#import "PowerProtectListViewController.h" //我的保全
 #import "HousePropertyListViewController.h" //我的产调
 
 #import "PowerProtectViewController.h"
@@ -58,7 +58,7 @@
         ApplicationListViewController *applicationListVC = [[ApplicationListViewController alloc] init];
         applicationListVC.hidesBottomBarWhenPushed = YES;
         [nav pushViewController:applicationListVC animated:NO];
-    }else if ([self.successType integerValue] == 2) {//保权
+    }else if ([self.successType integerValue] == 2) {//保全
         PowerProtectListViewController *powerListVC = [[PowerProtectListViewController alloc] init];
         powerListVC.hidesBottomBarWhenPushed = YES;
         [nav pushViewController:powerListVC animated:NO];
@@ -130,7 +130,7 @@
         if ([self.successType integerValue] == 1) {
             str3 = @"保函";
         }else if ([self.successType integerValue] == 2) {
-            str3 = @"保权";
+            str3 = @"保全";
         }else if ([self.successType integerValue] == 3) {
             str3 = @"产调";
         }
@@ -181,7 +181,7 @@
             ApplicationGuaranteeViewController *applicationGuaranteeVC = [[ApplicationGuaranteeViewController alloc] init];
             applicationGuaranteeVC.hidesBottomBarWhenPushed = YES;
             [nav pushViewController:applicationGuaranteeVC animated:NO];
-        }else if ([weakself.successType integerValue] == 2){//保权
+        }else if ([weakself.successType integerValue] == 2){//保全
             PowerProtectViewController *powerProtectVC = [[PowerProtectViewController alloc] init];
             powerProtectVC.hidesBottomBarWhenPushed = YES;
             [nav pushViewController:powerProtectVC animated:NO];

@@ -81,7 +81,7 @@
 {
     if (!_deMoneyView) {
         _deMoneyView = [ProDetailHeadFootView newAutoLayoutView];
-        _deMoneyView.backgroundColor = kBlueColor;
+        _deMoneyView.backgroundColor = kNavColor1;
     }
     return _deMoneyView;
 }
@@ -99,7 +99,7 @@
 {
     if (!_deTypeView) {
         _deTypeView = [ProDetailHeadFootView newAutoLayoutView];
-        _deTypeView.backgroundColor = kBlueColor;
+        _deTypeView.backgroundColor = kNavColor1;
         _deTypeView.fLabel2.font = kBigFont;
 //        _deTypeView.fLabel1.text = @"债权类型";
 //        _deTypeView.fLabel2.text = @"应收帐款";

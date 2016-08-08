@@ -143,7 +143,7 @@
         [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
         return cell;
         
-    }else if (indexPath.section == 2){//我的保权保函产调
+    }else if (indexPath.section == 2){//我的保全保函产调
         identifier = @"MineUserCell2";
         MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         
@@ -152,7 +152,7 @@
         }
         
         NSArray *imageArray = @[@"right",@"Lette_of_guarantee",@"property_transfer"];
-        NSArray *titileArray = @[@"    我的保权",@"    我的保函",@"    我的产调"];
+        NSArray *titileArray = @[@"    我的保全",@"    我的保函",@"    我的产调"];
         
         NSString *imageStr = imageArray[indexPath.row];
         NSString *titleStr = titileArray[indexPath.row];

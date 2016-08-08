@@ -28,6 +28,7 @@
         
         self.heightConstraint = [self.getbutton autoSetDimension:ALDimensionHeight toSize:40];
         self.leftBlueConstraints = [self.blueLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.getbutton withOffset:(kScreenWidth/2-80)/2];
+        self.widthBlueConstraints = [self.blueLabel autoSetDimension:ALDimensionWidth toSize:80];
         
         [self setNeedsUpdateConstraints];
     }
@@ -43,13 +44,13 @@
         [self.getbutton autoPinEdgeToSuperviewEdge:ALEdgeTop];
         [self.getbutton autoPinEdgeToSuperviewEdge:ALEdgeLeft];
         [self.getbutton autoSetDimension:ALDimensionWidth toSize:kScreenWidth/2];
-        
+
         [self.sendButton autoPinEdgeToSuperviewEdge:ALEdgeTop];
         [self.sendButton autoPinEdgeToSuperviewEdge:ALEdgeRight];
         [self.sendButton autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.getbutton];
         [self.sendButton autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.getbutton];
         
-        [self.blueLabel autoSetDimensionsToSize:CGSizeMake(80, 2)];
+        [self.blueLabel autoSetDimension:ALDimensionHeight toSize:2];
         [self.blueLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:1];
         
         [self.shortLineLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.getbutton];

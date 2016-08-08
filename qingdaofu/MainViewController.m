@@ -122,22 +122,29 @@
                 loginVC.hidesBottomBarWhenPushed = YES;
                 [viewController pushViewController:loginVC animated:YES];
             }else{//已登录或未认证
-               if (row == 12){
+                if (row == 77) {
                     ReportSuitViewController *collectVC = [[ReportSuitViewController alloc] init];
                     collectVC.categoryString = @"2";
                     collectVC.tagString = @"1";
                     collectVC.hidesBottomBarWhenPushed = YES;
-                    [viewController pushViewController:collectVC animated:YES];
-                }else if(row == 13){
+//                    [viewController pushViewController:collectVC animated:YES];
+                    UINavigationController *nav1 = [[UINavigationController alloc] initWithRootViewController:collectVC];
+                    
+                    [viewController presentViewController:nav1 animated:YES completion:nil];
+                    
+                }else if (row == 78){
                     ReportSuitViewController *reportSuitVC = [[ReportSuitViewController alloc] init];
                     reportSuitVC.categoryString = @"3";
                     reportSuitVC.tagString = @"1";
                     reportSuitVC.hidesBottomBarWhenPushed = YES;
-                    [viewController pushViewController:reportSuitVC animated:YES];
+//                    [viewController pushViewController:reportSuitVC animated:YES];
+                    
+                    UINavigationController *nav2 = [[UINavigationController alloc] initWithRootViewController:reportSuitVC];
+                    
+                    [viewController presentViewController:nav2 animated:YES completion:nil];
                 }
             }
         }];
-                
     }];
 }
 

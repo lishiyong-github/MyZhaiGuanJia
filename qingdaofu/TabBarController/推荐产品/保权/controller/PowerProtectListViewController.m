@@ -8,7 +8,7 @@
 
 #import "PowerProtectListViewController.h"
 
-#import "PowerProtectViewController.h" //申请保权
+#import "PowerProtectViewController.h" //申请保全
 #import "PowerDetailsViewController.h"  //保权详情
 
 #import "BaseCommitView.h"
@@ -28,7 +28,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"我的保权";
+    self.title = @"我的保全";
     
     self.navigationItem.leftBarButtonItem = self.leftItem;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"refresh"] style:UIBarButtonItemStylePlain target:self action:@selector(refreshLists)];
@@ -76,7 +76,7 @@
 {
     if (!_powerListCommitView) {
         _powerListCommitView = [BaseCommitView newAutoLayoutView];
-        [_powerListCommitView.button setTitle:@"申请保权" forState:0];
+        [_powerListCommitView.button setTitle:@"申请保全" forState:0];
         
         QDFWeakSelf;
         [_powerListCommitView.button addAction:^(UIButton *btn) {
@@ -140,7 +140,7 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        NSString *moneyStr1 = [NSString stringWithFormat:@"保权金额：%@",@"1000万"];
+        NSString *moneyStr1 = [NSString stringWithFormat:@"保全金额：%@",@"1000万"];
         NSString *moneyStr2 = @"2014-09-09 12:12";
         NSString *moneyStr = [NSString stringWithFormat:@"%@\n%@",moneyStr1,moneyStr2];
         NSMutableAttributedString *attributeMoneyStr = [[NSMutableAttributedString alloc] initWithString:moneyStr];

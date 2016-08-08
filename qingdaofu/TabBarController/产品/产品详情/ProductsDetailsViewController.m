@@ -9,17 +9,21 @@
 #import "ProductsDetailsViewController.h"
 #import "ProductsDetailsProViewController.h"   //产品信息
 #import "CheckDetailPublishViewController.h" //发布人信息
+#import "AllEvaluationViewController.h"  //全部评价
+#import "CaseViewController.h"  //经典案例
 
 #import "UIImage+Color.h"
 #import "BaseCommitButton.h"
 #import "EvaTopSwitchView.h"  //切换
 #import "ProdLeftView.h"  //产品基本信息
+#import "UIButton+WebCache.h"
 
 //cell
 #import "MineUserCell.h"
 #import "ProDetailCell.h"
 #import "ProDetailNumberCell.h"  //浏览次数
 #import "UserPublishCell.h"  //产品信息／发布方信息
+#import "EvaluatePhotoCell.h"
 
 //model
 //产品信息
@@ -33,6 +37,10 @@
 //收藏状态
 #import "ApplicationStateModel.h"
 
+//评价
+#import "EvaluateResponse.h"
+#import "EvaluateModel.h"
+
 
 
 @interface ProductsDetailsViewController ()<UITableViewDataSource,UITableViewDelegate>
@@ -43,6 +51,7 @@
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *productsDetailsTableView;
 @property (nonatomic,strong) BaseCommitButton *proDetailsCommitButton;
+@property (nonatomic,strong)  UIView *headerView;
 
 @property (nonatomic,strong) ProdLeftView *leftTableView;
 
@@ -55,6 +64,7 @@
 @property (nonatomic,strong) NSArray *messageArray22;
 @property (nonatomic,strong) NSArray *certificationArray1;
 @property (nonatomic,strong) NSArray *certificationArray11;
+@property (nonatomic,strong) NSString *casedesc;
 
 @property (nonatomic,strong) NSString *switchType; //切换产品详情or发布方信息
 
@@ -72,10 +82,10 @@
     [super viewWillAppear:animated];
     
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:kNavColor,NSFontAttributeName:kNavFont}];
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:kNavColor1] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:kBlueColor] forBarMetrics:UIBarMetricsDefault];
     
     self.shadowImage = self.navigationController.navigationBar.shadowImage;
-    [self.navigationController.navigationBar setShadowImage:[UIImage imageWithColor:kNavColor1]];
+    [self.navigationController.navigationBar setShadowImage:[UIImage imageWithColor:kBlueColor]];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -89,7 +99,7 @@
     [super viewDidLoad];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.leftItemButton];
     
-    self.switchType = @"34";
+    self.switchType = @"33";
     
     [self.view addSubview:self.productsDetailsTableView];
     [self.view addSubview:self.proDetailsCommitButton];
@@ -137,14 +147,80 @@
 - (UITableView *)productsDetailsTableView
 {
     if (!_productsDetailsTableView) {
-        _productsDetailsTableView.translatesAutoresizingMaskIntoConstraints = NO;
-        _productsDetailsTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+//        _productsDetailsTableView.translatesAutoresizingMaskIntoConstraints = NO;
+//        _productsDetailsTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+        _productsDetailsTableView = [UITableView newAutoLayoutView];
+        
         _productsDetailsTableView.delegate = self;
         _productsDetailsTableView.dataSource = self;
         _productsDetailsTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
         _productsDetailsTableView.backgroundColor = kBackColor;
     }
     return _productsDetailsTableView;
+}
+
+- (UIView *)headerView
+{
+    if (!_headerView) {
+        _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 50+kBigPadding)];
+        
+        EvaTopSwitchView *productSwitchView = [[EvaTopSwitchView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 50)];
+        productSwitchView.widthBlueConstraints.constant = kScreenWidth/2;
+        productSwitchView.backgroundColor = kNavColor;
+        [productSwitchView.getbutton  setTitle:@"产品信息" forState:0];//33
+        [productSwitchView.sendButton  setTitle:@"发布方信息" forState:0];//34
+        [productSwitchView.shortLineLabel setHidden:YES];
+        [self.headerView addSubview:productSwitchView];
+        
+        if ([self.switchType isEqualToString:@"33"]) {
+            [productSwitchView.getbutton setTitleColor:kBlueColor forState:0];
+            [productSwitchView.sendButton setTitleColor:kBlackColor forState:0];
+            productSwitchView.leftBlueConstraints.constant = 0;
+            
+        }else if ([self.switchType isEqualToString:@"34"]){
+            [productSwitchView.sendButton setTitleColor:kBlueColor forState:0];
+            [productSwitchView.getbutton setTitleColor:kBlackColor forState:0];
+            productSwitchView.leftBlueConstraints.constant = kScreenWidth/2;
+        }
+        
+        QDFWeak(productSwitchView);
+        QDFWeakSelf;
+        [productSwitchView setDidSelectedButton:^(NSInteger tag) {
+            if (tag == 33) {
+                [weakproductSwitchView.getbutton setTitleColor:kBlueColor forState:0];
+                [weakproductSwitchView.sendButton setTitleColor:kBlackColor forState:0];
+                weakproductSwitchView.leftBlueConstraints.constant = 0;
+                weakself.switchType = @"33";
+                
+                if (weakself.messageArray1.count == 0) {
+                    [weakself getDetailMessage];
+                }else{
+                    [weakself.productsDetailsTableView reloadData];
+                }
+                
+            }else{
+                PublishingResponse *qModel = self.recommendDataArray[0];
+                if ([qModel.state isEqualToString:@"1"]){
+                    [weakproductSwitchView.sendButton setTitleColor:kBlueColor forState:0];
+                    [weakproductSwitchView.getbutton setTitleColor:kBlackColor forState:0];
+                    weakproductSwitchView.leftBlueConstraints.constant = kScreenWidth/2;
+                    weakself.switchType = @"34";
+                    
+                    if (weakself.certificationArray1.count == 0) {
+                        [weakself getMessageOfPublishPerson];
+                    }else{
+                        [weakself.productsDetailsTableView reloadData];
+                    }
+                }else{
+                    [weakself showHint:@"发布方未认证，不能查看相关信息"];
+                    [weakproductSwitchView.getbutton setTitleColor:kBlueColor forState:0];
+                    [weakproductSwitchView.sendButton setTitleColor:kBlackColor forState:0];
+                    weakproductSwitchView.leftBlueConstraints.constant = 0;
+                }
+            }
+        }];
+    }
+    return _headerView;
 }
 
 - (BaseCommitButton *)proDetailsCommitButton
@@ -191,7 +267,7 @@
             }else{
                 //发布人信息
                 if (self.certificationArray1.count > 0) {
-                    return self.certificationArray1.count;
+                    return self.certificationArray1.count+3;
                 }
             }
         }
@@ -214,7 +290,17 @@
             return kBigPadding;
         }
         return kCellHeight;
-    }else{
+    }else if ([self.switchType isEqualToString:@"34"]) {
+        if (indexPath.row == self.certificationArray1.count) {//分割线
+            return kBigPadding;
+        }else if (indexPath.row == self.certificationArray1.count+2){//评价信息
+            EvaluateModel *model = self.allEvaDataArray[0];
+            if ([model.pictures isEqualToArray:@[]] || [model.pictures[0] isEqualToString:@""]) {
+                return 105;
+            }else{
+                return 170;
+            }
+        }
         return kCellHeight;
     }
     return 0;
@@ -237,27 +323,14 @@
                 cell = [[ProDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.backgroundColor = kNavColor1;
+            cell.backgroundColor = kBlueColor;
             
-            if ([proModel.category intValue] == 1) {//融资
-                //上边
-                cell.deRateLabel.text = @"返点(%)";
-                cell.deRateLabel1.text = [NSString getValidStringFromString:proModel.rebate toString:@"0"];
-                
-                //右边
-                if ([proModel.rate_cat integerValue] == 1) {
-                    cell.deTypeView.fLabel1.text = @"借款利率(%/天)";
-                }else{
-                    cell.deTypeView.fLabel1.text = @"借款利率(%/月)";
-                }
-                cell.deTypeView.fLabel2.text = [NSString getValidStringFromString:proModel.rate toString:@"0"];
-                
-            }else if ([proModel.category intValue] == 2){//清收
+            if ([proModel.category intValue] == 2){//清收
                 //上边
                 if ([proModel.agencycommissiontype isEqualToString:@"1"]) {
-                    cell.deRateLabel.text = @"提成比例(%)";
+                    cell.deRateLabel.text = @"----  提成比例(%)  ----";
                 }else{
-                    cell.deRateLabel.text = @"固定费用(万元)";
+                    cell.deRateLabel.text = @"----  固定费用(万元)  ----";
                 }
                 cell.deRateLabel1.text = [NSString getValidStringFromString:proModel.agencycommission toString:@"0"];
                 
@@ -276,9 +349,9 @@
             }else if ([proModel.category intValue] == 3){//诉讼
                 //上边
                 if ([proModel.agencycommissiontype isEqualToString:@"1"]) {
-                    cell.deRateLabel.text = @"固定费用(万元)";
+                    cell.deRateLabel.text = @"----  固定费用(万元)  ----";
                 }else{
-                    cell.deRateLabel.text = @"风险费率(%)";
+                    cell.deRateLabel.text = @"----  风险费率(%)  ----";
                 }
                 cell.deRateLabel1.text = [NSString getValidStringFromString:proModel.agencycommission toString:@"0"];
                 
@@ -388,8 +461,7 @@
             
             return cell;
         }
-        
-    }else{
+    }else{//发布方信息
         if (indexPath.row < self.certificationArray1.count) {
             identifier = @"proDetais20";
             MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -397,30 +469,133 @@
                 cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.userNameButton.userInteractionEnabled = NO;
+            cell.userActionButton.userInteractionEnabled = NO;
+
             [cell.userNameButton setTitle:self.certificationArray1[indexPath.row] forState:0];
             [cell.userActionButton setTitle:self.certificationArray11[indexPath.row] forState:0];
             
             if (indexPath.row == 0) {
                 [cell.userActionButton setTitleColor:kYellowColor forState:0];
-            }else{
+            }else if(indexPath.row > 0 && indexPath.row <self.certificationArray1.count-1){
                 [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
                 cell.userNameButton.titleLabel.font = kFirstFont;
                 [cell.userActionButton setTitleColor:kGrayColor forState:0];
                 cell.userActionButton.titleLabel.font = kFirstFont;
+            }else if (indexPath.row == self.certificationArray1.count-1){
+                [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
+                cell.userNameButton.titleLabel.font = kFirstFont;
+                [cell.userActionButton setTitleColor:kGrayColor forState:0];
+                cell.userActionButton.titleLabel.font = kFirstFont;
+                [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            }
+            
+            return cell;
+        }else if (indexPath.row == self.certificationArray1.count){
+            identifier = @"proDetais21";
+            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            [cell.userNameButton setHidden:YES];
+            [cell.userActionButton setHidden:YES];
+            cell.backgroundColor = kBackColor;
+            return cell;
+        }else if (indexPath.row == self.certificationArray1.count+1){
+            identifier = @"proDetais22";
+            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+            [cell.userNameButton setTitle:@"收到的评价" forState:0];
+            
+            if (self.allEvaDataArray.count > 0) {
+                [cell.userActionButton setTitle:@"查看全部" forState:0];
+                [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            }else{
+                [cell.userActionButton setTitle:@"暂无" forState:0];
+            }
+            
+            return cell;
+        }else{
+            identifier = @"publish11";
+            EvaluatePhotoCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            
+            if (!cell) {
+                cell = [[EvaluatePhotoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            EvaluateModel *evaModel;
+            if (self.allEvaDataArray.count > 0 ) {
+                [cell.remindImageButton setHidden:YES];
+                [cell.evaProductButton setHidden:YES];
+                [cell.evaNameLabel setHidden:NO];
+                [cell.evaTimeLabel setHidden:NO];
+                [cell.evaTextLabel setHidden:NO];
+                [cell.evaStarImage setHidden:NO];
+                
+                evaModel = self.allEvaDataArray[indexPath.row-1];
+                //0为正常评价。1为匿名评价
+                NSString *isHideStr;
+                if ([evaModel.isHide integerValue] == 0) {
+                    isHideStr = [NSString getValidStringFromString:evaModel.mobiles toString:@"匿名"];
+                }else{
+                    isHideStr = @"匿名";
+                }
+                cell.evaNameLabel.text = isHideStr;
+                cell.evaTimeLabel.text = [NSDate getYMDFormatterTime:evaModel.create_time];
+                cell.evaStarImage.currentIndex = [evaModel.creditor integerValue];
+                cell.evaProImageView1.backgroundColor = kLightGrayColor;
+                cell.evaProImageView2.backgroundColor = kLightGrayColor;
+                cell.evaTextLabel.text = [NSString getValidStringFromString:evaModel.content toString:@"未填写评价内容"];
+                
+                // 图片
+                if (evaModel.pictures.count == 1) {
+                    if ([evaModel.pictures[0] isEqualToString:@""]) {//没有图片
+                        [cell.evaProImageView1 setHidden:YES];
+                        [cell.evaProImageView2 setHidden:YES];
+                    }else{//有图片
+                        [cell.evaProImageView1 setHidden:NO];
+                        [cell.evaProImageView2 setHidden:YES];
+                        
+                        NSString *str1 = [evaModel.pictures[0] substringWithRange:NSMakeRange(1, [evaModel.pictures[0] length]-2)];
+                        NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str1];
+                        NSURL *url1 = [NSURL URLWithString:imageStr1];
+                        [cell.evaProImageView1 sd_setBackgroundImageWithURL:url1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+                    }
+                }else if (evaModel.pictures.count >= 2){
+                    [cell.evaProImageView1 setHidden:NO];
+                    [cell.evaProImageView2 setHidden:NO];
+                    NSString *str1 = [evaModel.pictures[0] substringWithRange:NSMakeRange(1, [evaModel.pictures[0] length]-2)];
+                    NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str1];
+                    NSURL *url1 = [NSURL URLWithString:imageStr1];
+                    NSString *str2 = [evaModel.pictures[1] substringWithRange:NSMakeRange(1, [evaModel.pictures[1] length]-2)];
+                    NSString *imageStr2 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str2];
+                    NSURL *url2 = [NSURL URLWithString:imageStr2];
+                    
+                    [cell.evaProImageView1 sd_setBackgroundImageWithURL:url1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+                    [cell.evaProImageView2 sd_setBackgroundImageWithURL:url2 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+                }
+            }else{
+                [cell.remindImageButton setHidden:NO];
+                [cell.evaProductButton setHidden:YES];
+                [cell.evaNameLabel setHidden:YES];
+                [cell.evaTimeLabel setHidden:YES];
+                [cell.evaTextLabel setHidden:YES];
+                [cell.evaStarImage setHidden:YES];
+                [cell.evaProImageView1 setHidden:YES];
+                [cell.evaProImageView2 setHidden:YES];
+                [cell.evaProductButton setHidden:YES];
             }
             
             return cell;
         }
-        
     }
-    
-    
-//    [cell.userNameButton setTitle:@"性情" forState:0];
-    
-    //////////////////////
-    
-    ///////////////////
-    
     return nil;
 }
 
@@ -435,32 +610,7 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     if (section == 1) {
-        UIView *headerView = [[UIView alloc] init];
-        
-        EvaTopSwitchView *productSwitchView = [[EvaTopSwitchView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 50)];
-        productSwitchView.backgroundColor = kNavColor;
-        [productSwitchView.getbutton  setTitle:@"产品信息" forState:0];//33
-        [productSwitchView.sendButton  setTitle:@"发布方信息" forState:0];//34
-        [headerView addSubview:productSwitchView];
-        
-        QDFWeak(productSwitchView);
-        QDFWeakSelf;
-        [productSwitchView setDidSelectedButton:^(NSInteger tag) {
-            if (tag == 33) {
-                [weakproductSwitchView.getbutton setTitleColor:kBlueColor forState:0];
-                [weakproductSwitchView.sendButton setTitleColor:kBlackColor forState:0];
-                weakself.switchType = @"33";
-//                [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:1]] withRowAnimation:UITableViewRowAnimationFade];
-            }else{
-                [weakproductSwitchView.sendButton setTitleColor:kBlueColor forState:0];
-                [weakproductSwitchView.getbutton setTitleColor:kBlackColor forState:0];
-                weakself.switchType = @"34";
-                [weakself getMessageOfPublishPerson];
-            }
-//            [tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
-        }];
-        
-        return headerView;
+        return self.headerView;
     }
     
     return nil;
@@ -475,6 +625,30 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
+    if ([self.switchType isEqualToString:@"33"]) {//产品信息
+        
+    }else if ([self.switchType isEqualToString:@"34"]){//发布人信息
+        if (indexPath.row == self.certificationArray1.count+1) {//所有评价
+            if (self.allEvaDataArray.count > 0) {
+                AllEvaluationViewController *allEvaluationVC = [[AllEvaluationViewController alloc] init];
+                allEvaluationVC.idString = self.idString;
+                allEvaluationVC.categoryString = self.categoryString;
+                allEvaluationVC.pidString = self.pidString;
+                allEvaluationVC.evaTypeString = @"evaluate";
+                [self.navigationController pushViewController:allEvaluationVC animated:YES];
+            }
+        }else if (indexPath.row == self.certificationArray1.count-1){
+            if ([self.certificationArray1[self.certificationArray1.count-1] isEqualToString:@"经典案例"]) {
+                CaseViewController *caseVC = [[CaseViewController alloc] init];
+                caseVC.caseString = self.casedesc;
+                [self.navigationController pushViewController:caseVC animated:YES];
+            }
+        }
+        
+    }
+    
+    
+    /*
     if (self.recommendDataArray.count > 0) {
         PublishingResponse *qModel = self.recommendDataArray[0];
         PublishingModel *pModel = qModel.product;
@@ -496,6 +670,14 @@
             }
         }
       }
+    }
+     */
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if (scrollView.contentOffset.y > 0 && scrollView.contentOffset.y < 260+kBigPadding) {
+        [scrollView setContentOffset:CGPointMake(0, 260+kBigPadding)];
     }
 }
 
@@ -795,9 +977,6 @@
         CompleteResponse *response = [CompleteResponse objectWithKeyValues:responseObject];
         
         if ([response.code isEqualToString:@"0000"]) {
-            if (response.certification) {
-                [weakself.certifiDataArray addObject:response.certification];
-            }
             
             NSString *definedStr;
             if ([response.certification.cardimg isEqualToString:@"undefined"]) {
@@ -812,13 +991,13 @@
             }else if ([response.certification.category integerValue] == 2){//律所
                 weakself.certificationArray1 = @[@"基本信息",@"律所名称",@"执业证号",@"图片",@"联系人",@"联系方式",@"邮箱",@"经典案例"];
                 weakself.certificationArray11 = @[@"已认证律所",response.certification.name,response.certification.cardno,definedStr,response.certification.contact,response.certification.mobile,response.certification.email,@"查看"];
+                weakself.casedesc = response.certification.casedesc;
             }else if ([response.certification.category integerValue] == 3){//公司
                 weakself.certificationArray1 = @[@"基本信息",@"公司名称",@"营业执照号",@"图片",@"联系人",@"联系方式",@"企业邮箱",@"公司经营地址",@"公司网站",@"经典案例"];
                 weakself.certificationArray11 = @[@"已认证公司",response.certification.name,response.certification.cardno,definedStr,response.certification.contact,response.certification.mobile,response.certification.email,response.certification.address,response.certification.enterprisewebsite,@"查看"];
+                weakself.casedesc = response.certification.casedesc;
             }
-            
-            [weakself.productsDetailsTableView reloadData];
-//            [weakself getAllEvaluationListWithPage:@"1"];
+            [weakself getAllEvaluationListWithPage:@"1"];
             
         }else{
             [weakself showHint:response.msg];
@@ -828,7 +1007,7 @@
     }];
 }
 
-/*
+
 - (void)getAllEvaluationListWithPage:(NSString *)page
 {
     NSString *evaluateString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kCheckOrderToEvaluationString];
@@ -846,14 +1025,13 @@
         for (EvaluateModel *model in response.evaluate) {
             [weakself.allEvaDataArray addObject:model];
         }
-        [weakself.checkDetailTableView reloadData];
-        
+        [weakself.productsDetailsTableView reloadData];
         
     } andFailBlock:^(NSError *error) {
         
     }];
 }
-*/
+
 
 //立即申请
 - (void)applicationCommit

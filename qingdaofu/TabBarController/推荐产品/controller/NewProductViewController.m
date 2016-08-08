@@ -9,7 +9,7 @@
 #import "NewProductViewController.h"
 #import "HouseAssessViewController.h"  //房产评估
 #import "ApplicationGuaranteeViewController.h" //申请保函
-#import "PowerProtectViewController.h" //诉讼保权
+#import "PowerProtectViewController.h" //诉讼保全
 #import "HousePropertyViewController.h" //产调
 
 #import "ProductsDetailsViewController.h" //详细信息
@@ -239,8 +239,8 @@
                     [weakself.navigationController pushViewController:housePropertyVC animated:YES];
                 }
                     break;
-                case 33:{//诉讼保权
-                    NSLog(@"诉讼保权");
+                case 33:{//诉讼保全
+                    NSLog(@"诉讼保全");
                     PowerProtectViewController *powerProtectVC = [[PowerProtectViewController alloc] init];
                     powerProtectVC.hidesBottomBarWhenPushed = YES;
                     [weakself.navigationController pushViewController:powerProtectVC animated:YES];
@@ -359,6 +359,7 @@
                 NewProductListModel *sModel = weakself.productsDataListArray[indexPath.section - 1];
                 productsDetailVC.idString = sModel.idString;
                 productsDetailVC.categoryString = sModel.category;
+                productsDetailVC.pidString = sModel.uidString;
                 [weakself.navigationController pushViewController:productsDetailVC animated:YES];
             }else if([model.code isEqualToString:@"3001"] || [self getValidateToken] == nil){//未登录
                 [weakself showHint:model.msg];

@@ -112,7 +112,7 @@
 //推荐页面的发布
 - (void)showBlurInView:(UIView *)view withArray:(NSArray *)array finishBlock:(void(^)(NSInteger row))finishBlock
 {
-    [self hiddenBlurView];
+//    [self hiddenBlurView];
     UIView *tagView = [self.view viewWithTag:99999];
     SingleButton *collectionButton;
     SingleButton *suitButton;
@@ -133,6 +133,12 @@
         [collectionButton.button setImage:[UIImage imageNamed:@"btn_collection"] forState:0];
         collectionButton.label.text = @"发布清收";
         [tagView addSubview:collectionButton];
+        QDFWeakSelf;
+        [collectionButton addAction:^(UIButton *btn) {
+            if (weakself.didSelectedSingleButton) {
+                weakself.didSelectedSingleButton(77);
+            }
+        }];
         
         //诉讼
         suitButton = [[SingleButton alloc] init];
@@ -140,6 +146,11 @@
         [suitButton.button setImage:[UIImage imageNamed:@"btn_litigation"] forState:0];
         suitButton.label.text = @"发布诉讼";
         [tagView addSubview:suitButton];
+        [suitButton addAction:^(UIButton *btn) {
+            if (weakself.didSelectedSingleButton) {
+                weakself.didSelectedSingleButton(78);
+            }
+        }];
         
         //取消按钮
         UIButton *cancelButton = [UIButton newAutoLayoutView];
@@ -163,10 +174,37 @@
     }
     
     if (finishBlock) {
-        [self hiddenBlurView];
-    }
+        
+        QDFWeakSelf;
+        
+        [collectionButton addAction:^(UIButton *btn) {
+//            if (weakself.didSelectedSingleButton) {
+//                weakself.didSelectedSingleButton(77);
+//            }
+//            [weakself hiddenBlurView];
+            
+            [tagView removeFromSuperview];
 
+            finishBlock(77);
+        
+        }];
+        
+        [suitButton addAction:^(UIButton *btn) {
+//            if (weakself.didSelectedSingleButton) {
+//                weakself.didSelectedSingleButton(78);
+//            }
+//            [weakself hiddenBlurView];
+            
+            [tagView removeFromSuperview];
+            finishBlock(78);
+
+        }];
+        
+    }
     
+//    if (finishBlock) {
+//    }
+
         /*
     NewPublishCell *cell;
     if (!tagView) {

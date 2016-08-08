@@ -15,7 +15,6 @@
 #import "HomeCell.h"
 #import "BidOneCell.h"
 #import "UIImage+Color.h"
-#import "AllProView.h"
 
 #import "AllProductsChooseView.h"
 
@@ -486,6 +485,7 @@
                 NewProductListModel *sModel = weakself.allDataList[indexPath.section];
                 productsDetailVC.idString = sModel.idString;
                 productsDetailVC.categoryString = sModel.category;
+                productsDetailVC.pidString = sModel.uidString;
                 [weakself.navigationController pushViewController:productsDetailVC animated:YES];
             }else if([model.code isEqualToString:@"3001"] || [self getValidateToken] == nil){//未登录
                 [weakself showHint:model.msg];

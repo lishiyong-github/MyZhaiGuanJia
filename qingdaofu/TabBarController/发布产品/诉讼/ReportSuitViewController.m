@@ -17,20 +17,18 @@
 #import "GuarantyViewController.h"  //抵押物地址
 
 #import "ReportFootView.h"
-#import "EvaTopSwitchView.h"
 #import "UIViewController+BlurView.h"
 
 #import "AgentCell.h"
 #import "EditDebtAddressCell.h"
 #import "SuitBaseCell.h"
 
-@interface ReportSuitViewController ()<UITableViewDataSource,UITableViewDelegate>
+@interface ReportSuitViewController ()<UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *suitTableView;
-
 @property (nonatomic,strong) ReportFootView *repSuitFootButton;
-@property (nonatomic,strong) EvaTopSwitchView *repSuitSwitchView;
+@property (nonatomic,strong) UIButton *suitRightButton;
 
 @property (nonatomic,strong) NSMutableArray *suitDataList;  //收起展开
 @property (nonatomic,strong) NSMutableArray *sTextArray;
@@ -42,7 +40,6 @@
 @property (nonatomic,strong) NSString *number;//1.抵押物地址，2.应收帐款，3.机动车抵押，4.无抵押
 @property (nonatomic,strong) NSMutableArray *creditorInfos;
 @property (nonatomic,strong) NSMutableArray *borrowinginfos;
-//@property (nonatomic,strong) NSMutableArray *creditorfiles;
 @property (nonatomic,strong) NSMutableDictionary *creditorfiles;
 
 @end
@@ -56,7 +53,9 @@
     }else{
         self.navigationItem.title = @"发布诉讼";
     }
-    self.navigationItem.leftBarButtonItem = self.leftItem;
+    
+    self.navigationItem.leftBarButtonItem = self.leftItemAnother;
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.suitRightButton];
     
     [self setupForDismissKeyboard];
     
@@ -90,10 +89,9 @@
     }
     
     [self.view addSubview:self.suitTableView];
-    [self.view addSubview:self.repSuitSwitchView];
     [self.view setNeedsUpdateConstraints];
     
-    [self addKeyboardObserver];
+//    [self addKeyboardObserver];
 }
 
 - (void)dealloc
@@ -105,12 +103,7 @@
 {
     if (!self.didSetupConstraints) {
         
-        [self.suitTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
-        [self.suitTableView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kTabBarHeight];
-        
-        [self.repSuitSwitchView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [self.repSuitSwitchView autoSetDimension:ALDimensionHeight toSize:kTabBarHeight];
-        
+        [self.suitTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
         self.didSetupConstraints = YES;
     }
     [super updateViewConstraints];
@@ -120,7 +113,7 @@
 {
     if (!_suitTableView) {
         _suitTableView.translatesAutoresizingMaskIntoConstraints = NO;
-        _suitTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
+        _suitTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _suitTableView.backgroundColor = kBackColor;
         _suitTableView.delegate = self;
         _suitTableView.dataSource = self;
@@ -131,44 +124,6 @@
     return _suitTableView;
 }
 
-- (EvaTopSwitchView *)repSuitSwitchView
-{
-    if (!_repSuitSwitchView) {
-        _repSuitSwitchView = [EvaTopSwitchView newAutoLayoutView];
-        _repSuitSwitchView.layer.borderColor = kSeparateColor.CGColor;
-        _repSuitSwitchView.layer.borderWidth = kLineWidth;
-        _repSuitSwitchView.heightConstraint.constant = kTabBarHeight;
-        _repSuitSwitchView.backgroundColor = kNavColor;
-        [_repSuitSwitchView.blueLabel setHidden:YES];
-        
-        [_repSuitSwitchView.getbutton setTitle:@"  保存" forState:0];
-        [_repSuitSwitchView.getbutton setImage:[UIImage imageNamed:@"save"] forState:0];
-        [_repSuitSwitchView.getbutton setTitleColor:kBlueColor forState:0];
-        
-        [_repSuitSwitchView.sendButton setTitle:@"  立即发布" forState:0];
-        [_repSuitSwitchView.sendButton setImage:[UIImage imageNamed:@"publish"] forState:0];
-        [_repSuitSwitchView.sendButton setTitleColor:kBlueColor forState:0];
-        
-        QDFWeakSelf;
-        [_repSuitSwitchView setDidSelectedButton:^(NSInteger tag) {
-            if (tag == 33) {//保存
-                [weakself reportSuitActionWithTypeString:@"0"];
-            }else{
-                [weakself reportSuitActionWithTypeString:@"1"];
-            }
-            
-//            [weakself tokenIsValid];
-//            [weakself setDidTokenValid:^(TokenModel *model) {
-//                if ([model.code isEqualToString:@"0000"] || [model.code isEqualToString:@"3006"]) {
-//                }else{//发布
-//                    [weakself showHint:model.msg];
-//                }
-//            }];
-        }];
-    }
-    return _repSuitSwitchView;
-}
-
 - (ReportFootView *)repSuitFootButton
 {
     if (!_repSuitFootButton) {
@@ -177,6 +132,21 @@
         [_repSuitFootButton addTarget:self action:@selector(openAndCloses:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _repSuitFootButton;
+}
+- (UIButton *)suitRightButton
+{
+    if (!_suitRightButton) {
+        _suitRightButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 44)];
+        [_suitRightButton setTitle:@"发布" forState:0];
+        _suitRightButton.titleLabel.font = kFirstFont;
+        [_suitRightButton setTitleColor:kBlueColor forState:0];
+        
+        QDFWeakSelf;
+        [_suitRightButton addAction:^(UIButton *btn) {
+            [weakself reportSuitActionWithTypeString:@"1"];
+        }];
+    }
+    return _suitRightButton;
 }
 
 - (NSMutableArray *)suitDataList
@@ -198,7 +168,7 @@
 - (NSMutableArray *)sTextArray
 {
     if (!_sTextArray) {
-        NSMutableArray *s1 = [NSMutableArray arrayWithArray:@[@"",@"借款本金",@"代理费用",@"",@"抵押物地址",@""]];
+        NSMutableArray *s1 = [NSMutableArray arrayWithArray:@[@"",@"借款本金",@"费用类型",@"",@"抵押物地址",@""]];
         NSMutableArray *s2 = [NSMutableArray arrayWithArray:@[@"|  选填信息(选填)",@"借款利率(%)",@"借款期限",@"还款方式",@"债务人主体",@"委托事项",@"委托代理期限(月)",@"已付本金",@"已付利息",@"",@"债权文件",@"债权人信息",@"债务人信息"]];
         _sTextArray = [NSMutableArray arrayWithObjects:s1,s2, nil];
     }
@@ -208,7 +178,7 @@
 - (NSMutableArray *)sHolderArray
 {
     if (!_sHolderArray) {
-        NSMutableArray *w1 = [NSMutableArray arrayWithArray:@[@"",@"填写借款本金",@"填写代理费用",@"",@"",@""]];
+        NSMutableArray *w1 = [NSMutableArray arrayWithArray:@[@"",@"填写借款本金",@"请选择类型",@"",@"",@""]];
         NSMutableArray *w2 = [NSMutableArray arrayWithArray:@[@"",@"能够给到融资方的利息",@"输入借款期限",@"",@"",@"",@"",@"填写已付本金",@"填写已付利息",@"",@"",@"",@"",@""]];
         _sHolderArray = [NSMutableArray arrayWithObjects:w1,w2, nil];
     }
@@ -273,10 +243,8 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == 0) {
-        
         return [self.rowString intValue];
     }
-
     return 13;
 }
 
@@ -297,7 +265,7 @@
     PublishingModel *suModel = self.suResponse.product;
     QDFWeakSelf;
     if (indexPath.section == 0) {
-        if (indexPath.row == 0) {//必填信息
+        if (indexPath.row == 0) {//基本信息
             identifier = @"suitSect00";
             AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
             if (!cell) {
@@ -306,7 +274,7 @@
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             [cell.agentTextField setHidden:YES];
             [cell.agentButton setHidden:YES];
-            NSMutableAttributedString *dddd = [cell.agentLabel setAttributeString:@"|  必填信息" withColor:kBlueColor andSecond:@"(必填)" withColor:kBlackColor withFont:12];
+            NSMutableAttributedString *dddd = [cell.agentLabel setAttributeString:@"|  基本信息" withColor:kBlueColor andSecond:@"（必填）" withColor:kBlackColor withFont:12];
             [cell.agentLabel setAttributedText:dddd];
 
             return cell;
@@ -338,7 +306,7 @@
             }];
 
             return cell;
-        }else if (indexPath.row == 2){//代理费用
+        }else if (indexPath.row == 2){//代理费用类型
             identifier = @"suitSect02";
             AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
             if (!cell) {
@@ -346,7 +314,9 @@
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.leftdAgentContraints.constant = 110;
-            cell.agentTextField.keyboardType = UIKeyboardTypeNumberPad;
+            cell.agentTextField.userInteractionEnabled = NO;
+            cell.agentButton.userInteractionEnabled = NO;
+//            cell.agentTextField.keyboardType = UIKeyboardTypeNumberPad;
 
             [cell setTouchBeginPoint:^(CGPoint point) {
                 weakself.touchPoint = point;
@@ -416,62 +386,6 @@
             [cell.agentButton addTarget:self action:@selector(showTitleOfUpwardViews:) forControlEvents:UIControlEventTouchUpInside];
             
             return cell;
-            
-            
-            /*
-            SuitBaseCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-            if (!cell) {
-                cell = [[SuitBaseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-            }
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.label.text = @"债权类型";
-            
-            if ([_number integerValue] == 1 || [_number integerValue] == 4) {
-                cell.segment.selectedSegmentIndex = [_number integerValue]-1;
-            }else if ([_number integerValue] == 3){
-                cell.segment.selectedSegmentIndex = 1;
-            }else{
-                cell.segment.selectedSegmentIndex = 2;
-            }
-            
-            //segment block
-            [cell setDidSelectedSeg:^(NSInteger selectedTag) {
-                AgentCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:4 inSection:0]];
-                cell.agentTextField.text = @"";
-                [self.view endEditing:YES];
-                
-                if (selectedTag == 0) {//房产抵押
-                    self.rowString = @"6";
-                    [self.sTextArray[0] replaceObjectAtIndex:4 withObject:@"抵押物地址"];
-                    [self.sHolderArray[0] replaceObjectAtIndex:4 withObject:@"选择抵押物地址"];
-                    _number = @"1";
-                    
-                }else if (selectedTag == 1){//机动车
-                    [cell.agentButton setHidden:NO];
-                    self.rowString = @"5";
-                    [self.sTextArray[0] replaceObjectAtIndex:4 withObject:@"机动车"];
-                    [self.sHolderArray[0] replaceObjectAtIndex:4 withObject:@"选择机动车品牌"];
-                    _number = @"3";
-                }else if (selectedTag == 2){//应收帐款
-                    self.rowString = @"5";
-                    [self.sTextArray[0] replaceObjectAtIndex:4 withObject:@""];
-                    [self.sHolderArray[0] replaceObjectAtIndex:4 withObject:@"应收帐款"];
-                    _number = @"2";
-                    
-                }else{//无抵押
-                    self.rowString = @"4";
-                    [self.sTextArray[0] replaceObjectAtIndex:4 withObject:@"无抵押"];
-                    [self.sHolderArray[0] replaceObjectAtIndex:4 withObject:@"无抵押"];
-                    _number = @"4";
-                }
-                
-                [self.suitDataDictionary setValue:_number forKey:@"loan_type"];
-                
-                [self.suitTableView reloadData];
-            }];
-            
-            return cell;
-             */
         }else if (indexPath.row == 4){//抵押物地址
             identifier = @"suitSect04";
             AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -597,7 +511,7 @@
         [cell.agentTextField setHidden:YES];
         [cell.agentButton setHidden:YES];
         
-        NSMutableAttributedString *ffff = [cell.agentLabel setAttributeString:@"|  选填信息" withColor:kBlueColor andSecond:@"(选填)" withColor:kBlackColor withFont:12];
+        NSMutableAttributedString *ffff = [cell.agentLabel setAttributeString:@"|  补充信息" withColor:kBlueColor andSecond:@"（选填）" withColor:kBlackColor withFont:12];
         [cell.agentLabel setAttributedText:ffff];
         
         return cell;
@@ -930,7 +844,12 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     QDFWeakSelf;
-    if (indexPath.section == 1) {
+    if (indexPath.section == 0) {//基本信息
+        if (indexPath.row == 2) {//代理费用类型
+            
+        }
+        
+    }else if (indexPath.section == 1) {
         if (indexPath.row == 10) {//债权文件
             UploadFilesViewController *uploadFilesVC = [[UploadFilesViewController alloc] init];
             uploadFilesVC.filesDic = self.creditorfiles;
@@ -985,6 +904,7 @@
             }];
         }
     }
+     
 }
 
 #pragma mark - method
@@ -1250,26 +1170,26 @@
 
 - (void)back
 {
-    if (!self.suitDataDictionary && !self.suResponse) {
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"是否保存" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"保存" otherButtonTitles:@"不保存", nil];
+    actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
+    
+    [actionSheet showInView:self.view];
+}
 
-    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:nil message:@"是否放弃保存？" preferredStyle:UIAlertControllerStyleAlert];
-    
-    QDFWeakSelf;
-    UIAlertAction *act1 = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [weakself.navigationController popViewControllerAnimated:YES];
-    }];
-    
-    UIAlertAction *act2 = [UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-    }];
-    [alertVC addAction:act1];
-    [alertVC addAction:act2];
-    
-    [self presentViewController:alertVC animated:YES completion:nil];
-        
-    }else{
-        [self.navigationController popViewControllerAnimated:YES];
+#pragma mark - actionsheet delegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {//保存
+        NSLog(@"0");
+        [self reportSuitActionWithTypeString:@"0"];
+    }else if (buttonIndex == 1){//不保存
+        NSLog(@"1");
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }else if (buttonIndex == 2){//取消
+        NSLog(@"2");
     }
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

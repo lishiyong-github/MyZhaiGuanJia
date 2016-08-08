@@ -28,7 +28,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"申请保权";
+    self.title = @"申请保全";
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
     [self setupForDismissKeyboard];

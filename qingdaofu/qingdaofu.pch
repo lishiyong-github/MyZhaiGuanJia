@@ -58,7 +58,7 @@
 #define KTimeStamp [NSString stringWithFormat:@"%.0f",[[NSDate new] timeIntervalSince1970] * 1000]
 
 
-//文字颜色  Helvetica-Bold加粗
+//文字颜色  Helvetica-Bold加粗 0da3f9  1bacff
 #define kBlueColor UIColorFromRGB(0x0da3f9)  //主色调 //0065b3--0da3f9
 #define kBlackColor UIColorFromRGB(0x333333)  //黑色
 #define kGrayColor UIColorFromRGB(0x666666)  //灰色
@@ -70,7 +70,7 @@
 
 //背景色
 #define kNavColor UIColorFromRGB(0xffffff)  //导航栏颜色1(白色)
-#define kNavColor1 UIColorFromRGB(0x42566d) //导航栏颜色2（产品详情界面）
+#define kNavColor1 UIColorFromRGB(0x1bacff) //导航栏颜色2（产品详情界面）42566d－1bacff
 #define kCellSelectedColor UIColorFromRGB(0xeef3f6)  //单元格选中颜色
 #define kSelectedColor UIColorFromRGB(0xbecdd2)  //按钮不可点击颜色c6d3dc－－becdd2
 

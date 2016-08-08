@@ -8,7 +8,7 @@
 
 #import "PowerDetailsViewController.h"
 
-#import "PowerProtectViewController.h"  //申请保权
+#import "PowerProtectViewController.h"  //申请保全
 
 #import "MessageCell.h"
 #import "MineUserCell.h"
@@ -115,7 +115,7 @@
                 cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            [cell.userNameButton setTitle:@"保权信息" forState:0];
+            [cell.userNameButton setTitle:@"保全信息" forState:0];
             cell.userNameButton.titleLabel.font = kBoldFont(16);
             return cell;
         }

@@ -20,7 +20,7 @@
 #import "MySaveViewController.h"  //我的保存
 #import "MyStoreViewController.h"  //我的收藏
 
-#import "PowerProtectListViewController.h" //保权
+#import "PowerProtectListViewController.h" //保全
 #import "ApplicationListViewController.h"  //保函
 #import "HousePropertyListViewController.h" //产调
 
@@ -89,7 +89,7 @@
             
             [weakself tokenIsValid];
             
-            if (buttonTag == 0|| buttonTag == 1 || buttonTag == 3 || buttonTag == 6 || buttonTag == 7 || buttonTag == 8 || buttonTag == 12) {//我的认证，发布，保存，保权，保函，产调，设置，
+            if (buttonTag == 0|| buttonTag == 1 || buttonTag == 3 || buttonTag == 6 || buttonTag == 7 || buttonTag == 8 || buttonTag == 12) {//我的认证，发布，保存，保全，保函，产调，设置，
                 [weakself setDidTokenValid:^(TokenModel *tokenModel) {
                     if ([tokenModel.code integerValue] == 0000 || [tokenModel.code integerValue] == 3006) {
                         switch (buttonTag) {
@@ -129,7 +129,7 @@
                                 [weakself.navigationController pushViewController:mySaveVC animated:YES];
                             }
                                 break;
-                            case 6:{//我的保权
+                            case 6:{//我的保全
                                 PowerProtectListViewController *powerProtectListVC = [[PowerProtectListViewController alloc] init];
                                 powerProtectListVC.hidesBottomBarWhenPushed = YES;
                                 [weakself.navigationController pushViewController:powerProtectListVC animated:YES];

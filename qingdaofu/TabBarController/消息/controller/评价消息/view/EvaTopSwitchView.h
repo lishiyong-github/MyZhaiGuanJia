@@ -22,5 +22,6 @@
 
 @property (nonatomic,strong) NSLayoutConstraint *heightConstraint;
 @property (nonatomic,strong) NSLayoutConstraint *leftBlueConstraints;
+@property (nonatomic,strong) NSLayoutConstraint *widthBlueConstraints;
 
 @end

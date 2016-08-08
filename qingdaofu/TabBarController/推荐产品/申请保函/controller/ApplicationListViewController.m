@@ -147,7 +147,7 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        NSArray *lawArray = @[@"法院",@"申请人",@"电话号码",@"保权金额",@"申请时间"];
+        NSArray *lawArray = @[@"法院",@"申请人",@"电话号码",@"保全金额",@"申请时间"];
         
         [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
         cell.userNameButton.titleLabel.font = kFirstFont;
