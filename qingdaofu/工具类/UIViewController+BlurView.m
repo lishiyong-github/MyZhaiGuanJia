@@ -9,10 +9,11 @@
 #import "UIViewController+BlurView.h"
 #import <objc/runtime.h>
 #import "UpwardTableView.h"
-//#import "NewPublishCell.h"
 #import "SingleButton.h"
 
 @implementation UIViewController (BlurView)
+
+@dynamic didSelectedSingleButton;
 
 //有标题
 - (void)showBlurInView:(UIView *)view withArray:(NSArray *)array andTitle:(NSString *)title finishBlock:(void (^)(NSString *text,NSInteger row))finishBlock

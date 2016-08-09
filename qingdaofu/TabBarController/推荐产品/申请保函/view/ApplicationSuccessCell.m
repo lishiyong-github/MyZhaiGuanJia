@@ -76,7 +76,7 @@
         _appLabel1 = [UILabel newAutoLayoutView];
         _appLabel1.text = @"提交成功";
         _appLabel1.font = [UIFont systemFontOfSize:22];
-        _appLabel1.textColor = kBlueColor;
+        _appLabel1.textColor = kBlackColor;
     }
     return _appLabel1;
 }

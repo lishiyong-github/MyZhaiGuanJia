@@ -30,7 +30,6 @@
         NSArray *views = @[self.squrebutton,self.stateButton,self.moneyButton];
         [views autoMatchViewsDimension:ALDimensionWidth];
         
-        
         [self.squrebutton autoPinEdgeToSuperviewEdge:ALEdgeTop];
         [self.squrebutton autoPinEdgeToSuperviewEdge:ALEdgeLeft];
         [self.squrebutton autoPinEdgeToSuperviewEdge:ALEdgeBottom];
@@ -39,7 +38,6 @@
         [self.stateButton autoPinEdgeToSuperviewEdge:ALEdgeBottom];
         [self.stateButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.squrebutton];
         [self.stateButton autoSetDimension:ALDimensionWidth toSize:kScreenWidth/3];
-        
         
         [self.moneyButton autoPinEdgeToSuperviewEdge:ALEdgeTop];
         [self.moneyButton autoPinEdgeToSuperviewEdge:ALEdgeBottom];

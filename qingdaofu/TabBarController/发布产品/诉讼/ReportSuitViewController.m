@@ -168,7 +168,7 @@
 - (NSMutableArray *)sTextArray
 {
     if (!_sTextArray) {
-        NSMutableArray *s1 = [NSMutableArray arrayWithArray:@[@"",@"借款本金",@"费用类型",@"",@"抵押物地址",@""]];
+        NSMutableArray *s1 = [NSMutableArray arrayWithArray:@[@"",@"借款本金",@"代理费用",@"",@"抵押物地址",@""]];
         NSMutableArray *s2 = [NSMutableArray arrayWithArray:@[@"|  选填信息(选填)",@"借款利率(%)",@"借款期限",@"还款方式",@"债务人主体",@"委托事项",@"委托代理期限(月)",@"已付本金",@"已付利息",@"",@"债权文件",@"债权人信息",@"债务人信息"]];
         _sTextArray = [NSMutableArray arrayWithObjects:s1,s2, nil];
     }
@@ -178,7 +178,7 @@
 - (NSMutableArray *)sHolderArray
 {
     if (!_sHolderArray) {
-        NSMutableArray *w1 = [NSMutableArray arrayWithArray:@[@"",@"填写借款本金",@"请选择类型",@"",@"",@""]];
+        NSMutableArray *w1 = [NSMutableArray arrayWithArray:@[@"",@"填写借款本金",@"请填写代理费用",@"",@"",@""]];
         NSMutableArray *w2 = [NSMutableArray arrayWithArray:@[@"",@"能够给到融资方的利息",@"输入借款期限",@"",@"",@"",@"",@"填写已付本金",@"填写已付利息",@"",@"",@"",@"",@""]];
         _sHolderArray = [NSMutableArray arrayWithObjects:w1,w2, nil];
     }
@@ -314,9 +314,7 @@
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.leftdAgentContraints.constant = 110;
-            cell.agentTextField.userInteractionEnabled = NO;
-            cell.agentButton.userInteractionEnabled = NO;
-//            cell.agentTextField.keyboardType = UIKeyboardTypeNumberPad;
+            cell.agentTextField.keyboardType = UIKeyboardTypeNumberPad;
 
             [cell setTouchBeginPoint:^(CGPoint point) {
                 weakself.touchPoint = point;
@@ -912,8 +910,7 @@
 {
     btn.selected = !btn.selected;
     if (btn.selected) {
-        
-        NSMutableAttributedString *aStr2 = [[NSMutableAttributedString alloc] initWithString:@"收回选填信息(选填)"];
+        NSMutableAttributedString *aStr2 = [[NSMutableAttributedString alloc] initWithString:@"收回补充信息(选填)"];
         [aStr2 addAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kNavColor} range:NSMakeRange(0, aStr2.length)];
         [btn.footButton setAttributedTitle:aStr2 forState:0];
         [btn.footButton setImage:[UIImage imageNamed:@"open"] forState:0];
@@ -923,7 +920,7 @@
         [self.suitTableView insertSections:set withRowAnimation:UITableViewRowAnimationFade];
     }else{
         
-        NSMutableAttributedString *aStr1 = [[NSMutableAttributedString alloc] initWithString:@"展开选填信息(选填)"];
+        NSMutableAttributedString *aStr1 = [[NSMutableAttributedString alloc] initWithString:@"展开补充信息(选填)"];
         [aStr1 addAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kNavColor} range:NSMakeRange(0, aStr1.length)];
         [btn.footButton setAttributedTitle:aStr1 forState:0];
         [btn.footButton setImage:[UIImage imageNamed:@"withdraw"] forState:0];

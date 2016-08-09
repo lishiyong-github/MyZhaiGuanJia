@@ -372,6 +372,10 @@
 		A19BBC971D52F18D00D8F23A /* tab_user@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A19BBC851D52F18D00D8F23A /* tab_user@2x.png */; };
 		A19BBC981D52F18D00D8F23A /* tab_user@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A19BBC861D52F18D00D8F23A /* tab_user@3x.png */; };
 		A19BBC9B1D53100000D8F23A /* ProDetailNumberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A19BBC9A1D53100000D8F23A /* ProDetailNumberCell.m */; };
+		A19CC08C1D599A4A000ED568 /* PowerDetailsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A19CC08B1D599A4A000ED568 /* PowerDetailsCell.m */; };
+		A19CC08F1D59B9F2000ED568 /* ApplicationGuaranteeFirstView.m in Sources */ = {isa = PBXBuildFile; fileRef = A19CC08E1D59B9F2000ED568 /* ApplicationGuaranteeFirstView.m */; };
+		A19CC0921D59C181000ED568 /* ApplicationGuaranteeView.m in Sources */ = {isa = PBXBuildFile; fileRef = A19CC0911D59C181000ED568 /* ApplicationGuaranteeView.m */; };
+		A19CC0951D59E049000ED568 /* ApplicationGuaranteeSecondView.m in Sources */ = {isa = PBXBuildFile; fileRef = A19CC0941D59E049000ED568 /* ApplicationGuaranteeSecondView.m */; };
 		A19D293E1CD1A32D00DAAEA7 /* NSString+Fram.m in Sources */ = {isa = PBXBuildFile; fileRef = A19D293D1CD1A32D00DAAEA7 /* NSString+Fram.m */; };
 		A19D29471CD1B44D00DAAEA7 /* MoneyView.m in Sources */ = {isa = PBXBuildFile; fileRef = A19D29461CD1B44D00DAAEA7 /* MoneyView.m */; };
 		A19D294E1CD1E04300DAAEA7 /* HomeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A19D294D1CD1E04300DAAEA7 /* HomeCell.m */; };
@@ -1130,6 +1134,14 @@
 		A19BBC861D52F18D00D8F23A /* tab_user@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_user@3x.png"; sourceTree = "<group>"; };
 		A19BBC991D53100000D8F23A /* ProDetailNumberCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProDetailNumberCell.h; sourceTree = "<group>"; };
 		A19BBC9A1D53100000D8F23A /* ProDetailNumberCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProDetailNumberCell.m; sourceTree = "<group>"; };
+		A19CC08A1D599A4A000ED568 /* PowerDetailsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PowerDetailsCell.h; sourceTree = "<group>"; };
+		A19CC08B1D599A4A000ED568 /* PowerDetailsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PowerDetailsCell.m; sourceTree = "<group>"; };
+		A19CC08D1D59B9F2000ED568 /* ApplicationGuaranteeFirstView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationGuaranteeFirstView.h; sourceTree = "<group>"; };
+		A19CC08E1D59B9F2000ED568 /* ApplicationGuaranteeFirstView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplicationGuaranteeFirstView.m; sourceTree = "<group>"; };
+		A19CC0901D59C181000ED568 /* ApplicationGuaranteeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationGuaranteeView.h; sourceTree = "<group>"; };
+		A19CC0911D59C181000ED568 /* ApplicationGuaranteeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplicationGuaranteeView.m; sourceTree = "<group>"; };
+		A19CC0931D59E049000ED568 /* ApplicationGuaranteeSecondView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationGuaranteeSecondView.h; sourceTree = "<group>"; };
+		A19CC0941D59E049000ED568 /* ApplicationGuaranteeSecondView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplicationGuaranteeSecondView.m; sourceTree = "<group>"; };
 		A19D293C1CD1A32D00DAAEA7 /* NSString+Fram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Fram.h"; sourceTree = "<group>"; };
 		A19D293D1CD1A32D00DAAEA7 /* NSString+Fram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Fram.m"; sourceTree = "<group>"; };
 		A19D29451CD1B44D00DAAEA7 /* MoneyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoneyView.h; sourceTree = "<group>"; };
@@ -3125,6 +3137,12 @@
 			children = (
 				A1B6FD4B1D4EEDDD0059690B /* ApplicationSuccessCell.h */,
 				A1B6FD4C1D4EEDDD0059690B /* ApplicationSuccessCell.m */,
+				A19CC08D1D59B9F2000ED568 /* ApplicationGuaranteeFirstView.h */,
+				A19CC08E1D59B9F2000ED568 /* ApplicationGuaranteeFirstView.m */,
+				A19CC0901D59C181000ED568 /* ApplicationGuaranteeView.h */,
+				A19CC0911D59C181000ED568 /* ApplicationGuaranteeView.m */,
+				A19CC0931D59E049000ED568 /* ApplicationGuaranteeSecondView.h */,
+				A19CC0941D59E049000ED568 /* ApplicationGuaranteeSecondView.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -3343,6 +3361,8 @@
 				A1B6FD5E1D4F4C290059690B /* PowerCell.m */,
 				A187B8FB1D502BC600A91A16 /* PowerDetailsView.h */,
 				A187B8FC1D502BC600A91A16 /* PowerDetailsView.m */,
+				A19CC08A1D599A4A000ED568 /* PowerDetailsCell.h */,
+				A19CC08B1D599A4A000ED568 /* PowerDetailsCell.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -3849,6 +3869,7 @@
 				A16856AC1CE9CBA5006A0887 /* ProDetailHeadFootView.m in Sources */,
 				A1AEC97C1D3F7D870082813F /* NewsTableViewCell.m in Sources */,
 				A187B9001D50336500A91A16 /* BaseCommitView.m in Sources */,
+				A19CC0921D59C181000ED568 /* ApplicationGuaranteeView.m in Sources */,
 				A159F9451D0BEE5E00A6A024 /* StandardPaths.m in Sources */,
 				A187B9121D508BAA00A91A16 /* HousePropertyListViewController.m in Sources */,
 				A1B028A71D17766900F32A09 /* UploadViewController.m in Sources */,
@@ -3909,6 +3930,7 @@
 				A1A0C8C71D4B061B00BC63C6 /* AssessCell.m in Sources */,
 				A1A34C371CE32C8000AD454A /* RegisterViewController.m in Sources */,
 				A16175531D1291D5001BB200 /* TokenModel.m in Sources */,
+				A19CC08C1D599A4A000ED568 /* PowerDetailsCell.m in Sources */,
 				A1A017501C5B696A00027134 /* MJFoundation.m in Sources */,
 				A196CDFE1CFC06DA00AC6C87 /* TextFieldCell.m in Sources */,
 				A1A017541C5B696A00027134 /* NSObject+MJClass.m in Sources */,
@@ -3952,6 +3974,7 @@
 				A1A0C8C41D4B046B00BC63C6 /* HouseAssessViewController.m in Sources */,
 				A16175561D12A1CF001BB200 /* LoginTableView.m in Sources */,
 				A1B028EE1D1794DC00F32A09 /* UIButton+WebCache.m in Sources */,
+				A19CC0951D59E049000ED568 /* ApplicationGuaranteeSecondView.m in Sources */,
 				A19F88461D517ADE00D4EC92 /* HouseCopyViewController.m in Sources */,
 				A17964D51CD2EAB100B6AD47 /* AuthenBaseView.m in Sources */,
 				A1FB26571CF2B41B00B66608 /* ReportSuccessCell.m in Sources */,
@@ -4021,6 +4044,7 @@
 				A19B8E221CCF42E300F8EBF2 /* ALView+PureLayout.m in Sources */,
 				A1B028F11D1794DC00F32A09 /* UIImageView+HighlightedWebCache.m in Sources */,
 				A10D7B811CEB083300422D7D /* ReportCollectViewController.m in Sources */,
+				A19CC08F1D59B9F2000ED568 /* ApplicationGuaranteeFirstView.m in Sources */,
 				A1B6FD5C1D4F35240059690B /* PowerProtectListViewController.m in Sources */,
 				A1B028F01D1794DC00F32A09 /* UIImage+MultiFormat.m in Sources */,
 				A19D296D1CD208FB00DAAEA7 /* CompleteViewController.m in Sources */,

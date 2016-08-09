@@ -96,7 +96,7 @@
     if (!_sendButton) {
         _sendButton = [UIButton newAutoLayoutView];
         [_sendButton setTitle:@"发出的评价" forState:0];
-        [_sendButton setTitleColor:[UIColor blackColor] forState:0];
+        [_sendButton setTitleColor:kBlackColor forState:0];
         _sendButton.titleLabel.font = kBigFont;
         
         QDFWeakSelf;

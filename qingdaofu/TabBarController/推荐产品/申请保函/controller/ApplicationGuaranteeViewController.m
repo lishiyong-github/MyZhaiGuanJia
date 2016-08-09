@@ -10,12 +10,19 @@
 #import "ApplicationSuccessViewController.h"
 #import "ApplicationCourtViewController.h"
 
+#import "ApplicationGuaranteeView.h"
+#import "ApplicationGuaranteeFirstView.h"
 #import "BaseCommitButton.h"
 
 #import "AgentCell.h"
 #import "MineUserCell.h"
 
+#import "ApplicationGuaranteeFirstView.h"  //基本信息
+
 @interface ApplicationGuaranteeViewController ()<UITableViewDelegate,UITableViewDataSource,UIPickerViewDelegate,UIPickerViewDataSource>
+
+@property (nonatomic,strong) ApplicationGuaranteeView *applicationTopView;
+@property (nonatomic,strong) ApplicationGuaranteeFirstView *guaranteeFirstView;
 
 @property (nonatomic,strong) UITableView *applicationTableView;
 @property (nonatomic,strong) BaseCommitButton *applicationFooterButton;
@@ -43,9 +50,12 @@
     
     _districtStr = @"请选择";
     
-    [self.view addSubview:self.applicationTableView];
-    [self.view addSubview:self.pickerChooseView];
-    [self.pickerChooseView setHidden:YES];
+    [self.view addSubview:self.applicationTopView];
+    [self.view addSubview:self.guaranteeFirstView];
+    
+//    [self.view addSubview:self.applicationTableView];
+//    [self.view addSubview:self.pickerChooseView];
+//    [self.pickerChooseView setHidden:YES];
     
     [self.view setNeedsUpdateConstraints];
 }
@@ -54,15 +64,64 @@
 {
     if (!self.didSetupConstraints) {
         
-        [self.applicationTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+        [self.applicationTopView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
+        [self.applicationTopView autoSetDimension:ALDimensionHeight toSize:kTabBarHeight];
         
-        [self.pickerChooseView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [self.pickerChooseView autoSetDimension:ALDimensionHeight toSize:200];
+        [self.guaranteeFirstView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+        [self.guaranteeFirstView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.applicationTopView];
+        
+        
+//        [self.applicationTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+        
+//        [self.pickerChooseView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+//        [self.pickerChooseView autoSetDimension:ALDimensionHeight toSize:200];
         
         self.didSetupConstraints = YES;
     }
     [super updateViewConstraints];
 }
+
+- (ApplicationGuaranteeView *)applicationTopView
+{
+    if (!_applicationTopView) {
+        _applicationTopView = [ApplicationGuaranteeView newAutoLayoutView];
+        [_applicationTopView.firstButton setTitle:@"基本信息" forState:0];
+        [_applicationTopView.secondButton setTitle:@"完善资料" forState:0];
+        [_applicationTopView.thirdButton setTitle:@"完成" forState:0];
+    }
+    return _applicationTopView;
+}
+
+- (ApplicationGuaranteeFirstView *)guaranteeFirstView
+{
+    if (!_guaranteeFirstView) {
+        _guaranteeFirstView = [ApplicationGuaranteeFirstView newAutoLayoutView];
+        [_guaranteeFirstView setDidSelectedRow:^(NSInteger row) {
+            switch (row) {
+                case 0:{//选择法院
+                    
+                }
+                    break;
+                case 1:{//案件类型
+                    
+                }
+                    break;
+                case 7:{//收货地址
+                    
+                }
+                    break;
+                case 10:{//下一步
+                    
+                }
+                    break;
+                default:
+                    break;
+            }
+        }];
+    }
+    return _guaranteeFirstView;
+}
+
 
 - (UITableView *)applicationTableView
 {

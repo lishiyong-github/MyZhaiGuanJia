@@ -31,7 +31,7 @@
     [super viewDidLoad];
     
     if ([self.successType integerValue] < 3) {
-        self.title = @"提交成功";
+        self.title = @"申请成功";
     }else{
         self.title = @"支付成功";
     }
@@ -117,7 +117,7 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     if ([self.successType integerValue] < 3) {
-        cell.appLabel1.text = @"提交成功";
+        cell.appLabel1.text = @"申请成功";
     }else{
         cell.appLabel1.text = @"支付成功";
     }

@@ -8,12 +8,16 @@
 
 #import "PowerProtectPictureViewController.h"
 
+#import "BaseCommitView.h"
+
 #import "UIViewController+MutipleImageChoice.h"
 #import "TakePictureCell.h"
+#import "MineUserCell.h"
 
 @interface PowerProtectPictureViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic,strong) UITableView *powerPictureTableView;
+@property (nonatomic,strong) BaseCommitView *powerPictureButton;
 @property (nonatomic,assign) BOOL didSetupConstraints;
 
 @end
@@ -22,13 +26,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = self.navTitleString;
+    self.title = @"完善资料";
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"保存" style:UIBarButtonItemStylePlain target:self action:@selector(sddd)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"查看示例" style:UIBarButtonItemStylePlain target:self action:@selector(sddd)];
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kBlueColor} forState:0];
     
     [self.view addSubview:self.powerPictureTableView];
+    [self.view addSubview:self.powerPictureButton];
     
     [self.view setNeedsUpdateConstraints];
 }
@@ -42,7 +47,12 @@
 {
     if (!self.didSetupConstraints) {
         
-        [self.powerPictureTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+        [self.powerPictureTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
+        [self.powerPictureTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.powerPictureButton];
+        
+        [self.powerPictureButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+        [self.powerPictureButton autoSetDimension:ALDimensionHeight toSize:kCellHeight1];
+        
         
         self.didSetupConstraints = YES;
     }
@@ -61,24 +71,55 @@
     return _powerPictureTableView;
 }
 
+- (BaseCommitView *)powerPictureButton
+{
+    if (!_powerPictureButton) {
+        _powerPictureButton = [BaseCommitView newAutoLayoutView];
+        [_powerPictureButton.button setTitle:@"保存" forState:0];
+    }
+    return _powerPictureButton;
+}
+
 #pragma mark - delegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    return 2;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return 4;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return kScreenHeight-kNavHeight;
+    if (indexPath.row == 1) {
+        return 50+kBigPadding*2;
+    }
+    return kCellHeight;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *identifier = @"upImage";
+    static NSString *identifier;
+    
+    if (indexPath.row == 0) {
+        identifier = @"upImage0";
+        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        
+        if (!cell) {
+            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        [cell.userActionButton setHidden:YES];
+        
+        NSArray *upArray = @[@"起诉书",@"财产保全申请书",@"相关证据材料",@"案件受理通知书"];
+        [cell.userNameButton setTitle:upArray[indexPath.section] forState:0];
+        
+        return cell;
+    }
+    
+    identifier = @"upImage1";
     TakePictureCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     
     if (!cell) {
@@ -87,42 +128,6 @@
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    /*
-    if (self.typeUpInt == 0) {//公证书
-        self.allImageArray = self.filesModel.imgnotarization;
-    }else if (self.typeUpInt == 1){
-        self.allImageArray = self.filesModel.imgcontract;
-    }else if (self.typeUpInt == 2){
-        self.allImageArray = self.filesModel.imgcreditor;
-    }else if (self.typeUpInt == 3){
-        self.allImageArray = self.filesModel.imgpick;
-    }else if (self.typeUpInt == 4){
-        self.allImageArray = self.filesModel.imgshouju;
-    }else{
-        self.allImageArray = self.filesModel.imgbenjin;
-    }
-    self.allImageModel  = self.filesModel;
-    
-     
-    if ([self.tagString integerValue] == 1) {//首次编辑
-        cell.collectionDataList = [NSMutableArray arrayWithArray:self.allImageArray];
-        
-    }else{//再次编辑
-        if (self.allImageArray.count == 0) {
-            cell.collectionDataList = [NSMutableArray arrayWithArray:@[]];
-        }else if ((self.allImageArray.count == 1) && [self.allImageArray[0] isEqualToString:@""]){
-            cell.collectionDataList = [NSMutableArray arrayWithArray:@[]];
-        }else{
-            for (int i=0; i<self.allImageArray.count; i++) {
-                NSString *huhStr = self.allImageArray[i];
-                NSString *subStr = [huhStr substringWithRange:NSMakeRange(1, huhStr.length-2)];
-                NSString *urlStr = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subStr];
-                NSURL *Url = [NSURL URLWithString:urlStr];
-                [cell.collectionDataList addObject:Url];
-            }
-        }
-    }
-    */
     cell.collectionDataList = [NSMutableArray arrayWithObject:@"upload_pictures"];
     [cell reloadData];
     
@@ -163,6 +168,38 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return kBigPadding;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    if (section == 3) {
+        return 40;
+    }
+    return 0.1f;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    if (section == 3) {
+        UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 40)];
+        footerView.backgroundColor = kBackColor;
+        
+        UIButton *footerButton = [UIButton newAutoLayoutView];
+        [footerButton setImage:[UIImage imageNamed:@"right"] forState:0];
+        [footerButton setTitle:@"  请确保提供的材料真实性和完整性，同时我们会保护您的隐私" forState:0];
+        [footerButton setTitleColor:kLightGrayColor forState:0];
+        footerButton.titleLabel.font = kTabBarFont;
+        [footerView addSubview:footerButton];
+        
+        [footerButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
+        [footerButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
+        [footerButton autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
+        
+        
+        return footerView;
+    }
+    
+    return nil;
 }
 
 - (void)didReceiveMemoryWarning {

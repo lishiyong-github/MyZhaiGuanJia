@@ -12,12 +12,14 @@
 #import "PowerDetailsViewController.h"  //保权详情
 
 #import "BaseCommitView.h"
+#import "EvaTopSwitchView.h"
 
 #import "MineUserCell.h"
-#import "PowerCell.h"
+#import "MessageCell.h"
 
 @interface PowerProtectListViewController ()<UITableViewDelegate,UITableViewDataSource>
 
+@property (nonatomic,strong) EvaTopSwitchView *powerSwitchView;
 @property (nonatomic,strong) UITableView *powerListTableView;
 @property (nonatomic,strong) BaseCommitView *powerListCommitView;
 @property (nonatomic,assign) BOOL didSetupConstraints;
@@ -29,26 +31,25 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"我的保全";
-    
     self.navigationItem.leftBarButtonItem = self.leftItem;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"refresh"] style:UIBarButtonItemStylePlain target:self action:@selector(refreshLists)];
     
+    [self.view addSubview:self.powerSwitchView];
     [self.view addSubview:self.powerListTableView];
     [self.view addSubview:self.powerListCommitView];
     
     [self.view setNeedsUpdateConstraints];
 }
 
-- (void)refreshLists
-{
-    
-}
-
 - (void)updateViewConstraints
 {
     if (!self.didSetupConstraints) {
         
-        [self.powerListTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
+        [self.powerSwitchView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
+        [self.powerSwitchView autoSetDimension:ALDimensionHeight toSize:50];
+        
+        [self.powerListTableView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.powerSwitchView];
+        [self.powerListTableView autoPinEdgeToSuperviewEdge:ALEdgeLeft];
+        [self.powerListTableView autoPinEdgeToSuperviewEdge:ALEdgeRight];
         [self.powerListTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.powerListCommitView];
         
         [self.powerListCommitView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
@@ -57,6 +58,34 @@
         self.didSetupConstraints = YES;
     }
     [super updateViewConstraints];
+}
+
+- (EvaTopSwitchView *)powerSwitchView
+{
+    if (!_powerSwitchView) {
+        _powerSwitchView = [EvaTopSwitchView newAutoLayoutView];
+        [_powerSwitchView.shortLineLabel setHidden:YES];
+        _powerSwitchView.leftBlueConstraints.constant = 0;
+        _powerSwitchView.widthBlueConstraints.constant = kScreenWidth/2;
+        _powerSwitchView.backgroundColor = kNavColor;
+        
+        [_powerSwitchView.getbutton setTitle:@"未完成的订单" forState:0];
+        [_powerSwitchView.sendButton setTitle:@"已完成的订单" forState:0];
+        
+        QDFWeakSelf;
+        [_powerSwitchView setDidSelectedButton:^(NSInteger tag) {
+            if (tag == 33) {
+                weakself.powerSwitchView.leftBlueConstraints.constant = 0;
+                [weakself.powerSwitchView.getbutton setTitleColor:kBlueColor forState:0];
+                [weakself.powerSwitchView.sendButton setTitleColor:kBlackColor forState:0];
+            }else if (tag == 34){
+                weakself.powerSwitchView.leftBlueConstraints.constant = kScreenWidth/2;
+                [weakself.powerSwitchView.sendButton setTitleColor:kBlueColor forState:0];
+                [weakself.powerSwitchView.getbutton setTitleColor:kBlackColor forState:0];
+            }
+        }];
+    }
+    return _powerSwitchView;
 }
 
 - (UITableView *)powerListTableView
@@ -101,13 +130,13 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 4;
+    return 6;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 1) {
-        return 60;
+        return 65;
     }
     return kCellHeight;
 }
@@ -134,12 +163,26 @@
         return cell;
     }else if(indexPath.row == 1){
         identifier = @"listas1";
-        PowerCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        MessageCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         if (!cell) {
-            cell = [[PowerCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            cell = [[MessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        [cell.countLabel setHidden:YES];
+        [cell.actButton setHidden:YES];
+        cell.userLabel.textColor = kGrayColor;
+        cell.newsLabel.textColor = kGrayColor;
+        cell.userLabel.font = kFirstFont;
+        cell.newsLabel.font = kFirstFont;
+
+        cell.userLabel.text = [NSString stringWithFormat:@"金额：%@万",@"1000"];
+        cell.timeLabel.text = @"2016-09-09 12:12";
+        cell.newsLabel.text = [NSString stringWithFormat:@"法院：%@",@"上海市高级人民法院"];
         
+        return cell;
+        
+        
+        /*
         NSString *moneyStr1 = [NSString stringWithFormat:@"保全金额：%@",@"1000万"];
         NSString *moneyStr2 = @"2014-09-09 12:12";
         NSString *moneyStr = [NSString stringWithFormat:@"%@\n%@",moneyStr1,moneyStr2];
@@ -153,7 +196,9 @@
         [cell.powerMoneyLabel setAttributedText:attributeMoneyStr];
         cell.powerStateLabel.text = @"审核中";//审核中－黑色；审核失败－红色；审核成功蓝色
         
+        
         return cell;
+         */
     }
     /*
     else{
