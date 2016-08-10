@@ -11,13 +11,16 @@
 #import "ForgetPassViewController.h"  //忘记密码
 
 #import "LoginCell.h"
+#import "EvaTopSwitchView.h"
 #import "BaseCommitButton.h"
 @interface LoginViewController ()<UITableViewDataSource,UITableViewDelegate>
 
+@property (nonatomic,strong) EvaTopSwitchView *loginSwitchView;
 @property (nonatomic,strong) UITableView *loginTableView;
 @property (nonatomic,assign) BOOL didSetupConstraints;
 
 @property (nonatomic,strong) NSMutableDictionary *loginDictionary;
+@property (nonatomic,strong) NSString *loginType;
 @end
 
 @implementation LoginViewController
@@ -25,24 +28,95 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @"登录";
-    self.navigationItem.leftBarButtonItem = self.leftItem;
+    self.navigationItem.leftBarButtonItem = self.leftItemAnother;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"注册" style:UIBarButtonItemStylePlain target:self action:@selector(registerNewUser)];
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kBlueColor} forState:0];
     
     [self setupForDismissKeyboard];
     
+    self.loginType = @"2";
+    
     [self.view addSubview:self.loginTableView];
+    [self.view addSubview:self.loginSwitchView];
+    
     [self.view setNeedsUpdateConstraints];
+}
+
+- (void)back
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)updateViewConstraints
 {
     if (!self.didSetupConstraints) {
         
-        [self.loginTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+        [self.loginSwitchView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
+        [self.loginSwitchView autoSetDimension:ALDimensionHeight toSize:kTabBarHeight];
+        
+        [self.loginTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+        [self.loginTableView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.loginSwitchView];
+        
         self.didSetupConstraints = YES;
     }
     [super updateViewConstraints];
+}
+
+- (EvaTopSwitchView *)loginSwitchView
+{
+    if (!_loginSwitchView) {
+        _loginSwitchView = [EvaTopSwitchView newAutoLayoutView];
+        _loginSwitchView.backgroundColor = kNavColor;
+        [_loginSwitchView.getbutton setTitle:@"验证码登录" forState:0];
+        [_loginSwitchView.sendButton setTitle:@"账号密码登录" forState:0];
+        _loginSwitchView.leftBlueConstraints.constant = 0;
+        _loginSwitchView.widthBlueConstraints.constant = kScreenWidth/2;
+        [_loginSwitchView.shortLineLabel setHidden:YES];
+        
+        QDFWeakSelf;
+        QDFWeak(_loginSwitchView);
+        [_loginSwitchView setDidSelectedButton:^(NSInteger tag) {
+            if (tag == 33) {//验证码登录
+                weakself.loginSwitchView.leftBlueConstraints.constant = 0;
+                [weak_loginSwitchView.getbutton setTitleColor:kBlueColor forState:0];
+                [weak_loginSwitchView.sendButton setTitleColor:kBlackColor forState:0];
+                
+                LoginCell *cell = [weakself.loginTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+                [cell.loginSwitch setHidden:YES];
+                [cell.getCodebutton setHidden:NO];
+                [cell.getCodebutton setBackgroundColor:kGrayColor];
+                [cell.getCodebutton setTitleColor:kNavColor forState:0];
+                [cell.getCodebutton setTitle:@"获取验证码" forState:0];
+                
+                //row==1
+                LoginCell *cell1 = [weakself.loginTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+                [cell1.getCodebutton setHidden:YES];
+                [cell1.loginSwitch setHidden:NO];
+                cell1.loginTextField.placeholder = @"输入验证码";
+                
+                weakself.loginType = @"2";
+                
+            }else if (tag == 34){//账号密码登录
+                weakself.loginSwitchView.leftBlueConstraints.constant = kScreenWidth/2;
+                [weak_loginSwitchView.sendButton setTitleColor:kBlueColor forState:0];
+                [weak_loginSwitchView.getbutton setTitleColor:kBlackColor forState:0];
+                
+                //row==0
+                LoginCell *cell = [weakself.loginTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+                [cell.getCodebutton setHidden:YES];
+                [cell.loginSwitch setHidden:YES];
+                
+                //row==1
+                LoginCell *cell1 = [weakself.loginTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+                [cell1.getCodebutton setHidden:YES];
+                [cell1.loginSwitch setHidden:YES];
+                cell1.loginTextField.placeholder = @"输入密码";
+                
+                weakself.loginType = @"1";
+            }
+        }];
+    }
+    return _loginSwitchView;
 }
 
 - (UITableView *)loginTableView
@@ -88,21 +162,28 @@
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
-    NSArray *array1 = @[@"输入您的手机号码    ",@"输入您的密码        "];
-    NSMutableAttributedString *attriStr = [[NSMutableAttributedString alloc] initWithString:array1[indexPath.row]];
-    [attriStr addAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(0, attriStr.length)];
-    [cell.loginTextField setAttributedPlaceholder:attriStr];
+    NSArray *array1 = @[@"输入您的手机号码    ",@"输入验证码        "];
+    cell.loginTextField.placeholder = array1[indexPath.row];
+//    NSMutableAttributedString *attriStr = [[NSMutableAttributedString alloc] initWithString:array1[indexPath.row]];
+//    [attriStr addAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(0, attriStr.length)];
+//    [cell.loginTextField setAttributedPlaceholder:attriStr];
     
     if (indexPath.row == 0) {//手机号
+        [cell.loginSwitch setHidden:YES];
+        [cell.getCodebutton setHidden:NO];
+        [cell.getCodebutton setBackgroundColor:kGrayColor];
+        [cell.getCodebutton setTitleColor:kNavColor forState:0];
+        [cell.getCodebutton setTitle:@"获取验证码" forState:0];
+        [cell.getCodebutton addTarget:self action:@selector(getCodess:) forControlEvents:UIControlEventTouchUpInside];
+        
         cell.loginTextField.keyboardType = UIKeyboardTypeNumberPad;
         [cell setFinishEditing:^(NSString *text) {
             [self.loginDictionary setValue:text forKey:@"mobile"];
         }];
     }else if (indexPath.row == 1) {//密码
-        cell.loginTextField.secureTextEntry = YES;
-        [cell.loginButton setTitle:@"显示密码" forState:0];
-        [cell.loginButton setTitle:@"隐藏密码" forState:UIControlStateSelected];
         [cell.getCodebutton setHidden:YES];
+        [cell.loginSwitch setHidden:NO];
+        cell.loginTextField.secureTextEntry = YES;
         
         [cell setFinishEditing:^(NSString *text) {
             [self.loginDictionary setValue:text forKey:@"password"];
@@ -150,6 +231,40 @@
 }
 
 #pragma mark - method
+- (void)getCodess:(JKCountDownButton *)sender
+{
+    [self.view endEditing:YES];
+    NSString *codeString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kLoginGetCodeString];
+    self.loginDictionary[@"mobile"] = self.loginDictionary[@"mobile"]?self.loginDictionary[@"mobile"]:@"";
+    
+    NSDictionary *params = self.loginDictionary;
+//  @{@"mobile" : self.loginDictionary[@"mobile"]};
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:codeString params:params successBlock:^(id responseObject){//成功
+        
+        BaseModel *codeModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:codeModel.msg];
+        if ([codeModel.code isEqualToString:@"0000"]) {
+            [sender startWithSecond:60];
+            [sender didChange:^NSString *(JKCountDownButton *countDownButton, int second) {
+                [sender setBackgroundColor:kLightGrayColor];
+                sender.enabled = NO;
+                NSString *title = [NSString stringWithFormat:@"剩余(%d秒)",second];
+                return title;
+            }];
+            
+            [sender didFinished:^NSString *(JKCountDownButton *countDownButton, int second) {
+                sender.backgroundColor = kBlueColor;
+                sender.enabled = YES;
+                return @"获取验证码";
+            }];
+        }
+    } andFailBlock:^(NSError *error){
+        
+    }];
+}
+
 - (void)registerNewUser
 {
     RegisterViewController *registerVC = [[RegisterViewController alloc] init];
@@ -165,7 +280,8 @@
     NSString *password = self.loginDictionary[@"password"]?self.loginDictionary[@"password"]:@"";
     
     NSDictionary *params = @{@"mobile" : mobile,
-                             @"password" : password
+                             @"password" : password,
+                             @"logintype" : self.loginType
                              };
     
     //18221496879 123456 (xiaolou)
@@ -182,7 +298,9 @@
             [[NSUserDefaults standardUserDefaults] setObject:loginModel.token forKey:@"token"];
             [[NSUserDefaults standardUserDefaults] setObject:weakself.loginDictionary[@"mobile"] forKey:@"mobile"];
             [[NSUserDefaults standardUserDefaults] synchronize];
-            [weakself.navigationController popViewControllerAnimated:YES];
+//            [weakself.navigationController popViewControllerAnimated:YES];
+            
+            [weakself back];
         }
         
     } andFailBlock:^(NSError *error){

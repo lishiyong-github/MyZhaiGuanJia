@@ -242,7 +242,8 @@
             [weakself showHint:model.msg];
             LoginViewController *loginVC = [[LoginViewController alloc] init];
             loginVC.hidesBottomBarWhenPushed = YES;
-            [weakself.navigationController pushViewController:loginVC animated:YES];
+            UINavigationController *uiui = [[UINavigationController alloc] initWithRootViewController:loginVC];
+            [weakself presentViewController:uiui animated:YES completion:nil];
         }
     }];
 }

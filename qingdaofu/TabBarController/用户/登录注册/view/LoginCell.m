@@ -15,12 +15,12 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         [self.contentView addSubview:self.loginTextField];
-        [self.contentView addSubview:self.loginButton];
         [self.contentView addSubview:self.getCodebutton];
+        [self.contentView addSubview:self.loginSwitch];
         
         self.topConstraint = [self.loginTextField autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:13];
         
-        [self.contentView setNeedsUpdateConstraints];
+        [self setNeedsUpdateConstraints];
     }
     return self;
 }
@@ -33,12 +33,14 @@
         [self.loginTextField autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
         [self.loginTextField autoSetDimension:ALDimensionWidth toSize:150];
         
-        [self.loginButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
-        [self.loginButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.loginTextField];
-        
         [self.getCodebutton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.getCodebutton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.loginTextField];
         [self.getCodebutton autoSetDimension:ALDimensionWidth toSize:80];
+        
+        [self.loginSwitch autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
+        [self.loginSwitch autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.loginTextField];
+//        [self.loginSwitch autoSetDimension:ALDimensionHeight toSize:20];
+//        [self.loginSwitch autoSetDimensionsToSize:CGSizeMake(100, 20)];
         
         self.didSetupConstraints = YES;
     }
@@ -56,26 +58,6 @@
     return _loginTextField;
 }
 
-- (UIButton *)loginButton
-{
-    if (!_loginButton) {
-        _loginButton = [UIButton newAutoLayoutView];
-        _loginButton.titleLabel.font = kSecondFont;
-        [_loginButton setTitleColor:kBlueColor forState:0];
-        
-        QDFWeakSelf;
-        [_loginButton addAction:^(UIButton *btn) {
-            btn.selected = !btn.selected;
-            if (btn.selected) {
-                weakself.loginTextField.secureTextEntry = NO;
-            }else{
-                weakself.loginTextField.secureTextEntry = YES;
-            }
-        }];
-    }
-    return _loginButton;
-}
-
 - (JKCountDownButton *)getCodebutton
 {
     if (!_getCodebutton) {
@@ -83,6 +65,19 @@
         _getCodebutton.titleLabel.font = kSecondFont;
     }
     return _getCodebutton;
+}
+
+- (UISwitch *)loginSwitch
+{
+    if (!_loginSwitch) {//79*27
+        _loginSwitch = [UISwitch newAutoLayoutView];
+        _loginSwitch.onTintColor = kBlueColor;
+        _loginSwitch.tintColor = kSeparateColor;
+//        _loginSwitch.onImage = [UIImage imageNamed:@"right"];
+//        _loginSwitch.offImage = [UIImage imageNamed:@"list_more"];
+//        _loginSwitch.transform =  CGAffineTransformMakeScale(1, 0.75);
+    }
+    return _loginSwitch;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField

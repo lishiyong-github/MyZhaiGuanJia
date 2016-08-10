@@ -159,7 +159,15 @@
                     }else{//去登录
                         LoginViewController *loginVC = [[LoginViewController alloc] init];
                         loginVC.hidesBottomBarWhenPushed = YES;
-                        [weakself.navigationController pushViewController:loginVC animated:YES];
+                        
+                        UINavigationController *msss = [[UINavigationController alloc] initWithRootViewController:loginVC];
+                        [weakself presentViewController:msss animated:YES completion:nil];
+                        
+                        
+//                        UINavigationController *loginNavs = [[UINavigationController alloc] initWithRootViewController:loginNavs];
+                        
+                        
+//                        [weakself.navigationController pushViewController:loginVC animated:YES];
                     }
                 }];
             }else{
@@ -206,7 +214,8 @@
                         [weakself showHint:tokenModel.msg];
                         LoginViewController *loginVC = [[LoginViewController alloc] init];
                         loginVC.hidesBottomBarWhenPushed = YES;
-                        [weakself.navigationController pushViewController:loginVC animated:YES];
+                        UINavigationController *uiui = [[UINavigationController alloc] initWithRootViewController:loginVC];
+                        [weakself presentViewController:uiui animated:YES completion:nil];
                     }
                 }];
             }

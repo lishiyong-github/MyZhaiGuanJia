@@ -14,7 +14,7 @@
 
 @interface ApplicationGuaranteeFirstView ()<UITableViewDelegate,UITableViewDataSource>
 
-@property (nonatomic,strong) UITableView *tableViewa;
+//@property (nonatomic,strong) UITableView *tableViewa;
 @property (nonatomic,strong) BaseCommitView *nextButton;
 
 @end
@@ -130,7 +130,7 @@
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             
-            NSArray *arr = @[@[@"案号",@"联系方式",@"保函金额"],@[@"案号形式",@"请输入手机号码",@"请输入保函金额"]];
+            NSArray *arr = @[@[@"案        号",@"联系方式",@"保函金额"],@[@"案号形式",@"请输入手机号码",@"请输入保函金额"]];
             cell.agentLabel.text = arr[0][indexPath.row-2];
             cell.agentTextField.placeholder = arr[1][indexPath.row-2];
 
@@ -156,40 +156,21 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.label.text = @"取函方式";
-        /*
-        [self.powerDic setObject:@"1" forKey:@"address"]; //默认选择快递
         
         QDFWeakSelf;
-        QDFWeak(cell);
         [cell setDidSelectedSeg:^(NSInteger segTag) {
             if (segTag == 0) {//快递
-                AgentCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
-                cell.agentTextField.userInteractionEnabled = NO;
-                cell.agentButton.userInteractionEnabled = NO;
-                [self.powerDic setObject:@"1" forKey:@"address"]; //默认选择快递
                 
-                cell.agentLabel.text = @"收货地址";
-                cell.agentTextField.placeholder = @"请选择";
-                cell.agentTextField.text = @"";
-                [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+                if (weakself.didSelectedRow) {
+                    weakself.didSelectedRow(11);
+                }
             }else if (segTag == 1){//自取
-                if (weakself.powerDic[@"court"]) {
-                    AgentCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
-                    cell.agentTextField.userInteractionEnabled = NO;
-                    cell.agentButton.userInteractionEnabled = NO;
-                    [self.powerDic setObject:@"2" forKey:@"address"]; //默认选择快递
-                    
-                    cell.agentLabel.text = @"取函地址";
-                    cell.agentTextField.text = weakself.powerDic[@"court"];
-                    [cell.agentButton setImage:[UIImage imageNamed:@""] forState:0];
-                    
-                }else{
-                    weakcell.segment.selectedSegmentIndex = 0;
-                    [weakself showHint:@"请先选择法院"];
+                
+                if (weakself.didSelectedRow) {
+                    weakself.didSelectedRow(12);
                 }
             }
         }];
-        */
         
         return cell;
     }else{

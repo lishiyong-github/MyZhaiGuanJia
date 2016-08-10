@@ -12,8 +12,8 @@
 @interface LoginCell : UITableViewCell<UITextFieldDelegate>
 
 @property (nonatomic,strong) UITextField *loginTextField;
-@property (nonatomic,strong) UIButton *loginButton;
 @property (nonatomic,strong) JKCountDownButton *getCodebutton;
+@property (nonatomic,strong) UISwitch *loginSwitch;
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) NSLayoutConstraint *topConstraint;

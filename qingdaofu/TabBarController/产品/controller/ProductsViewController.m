@@ -491,7 +491,8 @@
                 [weakself showHint:model.msg];
                 LoginViewController *loginVC = [[LoginViewController alloc] init];
                 loginVC.hidesBottomBarWhenPushed = YES;
-                [weakself.navigationController pushViewController:loginVC animated:YES];
+                UINavigationController *uiui = [[UINavigationController alloc] initWithRootViewController:loginVC];
+                [weakself presentViewController:uiui animated:YES completion:nil];
             }else if([model.code isEqualToString:@"3006"]){//已登录，未认证
                 [weakself showHint:model.msg];
                 AuthentyViewController *authentyVC = [[AuthentyViewController alloc] init];

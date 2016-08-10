@@ -23,6 +23,8 @@
         [self addSubview:self.thirdButton];
         [self addSubview:self.blueLabel];
         
+        self.leftBlueConstraints = [self.blueLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:0];
+        
         [self setNeedsUpdateConstraints];
     }
     return self;
@@ -48,7 +50,6 @@
         [self.thirdButton autoPinEdgeToSuperviewEdge:ALEdgeBottom];
         [self.thirdButton autoPinEdgeToSuperviewEdge:ALEdgeRight];
         
-        [self.blueLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:0];
         [self.blueLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom];
         [self.blueLabel autoSetDimension:ALDimensionWidth toSize:kScreenWidth/3];
         [self.blueLabel autoSetDimension:ALDimensionHeight toSize:2];
@@ -72,7 +73,7 @@
 {
     if (!_secondButton) {
         _secondButton = [UIButton newAutoLayoutView];
-        [_secondButton setTitleColor:kLightGrayColor forState:0];
+        [_secondButton setTitleColor:kGrayColor forState:0];
         _secondButton.titleLabel.font = kFirstFont;
     }
     return _secondButton;
@@ -82,7 +83,7 @@
 {
     if (!_thirdButton) {
         _thirdButton = [UIButton newAutoLayoutView];
-        [_thirdButton setTitleColor:kLightGrayColor forState:0];
+        [_thirdButton setTitleColor:kGrayColor forState:0];
         _thirdButton.titleLabel.font = kFirstFont;
     }
     return _thirdButton;

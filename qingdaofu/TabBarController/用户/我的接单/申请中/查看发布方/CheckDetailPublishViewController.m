@@ -143,7 +143,9 @@
                     }else{
                         [weakself showHint:tModel.msg];
                         LoginViewController *loginVC = [[LoginViewController alloc] init];
-                        [weakself.navigationController pushViewController:loginVC animated:YES];
+                        
+                        UINavigationController *gygy = [[UINavigationController alloc] initWithRootViewController:loginVC];
+                        [weakself presentViewController:gygy animated:YES completion:nil];
                     }
                 }];
             }];

@@ -46,7 +46,7 @@
         [self.appLabel2 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.appLine withOffset:kBigPadding];
         
         [self.appButton1 autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
-        [self.appButton1 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.appLabel2 withOffset:20];
+        [self.appButton1 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.appLabel2 withOffset:kBigPadding];
         [self.appButton1 autoSetDimension:ALDimensionWidth toSize:(kScreenWidth-kBigPadding*4)/2];
         [self.appButton1 autoSetDimension:ALDimensionHeight toSize:32];
         
@@ -94,6 +94,8 @@
     if (!_appLabel2) {
         _appLabel2 = [UILabel newAutoLayoutView];
         _appLabel2.numberOfLines = 0;
+        _appLabel2.font = kSecondFont;
+        [_appLabel2 setTextColor:kGrayColor];
     }
     return _appLabel2;
 }

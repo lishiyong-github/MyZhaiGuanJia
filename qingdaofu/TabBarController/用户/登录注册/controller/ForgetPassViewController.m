@@ -97,13 +97,13 @@
     if (indexPath.row == 0) {
         cell.loginTextField.keyboardType = UIKeyboardTypeNumberPad;
         [cell.getCodebutton setHidden:YES];
-        [cell.loginButton setHidden:YES];
+        [cell.loginSwitch setHidden:YES];
         [cell setFinishEditing:^(NSString *text) {
             [weakself.forgetDictionay setValue:text forKey:@"mobile"];
         }];
     }else if (indexPath.row == 1){
         cell.loginTextField.keyboardType = UIKeyboardTypeNumberPad;
-        [cell.loginButton setHidden:YES];
+        [cell.loginSwitch setHidden:YES];
         [cell.getCodebutton setBackgroundColor:kBlueColor];
         [cell.getCodebutton setTitleColor:kNavColor forState:0];
         [cell.getCodebutton setTitle:@"获取验证码" forState:0];
@@ -114,8 +114,8 @@
     }else{
         cell.loginTextField.secureTextEntry = YES;
         [cell.getCodebutton setHidden:YES];
-        [cell.loginButton setTitle:@"显示密码" forState:0];
-        [cell.loginButton setTitle:@"隐藏密码" forState:UIControlStateSelected];
+//        [cell.loginSwitch setTitle:@"显示密码" forState:0];
+//        [cell.loginSwitch setTitle:@"隐藏密码" forState:UIControlStateSelected];
         [cell setFinishEditing:^(NSString *text) {
             [weakself.forgetDictionay setValue:text forKey:@"new_password"];
         }];

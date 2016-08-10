@@ -7,15 +7,20 @@
 //
 
 #import "ApplicationGuaranteeSecondView.h"
-#import "BaseCommitView.h"
+//#import "BaseCommitView.h"
+#import "BaseCommitButton.h"
 
-#import "AgentCell.h"
-#import "SuitBaseCell.h"
+//#import "AgentCell.h"
+//#import "SuitBaseCell.h"
+#import "MineUserCell.h"
+#import "TakePictureCell.h"
+
+#import "UIViewController+MutipleImageChoice.h"
 
 @interface ApplicationGuaranteeSecondView ()<UITableViewDelegate,UITableViewDataSource>
 
-@property (nonatomic,strong) UITableView *tableViewa;
-@property (nonatomic,strong) BaseCommitView *nextButton;
+@property (nonatomic,strong) UIButton *lastButton;
+@property (nonatomic,strong) UIButton *applyButton;
 
 @end
 
@@ -29,8 +34,9 @@
         self.backgroundColor = kBackColor;
         
         [self addSubview:self.tableViewa];
-        [self addSubview:self.nextButton];
-        
+        [self addSubview:self.lastButton];
+        [self addSubview:self.applyButton];
+
         [self setNeedsUpdateConstraints];
     }
     return self;
@@ -41,13 +47,17 @@
     if (!self.didSrtupConstraints) {
         
         [self.tableViewa autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
-        [self.tableViewa autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.nextButton];
+        [self.tableViewa autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.lastButton];
         
-        //        [self.tableViewa autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
-        //        [self.tableViewa autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.nextButton];
+        [self.lastButton autoPinEdgeToSuperviewEdge:ALEdgeLeft];
+        [self.lastButton autoPinEdgeToSuperviewEdge:ALEdgeBottom];
+        [self.lastButton autoSetDimension:ALDimensionHeight toSize:40];
+        [self.lastButton autoSetDimension:ALDimensionWidth toSize:kScreenWidth/2];
         
-        [self.nextButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [self.nextButton autoSetDimension:ALDimensionHeight toSize:kCellHeight1];
+        [self.applyButton autoPinEdgeToSuperviewEdge:ALEdgeRight];
+        [self.applyButton autoPinEdgeToSuperviewEdge:ALEdgeBottom];
+        [self.applyButton autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.lastButton];
+        [self.applyButton autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.lastButton];
         
         self.didSrtupConstraints = YES;
     }
@@ -66,150 +76,134 @@
     return _tableViewa;
 }
 
-- (BaseCommitView *)nextButton
+- (UIButton *)lastButton
 {
-    if (!_nextButton) {
-        _nextButton = [BaseCommitView newAutoLayoutView];
-        [_nextButton.button setTitle:@"下一步" forState:0];
+    if (!_lastButton) {
+        _lastButton = [UIButton newAutoLayoutView];
+        [_lastButton setBackgroundColor:kNavColor];
+        [_lastButton setTitle:@"上一步" forState:0];
+        [_lastButton setTitleColor:kGrayColor forState:0];
+        _lastButton.titleLabel.font = kBigFont;
+        _lastButton.layer.borderColor = kSeparateColor.CGColor;
+        _lastButton.layer.borderWidth = kLineWidth;
         
         QDFWeakSelf;
-        [_nextButton.button addAction:^(UIButton *btn) {
+        [_lastButton addAction:^(UIButton *btn) {
             if (weakself.didSelectedRow) {
-                weakself.didSelectedRow(10);
+                weakself.didSelectedRow(11);
             }
         }];
     }
-    return _nextButton;
+    return _lastButton;
 }
 
-#pragma mark - delegate datasource
+- (UIButton *)applyButton
+{
+    if (!_applyButton) {
+        _applyButton = [UIButton newAutoLayoutView];
+        [_applyButton setTitle:@"立即申请" forState:0];
+        [_applyButton setBackgroundColor:kBlueColor];
+        [_applyButton setTitleColor:kNavColor forState:0];
+        _applyButton.titleLabel.font = kBigFont;
+        
+        QDFWeakSelf;
+        [_applyButton addAction:^(UIButton *btn) {
+            if (weakself.didSelectedRow) {
+                weakself.didSelectedRow(12);
+            }
+        }];
+    }
+    return _applyButton;
+}
+
 #pragma mark -tableview delegate and datasoyrce
+#pragma mark - delegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == 0) {
-        return 5;
-    }
-    
     return 2;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return 4;
 }
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.row == 1) {
+        return 50+kBigPadding*2;
+    }
     return kCellHeight;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier;
-    if (indexPath.section == 0) {
-        if (indexPath.row < 2) {//选择法院,案件类型
-            identifier = @"application00";
-            AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-            if (!cell) {
-                cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-            }
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.agentTextField.userInteractionEnabled = NO;
-            cell.agentButton.userInteractionEnabled = NO;
-            
-            NSArray *arr = @[@"选择法院",@"案件类型"];
-            cell.agentLabel.text = arr[indexPath.row];
-            cell.agentTextField.placeholder = @"请选择";
-            [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-            
-            return cell;
-        }else{
-            identifier = @"application01";
-            AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-            if (!cell) {
-                cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-            }
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            NSArray *arr = @[@[@"案号",@"联系方式",@"保函金额"],@[@"案号形式",@"请输入手机号码",@"请输入保函金额"]];
-            cell.agentLabel.text = arr[0][indexPath.row-2];
-            cell.agentTextField.placeholder = arr[1][indexPath.row-2];
-            
-            if (indexPath.row == 2) {
-                [cell.agentButton setHidden:YES];
-            }else if (indexPath.row == 3){
-                [cell.agentButton setHidden:YES];
-            }else if(indexPath.row == 4){
-                [cell.agentButton setHidden:NO];
-                [cell.agentButton setTitle:@"万元" forState:0];
-            }
-            
-            return cell;
+    
+    if (indexPath.row == 0) {
+        identifier = @"upImage0";
+        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        
+        if (!cell) {
+            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
+        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        [cell.userActionButton setHidden:YES];
+        
+        NSArray *upArray = @[@"起诉书",@"财产保全申请书",@"相关证据材料",@"案件受理通知书"];
+        [cell.userNameButton setTitle:upArray[indexPath.section] forState:0];
+        
+        return cell;
     }
     
-    //section==1
-    if (indexPath.row == 0) {//SuitBaseCell.h
-        identifier = @"application10";
-        SuitBaseCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if (!cell) {
-            cell = [[SuitBaseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.label.text = @"取函方式";
-        /*
-         [self.powerDic setObject:@"1" forKey:@"address"]; //默认选择快递
-         
-         QDFWeakSelf;
-         QDFWeak(cell);
-         [cell setDidSelectedSeg:^(NSInteger segTag) {
-         if (segTag == 0) {//快递
-         AgentCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
-         cell.agentTextField.userInteractionEnabled = NO;
-         cell.agentButton.userInteractionEnabled = NO;
-         [self.powerDic setObject:@"1" forKey:@"address"]; //默认选择快递
-         
-         cell.agentLabel.text = @"收货地址";
-         cell.agentTextField.placeholder = @"请选择";
-         cell.agentTextField.text = @"";
-         [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-         }else if (segTag == 1){//自取
-         if (weakself.powerDic[@"court"]) {
-         AgentCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
-         cell.agentTextField.userInteractionEnabled = NO;
-         cell.agentButton.userInteractionEnabled = NO;
-         [self.powerDic setObject:@"2" forKey:@"address"]; //默认选择快递
-         
-         cell.agentLabel.text = @"取函地址";
-         cell.agentTextField.text = weakself.powerDic[@"court"];
-         [cell.agentButton setImage:[UIImage imageNamed:@""] forState:0];
-         
-         }else{
-         weakcell.segment.selectedSegmentIndex = 0;
-         [weakself showHint:@"请先选择法院"];
-         }
-         }
-         }];
-         */
-        
-        return cell;
-    }else{
-        identifier = @"application11";
-        AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if (!cell) {
-            cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.agentTextField.userInteractionEnabled = NO;
-        cell.agentButton.userInteractionEnabled = NO;
-        
-        cell.agentLabel.text = @"收货地址";
-        cell.agentTextField.placeholder = @"请选择";
-        [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-        
-        return cell;
+    identifier = @"upImage1";
+    TakePictureCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    
+    if (!cell) {
+        cell = [[TakePictureCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
-    return nil;
+    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    cell.collectionDataList = [NSMutableArray arrayWithObject:@"upload_pictures"];
+    [cell reloadData];
+    
+    QDFWeakSelf;
+    [cell setDidSelectedItem:^(NSInteger items) {
+        
+        if (weakself.didSelectedRow) {
+            weakself.didSelectedRow(indexPath.section*2+indexPath.row);
+        }
+        
+//        [weakself addImageWithMaxSelection:5 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
+//            if (images.count > 0) {
+//                weakcell.collectionDataList = [NSMutableArray arrayWithArray:images];
+//                [weakcell reloadData];
+//            }else{
+//                weakcell.collectionDataList = [NSMutableArray arrayWithObject:@"upload_pictures"];
+//                [weakcell reloadData];
+//            }
+//        }];
+    }];
+    
+    //展示图片
+    /*
+     QDFWeakSelf;
+     [cell setDidSelectedItem:^(NSInteger itemTag) {
+     
+     NSMutableArray *imgArray = [NSMutableArray array];
+     for (NSString *filePath in weakself.allImageArray) {
+     FSBasicImage *basicImage = [[FSBasicImage alloc] initWithImage:[UIImage imageWithContentsOfFile:filePath]];
+     [imgArray addObject:basicImage];
+     }
+     
+     FSBasicImageSource *photoSource = [[FSBasicImageSource alloc] initWithImages:imgArray];
+     FSImageViewerViewController *browser = [[FSImageViewerViewController alloc] initWithImageSource:photoSource];
+     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:browser];
+     [weakself presentViewController:nav animated:YES completion:nil];
+     }];
+     */
+    return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -219,52 +213,33 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (section == 1) {
-        return kBigPadding;
+    if (section == 3) {
+        return 40;
     }
     return 0.1f;
 }
 
-/*
- - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
- {
- UIView *footerView = [[UIView alloc] init];
- [footerView addSubview:self.applicationFooterButton];
- 
- [self.applicationFooterButton autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:30];
- [self.applicationFooterButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
- [self.applicationFooterButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
- [self.applicationFooterButton autoSetDimension:ALDimensionHeight toSize:40];
- 
- return footerView;
- }
- */
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    
-    if (self.didSelectedRow) {
-        self.didSelectedRow(indexPath.section * 6 + indexPath.row);
+    if (section == 3) {
+        UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 40)];
+        footerView.backgroundColor = kBackColor;
+        
+        UIButton *footerButton = [UIButton newAutoLayoutView];
+        [footerButton setImage:[UIImage imageNamed:@"right"] forState:0];
+        [footerButton setTitle:@"  请确保提供的材料真实性和完整性，同时我们会保护您的隐私" forState:0];
+        [footerButton setTitleColor:kLightGrayColor forState:0];
+        footerButton.titleLabel.font = kTabBarFont;
+        [footerView addSubview:footerButton];
+        
+        [footerButton autoPinEdgeToSuperviewEdge:ALEdgeLeft];
+        [footerButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
+        [footerButton autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
+        
+        return footerView;
     }
     
-    /*
-     if (indexPath.row == 0) {//选择区域
-     [self.pickerChooseView setHidden:NO];
-     }else if(indexPath.row == 1){//选择法院
-     MineUserCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-     if ([cell.userActionButton.titleLabel.text isEqualToString:@"请选择"]) {
-     [self showHint:@"先确定区域才能选择法院"];
-     }else{
-     ApplicationCourtViewController *applicationCourtVC = [[ApplicationCourtViewController alloc] init];
-     [self.navigationController pushViewController:applicationCourtVC animated:YES];
-     
-     [applicationCourtVC setDidSelectedRow:^(NSString *courtString) {
-     MineUserCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-     [cell.userActionButton setTitle:courtString forState:0];
-     }];
-     }
-     }
-     */
+    return nil;
 }
 
 

@@ -10,8 +10,8 @@
 
 @interface ApplicationGuaranteeSecondView : UIView
 
-
 @property (nonatomic,strong) void (^didSelectedRow)(NSInteger);
+@property (nonatomic,strong) UITableView *tableViewa;
 
 @property (nonatomic,assign) BOOL didSrtupConstraints;
 

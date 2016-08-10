@@ -1,18 +1,17 @@
 //
-//  ApplicationGuaranteeFirstView.h
+//  ApplicationGuaranteeThirdView.h
 //  qingdaofu
 //
-//  Created by zhixiang on 16/8/9.
+//  Created by zhixiang on 16/8/10.
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface ApplicationGuaranteeFirstView : UIView
+@interface ApplicationGuaranteeThirdView : UIView
 @property (nonatomic,strong) void (^didSelectedRow)(NSInteger);
 
-@property (nonatomic,strong) UITableView *tableViewa;
-
 @property (nonatomic,assign) BOOL didSrtupConstraints;
+
 
 @end

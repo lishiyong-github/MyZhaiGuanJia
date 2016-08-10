@@ -118,9 +118,13 @@
         [weakself setDidTokenValid:^(TokenModel *tokenModel) {
             if ([tokenModel.code isEqualToString:@"3001"]) {//未登录
                 [weakself showHint:tokenModel.msg];
+                
                 LoginViewController *loginVC = [[LoginViewController alloc] init];
                 loginVC.hidesBottomBarWhenPushed = YES;
-                [viewController pushViewController:loginVC animated:YES];
+                UINavigationController *loginNav = [[UINavigationController alloc] initWithRootViewController:loginVC];
+                [viewController presentViewController:loginNav animated:YES completion:nil];
+                
+//                [viewController pushViewController:loginVC animated:YES];
             }else{//已登录或未认证
                 if (row == 77) {
                     ReportSuitViewController *collectVC = [[ReportSuitViewController alloc] init];
