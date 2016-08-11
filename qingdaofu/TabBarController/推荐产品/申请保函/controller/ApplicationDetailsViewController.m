@@ -7,8 +7,6 @@
 //
 
 #import "ApplicationDetailsViewController.h"
-
-
 #import "PowerProtectViewController.h"  //申请保全
 #import "PowerProtectPictureViewController.h"
 

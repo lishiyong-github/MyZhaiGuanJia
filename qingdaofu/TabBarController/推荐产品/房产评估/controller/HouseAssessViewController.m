@@ -112,16 +112,16 @@
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {//选择区域
             identifier = @"assess00";
-            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
             if (!cell) {
-                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+                cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.userNameButton.userInteractionEnabled = NO;
-            cell.userActionButton.userInteractionEnabled = NO;
-            
-            [cell.userNameButton setTitle:@"选择区域" forState:0];
-            [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            cell.agentButton.userInteractionEnabled = NO;
+            cell.agentTextField.userInteractionEnabled = NO;
+            cell.agentLabel.text = @"选择区域";
+            cell.agentTextField.placeholder = @"请选择";
+            [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
             
             return cell;
         }
@@ -222,8 +222,8 @@
         
 //        QDFWeakSelf;
         [houseChooseVC setDidSelectedRow:^(NSString *placeString) {
-            MineUserCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-            [cell.userActionButton setTitle:placeString forState:0];
+            AgentCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+            cell.agentTextField.text = placeString;
         }];
     }
 }

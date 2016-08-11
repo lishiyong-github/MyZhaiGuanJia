@@ -91,8 +91,9 @@
                 //row==1
                 LoginCell *cell1 = [weakself.loginTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
                 [cell1.getCodebutton setHidden:YES];
-                [cell1.loginSwitch setHidden:NO];
+                [cell1.loginSwitch setHidden:YES];
                 cell1.loginTextField.placeholder = @"输入验证码";
+                cell1.loginTextField.secureTextEntry = NO;
                 
                 weakself.loginType = @"2";
                 
@@ -109,8 +110,17 @@
                 //row==1
                 LoginCell *cell1 = [weakself.loginTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
                 [cell1.getCodebutton setHidden:YES];
-                [cell1.loginSwitch setHidden:YES];
+                [cell1.loginSwitch setHidden:NO];
                 cell1.loginTextField.placeholder = @"输入密码";
+                cell1.loginTextField.secureTextEntry = YES;
+                QDFWeak(cell1);
+                [cell1 setDidEndSwitching:^(BOOL state) {
+                    if (!state) {
+                        weakcell1.loginTextField.secureTextEntry = YES;
+                    }else{
+                        weakcell1.loginTextField.secureTextEntry = NO;
+                    }
+                }];
                 
                 weakself.loginType = @"1";
             }
@@ -180,10 +190,10 @@
         [cell setFinishEditing:^(NSString *text) {
             [self.loginDictionary setValue:text forKey:@"mobile"];
         }];
-    }else if (indexPath.row == 1) {//密码
+    }else if (indexPath.row == 1) {//验证码
         [cell.getCodebutton setHidden:YES];
-        [cell.loginSwitch setHidden:NO];
-        cell.loginTextField.secureTextEntry = YES;
+        [cell.loginSwitch setHidden:YES];
+        cell.loginTextField.secureTextEntry = NO;
         
         [cell setFinishEditing:^(NSString *text) {
             [self.loginDictionary setValue:text forKey:@"password"];
@@ -298,7 +308,6 @@
             [[NSUserDefaults standardUserDefaults] setObject:loginModel.token forKey:@"token"];
             [[NSUserDefaults standardUserDefaults] setObject:weakself.loginDictionary[@"mobile"] forKey:@"mobile"];
             [[NSUserDefaults standardUserDefaults] synchronize];
-//            [weakself.navigationController popViewControllerAnimated:YES];
             
             [weakself back];
         }

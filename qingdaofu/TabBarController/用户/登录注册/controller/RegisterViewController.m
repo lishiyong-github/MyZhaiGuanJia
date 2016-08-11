@@ -113,9 +113,17 @@
             [weakself.registerDictionary setValue:text forKey:@"validatecode"];
         }];
         
-    }else if (indexPath.row == 2){
+    }else{
         cell.loginTextField.secureTextEntry = YES;
         [cell.getCodebutton setHidden:YES];
+        QDFWeak(cell);
+        [cell setDidEndSwitching:^(BOOL state) {
+            if (!state) {
+                weakcell.loginTextField.secureTextEntry = YES;
+            }else{
+                weakcell.loginTextField.secureTextEntry = NO;
+            }
+        }];
         
         [cell setFinishEditing:^(NSString *text) {
             [weakself.registerDictionary setValue:text forKey:@"password"];

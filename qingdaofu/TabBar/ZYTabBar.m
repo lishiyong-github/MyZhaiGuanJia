@@ -29,7 +29,7 @@
     pathButton.allowSounds = NO;
 }
 - (void)drawRect:(CGRect)rect {
-   self.plusBtn = [[ZYPathButton alloc]initWithCenterImage:[UIImage imageNamed:@"publishs"]highlightedImage:[UIImage imageNamed:@"publishs"]];
+   self.plusBtn = [[ZYPathButton alloc]initWithCenterImage:[UIImage imageNamed:@"center"]highlightedImage:[UIImage imageNamed:@"center"]];
     self.plusBtn.delegate = self;
     [self setUpPathButton:self.plusBtn];
     self.plusBtn.ZYButtonCenter = CGPointMake(self.centerX, self.superview.height - self.height * 0.5 - 2 *ZYMagin );
@@ -38,7 +38,7 @@
     [self.superview addSubview:self.plusBtn];
     UILabel *label = [[UILabel alloc]init];
     label.text = @"发布";
-    label.font = [UIFont systemFontOfSize:13];
+    label.font = kTabBarFont;
     [label sizeToFit];
     label.textColor = [UIColor grayColor];
     label.centerX = _plusBtn.centerX;

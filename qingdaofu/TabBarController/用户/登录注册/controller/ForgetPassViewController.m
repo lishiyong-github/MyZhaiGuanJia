@@ -114,8 +114,16 @@
     }else{
         cell.loginTextField.secureTextEntry = YES;
         [cell.getCodebutton setHidden:YES];
-//        [cell.loginSwitch setTitle:@"显示密码" forState:0];
-//        [cell.loginSwitch setTitle:@"隐藏密码" forState:UIControlStateSelected];
+        [cell.loginSwitch setHidden:NO];
+        QDFWeak(cell);
+        [cell setDidEndSwitching:^(BOOL state) {
+            if (!state) {
+                weakcell.loginTextField.secureTextEntry = YES;
+            }else{
+                weakcell.loginTextField.secureTextEntry = NO;
+            }
+        }];
+        
         [cell setFinishEditing:^(NSString *text) {
             [weakself.forgetDictionay setValue:text forKey:@"new_password"];
         }];

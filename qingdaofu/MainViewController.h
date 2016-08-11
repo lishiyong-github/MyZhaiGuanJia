@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "NetworkViewController.h"
 
-@interface MainViewController : NetworkViewController
+@interface MainViewController : UITabBarController
 
 @end

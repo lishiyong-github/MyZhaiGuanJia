@@ -19,5 +19,7 @@
 @property (nonatomic,strong) NSLayoutConstraint *topConstraint;
 
 @property (nonatomic,strong) void (^finishEditing)(NSString *);
+@property (nonatomic,strong) void (^didEndSwitching)(BOOL);
+
 
 @end
