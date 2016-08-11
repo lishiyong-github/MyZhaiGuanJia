@@ -535,7 +535,6 @@
 		A1AD9B8E1D499414001F3076 /* ZYPathButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A1AD9B891D499414001F3076 /* ZYPathButton.m */; };
 		A1AD9B8F1D499414001F3076 /* ZYPathItemButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A1AD9B8B1D499414001F3076 /* ZYPathItemButton.m */; };
 		A1AD9B901D499414001F3076 /* ZYTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = A1AD9B8D1D499414001F3076 /* ZYTabBar.m */; };
-		A1AD9B931D49945F001F3076 /* TabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1AD9B921D49945F001F3076 /* TabBarViewController.m */; };
 		A1AD9B961D499729001F3076 /* UIView+LBExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = A1AD9B951D499729001F3076 /* UIView+LBExtension.m */; };
 		A1AEC97C1D3F7D870082813F /* NewsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1AEC97B1D3F7D870082813F /* NewsTableViewCell.m */; };
 		A1B028A71D17766900F32A09 /* UploadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1B028A61D17766900F32A09 /* UploadViewController.m */; };
@@ -1378,8 +1377,6 @@
 		A1AD9B8B1D499414001F3076 /* ZYPathItemButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZYPathItemButton.m; sourceTree = "<group>"; };
 		A1AD9B8C1D499414001F3076 /* ZYTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZYTabBar.h; sourceTree = "<group>"; };
 		A1AD9B8D1D499414001F3076 /* ZYTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZYTabBar.m; sourceTree = "<group>"; };
-		A1AD9B911D49945F001F3076 /* TabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarViewController.h; sourceTree = "<group>"; };
-		A1AD9B921D49945F001F3076 /* TabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabBarViewController.m; sourceTree = "<group>"; };
 		A1AD9B941D499729001F3076 /* UIView+LBExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+LBExtension.h"; sourceTree = "<group>"; };
 		A1AD9B951D499729001F3076 /* UIView+LBExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+LBExtension.m"; sourceTree = "<group>"; };
 		A1AEC97A1D3F7D870082813F /* NewsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsTableViewCell.h; sourceTree = "<group>"; };
@@ -2934,8 +2931,6 @@
 				A1A016A61C5A0C0300027134 /* AppDelegate.m */,
 				A18B26461CEAA699005526C5 /* MainViewController.h */,
 				A18B26471CEAA699005526C5 /* MainViewController.m */,
-				A1AD9B911D49945F001F3076 /* TabBarViewController.h */,
-				A1AD9B921D49945F001F3076 /* TabBarViewController.m */,
 				A18FC05B1D33937E00B1FCD4 /* IntroduceViewController.h */,
 				A18FC05C1D33937E00B1FCD4 /* IntroduceViewController.m */,
 				A1A016AB1C5A0C0300027134 /* Main.storyboard */,
@@ -4004,7 +3999,6 @@
 				A1B0292D1D17CE6F00F32A09 /* AFURLRequestSerialization.m in Sources */,
 				A1B028EF1D1794DC00F32A09 /* UIImage+GIF.m in Sources */,
 				A1FB26621CF2D47B00B66608 /* AllProductsChooseView.m in Sources */,
-				A1AD9B931D49945F001F3076 /* TabBarViewController.m in Sources */,
 				A1A017581C5B696A00027134 /* NSString+MJExtension.m in Sources */,
 				A187B9151D50966100A91A16 /* PropertyListCell.m in Sources */,
 				A17691261CD986BA004289DD /* LineLabel.m in Sources */,

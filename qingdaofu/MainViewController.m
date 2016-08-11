@@ -7,25 +7,24 @@
 //
 
 #import "MainViewController.h"
+#import "UIImage+Color.h"
 
-#import "TabBar.h"
-#import "TabBarItem.h"
+//#import "TabBar.h"
+//#import "TabBarItem.h"
 
 #import "NewProductViewController.h"
 #import "ProductsViewController.h"
 #import "MessageViewController.h"
 #import "MineViewController.h"
 
-#import "ReportSuitViewController.h"     //诉讼
-#import "LoginViewController.h"
-#import "AuthentyViewController.h"
+#import "ReportSuitViewController.h"     //发布诉讼
+#import "LoginViewController.h"  //登录
 
 #import "UIViewController+BlurView.h"
 
 #import "ZYTabBar.h"
 
-
-@interface MainViewController ()<TabBarDelegate,UIActionSheetDelegate,ZYTabBarDelegate>
+@interface MainViewController ()<UINavigationControllerDelegate, UIImagePickerControllerDelegate,UIGestureRecognizerDelegate,UIActionSheetDelegate,ZYTabBarDelegate>
 
 @property (nonatomic,strong) NSString *trackViewUrl;
 
@@ -38,11 +37,92 @@
     
 //    [self showTabBarItem];
     
+    self.view.backgroundColor = kBackColor;
+    
+    //修改导航栏的边界黑线
+    
+    //    self.edgesForExtendedLayout = UIRectEdgeNone ;
+    //    self.extendedLayoutIncludesOpaqueBars = NO ;
+    //    self.automaticallyAdjustsScrollViewInsets = NO ;
+    
+    //设置导航条的字体颜色
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:kBlackColor,NSFontAttributeName:kNavFont}];
+    
+    //去除系统效果
+    self.navigationController.navigationBar.translucent = NO;
+    
+    //设置导航栏颜色
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:kNavColor] forBarMetrics:UIBarMetricsDefault];
+    
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    
+    //右滑返回
+    self.navigationController.interactivePopGestureRecognizer.delegate = self;
+    
     //设置子视图
     [self setUpAllChildVc];
     [self configureZYPathButton];
 }
 
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    NSLog(@"=====%@===init==",NSStringFromClass([self class]));
+}
+
+- (void)dealloc
+{
+    NSLog(@"=====%@===dealloc==",NSStringFromClass([self class]));
+}
+
+-(UIBarButtonItem *)leftItem
+{
+    if (!_leftItem) {
+        _leftItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"bar_nav_back"] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
+    }
+    return _leftItem;
+}
+
+-(UIBarButtonItem *)leftItemAnother
+{
+    if (!_leftItemAnother) {
+        _leftItemAnother = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"close"] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
+    }
+    return _leftItemAnother;
+}
+
+- (UIImageView *)baseRemindImageView
+{
+    if (!_baseRemindImageView) {
+        _baseRemindImageView = [UIImageView newAutoLayoutView];
+        [_baseRemindImageView setImage:[UIImage imageNamed:@"kong"]];
+    }
+    return _baseRemindImageView;
+}
+
+#pragma mark - method
+- (void)back
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+//- (void)backAnother
+//{
+//    [self.navigationController popViewControllerAnimated:YES];
+//}
+
+- (NSString *)getValidateToken
+{
+    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:@"token"];
+    return token;
+}
+
+- (NSString *)getValidateMobile
+{
+    NSString *mobile = [[NSUserDefaults standardUserDefaults] objectForKey:@"mobile"];
+    return mobile;
+}
 
 - (void)configureZYPathButton {
     ZYTabBar *tabBar = [ZYTabBar new];
@@ -73,11 +153,10 @@
     ProductsViewController *FishVC = [[ProductsViewController alloc] init];
     [self setUpOneChildVcWithVc:FishVC Image:@"tab_product" selectedImage:@"tab_product_s" title:@"产品"];
     
-    
-    UIViewController *MessageVC = [[UIViewController alloc] init];
+    MessageViewController *MessageVC = [[MessageViewController alloc] init];
     [self setUpOneChildVcWithVc:MessageVC Image:@"news" selectedImage:@"news_s" title:@"消息"];
     
-    UIViewController *MineVC = [[UIViewController alloc] init];
+    MineViewController *MineVC = [[MineViewController alloc] init];
     [self setUpOneChildVcWithVc:MineVC Image:@"tab_user" selectedImage:@"tab_user_s" title:@"我的"];
 }
 #pragma mark - 初始化设置tabBar上面单个按钮的方法

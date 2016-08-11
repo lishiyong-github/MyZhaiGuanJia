@@ -25,7 +25,6 @@
     self.view.backgroundColor = kBackColor;
     
     //修改导航栏的边界黑线
-
 //    self.edgesForExtendedLayout = UIRectEdgeNone ;
 //    self.extendedLayoutIncludesOpaqueBars = NO ;
 //    self.automaticallyAdjustsScrollViewInsets = NO ;
