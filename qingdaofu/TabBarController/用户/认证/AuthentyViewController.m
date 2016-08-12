@@ -116,7 +116,7 @@
     
     NSArray *imageArr = @[@"list_icon_personal",@"list_icon_firm",@"list_icon_company"];
     NSArray *textArr = @[@"认证个人",@"认证律所",@"认证公司"];
-    NSArray *detailArr = @[@"可发布融资、清收、诉讼",@"可发布融资、清收、诉讼",@"可发布融资、清收、诉讼"];
+    NSArray *detailArr = @[@"可发布清收、诉讼",@"可发布清收、诉讼",@"可发布清收、诉讼"];
     NSArray *deArr = @[@"暂不支持代理",@"可代理诉讼、清收",@"可代理诉讼、清收"];
     
     cell.aImageView.image = [UIImage imageNamed:imageArr[indexPath.row]];

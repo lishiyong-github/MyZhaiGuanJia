@@ -24,11 +24,6 @@
     if (self = [super init]) {
         
         // Make sure the iteam has a certain frame
-        //
-        
-        
-        
-        
         CGRect itemFrame = CGRectMake(0, 0, backgroundImage.size.width, backgroundImage.size.height);
         
         if (!backgroundImage || !backgroundHighlightedImage) {

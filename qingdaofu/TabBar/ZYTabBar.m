@@ -36,6 +36,7 @@
     [self.plusBtn addPathItems:self.pathButtonArray];
     //必须加到父视图上
     [self.superview addSubview:self.plusBtn];
+    
     UILabel *label = [[UILabel alloc]init];
     label.text = @"发布";
     label.font = kTabBarFont;
@@ -45,6 +46,7 @@
     label.centerY = CGRectGetMaxY(_plusBtn.frame) + ZYMagin;
     [self.superview addSubview:label];
 }
+
 //重新绘制按钮
 - (void)layoutSubviews {
     [super layoutSubviews];
@@ -65,6 +67,7 @@
         }
     }
 }
+
 - (void)pathButton:(ZYPathButton *)ZYPathButton clickItemButtonAtIndex:(NSUInteger)itemButtonIndex {
     if ([self.delegate respondsToSelector:@selector(pathButton:clickItemButtonAtIndex:)]) {
         [self.delegate pathButton:self clickItemButtonAtIndex:itemButtonIndex];
@@ -72,17 +75,6 @@
 }
 
 @end
-
-
-
-
-
-
-
-
-
-
-
 
 
 

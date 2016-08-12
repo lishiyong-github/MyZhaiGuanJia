@@ -268,7 +268,7 @@
         
         cell.leftTextViewConstraints.constant = 105;
         cell.ediLabel.text = @"经典案例";
-        cell.ediTextView.placeholder = @"关于律所在融资等方面的成功案例，有利于发布方更加青睐你";
+        cell.ediTextView.placeholder = @"关于律所在清收等方面的成功案例，有利于发布方更加青睐你";
         cell.ediTextView.font = kFirstFont;
         cell.ediTextView.text = certificationModel.casedesc;
         [cell setTouchBeginPoint:^(CGPoint point) {

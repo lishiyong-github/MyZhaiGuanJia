@@ -9,9 +9,6 @@
 #import "MainViewController.h"
 #import "UIImage+Color.h"
 
-//#import "TabBar.h"
-//#import "TabBarItem.h"
-
 #import "NewProductViewController.h"
 #import "ProductsViewController.h"
 #import "MessageViewController.h"
@@ -20,9 +17,11 @@
 #import "ReportSuitViewController.h"     //发布诉讼
 #import "LoginViewController.h"  //登录
 
-#import "UIViewController+BlurView.h"
+//#import "TabBar.h"
+//#import "TabBarItem.h"
 
 #import "ZYTabBar.h"
+#import "UIViewController+BlurView.h"
 
 @interface MainViewController ()<UINavigationControllerDelegate, UIImagePickerControllerDelegate,UIGestureRecognizerDelegate,UIActionSheetDelegate,ZYTabBarDelegate>
 
@@ -73,6 +72,12 @@
     ZYPathItemButton *itemButton_2 = [[ZYPathItemButton alloc]initWithImage:[UIImage imageNamed:@"tab_product"]highlightedImage:[UIImage imageNamed:@"tab_product_s"]backgroundImage:[UIImage imageNamed:@"tab_bars"]backgroundHighlightedImage:[UIImage imageNamed:@"tab_bars"]];
     
     ZYPathItemButton *itemButton_3 = [[ZYPathItemButton alloc]initWithImage:[UIImage imageNamed:@"chooser-moment-icon-camera"]highlightedImage:[UIImage imageNamed:@"chooser-moment-icon-camera-highlighted"]backgroundImage:[UIImage imageNamed:@"tab_bars"]backgroundHighlightedImage:[UIImage imageNamed:@"tab_bars"]];
+    
+//    [itemButton_3 addAction:^(UIButton *btn) {
+//        NSLog(@"发布");
+//    }];
+    
+    [itemButton_3 addTarget:self action:@selector(ffffff) forControlEvents:UIControlEventTouchUpInside];
     
     ZYPathItemButton *itemButton_4 = [[ZYPathItemButton alloc]initWithImage:[UIImage imageNamed:@"news"]highlightedImage:[UIImage imageNamed:@"news_s"]backgroundImage:[UIImage imageNamed:@"tab_bars"]backgroundHighlightedImage:[UIImage imageNamed:@"tab_bars"]];
     
@@ -150,7 +155,10 @@
 }
 
 
-
+- (void)ffffff
+{
+    
+}
 
 
 
