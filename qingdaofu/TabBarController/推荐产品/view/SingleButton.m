@@ -32,12 +32,23 @@
 - (void)updateConstraints
 {
     if (!self.didSetupConstraints) {
-        [self.button autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kBigPadding];
-        [self.button autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
-        [self.button autoSetDimensionsToSize:CGSizeMake(55, 55)];
+        [self.button autoPinEdgeToSuperviewEdge:ALEdgeTop];
+        [self.button autoAlignAxisToSuperviewAxis:ALAxisVertical];
+        [self.button autoSetDimensionsToSize:CGSizeMake(80, 80)];
         
-        [self.label autoAlignAxis:ALAxisVertical toSameAxisOfView:self.button];
-        [self.label autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.button withOffset:20];
+        [self.label autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.button withOffset:kBigPadding];
+        [self.label autoPinEdgeToSuperviewEdge:ALEdgeLeft];
+        [self.label autoPinEdgeToSuperviewEdge:ALEdgeRight];
+        [self.label autoSetDimension:ALDimensionHeight toSize:20];
+        
+//        [self.label autoAlignAxis:ALAxisVertical toSameAxisOfView:self.button];
+//        [self.label autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
+        
+//        [self.button autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
+//        [self.button autoSetDimensionsToSize:CGSizeMake(80, 80)];
+//        
+//        [self.label autoAlignAxis:ALAxisVertical toSameAxisOfView:self.button];
+//        [self.label autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.button withOffset:20];
         
         self.didSetupConstraints = YES;
     }

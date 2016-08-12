@@ -28,7 +28,7 @@
 #import "UIViewController+BlurView.h"
 #import "UIButton+WebCache.h"
 
-@interface NewProductViewController ()<UITableViewDataSource,UITableViewDelegate,UIScrollViewDelegate>
+@interface NewProductViewController ()<UITableViewDataSource,UITableViewDelegate,UIScrollViewDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate,UIGestureRecognizerDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 

@@ -25,6 +25,10 @@
         
         // Make sure the iteam has a certain frame
         //
+        
+        
+        
+        
         CGRect itemFrame = CGRectMake(0, 0, backgroundImage.size.width, backgroundImage.size.height);
         
         if (!backgroundImage || !backgroundHighlightedImage) {
@@ -48,7 +52,6 @@
         // Add an action for the item button
         //
         [self addTarget:_delegate action:@selector(itemButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        
     }
     return self;
 }

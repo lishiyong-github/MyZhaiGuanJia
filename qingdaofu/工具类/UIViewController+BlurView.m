@@ -113,7 +113,7 @@
 //推荐页面的发布
 - (void)showBlurInView:(UIView *)view withArray:(NSArray *)array finishBlock:(void(^)(NSInteger row))finishBlock
 {
-//    [self hiddenBlurView];
+    [self hiddenBlurView];
     UIView *tagView = [self.view viewWithTag:99999];
     SingleButton *collectionButton;
     SingleButton *suitButton;
@@ -130,8 +130,8 @@
         
         //清收
         collectionButton = [[SingleButton alloc] init];
-        collectionButton.center = CGPointMake((kScreenWidth/4), kScreenHeight/2);
-        [collectionButton.button setImage:[UIImage imageNamed:@"btn_collection"] forState:0];
+        collectionButton.center = CGPointMake(kScreenWidth/4, kScreenHeight/2);
+        [collectionButton.button setImage:[UIImage imageNamed:@"release_clearance"] forState:0];
         collectionButton.label.text = @"发布清收";
         [tagView addSubview:collectionButton];
         QDFWeakSelf;
@@ -144,7 +144,7 @@
         //诉讼
         suitButton = [[SingleButton alloc] init];
         suitButton.center = CGPointMake((kScreenWidth/4*3), kScreenHeight/2);
-        [suitButton.button setImage:[UIImage imageNamed:@"btn_litigation"] forState:0];
+        [suitButton.button setImage:[UIImage imageNamed:@"release_proceedings"] forState:0];
         suitButton.label.text = @"发布诉讼";
         [tagView addSubview:suitButton];
         [suitButton addAction:^(UIButton *btn) {
@@ -155,19 +155,20 @@
         
         //取消按钮
         UIButton *cancelButton = [UIButton newAutoLayoutView];
-        [cancelButton setImage:[UIImage imageNamed:@"close"] forState:0];
+        [cancelButton setImage:[UIImage imageNamed:@"closew"] forState:0];
         [cancelButton addAction:^(UIButton *btn) {
             [tagView removeFromSuperview];
         }];
         [tagView addSubview:cancelButton];
         [cancelButton autoAlignAxisToSuperviewAxis:ALAxisVertical];
         [cancelButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:40];
+        [cancelButton autoSetDimensionsToSize:CGSizeMake(50, 50)];
         
         [UIView animateWithDuration:0.3 animations:^{
-            collectionButton.frame = CGRectMake(0, 0, 80, kScreenWidth/4);
+            collectionButton.frame = CGRectMake(0, 0, 80, 80);
             collectionButton.center = CGPointMake((kScreenWidth/4), kScreenHeight/2);
             
-            suitButton.frame = CGRectMake(0, 0, 80, kScreenWidth/4);
+            suitButton.frame = CGRectMake(0, 0, 80, 80);
             suitButton.center = CGPointMake((kScreenWidth/4*3), kScreenHeight/2);
         } completion:^(BOOL finished) {
             
@@ -176,7 +177,7 @@
     
     if (finishBlock) {
         
-        QDFWeakSelf;
+//        QDFWeakSelf;
         
         [collectionButton addAction:^(UIButton *btn) {
 //            if (weakself.didSelectedSingleButton) {

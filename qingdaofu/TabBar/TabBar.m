@@ -8,7 +8,7 @@
 
 #import "TabBar.h"
 #import "TabBarItem.h"
-
+#import "UIView+LBExtension.h"
 @implementation TabBar
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -24,12 +24,24 @@
 #pragma mark - private method
 - (void)config
 {
-    self.backgroundColor = kTabBarColor;
+//    [self setImage:[UIImage imageNamed:@"tab_bar"] forState:0];
     
-    UIImageView *topLine = [[UIImageView alloc] initWithFrame:CGRectMake(0, -1, kScreenWidth, 1)];
-    topLine.image = [UIImage imageNamed:@""];
-    topLine.backgroundColor = kCellSelectedColor;
-    [self addSubview:topLine];
+//    [self setBackgroundImage:[UIImage imageNamed:@"tab_bar"] forState:0];
+    
+//    self.backgroundColor = [UIImage imageNamed:@"tab_bar"];
+    
+//    self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"tab_bar"]];
+    
+//    self.backgroundImage = [UIImage imageNamed:@"tab_bar"];
+    self.backgroundColor = kRedColor;
+//
+//    UIImageView *topLine = [[UIImageView alloc] initWithFrame:CGRectMake(0, -1, kScreenWidth, 1)];
+////    topLine.image = [UIImage imageNamed:@"tab_bar"];
+//    topLine.backgroundColor = kSelectedColor;
+//    
+//    [self addSubview:topLine];
+    
+
 }
 
 - (void)setSelectedIndex:(NSInteger)index
@@ -80,6 +92,27 @@
             if (((TabBarItem *)item).tabBarItemType != TabBarItemTypeRise) {
                 ((TabBarItem *)item).tag = itemTag;
                 itemTag ++;
+            }
+        }
+    }
+}
+
+//重新绘制按钮
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    self.backgroundColor = [UIColor whiteColor];
+    //系统自带的按钮类型是UITabBarButton,找出这些类型的按钮,然后重新排布位置 ,空出中间的位置
+    Class class = NSClassFromString(@"UITabBarButton");
+    int btnIndex = 0;
+    for (UIView *btn in self.subviews) {//遍历tabbar的子控件
+        if ([btn isKindOfClass:class]) {//如果是系统的UITabBarButton，那么就调整子控件位置，空出中间位置
+            //每一个按钮的宽度 == tabbar的五分之一
+            btn.width = self.width * 0.2;
+            btn.x = btn.width * btnIndex;
+            btnIndex ++;
+            //如果是索引是2(从0开始的)，直接让索引++，目的就是让消息按钮的位置向右移动，空出来发布按钮的位置
+            if (btnIndex == 2) {
+                btnIndex++;
             }
         }
     }

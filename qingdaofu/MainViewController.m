@@ -35,12 +35,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-//    [self showTabBarItem];
+    //设置基本信息
+    [self setUpMessage];
     
+    [self setUpAllChildVc];
+    [self configureZYPathButton];
+}
+
+- (void)setUpMessage
+{
     self.view.backgroundColor = kBackColor;
     
     //修改导航栏的边界黑线
-    
     //    self.edgesForExtendedLayout = UIRectEdgeNone ;
     //    self.extendedLayoutIncludesOpaqueBars = NO ;
     //    self.automaticallyAdjustsScrollViewInsets = NO ;
@@ -58,92 +64,30 @@
     
     //右滑返回
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
-    
-    //设置子视图
-    [self setUpAllChildVc];
-    [self configureZYPathButton];
-}
-
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    NSLog(@"=====%@===init==",NSStringFromClass([self class]));
-}
-
-- (void)dealloc
-{
-    NSLog(@"=====%@===dealloc==",NSStringFromClass([self class]));
-}
-
--(UIBarButtonItem *)leftItem
-{
-    if (!_leftItem) {
-        _leftItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"bar_nav_back"] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
-    }
-    return _leftItem;
-}
-
--(UIBarButtonItem *)leftItemAnother
-{
-    if (!_leftItemAnother) {
-        _leftItemAnother = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"close"] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
-    }
-    return _leftItemAnother;
-}
-
-- (UIImageView *)baseRemindImageView
-{
-    if (!_baseRemindImageView) {
-        _baseRemindImageView = [UIImageView newAutoLayoutView];
-        [_baseRemindImageView setImage:[UIImage imageNamed:@"kong"]];
-    }
-    return _baseRemindImageView;
-}
-
-#pragma mark - method
-- (void)back
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
-//- (void)backAnother
-//{
-//    [self.navigationController popViewControllerAnimated:YES];
-//}
-
-- (NSString *)getValidateToken
-{
-    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:@"token"];
-    return token;
-}
-
-- (NSString *)getValidateMobile
-{
-    NSString *mobile = [[NSUserDefaults standardUserDefaults] objectForKey:@"mobile"];
-    return mobile;
 }
 
 - (void)configureZYPathButton {
     ZYTabBar *tabBar = [ZYTabBar new];
-    tabBar.delegate = self;//select_
-    ZYPathItemButton *itemButton_1 = [[ZYPathItemButton alloc]initWithImage:[UIImage imageNamed:@"chooser-moment-icon-music"]highlightedImage:[UIImage imageNamed:@"chooser-moment-icon-music-highlighted"]backgroundImage:[UIImage imageNamed:@"chooser-moment-button"]backgroundHighlightedImage:[UIImage imageNamed:@"chooser-moment-button-highlighted"]];
-    ZYPathItemButton *itemButton_2 = [[ZYPathItemButton alloc]initWithImage:[UIImage imageNamed:@"chooser-moment-icon-place"]highlightedImage:[UIImage imageNamed:@"chooser-moment-icon-place-highlighted"]backgroundImage:[UIImage imageNamed:@"chooser-moment-button"]backgroundHighlightedImage:[UIImage imageNamed:@"chooser-moment-button-highlighted"]];
+    tabBar.delegate = self;//select_   ／／tab_bar
+    ZYPathItemButton *itemButton_1 = [[ZYPathItemButton alloc]initWithImage:[UIImage imageNamed:@"tab_recommend"]highlightedImage:[UIImage imageNamed:@"tab_recommend_s"]backgroundImage:[UIImage imageNamed:@"tab_bars"]backgroundHighlightedImage:[UIImage imageNamed:@"tab_bars"]];
+    ZYPathItemButton *itemButton_2 = [[ZYPathItemButton alloc]initWithImage:[UIImage imageNamed:@"tab_product"]highlightedImage:[UIImage imageNamed:@"tab_product_s"]backgroundImage:[UIImage imageNamed:@"tab_bars"]backgroundHighlightedImage:[UIImage imageNamed:@"tab_bars"]];
     
-    ZYPathItemButton *itemButton_3 = [[ZYPathItemButton alloc]initWithImage:[UIImage imageNamed:@"chooser-moment-icon-camera"]highlightedImage:[UIImage imageNamed:@"chooser-moment-icon-camera-highlighted"]backgroundImage:[UIImage imageNamed:@"chooser-moment-button"]backgroundHighlightedImage:[UIImage imageNamed:@"chooser-moment-button-highlighted"]];
+    ZYPathItemButton *itemButton_3 = [[ZYPathItemButton alloc]initWithImage:[UIImage imageNamed:@"chooser-moment-icon-camera"]highlightedImage:[UIImage imageNamed:@"chooser-moment-icon-camera-highlighted"]backgroundImage:[UIImage imageNamed:@"tab_bars"]backgroundHighlightedImage:[UIImage imageNamed:@"tab_bars"]];
     
-    ZYPathItemButton *itemButton_4 = [[ZYPathItemButton alloc]initWithImage:[UIImage imageNamed:@"chooser-moment-icon-thought"]highlightedImage:[UIImage imageNamed:@"chooser-moment-icon-thought-highlighted"]backgroundImage:[UIImage imageNamed:@"chooser-moment-button"]backgroundHighlightedImage:[UIImage imageNamed:@"chooser-moment-button-highlighted"]];
+    ZYPathItemButton *itemButton_4 = [[ZYPathItemButton alloc]initWithImage:[UIImage imageNamed:@"news"]highlightedImage:[UIImage imageNamed:@"news_s"]backgroundImage:[UIImage imageNamed:@"tab_bars"]backgroundHighlightedImage:[UIImage imageNamed:@"tab_bars"]];
     
-    ZYPathItemButton *itemButton_5 = [[ZYPathItemButton alloc]initWithImage:[UIImage imageNamed:@"chooser-moment-icon-sleep"]highlightedImage:[UIImage imageNamed:@"chooser-moment-icon-sleep-highlighted"]backgroundImage:[UIImage imageNamed:@"chooser-moment-button"]backgroundHighlightedImage:[UIImage imageNamed:@"chooser-moment-button-highlighted"]];
+    ZYPathItemButton *itemButton_5 = [[ZYPathItemButton alloc]initWithImage:[UIImage imageNamed:@"tab_user"]highlightedImage:[UIImage imageNamed:@"tab_user_s"]backgroundImage:[UIImage imageNamed:@"tab_bars"]backgroundHighlightedImage:[UIImage imageNamed:@"tab_bars"]];
     tabBar.pathButtonArray = @[itemButton_1 , itemButton_2 , itemButton_3, itemButton_4 , itemButton_5];
-    tabBar.basicDuration = 0.5;
-    tabBar.allowSubItemRotation = YES;
-    tabBar.bloomRadius = 100;
-    tabBar.allowCenterButtonRotation = YES;
-    tabBar.bloomAngel = 100;
+    tabBar.delegate = self;
+    
+//    tabBar.basicDuration = 0.5;
+//    tabBar.allowSubItemRotation = YES;
+//    tabBar.bloomRadius = 100;
+//    tabBar.allowCenterButtonRotation = YES;
+//    tabBar.bloomAngel = 100;
+    
     //kvc实质是修改了系统的_tabBar
     [self setValue:tabBar forKeyPath:@"tabBar"];
-    
 }
 
 - (void)setUpAllChildVc {
@@ -175,7 +119,9 @@
 {
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:Vc];
     
-    Vc.view.backgroundColor = [self randomColor];
+//    Vc.view.backgroundColor = [self randomColor];
+    Vc.view.backgroundColor = kRedColor;
+    
     
     UIImage *myImage = [UIImage imageNamed:image];
     myImage = [myImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
@@ -212,6 +158,17 @@
 /*
 - (void)showTabBarItem
 {
+    
+    for (UIView *view in self.tabBarController.tabBar.subviews) {
+        
+        if ([view isKindOfClass:[UIImageView class]] && view.bounds.size.height <= 1) {
+            UIImageView *ima = (UIImageView *)view;
+//                        ima.backgroundColor = [UIColor redColor];
+            ima.hidden = YES;
+        }
+    }
+    
+    
     NewProductViewController *newProductVC = [[NewProductViewController alloc] init];
     UINavigationController *newproductNav = [[UINavigationController alloc] initWithRootViewController:newProductVC];
     
@@ -228,6 +185,7 @@
     tabBarController.viewControllers = @[newproductNav,productsNav,messageNav,mineNav];
     
     TabBar *tabBar = [[TabBar alloc] initWithFrame:tabBarController.tabBar.bounds];
+    tabBar.backgroundColor = kNavColor;
 //    [tabBar setClipsToBounds:YES];
 //    tabBar.opaque = YES;
 //    
@@ -239,13 +197,13 @@
 
     CGFloat normalButtonWidth = kScreenWidth/5;
     CGFloat tabBarHeight = CGRectGetHeight(tabBar.frame);
-    CGFloat publishItemWidth = kScreenWidth/5;
+//    CGFloat publishItemWidth = kScreenWidth/5;
     
     TabBarItem *newProductItem = [self tabBarItemWithFram:CGRectMake(0, 0, normalButtonWidth, tabBarHeight) title:@"首页" normalImageName:@"tab_recommend" selectedImageName:@"tab_recommend_s" tabBarItemType:TabBarItemTypeNormal];
     TabBarItem *productsItem = [self tabBarItemWithFram:CGRectMake(normalButtonWidth, 0, normalButtonWidth, tabBarHeight) title:@"产品" normalImageName:@"tab_product" selectedImageName:@"tab_product_s" tabBarItemType:TabBarItemTypeNormal];
     
 //    TabBarItem *publishItem = [self tabBarItemWithFram:CGRectMake(normalButtonWidth * 2, 4.5, normalButtonWidth, tabBarHeight) title:@"" normalImageName:@"publishs" selectedImageName:@"" tabBarItemType:TabBarItemTypeRise];
-    TabBarItem *publishItem = [self tabBarItemWithFram:CGRectMake(normalButtonWidth * 2, 0, normalButtonWidth, tabBarHeight) title:@"发布" normalImageName:@"publishs" selectedImageName:nil tabBarItemType:TabBarItemTypeRise];
+    TabBarItem *publishItem = [self tabBarItemWithFram:CGRectMake(normalButtonWidth * 2, 0, normalButtonWidth, tabBarHeight) title:@"发布" normalImageName:@"center" selectedImageName:@"center" tabBarItemType:TabBarItemTypeRise];
 
     TabBarItem *messageItem = [self tabBarItemWithFram:CGRectMake(normalButtonWidth * 3, 0, normalButtonWidth, tabBarHeight) title:@"消息" normalImageName:@"news" selectedImageName:@"news_s" tabBarItemType:TabBarItemTypeNormal];
     TabBarItem *mineItem = [self tabBarItemWithFram:CGRectMake(normalButtonWidth * 4, 0, normalButtonWidth, tabBarHeight) title:@"用户" normalImageName:@"tab_user" selectedImageName:@"tab_user_s" tabBarItemType:TabBarItemTypeNormal];
@@ -324,8 +282,8 @@
         }];
     }];
 }
- 
  */
+ 
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

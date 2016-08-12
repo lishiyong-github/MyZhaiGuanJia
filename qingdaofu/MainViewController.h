@@ -11,13 +11,13 @@
 
 @interface MainViewController : UITabBarController
 
-@property (nonatomic,strong) UIBarButtonItem *leftItem;
-@property (nonatomic,strong) UIBarButtonItem *leftItemAnother;
-@property (nonatomic,strong) UIImageView *baseRemindImageView;
-
-- (NSString *)getValidateToken;
-- (NSString *)getValidateMobile;
-- (void)back;
+//@property (nonatomic,strong) UIBarButtonItem *leftItem;
+//@property (nonatomic,strong) UIBarButtonItem *leftItemAnother;
+//@property (nonatomic,strong) UIImageView *baseRemindImageView;
+//
+//- (NSString *)getValidateToken;
+//- (NSString *)getValidateMobile;
+//- (void)back;
 
 
 @end

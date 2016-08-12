@@ -74,7 +74,7 @@
 #define kCellSelectedColor UIColorFromRGB(0xeef3f6)  //单元格选中颜色
 #define kSelectedColor UIColorFromRGB(0xbecdd2)  //按钮不可点击颜色c6d3dc－－becdd2
 
-#define kTabBarColor UIColorFromRGB1(0xf9f9f9,0.95)  //tabBar颜色
+#define kTabBarColor UIColorFromRGB1(0xffffff,1)  //tabBar颜色f9f9f9,0.95
 #define kBackColor UIColorFromRGB(0xf2f3f7)  //背景色
 #define kSeparateColor UIColorFromRGB(0xdddddd)  //分割线颜色
 

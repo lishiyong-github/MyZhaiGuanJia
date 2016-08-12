@@ -9,7 +9,6 @@
 #import "AppDelegate.h"
 #import "MBResourceManager.h"
 #import "MainViewController.h"
-#import "TabBarViewController.h"
 
 #import "IntroduceViewController.h"
 

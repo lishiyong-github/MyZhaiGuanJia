@@ -260,9 +260,6 @@
         weakself.resultDic = [NSMutableDictionary dictionaryWithDictionary:opopo[@"result"]];
         [weakself.messageTableView reloadData];
         
-        UIWindow *window = [UIApplication sharedApplication].keyWindow;
-        UITabBarController *tabBarController = (UITabBarController *)window.rootViewController;
-        
         NSInteger n1 = [weakself.resultDic[@"1"][@"number"] integerValue];
         NSInteger n2 = [weakself.resultDic[@"2"][@"number"] integerValue];
         NSInteger n4 = [weakself.resultDic[@"4"][@"number"] integerValue];
@@ -274,7 +271,7 @@
             [self.tabBarController.tabBar hideBadgeOnItemIndex:3];
         }else{
             //显示
-            [tabBarController.tabBar showBadgeOnItemIndex:3];
+            [self.tabBarController.tabBar showBadgeOnItemIndex:3];
         }
         
     } andFailBlock:^(NSError *error) {
