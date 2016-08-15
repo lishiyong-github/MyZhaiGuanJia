@@ -12,7 +12,6 @@
 
 @interface LoginTableView : UITableView<UITableViewDataSource,UITableViewDelegate>
 
-//@property (nonatomic,strong) void (^didSelectedIndex)(NSIndexPath*);
 @property (nonatomic,strong) void (^didSelectedButton)(NSInteger);
 
 @property (nonatomic,strong) TokenModel *model;

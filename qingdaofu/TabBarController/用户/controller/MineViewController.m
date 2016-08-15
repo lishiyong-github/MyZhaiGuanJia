@@ -23,6 +23,7 @@
 #import "PowerProtectListViewController.h" //保全
 #import "ApplicationListViewController.h"  //保函
 #import "HousePropertyListViewController.h" //产调
+#import "HouseAssessListViewController.h"  //评估
 
 #import "MyAgentListViewController.h"  //我的代理
 
@@ -89,7 +90,7 @@
             
             [weakself tokenIsValid];
             
-            if (buttonTag == 0|| buttonTag == 1 || buttonTag == 3 || buttonTag == 6 || buttonTag == 7 || buttonTag == 8 || buttonTag == 12) {//我的认证，发布，保存，保全，保函，产调，设置，
+            if (buttonTag == 0|| buttonTag == 1 || buttonTag == 3 || buttonTag == 6 || buttonTag == 7 || buttonTag == 8 || buttonTag == 9 || buttonTag == 12) {//我的认证，发布，保存，保全，保函，产调，评估，设置，
                 [weakself setDidTokenValid:^(TokenModel *tokenModel) {
                     if ([tokenModel.code integerValue] == 0000 || [tokenModel.code integerValue] == 3006) {
                         switch (buttonTag) {
@@ -145,6 +146,12 @@
                                 HousePropertyListViewController *housePropertyListVC = [[HousePropertyListViewController alloc] init];
                                 housePropertyListVC.hidesBottomBarWhenPushed = YES;
                                 [weakself.navigationController pushViewController:housePropertyListVC animated:YES];
+                            }
+                                break;
+                            case 9:{//我的房产评估结果
+                                HouseAssessListViewController *houseAssessListVC = [[HouseAssessListViewController alloc] init];
+                                houseAssessListVC.hidesBottomBarWhenPushed = YES;
+                                [weakself.navigationController pushViewController:houseAssessListVC animated:YES];
                             }
                                 break;
                             case 12:{//我的设置

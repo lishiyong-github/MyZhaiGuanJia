@@ -17,7 +17,7 @@
 #import "UIImage+Color.h"
 
 #import "AllProductsChooseView.h"
-
+#import "ProductsView.h"
 #import "UIViewController+BlurView.h"
 
 #import "NewProductModel.h"
@@ -25,7 +25,7 @@
 @interface ProductsViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
-@property (nonatomic,strong) UIButton *proTitleView;
+@property (nonatomic,strong) ProductsView *proTitleView;
 @property (nonatomic,strong) AllProductsChooseView *chooseView;  //头部选择栏
 @property (nonatomic,strong) UITableView *productsTableView;
 
@@ -98,26 +98,21 @@
     [super updateViewConstraints];
 }
 
-- (UIButton *)proTitleView
+- (ProductsView *)proTitleView
 {
     if (!_proTitleView) {
-        _proTitleView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
-        [_proTitleView setTitle:@"所有产品" forState:0];
-        _proTitleView.titleLabel.font = kNavFont;
-        [_proTitleView setTitleColor:kBlackColor forState:0];
+        _proTitleView = [[ProductsView alloc] initWithFrame:CGRectMake(0, 0, 120, 44)];
+//        _proTitleView.backgroundColor = kRedColor;
         
         QDFWeakSelf;
-        [_proTitleView addAction:^(UIButton *btn) {
-            [weakself hiddenBlurView];
-            [weakself.backBlurView removeFromSuperview];
-            
-            NSArray *titleArray = @[@"全部",@"融资",@"清收",@"诉讼"];
-            [weakself showBlurInView:weakself.view withArray:titleArray withTop:0 finishBlock:^(NSString *text, NSInteger row) {
-                NSString *value = [NSString stringWithFormat:@"%ld",(long)row];
-                [btn setTitle:text forState:0];
-                [weakself.paramsDictionary setValue:value forKey:@"category"];
+        [_proTitleView setDidSelectedBtn:^(NSInteger tag) {
+            if (tag == 101) {//清收
+                [weakself.paramsDictionary setObject:@"2" forKey:@"category"];
                 [weakself headerRefreshWithAllProducts];
-            }];
+            }else{//诉讼
+                [weakself.paramsDictionary setObject:@"3" forKey:@"category"];
+                [weakself headerRefreshWithAllProducts];
+            }
         }];
     }
     return _proTitleView;
@@ -346,71 +341,56 @@
         cell.moneyView.label1.text = [NSString getValidStringFromString:proModel.money toString:@"0"];
         cell.moneyView.label2.text = @"借款本金(万元)";
         
-        if ([proModel.category isEqualToString:@"1"]) {//融资
-            [cell.typeImageView setImage:[UIImage imageNamed:@"list_financing"]];
+        if ([proModel.loan_type isEqualToString:@"1"]) {
+            cell.rateView.label1.text = @"房产抵押";
             cell.addressLabel.text = [NSString getValidStringFromString:proModel.location toString:@"无抵押物地址"];
-            cell.pointView.label1.text = [NSString getValidStringFromString:proModel.rebate toString:@"0"];
-            cell.pointView.label2.text = @"返点(%)";
-            cell.rateView.label1.text = [NSString getValidStringFromString:proModel.rate toString:@"0"];
-            if ([proModel.rate_cat isEqualToString:@"1"]) {
-                cell.rateView.label2.text = @"借款利率(%/天)";
-            }else{
-                cell.rateView.label2.text = @"借款利率(%/月)";
-            }
-        }else if ([proModel.category isEqualToString:@"2"]){//清收
-            [cell.typeImageView setImage:[UIImage imageNamed:@"list_collection"]];
+        }else if ([proModel.loan_type isEqualToString:@"2"]){
+            cell.rateView.label1.text = @"应收账款";
+            cell.addressLabel.text = @"无抵押物地址";
+        }else if ([proModel.loan_type isEqualToString:@"3"]){
+            cell.rateView.label1.text = @"机动车抵押";
+            cell.addressLabel.text = @"无抵押物地址";
+        }else{
+            cell.rateView.label1.text = @"无抵押";
+            cell.addressLabel.text = @"无抵押物地址";
+        }
+        cell.rateView.label2.text = @"债权类型";
+        
+        cell.pointView.label1.text = [NSString getValidStringFromString:proModel.agencycommission toString:@"0"];
+        if ([proModel.category isEqualToString:@"2"]){//清收
             
-            cell.pointView.label1.text = [NSString getValidStringFromString:proModel.agencycommission toString:@"0"];
+            if ([proModel.progress_status integerValue] > 1) {//list_collection_nor@2x
+                [cell.typeImageView setImage:[UIImage imageNamed:@"list_collection_nor"]];
+            }else if ([proModel.progress_status integerValue] == 1){
+                [cell.typeImageView setImage:[UIImage imageNamed:@"list_collection"]];
+            }
+            
             if ([proModel.agencycommissiontype isEqualToString:@"1"]) {
                 cell.pointView.label2.text = @"提成比例(%)";
             }else{
                 cell.pointView.label2.text = @"固定费用(万元)";
             }
-            if ([proModel.loan_type isEqualToString:@"1"]) {
-                cell.rateView.label1.text = @"房产抵押";
-                cell.addressLabel.text = [NSString getValidStringFromString:proModel.location toString:@"无抵押物地址"];
-            }else if ([proModel.loan_type isEqualToString:@"2"]){
-                cell.rateView.label1.text = @"应收账款";
-                cell.addressLabel.text = @"无抵押物地址";
-            }else if ([proModel.loan_type isEqualToString:@"3"]){
-                cell.rateView.label1.text = @"机动车抵押";
-                cell.addressLabel.text = @"无抵押物地址";
-            }else{
-                cell.rateView.label1.text = @"无抵押";
-                cell.addressLabel.text = @"无抵押物地址";
+        }else if ([proModel.category isEqualToString:@"3"]){//诉讼
+            
+            if ([proModel.progress_status integerValue] > 1) {//list_litigation_nor@2x
+                [cell.typeImageView setImage:[UIImage imageNamed:@"list_litigation_nor"]];
+            }else if ([proModel.progress_status integerValue] == 1){
+                [cell.typeImageView setImage:[UIImage imageNamed:@"list_litigation"]];
             }
-            cell.rateView.label2.text = @"债权类型";
-        }else{//诉讼
-            [cell.typeImageView setImage:[UIImage imageNamed:@"list_litigation"]];
-            cell.pointView.label1.text = [NSString getValidStringFromString:proModel.agencycommission toString:@"0"];
+            
             if ([proModel.agencycommissiontype isEqualToString:@"1"]) {
                 cell.pointView.label2.text = @"固定费用(万元)";
             }else{
                 cell.pointView.label2.text = @"风险费率(%)";
             }
-            if ([proModel.loan_type isEqualToString:@"1"]) {
-                cell.rateView.label1.text = @"房产抵押";
-                cell.addressLabel.text = [NSString getValidStringFromString:proModel.location toString:@"无抵押物地址"];
-            }else if ([proModel.loan_type isEqualToString:@"2"]){
-                cell.rateView.label1.text = @"应收账款";
-                cell.addressLabel.text = @"无抵押物地址";
-            }else if ([proModel.loan_type isEqualToString:@"3"]){
-                cell.rateView.label1.text = @"机动车抵押";
-                cell.addressLabel.text = @"无抵押物地址";
-            }else{
-                cell.rateView.label1.text = @"无抵押";
-                cell.addressLabel.text = @"无抵押物地址";
-            }
-            cell.rateView.label2.text = @"债权类型";
         }
         
         cell.nameLabel.text = proModel.codeString;
         
         //typeButton
-        if([proModel.progress_status integerValue]  == 4){//结案
+        if([proModel.progress_status integerValue] > 1){//不可点击
             [cell.typeButton setHidden:NO];
             [cell.typeButton setImage:[UIImage imageNamed:@"list_chapter"] forState:0];
-
         }else{
             [cell.typeButton setHidden:YES];
         }
@@ -483,10 +463,15 @@
                 ProductsDetailsViewController *productsDetailVC = [[ProductsDetailsViewController alloc] init];
                 productsDetailVC.hidesBottomBarWhenPushed = YES;
                 NewProductListModel *sModel = weakself.allDataList[indexPath.section];
-                productsDetailVC.idString = sModel.idString;
-                productsDetailVC.categoryString = sModel.category;
-                productsDetailVC.pidString = sModel.uidString;
-                [weakself.navigationController pushViewController:productsDetailVC animated:YES];
+                
+                if ([sModel.progress_status integerValue] == 1) {
+                    productsDetailVC.idString = sModel.idString;
+                    productsDetailVC.categoryString = sModel.category;
+                    productsDetailVC.pidString = sModel.uidString;
+                    [weakself.navigationController pushViewController:productsDetailVC animated:YES];
+                }else{
+                    [weakself showHint:@"已撮合，不可查看"];
+                }
             }else if([model.code isEqualToString:@"3001"] || [self getValidateToken] == nil){//未登录
                 [weakself showHint:model.msg];
                 LoginViewController *loginVC = [[LoginViewController alloc] init];
@@ -666,7 +651,7 @@
     self.paramsDictionary[@"province"] = self.paramsDictionary[@"province"]?self.paramsDictionary[@"province"]:@"0";
     self.paramsDictionary[@"city"] = self.paramsDictionary[@"city"]?self.paramsDictionary[@"city"]:@"0";
     self.paramsDictionary[@"area"] = self.paramsDictionary[@"area"]?self.paramsDictionary[@"area"]:@"0";
-    self.paramsDictionary[@"category"] = self.paramsDictionary[@"category"]?self.paramsDictionary[@"category"]:@"0";
+    self.paramsDictionary[@"category"] = self.paramsDictionary[@"category"]?self.paramsDictionary[@"category"]:@"2";
     self.paramsDictionary[@"money"] = self.paramsDictionary[@"money"]?self.paramsDictionary[@"money"]:@"0";
     self.paramsDictionary[@"status"] = self.paramsDictionary[@"status"]?self.paramsDictionary[@"status"]:@"0";
     

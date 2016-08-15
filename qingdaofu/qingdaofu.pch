@@ -216,6 +216,9 @@
 
 #define kPropagandaString  @"capital/picture"  //轮播图
 
+//新增四大模块
+#define kHouseAssessString @"producedata/estate" //房产评估
+
 #endif
 
 

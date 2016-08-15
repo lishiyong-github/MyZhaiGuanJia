@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AssessCell : UITableViewCell
+@interface AssessCell : UITableViewCell<UITextFieldDelegate>
 
 @property (nonatomic,strong) UILabel *label1;
 @property (nonatomic,strong) UITextField *textField1;
@@ -17,5 +17,7 @@
 @property (nonatomic,strong) UILabel *label3;
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
+
+@property (nonatomic,strong) void (^didEndEditing)(NSString *);
 
 @end

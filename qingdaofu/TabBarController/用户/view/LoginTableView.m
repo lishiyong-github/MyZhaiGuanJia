@@ -36,7 +36,7 @@
     if (section < 2) {
         return 2;
     }else if (section == 2){
-        return 3;
+        return 4;
     }
     return 1;
 }
@@ -143,7 +143,7 @@
         [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
         return cell;
         
-    }else if (indexPath.section == 2){//我的保全保函产调
+    }else if (indexPath.section == 2){//我的保全保函产调评估
         identifier = @"MineUserCell2";
         MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         
@@ -151,8 +151,8 @@
             cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         
-        NSArray *imageArray = @[@"right",@"Lette_of_guarantee",@"property_transfer"];
-        NSArray *titileArray = @[@"    我的保全",@"    我的保函",@"    我的产调"];
+        NSArray *imageArray = @[@"right",@"Lette_of_guarantee",@"property_transfer",@"house_property_evaluation"];
+        NSArray *titileArray = @[@"    我的保全",@"    我的保函",@"    我的产调",@"    我的房产评估结果"];
         
         NSString *imageStr = imageArray[indexPath.row];
         NSString *titleStr = titileArray[indexPath.row];

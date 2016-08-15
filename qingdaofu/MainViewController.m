@@ -17,8 +17,8 @@
 #import "ReportSuitViewController.h"     //发布诉讼
 #import "LoginViewController.h"  //登录
 
-//#import "TabBar.h"
-//#import "TabBarItem.h"
+#import "TabBar.h"
+#import "TabBarItem.h"
 
 #import "ZYTabBar.h"
 #import "UIViewController+BlurView.h"
@@ -35,10 +35,12 @@
     [super viewDidLoad];
     
     //设置基本信息
-    [self setUpMessage];
+//    [self setUpMessage];
     
-    [self setUpAllChildVc];
-    [self configureZYPathButton];
+    [self showTabBarItem];
+    
+//    [self setUpAllChildVc];
+//    [self configureZYPathButton];
 }
 
 - (void)setUpMessage
@@ -163,7 +165,7 @@
 
 
 
-/*
+
 - (void)showTabBarItem
 {
     
@@ -290,7 +292,7 @@
         }];
     }];
 }
- */
+
  
 
 - (void)didReceiveMemoryWarning {

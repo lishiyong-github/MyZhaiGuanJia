@@ -28,10 +28,14 @@
     [super viewDidLoad];
     self.title = @"评估结果";
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"back" style:UIBarButtonItemStylePlain target:self action:nil];
-    [self.navigationItem.leftBarButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName:kNavColor} forState:0];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStylePlain target:self action:@selector(finish)];
-    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kBlueColor} forState:0];
+    if ([self.fromType integerValue] == 1) {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"back" style:UIBarButtonItemStylePlain target:self action:nil];
+        [self.navigationItem.leftBarButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName:kNavColor} forState:0];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStylePlain target:self action:@selector(finish)];
+        [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kBlueColor} forState:0];
+    }else{
+        self.navigationItem.leftBarButtonItem = self.leftItem;
+    }
     
     [self.view addSubview:self.assessSuccessTableView];
     [self.view setNeedsUpdateConstraints];
@@ -119,10 +123,10 @@
                 cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
             }
             cell.selectionStyle = UITableViewCellSeparatorStyleNone;
-            [cell.userActionButton setHidden:YES];
             
             cell.userNameButton.titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:18];
             [cell.userNameButton setTitle:@"评估结果" forState:0];
+            [cell.userActionButton setTitle:@"2016-09-09" forState:0];
             
             return cell;
         }
@@ -199,16 +203,18 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    if (section == 1) {
-        UIView *footerView = [[UIView alloc] init];
-        [footerView addSubview:self.assessSucFooterButton];
-        
-        [self.assessSucFooterButton autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:30];
-        [self.assessSucFooterButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
-        [self.assessSucFooterButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
-        [self.assessSucFooterButton autoSetDimension:ALDimensionHeight toSize:40];
-        
-        return footerView;
+    if ([self.fromType integerValue] == 1) {
+        if (section == 1) {
+            UIView *footerView = [[UIView alloc] init];
+            [footerView addSubview:self.assessSucFooterButton];
+            
+            [self.assessSucFooterButton autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:30];
+            [self.assessSucFooterButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
+            [self.assessSucFooterButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
+            [self.assessSucFooterButton autoSetDimension:ALDimensionHeight toSize:40];
+            
+            return footerView;
+        }
     }
     
     return nil;

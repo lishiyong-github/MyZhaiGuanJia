@@ -405,7 +405,7 @@
                 [cell.agentButton setHidden:NO];
                 cell.agentButton.userInteractionEnabled = YES;
                 [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-                [cell.agentButton setTitle:@"请选择" forState:0];
+                [cell.agentButton setTitle:@"请选择区域" forState:0];
                 
                 [cell.agentButton addAction:^(UIButton *btn) {
                     GuarantyViewController *guarantyVC = [[GuarantyViewController alloc] init];

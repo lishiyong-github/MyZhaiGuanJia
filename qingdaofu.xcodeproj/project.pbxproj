@@ -236,6 +236,10 @@
 		A17F7BE91CE578EB00E882A3 /* JKCountDownButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A17F7BE81CE578EB00E882A3 /* JKCountDownButton.m */; };
 		A17F7BF51CE5C52700E882A3 /* NewPublishCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A17F7BF41CE5C52700E882A3 /* NewPublishCell.m */; };
 		A17F7BFC1CE5DDDA00E882A3 /* ApplyRecordsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A17F7BFB1CE5DDDA00E882A3 /* ApplyRecordsViewController.m */; };
+		A185A7331D61701B00542579 /* ProductsView.m in Sources */ = {isa = PBXBuildFile; fileRef = A185A7321D61701B00542579 /* ProductsView.m */; };
+		A185A7361D61AFBA00542579 /* house_property_evaluation@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A185A7341D61AFBA00542579 /* house_property_evaluation@2x.png */; };
+		A185A7371D61AFBA00542579 /* house_property_evaluation@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A185A7351D61AFBA00542579 /* house_property_evaluation@3x.png */; };
+		A185A73A1D61B0ED00542579 /* HouseAssessListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A185A7391D61B0ED00542579 /* HouseAssessListViewController.m */; };
 		A187B8FD1D502BC600A91A16 /* PowerDetailsView.m in Sources */ = {isa = PBXBuildFile; fileRef = A187B8FC1D502BC600A91A16 /* PowerDetailsView.m */; };
 		A187B9001D50336500A91A16 /* BaseCommitView.m in Sources */ = {isa = PBXBuildFile; fileRef = A187B8FF1D50336500A91A16 /* BaseCommitView.m */; };
 		A187B9091D50646A00A91A16 /* HousePropertyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A187B9081D50646A00A91A16 /* HousePropertyViewController.m */; };
@@ -967,6 +971,12 @@
 		A17F7BF41CE5C52700E882A3 /* NewPublishCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewPublishCell.m; sourceTree = "<group>"; };
 		A17F7BFA1CE5DDDA00E882A3 /* ApplyRecordsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplyRecordsViewController.h; sourceTree = "<group>"; };
 		A17F7BFB1CE5DDDA00E882A3 /* ApplyRecordsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplyRecordsViewController.m; sourceTree = "<group>"; };
+		A185A7311D61701B00542579 /* ProductsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductsView.h; sourceTree = "<group>"; };
+		A185A7321D61701B00542579 /* ProductsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductsView.m; sourceTree = "<group>"; };
+		A185A7341D61AFBA00542579 /* house_property_evaluation@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "house_property_evaluation@2x.png"; sourceTree = "<group>"; };
+		A185A7351D61AFBA00542579 /* house_property_evaluation@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "house_property_evaluation@3x.png"; sourceTree = "<group>"; };
+		A185A7381D61B0ED00542579 /* HouseAssessListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HouseAssessListViewController.h; sourceTree = "<group>"; };
+		A185A7391D61B0ED00542579 /* HouseAssessListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HouseAssessListViewController.m; sourceTree = "<group>"; };
 		A187B8FB1D502BC600A91A16 /* PowerDetailsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PowerDetailsView.h; sourceTree = "<group>"; };
 		A187B8FC1D502BC600A91A16 /* PowerDetailsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PowerDetailsView.m; sourceTree = "<group>"; };
 		A187B8FE1D50336500A91A16 /* BaseCommitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseCommitView.h; sourceTree = "<group>"; };
@@ -2267,6 +2277,8 @@
 		A192B4BC1CDB45EB0053FC4C /* images */ = {
 			isa = PBXGroup;
 			children = (
+				A185A7341D61AFBA00542579 /* house_property_evaluation@2x.png */,
+				A185A7351D61AFBA00542579 /* house_property_evaluation@3x.png */,
 				A19EFBDF1D5D77D300C813D8 /* closew@2x.png */,
 				A19EFBE01D5D77D300C813D8 /* closew@3x.png */,
 				A19EFBE11D5D77D300C813D8 /* logow@2x.png */,
@@ -2778,6 +2790,8 @@
 				A19D294D1CD1E04300DAAEA7 /* HomeCell.m */,
 				A1FB26601CF2D47B00B66608 /* AllProductsChooseView.h */,
 				A1FB26611CF2D47B00B66608 /* AllProductsChooseView.m */,
+				A185A7311D61701B00542579 /* ProductsView.h */,
+				A185A7321D61701B00542579 /* ProductsView.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -3146,6 +3160,8 @@
 				A1A0C8C91D4B21FF00BC63C6 /* HouseChooseViewController.m */,
 				A1A0C8CB1D4B2FC500BC63C6 /* AssessSuccessViewController.h */,
 				A1A0C8CC1D4B2FC500BC63C6 /* AssessSuccessViewController.m */,
+				A185A7381D61B0ED00542579 /* HouseAssessListViewController.h */,
+				A185A7391D61B0ED00542579 /* HouseAssessListViewController.m */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -3615,6 +3631,7 @@
 				A1A5C7521D37502700173533 /* conserve_seat_icon@2x.png in Resources */,
 				A1A34C291CE319C000AD454A /* bond_icon_repayment@2x.png in Resources */,
 				A19BBC541D52D1CE00D8F23A /* img_transfer@2x.png in Resources */,
+				A185A7361D61AFBA00542579 /* house_property_evaluation@2x.png in Resources */,
 				A19BBC731D52E9A200D8F23A /* list_icon_setting@2x.png in Resources */,
 				A18DC9EF1D25120D0021B0BF /* icon-small.png in Resources */,
 				A1A5C75C1D37519900173533 /* conserve_fixed_icon@2x.png in Resources */,
@@ -3821,6 +3838,7 @@
 				A1A5C7571D3750EA00173533 /* conserve_rights_icon@3x.png in Resources */,
 				A19EFBEA1D5D77D300C813D8 /* logow@3x.png in Resources */,
 				A18DC9FC1D2514F60021B0BF /* 1334.png in Resources */,
+				A185A7371D61AFBA00542579 /* house_property_evaluation@3x.png in Resources */,
 				A18FC0671D33949F00B1FCD4 /* button@3x.png in Resources */,
 				A1FB26661CF2E51500B66608 /* select_oepn_s@3x.png in Resources */,
 				A1A97E2F1CDC5C3A00EDE320 /* list_icon_company@3x.png in Resources */,
@@ -3890,6 +3908,7 @@
 				A16391721D20194B0051F1D0 /* FSBasicImageSource.m in Sources */,
 				A19F887C1D51E98000D4EC92 /* CopyCell.m in Sources */,
 				A192B4B41CDB2CAF0053FC4C /* AdditionMessageViewController.m in Sources */,
+				A185A7331D61701B00542579 /* ProductsView.m in Sources */,
 				A18F14161CF6D3C100B14318 /* CaseViewController.m in Sources */,
 				A196CE021CFC1BD400AC6C87 /* AgreementViewController.m in Sources */,
 				A16BA1401CEC11B600A7010C /* EditDebtCreditMessageViewController.m in Sources */,
@@ -3976,6 +3995,7 @@
 				A19D29741CD2158100DAAEA7 /* AuthenPersonViewController.m in Sources */,
 				A159F9681D0D682700A6A024 /* DelayModel.m in Sources */,
 				A1A34C021CE2F8F900AD454A /* MineUserCell.m in Sources */,
+				A185A73A1D61B0ED00542579 /* HouseAssessListViewController.m in Sources */,
 				A168567B1CE992C4006A0887 /* ProductsDetailsViewController.m in Sources */,
 				A1602E741CED8D320053F850 /* CompleteCell.m in Sources */,
 				A17EE3821CD8518600ECC631 /* BaseCommitButton.m in Sources */,

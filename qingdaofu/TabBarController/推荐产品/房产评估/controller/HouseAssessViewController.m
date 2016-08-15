@@ -71,6 +71,7 @@
         QDFWeakSelf;
         [_assessFooterButton addAction:^(UIButton *btn) {
             AssessSuccessViewController *assessSuccessVC = [[AssessSuccessViewController alloc] init];
+            assessSuccessVC.fromType = @"1";
             [weakself.navigationController pushViewController:assessSuccessVC animated:YES];
         }];
     }
@@ -136,6 +137,11 @@
         cell.ediLabel.text = @"小区/地址";
         cell.ediTextView.placeholder = @"请输入小区名称或地址";
         
+        QDFWeakSelf;
+        [cell setDidEndEditing:^(NSString *text) {
+            [weakself.assessDic setObject:text forKey:@"address"];
+        }];
+        
         return cell;
     }
     
@@ -152,6 +158,11 @@
         cell.agentTextField.placeholder = @"请输入面积";
         [cell.agentButton setTitle:@"平米" forState:0];
         
+        QDFWeakSelf;
+        [cell setDidEndEditing:^(NSString *text) {
+            [weakself.assessDic setObject:text forKey:@"size"];
+        }];
+        
         return cell;
     }else if (indexPath.row == 1){//楼栋
         identifier = @"assess11";
@@ -165,6 +176,7 @@
         cell.label2.text = @"号";
         cell.textField2.placeholder = @"请输入室";
         cell.label3.text = @"室";
+        
         
         return cell;
     }else{//楼层
@@ -220,10 +232,11 @@
         HouseChooseViewController *houseChooseVC = [[HouseChooseViewController alloc] init];
         [self.navigationController pushViewController:houseChooseVC animated:YES];
         
-//        QDFWeakSelf;
+        QDFWeakSelf;
         [houseChooseVC setDidSelectedRow:^(NSString *placeString) {
             AgentCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
             cell.agentTextField.text = placeString;
+            [weakself.assessDic setObject:placeString forKey:@"district"];
         }];
     }
 }
@@ -231,7 +244,7 @@
 #pragma mark - method
 - (void)goToAssess
 {
-//    NSString *assessString = [NSString stringWithFormat:@""];
+    NSString *assessString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kHouseAssessString];
 }
 
 
