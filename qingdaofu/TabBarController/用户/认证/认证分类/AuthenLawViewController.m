@@ -8,12 +8,13 @@
 
 #import "AuthenLawViewController.h"
 
-#import "CompleteViewController.h"   //认证成功
+#import "AuthentyWaitingViewController.h"   //认证成功
 
 #import "TakePictureCell.h"
 #import "EditDebtAddressCell.h"
 #import "AgentCell.h"
-#import "BaseCommitButton.h"
+#import "BaseCommitView.h"
+#import "PersonCell.h"
 
 #import "UIViewController+MutipleImageChoice.h"
 
@@ -21,7 +22,7 @@
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *lawAuTableView;
-@property (nonatomic,strong) BaseCommitButton *lawAuCommitButton;
+@property (nonatomic,strong) BaseCommitView *lawAuCommitButton;
 @property (nonatomic,strong) UIAlertController *alertController;
 
 @property (nonatomic,strong) NSString *pictureString;
@@ -61,10 +62,10 @@
     if (!self.didSetupConstraints) {
         
         [self.lawAuTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
-        [self.lawAuTableView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kTabBarHeight];
+        [self.lawAuTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.lawAuCommitButton];
         
         [self.lawAuCommitButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [self.lawAuCommitButton autoSetDimension:ALDimensionHeight toSize:kTabBarHeight];
+        [self.lawAuCommitButton autoSetDimension:ALDimensionHeight toSize:kCellHeight1];
         
         self.didSetupConstraints = YES;
     }
@@ -74,9 +75,8 @@
 - (UITableView *)lawAuTableView
 {
     if (!_lawAuTableView) {
-//        _lawAuTableView = [UITableView newAutoLayoutView];
         _lawAuTableView.translatesAutoresizingMaskIntoConstraints = NO;
-        _lawAuTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
+        _lawAuTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _lawAuTableView.delegate = self;
         _lawAuTableView.dataSource = self;
         _lawAuTableView.tableFooterView = [[UIView alloc] init];
@@ -85,12 +85,12 @@
     return _lawAuTableView;
 }
 
-- (BaseCommitButton *)lawAuCommitButton
+- (BaseCommitView *)lawAuCommitButton
 {
     if (!_lawAuCommitButton) {
-        _lawAuCommitButton = [BaseCommitButton newAutoLayoutView];
-        [_lawAuCommitButton setTitle:@"立即认证" forState:0];
-        [_lawAuCommitButton addTarget:self action:@selector(goToAuthenLawMessages) forControlEvents:UIControlEventTouchUpInside];
+        _lawAuCommitButton = [BaseCommitView newAutoLayoutView];
+        [_lawAuCommitButton.button setTitle:@"提交资料" forState:0];
+        [_lawAuCommitButton.button addTarget:self action:@selector(goToAuthenLawMessages) forControlEvents:UIControlEventTouchUpInside];
     }
     return _lawAuCommitButton;
 }
@@ -122,11 +122,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        return 80;
-    }else if (indexPath.section == 2){
-        if (indexPath.row == 2) {
-            return 70;
-        }
+        return 105 + kBigPadding*2;
     }
     return kCellHeight;
 }
@@ -137,35 +133,37 @@
     
     CertificationModel *certificationModel = self.responseModel.certification;
     
+    QDFWeakSelf;
     if (indexPath.section == 0) {
         identifier = @"authenLaw0";
-        TakePictureCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        
+        PersonCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         if (!cell) {
-            cell = [[TakePictureCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            cell = [[PersonCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        if ([certificationModel.cardimg isEqualToString:@""] || !certificationModel.cardimg) {
-            cell.collectionDataList = [NSMutableArray arrayWithObjects:@"btn_camera", nil];
-        }else{
-            NSString *subString = [certificationModel.cardimg substringWithRange:NSMakeRange(1, certificationModel.cardimg.length-2)];
-            NSString *urlString = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subString];
-            NSURL *url = [NSURL URLWithString:urlString];
-            cell.collectionDataList = [NSMutableArray arrayWithObject:url];
-        }
-               
-        QDFWeak(cell);
-        QDFWeakSelf;
-        [cell setDidSelectedItem:^(NSInteger item) {
+        [cell.pictureButton1 setImage:[UIImage imageNamed:@"upload_positive_image"] forState:0];
+        [cell.pictureButton2 setImage:[UIImage imageNamed:@"upload_opposite_image"] forState:0];
+        
+        [cell.pictureButton1 addAction:^(UIButton *btn) {//正面照
             [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
-                
                 NSData *imgData = [NSData dataWithContentsOfFile:images[0]];
                 NSString *imgStr = [NSString stringWithFormat:@"%@",imgData];
-                [weakself.lawDataDictionary setValue:imgStr forKey:@"cardimgs"];
                 
-                weakcell.collectionDataList = [NSMutableArray arrayWithArray:images];
-                [weakcell reloadData];
+                //                [self.perDataDictionary setValue:imgStr forKey:@"cardimgs"];
+                
+                [btn setImage:[UIImage imageWithContentsOfFile:images[0]] forState:0];
+            }];
+        }];
+        
+        [cell.pictureButton2 addAction:^(UIButton *btn) {//反面照
+            [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
+                NSData *imgData = [NSData dataWithContentsOfFile:images[0]];
+                NSString *imgStr = [NSString stringWithFormat:@"%@",imgData];
+                
+                //                [self.perDataDictionary setValue:imgStr forKey:@"cardimgs"];
+                
+                [btn setImage:[UIImage imageWithContentsOfFile:images[0]] forState:0];
             }];
         }];
         
@@ -186,7 +184,6 @@
         NSArray *perTextArray = @[@"|  基本信息",@"律所名称",@"执业证号",@"联系人",@"联系方式"];
         NSArray *perPlacaTextArray = @[@"",@"请输入您的律所名称",@"请输入17位执业证号",@"请输入联系人姓名",@"请输入您常用的手机号码"];
         
-        cell.leftdAgentContraints.constant = 110;
         cell.agentLabel.text = perTextArray[indexPath.row];
         cell.agentTextField.placeholder = perPlacaTextArray[indexPath.row];
         
@@ -213,7 +210,7 @@
                 [weakself.lawDataDictionary setValue:text forKey:@"contact"];
             }];
         }else{//联系方式
-            cell.agentTextField.text = certificationModel.mobile;
+            cell.agentTextField.text = certificationModel.mobile?certificationModel.mobile:[self getValidateMobile];
             [cell setDidEndEditing:^(NSString *text) {
                 weakcell.agentTextField.text = text;
                 [weakself.lawDataDictionary setValue:text forKey:@"mobile"];
@@ -225,27 +222,27 @@
         
         if (indexPath.row <2) {
             identifier = @"authenLaw2";
-            QDFWeakSelf;
             AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
             
             if (!cell) {
                 cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
+           
+            QDFWeakSelf;
             [cell setTouchBeginPoint:^(CGPoint point) {
                 weakself.touchPoint = point;
             }];
             NSArray *perTesArray = @[@"补充信息",@"邮箱"];
             NSArray *perHolderArray = @[@"",@"请输入您常用邮箱"];
             
-            cell.leftdAgentContraints.constant = 110;
             cell.agentLabel.text = perTesArray[indexPath.row];
             cell.agentTextField.placeholder = perHolderArray[indexPath.row];
             
             QDFWeak(cell);
             if (indexPath.row == 0) {
                 cell.agentTextField.userInteractionEnabled = NO;
-                NSMutableAttributedString *ttt = [cell.agentLabel setAttributeString:@"|  补充信息  " withColor:kBlueColor andSecond:@"(选填)" withColor:kLightGrayColor withFont:12];
+                NSMutableAttributedString *ttt = [cell.agentLabel setAttributeString:@"|  补充信息  " withColor:kBlueColor andSecond:@"(选填)" withColor:kGrayColor withFont:12];
                 [cell.agentLabel setAttributedText:ttt];
             }else { //邮箱
                 cell.agentTextField.text = certificationModel.email;
@@ -257,6 +254,22 @@
             return cell;
         }
         
+        identifier = @"authenLaw3";
+        AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        
+        if (!cell) {
+            cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.agentTextField.userInteractionEnabled = NO;
+        cell.agentButton.userInteractionEnabled = NO;
+        cell.agentLabel.text = @"经典案例";
+        cell.agentTextField.placeholder = @"请输入诉讼、清收等成功案例";
+        [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        
+        return cell;
+        
+        /*
         identifier = @"authenLaw3";
         QDFWeakSelf;
         EditDebtAddressCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -281,6 +294,7 @@
         }];
 
         return cell;
+         */
     }
     
     return nil;
@@ -289,7 +303,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if (section == 0) {
-        return 25;
+        return 35;
     }
     
     return kBigPadding;
@@ -297,7 +311,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (section > 1) {
+    if (section == 2) {
         return kBigPadding;
     }
     return 0.1f;
@@ -306,23 +320,33 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     if (section == 0) {
-        UILabel *headerView = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 25)];
+        UILabel *headerView = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 35)];
         headerView.textAlignment = NSTextAlignmentCenter;
-        
-        NSString *str1 = @"上传验证身份证件照或名片图片";
-        NSString *str2 = @"（必填）";
-        NSString *str3 = [NSString stringWithFormat:@"%@%@",str1,str2];
-        
-        NSMutableAttributedString *attributeStr = [[NSMutableAttributedString alloc] initWithString:str3];
-        
-        [attributeStr setAttributes:@{NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, str1.length)];
-        [attributeStr setAttributes:@{NSForegroundColorAttributeName:kBlackColor} range:NSMakeRange(str1.length, str2.length)];
-        
-        [headerView setAttributedText:attributeStr];
         headerView.font = kSecondFont;
+        headerView.text = @"请上传律所执业图片";
+        headerView.textColor = kGrayColor;
+        
+//        NSString *str1 = @"上传验证身份证件照或名片图片";
+//        NSString *str2 = @"（必填）";
+//        NSString *str3 = [NSString stringWithFormat:@"%@%@",str1,str2];
+//
+//        NSMutableAttributedString *attributeStr = [[NSMutableAttributedString alloc] initWithString:str3];
+//
+//        [attributeStr setAttributes:@{NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, str1.length)];
+//        [attributeStr setAttributes:@{NSForegroundColorAttributeName:kBlackColor} range:NSMakeRange(str1.length, str2.length)];
+//
+//        [headerView setAttributedText:attributeStr];
         return headerView;
     }
     return nil;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 2 || indexPath.row == 2) {
+        NSLog(@"经典案例");
+        [self showHint:@"经典案例"];
+    }
 }
 
 #pragma mark - commit messages
@@ -376,15 +400,15 @@
         [weakself showHint:personModel.msg];
         
         if ([personModel.code isEqualToString:@"0000"]) {
-            UINavigationController *personNav = weakself.navigationController;
-            [personNav popViewControllerAnimated:NO];
-            [personNav popViewControllerAnimated:NO];
-            [personNav popViewControllerAnimated:NO];
+            UINavigationController *lawNav = weakself.navigationController;
+            [lawNav popViewControllerAnimated:NO];
+            [lawNav popViewControllerAnimated:NO];
+            [lawNav popViewControllerAnimated:NO];
             
-            CompleteViewController *completeVC = [[CompleteViewController alloc] init];
-            completeVC.hidesBottomBarWhenPushed = YES;
-            completeVC.categoryString = weakself.categoryString;
-            [personNav pushViewController:completeVC animated:NO];
+            AuthentyWaitingViewController *waitingVC = [[AuthentyWaitingViewController alloc] init];
+            waitingVC.categoryString = weakself.categoryString;
+            waitingVC.hidesBottomBarWhenPushed = YES;
+            [lawNav pushViewController:waitingVC animated:NO];
         }
 
     } andFailBlock:^(NSError *error) {

@@ -27,7 +27,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.leftBarButtonItem = self.leftItem;
-    self.navigationItem.title = @"认证";
+    
+    if ([self.typeAuthty isEqualToString:@"0"]) {
+        self.navigationItem.title = @"身份认证";
+    }else{
+        self.navigationItem.title = @"修改认证";
+    }
     
     [self.view addSubview:self.authenTableView];
     [self.view setNeedsUpdateConstraints];
@@ -47,40 +52,25 @@
 - (UITableView *)authenTableView
 {
     if (!_authenTableView) {
-        _authenTableView = [UITableView newAutoLayoutView];
+        _authenTableView.translatesAutoresizingMaskIntoConstraints = NO;
+        _authenTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _authenTableView.delegate = self;
         _authenTableView.dataSource = self;
         _authenTableView.tableFooterView = [[UIView alloc] init];
         _authenTableView.separatorColor = kSeparateColor;
         _authenTableView.backgroundColor = kBackColor;
-        _authenTableView.tableHeaderView = self.authenHeadView;
         _authenTableView.tableFooterView = self.authenFootView;
     }
     return _authenTableView;
 }
 
-- (UIButton *)authenHeadView
-{
-    if (!_authenHeadView) {
-        _authenHeadView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 56)];
-        
-        [_authenHeadView setTitle:@"请选择认证的身份" forState:0];
-        _authenHeadView.titleLabel.font = [UIFont systemFontOfSize:22];
-        [_authenHeadView setTitleColor:kBlackColor forState:0];
-//        _authenHeadView.label.textAlignment = NSTextAlignmentCenter;
-//        _authenHeadView.label.font = [UIFont systemFontOfSize:22];
-//        _authenHeadView.label.text = @"请选择认证的身份";
-    }
-    return _authenHeadView;
-}
-
 - (UIButton *)authenFootView
 {
     if (!_authenFootView) {
-        _authenFootView = [[UIButton alloc ] initWithFrame:CGRectMake(0, 0, kScreenWidth, 40)];
+        _authenFootView = [[UIButton alloc ] initWithFrame:CGRectMake(0, 0, kScreenWidth, 50)];
         [_authenFootView setTitle:@"在您未发布及未接单前，您可以根据实际需要，修改您的身份认证" forState:0];
         [_authenFootView setTitleColor:kLightGrayColor forState:0];;
-        _authenFootView.titleLabel.font = kSecondFont;
+        _authenFootView.titleLabel.font = kSmallFont;
         [_authenFootView setContentEdgeInsets:UIEdgeInsetsMake(0, kSmallPadding, 0, kSmallPadding)];
         _authenFootView.titleLabel.numberOfLines = 0;
     }
@@ -90,17 +80,15 @@
 #pragma mark - tabelView delegate and datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    return 1;
+}
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return 3;
 }
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *wtwt = @"可发布融资、清收、诉讼";
-    
-    CGSize titleSize = CGSizeMake(kScreenWidth - 175, MAXFLOAT);
-    CGSize  actualsize =[wtwt boundingRectWithSize:titleSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName :kFirstFont} context:nil].size;
-    
-    return 105 + MAX(actualsize.height, 16);
+    return 80 + kBigPadding*2;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -113,48 +101,51 @@
     }
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.AuthenButton.userInteractionEnabled = NO;
     
-    NSArray *imageArr = @[@"list_icon_personal",@"list_icon_firm",@"list_icon_company"];
-    NSArray *textArr = @[@"认证个人",@"认证律所",@"认证公司"];
-    NSArray *detailArr = @[@"可发布清收、诉讼",@"可发布清收、诉讼",@"可发布清收、诉讼"];
-    NSArray *deArr = @[@"暂不支持代理",@"可代理诉讼、清收",@"可代理诉讼、清收"];
+    NSArray *imageArr = @[@"personal_authentication",@"firm_certification",@"company_certification"];
+    NSArray *textArr = @[@"个人认证",@"律所认证",@"公司认证"];
+    NSArray *deArr = @[@"暂不支持代理",@"可代理诉讼、清收",@"可代理清收"];
     
-    cell.aImageView.image = [UIImage imageNamed:imageArr[indexPath.row]];
-    cell.bLabel.text = textArr[indexPath.row];
-    cell.cLabel.text = detailArr[indexPath.row];
-    cell.dLabel.text = deArr[indexPath.row];
-    
-    QDFWeakSelf;
-    [cell.AuthenButton addAction:^(UIButton *btn) {
-        if (indexPath.row == 0) {//认证个人
-            AuthenPersonViewController *authenPersonVC = [[AuthenPersonViewController alloc] init];
-            authenPersonVC.typeAuthen = self.typeAuthty;
-            authenPersonVC.categoryString = [NSString stringWithFormat:@"%ld",indexPath.row+1];
-            [weakself.navigationController pushViewController:authenPersonVC animated:YES];
-        }else if (indexPath.row == 1){//认证律所
-            AuthenLawViewController *authenLawVC = [[AuthenLawViewController alloc] init];
-            authenLawVC.typeAuthen = self.typeAuthty;
-            authenLawVC.categoryString = [NSString stringWithFormat:@"%ld",indexPath.row+1];
-            [weakself.navigationController pushViewController:authenLawVC animated:YES];
-        }else{//认证公司
-            AuthenCompanyViewController *authenCompanyVC = [[AuthenCompanyViewController alloc] init];
-            authenCompanyVC.typeAuthen = self.typeAuthty;
-            authenCompanyVC.categoryString = [NSString stringWithFormat:@"%ld",indexPath.row+1];
-            [weakself.navigationController pushViewController:authenCompanyVC animated:YES];
-        }
-    }];
+    cell.aImageView.image = [UIImage imageNamed:imageArr[indexPath.section]];
+    cell.bLabel.text = textArr[indexPath.section];
+    cell.cLabel.text = @"可发布清收、诉讼";
+    cell.dLabel.text = deArr[indexPath.section];
+    [cell.AuthenButton setTitle:@"  未认证" forState:0];
+    [cell.AuthenButton setTitleColor:kYellowColor forState:0];
+    [cell.AuthenButton setImage:[UIImage imageNamed:@"unauthorized"] forState:0];//authenticated@3x
     
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 0.1;
+    return kBigPadding;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     return 0.1;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 0) {//个人
+        AuthenPersonViewController *authenPersonVC = [[AuthenPersonViewController alloc] init];
+        authenPersonVC.typeAuthen = self.typeAuthty;
+        authenPersonVC.categoryString = [NSString stringWithFormat:@"%ld",indexPath.row+1];
+        [self.navigationController pushViewController:authenPersonVC animated:YES];
+    }else if (indexPath.section == 1){//律所
+        AuthenLawViewController *authenLawVC = [[AuthenLawViewController alloc] init];
+        authenLawVC.typeAuthen = self.typeAuthty;
+        authenLawVC.categoryString = [NSString stringWithFormat:@"%ld",indexPath.row+1];
+        [self.navigationController pushViewController:authenLawVC animated:YES];
+    }else{//公司
+        AuthenCompanyViewController *authenCompanyVC = [[AuthenCompanyViewController alloc] init];
+        authenCompanyVC.typeAuthen = self.typeAuthty;
+        authenCompanyVC.categoryString = [NSString stringWithFormat:@"%ld",indexPath.row+1];
+        [self.navigationController pushViewController:authenCompanyVC animated:YES];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

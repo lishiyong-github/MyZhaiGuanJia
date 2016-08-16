@@ -7,20 +7,20 @@
 //
 
 #import "AuthenPersonViewController.h"
-#import "CompleteViewController.h"   //认证成功
+#import "AuthentyWaitingViewController.h"   //认证成功
+
 
 #import "TakePictureCell.h"
-//#import "EditDebtAddressCell.h"
 #import "AgentCell.h"
-#import "BaseCommitButton.h"
-
+#import "PersonCell.h"
+#import "BaseCommitView.h"
 #import "UIViewController+MutipleImageChoice.h"
 
 @interface AuthenPersonViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *personAuTableView;
-@property (nonatomic,strong) BaseCommitButton *personAuCommitButton;
+@property (nonatomic,strong) BaseCommitView *personAuCommitButton;
 
 @property (nonatomic,strong) NSMutableDictionary *perDataDictionary;
 @property (nonatomic,strong) NSMutableDictionary *perImageDictionary;
@@ -54,10 +54,10 @@
     if (!self.didSetupConstraints) {
         
         [self.personAuTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
-        [self.personAuTableView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kTabBarHeight];
+        [self.personAuTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.personAuCommitButton];
         
         [self.personAuCommitButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [self.personAuCommitButton autoSetDimension:ALDimensionHeight toSize:kTabBarHeight];
+        [self.personAuCommitButton autoSetDimension:ALDimensionHeight toSize:kCellHeight1];
         
         self.didSetupConstraints = YES;
     }
@@ -68,7 +68,7 @@
 {
     if (!_personAuTableView) {
         _personAuTableView.translatesAutoresizingMaskIntoConstraints = NO;
-        _personAuTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
+        _personAuTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _personAuTableView.delegate = self;
         _personAuTableView.dataSource = self;
         _personAuTableView.tableFooterView = [[UIView alloc] init];
@@ -77,13 +77,12 @@
     return _personAuTableView;
 }
 
-- (BaseCommitButton *)personAuCommitButton
+- (BaseCommitView *)personAuCommitButton
 {
     if (!_personAuCommitButton) {
-        _personAuCommitButton = [BaseCommitButton newAutoLayoutView];
-        [_personAuCommitButton setTitle:@"立即认证" forState:0];
-        [_personAuCommitButton addTarget:self action:@selector(goToAuthenMessages) forControlEvents:UIControlEventTouchUpInside];
-
+        _personAuCommitButton = [BaseCommitView newAutoLayoutView];
+        [_personAuCommitButton.button setTitle:@"提交资料" forState:0];
+        [_personAuCommitButton.button addTarget:self action:@selector(goToAuthenMessages) forControlEvents:UIControlEventTouchUpInside];
     }
     return _personAuCommitButton;
 }
@@ -131,7 +130,8 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        return 80;
+        return 105 + kBigPadding*2;
+        
     }
 //    else if (indexPath.section == 2){
 //        if (indexPath.row == 2) {
@@ -148,6 +148,42 @@
     CertificationModel *certificationModel = self.respnseModel.certification;
     QDFWeakSelf;
     if (indexPath.section == 0) {
+        
+        identifier = @"authenPer0";
+        PersonCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        
+        if (!cell) {
+            cell = [[PersonCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        [cell.pictureButton1 setImage:[UIImage imageNamed:@"upload_positive_image"] forState:0];
+        [cell.pictureButton2 setImage:[UIImage imageNamed:@"upload_opposite_image"] forState:0];
+        
+        [cell.pictureButton1 addAction:^(UIButton *btn) {//正面照
+            [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
+                NSData *imgData = [NSData dataWithContentsOfFile:images[0]];
+                NSString *imgStr = [NSString stringWithFormat:@"%@",imgData];
+                
+//                [self.perDataDictionary setValue:imgStr forKey:@"cardimgs"];
+                
+                [btn setImage:[UIImage imageWithContentsOfFile:images[0]] forState:0];
+            }];
+        }];
+        
+        [cell.pictureButton2 addAction:^(UIButton *btn) {//反面照
+            [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
+                NSData *imgData = [NSData dataWithContentsOfFile:images[0]];
+                NSString *imgStr = [NSString stringWithFormat:@"%@",imgData];
+                
+                //                [self.perDataDictionary setValue:imgStr forKey:@"cardimgs"];
+                
+                [btn setImage:[UIImage imageWithContentsOfFile:images[0]] forState:0];
+            }];
+        }];
+        
+        return cell;
+        /*
         identifier = @"authenPer0";
         TakePictureCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         
@@ -177,6 +213,7 @@
             }];
         }];
         return cell;
+         */
         
     }else if (indexPath.section == 1){
         identifier = @"authenPer1";
@@ -190,10 +227,9 @@
             weakself.touchPoint = point;
         }];
         
-        NSArray *perTextArray = @[@"|  基本信息",@"姓名",@"身份证",@"联系方式"];
-        NSArray *perPlacaTextArray = @[@"",@"请输入您的姓名",@"请输入您的身份证号码",@"请输入您常用的手机号码"];
+        NSArray *perTextArray = @[@"|  基本信息",@"姓名",@"身份证",@"手机号码"];
+        NSArray *perPlacaTextArray = @[@"",@"请输入您的姓名",@"请输入您的身份证号码",@"请输入您的手机号码"];
         
-        cell.leftdAgentContraints.constant = 110;
         cell.agentLabel.text = perTextArray[indexPath.row];
         cell.agentTextField.placeholder = perPlacaTextArray[indexPath.row];
         
@@ -240,13 +276,12 @@
             NSArray *perTesArray = @[@"补充信息",@"邮箱"];
             NSArray *perHolderArray = @[@"",@"请输入您常用邮箱"];
             
-            cell.leftdAgentContraints.constant = 110;
             cell.agentLabel.text = perTesArray[indexPath.row];
             cell.agentTextField.placeholder = perHolderArray[indexPath.row];
             
             if (indexPath.row == 0) {
                 cell.agentTextField.userInteractionEnabled = NO;
-                NSMutableAttributedString *ttt = [cell.agentLabel setAttributeString:@"|  补充信息  " withColor:kBlueColor andSecond:@"(选填)" withColor:kLightGrayColor withFont:12];
+                NSMutableAttributedString *ttt = [cell.agentLabel setAttributeString:@"|  补充信息  " withColor:kBlueColor andSecond:@"(选填)" withColor:kGrayColor withFont:12];
                 [cell.agentLabel setAttributedText:ttt];
             }else{
                 cell.agentTextField.text = certificationModel.email;
@@ -291,7 +326,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if (section == 0) {
-        return 25;
+        return 35;
     }
     
     return kBigPadding;
@@ -308,20 +343,23 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     if (section == 0) {
-        UILabel *headerView = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 25)];
+        UILabel *headerView = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 35)];
         headerView.textAlignment = NSTextAlignmentCenter;
-
-        NSString *str1 = @"上传验证身份证件照或名片图片";
-        NSString *str2 = @"（选填）";
-        NSString *str3 = [NSString stringWithFormat:@"%@%@",str1,str2];
-        
-        NSMutableAttributedString *attributeStr = [[NSMutableAttributedString alloc] initWithString:str3];
-        
-        [attributeStr setAttributes:@{NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, str1.length)];
-        [attributeStr setAttributes:@{NSForegroundColorAttributeName:kBlackColor} range:NSMakeRange(str1.length, str2.length)];
-        
-        [headerView setAttributedText:attributeStr];
+        headerView.text = @"请上传一张【工牌或名片或身份证】等证明身份的图片";
         headerView.font = kSecondFont;
+        headerView.textColor = kGrayColor;
+        
+//        NSString *str1 = @"请上传一张[工牌或名片或身份证]等证明身份的图片";
+//        NSString *str2 = @"（选填）";
+//        NSString *str3 = [NSString stringWithFormat:@"%@%@",str1,str2];
+//        
+//        NSMutableAttributedString *attributeStr = [[NSMutableAttributedString alloc] initWithString:str3];
+//        
+//        [attributeStr setAttributes:@{NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, str1.length)];
+//        [attributeStr setAttributes:@{NSForegroundColorAttributeName:kBlackColor} range:NSMakeRange(str1.length, str2.length)];
+//        
+//        [headerView setAttributedText:attributeStr];
+//        headerView.font = kSecondFont;
         return headerView;
     }
     return nil;
@@ -371,11 +409,12 @@
             UINavigationController *nav = weakself.navigationController;
             [nav popViewControllerAnimated:NO];
             [nav popViewControllerAnimated:NO];
-            [nav popToRootViewControllerAnimated:NO];
-            CompleteViewController *completeVC = [[CompleteViewController alloc] init];
-            completeVC.categoryString = weakself.categoryString;
-            completeVC.hidesBottomBarWhenPushed = YES;
-            [nav pushViewController:completeVC animated:NO];
+            [nav popViewControllerAnimated:NO];
+            
+            AuthentyWaitingViewController *waitingVC = [[AuthentyWaitingViewController alloc] init];
+            waitingVC.categoryString = weakself.categoryString;
+            waitingVC.hidesBottomBarWhenPushed = YES;
+            [nav pushViewController:waitingVC animated:NO];
         }
         
     } andFailBlock:^(NSError *error) {

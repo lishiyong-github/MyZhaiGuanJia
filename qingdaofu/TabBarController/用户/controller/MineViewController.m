@@ -13,6 +13,7 @@
 #import "LoginViewController.h"     //登录
 #import "AuthentyViewController.h"  //未认证
 #import "CompleteViewController.h"  //已认证
+#import "AuthentyWaitingViewController.h"  //正在等待认证
 
 #import "MyReleaseViewController.h" //我的发布
 #import "MyOrderViewController.h"  //我的接单
@@ -114,6 +115,12 @@
                                     authentyVC.hidesBottomBarWhenPushed = YES;
                                     authentyVC.typeAuthty = @"0";
                                     [weakself.navigationController pushViewController:authentyVC animated:YES];
+                                    
+                                    
+//                                    AuthentyWaitingViewController *authentyWaitingVC = [[AuthentyWaitingViewController alloc] init];
+//                                    authentyWaitingVC.hidesBottomBarWhenPushed = YES;
+//                                    authentyWaitingVC.categoryString = @"1";
+//                                    [weakself.navigationController pushViewController:authentyWaitingVC animated:YES];
                                 }
                             }
                                 break;

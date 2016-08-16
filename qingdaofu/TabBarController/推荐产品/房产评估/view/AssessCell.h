@@ -18,6 +18,6 @@
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 
-@property (nonatomic,strong) void (^didEndEditing)(NSString *);
+@property (nonatomic,strong) void (^didEndEditing)(NSString *,NSInteger);
 
 @end

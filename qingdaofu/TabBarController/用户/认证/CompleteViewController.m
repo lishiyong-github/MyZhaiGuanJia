@@ -14,7 +14,7 @@
 #import "AuthenCompanyViewController.h"
 
 #import "MineUserCell.h"
-#import "BaseCommitButton.h"
+#import "BaseCommitView.h"
 
 #import "CompleteCell.h"
 #import "CompleteLawCell.h"
@@ -32,7 +32,7 @@
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *completeTableView;
 @property (nonatomic,strong) UIButton *comFooterView;
-@property (nonatomic,strong) BaseCommitButton *completeCommitButton;
+@property (nonatomic,strong) BaseCommitView *completeCommitButton;
 @property (nonatomic,strong) UIButton *navRightButton;
 
 @property (nonatomic,strong) NSMutableArray *completeDataArray;
@@ -112,26 +112,24 @@
 - (UITableView *)completeTableView
 {
     if (!_completeTableView) {
-        _completeTableView = [UITableView newAutoLayoutView];
+        _completeTableView.translatesAutoresizingMaskIntoConstraints = NO;
+        _completeTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _completeTableView.delegate = self;
         _completeTableView.dataSource = self;
         _completeTableView.backgroundColor = kBackColor;
         _completeTableView.separatorInset = UIEdgeInsetsZero;
-        _completeTableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
-        _completeTableView.tableFooterView = [[UIView alloc] init];
-        [_completeTableView.tableFooterView addSubview:self.comFooterView];
     }
     return _completeTableView;
 }
 
-- (BaseCommitButton *)completeCommitButton
+- (BaseCommitView *)completeCommitButton
 {
     if (!_completeCommitButton) {
-        _completeCommitButton = [BaseCommitButton newAutoLayoutView];
-        [_completeCommitButton setTitle:@"修改认证" forState:0];
+        _completeCommitButton = [BaseCommitView newAutoLayoutView];
+        [_completeCommitButton.button setTitle:@"修改认证" forState:0];
         
         QDFWeakSelf;
-        [_completeCommitButton addAction:^(UIButton *btn) {
+        [_completeCommitButton.button addAction:^(UIButton *btn) {
             AuthentyViewController *authentyVC = [[AuthentyViewController alloc] init];
             authentyVC.typeAuthty = @"1";
             [weakself.navigationController pushViewController:authentyVC animated:YES];
@@ -164,252 +162,173 @@
 }
 
 #pragma mark - tableView delegate and datasource
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return 2;
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CompleteResponse *response;
-    if (self.completeDataArray.count > 0) {
-        response = self.completeDataArray[0];
-    }
-    
-    CGSize titleSize = CGSizeMake(kScreenWidth - 137, MAXFLOAT);
-    CGSize  actualsize =[response.certification.casedesc boundingRectWithSize:titleSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName :kFirstFont} context:nil].size;
-    
-    if ([self.categoryString intValue] == 1) {//个人
-        if (indexPath.row == 0) {
-            return kCellHeight;
-        }
-        return 215;
-        
-    }else if ([self.categoryString intValue] == 2){//律所
-        if (indexPath.row == 0) {
-            return kCellHeight;
-        }
-        
-        return 250+MAX(actualsize.height, 33);
-    }
-    
-    //公司
-    if (indexPath.row == 0) {
-        return kCellHeight;
-    }
-    return 320 + MAX(actualsize.height, 33);
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *identifier;
-    if (indexPath.row == 0) {
-        identifier = @"complete0";
-        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        
-        if (!cell) {
-            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        [cell.userNameButton setTitle:@"|  认证信息" forState:0];
-        [cell.userNameButton setTitleColor:kBlueColor forState:0];
-        
+    if ([self.categoryString integerValue] > 1) {//律所
         CompleteResponse *response;
         if (self.completeDataArray.count > 0) {
             response = self.completeDataArray[0];
         }
         
-        if ([response.certification.canModify integerValue] == 0) {//canModify＝1可以修改，＝0不可修改
-            [cell.userActionButton setHidden:YES];
-        }
+        CGSize titleSize = CGSizeMake(kScreenWidth - 137, MAXFLOAT);
+        CGSize  actualsize =[response.certification.casedesc boundingRectWithSize:titleSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName :kFirstFont} context:nil].size;
         
-        if ([response.completionRate floatValue] < 1) {
-            [cell.userActionButton setHidden:NO];
-            [cell.userActionButton setTitle:@"编辑" forState:0];
-            [cell.userActionButton setTitleColor:kBlueColor forState:0];
-            cell.userActionButton.titleLabel.font = kFirstFont;
-            QDFWeakSelf;
-            [cell.userActionButton addAction:^(UIButton *btn) {
-                [weakself goToEditCompleteMessagesWithResponseModel:response];
-            }];
+        if ([self.categoryString integerValue] == 2) {
+            if (indexPath.row == 5) {
+                return 11 + MAX(actualsize.height, 33);
+            }
+            return kCellHeight;
+        }else{
+            if (indexPath.row == 7) {
+                return 11 + MAX(actualsize.height, 33);
+            }
+            return kCellHeight;
         }
-        return cell;
     }
-    
-    //具体信息
-    CompleteResponse *response;
-    CertificationModel *certificationModel;
+    return kCellHeight;
+}
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     if (self.completeDataArray.count > 0) {
+        CompleteResponse *response;
         response = self.completeDataArray[0];
-        certificationModel = response.certification;
+        
+        if ([self.categoryString integerValue] == 1) {
+            return 4;
+        }else if ([self.categoryString integerValue] == 2){
+            return 6;
+        }else if ([self.categoryString integerValue] == 3){
+            return 8;
+        }
     }
     
-    QDFWeakSelf;
-    if ([self.categoryString intValue] == 1) {//个人
-        identifier = @"complete11";
-        CompleteCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        
-        if (!cell) {
-            cell = [[CompleteCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        NSString *nameStr = [NSString getValidStringFromString:certificationModel.name];
-        NSMutableAttributedString *nameString = [cell.comNameLabel setAttributeString:@"姓名：            " withColor:kBlackColor andSecond:nameStr withColor:kLightGrayColor withFont:14];
-        [cell.comNameLabel setAttributedText:nameString];
-        
-        NSString *IDStr = [NSString getValidStringFromString:certificationModel.cardno];
-        NSMutableAttributedString *IDString = [cell.comIDLabel setAttributeString:@"身份证号码：" withColor:kBlackColor andSecond:IDStr withColor:kLightGrayColor withFont:14];
-        [cell.comIDLabel setAttributedText:IDString];
-        
-        //图片
-        if ([certificationModel.cardimg isEqualToString:@""] || !certificationModel.cardimg) {
-            [cell.comPicButton setImage:[UIImage imageNamed:@"account_bitmap"] forState:0];
-        }else{
-            NSString *subString = [certificationModel.cardimg substringWithRange:NSMakeRange(1, certificationModel.cardimg.length-2)];
-            NSString *urlString = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subString];
-            NSURL *url = [NSURL URLWithString:urlString];
+    return 0;
+}
 
-            [cell.comPicButton sd_setImageWithURL:url forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
-            
-//            [cell.comPicButton sd_setBackgroundImageWithURL:url forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
-            [cell.comPicButton addAction:^(UIButton *btn) {
-                [weakself showImages:@[url]];
-            }];
-        }
-        
-        NSString *mobileStr = [NSString getValidStringFromString:certificationModel.mobile];
-        NSMutableAttributedString *mobileString = [cell.comIDLabel setAttributeString:@"联系方式：    " withColor:kBlackColor andSecond:mobileStr withColor:kLightGrayColor withFont:14];
-        [cell.mobileLabel setAttributedText:mobileString];
-        
-        NSString *emailStr = [NSString getValidStringFromString:certificationModel.email];
-        NSMutableAttributedString *mailString = [cell.comMailLabel setAttributeString:@"邮箱：            " withColor:kBlackColor andSecond:emailStr withColor:kLightGrayColor withFont:14];
-        [cell.comMailLabel setAttributedText:mailString];
-//        
-//        cell.comExampleLabel.text = @"经典案例：   ";
-//        cell.comExampleLabel2.text = [NSString getValidStringFromString:certificationModel.casedesc];
-//        
-        return cell;
-        
-    }else if ([self.categoryString intValue] == 2){//律所
-        identifier = @"complete12";
-        CompleteLawCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        
-        if (!cell) {
-            cell = [[CompleteLawCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        NSString *nameStr = [NSString getValidStringFromString:certificationModel.name];
-        NSMutableAttributedString *nameString = [cell.comNameLabel setAttributeString:@"律所名称：" withColor:kBlackColor andSecond:nameStr withColor:kLightGrayColor withFont:14];
-        [cell.comNameLabel setAttributedText:nameString];
-        
-        NSString *IDStr = [NSString getValidStringFromString:certificationModel.cardno];
-        NSMutableAttributedString *IDString = [cell.comIDLabel setAttributeString:@"执业证号：" withColor:kBlackColor andSecond:IDStr withColor:kLightGrayColor withFont:14];
-        [cell.comIDLabel setAttributedText:IDString];
-        
-        //图片
-        if ([certificationModel.cardimg isEqualToString:@""] || !certificationModel.cardimg) {
-            [cell.comPicButton setImage:[UIImage imageNamed:@"account_bitmap"] forState:0];
-        }else{
-            NSString *subString = [certificationModel.cardimg substringWithRange:NSMakeRange(1, certificationModel.cardimg.length-2)];
-            NSString *urlString = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subString];
-            NSURL *url = [NSURL URLWithString:urlString];
-            [cell.comPicButton sd_setImageWithURL:url forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
-            [cell.comPicButton addAction:^(UIButton *btn) {
-                [weakself showImages:@[url]];
-            }];
-        }
-        
-        NSString *contactStr = [NSString getValidStringFromString:certificationModel.contact];
-        NSMutableAttributedString *personNameString = [cell.comPersonNameLabel setAttributeString:@"联系人：    " withColor:kBlackColor andSecond:contactStr withColor:kLightGrayColor withFont:14];
-        [cell.comPersonNameLabel setAttributedText:personNameString];
-        
-        NSString *mobileStr = [NSString getValidStringFromString:certificationModel.mobile];
-        NSMutableAttributedString *personTelString = [cell.comPersonTelLabel setAttributeString:@"联系方式：" withColor:kBlackColor andSecond:mobileStr withColor:kLightGrayColor withFont:14];
-        [cell.comPersonTelLabel setAttributedText:personTelString];
-        
-        NSString *emailStr = [NSString getValidStringFromString:certificationModel.email];
-        NSMutableAttributedString *mailString = [cell.comMailLabel setAttributeString:@"邮箱：        " withColor:kBlackColor andSecond:emailStr withColor:kLightGrayColor withFont:14];
-        [cell.comMailLabel setAttributedText:mailString];
-        
-        cell.comExampleLabel.text = @"经典案例：";
-        cell.comExampleLabel2.text = [NSString getValidStringFromString:certificationModel.casedesc];
-        
-        return cell;
-
-    }else if([self.categoryString intValue] == 3){//公司
-        identifier = @"complete13";
-        CompleteCompanyTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        
-        if (!cell) {
-            cell = [[CompleteCompanyTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        NSString *nameStr = [NSString getValidStringFromString:certificationModel.name];
-        NSMutableAttributedString *nameString = [cell.comNameLabel setAttributeString:@"公司名称：        " withColor:kBlackColor andSecond:nameStr withColor:kLightGrayColor withFont:14];
-        [cell.comNameLabel setAttributedText:nameString];
-        
-        NSString *IDStr = [NSString getValidStringFromString:certificationModel.cardno];
-        NSMutableAttributedString *IDString = [cell.comIDLabel setAttributeString:@"营业执照号：    " withColor:kBlackColor andSecond:IDStr withColor:kLightGrayColor withFont:14];
-        [cell.comIDLabel setAttributedText:IDString];
-        
-        //图片
-        if ([certificationModel.cardimg isEqualToString:@""] || !certificationModel.cardimg) {
-            [cell.comPicButton setBackgroundImage:[UIImage imageNamed:@"account_bitmap"] forState:0];
-        }else{
-            NSString *subString = [certificationModel.cardimg substringWithRange:NSMakeRange(1, certificationModel.cardimg.length-2)];
-            NSString *urlString = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subString];
-            NSURL *url = [NSURL URLWithString:urlString];
-            [cell.comPicButton sd_setImageWithURL:url forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
-            
-            [cell.comPicButton addAction:^(UIButton *btn) {
-                [weakself showImages:@[url]];
-            }];
-        }
-        
-        NSString *contactStr = [NSString getValidStringFromString:certificationModel.contact];
-        NSMutableAttributedString *personNameString = [cell.comPersonNameLabel setAttributeString:@"联系人：            " withColor:kBlackColor andSecond:contactStr withColor:kLightGrayColor withFont:14];
-        [cell.comPersonNameLabel setAttributedText:personNameString];
-        
-        NSString *mobileStr = [NSString getValidStringFromString:certificationModel.mobile];
-        NSMutableAttributedString *personTelString = [cell.comPersonTelLabel setAttributeString:@"联系方式：        " withColor:kBlackColor andSecond:mobileStr withColor:kLightGrayColor withFont:14];
-        [cell.comPersonTelLabel setAttributedText:personTelString];
-        
-        NSString *emailStr = [NSString getValidStringFromString:certificationModel.email];
-        NSMutableAttributedString *mailString = [cell.comMailLabel setAttributeString:@"企业邮箱：        " withColor:kBlackColor andSecond:emailStr withColor:kLightGrayColor withFont:14];
-        [cell.comMailLabel setAttributedText:mailString];
-        
-        NSString *addressStr = [NSString getValidStringFromString:certificationModel.address];
-        NSMutableAttributedString *addressString = [cell.comAddressLabel setAttributeString:@"企业经营地址：" withColor:kBlackColor andSecond:addressStr withColor:kLightGrayColor withFont:14];
-        [cell.comAddressLabel setAttributedText:addressString];
-        
-        NSString *enterprisewebsiteStr = [NSString getValidStringFromString:certificationModel.enterprisewebsite];
-        NSMutableAttributedString *websiteString = [cell.comWebsiteLabel setAttributeString:@"公司网站：        " withColor:kBlackColor andSecond:enterprisewebsiteStr withColor:kLightGrayColor withFont:14];
-        [cell.comWebsiteLabel setAttributedText:websiteString];
-        
-        cell.comExampleLabel.text = @"经典案例：";
-        cell.comExampleLabel2.text = [NSString getValidStringFromString:certificationModel.casedesc];
-        
-        return cell;
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *identifier = @"complete";
+    MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    
+    if (!cell) {
+        cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
     
-    return nil;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
+    cell.userNameButton.titleLabel.font = kFirstFont;
+    [cell.userActionButton setTitleColor:kBlackColor forState:0];
+    cell.userActionButton.titleLabel.font = kBigFont;
+    
+    CertificationModel *model;
+    if (self.completeDataArray.count > 0) {
+        CompleteResponse *response = self.completeDataArray[0];
+        model = response.certification;
+    }
+    
+    if ([self.categoryString integerValue] == 1) {//个人
+        if (indexPath.row == 0) {
+            [cell.userNameButton setTitle:@"姓名" forState:0];
+            [cell.userActionButton setTitle:model.name forState:0];
+        }else if (indexPath.row == 1){
+            [cell.userNameButton setTitle:@"身份证" forState:0];
+            [cell.userActionButton setTitle:model.cardno forState:0];
+        }else if (indexPath.row == 2){
+            [cell.userNameButton setTitle:@"联系方式" forState:0];
+            [cell.userActionButton setTitle:model.mobile forState:0];
+        }else if (indexPath.row == 3){
+            [cell.userNameButton setTitle:@"邮箱" forState:0];
+            [cell.userActionButton setTitle:[NSString getValidStringFromString:model.email] forState:0];
+        }
+    }else if ([self.categoryString integerValue] == 2){//律所
+        if (indexPath.row == 0) {
+            [cell.userNameButton setTitle:@"律所名称" forState:0];
+            [cell.userActionButton setTitle:model.name forState:0];
+        }else if (indexPath.row == 1){
+            [cell.userNameButton setTitle:@"执业证号" forState:0];
+            [cell.userActionButton setTitle:model.cardno forState:0];
+        }else if (indexPath.row == 2){
+            [cell.userNameButton setTitle:@"联系人" forState:0];
+            [cell.userActionButton setTitle:model.contact forState:0];
+        }else if (indexPath.row == 3){
+            [cell.userNameButton setTitle:@"联系方式" forState:0];
+            [cell.userActionButton setTitle:model.mobile forState:0];
+        }else if (indexPath.row == 4){
+            [cell.userNameButton setTitle:@"邮箱" forState:0];
+            [cell.userActionButton setTitle:[NSString getValidStringFromString:model.email] forState:0];
+        }else if (indexPath.row == 5){
+            [cell.userNameButton setTitle:@"经典案例" forState:0];
+            [cell.userActionButton setTitle:[NSString getValidStringFromString:model.casedesc] forState:0];
+        }
+    }else if ([self.categoryString integerValue] == 3){//公司
+        if (indexPath.row == 0) {
+            [cell.userNameButton setTitle:@"公司名称" forState:0];
+            [cell.userActionButton setTitle:model.name forState:0];
+        }else if (indexPath.row == 1){
+            [cell.userNameButton setTitle:@"营业执照号" forState:0];
+            [cell.userActionButton setTitle:model.cardno forState:0];
+        }else if (indexPath.row == 2){
+            [cell.userNameButton setTitle:@"联系人" forState:0];
+            [cell.userActionButton setTitle:model.contact forState:0];
+        }else if (indexPath.row == 3){
+            [cell.userNameButton setTitle:@"联系方式" forState:0];
+            [cell.userActionButton setTitle:model.mobile forState:0];
+        }else if (indexPath.row == 4){
+            [cell.userNameButton setTitle:@"企业邮箱" forState:0];
+            [cell.userActionButton setTitle:[NSString getValidStringFromString:model.email] forState:0];
+        }
+        else if (indexPath.row == 5){
+            [cell.userNameButton setTitle:@"企业地址" forState:0];
+            [cell.userActionButton setTitle:[NSString getValidStringFromString:model.address] forState:0];
+        }
+        else if (indexPath.row == 6){
+            [cell.userNameButton setTitle:@"公司网站" forState:0];
+            [cell.userActionButton setTitle:[NSString getValidStringFromString:model.enterprisewebsite] forState:0];
+        }
+        else if (indexPath.row == 7){
+            [cell.userNameButton setTitle:@"经典案例" forState:0];
+            [cell.userActionButton setTitle:[NSString getValidStringFromString:model.casedesc] forState:0];
+        }
+    }
+    return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 0.1;
+    return 150;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return 0.1;
+    return 50;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *headerView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 150)];
+    headerView.backgroundColor = kBackColor;
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 140)];
+    [imageView setImage:[UIImage imageNamed:@"certification_success_banner"]];
+    [headerView addSubview:imageView];
+    
+    return headerView;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 50)];
+    
+    UILabel *label = [UILabel newAutoLayoutView];
+    label.textColor = kLightGrayColor;
+    label.text = @"在您未发布及未接单前，您可以根据实际需要，修改您的身份认证";
+    label.font = kSmallFont;
+    label.numberOfLines = 0;
+    [footerView addSubview:label];
+    
+    [label autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(kBigPadding, kBigPadding, 0, kBigPadding) excludingEdge:ALEdgeBottom];
+    
+    return footerView;
 }
 
 #pragma mark - method
@@ -427,9 +346,7 @@
         [weakself.completeTableView reloadData];
         
         if ([response.certification.canModify integerValue] == 0) {//canModify＝1可以修改，＝0不可修改
-            [weakself.completeCommitButton setBackgroundColor:kSelectedColor];
-            [weakself.completeCommitButton setTitle:@"不可修改认证" forState:0];
-            [weakself.completeCommitButton setTitleColor:kBlackColor forState:0];
+            [weakself.completeCommitButton.button setTitle:@"不可修改认证" forState:0];
             weakself.completeCommitButton.userInteractionEnabled = NO;
         }
     } andFailBlock:^(NSError *error){

@@ -67,6 +67,8 @@
         _textField1.textColor = kBlackColor;
         _textField1.font = kFirstFont;
         _textField1.keyboardType = UIKeyboardTypeNumberPad;
+        _textField1.delegate = self;
+        _textField1.tag = 11;
     }
     return _textField1;
 }
@@ -86,6 +88,8 @@
         _textField2.textColor = kBlackColor;
         _textField2.font = kFirstFont;
         _textField2.keyboardType = UIKeyboardTypeNumberPad;
+        _textField2.delegate = self;
+        _textField1.tag = 12;
     }
     return _textField2;
 }
@@ -98,6 +102,22 @@
     }
     return _label3;
 }
+
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    if (self.didEndEditing) {
+        self.didEndEditing(textField.text,textField.tag);
+    }
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
+
+
 - (void)awakeFromNib {
     [super awakeFromNib];
 

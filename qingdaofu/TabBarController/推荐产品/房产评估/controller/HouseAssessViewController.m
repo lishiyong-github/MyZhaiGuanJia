@@ -70,9 +70,7 @@
         
         QDFWeakSelf;
         [_assessFooterButton addAction:^(UIButton *btn) {
-            AssessSuccessViewController *assessSuccessVC = [[AssessSuccessViewController alloc] init];
-            assessSuccessVC.fromType = @"1";
-            [weakself.navigationController pushViewController:assessSuccessVC animated:YES];
+            [weakself goToAssess];
         }];
     }
     return _assessFooterButton;
@@ -177,6 +175,14 @@
         cell.textField2.placeholder = @"请输入室";
         cell.label3.text = @"室";
         
+        QDFWeakSelf;
+        [cell setDidEndEditing:^(NSString *text, NSInteger tag) {
+            if (tag == 11) {//号
+                [weakself.assessDic setObject:text forKey:@"buildingNumber"];
+            }else{//室
+                [weakself.assessDic setObject:text forKey:@"unitNumber"];
+            }
+        }];
         
         return cell;
     }else{//楼层
@@ -191,6 +197,15 @@
         cell.label2.text = @"层";
         cell.textField2.placeholder = @"请输入共几层";
         cell.label3.text = @"层";
+        
+        QDFWeakSelf;
+        [cell setDidEndEditing:^(NSString *text, NSInteger tag) {
+            if (tag == 11) {//层
+                [weakself.assessDic setObject:text forKey:@"floor"];
+            }else{//总共层
+                [weakself.assessDic setObject:text forKey:@"maxFloor"];
+            }
+        }];
         
         return cell;
     }
@@ -245,6 +260,13 @@
 - (void)goToAssess
 {
     NSString *assessString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kHouseAssessString];
+    
+    self.assessDic[@"district"] = [self.assessDic[@"district"] getValidStringFromString:self.assessDic[@""] toString:@""];
+    
+    
+//    AssessSuccessViewController *assessSuccessVC = [[AssessSuccessViewController alloc] init];
+//    assessSuccessVC.fromType = @"1";
+//    [weakself.navigationController pushViewController:assessSuccessVC animated:YES];
 }
 
 

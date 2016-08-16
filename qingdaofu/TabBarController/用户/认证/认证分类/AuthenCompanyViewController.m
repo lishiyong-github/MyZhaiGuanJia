@@ -8,12 +8,13 @@
 
 #import "AuthenCompanyViewController.h"
 
-#import "CompleteViewController.h"   //认证成功
+#import "AuthentyWaitingViewController.h"   //认证成功
 
 #import "TakePictureCell.h"
 #import "EditDebtAddressCell.h"
 #import "AgentCell.h"
-#import "BaseCommitButton.h"
+#import "BaseCommitView.h"
+#import "PersonCell.h"
 
 #import "UIViewController+MutipleImageChoice.h"
 
@@ -21,7 +22,7 @@
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *companyAuTableView;
-@property (nonatomic,strong) BaseCommitButton *companyAuCommitButton;
+@property (nonatomic,strong) BaseCommitView *companyAuCommitButton;
 
 @property (nonatomic,strong) NSMutableDictionary *comDataDictionary;
 @property (nonatomic,strong) NSMutableArray *imageArray;
@@ -29,7 +30,6 @@
 @end
 
 @implementation AuthenCompanyViewController
-
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -56,10 +56,10 @@
     if (!self.didSetupConstraints) {
         
         [self.companyAuTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
-        [self.companyAuTableView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kTabBarHeight];
+        [self.companyAuTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.companyAuCommitButton];
         
         [self.companyAuCommitButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [self.companyAuCommitButton autoSetDimension:ALDimensionHeight toSize:kTabBarHeight];
+        [self.companyAuCommitButton autoSetDimension:ALDimensionHeight toSize:kCellHeight1];
         
         self.didSetupConstraints = YES;
     }
@@ -70,7 +70,7 @@
 {
     if (!_companyAuTableView) {
         _companyAuTableView.translatesAutoresizingMaskIntoConstraints = NO;
-        _companyAuTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
+        _companyAuTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _companyAuTableView.delegate = self;
         _companyAuTableView.dataSource = self;
         _companyAuTableView.tableFooterView = [[UIView alloc] init];
@@ -79,12 +79,12 @@
     return _companyAuTableView;
 }
 
-- (BaseCommitButton *)companyAuCommitButton
+- (BaseCommitView *)companyAuCommitButton
 {
     if (!_companyAuCommitButton) {
-        _companyAuCommitButton = [BaseCommitButton newAutoLayoutView];
-        [_companyAuCommitButton setTitle:@"立即认证" forState:0];
-        [_companyAuCommitButton addTarget:self action:@selector(goToAuthenCompanyMessages) forControlEvents:UIControlEventTouchUpInside];
+        _companyAuCommitButton = [BaseCommitView newAutoLayoutView];
+        [_companyAuCommitButton.button setTitle:@"提交资料" forState:0];
+        [_companyAuCommitButton.button addTarget:self action:@selector(goToAuthenCompanyMessages) forControlEvents:UIControlEventTouchUpInside];
     }
     return _companyAuCommitButton;
 }
@@ -125,12 +125,9 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        return 80;
-    }else if (indexPath.section == 2){
-        if (indexPath.row == 4) {
-            return 70;
-        }
+        return 105 + kBigPadding*2;
     }
+    
     return kCellHeight;
 }
 
@@ -140,36 +137,36 @@
     CertificationModel *certificationModel = self.responseModel.certification;
     if (indexPath.section == 0) {
         identifier = @"authenPer0";
-        TakePictureCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        
+        PersonCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         if (!cell) {
-            cell = [[TakePictureCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            cell = [[PersonCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        if ([certificationModel.cardimg isEqualToString:@""] || !certificationModel.cardimg) {
-            cell.collectionDataList = [NSMutableArray arrayWithObjects:@"btn_camera", nil];
-        }else{
-            NSString *subString = [certificationModel.cardimg substringWithRange:NSMakeRange(1, certificationModel.cardimg.length-2)];
-            NSString *urlString = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subString];
-            NSURL *url = [NSURL URLWithString:urlString];
-            cell.collectionDataList = [NSMutableArray arrayWithObject:url];
-        }
-
+        [cell.pictureButton1 setImage:[UIImage imageNamed:@"upload_positive_image"] forState:0];
+        [cell.pictureButton2 setImage:[UIImage imageNamed:@"upload_opposite_image"] forState:0];
+        
         QDFWeakSelf;
-        QDFWeak(cell);
-        [cell setDidSelectedItem:^(NSInteger itemTag) {
-            
+        [cell.pictureButton1 addAction:^(UIButton *btn) {//正面照
             [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
-                
                 NSData *imgData = [NSData dataWithContentsOfFile:images[0]];
                 NSString *imgStr = [NSString stringWithFormat:@"%@",imgData];
                 [self.comDataDictionary setValue:imgStr forKey:@"cardimgs"];
-                
-                weakcell.collectionDataList = [NSMutableArray arrayWithArray:images];
-                [weakcell reloadData];
+                [btn setImage:[UIImage imageWithContentsOfFile:images[0]] forState:0];
             }];
         }];
+        
+        [cell.pictureButton2 addAction:^(UIButton *btn) {//反面照
+            [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
+                NSData *imgData = [NSData dataWithContentsOfFile:images[0]];
+                NSString *imgStr = [NSString stringWithFormat:@"%@",imgData];
+                
+                //                [self.perDataDictionary setValue:imgStr forKey:@"cardimgs"];
+                
+                [btn setImage:[UIImage imageWithContentsOfFile:images[0]] forState:0];
+            }];
+        }];
+        
         return cell;
         
     }else if (indexPath.section == 1){
@@ -180,14 +177,15 @@
             cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.leftdAgentContraints.constant = 100;
         
         NSArray *perTextArray = @[@"|  基本信息",@"公司名称",@"营业执照号",@"联系人",@"联系方式"];
         NSArray *perPlacaTextArray = @[@"",@"请输入您的公司名称",@"请输入17位营业执照号",@"请输入您的姓名",@"请输入您常用的手机号码"];
-        
-        cell.leftdAgentContraints.constant = 120;
+
         cell.agentLabel.text = perTextArray[indexPath.row];
         cell.agentTextField.placeholder = perPlacaTextArray[indexPath.row];
         
+        QDFWeakSelf;
         if (indexPath.row == 0) {
             cell.agentLabel.textColor = kBlueColor;
             cell.agentTextField.userInteractionEnabled = NO;
@@ -213,18 +211,20 @@
                 [self.comDataDictionary setValue:text forKey:@"contact"];
             }];
         }else{//联系方式
-            cell.agentTextField.text = certificationModel.mobile;
+            cell.agentTextField.text = certificationModel.mobile?certificationModel.mobile:[self getValidateMobile];
             QDFWeak(cell);
             [cell setDidEndEditing:^(NSString *text) {
                 weakcell.agentTextField.text = text;
                 [self.comDataDictionary setValue:text forKey:@"mobile"];
             }];
         }
-        QDFWeakSelf;
+        
         [cell setTouchBeginPoint:^(CGPoint point) {
             weakself.touchPoint = point;
         }];
+        
         return cell;
+        
     }else{
         
         if (indexPath.row < 4) {
@@ -236,17 +236,17 @@
                 cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            NSArray *perTesArray = @[@"补充信息",@"企业邮箱",@"企业经营地址  ",@"公司网站"];
+            cell.leftdAgentContraints.constant = 100;
+
+            NSArray *perTesArray = @[@"补充信息",@"企业邮箱",@"企业地址  ",@"公司网站"];
             NSArray *perHolderArray = @[@"",@"请输入您的企业邮箱",@"请输入您的企业经营地址",@"请输入您的公司网站"];
             
-            cell.leftdAgentContraints.constant = 120;
             cell.agentLabel.text = perTesArray[indexPath.row];
             cell.agentTextField.placeholder = perHolderArray[indexPath.row];
             
             if (indexPath.row == 0) {
                 cell.agentTextField.userInteractionEnabled = NO;
-                NSMutableAttributedString *ttt = [cell.agentLabel setAttributeString:@"|  补充信息  " withColor:kBlueColor andSecond:@"(选填)" withColor:kLightGrayColor withFont:12];
+                NSMutableAttributedString *ttt = [cell.agentLabel setAttributeString:@"|  补充信息  " withColor:kBlueColor andSecond:@"(选填)" withColor:kGrayColor withFont:12];
                 [cell.agentLabel setAttributedText:ttt];
             }else if (indexPath.row == 1){//企业邮箱
                 cell.agentTextField.text = certificationModel.email;
@@ -280,22 +280,23 @@
         
         identifier = @"authenPer3";
         
-        EditDebtAddressCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         
         if (!cell) {
-            cell = [[EditDebtAddressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.leftTextViewConstraints.constant = 115;
+        cell.agentTextField.userInteractionEnabled = NO;
+        cell.agentButton.userInteractionEnabled = NO;
         
-        cell.ediLabel.text = @"经典案例";
-        cell.ediTextView.placeholder = @"关于公司在清收等方面的成功案例，有利于发布方更加青睐你";
-        cell.ediTextView.font = kFirstFont;
-        cell.ediTextView.text = certificationModel.casedesc;
+        cell.agentLabel.text = @"经典案例";
+        cell.agentTextField.placeholder = @"请输入诉讼、清收等成功案例";
+        cell.agentTextField.text = certificationModel.casedesc;
+        [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
         
         QDFWeak(cell);
         [cell setDidEndEditing:^(NSString *text) {
-            weakcell.ediTextView.text = text;
+            weakcell.agentTextField.text = text;
             [self.comDataDictionary setValue:text forKey:@"casedesc"];
         }];
         
@@ -308,7 +309,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if (section == 0) {
-        return 25;
+        return 35;
     }
     
     return kBigPadding;
@@ -325,23 +326,32 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     if (section == 0) {
-        UILabel *headerView = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 25)];
+        UILabel *headerView = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 35)];
         headerView.textAlignment = NSTextAlignmentCenter;
-        
-        NSString *str1 = @"上传验证身份证件照或名片图片";
-        NSString *str2 = @"（必填）";
-        NSString *str3 = [NSString stringWithFormat:@"%@%@",str1,str2];
-        
-        NSMutableAttributedString *attributeStr = [[NSMutableAttributedString alloc] initWithString:str3];
-        
-        [attributeStr setAttributes:@{NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, str1.length)];
-        [attributeStr setAttributes:@{NSForegroundColorAttributeName:kBlackColor} range:NSMakeRange(str1.length, str2.length)];
-        
-        [headerView setAttributedText:attributeStr];
         headerView.font = kSecondFont;
+        headerView.text = @"请上传公司营业执照图片";
+        headerView.textColor = kGrayColor;
+        
+//        NSString *str1 = @"上传验证身份证件照或名片图片";
+//        NSString *str2 = @"（必填）";
+//        NSString *str3 = [NSString stringWithFormat:@"%@%@",str1,str2];
+//
+//        NSMutableAttributedString *attributeStr = [[NSMutableAttributedString alloc] initWithString:str3];
+//
+//        [attributeStr setAttributes:@{NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, str1.length)];
+//        [attributeStr setAttributes:@{NSForegroundColorAttributeName:kBlackColor} range:NSMakeRange(str1.length, str2.length)];
+//
+//        [headerView setAttributedText:attributeStr];
         return headerView;
     }
     return nil;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 2 && indexPath.row == 2) {
+        [self showHint:@"经典案例"];
+    }
 }
 
 #pragma mark - commit messages
@@ -403,10 +413,10 @@
             [personNav popViewControllerAnimated:NO];
             [personNav popViewControllerAnimated:NO];
             
-            CompleteViewController *completeVC = [[CompleteViewController alloc] init];
-            completeVC.hidesBottomBarWhenPushed = YES;
-            completeVC.categoryString = weakself.categoryString;
-            [personNav pushViewController:completeVC animated:NO];
+            AuthentyWaitingViewController *waitingVC = [[AuthentyWaitingViewController alloc] init];
+            waitingVC.categoryString = weakself.categoryString;
+            waitingVC.hidesBottomBarWhenPushed = YES;
+            [personNav pushViewController:waitingVC animated:NO];
         }
     } andFailBlock:^(NSError *error) {
         

@@ -63,7 +63,7 @@
 #define kBlackColor UIColorFromRGB(0x333333)  //黑色
 #define kGrayColor UIColorFromRGB(0x666666)  //灰色
 #define kLightGrayColor UIColorFromRGB(0x999999)//浅灰色
-#define kYellowColor UIColorFromRGB(0xff871f)  //黄色ff871f－－ff871f
+#define kYellowColor UIColorFromRGB(0xffae01)  //黄色ff871f－－ff871f
 #define kRedColor UIColorFromRGB(0xf23838)  //红色  ff5959－－f23838
 #define kDarkGrayColor UIColorFromRGB(0x37485b) //深灰色
 #define kBorderColor UIColorFromRGB(0xcccccc)  //描边颜色
@@ -218,6 +218,7 @@
 
 //新增四大模块
 #define kHouseAssessString @"producedata/estate" //房产评估
+#define kHouseCityString @"producedata/diqu" //区域
 
 #endif
 

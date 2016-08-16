@@ -28,6 +28,8 @@
     
     [self.view addSubview:self.houseChooseTableView];
     [self.view setNeedsUpdateConstraints];
+    
+    [self getCityList];
 }
 
 - (void)updateViewConstraints
@@ -111,6 +113,20 @@
         self.didSelectedRow(self.listArray[indexPath.row]);
         [self.navigationController popViewControllerAnimated:YES];
     }
+}
+
+#pragma mark - method
+- (void)getCityList
+{
+    NSString *cityString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kHouseCityString];
+    [self requestDataPostWithString:cityString params:nil successBlock:^(id responseObject) {
+        
+        NSDictionary *uiui = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        NSLog(@"uiui %@",uiui);
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
 }
 
 - (void)didReceiveMemoryWarning {

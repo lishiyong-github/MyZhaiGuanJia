@@ -36,23 +36,21 @@
 {
     if (!self.didSetupConstraints) {
         
-        [self.aImageView autoSetDimensionsToSize:CGSizeMake(50, 50)];
         [self.aImageView autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
-        [self.aImageView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:15];
+        [self.aImageView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(kBigPadding, kBigPadding, kBigPadding, 0) excludingEdge:ALEdgeRight];
+//        [self.aImageView autoSetDimension:ALDimensionWidth toSize:110];
         
-        [self.bLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:25];
-        [self.bLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.aImageView withOffset:20];
+        [self.bLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.aImageView];
+        [self.bLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.aImageView withOffset:kBigPadding];
         
-        [self.cLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.bLabel withOffset:20];
+        [self.cLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.bLabel withOffset:kBigPadding/2];
         [self.cLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.bLabel];
-        [self.cLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.AuthenButton withOffset:-5];
         
-        [self.dLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.cLabel withOffset:10];
+        [self.dLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.cLabel withOffset:kBigPadding/2];
         [self.dLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.cLabel];
         
-        [self.AuthenButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:15];
-        [self.AuthenButton autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
-        [self.AuthenButton autoSetDimensionsToSize:CGSizeMake(70, 35)];
+        [self.AuthenButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.bLabel];
+        [self.AuthenButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         
         self.didSetupConstraints = YES;
     }
@@ -73,7 +71,7 @@
     if (!_bLabel) {
         _bLabel = [UILabel newAutoLayoutView];
         _bLabel.textColor = kBlackColor;
-        _bLabel.font = [UIFont systemFontOfSize:17];
+        _bLabel.font = kBigFont;
         _bLabel.text = @"认证个人";
     }
     return _bLabel;
@@ -84,7 +82,7 @@
     if (!_cLabel) {
         _cLabel = [UILabel newAutoLayoutView];
         _cLabel.textColor = kLightGrayColor;
-        _cLabel.font = kFirstFont;
+        _cLabel.font = kSecondFont;
         _cLabel.text = @"可发布融资";
         _cLabel.numberOfLines = 0;
     }
@@ -96,7 +94,7 @@
     if (!_dLabel) {
         _dLabel = [UILabel newAutoLayoutView];
         _dLabel.textColor = kLightGrayColor;
-        _dLabel.font = kFirstFont;
+        _dLabel.font = kSecondFont;
 //        _dLabel.text = @"暂不支持代理";
     }
     return _dLabel;
@@ -106,13 +104,7 @@
 {
     if (!_AuthenButton) {
         _AuthenButton = [UIButton newAutoLayoutView];
-        _AuthenButton.backgroundColor = kBlueColor;
-        _AuthenButton.layer.cornerRadius = corner;
-        [_AuthenButton setTitle:@"立即认证" forState:0];
-        _AuthenButton.titleLabel.font = kFirstFont;
-        [_AuthenButton setTitleColor:kNavColor forState:0];
-        [_AuthenButton addAction:^(UIButton *btn) {
-        }];
+        _AuthenButton.titleLabel.font = kSecondFont;
     }
     return _AuthenButton;
 }

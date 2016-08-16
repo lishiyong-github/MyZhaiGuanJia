@@ -6,9 +6,9 @@
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
-#import "BaseViewController.h"
+#import "NetworkViewController.h"
 
-@interface HouseChooseViewController : BaseViewController
+@interface HouseChooseViewController : NetworkViewController
 
 @property (nonatomic,strong) void (^didSelectedRow)(NSString *);
 
