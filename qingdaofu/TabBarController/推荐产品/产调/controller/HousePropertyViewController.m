@@ -133,17 +133,17 @@
     static NSString *identifier;
     if (indexPath.row == 0) {//地址
         identifier = @"property0";
-        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         if (!cell) {
-            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.userActionButton.userInteractionEnabled = NO;
-        cell.userNameButton.userInteractionEnabled = NO;
+        cell.agentTextField.userInteractionEnabled = NO;
+        cell.agentButton.userInteractionEnabled = NO;
 
-        [cell.userNameButton setTitle:@"选择区域" forState:0];
-        [cell.userActionButton setTitle:@"请选择  " forState:0];
-        [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        cell.agentLabel.text = @"选择区域";
+        cell.agentTextField.placeholder = @"请选择";
+        [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
         
         return cell;
     }else if (indexPath.row == 1){//详细地址
@@ -204,9 +204,8 @@
         
         QDFWeakSelf;
         [houseChooseVC setDidSelectedRow:^(NSString *text) {
-            MineUserCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-            [cell.userActionButton setTitle:text forState:0];
-            
+            AgentCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            cell.agentTextField.text = text;
             [weakself.propertyDic setObject:text forKey:@""];
         }];
     }

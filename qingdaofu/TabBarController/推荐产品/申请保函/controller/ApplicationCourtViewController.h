@@ -6,9 +6,9 @@
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
-#import "BaseViewController.h"
+#import "NetworkViewController.h"
 
-@interface ApplicationCourtViewController : BaseViewController
+@interface ApplicationCourtViewController : NetworkViewController
 
 @property (nonatomic,strong) void (^didSelectedRow)(NSString *);
 

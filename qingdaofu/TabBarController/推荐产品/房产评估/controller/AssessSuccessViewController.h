@@ -7,9 +7,11 @@
 //
 
 #import "BaseViewController.h"
+#import "AssessModel.h"
 
 @interface AssessSuccessViewController : BaseViewController
 
 @property (nonatomic,strong) NSString *fromType;  //1-首页，2列表
+@property (nonatomic,strong) AssessModel *aModel;
 
 @end

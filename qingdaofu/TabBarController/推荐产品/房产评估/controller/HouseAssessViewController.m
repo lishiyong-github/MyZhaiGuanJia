@@ -16,6 +16,9 @@
 #import "EditDebtAddressCell.h"
 #import "BaseCommitButton.h"
 
+#import "AssessResonse.h"
+#import "AssessModel.h"
+
 @interface HouseAssessViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic,strong) UITableView *houseAssessTableView;
@@ -179,7 +182,7 @@
         [cell setDidEndEditing:^(NSString *text, NSInteger tag) {
             if (tag == 11) {//号
                 [weakself.assessDic setObject:text forKey:@"buildingNumber"];
-            }else{//室
+            }else if (tag == 12){//室
                 [weakself.assessDic setObject:text forKey:@"unitNumber"];
             }
         }];
@@ -202,7 +205,7 @@
         [cell setDidEndEditing:^(NSString *text, NSInteger tag) {
             if (tag == 11) {//层
                 [weakself.assessDic setObject:text forKey:@"floor"];
-            }else{//总共层
+            }else if (tag == 12){//总共层
                 [weakself.assessDic setObject:text forKey:@"maxFloor"];
             }
         }];
@@ -259,16 +262,40 @@
 #pragma mark - method
 - (void)goToAssess
 {
+    [self.view endEditing:YES];
     NSString *assessString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kHouseAssessString];
     
-    self.assessDic[@"district"] = [self.assessDic[@"district"] getValidStringFromString:self.assessDic[@""] toString:@""];
+    self.assessDic[@"district"] = [NSString getValidStringFromString:self.assessDic[@"district"] toString:@""];
+    self.assessDic[@"address"] = [NSString getValidStringFromString:self.assessDic[@"address"] toString:@"海鑫苑"];
+    self.assessDic[@"size"] = [NSString getValidStringFromString:self.assessDic[@"size"] toString:@""];
+    self.assessDic[@"buildingNumber"] = [NSString getValidStringFromString:self.assessDic[@"buildingNumber"] toString:@""];
+    self.assessDic[@"unitNumber"] = [NSString getValidStringFromString:self.assessDic[@"unitNumber"] toString:@""];
+    self.assessDic[@"floor"] = [NSString getValidStringFromString:self.assessDic[@"floor"] toString:@""];
+    self.assessDic[@"maxFloor"] = [NSString getValidStringFromString:self.assessDic[@"maxFloor"] toString:@""];
+    [self.assessDic setObject:[self getValidateToken] forKey:@"token"];
     
+    NSDictionary *params = self.assessDic;
     
-//    AssessSuccessViewController *assessSuccessVC = [[AssessSuccessViewController alloc] init];
-//    assessSuccessVC.fromType = @"1";
-//    [weakself.navigationController pushViewController:assessSuccessVC animated:YES];
+    QDFWeakSelf;
+    [self requestDataPostWithString:assessString params:params successBlock:^(id responseObject) {
+         AssessResonse *responsed = [AssessResonse objectWithKeyValues:responseObject];
+        
+        if ([responsed.code isEqualToString:@"0000"]) {
+            AssessSuccessViewController *assessSuccessVC = [[AssessSuccessViewController alloc] init];
+            assessSuccessVC.fromType = @"1";
+            assessSuccessVC.aModel = responsed.data;
+            
+            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:assessSuccessVC];
+            [weakself presentViewController:nav animated:YES completion:^{
+                [weakself.navigationController popViewControllerAnimated:NO];
+            }];
+        }else{
+            [weakself showHint:responsed.msg];
+        }
+    } andFailBlock:^(NSError *error) {
+        
+    }];
 }
-
 
 - (void)dealloc
 {

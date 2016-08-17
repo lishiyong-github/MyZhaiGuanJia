@@ -224,38 +224,37 @@
         
         QDFWeakSelf;
         [cell setDidClickButton:^(NSInteger tag) {
-            switch (tag) {
-                case 11:{//房产评估
-                    NSLog(@"房产评估");
-                    HouseAssessViewController *houseAssessVC = [[HouseAssessViewController alloc] init];
-                    houseAssessVC.hidesBottomBarWhenPushed = YES;
-                    [weakself.navigationController pushViewController:houseAssessVC animated:YES];
+            
+            [weakself tokenIsValid];
+            [weakself setDidTokenValid:^(TokenModel *tokenModel) {
+                if ([tokenModel.code isEqualToString:@"0000"] || [tokenModel.code isEqualToString:@"3006"]) {
+                    if (tag == 11) {//房产评估
+                        HouseAssessViewController *houseAssessVC = [[HouseAssessViewController alloc] init];
+                        houseAssessVC.hidesBottomBarWhenPushed = YES;
+                        [weakself.navigationController pushViewController:houseAssessVC animated:YES];
+                    }else if (tag == 22){//产调
+                        HousePropertyViewController *housePropertyVC = [[HousePropertyViewController alloc] init];
+                        housePropertyVC.hidesBottomBarWhenPushed = YES;
+                        [weakself.navigationController pushViewController:housePropertyVC animated:YES];
+                        
+                    }else if (tag == 33){//保全
+                        PowerProtectViewController *powerProtectVC = [[PowerProtectViewController alloc] init];
+                        powerProtectVC.hidesBottomBarWhenPushed = YES;
+                        [weakself.navigationController pushViewController:powerProtectVC animated:YES];
+                        
+                    }else if (tag == 44){//保函
+                        ApplicationGuaranteeViewController *applicationGuaranteeVC = [[ApplicationGuaranteeViewController alloc] init];
+                        applicationGuaranteeVC.hidesBottomBarWhenPushed = YES;
+                        [weakself.navigationController pushViewController:applicationGuaranteeVC animated:YES];
+                    }
+                }else{//未登录
+                    [weakself showHint:tokenModel.msg];
+                    LoginViewController *loginVC = [[LoginViewController alloc] init];
+                    loginVC.hidesBottomBarWhenPushed = YES;
+                    UINavigationController *uiui = [[UINavigationController alloc] initWithRootViewController:loginVC];
+                    [weakself presentViewController:uiui animated:YES completion:nil];
                 }
-                    break;
-                case 22:{//房屋产调
-                    NSLog(@"房屋产调");
-                    HousePropertyViewController *housePropertyVC = [[HousePropertyViewController alloc] init];
-                    housePropertyVC.hidesBottomBarWhenPushed = YES;
-                    [weakself.navigationController pushViewController:housePropertyVC animated:YES];
-                }
-                    break;
-                case 33:{//诉讼保全
-                    NSLog(@"诉讼保全");
-                    PowerProtectViewController *powerProtectVC = [[PowerProtectViewController alloc] init];
-                    powerProtectVC.hidesBottomBarWhenPushed = YES;
-                    [weakself.navigationController pushViewController:powerProtectVC animated:YES];
-                }
-                    break;
-                case 44:{//申请保函
-                    NSLog(@"申请保函");
-                    ApplicationGuaranteeViewController *applicationGuaranteeVC = [[ApplicationGuaranteeViewController alloc] init];
-                    applicationGuaranteeVC.hidesBottomBarWhenPushed = YES;
-                    [weakself.navigationController pushViewController:applicationGuaranteeVC animated:YES];
-                }
-                    break;
-                default:
-                    break;
-            }
+            }];
         }];
         return cell;
     }
@@ -361,18 +360,18 @@
                 productsDetailVC.categoryString = sModel.category;
                 productsDetailVC.pidString = sModel.uidString;
                 [weakself.navigationController pushViewController:productsDetailVC animated:YES];
-            }else if([model.code isEqualToString:@"3001"] || [self getValidateToken] == nil){//未登录
-                [weakself showHint:model.msg];
-                LoginViewController *loginVC = [[LoginViewController alloc] init];
-                loginVC.hidesBottomBarWhenPushed = YES;
-                UINavigationController *uiui = [[UINavigationController alloc] initWithRootViewController:loginVC];
-                [weakself presentViewController:uiui animated:YES completion:nil];
             }else if([model.code isEqualToString:@"3006"]){//已登录，未认证
                 [weakself showHint:model.msg];
                 AuthentyViewController *authentyVC = [[AuthentyViewController alloc] init];
                 authentyVC.hidesBottomBarWhenPushed = YES;
                 authentyVC.typeAuthty = @"0";
                 [weakself.navigationController pushViewController:authentyVC animated:YES];
+            }else{//未登录
+                [weakself showHint:model.msg];
+                LoginViewController *loginVC = [[LoginViewController alloc] init];
+                loginVC.hidesBottomBarWhenPushed = YES;
+                UINavigationController *uiui = [[UINavigationController alloc] initWithRootViewController:loginVC];
+                [weakself presentViewController:uiui animated:YES completion:nil];
             }
         }];
     }
@@ -388,28 +387,7 @@
 
 - (void)pageTurn:(UIPageControl *)page
 {
-//    CATransaction *transition;
-//    int secondPage = [page currentPage];
-//    if (secondPage > [page currentPage]) {
-////        transition = [self get];
-//    }else{
-//        
-//    }
     self.mainHeaderScrollView.contentOffset = CGPointMake([page currentPage]*kScreenWidth, 0);
-    
-//    CATransition *transition;
-//    int secondPage = [pageControl currentPage];
-//    if((secondPage - currentPage)>0)
-//        transition = [self getAnimation:@"fromRight"];
-//    else
-//        transition = [self getAnimation:@"fromLeft"];
-//    
-//    UIImageView *newView = (UIImageView *)[[contentView subviews] objectAtIndex:0];
-//    [newView setImage:[UIImage imageNamed:[NSString stringWithFormat:@"ipad_wallpaper%02d.jpg",secondPage+1]]];
-//    [contentView exchangeSubviewAtIndex:0 withSubviewAtIndex:1];
-//    [[contentView layer] addAnimation:transition forKey:@"transitionView Animation"];
-//    
-//    currentPage = [pageControl currentPage];
 }
 
 #pragma mark - method

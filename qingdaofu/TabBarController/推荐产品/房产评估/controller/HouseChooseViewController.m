@@ -50,7 +50,8 @@
         _houseChooseTableView.delegate = self;
         _houseChooseTableView.dataSource = self;
         _houseChooseTableView.separatorColor = kSeparateColor;
-        _houseChooseTableView.tableFooterView = [[UIView alloc] init];
+        _houseChooseTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
+        _houseChooseTableView.backgroundColor = kBackColor;
     }
     return _houseChooseTableView;
 }
@@ -59,7 +60,6 @@
 {
     if (!_listArray) {
         _listArray = [NSMutableArray array];
-        _listArray = [NSMutableArray arrayWithObjects:@"长宁区",@"崇明",@"宝山",@"嘉定", nil];
     }
     return _listArray;
 }
@@ -119,10 +119,19 @@
 - (void)getCityList
 {
     NSString *cityString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kHouseCityString];
-    [self requestDataPostWithString:cityString params:nil successBlock:^(id responseObject) {
+    NSDictionary *params = @{@"token" : [self getValidateToken]};
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:cityString params:params successBlock:^(id responseObject) {
         
         NSDictionary *uiui = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        NSLog(@"uiui %@",uiui);
+        
+        if ([uiui[@"code"] isEqualToString:@"0000"]) {
+            weakself.listArray = [NSMutableArray arrayWithArray:[uiui[@"result"][@"data"] allValues]];
+            [weakself.houseChooseTableView reloadData];
+        }else{
+            [weakself showHint:uiui[@"msg"]];
+        }
         
     } andFailBlock:^(NSError *error) {
         

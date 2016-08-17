@@ -15,16 +15,26 @@
 #import "BaseCommitView.h"
 #import "AgentCell.h"
 #import "SuitBaseCell.h" //取函方式
+#import "PowerCourtView.h"
 
 #import "UIViewController+BlurView.h"
+
+
+#import "CourtProvinceResponse.h"
+#import "CourtProvinceModel.h"
 
 @interface PowerProtectViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic,strong) UITableView *powerTableView;
 @property (nonatomic,strong) BaseCommitView *powerCommitView;
+@property (nonatomic,strong) PowerCourtView *powerPickerView;
 @property (nonatomic,assign) BOOL didSetupConstraints;
 
 @property (nonatomic,strong) NSMutableDictionary *powerDic;
+@property (nonatomic,strong) NSMutableArray *powerCourtList;
+
+@property (nonatomic,strong) NSString *courtProString;
+@property (nonatomic,strong) NSString *courtCityString;
 
 @end
 
@@ -39,6 +49,8 @@
     
     [self.view addSubview:self.powerTableView];
     [self.view addSubview:self.powerCommitView];
+    [self.view addSubview:self.powerPickerView];
+    [self.powerPickerView setHidden:YES];
     
     [self.view setNeedsUpdateConstraints];
 }
@@ -52,6 +64,9 @@
         
         [self.powerCommitView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
         [self.powerCommitView autoSetDimension:ALDimensionHeight toSize:60];
+        
+        [self.powerPickerView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+        [self.powerPickerView autoSetDimension:ALDimensionHeight toSize:200];
         
         self.didSetupConstraints = YES;
     }
@@ -83,9 +98,34 @@
             applicationSuccessVC.successType = @"2";
             [weakself.navigationController pushViewController:applicationSuccessVC animated:YES];
         }];
-
     }
     return _powerCommitView;
+}
+
+- (PowerCourtView *)powerPickerView
+{
+    if (!_powerPickerView) {
+        _powerPickerView = [PowerCourtView newAutoLayoutView];
+        _powerPickerView.backgroundColor = kBackColor;
+        
+        QDFWeakSelf;
+        [_powerPickerView setDidSelectdRow:^(NSInteger component, NSInteger row,CourtProvinceModel *model) {
+            if (component == 0) {//省
+                [weakself.powerDic setObject:model.idString forKey:@"area_pid"];
+                weakself.courtProString = model.name;
+                [weakself getCourtOfCityWithProvinceID:model.idString];
+            }else if (component == 1){//市
+                [weakself.powerDic setObject:model.idString forKey:@"area_id"];
+                weakself.courtCityString = model.name;
+            }else if (component == 2){//完成
+                [weakself.powerPickerView setHidden:YES];
+                
+                AgentCell *cell = [weakself.powerTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+                cell.agentTextField.text = [NSString stringWithFormat:@"%@%@",weakself.courtProString,weakself.courtCityString];
+            }
+        }];
+    }
+    return _powerPickerView;
 }
 
 -(NSMutableDictionary *)powerDic
@@ -96,11 +136,19 @@
     return _powerDic;
 }
 
+- (NSMutableArray *)powerCourtList
+{
+    if (!_powerCourtList) {
+        _powerCourtList = [NSMutableArray array];
+    }
+    return _powerCourtList;
+}
+
 #pragma mark -tableview delegate and datasoyrce
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == 0) {
-        return 4;
+        return 5;
     }
     return 2;
 }
@@ -118,8 +166,8 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier;
-    if (indexPath.section == 0) {//选择法院，案件类型
-        if (indexPath.row < 2) {
+    if (indexPath.section == 0) {//选择区域,选择法院，案件类型
+        if (indexPath.row < 3) {
             identifier = @"power00";
             AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
             if (!cell) {
@@ -129,7 +177,7 @@
             cell.agentTextField.userInteractionEnabled = NO;
             cell.agentButton.userInteractionEnabled = NO;
             
-            NSArray *powerArr = @[@"选择法院",@"案件类型"];
+            NSArray *powerArr = @[@"选择区域",@"选择法院",@"案件类型"];
             cell.agentLabel.text = powerArr[indexPath.row];
             cell.agentTextField.placeholder = @"请选择";
             [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
@@ -146,11 +194,11 @@
 
             NSArray *powerArr = @[@"联系方式",@"保全金额"];
             NSArray *powerDetailArr = @[@"请输入电话号码",@"请输入保全金额"];
-            cell.agentLabel.text = powerArr[indexPath.row-2];
-            cell.agentTextField.placeholder = powerDetailArr[indexPath.row-2];
+            cell.agentLabel.text = powerArr[indexPath.row-3];
+            cell.agentTextField.placeholder = powerDetailArr[indexPath.row-3];
             
             QDFWeakSelf;
-            if (indexPath.row == 2){//联系方式
+            if (indexPath.row == 3){//联系方式
                 [cell.agentButton setHidden:YES];
                 cell.agentTextField.text = [weakself getValidateMobile];
                 
@@ -158,7 +206,7 @@
                     [weakself.powerDic setObject:text forKey:@""];
                 }];
                 
-            }else if (indexPath.row == 3){//保全金额
+            }else if (indexPath.row == 4){//保全金额
                 [cell.agentButton setHidden:NO];
                 [cell.agentButton setTitle:@"万元" forState:0];
                 
@@ -249,17 +297,11 @@
 {
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-            ApplicationCourtViewController *applicationCourtVC = [[ApplicationCourtViewController alloc] init];
-            [self.navigationController pushViewController:applicationCourtVC animated:YES];
+            [self getCourtOfProvince];
             
-            QDFWeakSelf;
-            [applicationCourtVC setDidSelectedRow:^(NSString *text) {
-                AgentCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-                cell.agentTextField.text = text;
-                [weakself.powerDic setObject:text forKey:@"court"];
-            }];
+        }else if (indexPath.row == 1){
             
-        }else if(indexPath.row == 1){
+        }else if(indexPath.row == 2){
             NSArray *array11 = @[@"借贷纠纷",@"房产土地",@"劳动纠纷",@"婚姻家庭",@" 合同纠纷",@"公司治理",@"知识产权",@"其他民事纠纷"];
             
             [self showBlurInView:self.view withArray:array11 andTitle:@"选择案件类型" finishBlock:^(NSString *text, NSInteger row) {
@@ -282,6 +324,56 @@
     }
 }
 
+#pragma mark - method
+//省份
+- (void)getCourtOfProvince
+{
+    NSString *brandString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kGuaranteeCourtProvince];
+    NSDictionary *param = @{@"token" : [self getValidateToken]};
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:brandString params:param successBlock:^(id responseObject) {
+        
+        [weakself.powerPickerView.component1 removeAllObjects];
+        
+        CourtProvinceResponse * courtResponse = [CourtProvinceResponse objectWithKeyValues:responseObject];
+        
+        for (CourtProvinceModel *proModel in courtResponse.data) {
+            [weakself.powerPickerView.component1 addObject:proModel];
+        }
+        
+        [weakself.powerPickerView setHidden:NO];
+        [weakself.powerPickerView.pickerViews reloadAllComponents];
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+//市
+- (void)getCourtOfCityWithProvinceID:(NSString *)areaPid
+{
+    NSString *cityString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kGuaranteeCourtCity];
+    NSDictionary *param = @{@"token" : [self getValidateToken],
+                            @"depdrop_parents" : areaPid};
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:cityString params:param successBlock:^(id responseObject) {
+        
+        [weakself.powerPickerView.component2 removeAllObjects];
+
+        CourtProvinceResponse * courtResponse = [CourtProvinceResponse objectWithKeyValues:responseObject];
+        
+        for (CourtProvinceModel *cityModel in courtResponse.data) {
+            [weakself.powerPickerView.component2 addObject:cityModel];
+        }
+        
+        weakself.powerPickerView.typeComponent = @"2";
+        [weakself.powerPickerView.pickerViews reloadAllComponents];
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
 
 
 - (void)didReceiveMemoryWarning {

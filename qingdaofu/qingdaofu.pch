@@ -220,6 +220,11 @@
 #define kHouseAssessString @"producedata/estate" //房产评估
 #define kHouseCityString @"producedata/diqu" //区域
 
+#define kGuaranteeString @"producedata/index"  //申请保全
+#define kGuaranteeCourtProvince @"policy/area-province" //法院省
+#define kGuaranteeCourtCity @"policy/area-city" //法院市
+#define kGuaranteeCourtString @"policy/fayuan"  //法院
+
 #endif
 
 

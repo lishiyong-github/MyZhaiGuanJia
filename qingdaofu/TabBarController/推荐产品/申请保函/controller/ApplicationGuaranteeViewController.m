@@ -107,16 +107,16 @@
                     [applicationCourtVC setDidSelectedRow:^(NSString *text) {
                         AgentCell *cell = [weakself.guaranteeFirstView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
                         cell.agentTextField.text = text;
-                        [weakself.applicationDic setObject:text forKey:@"court"];
+                        [weakself.applicationDic setObject:text forKey:@"fayuan_id"];
                     }];
                 }
                     break;
                 case 1:{//案件类型
-                    
                     NSArray *array11 = @[@"借贷纠纷",@"房产土地",@"劳动纠纷",@"婚姻家庭",@" 合同纠纷",@"公司治理",@"知识产权",@"其他民事纠纷"];
                     [weakself showBlurInView:weakself.view withArray:array11 andTitle:@"选择案件类型" finishBlock:^(NSString *text, NSInteger row) {
                         AgentCell *cell = [weakself.guaranteeFirstView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
                         cell.agentTextField.text = text;
+                        [weakself.applicationDic setObject:text forKey:@"category"];
                     }];
                 }
                     break;

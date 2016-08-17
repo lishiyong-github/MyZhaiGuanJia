@@ -43,9 +43,7 @@
 
 - (void)finish
 {
-    UINavigationController *nav = self.navigationController;
-    [nav popViewControllerAnimated:NO];
-    [nav popViewControllerAnimated:NO];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)updateViewConstraints
@@ -79,13 +77,11 @@
         
         QDFWeakSelf;
         [_assessSucFooterButton addAction:^(UIButton *btn) {
-            UINavigationController *nav = weakself.navigationController;
-            [nav popViewControllerAnimated:NO];
-            [nav popViewControllerAnimated:NO];
+            [weakself dismissViewControllerAnimated:NO completion:nil];
             
-            HouseAssessViewController *houseAssessVC = [[HouseAssessViewController alloc] init];
-            houseAssessVC.hidesBottomBarWhenPushed = YES;
-            [nav pushViewController:houseAssessVC animated:NO];
+//            HouseAssessViewController *houseAssessVC = [[HouseAssessViewController alloc] init];
+//            houseAssessVC.hidesBottomBarWhenPushed = YES;
+//            [weakself.navigationController pushViewController:houseAssessVC animated:NO];
         }];
     }
     return _assessSucFooterButton;
@@ -124,12 +120,16 @@
             }
             cell.selectionStyle = UITableViewCellSeparatorStyleNone;
             
-            cell.userNameButton.titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:18];
+            cell.userNameButton.titleLabel.font = kBigFont;
             [cell.userNameButton setTitle:@"评估结果" forState:0];
-            [cell.userActionButton setTitle:@"2016-09-09" forState:0];
+            cell.userActionButton.titleLabel.font = kSecondFont;
+            
+            NSString *time = [NSDate getYMDhmFormatterTime:self.aModel.create_time];
+            [cell.userActionButton setTitle:time forState:0];
             
             return cell;
         }
+        
         //具体评估结果
         identifier = @"success01";
         BidOneCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -138,9 +138,9 @@
         }
         cell.selectionStyle = UITableViewCellSeparatorStyleNone;
         
-        NSString *moneyString1 = @"  551";
-        NSString *moneyString2 = @"万";
-        NSString *moneyString3 = @"房产评估结果";
+        NSString *moneyString1 = [NSString stringWithFormat:@"%ld",[self.aModel.totalPrice integerValue]/10000];
+        NSString *moneyString2 = @" 万";
+        NSString *moneyString3 = @"房产初评结果";
         
         NSString *moneyStr = [NSString stringWithFormat:@"%@%@\n%@",moneyString1,moneyString2,moneyString3];
         NSMutableAttributedString *attributeStr = [[NSMutableAttributedString alloc] initWithString:moneyStr];
@@ -154,7 +154,7 @@
         [attributeStr addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [moneyStr length])];
 
         [cell.oneButton setAttributedTitle:attributeStr forState:0];
-        cell.oneButton.titleLabel.textAlignment = NSTextAlignmentRight;
+        cell.oneButton.titleLabel.textAlignment = NSTextAlignmentCenter;
 
         return cell;
     }
@@ -172,15 +172,17 @@
         cell.userNameButton.titleLabel.font = kFirstFont;
         [cell.userNameButton setTitleColor:kGrayColor forState:0];
     }else{
-        cell.userNameButton.titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:18];
+        cell.userNameButton.titleLabel.font = kBigFont;
     }
     
     NSString *str1 = @"房源信息";
-    NSString *str2 = [NSString stringWithFormat:@"房源地址：%@",@"浦东新区"];
-    NSString *str3 = [NSString stringWithFormat:@"小区地址：%@",@"浦东南路"];
-    NSString *str4 = [NSString stringWithFormat:@"小区均价：%@",@"99999元/m²"];
-    NSString *str5 = [NSString stringWithFormat:@"房源面积：%@",@"100m²"];
-    NSString *str6 = [NSString stringWithFormat:@"房源楼层：%@",@"第4层，共9层"];
+    NSString *str2 = [NSString stringWithFormat:@"房源地址：%@",self.aModel.district];
+    NSString *str3 = [NSString stringWithFormat:@"小区地址：%@",self.aModel.address];
+    
+    float total = [self.aModel.totalPrice floatValue] / [self.aModel.size floatValue];
+    NSString *str4 = [NSString stringWithFormat:@"小区均价：%.2f元/m²",total];
+    NSString *str5 = [NSString stringWithFormat:@"房源面积：%@m²",self.aModel.size];
+    NSString *str6 = [NSString stringWithFormat:@"房源楼层：第%@层，共%@层",self.aModel.floor,self.aModel.maxFloor];
     NSArray *resultArray = [NSArray arrayWithObjects:str1,str2,str3,str4,str5,str6,nil];
     [cell.userNameButton setTitle:resultArray[indexPath.row] forState:0];
     

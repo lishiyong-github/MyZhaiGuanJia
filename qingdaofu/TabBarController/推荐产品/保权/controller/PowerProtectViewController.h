@@ -6,8 +6,10 @@
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
-#import "BaseViewController.h"
+#import "NetworkViewController.h"
 
-@interface PowerProtectViewController : BaseViewController
+@interface PowerProtectViewController : NetworkViewController
+
+@property (nonatomic,strong) void (^didSelectedRow)(NSString *,NSString *,NSString*,NSString*,NSString*,NSString *);
 
 @end

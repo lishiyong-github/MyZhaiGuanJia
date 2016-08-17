@@ -33,13 +33,13 @@
         [self.label1 autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
         [self.label1 autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
         
-        [self.textField1 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.label1 withOffset:kSmallPadding];
+        [self.textField1 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.label1 withOffset:kBigPadding];
         [self.textField1 autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.label1];
         
-        [self.label2 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.textField1 withOffset:kBigPadding];
+        [self.label2 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.textField1 withOffset:kSmallPadding];
         [self.label2 autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.label1];
         
-        [self.textField2 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.label2 withOffset:kBigPadding];
+        [self.textField2 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.label2 withOffset:kSmallPadding/2];
         [self.textField2 autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.label1];
         
         [self.label3 autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
@@ -89,7 +89,7 @@
         _textField2.font = kFirstFont;
         _textField2.keyboardType = UIKeyboardTypeNumberPad;
         _textField2.delegate = self;
-        _textField1.tag = 12;
+        _textField2.tag = 12;
     }
     return _textField2;
 }

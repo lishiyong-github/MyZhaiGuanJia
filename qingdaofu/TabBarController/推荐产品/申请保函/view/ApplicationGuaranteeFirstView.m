@@ -130,7 +130,7 @@
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             
-            NSArray *arr = @[@[@"案        号",@"联系方式",@"保函金额"],@[@"案号形式",@"请输入手机号码",@"请输入保函金额"]];
+            NSArray *arr = @[@[@"案        号",@"联系方式",@"保函金额"],@[@"如：(2016)沪108执00211号",@"请输入手机号码",@"请输入保函金额"]];
             cell.agentLabel.text = arr[0][indexPath.row-2];
             cell.agentTextField.placeholder = arr[1][indexPath.row-2];
 

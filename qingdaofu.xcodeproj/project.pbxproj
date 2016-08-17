@@ -344,8 +344,6 @@
 		A19BBC4F1D52D1CE00D8F23A /* img_assessment@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A19BBC471D52D1CE00D8F23A /* img_assessment@3x.png */; };
 		A19BBC501D52D1CE00D8F23A /* img_guarantee@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A19BBC481D52D1CE00D8F23A /* img_guarantee@2x.png */; };
 		A19BBC511D52D1CE00D8F23A /* img_guarantee@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A19BBC491D52D1CE00D8F23A /* img_guarantee@3x.png */; };
-		A19BBC521D52D1CE00D8F23A /* img_litigation@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A19BBC4A1D52D1CE00D8F23A /* img_litigation@2x.png */; };
-		A19BBC531D52D1CE00D8F23A /* img_litigation@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A19BBC4B1D52D1CE00D8F23A /* img_litigation@3x.png */; };
 		A19BBC541D52D1CE00D8F23A /* img_transfer@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A19BBC4C1D52D1CE00D8F23A /* img_transfer@2x.png */; };
 		A19BBC551D52D1CE00D8F23A /* img_transfer@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A19BBC4D1D52D1CE00D8F23A /* img_transfer@3x.png */; };
 		A19BBC581D52E14A00D8F23A /* UserPublishCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A19BBC571D52E14A00D8F23A /* UserPublishCell.m */; };
@@ -391,6 +389,13 @@
 		A19D296A1CD208E900DAAEA7 /* AuthentyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A19D29691CD208E900DAAEA7 /* AuthentyViewController.m */; };
 		A19D296D1CD208FB00DAAEA7 /* CompleteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A19D296C1CD208FB00DAAEA7 /* CompleteViewController.m */; };
 		A19D29741CD2158100DAAEA7 /* AuthenPersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A19D29731CD2158100DAAEA7 /* AuthenPersonViewController.m */; };
+		A19D943D1D63FDF200DE89FC /* AssessModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A19D943C1D63FDF200DE89FC /* AssessModel.m */; };
+		A19D94401D64062C00DE89FC /* AssessResonse.m in Sources */ = {isa = PBXBuildFile; fileRef = A19D943F1D64062C00DE89FC /* AssessResonse.m */; };
+		A19D94431D6434B900DE89FC /* img_litigation@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A19D94411D6434B900DE89FC /* img_litigation@2x.png */; };
+		A19D94441D6434B900DE89FC /* img_litigation@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A19D94421D6434B900DE89FC /* img_litigation@3x.png */; };
+		A19D94481D64430400DE89FC /* CourtProvinceResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A19D94471D64430400DE89FC /* CourtProvinceResponse.m */; };
+		A19D944B1D64436B00DE89FC /* CourtProvinceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A19D944A1D64436B00DE89FC /* CourtProvinceModel.m */; };
+		A19D94511D644ADF00DE89FC /* PowerCourtView.m in Sources */ = {isa = PBXBuildFile; fileRef = A19D94501D644ADF00DE89FC /* PowerCourtView.m */; };
 		A19EFBDD1D5D713400C813D8 /* center@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A19EFBDB1D5D713400C813D8 /* center@2x.png */; };
 		A19EFBDE1D5D713400C813D8 /* center@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A19EFBDC1D5D713400C813D8 /* center@3x.png */; };
 		A19EFBE71D5D77D300C813D8 /* closew@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A19EFBDF1D5D77D300C813D8 /* closew@2x.png */; };
@@ -1143,8 +1148,6 @@
 		A19BBC471D52D1CE00D8F23A /* img_assessment@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_assessment@3x.png"; sourceTree = "<group>"; };
 		A19BBC481D52D1CE00D8F23A /* img_guarantee@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_guarantee@2x.png"; sourceTree = "<group>"; };
 		A19BBC491D52D1CE00D8F23A /* img_guarantee@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_guarantee@3x.png"; sourceTree = "<group>"; };
-		A19BBC4A1D52D1CE00D8F23A /* img_litigation@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_litigation@2x.png"; sourceTree = "<group>"; };
-		A19BBC4B1D52D1CE00D8F23A /* img_litigation@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_litigation@3x.png"; sourceTree = "<group>"; };
 		A19BBC4C1D52D1CE00D8F23A /* img_transfer@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_transfer@2x.png"; sourceTree = "<group>"; };
 		A19BBC4D1D52D1CE00D8F23A /* img_transfer@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_transfer@3x.png"; sourceTree = "<group>"; };
 		A19BBC561D52E14A00D8F23A /* UserPublishCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserPublishCell.h; sourceTree = "<group>"; };
@@ -1203,6 +1206,18 @@
 		A19D296C1CD208FB00DAAEA7 /* CompleteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompleteViewController.m; sourceTree = "<group>"; };
 		A19D29721CD2158100DAAEA7 /* AuthenPersonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenPersonViewController.h; sourceTree = "<group>"; };
 		A19D29731CD2158100DAAEA7 /* AuthenPersonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenPersonViewController.m; sourceTree = "<group>"; };
+		A19D943B1D63FDF200DE89FC /* AssessModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssessModel.h; sourceTree = "<group>"; };
+		A19D943C1D63FDF200DE89FC /* AssessModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AssessModel.m; sourceTree = "<group>"; };
+		A19D943E1D64062C00DE89FC /* AssessResonse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssessResonse.h; sourceTree = "<group>"; };
+		A19D943F1D64062C00DE89FC /* AssessResonse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AssessResonse.m; sourceTree = "<group>"; };
+		A19D94411D6434B900DE89FC /* img_litigation@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_litigation@2x.png"; sourceTree = "<group>"; };
+		A19D94421D6434B900DE89FC /* img_litigation@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_litigation@3x.png"; sourceTree = "<group>"; };
+		A19D94461D64430400DE89FC /* CourtProvinceResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourtProvinceResponse.h; sourceTree = "<group>"; };
+		A19D94471D64430400DE89FC /* CourtProvinceResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourtProvinceResponse.m; sourceTree = "<group>"; };
+		A19D94491D64436B00DE89FC /* CourtProvinceModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourtProvinceModel.h; sourceTree = "<group>"; };
+		A19D944A1D64436B00DE89FC /* CourtProvinceModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourtProvinceModel.m; sourceTree = "<group>"; };
+		A19D944F1D644ADF00DE89FC /* PowerCourtView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PowerCourtView.h; sourceTree = "<group>"; };
+		A19D94501D644ADF00DE89FC /* PowerCourtView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PowerCourtView.m; sourceTree = "<group>"; };
 		A19EFBDB1D5D713400C813D8 /* center@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "center@2x.png"; sourceTree = "<group>"; };
 		A19EFBDC1D5D713400C813D8 /* center@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "center@3x.png"; sourceTree = "<group>"; };
 		A19EFBDF1D5D77D300C813D8 /* closew@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "closew@2x.png"; sourceTree = "<group>"; };
@@ -2315,6 +2330,8 @@
 		A192B4BC1CDB45EB0053FC4C /* images */ = {
 			isa = PBXGroup;
 			children = (
+				A19D94411D6434B900DE89FC /* img_litigation@2x.png */,
+				A19D94421D6434B900DE89FC /* img_litigation@3x.png */,
 				A1A69DE21D62F9D90053FFED /* certification_success_banner@2x.png */,
 				A1A69DE31D62F9D90053FFED /* certification_success_banner@3x.png */,
 				A1A69DD81D62BDFC0053FFED /* upload_opposite_image@2x.png */,
@@ -2383,8 +2400,6 @@
 				A19BBC471D52D1CE00D8F23A /* img_assessment@3x.png */,
 				A19BBC481D52D1CE00D8F23A /* img_guarantee@2x.png */,
 				A19BBC491D52D1CE00D8F23A /* img_guarantee@3x.png */,
-				A19BBC4A1D52D1CE00D8F23A /* img_litigation@2x.png */,
-				A19BBC4B1D52D1CE00D8F23A /* img_litigation@3x.png */,
 				A19BBC4C1D52D1CE00D8F23A /* img_transfer@2x.png */,
 				A19BBC4D1D52D1CE00D8F23A /* img_transfer@3x.png */,
 				A19BBC421D52CF9D00D8F23A /* close@2x.png */,
@@ -2982,6 +2997,28 @@
 			path = view;
 			sourceTree = "<group>";
 		};
+		A19D94371D63FD9800DE89FC /* model */ = {
+			isa = PBXGroup;
+			children = (
+				A19D943B1D63FDF200DE89FC /* AssessModel.h */,
+				A19D943C1D63FDF200DE89FC /* AssessModel.m */,
+				A19D943E1D64062C00DE89FC /* AssessResonse.h */,
+				A19D943F1D64062C00DE89FC /* AssessResonse.m */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		A19D94451D6442DC00DE89FC /* model */ = {
+			isa = PBXGroup;
+			children = (
+				A19D94461D64430400DE89FC /* CourtProvinceResponse.h */,
+				A19D94471D64430400DE89FC /* CourtProvinceResponse.m */,
+				A19D94491D64436B00DE89FC /* CourtProvinceModel.h */,
+				A19D944A1D64436B00DE89FC /* CourtProvinceModel.m */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
 		A1A016961C5A0C0300027134 = {
 			isa = PBXGroup;
 			children = (
@@ -3203,6 +3240,7 @@
 		A1A0C8BF1D4B03E800BC63C6 /* 房产评估 */ = {
 			isa = PBXGroup;
 			children = (
+				A19D94371D63FD9800DE89FC /* model */,
 				A1A0C8C11D4B042200BC63C6 /* view */,
 				A1A0C8C01D4B041300BC63C6 /* controller */,
 			);
@@ -3236,6 +3274,7 @@
 		A1A0C8CE1D4B43B100BC63C6 /* 申请保函 */ = {
 			isa = PBXGroup;
 			children = (
+				A19D94451D6442DC00DE89FC /* model */,
 				A1A0C8D01D4B43C700BC63C6 /* view */,
 				A1A0C8CF1D4B43BF00BC63C6 /* controller */,
 			);
@@ -3492,6 +3531,8 @@
 				A187B8FC1D502BC600A91A16 /* PowerDetailsView.m */,
 				A19CC08A1D599A4A000ED568 /* PowerDetailsCell.h */,
 				A19CC08B1D599A4A000ED568 /* PowerDetailsCell.m */,
+				A19D944F1D644ADF00DE89FC /* PowerCourtView.h */,
+				A19D94501D644ADF00DE89FC /* PowerCourtView.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -3674,6 +3715,7 @@
 				A1718DF21CFD6C490007DA6F /* list_icon_cutout@3x.png in Resources */,
 				A16486B41D00088B00B442C1 /* title_product_open@3x.png in Resources */,
 				A14C17611D07F692003826F8 /* list_litigation_nor@3x.png in Resources */,
+				A19D94441D6434B900DE89FC /* img_litigation@3x.png in Resources */,
 				A19BBC891D52F18D00D8F23A /* news@2x.png in Resources */,
 				A14853F01D1BBE2E0088AA4D /* selected@2x.png in Resources */,
 				A19BBC6B1D52E82200D8F23A /* list_icon_collection@2x.png in Resources */,
@@ -3715,6 +3757,7 @@
 				A196CDF31CFBDF4000AC6C87 /* btn_litigation@2x.png in Resources */,
 				A192B4C01CDB46020053FC4C /* list_more@3x.png in Resources */,
 				A1A5C73F1D374E6E00173533 /* conserve_investment_icon@3x.png in Resources */,
+				A19D94431D6434B900DE89FC /* img_litigation@2x.png in Resources */,
 				A1718DFC1CFD6C5A0007DA6F /* list_icon_treatment@3x.png in Resources */,
 				A19BBC5C1D52E5EE00D8F23A /* authentication_icon@3x.png in Resources */,
 				A1770E2F1CFEAFE5003579E1 /* evaluate_star@3x.png in Resources */,
@@ -3722,7 +3765,6 @@
 				A1770E2C1CFEAFE5003579E1 /* evaluate_star_s@2x.png in Resources */,
 				A1718DD81CFD38E70007DA6F /* stop@2x.png in Resources */,
 				A192B4D41CDB52A40053FC4C /* list_icon_user@3x.png in Resources */,
-				A19BBC521D52D1CE00D8F23A /* img_litigation@2x.png in Resources */,
 				A19F886C1D51DFC400D4EC92 /* right@2x.png in Resources */,
 				A1FB26691CF2E52B00B66608 /* select_oepn@2x.png in Resources */,
 				A145B2A31CEEDB0D003A93B7 /* list_financing@3x.png in Resources */,
@@ -3920,7 +3962,6 @@
 				A1A5C75D1D37519900173533 /* conserve_fixed_icon@3x.png in Resources */,
 				A19F886D1D51DFC400D4EC92 /* right@3x.png in Resources */,
 				A19BBC8F1D52F18D00D8F23A /* tab_product@2x.png in Resources */,
-				A19BBC531D52D1CE00D8F23A /* img_litigation@3x.png in Resources */,
 				A18DC9F51D25120D0021B0BF /* itunesartwork@2x.png in Resources */,
 				A16FF5A31D05935D00C50A0B /* list_label_recommen@2x.png in Resources */,
 				A19BBC511D52D1CE00D8F23A /* img_guarantee@3x.png in Resources */,
@@ -4047,6 +4088,7 @@
 				A19F88851D51F36300D4EC92 /* CopyAddressEditViewController.m in Sources */,
 				A1A97E6D1CDC98EB00EDE320 /* MyDealingViewController.m in Sources */,
 				A187B90C1D5073FE00A91A16 /* HousePayingViewController.m in Sources */,
+				A19D944B1D64436B00DE89FC /* CourtProvinceModel.m in Sources */,
 				A159F9871D0E7EFF00A6A024 /* SuitBaseCell.m in Sources */,
 				A154B8D61CE18E7F00884CA4 /* ReportFootView.m in Sources */,
 				A18C675C1CD06C2E00C7B070 /* UIButton+Block.m in Sources */,
@@ -4062,6 +4104,7 @@
 				A10D7B871CEB1BE000422D7D /* UIView+UITextColor.m in Sources */,
 				A1A97E5F1CDC8AED00EDE320 /* EvaTopSwitchView.m in Sources */,
 				A1B028EB1D1794DC00F32A09 /* SDWebImageDownloaderOperation.m in Sources */,
+				A19D94481D64430400DE89FC /* CourtProvinceResponse.m in Sources */,
 				A16486BE1D011FE900B442C1 /* MarkingViewController.m in Sources */,
 				A1522BEB1D0FB17B00135C72 /* PaceModel.m in Sources */,
 				A159F9571D0D456700A6A024 /* ScheduleModel.m in Sources */,
@@ -4141,6 +4184,7 @@
 				A1B028EE1D1794DC00F32A09 /* UIButton+WebCache.m in Sources */,
 				A19CC0951D59E049000ED568 /* ApplicationGuaranteeSecondView.m in Sources */,
 				A19F88461D517ADE00D4EC92 /* HouseCopyViewController.m in Sources */,
+				A19D94401D64062C00DE89FC /* AssessResonse.m in Sources */,
 				A17964D51CD2EAB100B6AD47 /* AuthenBaseView.m in Sources */,
 				A1FB26571CF2B41B00B66608 /* ReportSuccessCell.m in Sources */,
 				A176912A1CD9976D004289DD /* MyClosingViewController.m in Sources */,
@@ -4173,6 +4217,7 @@
 				A1A017571C5B696A00027134 /* NSObject+MJProperty.m in Sources */,
 				A1A34C341CE32C7100AD454A /* LoginViewController.m in Sources */,
 				A1718DE41CFD64CD0007DA6F /* CaseNoCell.m in Sources */,
+				A19D943D1D63FDF200DE89FC /* AssessModel.m in Sources */,
 				A17634201D067AB200CD4623 /* PublishingModel.m in Sources */,
 				A1FB265F1CF2CD8900B66608 /* SearchViewController.m in Sources */,
 				A16BA1461CEC2ECB00A7010C /* EditDebtAddressCell.m in Sources */,
@@ -4210,6 +4255,7 @@
 				A19B8E221CCF42E300F8EBF2 /* ALView+PureLayout.m in Sources */,
 				A1B028F11D1794DC00F32A09 /* UIImageView+HighlightedWebCache.m in Sources */,
 				A10D7B811CEB083300422D7D /* ReportCollectViewController.m in Sources */,
+				A19D94511D644ADF00DE89FC /* PowerCourtView.m in Sources */,
 				A19CC08F1D59B9F2000ED568 /* ApplicationGuaranteeFirstView.m in Sources */,
 				A1B6FD5C1D4F35240059690B /* PowerProtectListViewController.m in Sources */,
 				A1B028F01D1794DC00F32A09 /* UIImage+MultiFormat.m in Sources */,
