@@ -6,8 +6,8 @@
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
-#import "BaseViewController.h"
+#import "NetworkViewController.h"
 
-@interface PowerProtectListViewController : BaseViewController
+@interface PowerProtectListViewController : NetworkViewController
 
 @end

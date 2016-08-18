@@ -86,6 +86,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier;
+    
     if (indexPath.section == 0) {//保权进度
         identifier = @"power00";
         PowerDetailsCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -94,8 +95,10 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.backgroundColor = kBlueColor;
+        cell.progress3.text = @"保全已出";
         
         return cell;
+        
     }else if (indexPath.section == 1){
         //补充材料
         if (indexPath.row == 0) {
@@ -124,31 +127,26 @@
         [cell.userNameButton setTitle:additionArray[indexPath.row-1] forState:0];
         
         if (indexPath.row == 1) {
-            [cell.userActionButton setTitle:@"600万" forState:0];
+            NSInteger account = [self.pModel.account integerValue]/10000;
+            NSString *accounts = [NSString stringWithFormat:@"%ld万",(long)account];
+            [cell.userActionButton setTitle:accounts forState:0];
         }else if (indexPath.row == 2){
-            [cell.userActionButton setTitle:@"上海市高级人民法院" forState:0];
+            [cell.userActionButton setTitle:self.pModel.fayuan_name forState:0];
         }else if (indexPath.row == 3){
-            [cell.userActionButton setTitle:@"快递" forState:0];
+            if ([self.pModel.type integerValue] == 1) {
+                [cell.userActionButton setTitle:@"自取" forState:0];
+            }else if ([self.pModel.type integerValue] == 2){
+                [cell.userActionButton setTitle:@"快递" forState:0];
+            }
         }else if (indexPath.row == 4){
-            [cell.userActionButton setTitle:@"上海市浦东新区浦东南路855号" forState:0];
+            if ([self.pModel.type integerValue] == 1) {
+                [cell.userNameButton setTitle:@"取函地址" forState:0];
+                [cell.userActionButton setTitle:self.pModel.fayuan_address forState:0];
+            }else if ([self.pModel.type integerValue] == 2){
+                [cell.userNameButton setTitle:@"收货地址" forState:0];
+                [cell.userActionButton setTitle:self.pModel.fayuan_address forState:0];
+            }
         }
-        
-        /*
-        [cell.userActionButton setHidden:YES];
-        [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
-        cell.userNameButton.titleLabel.font = kSecondFont;
-        
-        NSString *textStr1 = [NSString stringWithFormat:@"姓名：        %@",@"顾笙"];
-        NSString *textStr2 = [NSString stringWithFormat:@"身份证：    %@",@"123321231212345678"];
-        NSString *textStr3 = [NSString stringWithFormat:@"联系方式：%@",@"12345678987"];
-        NSString *textStr4 = [NSString stringWithFormat:@"债券金额：%@",@"600万"];
-        NSArray *additionArray = @[textStr1,textStr2,textStr3,textStr4];
-        [cell.userNameButton setTitle:additionArray[indexPath.row-1] forState:0];
-        
-        
-        [cell.userActionButton setTitle:@"添加图片" forState:0];
-        [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-        */
         return cell;
     }
     

@@ -104,10 +104,10 @@
                     ApplicationCourtViewController *applicationCourtVC = [[ApplicationCourtViewController alloc] init];
                     [weakself.navigationController pushViewController:applicationCourtVC animated:YES];
                     
-                    [applicationCourtVC setDidSelectedRow:^(NSString *text) {
+                    [applicationCourtVC setDidSelectedRow:^(NSString *nameString,NSString *idString) {
                         AgentCell *cell = [weakself.guaranteeFirstView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-                        cell.agentTextField.text = text;
-                        [weakself.applicationDic setObject:text forKey:@"fayuan_id"];
+                        cell.agentTextField.text = nameString;
+                        [weakself.applicationDic setObject:idString forKey:@"fayuan_id"];
                     }];
                 }
                     break;
@@ -173,18 +173,20 @@
         [_guaranteeSecondView setDidSelectedRow:^(NSInteger tag) {
             
             if (tag < 8) {//1,3,5,7
-                [weakself addImageWithMaxSelection:5 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
-//                        if (images.count > 0) {
-//                            weakself.tableViewa.cell.collectionDataList = [NSMutableArray arrayWithArray:images];
-//                            [weakcell reloadData];
-//                        }else{
-//                            weakcell.collectionDataList = [NSMutableArray arrayWithObject:@"upload_pictures"];
-//                            [weakcell reloadData];
-//                        }
+                [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
                     if (tag == 1) {//起诉书
+                        
+                        for(NSInteger i = 0; i < images.count; i++) {
+                            NSData * imageData = UIImageJPEGRepresentation(images[i], 0.5);
+                            // 上传的参数名
+                            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+                        }
+                        
                         TakePictureCell *cell = [weakself.guaranteeSecondView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
                         cell.collectionDataList = [NSMutableArray arrayWithArray:images];
                         [cell reloadData];
+                        
+                        
                     }else if (tag == 3){//财产保全申请书
                         TakePictureCell *cell = [weakself.guaranteeSecondView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
                         cell.collectionDataList = [NSMutableArray arrayWithArray:images];
@@ -305,47 +307,15 @@
     return _applicationDic;
 }
 
-
-#pragma mark - pickerView delegate and datasource
-/*
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+#pragma mark - method
+- (void)uploadImages:(NSData *)imgData
 {
-    return 3;
-}
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
-{
-    return 10;
-}
-- (CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component
-{
-    return 30;
-}
-
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
-{
-    if (component == 0) {
-        return @"省";
-    }else if (component == 1){
-        return @"市";
-    }
-    return @"区";
-}
-
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
-{
-    NSLog(@"选择");
-    if (component == 0) {
-        _provinceStr = @"上海市";
-    }else if (component == 1){
-        _cityStr = @"上海市";
-    }else if (component == 2) {
-        _districtStr = @"浦东新区";
-    }
-}
-*/
-- (void)dealloc
-{
-    [self removeKeyboardObserver];
+    NSString *uploadsString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kUploadImagesString];
+    NSDictionary *params = @{@"filetype" : @"1",
+                             @"extension" : @"jpg",
+                             @"picture" : imgData
+                             };
+//    [self req];
 }
 
 - (void)didReceiveMemoryWarning {

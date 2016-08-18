@@ -11,6 +11,8 @@
 #import "PowerProtectPictureViewController.h"  //选择材料
 #import "ApplicationCourtViewController.h" //选择法院
 #import "HouseChooseViewController.h" //收获地址
+#import "PowerProtectListViewController.h" //我的保全
+
 
 #import "BaseCommitView.h"
 #import "AgentCell.h"
@@ -92,12 +94,7 @@
         _powerCommitView = [BaseCommitView newAutoLayoutView];
         
         [_powerCommitView.button setTitle:@"点击申请" forState:0];
-        QDFWeakSelf;
-        [_powerCommitView.button addAction:^(UIButton *btn) {
-            ApplicationSuccessViewController *applicationSuccessVC = [[ApplicationSuccessViewController alloc] init];
-            applicationSuccessVC.successType = @"2";
-            [weakself.navigationController pushViewController:applicationSuccessVC animated:YES];
-        }];
+        [_powerCommitView.button addTarget:self action:@selector(goToPowerApply) forControlEvents:UIControlEventTouchUpInside];
     }
     return _powerCommitView;
 }
@@ -114,6 +111,7 @@
                 [weakself.powerDic setObject:model.idString forKey:@"area_pid"];
                 weakself.courtProString = model.name;
                 [weakself getCourtOfCityWithProvinceID:model.idString];
+               
             }else if (component == 1){//市
                 [weakself.powerDic setObject:model.idString forKey:@"area_id"];
                 weakself.courtCityString = model.name;
@@ -132,6 +130,7 @@
 {
     if (!_powerDic) {
         _powerDic = [NSMutableDictionary dictionary];
+        [_powerDic setObject:@"2" forKey:@"type"];
     }
     return _powerDic;
 }
@@ -203,7 +202,7 @@
                 cell.agentTextField.text = [weakself getValidateMobile];
                 
                 [cell setDidEndEditing:^(NSString *text) {
-                    [weakself.powerDic setObject:text forKey:@""];
+                    [weakself.powerDic setObject:text forKey:@"phone"];
                 }];
                 
             }else if (indexPath.row == 4){//保全金额
@@ -211,7 +210,7 @@
                 [cell.agentButton setTitle:@"万元" forState:0];
                 
                 [cell setDidEndEditing:^(NSString *text) {
-                    [weakself.powerDic setObject:text forKey:@""];
+                    [weakself.powerDic setObject:text forKey:@"account"];
                 }];
             }
             
@@ -228,7 +227,6 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.label.text = @"取函方式";
-        [self.powerDic setObject:@"1" forKey:@"address"]; //默认选择快递
         
         QDFWeakSelf;
         QDFWeak(cell);
@@ -237,21 +235,22 @@
                 AgentCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
                 cell.agentTextField.userInteractionEnabled = NO;
                 cell.agentButton.userInteractionEnabled = NO;
-                [self.powerDic setObject:@"1" forKey:@"address"]; //默认选择快递
+                [self.powerDic setObject:@"2" forKey:@"type"]; //默认选择快递
 
                 cell.agentLabel.text = @"收货地址";
                 cell.agentTextField.placeholder = @"请选择";
-                cell.agentTextField.text = @"";
+                cell.agentTextField.text = weakself.powerDic[@"address"]?weakself.powerDic[@"address"]:@"";
                 [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+                
             }else if (segTag == 1){//自取
-                if (weakself.powerDic[@"court"]) {
+                if (weakself.powerDic[@"fayuan_id"]) {
                     AgentCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
                     cell.agentTextField.userInteractionEnabled = NO;
                     cell.agentButton.userInteractionEnabled = NO;
-                    [self.powerDic setObject:@"2" forKey:@"address"]; //默认选择快递
-
+                    [self.powerDic setObject:@"1" forKey:@"type"];
+                    
                     cell.agentLabel.text = @"取函地址";
-                    cell.agentTextField.text = weakself.powerDic[@"court"];
+                    cell.agentTextField.text = weakself.powerDic[@"fayuan_name"];
                     [cell.agentButton setImage:[UIImage imageNamed:@""] forState:0];
 
                 }else{
@@ -297,27 +296,54 @@
 {
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-            [self getCourtOfProvince];
+            if (self.powerPickerView.component1.count == 0) {
+                [self getCourtOfProvince];
+            }else{
+                [self.powerPickerView setHidden:NO];
+                [self.powerPickerView.pickerViews reloadAllComponents];
+            }
             
-        }else if (indexPath.row == 1){
-            
+        }else if (indexPath.row == 1){//法院
+            if (self.powerDic[@"area_id"]) {
+                ApplicationCourtViewController *applicationCourtVC = [[ApplicationCourtViewController alloc] init];
+                applicationCourtVC.area_pidString = self.powerDic[@"area_pid"];
+                applicationCourtVC.area_idString = self.powerDic[@"area_id"];
+                [self.navigationController pushViewController:applicationCourtVC animated:YES];
+                
+                QDFWeakSelf;
+                [applicationCourtVC setDidSelectedRow:^(NSString *nameString,NSString *idString) {
+                    [weakself.powerDic setObject:idString forKey:@"fayuan_id"];
+                    [weakself.powerDic setObject:nameString forKey:@"fayuan_name"];
+                    [weakself.powerDic setObject:nameString forKey:@"fayuan_address"];
+
+                    AgentCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+                    cell.agentTextField.text = nameString;
+                }];
+            }else{
+                [self showHint:@"请先选择区域"];
+            }
         }else if(indexPath.row == 2){
             NSArray *array11 = @[@"借贷纠纷",@"房产土地",@"劳动纠纷",@"婚姻家庭",@" 合同纠纷",@"公司治理",@"知识产权",@"其他民事纠纷"];
             
+            QDFWeakSelf;
             [self showBlurInView:self.view withArray:array11 andTitle:@"选择案件类型" finishBlock:^(NSString *text, NSInteger row) {
                 AgentCell *cell = [tableView cellForRowAtIndexPath:indexPath];
                 cell.agentTextField.text = text;
+                NSString *gygyg = [NSString stringWithFormat:@"%ld",(long)row];
+                [weakself.powerDic setObject:gygyg forKey:@"category"];
             }];
         }
     }else{
         if (indexPath.row == 1) {
-            if ([self.powerDic[@"address"] isEqualToString:@"1"]) {//快递
+            if ([self.powerDic[@"type"] isEqualToString:@"2"]) {//快递
                 HouseChooseViewController *houseChooseVC = [[HouseChooseViewController alloc] init];
                 [self.navigationController pushViewController:houseChooseVC animated:YES];
                 
+                QDFWeakSelf;
                 [houseChooseVC setDidSelectedRow:^(NSString *text) {
                     AgentCell *cell = [tableView cellForRowAtIndexPath:indexPath];
                     cell.agentTextField.text = text;
+                    [weakself.powerDic setObject:text forKey:@"address"];
                 }];
             }
         }
@@ -328,7 +354,7 @@
 //省份
 - (void)getCourtOfProvince
 {
-    NSString *brandString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kGuaranteeCourtProvince];
+    NSString *brandString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPowerCourtProvince];
     NSDictionary *param = @{@"token" : [self getValidateToken]};
     
     QDFWeakSelf;
@@ -352,7 +378,7 @@
 //市
 - (void)getCourtOfCityWithProvinceID:(NSString *)areaPid
 {
-    NSString *cityString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kGuaranteeCourtCity];
+    NSString *cityString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPowerCourtCity];
     NSDictionary *param = @{@"token" : [self getValidateToken],
                             @"depdrop_parents" : areaPid};
     
@@ -375,6 +401,41 @@
     }];
 }
 
+- (void)goToPowerApply
+{
+    [self.view endEditing:YES];
+    NSString *powerStrig = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPowerString];
+    
+    self.powerDic[@"phone"] = self.powerDic[@"phone"]?self.powerDic[@"phone"]:[self getValidateMobile];
+    [self.powerDic setObject:[self getValidateToken] forKey:@"token"];
+    
+    NSDictionary *params = self.powerDic;
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:powerStrig params:params successBlock:^(id responseObject) {
+        
+        BaseModel *model = [BaseModel objectWithKeyValues:responseObject];
+        
+        if ([model.code isEqualToString:@"0000"]) {
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"申请成功" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *act = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                
+                UINavigationController *nsdd = self.navigationController;
+                [nsdd popViewControllerAnimated:NO];
+                PowerProtectListViewController *powerProtectListVC = [[PowerProtectListViewController alloc] init];
+                powerProtectListVC.hidesBottomBarWhenPushed = YES;
+                [nsdd pushViewController:powerProtectListVC animated:NO];
+                
+            }];
+            [alertController addAction:act];
+            [weakself presentViewController:alertController animated:YES completion:nil];
+        }else{
+            [weakself showHint:model.msg];
+        }
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

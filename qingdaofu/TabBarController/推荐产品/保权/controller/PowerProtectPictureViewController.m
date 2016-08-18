@@ -135,12 +135,24 @@
     QDFWeak(cell);
     [cell setDidSelectedItem:^(NSInteger items) {
          [weakself addImageWithMaxSelection:5 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
-             if (images.count > 0) {
-                 weakcell.collectionDataList = [NSMutableArray arrayWithArray:images];
-                 [weakcell reloadData];
-             }else{
-                 weakcell.collectionDataList = [NSMutableArray arrayWithObject:@"upload_pictures"];
-                 [weakcell reloadData];
+             if (indexPath.section == 0) {//起诉书
+                 
+                 NSData *iData = [[NSData alloc] initWithContentsOfFile:images[0]];
+                 [weakself uploadImages:iData];
+//                 if (images.count > 0) {
+//                     weakcell.collectionDataList = [NSMutableArray arrayWithArray:images];
+//                     [weakcell reloadData];
+//                 }else{
+//                     weakcell.collectionDataList = [NSMutableArray arrayWithObject:@"upload_pictures"];
+//                     [weakcell reloadData];
+//                 }
+                 
+             }else if (indexPath.section == 1){//财产保全申请书
+                 
+             }else if (indexPath.section == 2){//相关证据材料
+                 
+             }else if (indexPath.section == 3){//案件受理通知书
+                 
              }
          }];
      }];
@@ -201,6 +213,25 @@
     
     return nil;
 }
+
+#pragma mark - method
+- (void)uploadImages:(NSData *)imgData
+{
+    NSString *uploadsString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kUploadImagesString];
+    NSDictionary *params = @{@"filetype" : @"1",
+                             @"extension" : @"jpg",
+                             @"picture" : imgData
+                             };
+    [self requestDataPostWithString:uploadsString params:params successBlock:^(id responseObject) {
+        
+        NSDictionary *kpkpkp = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        NSLog(@"uiuiuiu  %@",kpkpkp);
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

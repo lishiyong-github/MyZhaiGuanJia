@@ -39,8 +39,7 @@
     [self.view addSubview:self.applyRecordsTableView];
     [self.view addSubview:self.baseRemindImageView];
     [self.baseRemindImageView setHidden:YES];
-    [self.applyRecordsTableView addHeaderWithTarget:self action:@selector(headerRefreshOfRecords)];
-    [self.applyRecordsTableView addFooterWithTarget:self action:@selector(footerRefreshOfRecords)];
+    
     
     [self.view setNeedsUpdateConstraints];
 }
@@ -68,7 +67,9 @@
         _applyRecordsTableView.tableFooterView = [[UIView alloc] init];
         _applyRecordsTableView.backgroundColor = kBackColor;
         _applyRecordsTableView.separatorInset = UIEdgeInsetsZero;
-        
+        [_applyRecordsTableView addHeaderWithTarget:self action:@selector(headerRefreshOfRecords)];
+        [_applyRecordsTableView addFooterWithTarget:self action:@selector(footerRefreshOfRecords)];
+
         if ([_applyRecordsTableView respondsToSelector:@selector(setSeparatorInset:)]) {
             [_applyRecordsTableView setSeparatorInset:UIEdgeInsetsZero];
         }

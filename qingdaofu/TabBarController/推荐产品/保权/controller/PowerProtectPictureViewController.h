@@ -6,9 +6,9 @@
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
-#import "BaseViewController.h"
+#import "NetworkViewController.h"
 
-@interface PowerProtectPictureViewController : BaseViewController
+@interface PowerProtectPictureViewController : NetworkViewController
 
 @property (nonatomic,strong) NSString *navTitleString;
 

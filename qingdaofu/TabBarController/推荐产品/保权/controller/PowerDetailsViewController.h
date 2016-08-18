@@ -6,8 +6,11 @@
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
-#import "BaseViewController.h"
+#import "NetworkViewController.h"
+#import "PowerModel.h"
 
-@interface PowerDetailsViewController : BaseViewController
+@interface PowerDetailsViewController : NetworkViewController
+
+@property (nonatomic,strong) PowerModel *pModel;
 
 @end

@@ -10,7 +10,9 @@
 
 @interface ApplicationCourtViewController : NetworkViewController
 
-@property (nonatomic,strong) void (^didSelectedRow)(NSString *);
+@property (nonatomic,strong) void (^didSelectedRow)(NSString *,NSString *);
 
+@property (nonatomic,strong) NSString *area_pidString; //省
+@property (nonatomic,strong) NSString *area_idString;//市
 
 @end

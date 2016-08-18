@@ -13,9 +13,11 @@
 
 #import "BaseCommitView.h"
 #import "EvaTopSwitchView.h"
-
 #import "MineUserCell.h"
 #import "MessageCell.h"
+
+#import "PowerResponse.h"
+#import "PowerModel.h"
 
 @interface PowerProtectListViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -24,6 +26,9 @@
 @property (nonatomic,strong) BaseCommitView *powerListCommitView;
 @property (nonatomic,assign) BOOL didSetupConstraints;
 
+@property (nonatomic,strong) NSString *typeString;
+@property (nonatomic,assign) NSInteger pagePower;
+@property (nonatomic,strong) NSMutableArray *powerListArray;
 @end
 
 @implementation PowerProtectListViewController
@@ -33,11 +38,17 @@
     self.title = @"我的保全";
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
+    self.typeString = @"1";
+    
     [self.view addSubview:self.powerSwitchView];
     [self.view addSubview:self.powerListTableView];
     [self.view addSubview:self.powerListCommitView];
+    [self.view addSubview:self.baseRemindImageView];
+    [self.baseRemindImageView setHidden:YES];
     
     [self.view setNeedsUpdateConstraints];
+    
+    [self headerRefreshOfPowerList];
 }
 
 - (void)updateViewConstraints
@@ -54,6 +65,9 @@
         
         [self.powerListCommitView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
         [self.powerListCommitView autoSetDimension:ALDimensionHeight toSize:60];
+        
+        [self.baseRemindImageView autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
+        [self.baseRemindImageView autoAlignAxisToSuperviewAxis:ALAxisVertical];
         
         self.didSetupConstraints = YES;
     }
@@ -74,15 +88,19 @@
         
         QDFWeakSelf;
         [_powerSwitchView setDidSelectedButton:^(NSInteger tag) {
+            [weakself.powerListArray removeAllObjects];
             if (tag == 33) {
                 weakself.powerSwitchView.leftBlueConstraints.constant = 0;
                 [weakself.powerSwitchView.getbutton setTitleColor:kBlueColor forState:0];
                 [weakself.powerSwitchView.sendButton setTitleColor:kBlackColor forState:0];
+                weakself.typeString = @"1";
             }else if (tag == 34){
                 weakself.powerSwitchView.leftBlueConstraints.constant = kScreenWidth/2;
                 [weakself.powerSwitchView.sendButton setTitleColor:kBlueColor forState:0];
                 [weakself.powerSwitchView.getbutton setTitleColor:kBlackColor forState:0];
+                weakself.typeString = @"2";
             }
+            [weakself headerRefreshOfPowerList];
         }];
     }
     return _powerSwitchView;
@@ -97,6 +115,8 @@
         _powerListTableView.dataSource = self;
         _powerListTableView.backgroundColor = kBackColor;
         _powerListTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
+        [_powerListTableView addHeaderWithTarget:self action:@selector(headerRefreshOfPowerList)];
+        [_powerListTableView addFooterWithTarget:self action:@selector(footerRefreshOfPowerList)];
     }
     return _powerListTableView;
 }
@@ -122,6 +142,14 @@
     return _powerListCommitView;
 }
 
+- (NSMutableArray *)powerListArray
+{
+    if (!_powerListArray) {
+        _powerListArray = [NSMutableArray array];
+    }
+    return _powerListArray;
+}
+
 #pragma mark -tableview delegate and datasoyrce
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -130,7 +158,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 6;
+    return self.powerListArray.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -145,6 +173,8 @@
 {
     static NSString *identifier;
     
+    PowerModel *model = self.powerListArray[indexPath.section];
+    
     if (indexPath.row == 0) {
         identifier = @"listas0";
         MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -155,12 +185,14 @@
         cell.userNameButton.userInteractionEnabled = NO;
         cell.userActionButton.userInteractionEnabled = NO;
 
-        [cell.userNameButton setTitle:@"  BH20160928009" forState:0];
+        NSString *number = [NSString stringWithFormat:@"  %@",model.number];
+        [cell.userNameButton setTitle:number forState:0];
         [cell.userNameButton setTitleColor:kGrayColor forState:0];
         [cell.userNameButton setImage:[UIImage imageNamed:@"right"] forState:0];
         [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
         
         return cell;
+        
     }else if(indexPath.row == 1){
         identifier = @"listas1";
         MessageCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -175,55 +207,13 @@
         cell.userLabel.font = kFirstFont;
         cell.newsLabel.font = kFirstFont;
 
-        cell.userLabel.text = [NSString stringWithFormat:@"金额：%@万",@"1000"];
-        cell.timeLabel.text = @"2016-09-09 12:12";
-        cell.newsLabel.text = [NSString stringWithFormat:@"法院：%@",@"上海市高级人民法院"];
-        
-        return cell;
-        
-        
-        /*
-        NSString *moneyStr1 = [NSString stringWithFormat:@"保全金额：%@",@"1000万"];
-        NSString *moneyStr2 = @"2014-09-09 12:12";
-        NSString *moneyStr = [NSString stringWithFormat:@"%@\n%@",moneyStr1,moneyStr2];
-        NSMutableAttributedString *attributeMoneyStr = [[NSMutableAttributedString alloc] initWithString:moneyStr];
-        [attributeMoneyStr addAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kBlackColor} range:NSMakeRange(0, moneyStr1.length)];
-        [attributeMoneyStr addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(moneyStr1.length+1, moneyStr2.length)];
-        NSMutableParagraphStyle *paragraphStyle1 = [[NSMutableParagraphStyle alloc] init];
-        [paragraphStyle1 setLineSpacing:kSpacePadding];
-        [attributeMoneyStr addAttribute:NSParagraphStyleAttributeName value:paragraphStyle1 range:NSMakeRange(0, [moneyStr length])];
-        
-        [cell.powerMoneyLabel setAttributedText:attributeMoneyStr];
-        cell.powerStateLabel.text = @"审核中";//审核中－黑色；审核失败－红色；审核成功蓝色
-        
-        
-        return cell;
-         */
-    }
-    /*
-    else{
-        identifier = @"listas2";
-        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if (!cell) {
-            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        [cell.userNameButton setHidden:YES];
-        [cell.userActionButton setTitleColor:kBlackColor forState:0];
-        [cell.userActionButton setTitle:@"  查看进度  " forState:0];
-        cell.userActionButton.layer.borderColor = kBorderColor.CGColor;
-        cell.userActionButton.layer.borderWidth = kLineWidth;
-        
-        QDFWeakSelf;
-        [cell.userActionButton addAction:^(UIButton *btn) {
-            PowerPaceViewController *powerPaceVC = [[PowerPaceViewController alloc] init];
-            [weakself.navigationController pushViewController:powerPaceVC animated:YES];
-        }];
+        NSInteger account = [model.account integerValue]/10000;
+        cell.userLabel.text = [NSString stringWithFormat:@"金额：%ld万",(long)account];
+        cell.timeLabel.text = [NSDate getYMDhmFormatterTime:model.create_time];
+        cell.newsLabel.text = [NSString stringWithFormat:@"法院：%@",model.fayuan_name];
         
         return cell;
     }
-     */
-    
     return nil;
 }
 
@@ -242,8 +232,69 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.row == 0) {
         PowerDetailsViewController *powerDetailsVC = [[PowerDetailsViewController alloc] init];
+        powerDetailsVC.pModel = self.powerListArray[indexPath.section];
         [self.navigationController pushViewController:powerDetailsVC animated:YES];
     }
+}
+
+#pragma mark - method
+- (void)getPowerAssessListWithPage:(NSString *)page
+{
+    NSString *assessListString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPowerAssessListString];
+    NSDictionary *params = @{@"token" : [self getValidateToken],
+                             @"page" : page,
+                             @"limit" : @"10",
+                             @"type" : self.typeString //1未完成，2已完成
+                             };
+    QDFWeakSelf;
+    [self requestDataPostWithString:assessListString params:params successBlock:^(id responseObject) {
+        
+        if ([page integerValue] == 1) {
+            [weakself.powerListArray removeAllObjects];
+            _pagePower = 1;
+        }
+        
+        PowerResponse *responsey = [PowerResponse objectWithKeyValues:responseObject];
+        
+        if (responsey.data.count == 0) {
+            _pagePower--;
+        }
+        
+        for (PowerModel *model in responsey.data) {
+            [weakself.powerListArray addObject:model];
+        }
+        
+        if (weakself.powerListArray.count > 0) {
+            [weakself.baseRemindImageView setHidden:YES];
+        }else{
+            [weakself.baseRemindImageView setHidden:NO];
+        }
+        
+        [weakself.powerListTableView reloadData];
+        
+    } andFailBlock:^(NSError *error) {
+    }];
+}
+
+- (void)headerRefreshOfPowerList
+{
+    _pagePower = 1;
+    [self getPowerAssessListWithPage:@"1"];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.powerListTableView headerEndRefreshing];
+    });
+}
+
+- (void)footerRefreshOfPowerList
+{
+    _pagePower++;
+    NSString *page = [NSString stringWithFormat:@"%ld",_pagePower];
+    [self getPowerAssessListWithPage:page];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.powerListTableView footerEndRefreshing];
+    });
 }
 
 
