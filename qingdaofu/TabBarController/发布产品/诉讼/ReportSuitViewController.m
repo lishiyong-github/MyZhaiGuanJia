@@ -169,7 +169,7 @@
 {
     if (!_sTextArray) {
         NSMutableArray *s1 = [NSMutableArray arrayWithArray:@[@"",@"借款本金",@"代理费用",@"",@"抵押物地址",@""]];
-        NSMutableArray *s2 = [NSMutableArray arrayWithArray:@[@"|  选填信息(选填)",@"借款利率(%)",@"借款期限",@"还款方式",@"债务人主体",@"委托事项",@"委托代理期限(月)",@"已付本金",@"已付利息",@"",@"债权文件",@"债权人信息",@"债务人信息"]];
+        NSMutableArray *s2 = [NSMutableArray arrayWithArray:@[@"|  选填信息(选填)",@"借款利率(%)",@"借款期限",@"还款方式",@"债务人主体",@"委托代理期限(月)",@"已付本金",@"已付利息",@"",@"债权文件",@"债权人信息",@"债务人信息"]];
         _sTextArray = [NSMutableArray arrayWithObjects:s1,s2, nil];
     }
     return _sTextArray;
@@ -332,7 +332,7 @@
             [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
             NSArray *dede;
             if ([self.categoryString integerValue] == 2) {
-                dede = @[@"提成比例(%)",@"固定费用(万元)"];
+                dede = @[@"服务佣金(%)",@"固定费用(万元)"];
             }else{
                 dede = @[@"固定费用(万元)",@"代理费率(%)"];
             }
@@ -641,32 +641,7 @@
         [cell.agentButton addTarget:self action:@selector(showTitleOfUpwardViews:) forControlEvents:UIControlEventTouchUpInside];
 
         return cell;
-    }else if (indexPath.row == 5){//委托事项
-        identifier = @"suitSect1";
-        
-        AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if (!cell) {
-            cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.leftdAgentContraints.constant = 110;
-        [cell.agentTextField setHidden:YES];
-        
-        cell.agentLabel.text = self.sTextArray[1][indexPath.row];
-        [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-        if (suModel.commitment) {
-            NSArray *ffff = @[@"代理诉讼",@"代理仲裁",@"代理执行"];
-            [cell.agentButton setTitle:ffff[[suModel.commitment integerValue] -1] forState:0];
-        }else{
-            NSString *eeee = self.suitDataDictionary[@"commitment_str"]?self.suitDataDictionary[@"commitment_str"]:@"请选择";
-            [cell.agentButton setTitle:eeee forState:0];
-        }
-        
-        cell.agentButton.tag = 12;
-        [cell.agentButton addTarget:self action:@selector(showTitleOfUpwardViews:) forControlEvents:UIControlEventTouchUpInside];
-
-        return cell;
-    }else if (indexPath.row == 6){//委托代理期限
+    }else if (indexPath.row == 5){//委托代理期限
         identifier = @"suitSect1";
         
         AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -690,7 +665,7 @@
         [cell.agentButton addTarget:self action:@selector(showTitleOfUpwardViews:) forControlEvents:UIControlEventTouchUpInside];
         
         return cell;
-    }else if (indexPath.row == 7){//已付本金
+    }else if (indexPath.row == 6){//已付本金
         identifier = @"suitSect1";
         
         AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -719,7 +694,7 @@
         }];
 
         return cell;
-    }else if (indexPath.row == 8){//已付利息
+    }else if (indexPath.row == 7){//已付利息
         identifier = @"suitSect1";
         
         AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -747,7 +722,7 @@
         }];
 
         return cell;
-    }else if (indexPath.row == 9){//合同履行地
+    }else if (indexPath.row == 8){//合同履行地
         identifier = @"suitSect19";
         
         EditDebtAddressCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -771,7 +746,7 @@
         }];
         
         return cell;
-    }else if (indexPath.row == 10){//债权文件
+    }else if (indexPath.row == 9){//债权文件
         identifier = @"suitSect110";
         
         AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -787,7 +762,7 @@
         [cell.agentButton setTitle:@"上传" forState:0];
         cell.agentButton.userInteractionEnabled = NO;
         return cell;
-    }else if (indexPath.row == 11){//债权人信息
+    }else if (indexPath.row == 10){//债权人信息
         identifier = @"suitSect1";
         
         AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -803,7 +778,7 @@
         [cell.agentButton setTitle:@"完善" forState:0];
         cell.agentButton.userInteractionEnabled = NO;
         return cell;
-    }else if (indexPath.row == 12){//债务人信息
+    }else if (indexPath.row == 11){//债务人信息
         identifier = @"suitSect1";
         
         AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -872,7 +847,6 @@
                 NSString *endStr = @"";
                 for (NSInteger i=0; i<arrays.count; i++) {
                     DebtModel *model = arrays[i];
-                    
                     qqq = [NSString stringWithFormat:@"creditorname-%ld=%@,creditormobile-%ld=%@,creditorcardcode-%ld=%@,creditoraddress-%ld=%@,creditorcardimage-%ld=%@",(long)i,model.creditorname,(long)i,model.creditormobile,(long)i,model.creditorcardcode,(long)i,model.creditoraddress,(long)i,model.creditorcardimages];
                     
                     endStr = [NSString stringWithFormat:@"%@,%@",endStr,qqq];
@@ -936,12 +910,11 @@
 {
     [self.view endEditing:YES];
     NSArray *arr2 = @[@"固定费用(万元)",@"代理费率(%)"];
+    NSArray *arr22 = @[@"服务佣金(%)",@"固定费用(万元)"];
     NSArray *arr3 = @[@"房产抵押",@"应收帐款",@"机动车抵押",@"无抵押"];
-    NSArray *arr22 = @[@"提成比例(%)",@"固定费用(万元)"];
     NSArray *arr8 = @[@"%/天",@"%/月"];
     NSArray *arr10 = @[@"一次性到期还本付息",@"按月付息，到期还本",@"其他"];
     NSArray *arr11 = @[@"自然人",@"法人",@"其他"];
-    NSArray *arr12 = @[@"代理诉讼",@"代理仲裁",@"代理执行"];
     NSArray *arr13 = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10",@"11",@"12"];
     
     QDFWeakSelf;
@@ -1054,18 +1027,7 @@
             }];
         }
             break;
-        case 12:{//委托事项
-            [self showBlurInView:self.view withArray:arr12 andTitle:@"选择委托事项" finishBlock:^(NSString *text,NSInteger row) {
-                [btn setTitle:text forState:0];
-                
-                NSString *value = [NSString stringWithFormat:@"%ld",(long)row];
-                [weakself.suitDataDictionary setValue:value forKey:@"commitment"];
-                [weakself.suitDataDictionary setValue:text forKey:@"commitment_str"];
-
-            }];
-        }
-            break;
-        case 13:{//委托代理期限
+        case 12:{//委托代理期限
             [self showBlurInView:self.view withArray:arr13 andTitle:@"选择委托代理期限" finishBlock:^(NSString *text,NSInteger row) {
                 [btn setTitle:text forState:0];
                 
@@ -1105,7 +1067,6 @@
     self.suitDataDictionary[@"term"] = self.suitDataDictionary[@"term"]?self.suitDataDictionary[@"term"]:self.suResponse.product.term;//借款期限
     self.suitDataDictionary[@"repaymethod"] = self.suitDataDictionary[@"repaymethod"]?self.suitDataDictionary[@"repaymethod"]:self.suResponse.product.repaymethod;//付款方式
     self.suitDataDictionary[@"obligor"] = self.suitDataDictionary[@"obligor"]?self.suitDataDictionary[@"obligor"]:self.suResponse.product.obligor;//债务人主体
-    self.suitDataDictionary[@"commitment"] = self.suitDataDictionary[@"commitment"]?self.suitDataDictionary[@"commitment"]:self.suResponse.product.commitment;//委托事项
     self.suitDataDictionary[@"commissionperiod"] = self.suitDataDictionary[@"commissionperiod"]?self.suitDataDictionary[@"commissionperiod"]:self.suResponse.product.commissionperiod;  //委托代理期限
     self.suitDataDictionary[@"paidmoney"] = self.suitDataDictionary[@"paidmoney"]?self.suitDataDictionary[@"paidmoney"]:self.suResponse.product.paidmoney;//已付本金
     self.suitDataDictionary[@"interestpaid"] = self.suitDataDictionary[@"interestpaid"]?self.suitDataDictionary[@"interestpaid"]:self.suResponse.product.interestpaid; //已付利息

@@ -35,31 +35,41 @@
 - (void)updateConstraints
 {
     if (!self.didSetupConstraints) {
-        [self.typeImageView autoSetDimensionsToSize:CGSizeMake(40, 18)];
-        [self.typeImageView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:15];
-        [self.typeImageView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:15];
         
-        [self.nameLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.typeImageView withOffset:10];
+//        [self.typeImageView autoSetDimensionsToSize:CGSizeMake(40, 18)];
+        [self.typeImageView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kBigPadding];
+        [self.typeImageView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
+        
+        [self.nameLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.typeImageView withOffset:kSpacePadding];
         [self.nameLabel autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.typeImageView];
         
-        [self.recommendimageView autoPinEdgeToSuperviewEdge:ALEdgeTop];
+        [self.recommendimageView autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.nameLabel];
         [self.recommendimageView autoPinEdgeToSuperviewEdge:ALEdgeRight];
-        [self.recommendimageView autoSetDimensionsToSize:CGSizeMake(35, 35)];
+//        [self.recommendimageView autoSetDimensionsToSize:CGSizeMake(35, 35)];
         
         [self.typeButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
-        [self.typeButton autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kSmallPadding];
+        [self.typeButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.nameLabel];
         
         [self.addressLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.typeImageView];
-        [self.addressLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.typeImageView withOffset:10];
+        [self.addressLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.typeImageView withOffset:kSpacePadding];
         [self.addressLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         
-        [self.grayLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.addressLabel withOffset:10];
+        [self.grayLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.addressLabel withOffset:kSpacePadding];
         [self.grayLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.typeImageView];
-        [self.grayLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:15];
+        [self.grayLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.grayLabel autoSetDimension:ALDimensionHeight toSize:1];
         
         NSArray *views = @[self.moneyView,self.pointView,self.rateView];
         [views autoSetViewsDimensionsToSize:CGSizeMake(kScreenWidth/3, 88)];
+        
+//        [self.moneyView autoPinEdgeToSuperviewEdge:ALEdgeLeft];
+//        [self.moneyView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.grayLabel];
+//        
+//        [self.pointView autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.moneyView];
+//        [self.pointView autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.moneyView];
+//        
+//        [self.rateView autoPinEdgeToSuperviewEdge:ALEdgeRight];
+//        [self.rateView autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.moneyView];
         
         [self.moneyView autoPinEdgeToSuperviewEdge:ALEdgeLeft];
         [self.moneyView autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.pointView];
@@ -88,9 +98,9 @@
 {
     if (!_nameLabel) {
         _nameLabel = [UILabel newAutoLayoutView];
-        _nameLabel.font = kSecondFont;
         _nameLabel.text = @"RZ201602220001";
         _nameLabel.textColor = kGrayColor;
+        _nameLabel.font = kBoldFont(16);
     }
     return _nameLabel;
 }
@@ -116,7 +126,7 @@
 {
     if (!_addressLabel) {
         _addressLabel = [UILabel newAutoLayoutView];
-        _addressLabel.font = kSecondFont;
+        _addressLabel.font = kSmallFont;
         _addressLabel.text = @"抵押物地址：上海市浦东新区浦东南路855号";
         _addressLabel.textColor = kLightGrayColor;
     }
@@ -162,8 +172,8 @@
     if (!_rateView) {
         _rateView = [MoneyView newAutoLayoutView];
         _rateView.label1.text = @"机动车";
-        _rateView.label1.textColor = kBlueColor;
-        _rateView.label1.font = [UIFont systemFontOfSize:22];
+        _rateView.label1.textColor = kGrayColor;
+//        _rateView.label1.font = [UIFont systemFontOfSize:22];
         _rateView.label2.text = @"债券类型";
     }
     return _rateView;

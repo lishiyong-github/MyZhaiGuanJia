@@ -328,11 +328,24 @@
             if ([proModel.category intValue] == 2){//清收
                 //上边
                 if ([proModel.agencycommissiontype isEqualToString:@"1"]) {
-                    cell.deRateLabel.text = @"----  提成比例(%)  ----";
+                    cell.deRateLabel.text = @"----  服务佣金  ----";
+                    NSString *moneyStr1 = proModel.agencycommission;
+                    NSString *moneyStr2 = @"%";
+                    NSString *moneyStr = [NSString stringWithFormat:@"%@%@",moneyStr1,moneyStr2];
+                    NSMutableAttributedString *attMoneyStr = [[NSMutableAttributedString alloc] initWithString:moneyStr];
+                    [attMoneyStr addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:40],NSForegroundColorAttributeName:kNavColor} range:NSMakeRange(0, moneyStr1.length)];
+                    [attMoneyStr addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kNavColor} range:NSMakeRange(moneyStr1.length, moneyStr2.length)];
+                    [cell.deRateLabel1 setAttributedText:attMoneyStr];
                 }else{
-                    cell.deRateLabel.text = @"----  固定费用(万元)  ----";
+                    cell.deRateLabel.text = @"----  固定费用  ----";
+                    NSString *moneyStr1 = proModel.agencycommission;
+                    NSString *moneyStr2 = @"万";
+                    NSString *moneyStr = [NSString stringWithFormat:@"%@%@",moneyStr1,moneyStr2];
+                    NSMutableAttributedString *attMoneyStr = [[NSMutableAttributedString alloc] initWithString:moneyStr];
+                    [attMoneyStr addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:40],NSForegroundColorAttributeName:kLightWhiteColor} range:NSMakeRange(0, moneyStr1.length)];
+                    [attMoneyStr addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kLightWhiteColor} range:NSMakeRange(moneyStr1.length, moneyStr2.length)];
+                    [cell.deRateLabel1 setAttributedText:attMoneyStr];
                 }
-                cell.deRateLabel1.text = [NSString getValidStringFromString:proModel.agencycommission toString:@"0"];
                 
                 //右边
                 cell.deTypeView.fLabel1.text = @"债权类型";
@@ -349,11 +362,24 @@
             }else if ([proModel.category intValue] == 3){//诉讼
                 //上边
                 if ([proModel.agencycommissiontype isEqualToString:@"1"]) {
-                    cell.deRateLabel.text = @"----  固定费用(万元)  ----";
+                    cell.deRateLabel.text = @"----  固定费用  ----";
+                    NSString *moneyStr1 = proModel.agencycommission;
+                    NSString *moneyStr2 = @"万";
+                    NSString *moneyStr = [NSString stringWithFormat:@"%@%@",moneyStr1,moneyStr2];
+                    NSMutableAttributedString *attMoneyStr = [[NSMutableAttributedString alloc] initWithString:moneyStr];
+                    [attMoneyStr addAttributes:@{NSFontAttributeName:kBoldFont1,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, moneyStr1.length)];
+                    [attMoneyStr addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(moneyStr1.length, moneyStr2.length)];
+                    [cell.deRateLabel1 setAttributedText:attMoneyStr];
                 }else{
-                    cell.deRateLabel.text = @"----  风险费率(%)  ----";
+                    cell.deRateLabel.text = @"----  代理费率  ----";
+                    NSString *moneyStr1 = proModel.agencycommission;
+                    NSString *moneyStr2 = @"%";
+                    NSString *moneyStr = [NSString stringWithFormat:@"%@%@",moneyStr1,moneyStr2];
+                    NSMutableAttributedString *attMoneyStr = [[NSMutableAttributedString alloc] initWithString:moneyStr];
+                    [attMoneyStr addAttributes:@{NSFontAttributeName:kBoldFont1,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, moneyStr1.length)];
+                    [attMoneyStr addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(moneyStr1.length, moneyStr2.length)];
+                    [cell.deRateLabel1 setAttributedText:attMoneyStr];
                 }
-                cell.deRateLabel1.text = [NSString getValidStringFromString:proModel.agencycommission toString:@"0"];
                 
                 //右边
                 cell.deTypeView.fLabel1.text = @"债权类型";
@@ -369,7 +395,8 @@
             }
             
             //左边－－－－通用
-            cell.deMoneyView.fLabel1.text = @"借款本金(万元)";
+            cell.deMoneyView.fLabel1.text = @"借款本金";
+            
             cell.deMoneyView.fLabel2.text = [NSString getValidStringFromString:proModel.money toString:@"0"];
             
             return cell;
@@ -674,12 +701,14 @@
      */
 }
 
+/*
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     if (scrollView.contentOffset.y > 0 && scrollView.contentOffset.y < 260+kBigPadding) {
         [scrollView setContentOffset:CGPointMake(0, 260+kBigPadding)];
     }
 }
+ */
 
 #pragma mark - method
 //产品详情
@@ -721,7 +750,7 @@
         NSString *agencycommissiontypeStr = @"暂无";  //代理费用类型
         if ([respModel.product.agencycommissiontype intValue] == 1) {
             if ([respModel.product.category integerValue] == 2) {
-                agencycommissiontypeStr = @"提成比例(%)";
+                agencycommissiontypeStr = @"服务佣金(%)";
             }else{
                 agencycommissiontypeStr = @"固定费用(万元)";
             }

@@ -7,9 +7,11 @@
 //
 
 #import "NetworkViewController.h"
+#import "PowerModel.h"
 
 @interface PowerProtectPictureViewController : NetworkViewController
 
 @property (nonatomic,strong) NSString *navTitleString;
+@property (nonatomic,strong) PowerModel *pModel;
 
 @end

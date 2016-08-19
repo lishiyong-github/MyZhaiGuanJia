@@ -211,7 +211,6 @@
 		A17964F41CD35AD500B6AD47 /* MySaveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A17964F31CD35AD500B6AD47 /* MySaveViewController.m */; };
 		A17964FA1CD3656800B6AD47 /* MyStoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A17964F91CD3656800B6AD47 /* MyStoreViewController.m */; };
 		A17964FD1CD3682A00B6AD47 /* MyDetailStoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A17964FC1CD3682A00B6AD47 /* MyDetailStoreViewController.m */; };
-		A17965021CD3690D00B6AD47 /* MyStoreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A17965011CD3690D00B6AD47 /* MyStoreCell.m */; };
 		A17B74AA1D5C1CF50015D86A /* bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A17B74A81D5C1CF50015D86A /* bg@2x.png */; };
 		A17B74AB1D5C1CF50015D86A /* bg@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A17B74A91D5C1CF50015D86A /* bg@3x.png */; };
 		A17B74AF1D5C2B2F0015D86A /* HorizontalProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = A17B74AE1D5C2B2F0015D86A /* HorizontalProgressView.m */; };
@@ -532,6 +531,7 @@
 		A1A69DE11D62F4C20053FFED /* AuthentyWaitingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A69DE01D62F4C20053FFED /* AuthentyWaitingViewController.m */; };
 		A1A69DE41D62F9D90053FFED /* certification_success_banner@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A69DE21D62F9D90053FFED /* certification_success_banner@2x.png */; };
 		A1A69DE51D62F9D90053FFED /* certification_success_banner@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A69DE31D62F9D90053FFED /* certification_success_banner@3x.png */; };
+		A1A6C84F1D669D9A00EC060E /* ImageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A6C84E1D669D9A00EC060E /* ImageModel.m */; };
 		A1A7D08A1D6583FF00E84329 /* PowerResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A7D0891D6583FF00E84329 /* PowerResponse.m */; };
 		A1A7D08D1D65840F00E84329 /* PowerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A7D08C1D65840F00E84329 /* PowerModel.m */; };
 		A1A97E1A1CDC388E00EDE320 /* information_nav_remind@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A97E181CDC388E00EDE320 /* information_nav_remind@2x.png */; };
@@ -956,8 +956,6 @@
 		A17964F91CD3656800B6AD47 /* MyStoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyStoreViewController.m; sourceTree = "<group>"; };
 		A17964FB1CD3682A00B6AD47 /* MyDetailStoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyDetailStoreViewController.h; sourceTree = "<group>"; };
 		A17964FC1CD3682A00B6AD47 /* MyDetailStoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyDetailStoreViewController.m; sourceTree = "<group>"; };
-		A17965001CD3690D00B6AD47 /* MyStoreCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyStoreCell.h; sourceTree = "<group>"; };
-		A17965011CD3690D00B6AD47 /* MyStoreCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyStoreCell.m; sourceTree = "<group>"; };
 		A17B74A81D5C1CF50015D86A /* bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg@2x.png"; sourceTree = "<group>"; };
 		A17B74A91D5C1CF50015D86A /* bg@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg@3x.png"; sourceTree = "<group>"; };
 		A17B74AD1D5C2B2F0015D86A /* HorizontalProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HorizontalProgressView.h; sourceTree = "<group>"; };
@@ -1401,6 +1399,8 @@
 		A1A69DE01D62F4C20053FFED /* AuthentyWaitingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthentyWaitingViewController.m; sourceTree = "<group>"; };
 		A1A69DE21D62F9D90053FFED /* certification_success_banner@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "certification_success_banner@2x.png"; sourceTree = "<group>"; };
 		A1A69DE31D62F9D90053FFED /* certification_success_banner@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "certification_success_banner@3x.png"; sourceTree = "<group>"; };
+		A1A6C84D1D669D9A00EC060E /* ImageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageModel.h; sourceTree = "<group>"; };
+		A1A6C84E1D669D9A00EC060E /* ImageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageModel.m; sourceTree = "<group>"; };
 		A1A7D0881D6583FF00E84329 /* PowerResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PowerResponse.h; sourceTree = "<group>"; };
 		A1A7D0891D6583FF00E84329 /* PowerResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PowerResponse.m; sourceTree = "<group>"; };
 		A1A7D08B1D65840F00E84329 /* PowerModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PowerModel.h; sourceTree = "<group>"; };
@@ -2112,15 +2112,6 @@
 				A1602E791CEDAF790053F850 /* BidMessageCell.m */,
 				A1602E7B1CEDB3920053F850 /* BidOneCell.h */,
 				A1602E7C1CEDB3920053F850 /* BidOneCell.m */,
-			);
-			path = view;
-			sourceTree = "<group>";
-		};
-		A17964FF1CD368FD00B6AD47 /* view */ = {
-			isa = PBXGroup;
-			children = (
-				A17965001CD3690D00B6AD47 /* MyStoreCell.h */,
-				A17965011CD3690D00B6AD47 /* MyStoreCell.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -2945,7 +2936,6 @@
 		A19D29661CD2087400DAAEA7 /* 我的收藏 */ = {
 			isa = PBXGroup;
 			children = (
-				A17964FF1CD368FD00B6AD47 /* view */,
 				A17964F81CD3656800B6AD47 /* MyStoreViewController.h */,
 				A17964F91CD3656800B6AD47 /* MyStoreViewController.m */,
 				A17964FB1CD3682A00B6AD47 /* MyDetailStoreViewController.h */,
@@ -3369,6 +3359,8 @@
 				A1A7D0891D6583FF00E84329 /* PowerResponse.m */,
 				A1A7D08B1D65840F00E84329 /* PowerModel.h */,
 				A1A7D08C1D65840F00E84329 /* PowerModel.m */,
+				A1A6C84D1D669D9A00EC060E /* ImageModel.h */,
+				A1A6C84E1D669D9A00EC060E /* ImageModel.m */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -4060,7 +4052,6 @@
 				A1A5C73B1D37258900173533 /* UpCell.m in Sources */,
 				A176341D1D067A6E00CD4623 /* PublishingResponse.m in Sources */,
 				A17634241D06B68700CD4623 /* CompleteResponse.m in Sources */,
-				A17965021CD3690D00B6AD47 /* MyStoreCell.m in Sources */,
 				A1ECB66F1CED6CA70017EA10 /* PlaceHolderTextView.m in Sources */,
 				A19B8E231CCF42E300F8EBF2 /* NSArray+PureLayout.m in Sources */,
 				A17964FA1CD3656800B6AD47 /* MyStoreViewController.m in Sources */,
@@ -4082,6 +4073,7 @@
 				A16856AC1CE9CBA5006A0887 /* ProDetailHeadFootView.m in Sources */,
 				A1AEC97C1D3F7D870082813F /* NewsTableViewCell.m in Sources */,
 				A187B9001D50336500A91A16 /* BaseCommitView.m in Sources */,
+				A1A6C84F1D669D9A00EC060E /* ImageModel.m in Sources */,
 				A19CC0921D59C181000ED568 /* ApplicationGuaranteeView.m in Sources */,
 				A159F9451D0BEE5E00A6A024 /* StandardPaths.m in Sources */,
 				A187B9121D508BAA00A91A16 /* HousePropertyListViewController.m in Sources */,

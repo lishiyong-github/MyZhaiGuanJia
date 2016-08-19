@@ -142,7 +142,7 @@
         }else if ([proModel.category intValue] == 2){//清收
             //上边
             if ([proModel.agencycommissiontype isEqualToString:@"1"]) {
-                cell.deRateLabel.text = @"提成比例(%)";
+                cell.deRateLabel.text = @"服务佣金(%)";
             }else{
                 cell.deRateLabel.text = @"固定费用(万元)";
             }

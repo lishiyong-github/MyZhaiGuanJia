@@ -287,7 +287,7 @@
         
         cell.pointView.label1.text = [NSString getValidStringFromString:newModel.agencycommission toString:@"0"];
         if ([newModel.agencycommissiontype isEqualToString:@"1"]) {
-            cell.pointView.label2.text = @"提成比例(%)";
+            cell.pointView.label2.text = @"服务佣金(%)";
         }else{
             cell.pointView.label2.text = @"固定费用(万元)";
         }

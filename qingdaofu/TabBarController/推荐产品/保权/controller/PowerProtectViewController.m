@@ -118,8 +118,10 @@
             }else if (component == 2){//完成
                 [weakself.powerPickerView setHidden:YES];
                 
-                AgentCell *cell = [weakself.powerTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-                cell.agentTextField.text = [NSString stringWithFormat:@"%@%@",weakself.courtProString,weakself.courtCityString];
+                if (weakself.powerPickerView.component2.count > 0) {
+                    AgentCell *cell = [weakself.powerTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+                    cell.agentTextField.text = [NSString stringWithFormat:@"%@%@",weakself.courtProString,weakself.courtCityString];
+                }
             }
         }];
     }
@@ -407,6 +409,7 @@
     NSString *powerStrig = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPowerString];
     
     self.powerDic[@"phone"] = self.powerDic[@"phone"]?self.powerDic[@"phone"]:[self getValidateMobile];
+    
     [self.powerDic setObject:[self getValidateToken] forKey:@"token"];
     
     NSDictionary *params = self.powerDic;

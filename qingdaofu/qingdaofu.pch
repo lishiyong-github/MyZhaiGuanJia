@@ -63,10 +63,11 @@
 #define kBlackColor UIColorFromRGB(0x333333)  //黑色
 #define kGrayColor UIColorFromRGB(0x666666)  //灰色
 #define kLightGrayColor UIColorFromRGB(0x999999)//浅灰色
-#define kYellowColor UIColorFromRGB(0xffae01)  //黄色ff871f－－ff871f
+#define kYellowColor UIColorFromRGB(0xff871f)  //黄色ffae01-ff871f
 #define kRedColor UIColorFromRGB(0xf23838)  //红色  ff5959－－f23838
 #define kDarkGrayColor UIColorFromRGB(0x37485b) //深灰色
 #define kBorderColor UIColorFromRGB(0xcccccc)  //描边颜色
+#define kLightWhiteColor  UIColorFromRGB(0xdcecff)  //浅白色
 
 //背景色
 #define kNavColor UIColorFromRGB(0xffffff)  //导航栏颜色1(白色)
@@ -80,6 +81,9 @@
 
 //文字大小
 #define kBoldFont(fontSize) [UIFont fontWithName:@"Helvetica-Bold" size:fontSize]
+#define kBoldFont1 [UIFont systemFontOfSize:24]
+#define kBoldFont2 [UIFont systemFontOfSize:20]
+
 #define kNavFont [UIFont systemFontOfSize:18]  //标题
 #define kBigFont [UIFont systemFontOfSize:16]    //正文15-16
 #define kFirstFont [UIFont systemFontOfSize:15]  //内容大一点14-15
@@ -226,6 +230,7 @@
 #define kPowerCourtString @"policy/fayuan"  //法院
 #define kPowerAssessListString @"producedata/baoquanlists" //保全列表
 #define kUploadImagesString @"common/uploads"  //上传图片
+#define kPowerAdditionalMessageString @"producedata/picturedatas"  //补充图片
 
 #endif
 

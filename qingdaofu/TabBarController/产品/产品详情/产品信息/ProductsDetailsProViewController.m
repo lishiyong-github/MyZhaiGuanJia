@@ -150,7 +150,7 @@
             NSString *agencycommissiontypeStr = @"暂无";  //代理费用类型
             if ([leftModel.agencycommissiontype intValue] == 1) {
                 if ([leftModel.category integerValue] == 2) {
-                    agencycommissiontypeStr = @"提成比例(%)";
+                    agencycommissiontypeStr = @"服务佣金(%)";
                 }else{
                     agencycommissiontypeStr = @"固定费用(万元)";
                 }

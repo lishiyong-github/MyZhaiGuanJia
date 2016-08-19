@@ -241,7 +241,7 @@
             }else if ([processModel.category intValue] == 2){//清收
                 string22 = @"清收";
                 if ([processModel.agencycommissiontype intValue] == 1) {
-                    string3 = @"  提成比例(%)";
+                    string3 = @"  服务佣金(%)";
                     imageString3 =  @"conserve_rights_icon";
                 }else{
                     string3 = @"  固定费用(万元)";

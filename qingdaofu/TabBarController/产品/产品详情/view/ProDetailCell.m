@@ -33,7 +33,7 @@
         [self.deRateLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kBigPadding];
         [self.deRateLabel autoAlignAxisToSuperviewAxis:ALAxisVertical];
         
-        [self.deRateLabel1 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.deRateLabel withOffset:20];
+        [self.deRateLabel1 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.deRateLabel withOffset:kSpacePadding];
         [self.deRateLabel1 autoAlignAxis:ALAxisVertical toSameAxisOfView:self.deRateLabel];
         
         [self.deMoneyView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.deRateLabel1 withOffset:25];
@@ -61,7 +61,7 @@
     if (!_deRateLabel) {
         _deRateLabel = [UILabel newAutoLayoutView];
         _deRateLabel.font = kSecondFont;
-        _deRateLabel.textColor = UIColorFromRGB(0xbdcae3);
+        _deRateLabel.textColor = kLightWhiteColor;
         _deRateLabel.text = @"代理费率";
     }
     return _deRateLabel;

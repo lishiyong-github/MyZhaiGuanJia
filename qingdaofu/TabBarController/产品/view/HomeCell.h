@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "MoneyView.h"
 
-//156H
+//125H
 @interface HomeCell : UITableViewCell
 
 @property (nonatomic,assign) BOOL didSetupConstraints;

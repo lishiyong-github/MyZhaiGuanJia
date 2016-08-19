@@ -43,7 +43,7 @@
 {
     if (!_fLabel1) {
         _fLabel1 = [UILabel newAutoLayoutView];
-        _fLabel1.textColor = UIColorFromRGB(0xbdcae3);
+        _fLabel1.textColor = kLightWhiteColor;
         _fLabel1.font = kSecondFont;
     }
     return _fLabel1;

@@ -162,8 +162,13 @@
         cell.userActionButton.userInteractionEnabled = NO;
         
         [cell.userNameButton setTitle:@"上传的资料" forState:0];
-        [cell.userActionButton setTitle:@"编辑" forState:0];
-        [cell.userActionButton setTitleColor:kBlueColor forState:0];
+        
+        if ([self.pModel.status integerValue] < 2) {
+            [cell.userActionButton setTitle:@"编辑" forState:0];
+            [cell.userActionButton setTitleColor:kBlueColor forState:0];
+        }else{
+            [cell.userActionButton setTitle:@"" forState:0];
+        }
         
         return cell;
         
@@ -206,8 +211,19 @@
 {
     if (indexPath.section == 2) {//上传材料
         if (indexPath.row == 0) {
-            PowerProtectPictureViewController *powerProtectPictureVC = [[PowerProtectPictureViewController alloc] init];
-            [self.navigationController pushViewController:powerProtectPictureVC animated:YES];
+            if ([self.pModel.status integerValue] < 1) {
+                PowerProtectPictureViewController *powerProtectPictureVC = [[PowerProtectPictureViewController alloc] init];
+                powerProtectPictureVC.pModel = self.pModel;
+                [self.navigationController pushViewController:powerProtectPictureVC animated:YES];
+            }
+        }else if (indexPath.row == 1){
+            
+        }else if (indexPath.row == 2){
+            
+        }else if (indexPath.row == 3){
+            
+        }else if (indexPath.row == 4){
+            
         }
     }
 }

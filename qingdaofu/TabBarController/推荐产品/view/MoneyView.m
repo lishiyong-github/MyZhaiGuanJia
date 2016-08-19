@@ -37,11 +37,11 @@
         NSArray *views = @[self.label1,self.label2];
         [views autoAlignViewsToAxis:ALAxisVertical];
         
-        [self.label1 autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kBigPadding];
+        [self.label1 autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:8];
         [self.label1 autoPinEdgeToSuperviewEdge:ALEdgeLeft];
         [self.label1 autoAlignAxisToSuperviewAxis:ALAxisVertical];
         
-        [self.label2 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.label1 withOffset:kBigPadding];
+        [self.label2 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.label1 withOffset:kSmallPadding];
         
         self.didSetupConstraints = YES;
     }

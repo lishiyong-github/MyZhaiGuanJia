@@ -174,7 +174,7 @@
     static NSString *identifier;
     
     PowerModel *model = self.powerListArray[indexPath.section];
-    
+
     if (indexPath.row == 0) {
         identifier = @"listas0";
         MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -211,7 +211,6 @@
         cell.userLabel.text = [NSString stringWithFormat:@"金额：%ld万",(long)account];
         cell.timeLabel.text = [NSDate getYMDhmFormatterTime:model.create_time];
         cell.newsLabel.text = [NSString stringWithFormat:@"法院：%@",model.fayuan_name];
-        
         return cell;
     }
     return nil;
@@ -248,6 +247,9 @@
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:assessListString params:params successBlock:^(id responseObject) {
+        
+        NSDictionary *opoopo = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
         
         if ([page integerValue] == 1) {
             [weakself.powerListArray removeAllObjects];
