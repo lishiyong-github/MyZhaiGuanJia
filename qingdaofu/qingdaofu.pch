@@ -87,6 +87,7 @@
 #define kNavFont [UIFont systemFontOfSize:18]  //标题
 #define kBigFont [UIFont systemFontOfSize:16]    //正文15-16
 #define kFirstFont [UIFont systemFontOfSize:15]  //内容大一点14-15
+#define kFourFont [UIFont systemFontOfSize:14]  
 #define kSecondFont [UIFont systemFontOfSize:13] //内容小一点12-13
 #define kSmallFont [UIFont systemFontOfSize:12] //小标题
 #define kTabBarFont [UIFont systemFontOfSize:11]  //tabBar文字大小10-11

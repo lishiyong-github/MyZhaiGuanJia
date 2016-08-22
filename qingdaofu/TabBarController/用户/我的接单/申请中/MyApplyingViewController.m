@@ -11,9 +11,8 @@
 #import "AdditionMessageViewController.h"  //查看更多
 #import "AgreementViewController.h"
 
+#import "BaseCommitButton.h"
 #import "MineUserCell.h"
-#import "BidMessageCell.h"
-#import "BidOneCell.h"
 
 #import "PublishingResponse.h"
 #import "PublishingModel.h"
@@ -22,6 +21,7 @@
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *myApplyingTableView;
+@property (nonatomic,strong) BaseCommitButton *myApplyingButton;
 @property (nonatomic,strong) NSMutableArray *myApplyArray;
 
 
@@ -45,6 +45,8 @@
 //    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kBlueColor} forState:0];
     
     [self.view addSubview:self.myApplyingTableView];
+    [self.view addSubview:self.myApplyingButton];
+    
     [self.view setNeedsUpdateConstraints];
     
     [self getDetailMessageOfApplying];
@@ -54,7 +56,12 @@
 {
     if (!self.didSetupConstraints) {
         
-        [self.myApplyingTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+        [self.myApplyingTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
+        [self.myApplyingTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.myApplyingButton];
+        
+        [self.myApplyingButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+        [self.myApplyingButton autoSetDimension:ALDimensionHeight toSize:40];
+        
         self.didSetupConstraints = YES;
     }
     [super updateViewConstraints];
@@ -72,6 +79,18 @@
         _myApplyingTableView.backgroundColor = kBackColor;
     }
     return _myApplyingTableView;
+}
+
+- (BaseCommitButton *)myApplyingButton
+{
+    if (!_myApplyingButton) {
+        _myApplyingButton = [BaseCommitButton newAutoLayoutView];
+        [_myApplyingButton setTitle:@"取消申请" forState:0];
+        [_myApplyingButton setTitleColor:kBlackColor forState:0];
+        _myApplyingButton.titleLabel.font = kFirstFont;
+        _myApplyingButton.backgroundColor = kNavColor;
+    }
+    return _myApplyingButton;
 }
 
 - (NSMutableArray *)myApplyArray
@@ -108,6 +127,11 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.section == 0) {
+        return 40;
+    }else if (indexPath.section == 1){//112
+        return 56;
+    }
     return kCellHeight;
 }
 
@@ -128,7 +152,6 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.backgroundColor = UIColorFromRGB(0x42566d);
         
-//        = [NSString stringWithFormat:@"产品编号：%@",applyModel.codeString];
         NSString *nameStrss;
         if ([applyModel.category integerValue] == 2) {
             nameStrss = @"清收";
@@ -139,7 +162,7 @@
 
         [cell.userNameButton setTitle:nameStr forState:0];
         [cell.userNameButton setTitleColor:UIColorFromRGB(0xcfd4e8) forState:0];
-        cell.userNameButton.titleLabel.font = kFirstFont;
+        cell.userNameButton.titleLabel.font = kFourFont;
 
         [cell.userActionButton setTitle:@"申请中" forState:0];
         [cell.userActionButton setTitleColor:kNavColor forState:0];
@@ -147,177 +170,354 @@
         
         return cell;
         
-    }else if (indexPath.section == 1){
+    }else if (indexPath.section == 1){//联系发布方
+        identifier = @"applying1";
+        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         
-        if (indexPath.row < 5) {
-            identifier = @"applying1";
+        if (!cell) {
+            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        [cell.userNameButton setTitle:@"发布方：" forState:0];
+        [cell.userActionButton setTitle:@"查看详情  " forState:0];
+        [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        
+        return cell;
+    }else{//详情
+        if (indexPath.row == 0) {
+            identifier = @"applying20";
             MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
             
             if (!cell) {
                 cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            NSString *string22;
-            NSString *string3;
-            NSString *imageString3;
-            NSString *string33;
-            NSString *string4;
-            NSString *imageString4;
-            NSString *string44;
-            if ([applyModel.category intValue] == 1) {//融资
-                string22 = @"融资";
-                if ([applyModel.rate_cat intValue] == 1) {
-                    string3 = @"  借款利率(%/天)";
-                }else if ([applyModel.rate_cat intValue] == 2){
-                    string3 = @"  借款利率(%/月)";
-                }
-                imageString3 = @"conserve_interest_icon";
-                string33 = [NSString getValidStringFromString:applyModel.rate toString:@"0"];
-                string4 = @"  返点(%)";
-                imageString4 = @"conserve_rebate_icon";
-                string44 = [NSString getValidStringFromString:applyModel.rebate toString:@"0"];
-                
-                _loanTypeString1 = @"  抵押物地址";
-                _loanTypeString2 = [NSString getValidStringFromString:applyModel.seatmortgage toString:@"无抵押物地址"];
-                _loanTypeImage = @"conserve_seat_icon";
-                
-            }else if ([applyModel.category intValue] == 2){//清收
-                string22 = @"清收";
-                if ([applyModel.agencycommissiontype intValue] == 1) {
-                    string3 = @"  服务佣金(%)";
-                    imageString3 =  @"conserve_rights_icon";
-                }else if ([applyModel.agencycommissiontype intValue] == 2){
-                    string3 = @"  固定费用(万元)";
-                    imageString3 =  @"conserve_fixed_icons";
-                }
-                string33 = [NSString getValidStringFromString:applyModel.agencycommission toString:@"0"];
-                string4 = @"  债权类型";
-                imageString4 = @"conserve_loantype_icon";
-                if ([applyModel.loan_type intValue] == 1) {
-                    string44 = @"房产抵押";
-                    _loanTypeString1 = [NSString stringWithFormat:@"  %@",string44];
-                    _loanTypeString2 = [NSString getValidStringFromString:applyModel.seatmortgage toString:@"无抵押物地址"];
-                    _loanTypeImage = @"conserve_seat_icon";
-
-                }else if ([applyModel.loan_type intValue] == 2){
-                    string44 = @"应收账款";
-                    _loanTypeString1 = [NSString stringWithFormat:@"  %@(万元)",string44];
-                    _loanTypeString2 = [NSString getValidStringFromString:applyModel.accountr toString:@"0"];
-                    _loanTypeImage = @"conserve_account_icon";
-                }else if ([applyModel.loan_type intValue] == 3){
-                    string44 = @"机动车抵押";
-                    _loanTypeString1 = [NSString stringWithFormat:@"  %@",string44];
-                    NSString *carS2 = [NSString getValidStringFromString:responseModel.car];
-                    NSString *licenseS2 = [NSString getValidStringFromString:responseModel.license];
-                    _loanTypeString2 = [NSString stringWithFormat:@"%@/%@",carS2,licenseS2];
-                    _loanTypeImage = @"conserve_car_icon";
-                }else{
-                    string44 = @"无抵押";
-                }
-            }else if ([applyModel.category intValue] == 3){//诉讼
-                string22 = @"诉讼";
-                if ([applyModel.agencycommissiontype intValue] == 1) {
-                    string3 = @"  固定费用(万元)";
-                    imageString3 =  @"conserve_fixed_icons";
-                }else if ([applyModel.agencycommissiontype intValue] == 2){
-                    string3 = @"  风险费率(%)";
-                    imageString3 =  @"conserve_fixed_icon";
-                }
-                string33 = [NSString getValidStringFromString:applyModel.agencycommission toString:@"0"];
-                string4 = @"  债权类型";
-                imageString4 = @"conserve_loantype_icon";
-                if ([applyModel.loan_type intValue] == 1) {
-                    string44 = @"房产抵押";
-                    _loanTypeString1 = [NSString stringWithFormat:@"  %@",string44];
-                    _loanTypeString2 = [NSString getValidStringFromString:applyModel.seatmortgage toString:@"无抵押物地址"];
-                    _loanTypeImage = @"conserve_seat_icon";
-
-                }else if ([applyModel.loan_type intValue] == 2){
-                    string44 = @"应收账款";
-                    _loanTypeString1 = [NSString stringWithFormat:@"  %@(万元)",string44];
-                    _loanTypeString2 = [NSString getValidStringFromString:applyModel.accountr toString:@"0"];
-                    _loanTypeImage = @"conserve_account_icon";
-                }else if ([applyModel.loan_type intValue] == 3){
-                    string44 = @"机动车抵押";
-                    _loanTypeString1 = [NSString stringWithFormat:@"  %@",string44];
-                    NSString *carS3 = [NSString getValidStringFromString:responseModel.car];
-                    NSString *licenseS3 = [NSString getValidStringFromString:responseModel.license];
-                    _loanTypeString2 = [NSString stringWithFormat:@"%@/%@",carS3,licenseS3];
-                    _loanTypeImage = @"conserve_car_icon";
-                }else{
-                    string44 = @"无抵押";
-                }
-            }
-            
-            NSString *moneyS1 = [NSString getValidStringFromString:applyModel.money toString:@"0"];
-            NSArray *dataArray = @[@"|  基本信息",@"  产品类型",@"  借款本金(万元)",string3,string4];
-            NSArray *imageArray = @[@"",@"conserve_investment_icon",@"conserve_loan_icon",imageString3,imageString4];
-            NSArray *detailArray = @[@"",string22,moneyS1,string33,string44];
-            
-            [cell.userNameButton setTitle:dataArray[indexPath.row] forState:0];
-            [cell.userNameButton setImage:[UIImage imageNamed:imageArray[indexPath.row]] forState:0];
-            [cell.userActionButton setTitle:detailArray[indexPath.row] forState:0];
-            
-            if (indexPath.row == 0) {
-                [cell.userNameButton setTitleColor:kBlueColor forState:0];
-            }
+            [cell.userNameButton setTitle:@"产品信息" forState:0];
+            [cell.userActionButton setTitle:@"查看全部  " forState:0];
+            [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
             
             return cell;
+        }
+        //详情
+        identifier = @"applying21";
+        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        
+        if (!cell) {
+            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
+        cell.userNameButton.titleLabel.font = kFirstFont;
+        [cell.userActionButton setTitleColor:kGrayColor forState:0];
+        cell.userActionButton.titleLabel.font = kBigFont;
+        
+        NSString *rowString1 = @"借款本金";
+        NSString *rowString11 = [NSString stringWithFormat:@"%@万",applyModel.money];//具体借款本金
+        NSString *rowString2 = @"费用类型";
+        NSString *rowString3;//具体费用类型
+        NSString *rowString33;//费用
+        if ([applyModel.category integerValue] == 2) {
+            if ([applyModel.agencycommissiontype integerValue] == 1) {
+                rowString3 = @"服务佣金";
+                rowString33 = [NSString stringWithFormat:@"%@%@",applyModel.agencycommission,@"%"];
+            }else{
+                rowString3 = @"固定费用";
+                rowString33 = [NSString stringWithFormat:@"%@万",applyModel.agencycommission];
+            }
+        }else if ([applyModel.category integerValue] == 3){
+            if ([applyModel.agencycommissiontype integerValue] == 1) {
+                rowString3 = @"固定费用";
+                rowString33 = [NSString stringWithFormat:@"%@万",applyModel.agencycommission];
+            }else{
+                rowString3 = @"代理费率";
+                rowString33 = [NSString stringWithFormat:@"%@%@",applyModel.agencycommission,@"%"];
+            }
         }
         
-        if ([applyModel.loan_type isEqualToString:@"4"]) {//无抵押
-            //补充信息
-            identifier = @"detailSave4";
-            BidOneCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-            
-            if (!cell) {
-                cell = [[BidOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-            }
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            [cell.oneButton setTitle:@"查看补充信息" forState:0];
-            [cell.oneButton setImage:[UIImage imageNamed:@"more"] forState:0];
-            cell.oneButton.userInteractionEnabled = NO;
-            
-            return cell;
-        }else{
-            if (indexPath.row == 5) {
-                identifier = @"detailSave2";
-                MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-                
-                if (!cell) {
-                    cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-                }
-                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                cell.userActionButton.titleLabel.font = kSecondFont;
-                [cell.userActionButton autoSetDimension:ALDimensionWidth toSize:kScreenWidth-150];
-
-                [cell.userNameButton setTitle:_loanTypeString1 forState:0];
-                [cell.userNameButton setImage:[UIImage imageNamed:_loanTypeImage] forState:0];
-                [cell.userActionButton setTitle:_loanTypeString2 forState:0];
-                
-                return cell;
-            }else{
-                //补充信息
-                identifier = @"detailSave3";
-                BidOneCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-                
-                if (!cell) {
-                    cell = [[BidOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-                }
-                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                
-                [cell.oneButton setTitle:@"查看补充信息" forState:0];
-                [cell.oneButton setImage:[UIImage imageNamed:@"more"] forState:0];
-                cell.oneButton.userInteractionEnabled = NO;
-                
-                return cell;
-            }
-            
+        NSString *rowString4 = @"债权类型";
+        NSString *rowString44; //具体债权类型
+        NSString *rowString5;
+        NSString *rowString55;
+        if ([applyModel.loan_type integerValue] == 1) {
+            rowString44 = @"房产抵押";
+            rowString5 = @"抵押物地址";
+            rowString55 = applyModel.seatmortgage;
+        }else if ([applyModel.loan_type integerValue] == 2) {
+            rowString44 = @"应收帐款";
+            rowString5 = [NSString stringWithFormat:@"%@万",applyModel.accountr];
+            rowString55 = applyModel.seatmortgage;
+        }else if ([applyModel.loan_type integerValue] == 3) {
+            rowString44 = @"机动车抵押";
+            rowString5 = @"机动车抵押";
+            rowString55 = responseModel.car;
+        }else if ([applyModel.loan_type integerValue] == 4) {
+            rowString44 = @"无抵押";
+            rowString5 = @"1";
+            rowString55 = @"1";
         }
+        
+        NSArray *rowLeftArray = @[rowString1,rowString2,rowString3,rowString4,rowString5];
+        NSArray *rowRightArray = @[rowString11,rowString3,rowString33,rowString44,rowString55];
+
+        [cell.userNameButton setTitle:rowLeftArray[indexPath.row-1] forState:0];
+        [cell.userActionButton setTitle:rowRightArray[indexPath.row-1] forState:0];
+
+        return cell;
     }
+    
     return nil;
+    
+//        //详情
+//        identifier = @"applying11";
+//        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+//        
+//        if (!cell) {
+//            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+//        }
+//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//        NSString *string22;
+//        NSString *string3;
+//        NSString *imageString3;
+//        NSString *string33;
+//        NSString *string4;
+//        NSString *imageString4;
+//        NSString *string44;
+//        if ([applyModel.category intValue] == 2){//清收
+//            string22 = @"清收";
+//            if ([applyModel.agencycommissiontype intValue] == 1) {
+//                string3 = @"  服务佣金(%)";
+//                imageString3 =  @"conserve_rights_icon";
+//            }else if ([applyModel.agencycommissiontype intValue] == 2){
+//                string3 = @"  固定费用(万元)";
+//                imageString3 =  @"conserve_fixed_icons";
+//            }
+//            string33 = [NSString getValidStringFromString:applyModel.agencycommission toString:@"0"];
+//            string4 = @"  债权类型";
+//            imageString4 = @"conserve_loantype_icon";
+//            if ([applyModel.loan_type intValue] == 1) {
+//                string44 = @"房产抵押";
+//                _loanTypeString1 = [NSString stringWithFormat:@"  %@",string44];
+//                _loanTypeString2 = [NSString getValidStringFromString:applyModel.seatmortgage toString:@"无抵押物地址"];
+//                _loanTypeImage = @"conserve_seat_icon";
+//                
+//            }else if ([applyModel.loan_type intValue] == 2){
+//                string44 = @"应收账款";
+//                _loanTypeString1 = [NSString stringWithFormat:@"  %@(万元)",string44];
+//                _loanTypeString2 = [NSString getValidStringFromString:applyModel.accountr toString:@"0"];
+//                _loanTypeImage = @"conserve_account_icon";
+//            }else if ([applyModel.loan_type intValue] == 3){
+//                string44 = @"机动车抵押";
+//                _loanTypeString1 = [NSString stringWithFormat:@"  %@",string44];
+//                NSString *carS2 = [NSString getValidStringFromString:responseModel.car];
+//                NSString *licenseS2 = [NSString getValidStringFromString:responseModel.license];
+//                _loanTypeString2 = [NSString stringWithFormat:@"%@/%@",carS2,licenseS2];
+//                _loanTypeImage = @"conserve_car_icon";
+//            }else{
+//                string44 = @"无抵押";
+//            }
+//        }else if ([applyModel.category intValue] == 3){//诉讼
+//            string22 = @"诉讼";
+//            if ([applyModel.agencycommissiontype intValue] == 1) {
+//                string3 = @"  固定费用(万元)";
+//                imageString3 =  @"conserve_fixed_icons";
+//            }else if ([applyModel.agencycommissiontype intValue] == 2){
+//                string3 = @"  风险费率(%)";
+//                imageString3 =  @"conserve_fixed_icon";
+//            }
+//            string33 = [NSString getValidStringFromString:applyModel.agencycommission toString:@"0"];
+//            string4 = @"  债权类型";
+//            imageString4 = @"conserve_loantype_icon";
+//            if ([applyModel.loan_type intValue] == 1) {
+//                string44 = @"房产抵押";
+//                _loanTypeString1 = [NSString stringWithFormat:@"  %@",string44];
+//                _loanTypeString2 = [NSString getValidStringFromString:applyModel.seatmortgage toString:@"无抵押物地址"];
+//                _loanTypeImage = @"conserve_seat_icon";
+//                
+//            }else if ([applyModel.loan_type intValue] == 2){
+//                string44 = @"应收账款";
+//                _loanTypeString1 = [NSString stringWithFormat:@"  %@(万元)",string44];
+//                _loanTypeString2 = [NSString getValidStringFromString:applyModel.accountr toString:@"0"];
+//                _loanTypeImage = @"conserve_account_icon";
+//            }else if ([applyModel.loan_type intValue] == 3){
+//                string44 = @"机动车抵押";
+//                _loanTypeString1 = [NSString stringWithFormat:@"  %@",string44];
+//                NSString *carS3 = [NSString getValidStringFromString:responseModel.car];
+//                NSString *licenseS3 = [NSString getValidStringFromString:responseModel.license];
+//                _loanTypeString2 = [NSString stringWithFormat:@"%@/%@",carS3,licenseS3];
+//                _loanTypeImage = @"conserve_car_icon";
+//            }else{
+//                string44 = @"无抵押";
+//            }
+//        }
+//        
+//        NSString *moneyS1 = [NSString getValidStringFromString:applyModel.money toString:@"0"];
+//        NSArray *dataArray = @[@"|  基本信息",@"  产品类型",@"  借款本金(万元)",string3,string4];
+//        NSArray *imageArray = @[@"",@"conserve_investment_icon",@"conserve_loan_icon",imageString3,imageString4];
+//        NSArray *detailArray = @[@"",string22,moneyS1,string33,string44];
+//        
+//        [cell.userNameButton setTitle:dataArray[indexPath.row] forState:0];
+//        [cell.userNameButton setImage:[UIImage imageNamed:imageArray[indexPath.row]] forState:0];
+//        [cell.userActionButton setTitle:detailArray[indexPath.row] forState:0];
+//
+//        return cell;
+//        
+//    }else if (indexPath.section == 2){
+//        
+//    }
+    
+        
+//        if (indexPath.row < 5) {
+//            identifier = @"applying11";
+//            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+//            
+//            if (!cell) {
+//                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+//            }
+//            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//            
+//            NSString *string22;
+//            NSString *string3;
+//            NSString *imageString3;
+//            NSString *string33;
+//            NSString *string4;
+//            NSString *imageString4;
+//            NSString *string44;
+//            if ([applyModel.category intValue] == 2){//清收
+//                string22 = @"清收";
+//                if ([applyModel.agencycommissiontype intValue] == 1) {
+//                    string3 = @"  服务佣金(%)";
+//                    imageString3 =  @"conserve_rights_icon";
+//                }else if ([applyModel.agencycommissiontype intValue] == 2){
+//                    string3 = @"  固定费用(万元)";
+//                    imageString3 =  @"conserve_fixed_icons";
+//                }
+//                string33 = [NSString getValidStringFromString:applyModel.agencycommission toString:@"0"];
+//                string4 = @"  债权类型";
+//                imageString4 = @"conserve_loantype_icon";
+//                if ([applyModel.loan_type intValue] == 1) {
+//                    string44 = @"房产抵押";
+//                    _loanTypeString1 = [NSString stringWithFormat:@"  %@",string44];
+//                    _loanTypeString2 = [NSString getValidStringFromString:applyModel.seatmortgage toString:@"无抵押物地址"];
+//                    _loanTypeImage = @"conserve_seat_icon";
+//
+//                }else if ([applyModel.loan_type intValue] == 2){
+//                    string44 = @"应收账款";
+//                    _loanTypeString1 = [NSString stringWithFormat:@"  %@(万元)",string44];
+//                    _loanTypeString2 = [NSString getValidStringFromString:applyModel.accountr toString:@"0"];
+//                    _loanTypeImage = @"conserve_account_icon";
+//                }else if ([applyModel.loan_type intValue] == 3){
+//                    string44 = @"机动车抵押";
+//                    _loanTypeString1 = [NSString stringWithFormat:@"  %@",string44];
+//                    NSString *carS2 = [NSString getValidStringFromString:responseModel.car];
+//                    NSString *licenseS2 = [NSString getValidStringFromString:responseModel.license];
+//                    _loanTypeString2 = [NSString stringWithFormat:@"%@/%@",carS2,licenseS2];
+//                    _loanTypeImage = @"conserve_car_icon";
+//                }else{
+//                    string44 = @"无抵押";
+//                }
+//            }else if ([applyModel.category intValue] == 3){//诉讼
+//                string22 = @"诉讼";
+//                if ([applyModel.agencycommissiontype intValue] == 1) {
+//                    string3 = @"  固定费用(万元)";
+//                    imageString3 =  @"conserve_fixed_icons";
+//                }else if ([applyModel.agencycommissiontype intValue] == 2){
+//                    string3 = @"  风险费率(%)";
+//                    imageString3 =  @"conserve_fixed_icon";
+//                }
+//                string33 = [NSString getValidStringFromString:applyModel.agencycommission toString:@"0"];
+//                string4 = @"  债权类型";
+//                imageString4 = @"conserve_loantype_icon";
+//                if ([applyModel.loan_type intValue] == 1) {
+//                    string44 = @"房产抵押";
+//                    _loanTypeString1 = [NSString stringWithFormat:@"  %@",string44];
+//                    _loanTypeString2 = [NSString getValidStringFromString:applyModel.seatmortgage toString:@"无抵押物地址"];
+//                    _loanTypeImage = @"conserve_seat_icon";
+//
+//                }else if ([applyModel.loan_type intValue] == 2){
+//                    string44 = @"应收账款";
+//                    _loanTypeString1 = [NSString stringWithFormat:@"  %@(万元)",string44];
+//                    _loanTypeString2 = [NSString getValidStringFromString:applyModel.accountr toString:@"0"];
+//                    _loanTypeImage = @"conserve_account_icon";
+//                }else if ([applyModel.loan_type intValue] == 3){
+//                    string44 = @"机动车抵押";
+//                    _loanTypeString1 = [NSString stringWithFormat:@"  %@",string44];
+//                    NSString *carS3 = [NSString getValidStringFromString:responseModel.car];
+//                    NSString *licenseS3 = [NSString getValidStringFromString:responseModel.license];
+//                    _loanTypeString2 = [NSString stringWithFormat:@"%@/%@",carS3,licenseS3];
+//                    _loanTypeImage = @"conserve_car_icon";
+//                }else{
+//                    string44 = @"无抵押";
+//                }
+//            }
+//            
+//            NSString *moneyS1 = [NSString getValidStringFromString:applyModel.money toString:@"0"];
+//            NSArray *dataArray = @[@"|  基本信息",@"  产品类型",@"  借款本金(万元)",string3,string4];
+//            NSArray *imageArray = @[@"",@"conserve_investment_icon",@"conserve_loan_icon",imageString3,imageString4];
+//            NSArray *detailArray = @[@"",string22,moneyS1,string33,string44];
+//            
+//            [cell.userNameButton setTitle:dataArray[indexPath.row] forState:0];
+//            [cell.userNameButton setImage:[UIImage imageNamed:imageArray[indexPath.row]] forState:0];
+//            [cell.userActionButton setTitle:detailArray[indexPath.row] forState:0];
+//            
+//            if (indexPath.row == 0) {
+//                [cell.userNameButton setTitleColor:kBlueColor forState:0];
+//            }
+//            
+//            return cell;
+//        }
+//        
+//        if ([applyModel.loan_type isEqualToString:@"4"]) {//无抵押
+//            //补充信息
+//            identifier = @"detailSave4";
+//            BidOneCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+//            
+//            if (!cell) {
+//                cell = [[BidOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+//            }
+//            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//            
+//            [cell.oneButton setTitle:@"查看补充信息" forState:0];
+//            [cell.oneButton setImage:[UIImage imageNamed:@"more"] forState:0];
+//            cell.oneButton.userInteractionEnabled = NO;
+//            
+//            return cell;
+//        }else{
+//            if (indexPath.row == 5) {
+//                identifier = @"detailSave2";
+//                MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+//                
+//                if (!cell) {
+//                    cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+//                }
+//                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//                cell.userActionButton.titleLabel.font = kSecondFont;
+//                [cell.userActionButton autoSetDimension:ALDimensionWidth toSize:kScreenWidth-150];
+//
+//                [cell.userNameButton setTitle:_loanTypeString1 forState:0];
+//                [cell.userNameButton setImage:[UIImage imageNamed:_loanTypeImage] forState:0];
+//                [cell.userActionButton setTitle:_loanTypeString2 forState:0];
+//                
+//                return cell;
+//            }else{
+//                //补充信息
+//                identifier = @"detailSave3";
+//                BidOneCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+//                
+//                if (!cell) {
+//                    cell = [[BidOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+//                }
+//                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//                
+//                [cell.oneButton setTitle:@"查看补充信息" forState:0];
+//                [cell.oneButton setImage:[UIImage imageNamed:@"more"] forState:0];
+//                cell.oneButton.userInteractionEnabled = NO;
+//                
+//                return cell;
+//            }
+//            
+//         
+//        }
+//    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -333,6 +533,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 1) {
+        
+    }else if (indexPath.section == 2 && indexPath.row == 0) {//查看更多
+        
+        
         
         PublishingResponse *resModel = self.myApplyArray[0];
         PublishingModel *dealModel = resModel.product;
