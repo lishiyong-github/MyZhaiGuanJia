@@ -77,9 +77,9 @@
     if (!_reportSucTableView) {
         _reportSucTableView = [UITableView newAutoLayoutView];
         _reportSucTableView.backgroundColor = kBackColor;
+        _reportSucTableView.separatorColor = kSeparateColor;
         _reportSucTableView.delegate = self;
         _reportSucTableView.dataSource = self;
-        _reportSucTableView.separatorColor = kSeparateColor;
         _reportSucTableView.separatorInset = UIEdgeInsetsZero;
         _reportSucTableView.tableFooterView = [[UIView alloc] init];
         _reportSucTableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 187.5)];

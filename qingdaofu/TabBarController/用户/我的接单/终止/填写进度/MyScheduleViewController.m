@@ -57,7 +57,8 @@
         _scheduleTableView.dataSource = self;
         _scheduleTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
         _scheduleTableView.backgroundColor = kBackColor;
-        
+        _scheduleTableView.separatorColor = kSeparateColor;
+
         if ([_scheduleTableView respondsToSelector:@selector(setSeparatorInset:)]) {
             [_scheduleTableView setSeparatorInset:UIEdgeInsetsZero];
         }

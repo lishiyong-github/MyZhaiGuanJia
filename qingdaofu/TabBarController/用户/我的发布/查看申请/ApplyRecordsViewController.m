@@ -66,6 +66,7 @@
         _applyRecordsTableView.dataSource = self;
         _applyRecordsTableView.tableFooterView = [[UIView alloc] init];
         _applyRecordsTableView.backgroundColor = kBackColor;
+        _applyRecordsTableView.separatorColor = kSeparateColor;
         _applyRecordsTableView.separatorInset = UIEdgeInsetsZero;
         [_applyRecordsTableView addHeaderWithTarget:self action:@selector(headerRefreshOfRecords)];
         [_applyRecordsTableView addFooterWithTarget:self action:@selector(footerRefreshOfRecords)];

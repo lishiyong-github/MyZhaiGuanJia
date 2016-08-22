@@ -30,13 +30,13 @@
 {
     if (!self.didSetupConstraints) {
         
-        [self.deRateLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kBigPadding];
+        [self.deRateLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:12];
         [self.deRateLabel autoAlignAxisToSuperviewAxis:ALAxisVertical];
         
-        [self.deRateLabel1 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.deRateLabel withOffset:kSpacePadding];
+        [self.deRateLabel1 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.deRateLabel withOffset:10];
         [self.deRateLabel1 autoAlignAxis:ALAxisVertical toSameAxisOfView:self.deRateLabel];
         
-        [self.deMoneyView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.deRateLabel1 withOffset:25];
+        [self.deMoneyView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.deRateLabel1 withOffset:20];
         [self.deMoneyView autoPinEdgeToSuperviewEdge:ALEdgeLeft];
         [self.deMoneyView autoSetDimension:ALDimensionWidth toSize:kScreenWidth/2];
         [self.deMoneyView autoPinEdgeToSuperviewEdge:ALEdgeBottom];
@@ -90,7 +90,7 @@
 {
     if (!_deLineLabel) {
         _deLineLabel = [UILabel newAutoLayoutView];
-        _deLineLabel.backgroundColor = kNavColor;
+        _deLineLabel.backgroundColor = kLightWhiteColor;
     }
     return _deLineLabel;
 }

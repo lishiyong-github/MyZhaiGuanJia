@@ -84,9 +84,9 @@
         _reportFinanceTableView.delegate = self;
         _reportFinanceTableView.dataSource = self;
         _reportFinanceTableView.backgroundColor = kBackColor;
+        _reportFinanceTableView.separatorColor = kSeparateColor;
         _reportFinanceTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 100)];
         [_reportFinanceTableView.tableFooterView addSubview:self.financeFooterView];
-        _reportFinanceTableView.separatorColor = kSeparateColor;
     }
     return _reportFinanceTableView;
 }

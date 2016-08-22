@@ -98,6 +98,7 @@
         _applicationListTableView.delegate = self;
         _applicationListTableView.dataSource = self;
         _applicationListTableView.backgroundColor = kBackColor;
+        _applicationListTableView.separatorColor = kSeparateColor;
         _applicationListTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
     }
     return _applicationListTableView;

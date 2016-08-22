@@ -55,6 +55,7 @@
         _registerTableView.dataSource = self;
         _registerTableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
         _registerTableView.backgroundColor = kBackColor;
+        _registerTableView.separatorColor = kSeparateColor;
     }
     return _registerTableView;
 }

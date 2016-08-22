@@ -15,4 +15,13 @@
     return @{@"idString" : @"id"};
 }
 
++ (NSDictionary *)objectClassInArray
+{
+    return @{@"anjian" : @"ImageModel",
+             @"caichan" : @"ImageModel",
+             @"qisu" : @"ImageModel",
+             @"zhengju" : @"ImageModel"
+             };
+}
+
 @end

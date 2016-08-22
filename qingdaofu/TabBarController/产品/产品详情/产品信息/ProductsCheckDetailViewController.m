@@ -55,6 +55,7 @@
         _listTableView.dataSource = self;
         _listTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
         _listTableView.backgroundColor = kBackColor;
+        _listTableView.separatorColor = kSeparateColor;
     }
     return _listTableView;
 }

@@ -65,6 +65,7 @@
         _detailStoreTableView.delegate = self;
         _detailStoreTableView.dataSource = self;
         _detailStoreTableView.backgroundColor = kBackColor;
+        _detailStoreTableView.separatorColor = kSeparateColor;
     }
     return _detailStoreTableView;
 }

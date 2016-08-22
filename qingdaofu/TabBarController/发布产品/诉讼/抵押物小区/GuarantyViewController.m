@@ -60,6 +60,7 @@
         _guTableView.dataSource = self;
         _guTableView.tableFooterView = [[UIView alloc] init];
         _guTableView.backgroundColor = kBackColor;
+        _guTableView.separatorColor = kSeparateColor;
     }
     return _guTableView;
 }

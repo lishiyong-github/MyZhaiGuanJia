@@ -74,6 +74,7 @@
         _myAgentListTableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
         _myAgentListTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
         _myAgentListTableView.backgroundColor = kBackColor;
+        _myAgentListTableView.separatorColor = kSeparateColor;
         [_myAgentListTableView addHeaderWithTarget:self action:@selector(headerRefreshOfMyAgent)];
         [_myAgentListTableView addFooterWithTarget:self action:@selector(footerRefreshOfMyAgent)];
     }

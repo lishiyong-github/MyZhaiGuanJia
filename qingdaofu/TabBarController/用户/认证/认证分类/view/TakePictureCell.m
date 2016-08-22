@@ -10,6 +10,7 @@
 #import "UIImageView+WebCache.h"
 #import "CollectionViewCell.h"
 
+
 @interface TakePictureCell ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
 
 @end
@@ -102,7 +103,9 @@
 
     }else if ([self.collectionDataList[indexPath.item] isKindOfClass:[NSString class]]){
         NSString *file = self.collectionDataList[indexPath.item];
-        if ([file containsString:@"/"]) {
+        if ([file containsString:@"http://"]) {
+            [cell.cellImageView sd_setImageWithURL:self.collectionDataList[indexPath.item] placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+        }else if ([file containsString:@"/"]) {
             cell.cellImageView.image = [UIImage imageWithContentsOfFile:file];
         }else{
             cell.cellImageView.image = [UIImage imageNamed:file];

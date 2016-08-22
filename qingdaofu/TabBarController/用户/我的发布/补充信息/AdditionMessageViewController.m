@@ -58,6 +58,7 @@
         _addMessageTableView.backgroundColor = kBackColor;
         _addMessageTableView.delegate = self;
         _addMessageTableView.dataSource = self;
+        _addMessageTableView.separatorColor = kSeparateColor;
         _addMessageTableView.tableFooterView = [[UIView alloc] init];
         _addMessageTableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
     }

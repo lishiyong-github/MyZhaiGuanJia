@@ -61,6 +61,7 @@
         _tableViewa.delegate = self;
         _tableViewa.dataSource = self;
         _tableViewa.backgroundColor = kBackColor;
+        _tableViewa.separatorColor = kSeparateColor;
     }
     return _tableViewa;
 }

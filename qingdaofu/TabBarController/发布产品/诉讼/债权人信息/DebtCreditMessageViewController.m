@@ -83,6 +83,7 @@
         _debtCreditTableView.dataSource = self;
         _debtCreditTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
         _debtCreditTableView.backgroundColor = kBackColor;
+        _debtCreditTableView.separatorColor = kSeparateColor;
     }
     return _debtCreditTableView;
 }

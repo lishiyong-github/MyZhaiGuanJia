@@ -47,6 +47,7 @@
         _messageRemindTableView.dataSource = self;
         _messageRemindTableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
         _messageRemindTableView.backgroundColor = kBackColor;
+        _messageRemindTableView.separatorColor = kSeparateColor;
         _messageRemindTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 50)];
         [_messageRemindTableView.tableFooterView addSubview:self.meReFootView];
     }

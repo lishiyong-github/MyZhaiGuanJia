@@ -19,6 +19,10 @@
         [self addSubview:self.fLabel1];
         [self addSubview:self.fLabel2];
         
+        self.topConstant = [self.fLabel1 autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:16];
+
+        self.spaceConstant = [self.fLabel2 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.fLabel1 withOffset:8];
+
         [self setNeedsUpdateConstraints];
     }
     return self;
@@ -28,10 +32,8 @@
 {
     if (!self.didSetupConstraints) {
         
-        [self.fLabel1 autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kBigPadding];
         [self.fLabel1 autoAlignAxisToSuperviewAxis:ALAxisVertical];
         
-        [self.fLabel2 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.fLabel1 withOffset:5];
         [self.fLabel2 autoAlignAxis:ALAxisVertical toSameAxisOfView:self.fLabel1];
         
         self.didSetupConstraints = YES;
@@ -54,7 +56,7 @@
     if (!_fLabel2) {
         _fLabel2 = [UILabel newAutoLayoutView];
         _fLabel2.textColor = kNavColor;
-        _fLabel2.font = [UIFont systemFontOfSize:20];
+        _fLabel2.font = kFirstFont;
     }
     return _fLabel2;
 }

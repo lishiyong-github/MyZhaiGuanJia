@@ -71,6 +71,7 @@
         _newsListTableView.delegate = self;
         _newsListTableView.dataSource = self;
         _newsListTableView.backgroundColor = kBackColor;
+        _newsListTableView.separatorColor = kSeparateColor;
         _newsListTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
         [_newsListTableView addHeaderWithTarget:self action:@selector(headerRefreshWithMessageOfPublish)];
         [_newsListTableView addFooterWithTarget:self action:@selector(footerRefreshWithMessageOfPublish)];

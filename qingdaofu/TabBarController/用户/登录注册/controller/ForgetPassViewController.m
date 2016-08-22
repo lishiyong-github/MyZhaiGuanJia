@@ -52,6 +52,7 @@
         _forgetPassTableView.delegate = self;
         _forgetPassTableView.dataSource = self;
         _forgetPassTableView.backgroundColor = kBackColor;
+        _forgetPassTableView.separatorColor = kSeparateColor;
         _forgetPassTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
         _forgetPassTableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
     }

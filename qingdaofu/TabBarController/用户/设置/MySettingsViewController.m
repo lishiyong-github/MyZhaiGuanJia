@@ -51,13 +51,13 @@
 - (UITableView *)mySettingTableView
 {
     if (!_mySettingTableView) {
-//        _mySettingTableView = [UITableView newAutoLayoutView];
         _mySettingTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _mySettingTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _mySettingTableView.delegate = self;
         _mySettingTableView.dataSource = self;
         _mySettingTableView.tableFooterView = [[UIView alloc] init];
         _mySettingTableView.separatorColor = kSeparateColor;
+        _mySettingTableView.backgroundColor = kBackColor;
     }
     return _mySettingTableView;
 }

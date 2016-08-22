@@ -92,6 +92,7 @@
         _dealingTableView.delegate = self;
         _dealingTableView.dataSource = self;
         _dealingTableView.backgroundColor = kBackColor;
+        _dealingTableView.separatorColor = kSeparateColor;
     }
     return _dealingTableView;
 }

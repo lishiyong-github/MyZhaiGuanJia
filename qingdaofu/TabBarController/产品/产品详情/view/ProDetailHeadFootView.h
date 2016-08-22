@@ -14,5 +14,7 @@
 @property (nonatomic,strong) UILabel *fLabel2;
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
+@property (nonatomic,strong) NSLayoutConstraint *spaceConstant;
+@property (nonatomic,strong) NSLayoutConstraint *topConstant;
 
 @end

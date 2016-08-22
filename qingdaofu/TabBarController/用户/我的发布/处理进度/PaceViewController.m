@@ -66,6 +66,7 @@
         _paceTableView.dataSource = self;
         _paceTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
         _paceTableView.backgroundColor = kBackColor;
+        _paceTableView.separatorColor = kSeparateColor;
     }
     return _paceTableView;
 }

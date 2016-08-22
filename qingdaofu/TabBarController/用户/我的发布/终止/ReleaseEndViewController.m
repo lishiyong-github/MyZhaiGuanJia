@@ -86,6 +86,8 @@
         _releaseEndTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _releaseEndTableView.delegate = self;
         _releaseEndTableView.dataSource = self;
+        _releaseEndTableView.backgroundColor = kBackColor;
+        _releaseEndTableView.separatorColor = kSeparateColor;
     }
     return _releaseEndTableView;
 }

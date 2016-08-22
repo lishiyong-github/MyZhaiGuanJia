@@ -16,7 +16,8 @@
              @"name" : @"result.name",
              @"size" : @"result.size",
              @"type" : @"result.type",
-             @"url" : @"result.url"
+             @"url" : @"result.url",
+             @"idString" : @"id"
              };
 }
 

@@ -68,6 +68,7 @@
         _sysMessageTableView.delegate = self;
         _sysMessageTableView.dataSource = self;
         _sysMessageTableView.backgroundColor = kBackColor;
+        _sysMessageTableView.separatorColor = kSeparateColor;
         _sysMessageTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
         [_sysMessageTableView addHeaderWithTarget:self action:@selector(headerRefreshWithMessageOfSystem)];
         [_sysMessageTableView addFooterWithTarget:self action:@selector(footerRefreshWithMessageOfSystem)];

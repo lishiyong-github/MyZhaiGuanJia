@@ -129,6 +129,7 @@
         _evaluateTableView.dataSource = self;
         _evaluateTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
         _evaluateTableView.backgroundColor = kBackColor;
+        _evaluateTableView.separatorColor = kSeparateColor;
         [_evaluateTableView addFooterWithTarget:self action:@selector(footerRefreshOfList)];
         [_evaluateTableView addHeaderWithTarget:self action:@selector(headerRefreshOfList)];
     }

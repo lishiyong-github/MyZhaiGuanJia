@@ -23,6 +23,10 @@
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *myStoreTableView;
+@property (nonatomic,strong) UIButton *rightNavButton;
+
+//json
+@property (nonatomic,assign) BOOL editState;
 @property (nonatomic,strong) NSMutableArray *storeDataList;
 @property (nonatomic,assign) NSInteger pageStore;
 
@@ -39,9 +43,11 @@
     [self refreshHeaderOfMySave];
 }
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
     self.navigationItem.title = @"我的收藏";
     self.navigationItem.leftBarButtonItem = self.leftItem;
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightNavButton];
     
     [self.view addSubview:self.myStoreTableView];
     [self.view addSubview:self.baseRemindImageView];
@@ -79,6 +85,38 @@
         [_myStoreTableView addFooterWithTarget:self action:@selector(refreshFooterOfMySave)];
     }
     return _myStoreTableView;
+}
+
+- (UIButton *)rightNavButton
+{
+    if (!_rightNavButton) {
+        _rightNavButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 44)];
+        _rightNavButton.titleLabel.font = kFirstFont;
+        [_rightNavButton setTitle:@"编辑" forState:0];
+        [_rightNavButton setTitleColor:kBlueColor forState:0];
+        
+        QDFWeakSelf;
+        [_rightNavButton addAction:^(UIButton *btn) {
+//            weakself.editState = YES;
+//            [weakself.myStoreTableView reloadData];
+            
+            [weakself.myStoreTableView setEditing:!weakself.myStoreTableView.editing animated:YES];
+            
+            if (weakself.myStoreTableView.editing)
+            {
+                [btn setTitle:@"删除" forState:0];
+//                [self.navigationItem.leftBarButtonItemsetTitle:@"删除"];
+            }
+            else
+            {
+                [btn setTitle:@"编辑" forState:0];
+
+//                [self.navigationItem.leftBarButtonItemsetTitle:@"管理"];
+            }
+            
+        }];
+    }
+    return _rightNavButton;
 }
 
 - (NSMutableArray *)storeDataList
@@ -212,23 +250,6 @@
     return cell;
 }
 
-/*
-- (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewRowAction *editAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"立即申请" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
-        [self goToApplyWithRow:indexPath.row];
-    }];
-    editAction.backgroundColor = kBlueColor;
-    
-    UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"取消收藏"  handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
-        [self deleteOneStoreOfRow:indexPath.row];
-    }];
-    deleteAction.backgroundColor = kRedColor;
-    
-    return @[deleteAction,editAction];
-}
- */
-
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return kBigPadding;
@@ -238,6 +259,25 @@
 {
     return 0.1f;
 }
+
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(tableView.editing) {//是否处于编辑状态
+        return UITableViewCellEditingStyleDelete;
+    }
+    return UITableViewCellEditingStyleNone;
+}
+
+//删除cell方法
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSUInteger section = [indexPath section]; //获取当前jie
+    [self deleteOneStoreOfRow:section];
+//    [self.storeDataList removeObjectAtIndex:section]; //在数据中删除当前对象
+//    [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade]; //数组执行删除 操作
+}
+
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {

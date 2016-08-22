@@ -220,6 +220,7 @@
         _productsTableView.delegate = self;
         _productsTableView.dataSource = self;
         _productsTableView.backgroundColor = kBackColor;
+        _productsTableView.separatorColor = kSeparateColor;
         _productsTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
         [_productsTableView addHeaderWithTarget:self action:@selector(headerRefreshWithAllProducts)];
         [_productsTableView addFooterWithTarget:self action:@selector(footerRefreshOfAllProducts)];
@@ -320,7 +321,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (tableView == self.productsTableView) {
-        return 156;
+        return 130;//156
     }
     return 40;
 }

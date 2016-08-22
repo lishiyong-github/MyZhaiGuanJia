@@ -70,6 +70,7 @@
         _publishingTableView.delegate = self;
         _publishingTableView.dataSource = self;
         _publishingTableView.backgroundColor = kBackColor;
+        _publishingTableView.separatorColor = kSeparateColor;
     }
     return _publishingTableView;
 }

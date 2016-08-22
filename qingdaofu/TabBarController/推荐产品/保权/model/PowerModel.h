@@ -19,4 +19,10 @@
 @property (nonatomic,copy) NSString *number;  //保全单号
 @property (nonatomic,copy) NSString *status;  //保全状态 1-审核未通过
 @property (nonatomic,copy) NSString *type; //取函方式
+
+@property (nonatomic,strong) NSMutableArray *anjian;
+@property (nonatomic,strong) NSMutableArray *caichan;
+@property (nonatomic,strong) NSMutableArray *qisu;
+@property (nonatomic,strong) NSMutableArray *zhengju;
+
 @end

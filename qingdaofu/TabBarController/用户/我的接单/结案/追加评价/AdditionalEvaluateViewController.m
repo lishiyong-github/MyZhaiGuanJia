@@ -72,6 +72,7 @@
         _additionalTableView.backgroundColor = kBackColor;
         _additionalTableView.delegate = self;
         _additionalTableView.dataSource = self;
+        _additionalTableView.separatorColor = kSeparateColor;
         _additionalTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kCellHeight)];
         _additionalTableView.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
     }

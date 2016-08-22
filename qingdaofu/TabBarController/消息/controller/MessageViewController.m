@@ -65,6 +65,7 @@
         _messageTableView.dataSource = self;
         _messageTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
         _messageTableView.backgroundColor = kBackColor;
+        _messageTableView.separatorColor = kSeparateColor;
     }
     return _messageTableView;
 }

@@ -118,6 +118,7 @@
         _completeTableView.dataSource = self;
         _completeTableView.backgroundColor = kBackColor;
         _completeTableView.separatorInset = UIEdgeInsetsZero;
+        _completeTableView.separatorColor = kSeparateColor;
     }
     return _completeTableView;
 }

@@ -60,6 +60,7 @@
         _editDebtTableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
         _editDebtTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
         _editDebtTableView.backgroundColor = kBackColor;
+        _editDebtTableView.separatorColor = kSeparateColor;
     }
     return _editDebtTableView;
 }

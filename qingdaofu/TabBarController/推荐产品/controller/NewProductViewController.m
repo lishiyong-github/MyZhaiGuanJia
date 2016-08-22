@@ -208,7 +208,7 @@
     if (indexPath.section == 0) {
         return 140;
     }
-    return 156;//产品列表
+    return 130;//产品列表
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

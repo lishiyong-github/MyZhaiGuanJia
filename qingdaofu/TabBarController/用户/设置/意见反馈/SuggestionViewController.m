@@ -56,6 +56,7 @@
         _suggestTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _suggestTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _suggestTableView.backgroundColor = kBackColor;
+        _suggestTableView.separatorColor = kSeparateColor;
         _suggestTableView.delegate = self;
         _suggestTableView.dataSource = self;
         _suggestTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 70)];

@@ -16,4 +16,8 @@
 @property (nonatomic,copy) NSString *type;  // 图片类型
 @property (nonatomic,copy) NSString *url;  //图片下载地址
 
+//列表里的图片
+@property (nonatomic,copy) NSString *file;
+@property (nonatomic,copy) NSString *idString;
+
 @end

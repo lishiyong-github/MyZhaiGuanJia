@@ -10,10 +10,13 @@
 
 #import "PowerProtectViewController.h"  //申请保全
 #import "PowerProtectPictureViewController.h"
+#import "UIViewController+ImageBrowser.h"
 
 #import "MessageCell.h"
 #import "MineUserCell.h"
 #import "PowerDetailsCell.h"
+
+#import "ImageModel.h"
 
 @interface PowerDetailsViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -55,6 +58,7 @@
         _powerDetailsTableView.delegate = self;
         _powerDetailsTableView.dataSource = self;
         _powerDetailsTableView.separatorColor = kSeparateColor;
+        _powerDetailsTableView.backgroundColor = kBackColor;
     }
     return _powerDetailsTableView;
 }
@@ -189,8 +193,20 @@
         
         [cell.userActionButton setTitleColor:kGrayColor forState:0];
         cell.userActionButton.titleLabel.font = kFirstFont;
-        [cell.userActionButton setTitle:@"x0" forState:0];
-        
+
+        if (indexPath.row == 1){
+            NSString *qisuCount = [NSString stringWithFormat:@"x%lu",(unsigned long)self.pModel.qisu.count];
+            [cell.userActionButton setTitle:qisuCount forState:0];
+        }else if (indexPath.row == 2){
+            NSString *caichanCount = [NSString stringWithFormat:@"x%lu",(unsigned long)self.pModel.caichan.count];
+            [cell.userActionButton setTitle:caichanCount forState:0];
+        }else if (indexPath.row == 3){
+            NSString *zhengjuCount = [NSString stringWithFormat:@"x%lu",(unsigned long)self.pModel.zhengju.count];
+            [cell.userActionButton setTitle:zhengjuCount forState:0];
+        }else if (indexPath.row == 4){
+            NSString *anjianCount = [NSString stringWithFormat:@"x%lu",(unsigned long)self.pModel.anjian.count];
+            [cell.userActionButton setTitle:anjianCount forState:0];
+        }
         return cell;
     }
     
@@ -211,19 +227,45 @@
 {
     if (indexPath.section == 2) {//上传材料
         if (indexPath.row == 0) {
-            if ([self.pModel.status integerValue] < 1) {
+            if ([self.pModel.status integerValue] < 2) {
                 PowerProtectPictureViewController *powerProtectPictureVC = [[PowerProtectPictureViewController alloc] init];
                 powerProtectPictureVC.pModel = self.pModel;
                 [self.navigationController pushViewController:powerProtectPictureVC animated:YES];
             }
         }else if (indexPath.row == 1){
+            NSMutableArray *fileArray1 = [NSMutableArray array];
+            for (int i=0; i<self.pModel.qisu.count; i++) {
+                ImageModel *fileModel = self.pModel.qisu[i];
+                NSString *file = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,fileModel.file];
+                [fileArray1 addObject:file];
+            }
+            [self showImages:fileArray1];
             
         }else if (indexPath.row == 2){
-            
+            NSMutableArray *fileArray2 = [NSMutableArray array];
+            for (int i=0; i<self.pModel.caichan.count; i++) {
+                ImageModel *fileModel = self.pModel.caichan[i];
+                NSString *file = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,fileModel.file];
+                [fileArray2 addObject:file];
+            }
+            [self showImages:fileArray2];
         }else if (indexPath.row == 3){
+            NSMutableArray *fileArray3 = [NSMutableArray array];
+            for (int i=0; i<self.pModel.zhengju.count; i++) {
+                ImageModel *fileModel = self.pModel.zhengju[i];
+                NSString *file = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,fileModel.file];
+                [fileArray3 addObject:file];
+            }
+            [self showImages:fileArray3];
             
         }else if (indexPath.row == 4){
-            
+            NSMutableArray *fileArray4 = [NSMutableArray array];
+            for (int i=0; i<self.pModel.anjian.count; i++) {
+                ImageModel *fileModel = self.pModel.anjian[i];
+                NSString *file = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,fileModel.file];
+                [fileArray4 addObject:file];
+            }
+            [self showImages:fileArray4];
         }
     }
 }

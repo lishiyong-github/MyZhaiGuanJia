@@ -56,6 +56,7 @@
         _aboutTableView = [UITableView newAutoLayoutView];
         _aboutTableView.delegate = self;
         _aboutTableView.dataSource = self;
+        _aboutTableView.separatorColor = kSeparateColor;
         _aboutTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
         _aboutTableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 142)];
         [_aboutTableView.tableHeaderView addSubview:self.aboutHeaderView];

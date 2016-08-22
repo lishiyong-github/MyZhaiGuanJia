@@ -80,6 +80,7 @@
         _collectionTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _collectionTableView = [[UITableView alloc ] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _collectionTableView.backgroundColor = kBackColor;
+        _collectionTableView.separatorColor = kSeparateColor;
         _collectionTableView.delegate = self;
         _collectionTableView.dataSource = self;
         _collectionTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 90)];

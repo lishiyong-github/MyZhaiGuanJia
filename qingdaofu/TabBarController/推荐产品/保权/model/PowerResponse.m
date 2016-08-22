@@ -7,6 +7,7 @@
 //
 
 #import "PowerResponse.h"
+@class ImageModel;
 
 @implementation PowerResponse
 

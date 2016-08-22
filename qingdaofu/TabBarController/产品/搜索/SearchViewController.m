@@ -50,6 +50,7 @@
         _searchTableView.delegate = self;
         _searchTableView.dataSource = self;
         _searchTableView.backgroundColor = kBackColor;
+        _searchTableView.separatorColor = kSeparateColor;
         _searchTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
     }
     return _searchTableView;

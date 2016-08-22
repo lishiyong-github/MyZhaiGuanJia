@@ -115,6 +115,7 @@
         _suitTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _suitTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _suitTableView.backgroundColor = kBackColor;
+        _suitTableView.separatorColor = kSeparateColor;
         _suitTableView.delegate = self;
         _suitTableView.dataSource = self;
         _suitTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 90)];
@@ -168,8 +169,8 @@
 - (NSMutableArray *)sTextArray
 {
     if (!_sTextArray) {
-        NSMutableArray *s1 = [NSMutableArray arrayWithArray:@[@"",@"借款本金",@"代理费用",@"",@"抵押物地址",@""]];
-        NSMutableArray *s2 = [NSMutableArray arrayWithArray:@[@"|  选填信息(选填)",@"借款利率(%)",@"借款期限",@"还款方式",@"债务人主体",@"委托代理期限(月)",@"已付本金",@"已付利息",@"",@"债权文件",@"债权人信息",@"债务人信息"]];
+        NSMutableArray *s1 = [NSMutableArray arrayWithArray:@[@"",@"借款本金",@"代理费用",@"债券类型",@"抵押物地址",@""]];
+        NSMutableArray *s2 = [NSMutableArray arrayWithArray:@[@"|  选填信息(选填)",@"借款利率",@"借款期限",@"还款方式",@"债务人主体",@"委托代理期限",@"已付本金",@"已付利息",@"",@"债权文件",@"债权人信息",@"债务人信息"]];
         _sTextArray = [NSMutableArray arrayWithObjects:s1,s2, nil];
     }
     return _sTextArray;
@@ -179,7 +180,7 @@
 {
     if (!_sHolderArray) {
         NSMutableArray *w1 = [NSMutableArray arrayWithArray:@[@"",@"填写借款本金",@"请填写代理费用",@"",@"",@""]];
-        NSMutableArray *w2 = [NSMutableArray arrayWithArray:@[@"",@"能够给到融资方的利息",@"输入借款期限",@"",@"",@"",@"",@"填写已付本金",@"填写已付利息",@"",@"",@"",@"",@""]];
+        NSMutableArray *w2 = [NSMutableArray arrayWithArray:@[@"",@"能够给到融资方的利息",@"输入借款期限",@"",@"",@"",@"填写已付本金",@"填写已付利息",@"",@"",@"",@"",@""]];
         _sHolderArray = [NSMutableArray arrayWithObjects:w1,w2, nil];
     }
     return _sHolderArray;
@@ -245,14 +246,14 @@
     if (section == 0) {
         return [self.rowString intValue];
     }
-    return 13;
+    return 12;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ((indexPath.section == 0) && (indexPath.row == 5)) {
         return 62;
-    }else if ((indexPath.section == 1) && (indexPath.row == 9)){
+    }else if ((indexPath.section == 1) && (indexPath.row == 8)){
         return 62;
     }
     return kCellHeight;
@@ -497,7 +498,7 @@
     }
     
     //section ＝ 1
-    if (indexPath.row == 0) {//选填信息
+    if (indexPath.row == 0) {//补充信息
         identifier = @"suitSect10";
         
         AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -763,7 +764,7 @@
         cell.agentButton.userInteractionEnabled = NO;
         return cell;
     }else if (indexPath.row == 10){//债权人信息
-        identifier = @"suitSect1";
+        identifier = @"suitSect111";
         
         AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         if (!cell) {
@@ -779,7 +780,7 @@
         cell.agentButton.userInteractionEnabled = NO;
         return cell;
     }else if (indexPath.row == 11){//债务人信息
-        identifier = @"suitSect1";
+        identifier = @"suitSect112";
         
         AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         if (!cell) {

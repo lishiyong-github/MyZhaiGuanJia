@@ -101,6 +101,8 @@
         _myProcessingTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _myProcessingTableView.delegate = self;
         _myProcessingTableView.dataSource = self;
+        _myProcessingTableView.separatorColor = kSeparateColor;
+        _myProcessingTableView.backgroundColor = kBackColor;
     }
     return _myProcessingTableView;
 }

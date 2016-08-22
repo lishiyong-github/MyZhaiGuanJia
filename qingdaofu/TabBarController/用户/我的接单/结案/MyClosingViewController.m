@@ -110,6 +110,8 @@
         _myClosingTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _myClosingTableView.delegate = self;
         _myClosingTableView.dataSource = self;
+        _myClosingTableView.separatorColor = kSeparateColor;
+        _myClosingTableView.backgroundColor = kBackColor;
     }
     return _myClosingTableView;
 }

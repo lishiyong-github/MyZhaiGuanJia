@@ -14,12 +14,18 @@
 #import "MineUserCell.h"
 #import "MessageCell.h"
 
+#import "AssessListResponse.h"
+#import "AssessModel.h"
+
 @interface HouseAssessListViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic,strong) UITableView *houseListTableView;
 @property (nonatomic,strong) BaseCommitView *houseListCommitView;
 @property (nonatomic,assign) BOOL didSetupConstraints;
 
+//json
+@property (nonatomic,assign) NSInteger pageAssess;
+@property (nonatomic,strong) NSMutableArray *assessListArray;
 @end
 
 @implementation HouseAssessListViewController
@@ -33,6 +39,8 @@
     [self.view addSubview:self.houseListCommitView];
     
     [self.view setNeedsUpdateConstraints];
+    
+    [self headerRefreshOfHouseAssessList];
 }
 
 - (void)updateViewConstraints
@@ -59,6 +67,8 @@
         _houseListTableView.delegate = self;
         _houseListTableView.dataSource = self;
         _houseListTableView.separatorColor = kSeparateColor;
+        [_houseListTableView addHeaderWithTarget:self action:@selector(headerRefreshOfHouseAssessList)];
+        [_houseListTableView addFooterWithTarget:self action:@selector(footerRefreshOfHouseAssessList)];
     }
     return _houseListTableView;
 }
@@ -80,6 +90,14 @@
     return _houseListCommitView;
 }
 
+- (NSMutableArray *)assessListArray
+{
+    if (!_assessListArray) {
+        _assessListArray = [NSMutableArray array];
+    }
+    return _assessListArray;
+}
+
 #pragma mark -tableview delegate and datasoyrce
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -88,7 +106,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return self.assessListArray.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -103,6 +121,8 @@
 {
     static NSString *identifier;
     
+    AssessModel *aModel = self.assessListArray[indexPath.section];
+    
     if (indexPath.row == 0) {
         identifier = @"houseList0";
         MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -113,11 +133,10 @@
         
         [cell.userNameButton setImage:[UIImage imageNamed:@"house_property_evaluation"] forState:0];
         
-        
-        NSMutableAttributedString *resultStr = [cell.userNameButton setAttributeString:@"  评估结果：" withColor:kBlackColor andSecond:@"200万" withColor:kRedColor withFont:16];
+        NSInteger totalPrice = [aModel.totalPrice integerValue]/10000;
+        NSString *total = [NSString stringWithFormat:@"%.0ld万",(long)totalPrice];
+        NSMutableAttributedString *resultStr = [cell.userNameButton setAttributeString:@"  评估结果：" withColor:kBlackColor andSecond:total withColor:kRedColor withFont:16];
         [cell.userNameButton setAttributedTitle:resultStr forState:0];
-//        NSString *resultStr = [NSString stringWithFormat:@"  评估结果：%@万",@"600"];
-//        [cell.userNameButton setTitle:resultStr forState:0];
         [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
         
         return cell;
@@ -132,8 +151,8 @@
     [cell.countLabel setHidden:YES];
     [cell.actButton setHidden:YES];
 
-    cell.userLabel.text = [NSString stringWithFormat:@"房源信息：%@",@"浦东新区孙环路177弄1号101室"];
-    cell.newsLabel.text = [NSString stringWithFormat:@"评估时间：%@",@"2016-09-09"];
+    cell.userLabel.text = [NSString stringWithFormat:@"房源信息：%@%@",aModel.district,aModel.address];
+    cell.newsLabel.text = [NSDate getYMDhmFormatterTime:aModel.create_time];
     
     return cell;
 }
@@ -153,11 +172,61 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0) {
+    if (indexPath.row == 0) {
         AssessSuccessViewController *assessSuccessVC = [[AssessSuccessViewController alloc] init];
         assessSuccessVC.fromType = @"2";
+        assessSuccessVC.aModel = self.assessListArray[indexPath.section];
         [self.navigationController pushViewController:assessSuccessVC animated:YES];
     }
+}
+
+#pragma mark - method
+- (void)getHouseAssessListWithPage:(NSString *)page
+{
+    NSString *assessListStrig = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kHouseAssessListString];
+    NSDictionary *params = @{@"page" : page,
+                             @"limit" : @"10",
+                             @"token" : [self getValidateToken]
+                             };
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:assessListStrig params:params successBlock:^(id responseObject) {
+        
+        if ([page integerValue] == 1) {
+            [weakself.assessListArray removeAllObjects];
+        }
+        
+        AssessListResponse *responseF = [AssessListResponse objectWithKeyValues:responseObject];
+        
+        for (AssessModel *model in responseF.data) {
+            [weakself.assessListArray addObject:model];
+        }
+    
+        [weakself.houseListTableView reloadData];
+    
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
+- (void)headerRefreshOfHouseAssessList
+{
+    _pageAssess = 1;
+    [self getHouseAssessListWithPage:@"1"];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.houseListTableView headerEndRefreshing];
+    });
+}
+
+- (void)footerRefreshOfHouseAssessList
+{
+    _pageAssess++;
+    NSString *page = [NSString stringWithFormat:@"%ld",(long)_pageAssess];
+    [self getHouseAssessListWithPage:page];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.houseListTableView footerEndRefreshing];
+    });
 }
 
 

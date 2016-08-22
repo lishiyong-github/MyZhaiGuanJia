@@ -83,6 +83,8 @@
         _myEndingTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _myEndingTableView.delegate = self;
         _myEndingTableView.dataSource = self;
+        _myEndingTableView.separatorColor = kSeparateColor;
+        _myEndingTableView.backgroundColor = kBackColor;
     }
     return _myEndingTableView;
 }

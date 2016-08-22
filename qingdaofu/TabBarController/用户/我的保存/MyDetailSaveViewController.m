@@ -77,6 +77,7 @@
         _detailSaveTableView.dataSource = self;
         _detailSaveTableView.tableFooterView = [[UIView alloc] init];
         _detailSaveTableView.backgroundColor = kBackColor;
+        _detailSaveTableView.separatorColor = kSeparateColor;
     }
     return _detailSaveTableView;
 }

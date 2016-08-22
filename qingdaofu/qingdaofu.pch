@@ -223,6 +223,7 @@
 //新增四大模块
 #define kHouseAssessString @"producedata/estate" //房产评估
 #define kHouseCityString @"producedata/diqu" //区域
+#define kHouseAssessListString @"producedata/estatelist" //评估列表
 
 #define kPowerString @"producedata/index"  //申请保全
 #define kPowerCourtProvince @"policy/area-province" //法院省
@@ -231,6 +232,7 @@
 #define kPowerAssessListString @"producedata/baoquanlists" //保全列表
 #define kUploadImagesString @"common/uploads"  //上传图片
 #define kPowerAdditionalMessageString @"producedata/picturedatas"  //补充图片
+
 
 #endif
 

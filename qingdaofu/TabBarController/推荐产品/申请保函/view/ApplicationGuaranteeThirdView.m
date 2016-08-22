@@ -50,6 +50,7 @@
         _tableViewa.dataSource = self;
         _tableViewa.backgroundColor = kBackColor;
         _tableViewa.tableFooterView = [[UIView alloc] init];
+        _tableViewa.separatorColor = kSeparateColor;
     }
     return _tableViewa;
 }

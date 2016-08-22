@@ -16,8 +16,9 @@
 #import "DelayRequestsViewController.h"  //申请延期
 #import "AdditionalEvaluateViewController.h"  //去评价
 
-#import "AnotherHomeCell.h"
 #import "AllProSegView.h"
+#import "AnotherHomeCell.h"
+#import "ExtendHomeCell.h"
 
 #import "ReleaseResponse.h"
 #import "RowsModel.h"
@@ -50,8 +51,6 @@
     [super viewDidLoad];
     self.navigationItem.title = @"我的接单";
     self.navigationItem.leftBarButtonItem = self.leftItem;
-    
-    [self setupForDismissKeyboard];
     
     [self.view addSubview:self.orderHeadView];
     [self.view addSubview:self.myOrderTableView];
@@ -156,10 +155,11 @@
 {
     if (!_myOrderTableView) {
         _myOrderTableView.translatesAutoresizingMaskIntoConstraints = NO;
-        _myOrderTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
+        _myOrderTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _myOrderTableView.delegate = self;
         _myOrderTableView.dataSource = self;
         _myOrderTableView.backgroundColor = kBackColor;
+        _myOrderTableView.separatorColor = kSeparateColor;
         _myOrderTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
         [_myOrderTableView addHeaderWithTarget:self action:@selector(refreshsHeaderOfMyOrder)];
         [_myOrderTableView addFooterWithTarget:self action:@selector(refreshsFooterOfMyOrder)];
@@ -204,26 +204,142 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    RowsModel *orderModel = self.myOrderDataList[indexPath.section];
-    
-    if (([orderModel.progress_status integerValue] == 1) || [orderModel.progress_status integerValue] == 3) {
-        return 160;
-    }else if ([orderModel.progress_status integerValue] == 4){
-        
-        NSString *id_category = [NSString stringWithFormat:@"%@_%@",orderModel.idString,orderModel.category];
-        NSString *value = self.myOrderResonseDic[id_category];
-        if ([value integerValue] >= 2) {//不能评价
-            return 160;
-        }
-    }
-    return 200;
+//    RowsModel *orderModel = self.myOrderDataList[indexPath.section];
+//    
+//    if (([orderModel.progress_status integerValue] == 1) || [orderModel.progress_status integerValue] == 3) {
+//        return 160;
+//    }else if ([orderModel.progress_status integerValue] == 4){
+//        
+//        NSString *id_category = [NSString stringWithFormat:@"%@_%@",orderModel.idString,orderModel.category];
+//        NSString *value = self.myOrderResonseDic[id_category];
+//        if ([value integerValue] >= 2) {//不能评价
+//            return 160;
+//        }
+//    }
+    return 200;//200
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *identifier;
+    static NSString *identifier;//ExtendHomeCell.h
     
     identifier = @"myRelease0";
+    ExtendHomeCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    if (!cell) {
+        cell = [[ExtendHomeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+    }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    RowsModel *rowModel = self.myOrderDataList[indexPath.section];
+    
+    //image
+    if ([rowModel.category intValue] == 2){//清收
+        cell.typeImageView.image = [UIImage imageNamed:@"list_collection"];
+    }else if ([rowModel.category intValue] == 3){//诉讼
+        cell.typeImageView.image = [UIImage imageNamed:@"list_litigation"];
+    }
+    
+    //code
+    [cell.nameButton setTitle:rowModel.codeString forState:0];
+//    [cell.nameButton swapImage];
+//    [cell.nameButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+    
+    //status
+    NSArray *statusArray = @[@"申请中",@"处理中",@"已终止",@"已结案"];
+    NSInteger statusInt = [rowModel.progress_status integerValue];
+    cell.statusLabel.text = statusArray[statusInt - 1];
+    
+    //content
+    NSString *orString0 = [NSString stringWithFormat:@"   借款本金：%@万",rowModel.money];
+    NSString *orString1;
+    if ([rowModel.category integerValue] == 2) {//清收
+        if ([rowModel.agencycommissiontype integerValue] == 1) {
+            orString1 = [NSString stringWithFormat:@"   服务佣金：%@%@",rowModel.agencycommission,@"%"];
+        }else{
+            orString1 = [NSString stringWithFormat:@"   固定费用：%@万",rowModel.agencycommission];
+        }
+    }else if ([rowModel.category integerValue] == 3){//诉讼
+        if ([rowModel.agencycommissiontype integerValue] == 1) {
+            orString1 = [NSString stringWithFormat:@"   固定费用：%@万",rowModel.agencycommission];
+        }else{
+            orString1 = [NSString stringWithFormat:@"   代理费率：%@%@",rowModel.agencycommission,@"%"];
+        }
+    }
+    NSString *orString2;
+    NSString *orString3;
+    if ([rowModel.loan_type integerValue] == 1) {
+        orString2 = [NSString stringWithFormat: @"   债权类型：房产抵押"];
+        orString3 = [NSString stringWithFormat:@"   抵押物地址：%@",rowModel.mortorage_community];
+    }else if ([rowModel.loan_type integerValue] == 2){
+        orString2 = [NSString stringWithFormat: @"   债权类型：应收帐款"];
+        orString3 = [NSString stringWithFormat:@"   应收帐款：%@万",rowModel.mortorage_community];
+    }else if ([rowModel.loan_type integerValue] == 3){
+        orString2 = [NSString stringWithFormat: @"   债权类型：机动车抵押"];
+        orString3 = [NSString stringWithFormat:@"   机动车抵押：%@",rowModel.mortorage_community];
+    }else if ([rowModel.loan_type integerValue] == 4){
+        orString2 = [NSString stringWithFormat: @"   债权类型：无抵押"];
+        orString3 = [NSString stringWithFormat:@"   无抵押"];
+    }
+    
+    NSString *orString = [NSString stringWithFormat:@"%@\n%@\n%@\n%@",orString0,orString1,orString2,orString3];
+    NSMutableAttributedString *orAttributeStr = [[NSMutableAttributedString alloc] initWithString:orString];
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    [style setLineSpacing:6];
+    [orAttributeStr addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, orString.length)];
+    [cell.contentLabel setAttributedText:orAttributeStr];
+    
+    //deadlineLabel
+    if ([rowModel.progress_status intValue] == 2){//处理中（距离单子处理还剩一周，显示截至日期）
+        [cell.deadLineButton setHidden:NO];
+        
+        NSString *id_category = [NSString stringWithFormat:@"%@_%@",rowModel.idString,rowModel.category];
+        NSString *value11 = self.myOrderDelaysDic[id_category];
+        NSString *deadString = [NSString stringWithFormat:@" 截止处理时间：%@",value11];
+        [cell.deadLineButton setTitle:deadString forState:0];
+        [cell.deadLineButton setImage:[UIImage imageNamed:@"time"] forState:0];
+    }else{
+        [cell.deadLineButton setHidden:YES];
+    }
+    
+    //action
+    if ([rowModel.progress_status integerValue] == 1) {//申请
+        [cell.actButton1 setHidden:YES];
+        [cell.actButton2 setHidden:NO];
+        [cell.actButton2 setTitle:@"取消申请" forState:0];
+        [cell.actButton2 setTitleColor:kBlackColor forState:0];
+        cell.actButton2.layer.borderColor = kBorderColor.CGColor;
+    }else if ([rowModel.progress_status integerValue] == 2) {//处理
+        [cell.actButton1 setHidden:NO];
+        [cell.actButton2 setHidden:NO];
+        cell.actButton1.layer.borderColor = kBorderColor.CGColor;
+        [cell.actButton1 setTitleColor:kBlackColor forState:0];
+        [cell.actButton1 setTitle:@"联系发布方" forState:0];
+        
+        cell.actButton2.layer.borderColor = kBlueColor.CGColor;
+        [cell.actButton2 setTitleColor:kBlueColor forState:0];
+        [cell.actButton2 setTitle:@"填写进度" forState:0];
+    }else if ([rowModel.progress_status integerValue] == 3) {//终止
+        [cell.actButton1 setHidden:YES];
+        [cell.actButton2 setHidden:NO];
+        [cell.actButton2 setTitle:@"删除订单" forState:0];
+        [cell.actButton2 setTitleColor:kBlackColor forState:0];
+        cell.actButton2.layer.borderColor = kBorderColor.CGColor;
+    }else if ([rowModel.progress_status integerValue] == 4) {//结案
+        [cell.actButton1 setHidden:NO];
+        [cell.actButton2 setHidden:NO];
+        cell.actButton1.layer.borderColor = kBorderColor.CGColor;
+        [cell.actButton1 setTitleColor:kBlackColor forState:0];
+        [cell.actButton1 setTitle:@"删除订单" forState:0];
+        
+        cell.actButton2.layer.borderColor = kBlueColor.CGColor;
+        [cell.actButton2 setTitleColor:kBlueColor forState:0];
+        [cell.actButton2 setTitle:@"评价发布方" forState:0];
+    }
+    
+
+    return cell;
+    
+    /*
+    identifier = @"myRelease1";
     AnotherHomeCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
         cell = [[AnotherHomeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
@@ -235,11 +351,10 @@
     RowsModel *rowModel = self.myOrderDataList[indexPath.section];
     
     cell.nameLabel.text = rowModel.codeString;
-    /*typeImageView
-     nameLabel*/
-    //融资－－借款本金（万元），返点（％），借款利率（月，天）
+    //typeImageView  nameLabel*/
     //清收－－借款本金（万元），代理费用，债权类型
     //诉讼－－借款本金（万元），代理费用（或风险费率  具体看用户自己选择），债权类型
+    /*
     if ([rowModel.category intValue] == 1) {//融资
         cell.typeImageView.image = [UIImage imageNamed:@"list_financing"];
         if ([rowModel.progress_status intValue] > 2) {
@@ -319,7 +434,7 @@
     }
     
     /*typeLabel*/
-    
+    /*
     if ([rowModel.progress_status integerValue]  == 0) {
         [cell.typeLabel setHidden:NO];
         cell.typeLabel.text = @"待申请";
@@ -395,6 +510,7 @@
     }
     
     return cell;
+    */
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -454,6 +570,8 @@
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:myOrderString params:params successBlock:^(id responseObject) {
+        
+        NSDictionary *sususu = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
         if ([page intValue] == 1) {
             [weakself.myOrderDataList removeAllObjects];

@@ -104,6 +104,8 @@
         _ReleaseCloseTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _ReleaseCloseTableView.delegate = self;
         _ReleaseCloseTableView.dataSource = self;
+        _ReleaseCloseTableView.separatorColor = kSeparateColor;
+        _ReleaseCloseTableView.backgroundColor = kBackColor;
     }
     return _ReleaseCloseTableView;
 }

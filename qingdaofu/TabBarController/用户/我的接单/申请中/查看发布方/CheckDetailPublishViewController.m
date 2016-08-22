@@ -107,9 +107,7 @@
     if (!_checkDetailTableView) {
         _checkDetailTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _checkDetailTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
-        
-//        _checkDetailTableView = [UITableView newAutoLayoutView];
-        
+        _checkDetailTableView.separatorColor = kSeparateColor;
         _checkDetailTableView.delegate = self;
         _checkDetailTableView.dataSource = self;
         _checkDetailTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];

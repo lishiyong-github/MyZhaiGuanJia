@@ -66,6 +66,7 @@
         _upTableView.dataSource = self;
         _upTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
         _upTableView.backgroundColor = kBackColor;
+        _upTableView.separatorColor = kSeparateColor;
     }
     return _upTableView;
 }

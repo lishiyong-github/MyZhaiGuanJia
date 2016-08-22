@@ -38,11 +38,11 @@
     self.navigationItem.title = @"产品详情";
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
-    if (self.pidString) {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"查看发布方" style:UIBarButtonItemStylePlain target:self action:@selector(checkDetails)];
-    }
-    
-    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kBlueColor} forState:0];
+//    if (self.pidString) {
+//        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"查看发布方" style:UIBarButtonItemStylePlain target:self action:@selector(checkDetails)];
+//    }
+//    
+//    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kBlueColor} forState:0];
     
     [self.view addSubview:self.myApplyingTableView];
     [self.view setNeedsUpdateConstraints];
@@ -68,6 +68,8 @@
         _myApplyingTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
         _myApplyingTableView.delegate = self;
         _myApplyingTableView.dataSource = self;
+        _myApplyingTableView.separatorColor = kSeparateColor;
+        _myApplyingTableView.backgroundColor = kBackColor;
     }
     return _myApplyingTableView;
 }
@@ -84,7 +86,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (self.myApplyArray.count > 0) {
-        return 2;
+        return 3;
     }
     return 0;
 }
@@ -92,13 +94,12 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (self.myApplyArray.count > 0) {
-        
-        if (section == 1) {
+        if (section == 2) {
             PublishingResponse *response = self.myApplyArray[0];
             if ([response.product.loan_type isEqualToString:@"4"]) {
-                return 6;
+                return 5;
             }
-            return 7;
+            return 6;
         }
         return 1;
     }
@@ -127,15 +128,19 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.backgroundColor = UIColorFromRGB(0x42566d);
         
-        NSString *nameStr = [NSString stringWithFormat:@"产品编号：%@",applyModel.codeString];
+//        = [NSString stringWithFormat:@"产品编号：%@",applyModel.codeString];
+        NSString *nameStrss;
+        if ([applyModel.category integerValue] == 2) {
+            nameStrss = @"清收";
+        }else if ([applyModel.category integerValue] == 3){
+            nameStrss = @"诉讼";
+        }
+        NSString *nameStr = [NSString stringWithFormat:@"%@%@",nameStrss,applyModel.codeString];
+
         [cell.userNameButton setTitle:nameStr forState:0];
         [cell.userNameButton setTitleColor:UIColorFromRGB(0xcfd4e8) forState:0];
         cell.userNameButton.titleLabel.font = kFirstFont;
-        
-        /*0为待发布（保存未发布的）。 1为发布中（已发布的）。
-         2为处理中（有人已接单发布方也已同意）。
-         3为终止（只用发布方可以终止）。
-         4为结案（双方都可以申请，一方申请一方同意*/
+
         [cell.userActionButton setTitle:@"申请中" forState:0];
         [cell.userActionButton setTitleColor:kNavColor forState:0];
         cell.userActionButton.titleLabel.font = kBigFont;
@@ -350,6 +355,7 @@
 }
 
 #pragma mark - method
+//查看发布方
 - (void)checkDetails
 {
     PublishingResponse *responde;

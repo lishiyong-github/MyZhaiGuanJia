@@ -114,6 +114,7 @@
         _powerListTableView.delegate = self;
         _powerListTableView.dataSource = self;
         _powerListTableView.backgroundColor = kBackColor;
+        _powerListTableView.separatorColor = kSeparateColor;
         _powerListTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
         [_powerListTableView addHeaderWithTarget:self action:@selector(headerRefreshOfPowerList)];
         [_powerListTableView addFooterWithTarget:self action:@selector(footerRefreshOfPowerList)];
@@ -173,7 +174,7 @@
 {
     static NSString *identifier;
     
-    PowerModel *model = self.powerListArray[indexPath.section];
+    PowerModel *tModel = self.powerListArray[indexPath.section];
 
     if (indexPath.row == 0) {
         identifier = @"listas0";
@@ -185,7 +186,7 @@
         cell.userNameButton.userInteractionEnabled = NO;
         cell.userActionButton.userInteractionEnabled = NO;
 
-        NSString *number = [NSString stringWithFormat:@"  %@",model.number];
+        NSString *number = [NSString stringWithFormat:@"  %@",tModel.number];
         [cell.userNameButton setTitle:number forState:0];
         [cell.userNameButton setTitleColor:kGrayColor forState:0];
         [cell.userNameButton setImage:[UIImage imageNamed:@"right"] forState:0];
@@ -207,10 +208,10 @@
         cell.userLabel.font = kFirstFont;
         cell.newsLabel.font = kFirstFont;
 
-        NSInteger account = [model.account integerValue]/10000;
+        NSInteger account = [tModel.account integerValue]/10000;
         cell.userLabel.text = [NSString stringWithFormat:@"金额：%ld万",(long)account];
-        cell.timeLabel.text = [NSDate getYMDhmFormatterTime:model.create_time];
-        cell.newsLabel.text = [NSString stringWithFormat:@"法院：%@",model.fayuan_name];
+        cell.timeLabel.text = [NSDate getYMDhmFormatterTime:tModel.create_time];
+        cell.newsLabel.text = [NSString stringWithFormat:@"法院：%@",tModel.fayuan_name];
         return cell;
     }
     return nil;
@@ -248,9 +249,6 @@
     QDFWeakSelf;
     [self requestDataPostWithString:assessListString params:params successBlock:^(id responseObject) {
         
-        NSDictionary *opoopo = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        
-        
         if ([page integerValue] == 1) {
             [weakself.powerListArray removeAllObjects];
             _pagePower = 1;
@@ -262,8 +260,8 @@
             _pagePower--;
         }
         
-        for (PowerModel *model in responsey.data) {
-            [weakself.powerListArray addObject:model];
+        for (PowerModel *tModel in responsey.data) {
+            [weakself.powerListArray addObject:tModel];
         }
         
         if (weakself.powerListArray.count > 0) {
@@ -275,6 +273,10 @@
         [weakself.powerListTableView reloadData];
         
     } andFailBlock:^(NSError *error) {
+        if ([page integerValue] == 1) {
+            [weakself.powerListArray removeAllObjects];
+            _pagePower = 1;
+        }
     }];
 }
 

@@ -146,6 +146,7 @@
         _myReleaseTableView.delegate = self;
         _myReleaseTableView.dataSource = self;
         _myReleaseTableView.backgroundColor = kBackColor;
+        _myReleaseTableView.separatorColor = kSeparateColor;
         _myReleaseTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
         [_myReleaseTableView addHeaderWithTarget:self action:@selector(refreshHeaderOfMyRelease)];
         [_myReleaseTableView addFooterWithTarget:self action:@selector(refreshFooterOfMyRelease)];

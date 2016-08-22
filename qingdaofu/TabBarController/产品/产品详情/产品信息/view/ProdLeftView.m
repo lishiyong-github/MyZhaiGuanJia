@@ -18,6 +18,7 @@
         self.dataSource = self;
         self.delegate = self;
         self.backgroundColor = kBackColor;
+        self.separatorColor = kSeparateColor;
         self.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 12.5)];
         self.tableFooterView = [[UIView alloc] init];
     }

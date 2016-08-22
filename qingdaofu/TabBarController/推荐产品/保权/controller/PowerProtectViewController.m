@@ -84,6 +84,7 @@
         _powerTableView.delegate = self;
         _powerTableView.dataSource = self;
         _powerTableView.separatorColor = kSeparateColor;
+        _powerTableView.backgroundColor = kBackColor;
     }
     return _powerTableView;
 }

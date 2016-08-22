@@ -79,6 +79,7 @@
         _powerPictureTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _powerPictureTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _powerPictureTableView.backgroundColor = kBackColor;
+        _powerPictureTableView.separatorColor = kSeparateColor;
         _powerPictureTableView.delegate = self;
         _powerPictureTableView.dataSource = self;
     }
@@ -130,14 +131,36 @@
 - (NSMutableArray *)qisuArray1
 {
     if (!_qisuArray1) {
-        _qisuArray1 = [NSMutableArray arrayWithObject:@"upload_pictures"];
+        if (self.pModel.qisu.count > 0) {
+            NSMutableArray *aaaa = [NSMutableArray array];
+            for (NSInteger i=0; i<self.pModel.qisu.count; i++) {
+                ImageModel *imaModel = self.pModel.qisu[i];
+                NSString *files = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imaModel.file];
+                [aaaa addObject:files];
+            }
+            _qisuArray1 = [NSMutableArray arrayWithArray:aaaa];
+            [_qisuArray1 addObject:@"upload_pictures"];
+        }else{
+            _qisuArray1 = [NSMutableArray arrayWithObject:@"upload_pictures"];
+        }
     }
     return _qisuArray1;
 }
 - (NSMutableArray *)caichanArray1
 {
     if (!_caichanArray1) {
-        _caichanArray1 = [NSMutableArray arrayWithObject:@"upload_pictures"];
+        if (self.pModel.caichan.count > 0) {
+            NSMutableArray *bbbb = [NSMutableArray array];
+            for (NSInteger i=0; i<self.pModel.caichan.count; i++) {
+                ImageModel *imaModel = self.pModel.caichan[i];
+                NSString *files = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imaModel.file];
+                [bbbb addObject:files];
+            }
+            _caichanArray1 = [NSMutableArray arrayWithArray:bbbb];
+            [_caichanArray1 addObject:@"upload_pictures"];
+        }else{
+            _caichanArray1 = [NSMutableArray arrayWithObject:@"upload_pictures"];
+        }
     }
     return _caichanArray1;
 }
@@ -145,7 +168,18 @@
 - (NSMutableArray *)zhengjuArray1
 {
     if (!_zhengjuArray1) {
-        _zhengjuArray1 = [NSMutableArray arrayWithObject:@"upload_pictures"];
+        if (self.pModel.zhengju.count > 0) {
+            NSMutableArray *cccc = [NSMutableArray array];
+            for (NSInteger i=0; i<self.pModel.zhengju.count; i++) {
+                ImageModel *imaModel = self.pModel.zhengju[i];
+                NSString *files = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imaModel.file];
+                [cccc addObject:files];
+            }
+            _zhengjuArray1 = [NSMutableArray arrayWithArray:cccc];
+            [_zhengjuArray1 addObject:@"upload_pictures"];
+        }else{
+            _zhengjuArray1 = [NSMutableArray arrayWithObject:@"upload_pictures"];
+        }
     }
     return _zhengjuArray1;
 }
@@ -153,7 +187,18 @@
 - (NSMutableArray *)anjianArray1
 {
     if (!_anjianArray1) {
-        _anjianArray1 = [NSMutableArray arrayWithObject:@"upload_pictures"];
+        if (self.pModel.anjian.count > 0) {
+            NSMutableArray *dddd = [NSMutableArray array];
+            for (NSInteger i=0; i<self.pModel.anjian.count; i++) {
+                ImageModel *imaModel = self.pModel.anjian[i];
+                NSString *files = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imaModel.file];
+                [dddd addObject:files];
+            }
+            _anjianArray1 = [NSMutableArray arrayWithArray:dddd];
+            [_anjianArray1 addObject:@"upload_pictures"];
+        }else{
+            _anjianArray1 = [NSMutableArray arrayWithObject:@"upload_pictures"];
+        }
     }
     return _anjianArray1;
 }
@@ -199,11 +244,9 @@
     
     identifier = @"upImage1";
     TakePictureCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    
     if (!cell) {
         cell = [[TakePictureCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
-    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     if (indexPath.section == 0) {

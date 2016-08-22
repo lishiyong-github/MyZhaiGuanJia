@@ -32,7 +32,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = kBackColor;
-        
+
         [self addSubview:self.tableViewa];
         [self addSubview:self.lastButton];
         [self addSubview:self.applyButton];
@@ -72,6 +72,7 @@
         _tableViewa.delegate = self;
         _tableViewa.dataSource = self;
         _tableViewa.backgroundColor = kBackColor;
+        _tableViewa.separatorColor = kSeparateColor;
     }
     return _tableViewa;
 }

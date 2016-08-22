@@ -52,10 +52,12 @@
 {
     if (!_numberButton1) {
         _numberButton1 = [ProDetailHeadFootView newAutoLayoutView];
-        _numberButton1.backgroundColor = kNavColor;
+        _numberButton1.backgroundColor = [UIColor clearColor];
         _numberButton1.fLabel1.textColor = kGrayColor;
         _numberButton1.fLabel2.textColor = kBlueColor;
         _numberButton1.fLabel2.font = kFirstFont;
+        _numberButton1.spaceConstant.constant = 6;
+        _numberButton1.topConstant.constant = 12;
     }
     return _numberButton1;
 }
@@ -64,10 +66,12 @@
 {
     if (!_numberButton2) {
         _numberButton2 = [ProDetailHeadFootView newAutoLayoutView];
-        _numberButton2.backgroundColor = kNavColor;
+        _numberButton2.backgroundColor = [UIColor clearColor];
         _numberButton2.fLabel1.textColor = kGrayColor;
         _numberButton2.fLabel2.textColor = kBlueColor;
         _numberButton2.fLabel2.font = kFirstFont;
+        _numberButton2.spaceConstant.constant = 6;
+        _numberButton2.topConstant.constant = 12;
     }
     return _numberButton2;
 }
@@ -76,10 +80,12 @@
 {
     if (!_numberButton3) {
         _numberButton3 = [ProDetailHeadFootView newAutoLayoutView];
-        _numberButton3.backgroundColor = kNavColor;
-        _numberButton3.fLabel1.textColor = kGrayColor;
+        _numberButton3.backgroundColor = [UIColor clearColor];
+        _numberButton3.fLabel1.textColor = kLightGrayColor;
         _numberButton3.fLabel2.textColor = kBlueColor;
         _numberButton3.fLabel2.font = kFirstFont;
+        _numberButton3.spaceConstant.constant = 6;
+        _numberButton3.topConstant.constant = 12;
     }
     return _numberButton3;
 }

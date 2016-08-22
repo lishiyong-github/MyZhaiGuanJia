@@ -86,6 +86,7 @@
         _receiveTableView.delegate = self;
         _receiveTableView.dataSource = self;
         _receiveTableView.backgroundColor = kBackColor;
+        _receiveTableView.separatorColor = kSeparateColor;
         _receiveTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
         [_receiveTableView addHeaderWithTarget:self action:@selector(headerRefreshWithMessageOfOrder)];
         [_receiveTableView addFooterWithTarget:self action:@selector(footerRefreshWithMessageOfOrder)];

@@ -62,6 +62,7 @@
         _tableView1.dataSource = self;
         _tableView1.tableFooterView = [[UIView alloc] init];
         _tableView1.backgroundColor = kBackColor;
+        _tableView1.separatorColor = kSeparateColor;
     }
     return _tableView1;
 }
@@ -74,6 +75,7 @@
         _tableView2.dataSource = self;
         _tableView2.tableFooterView = [[UIView alloc] init];
         _tableView2.backgroundColor = kBackColor;
+        _tableView2.separatorColor = kSeparateColor;
     }
     return _tableView2;
 }
@@ -86,6 +88,7 @@
         _tableView3.dataSource = self;
         _tableView3.tableFooterView = [[UIView alloc] init];
         _tableView3.backgroundColor = kBackColor;
+        _tableView3.separatorColor = kSeparateColor;
     }
     return _tableView3;
 }

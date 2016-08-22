@@ -56,6 +56,7 @@
         _addAgentTableView = [UITableView newAutoLayoutView];
         _addAgentTableView.delegate = self;
         _addAgentTableView.dataSource = self;
+        _addAgentTableView.separatorColor = kSeparateColor;
         _addAgentTableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
         _addAgentTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
         _addAgentTableView.separatorColor = kSeparateColor;

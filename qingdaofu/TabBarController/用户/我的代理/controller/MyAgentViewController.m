@@ -59,6 +59,7 @@
         _myAgentTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
         _myAgentTableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
         _myAgentTableView.backgroundColor = kBackColor;
+        _myAgentTableView.separatorColor = kSeparateColor;
     }
     return _myAgentTableView;
 }
