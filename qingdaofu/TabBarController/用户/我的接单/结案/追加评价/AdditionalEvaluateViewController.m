@@ -8,8 +8,8 @@
 
 #import "AdditionalEvaluateViewController.h"
 
-#import "BaseCommitButton.h"
 #import "MineUserCell.h"
+#import "ExeCell.h"
 #import "StarCell.h"
 #import "TextFieldCell.h"
 #import "TakePictureCell.h"
@@ -21,8 +21,8 @@
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *additionalTableView;
 
-@property (nonatomic,strong) BaseCommitButton *commitEvaButton;
 @property (nonatomic,strong) NSMutableDictionary *evaDataDictionary;
+@property (nonatomic,strong) NSMutableArray *evaImageArray;
 
 @property (nonatomic,assign) NSInteger charCount;
 
@@ -33,15 +33,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @"填写评价";
-    self.navigationItem.leftBarButtonItem = self.leftItem;
+    self.navigationItem.leftBarButtonItem = self.leftItemAnother;
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"提交" style:UIBarButtonItemStylePlain target:self action:@selector(evaluateCommitMessages)];
+    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kBlueColor} forState:0];
     
     [self setupForDismissKeyboard];
+    [self addKeyboardObserver];
     
     [self.view addSubview:self.additionalTableView];
-    [self.view addSubview:self.commitEvaButton];
     [self.view setNeedsUpdateConstraints];
     
-    [self addKeyboardObserver];
 }
 
 - (void)dealloc
@@ -49,44 +51,42 @@
     [self removeKeyboardObserver];
 }
 
+- (void)back
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 - (void)updateViewConstraints
 {
     if (!self.didSetupConstraints) {
         
-        [self.additionalTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
-        [self.additionalTableView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kTabBarHeight];
-        
-        [self.commitEvaButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [self.commitEvaButton autoSetDimension:ALDimensionHeight toSize:kTabBarHeight];
+        [self.additionalTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
         
         self.didSetupConstraints = YES;
     }
     [super updateViewConstraints];
 }
 
-#pragma mark -
+#pragma mark - init
 - (UITableView *)additionalTableView
 {
     if (!_additionalTableView) {
-        _additionalTableView = [UITableView newAutoLayoutView];
+        _additionalTableView.translatesAutoresizingMaskIntoConstraints = NO;
+        _additionalTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _additionalTableView.backgroundColor = kBackColor;
+        _additionalTableView.separatorColor = kSeparateColor;
         _additionalTableView.delegate = self;
         _additionalTableView.dataSource = self;
-        _additionalTableView.separatorColor = kSeparateColor;
-        _additionalTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kCellHeight)];
-        _additionalTableView.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
     }
     return _additionalTableView;
 }
 
-- (BaseCommitButton *)commitEvaButton
+- (NSMutableArray *)evaImageArray
 {
-    if (!_commitEvaButton) {
-        _commitEvaButton = [BaseCommitButton newAutoLayoutView];
-        [_commitEvaButton setTitle:@"提交评价" forState:0];
-        [_commitEvaButton addTarget:self action:@selector(evaluateCommitMessages) forControlEvents:UIControlEventTouchUpInside];
+    if (!_evaImageArray) {
+        _evaImageArray = [NSMutableArray array];
     }
-    return _commitEvaButton;
+    return _evaImageArray;
 }
 
 - (NSMutableDictionary *)evaDataDictionary
@@ -100,48 +100,35 @@
 #pragma mark -
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 5;
+    if (section == 0) {
+        return 1;
+    }
+    
+    return 2;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 3;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row == 0) {
-        return 60;
-    }else if (indexPath.row == 1){
-        return 145;
-    }else if (indexPath.row ==2){
-        return 100;
-    }else if (indexPath.row == 3){
+    if (indexPath.section == 0) {
+        return 150;
+    }else if (indexPath.section == 1 &&indexPath.row == 1){
+        return 80;
+    }else if (indexPath.section == 2 &&indexPath.row == 1){
         return 80;
     }
-    return kCellHeight;
+    return 30;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier;
-    if (indexPath.row == 0) {
+    if (indexPath.section == 0){
         identifier = @"additional0";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if (!cell) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        cell.backgroundColor = kBackColor;
-        
-        NSArray *tyArray = @[@"融资",@"清收",@"诉讼"];
-        NSString *tyString = tyArray[[self.categoryString integerValue] -1];
-        
-        cell.textLabel.text = [NSString stringWithFormat:@"您的%@单号%@已经结束，感谢您对平台的信任，请留下您的评价",tyString,self.codeString];
-        cell.textLabel.font = kFirstFont;
-        cell.textLabel.textColor = kBlueColor;
-        cell.textLabel.numberOfLines = 0;
-        
-        return cell;
-    }else if (indexPath.row == 1){
-        identifier = @"additional1";
         StarCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         if (!cell) {
             cell = [[StarCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
@@ -174,8 +161,25 @@
         
         return cell;
         
-    }else if (indexPath.row == 2){
-        identifier = @"additional2";
+    }else if (indexPath.section == 1){
+        if (indexPath.row == 0) {
+            identifier = @"additional10";
+            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
+                cell.separatorInset = UIEdgeInsetsMake(0, kScreenWidth, 0, 0);
+            }
+            
+            [cell.userActionButton setHidden:YES];
+            [cell.userNameButton setTitle:@"自我感受" forState:0];
+            
+            return cell;
+        }
+        
+        identifier = @"additional11";
         TextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         if (!cell) {
             cell = [[TextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
@@ -183,9 +187,9 @@
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        cell.textField.placeholder = @"请输入您的真实感受，对接单方的帮助很大奥";
+        cell.textField.placeholder = @"请输入您的真实感受，对接单方的帮助很大奥！不少于5个字。";
         cell.textField.font = kSecondFont;
-        cell.countLabel.text = [NSString stringWithFormat:@"%lu/600",(unsigned long)cell.textField.text.length];
+        cell.countLabel.text = [NSString stringWithFormat:@"%lu/400",(unsigned long)cell.textField.text.length];
         
         QDFWeakSelf;
         [cell setTouchBeginPoint:^(CGPoint point) {
@@ -198,58 +202,75 @@
         
         return cell;
         
-    }else if (indexPath.row == 3){
-        identifier = @"additional3";
+    }else if (indexPath.section == 2){
+        if (indexPath.row == 0) {
+            identifier = @"additional20";
+            ExeCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[ExeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            [cell.ceButton setTitle:@"添加图片" forState:0];
+            
+            if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
+                cell.separatorInset = UIEdgeInsetsMake(0, kScreenWidth, 0, 0);
+            }
+            
+            return cell;
+        }
+        
+        identifier = @"additional21";
         TakePictureCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         if (!cell) {
             cell = [[TakePictureCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        cell.collectionDataList = [NSMutableArray arrayWithObjects:@"btn_camera", nil];
+        cell.collectionDataList = [NSMutableArray arrayWithObjects:@"upload_pictures", nil];
         
         QDFWeakSelf;
         QDFWeak(cell);
         [cell setDidSelectedItem:^(NSInteger itemTag) {
-            [weakself addImageWithMaxSelection:2 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
-                
-                NSData *tData;
-                NSString *ttt = @"";
-                NSString *tStr = @"";
-                for (int i=0; i<images.count; i++) {
-                    tData = [NSData dataWithContentsOfFile:images[i]];
-                    ttt = [NSString stringWithFormat:@"%@",tData];
-                    tStr = [NSString stringWithFormat:@"%@,%@",tStr,ttt];
+            if (itemTag == weakcell.collectionDataList.count-1) {//只允许点击最后一个collection
+                if (weakcell.collectionDataList.count < 5) {
+                    [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
+                        
+                        NSData *imData = [NSData dataWithContentsOfFile:images[0]];
+                        NSString *imString = [NSString stringWithFormat:@"%@",imData];
+                        [weakself uploadImages:imString andType:@"jgp" andFilePath:images[0]];
+                        
+                        [weakself setDidGetValidImage:^(ImageModel *imageModel) {
+                            if ([imageModel.code isEqualToString:@"0000"]) {
+                                [weakself.evaImageArray addObject:imageModel.fileid];
+                                [weakcell.collectionDataList insertObject:images[0] atIndex:0];
+                                [weakcell reloadData];
+                            }else{
+                                [weakself showHint:imageModel.msg];
+                            }
+                        }];
+                    }];
+                }else{
+                    [weakself showHint:@"最多4张"];
                 }
-                [weakself.evaDataDictionary setValue:tStr forKey:@"pictures"];
-                weakcell.collectionDataList = [NSMutableArray arrayWithArray:images];
-                [weakcell reloadData];
-            }];
-        }];
-        
-        return cell;
-    }
-        identifier = @"additional4";
-        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if (!cell) {
-            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        [cell.userActionButton setTitle:@"匿名评价  " forState:0];
-        [cell.userActionButton setImage:[UIImage imageNamed:@"anonymous"] forState:0];
-        [cell.userActionButton setImage:[UIImage imageNamed:@"real_name"] forState:UIControlStateSelected];
-        
-        [cell.userActionButton addAction:^(UIButton *btn) {
-            btn.selected = !btn.selected;
-            if (btn.selected) {//0为正常评价。1为匿名评价
-                [self.evaDataDictionary setValue:@"1" forKey:@"isHide"];
-            }else{
-                [self.evaDataDictionary setValue:@"0" forKey:@"isHide"];
             }
         }];
         
         return cell;
+    }
+    return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return kBigPadding;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    if (section == 2) {
+        return kBigPadding;
+    }
+    return 0.1f;
 }
 
 #pragma mark - method
@@ -259,20 +280,29 @@
     NSString *evaluateString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kEvaluateString];
     
     //发布方：态度。接单方：真实性
-    self.evaDataDictionary[@"serviceattitude"] = self.evaDataDictionary[@"serviceattitude"]?self.evaDataDictionary[@"serviceattitude"]:@"";
+    self.evaDataDictionary[@"serviceattitude"] = [NSString getValidStringFromString:self.evaDataDictionary[@"serviceattitude"] toString:@""];
+//    [self.evaDataDictionary[@"serviceattitude"]?self.evaDataDictionary[@"serviceattitude"]:@"";
     //发布方：专业知识。接单方：响应度
-    self.evaDataDictionary[@"professionalknowledge"] = self.evaDataDictionary[@"professionalknowledge"]?self.evaDataDictionary[@"professionalknowledge"]:@"";
+    self.evaDataDictionary[@"professionalknowledge"] = [NSString getValidStringFromString:self.evaDataDictionary[@"professionalknowledge"] toString:@""];
+//    self.evaDataDictionary[@"professionalknowledge"]?self.evaDataDictionary[@"professionalknowledge"]:@"";
     //发布方：办事效率。接单方：响应度
-    self.evaDataDictionary[@"workefficiency"] = self.evaDataDictionary[@"workefficiency"]?self.evaDataDictionary[@"workefficiency"]:@"";
-    self.evaDataDictionary[@"content"] = self.evaDataDictionary[@"content"]?self.evaDataDictionary[@"content"]:@"优质，专业，高效，快捷";
+    self.evaDataDictionary[@"workefficiency"] = [NSString getValidStringFromString:self.evaDataDictionary[@"workefficiency"] toString:@""];
+//    self.evaDataDictionary[@"workefficiency"]?self.evaDataDictionary[@"workefficiency"]:@"";
+    self.evaDataDictionary[@"content"] = [NSString getValidStringFromString:self.evaDataDictionary[@"content"] toString:@"优质，专业，高效，快捷"];
+//    self.evaDataDictionary[@"content"]?self.evaDataDictionary[@"content"]:@"优质，专业，高效，快捷";
     //优质，专业，高效，快捷
-    self.evaDataDictionary[@"isHide"] = self.evaDataDictionary[@"isHide"]?self.evaDataDictionary[@"isHide"]:@"0";
 
     self.evaDataDictionary[@"category"] = self.categoryString;
     self.evaDataDictionary[@"product_id"] = self.idString;
-    self.evaDataDictionary[@"pictures"] = self.evaDataDictionary[@"pictures"]?self.evaDataDictionary[@"pictures"]:@"";
     self.evaDataDictionary[@"type"] = self.evaString;
     self.evaDataDictionary[@"token"] = [self getValidateToken];
+    
+    
+    NSString *imageStr = @"";
+    for (NSInteger i=0; i<self.evaImageArray.count; i++) {
+        imageStr = [NSString stringWithFormat:@"%@,%@",self.evaImageArray[i],imageStr];
+    }
+    [self.evaDataDictionary setObject:imageStr forKey:@"pictures"];
     
     NSDictionary *params = self.evaDataDictionary;
     
@@ -282,12 +312,14 @@
         [weakself showHint:evaModel.msg];
         if ([evaModel.code isEqualToString:@"0000"]) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"evaluate" object:nil];
-            [weakself.navigationController popViewControllerAnimated:YES];
+            [weakself back];
         }
     } andFailBlock:^(NSError *error) {
     }];
 }
 
+
+#pragma mark - image upload
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

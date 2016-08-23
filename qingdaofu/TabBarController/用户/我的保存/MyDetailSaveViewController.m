@@ -9,9 +9,7 @@
 #import "MyDetailSaveViewController.h"
 #import "AdditionMessageViewController.h"
 
-#import "ReportFinanceViewController.h"   //发布融资
-#import "ReportCollectViewController.h"  //发布清收
-#import "ReportSuitViewController.h"  //发布诉讼
+#import "ReportSuitViewController.h"  //发布
 
 #import "MyReleaseViewController.h"   //我的发布
 
@@ -280,20 +278,12 @@
             
             QDFWeakSelf;
             [cell.userActionButton addAction:^(UIButton *btn) {
-                if ([self.categaryString integerValue] == 1) {//融资
-                    ReportFinanceViewController *reportFinanceVC = [[ReportFinanceViewController alloc] init];
-                    reportFinanceVC.fiModel = saveModel;
-                    [weakself.navigationController pushViewController:reportFinanceVC animated:YES];
-                }else{
-                    ReportSuitViewController *reportSuitVC = [[ReportSuitViewController alloc] init];
-                    reportSuitVC.suResponse = response;
-                    reportSuitVC.categoryString = self.categaryString;
-                    reportSuitVC.tagString = @"2";
-                    [weakself.navigationController pushViewController:reportSuitVC animated:YES];
-                }
-                
+                ReportSuitViewController *reportSuitVC = [[ReportSuitViewController alloc] init];
+                reportSuitVC.suResponse = response;
+                reportSuitVC.categoryString = self.categaryString;
+                reportSuitVC.tagString = @"2";
+                [weakself.navigationController pushViewController:reportSuitVC animated:YES];
             }];
-            
         }
         return cell;
     }

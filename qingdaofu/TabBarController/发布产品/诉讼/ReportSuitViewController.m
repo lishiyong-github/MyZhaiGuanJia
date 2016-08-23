@@ -523,7 +523,8 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.leftdAgentContraints.constant = 110;
-        cell.agentTextField.keyboardType = UIKeyboardTypeNumberPad;
+//        cell.agentTextField.keyboardType = UIKeyboardTypeNumberPad;
+        [cell.agentButton setTitle:@"%/月" forState:0];
 
         cell.agentLabel.text = self.sTextArray[1][indexPath.row];
         cell.agentTextField.placeholder = self.sHolderArray[1][indexPath.row];
@@ -536,18 +537,6 @@
         }else{
             cell.agentTextField.text = suModel.rate?suModel.rate:@"";
         }
-        [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-        
-        if (suModel.rate_cat) {
-            NSArray *ffff = @[@"天(%)",@"月(%)"];
-            [cell.agentButton setTitle:ffff[[suModel.rate_cat integerValue] -1] forState:0];
-        }else{
-            NSString *eeee = self.suitDataDictionary[@"rate_cat_str"]?self.suitDataDictionary[@"rate_cat_str"]:@"请选择";
-            [cell.agentButton setTitle:eeee forState:0];
-        }
-        
-        cell.agentButton.tag = 8;
-        [cell.agentButton addTarget:self action:@selector(showTitleOfUpwardViews:) forControlEvents:UIControlEventTouchUpInside];
         
         [cell setDidEndEditing:^(NSString *text) {
             [self.suitDataDictionary setValue:text forKey:@"rate"];
@@ -564,6 +553,7 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.leftdAgentContraints.constant = 110;
         cell.agentTextField.keyboardType = UIKeyboardTypeNumberPad;
+        [cell.agentButton setTitle:@"月" forState:0];
 
         cell.agentLabel.text = self.sTextArray[1][indexPath.row];
         cell.agentTextField.placeholder = self.sHolderArray[1][indexPath.row];
@@ -575,23 +565,13 @@
         }else{
             cell.agentTextField.text = suModel.term?suModel.term:@"";
         }
-        [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-        if (suModel.rate_cat) {
-            NSArray *ffff = @[@"天",@"月"];
-            [cell.agentButton setTitle:ffff[[suModel.rate_cat integerValue] - 1] forState:0];
-        }else{
-            NSString *eeee = self.suitDataDictionary[@"rate_cat_str"]?self.suitDataDictionary[@"rate_cat_str"]:@"请选择";
-            [cell.agentButton setTitle:eeee forState:0];
-        }
-        
-        cell.agentButton.tag = 9;
-        [cell.agentButton addTarget:self action:@selector(showTitleOfUpwardViews:) forControlEvents:UIControlEventTouchUpInside];
         
         [cell setDidEndEditing:^(NSString *text) {
             [self.suitDataDictionary setValue:text forKey:@"term"];
         }];
         
         return cell;
+        
     }else if (indexPath.row == 3){//还款方式
         identifier = @"suitSect1";
         
@@ -913,7 +893,6 @@
     NSArray *arr2 = @[@"固定费用(万元)",@"代理费率(%)"];
     NSArray *arr22 = @[@"服务佣金(%)",@"固定费用(万元)"];
     NSArray *arr3 = @[@"房产抵押",@"应收帐款",@"机动车抵押",@"无抵押"];
-    NSArray *arr8 = @[@"%/天",@"%/月"];
     NSArray *arr10 = @[@"一次性到期还本付息",@"按月付息，到期还本",@"其他"];
     NSArray *arr11 = @[@"自然人",@"法人",@"其他"];
     NSArray *arr13 = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10",@"11",@"12"];
@@ -980,32 +959,6 @@
             }];
         }
             break;
-        case 8:{//借款利率
-            [self showBlurInView:self.view withArray:arr8 andTitle:@"选择借款利率类型" finishBlock:^(NSString *text,NSInteger row) {
-                [btn setTitle:text forState:0];
-                NSString *value = [NSString stringWithFormat:@"%ld",(long)row];
-                [weakself.suitDataDictionary setValue:value forKey:@"rate_cat"];
-                [weakself.suitDataDictionary setValue:text forKey:@"rate_cat_str"];
-
-                UIButton *elseBtn = [self.suitTableView viewWithTag:9];
-                [elseBtn setTitle:text forState:0];
-                
-            }];
-        }
-            break;
-        case 9:{//借款期限
-            [self showBlurInView:self.view withArray:arr8 andTitle:@"选择借款期限类型" finishBlock:^(NSString *text,NSInteger row) {
-                [btn setTitle:text forState:0];
-                
-                NSString *value = [NSString stringWithFormat:@"%ld",(long)row];
-                [weakself.suitDataDictionary setValue:value forKey:@"rate_cat"];
-                [weakself.suitDataDictionary setValue:text forKey:@"rate_cat_str"];
-
-                UIButton *elseBtn = [self.suitTableView viewWithTag:8];
-                [elseBtn setTitle:text forState:0];
-            }];
-        }
-            break;
         case 10:{//还款方式
             [self showBlurInView:self.view withArray:arr10 andTitle:@"选择还款方式" finishBlock:^(NSString *text,NSInteger row) {
                 [btn setTitle:text forState:0];
@@ -1064,7 +1017,8 @@
     
     self.suitDataDictionary[@"accountr"] = self.suitDataDictionary[@"accountr"]?self.suitDataDictionary[@"accountr"]:self.suResponse.product.accountr; //应收帐款
     self.suitDataDictionary[@"rate"] = self.suitDataDictionary[@"rate"]?self.suitDataDictionary[@"rate"]:self.suResponse.product.rate;  //借款利率
-    self.suitDataDictionary[@"rate_cat"] = self.suitDataDictionary[@"rate_cat"]?self.suitDataDictionary[@"rate_cat"]:self.suResponse.product.rate_cat;//借款利率单位
+    self.suitDataDictionary[@"rate_cat"] = @"2";
+//    self.suitDataDictionary[@"rate_cat"]?self.suitDataDictionary[@"rate_cat"]:self.suResponse.product.rate_cat;//借款利率单位
     self.suitDataDictionary[@"term"] = self.suitDataDictionary[@"term"]?self.suitDataDictionary[@"term"]:self.suResponse.product.term;//借款期限
     self.suitDataDictionary[@"repaymethod"] = self.suitDataDictionary[@"repaymethod"]?self.suitDataDictionary[@"repaymethod"]:self.suResponse.product.repaymethod;//付款方式
     self.suitDataDictionary[@"obligor"] = self.suitDataDictionary[@"obligor"]?self.suitDataDictionary[@"obligor"]:self.suResponse.product.obligor;//债务人主体
@@ -1087,7 +1041,7 @@
     NSDictionary *params = self.suitDataDictionary;
     
     QDFWeakSelf;
-    [self requestDataPostWithString:reFinanceString params:params andImages:nil successBlock:^(id responseObject) {
+    [self requestDataPostWithString:reFinanceString params:params successBlock:^(id responseObject) {
         
         BaseModel *suitModel = [BaseModel objectWithKeyValues:responseObject];
         

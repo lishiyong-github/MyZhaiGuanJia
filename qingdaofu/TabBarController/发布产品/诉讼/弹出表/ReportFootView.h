@@ -2,7 +2,7 @@
 //  ReportFootView.h
 //  qingdaofu
 //
-//  Created by zhixiang on 16/5/10.
+//  Created by zhixiang on 16/8/23.
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
@@ -12,7 +12,6 @@
 
 @property (nonatomic,strong) UIButton *footButton;
 @property (nonatomic,strong) UILabel *footLabel;
-
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 

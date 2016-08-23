@@ -85,7 +85,8 @@
 {
     if (!_myApplyingButton) {
         _myApplyingButton = [BaseCommitButton newAutoLayoutView];
-        [_myApplyingButton setTitle:@"取消申请" forState:0];
+        [_myApplyingButton setImage:[UIImage imageNamed:@"cancel_apply"] forState:0];
+        [_myApplyingButton setTitle:@" 取消申请" forState:0];
         [_myApplyingButton setTitleColor:kBlackColor forState:0];
         _myApplyingButton.titleLabel.font = kFirstFont;
         _myApplyingButton.backgroundColor = kNavColor;
@@ -178,6 +179,9 @@
             cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.userNameButton.userInteractionEnabled = NO;
+        cell.userActionButton.userInteractionEnabled = NO;
+        
         [cell.userNameButton setTitle:@"发布方：" forState:0];
         [cell.userActionButton setTitle:@"查看详情  " forState:0];
         [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
@@ -192,6 +196,9 @@
                 cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.userNameButton.userInteractionEnabled = NO;
+            cell.userActionButton.userInteractionEnabled = NO;
+            
             [cell.userNameButton setTitle:@"产品信息" forState:0];
             [cell.userActionButton setTitle:@"查看全部  " forState:0];
             [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
@@ -532,11 +539,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 1) {
+    if (indexPath.section == 1) {//查看发布方
         
     }else if (indexPath.section == 2 && indexPath.row == 0) {//查看更多
-        
-        
         
         PublishingResponse *resModel = self.myApplyArray[0];
         PublishingModel *dealModel = resModel.product;

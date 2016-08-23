@@ -264,51 +264,51 @@
     QDFWeakSelf;
     [cell setDidSelectedItem:^(NSInteger items) {
         if (indexPath.section == 0) {//起诉书
-            if (items == self.qisuArray1.count-1) {
-                if (self.qisuArray1.count < 5) {
+            if (items == weakself.qisuArray1.count-1) {
+                if (weakself.qisuArray1.count < 5) {
                     [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
                         NSData *iData = [[NSData alloc] initWithContentsOfFile:images[0]];
                         NSString *dataString = [NSString stringWithFormat:@"%@",iData];
                         [weakself uploadImages:dataString andType:@"qisu" andFilePath:images[0]];
                     }];
                 }else{
-                    [self showHint:@"最多添加4张"];
+                    [weakself showHint:@"最多添加4张"];
                 }
             }
         }else if (indexPath.section == 1){//财产保全申请书
-            if (items == self.caichanArray1.count-1) {
-                if (self.caichanArray1.count < 5) {
+            if (items == weakself.caichanArray1.count-1) {
+                if (weakself.caichanArray1.count < 5) {
                     [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
                         NSData *iData = [[NSData alloc] initWithContentsOfFile:images[0]];
                         NSString *dataString = [NSString stringWithFormat:@"%@",iData];
                         [weakself uploadImages:dataString andType:@"caichan" andFilePath:images[0]];
                     }];
                 }else{
-                    [self showHint:@"最多添加4张"];
+                    [weakself showHint:@"最多添加4张"];
                 }
             }
         }else if (indexPath.section == 2){//相关证据材料
-            if (items == self.zhengjuArray1.count-1) {
-                if (self.zhengjuArray1.count < 5) {
+            if (items == weakself.zhengjuArray1.count-1) {
+                if (weakself.zhengjuArray1.count < 5) {
                     [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
                         NSData *iData = [[NSData alloc] initWithContentsOfFile:images[0]];
                         NSString *dataString = [NSString stringWithFormat:@"%@",iData];
                         [weakself uploadImages:dataString andType:@"zhengju" andFilePath:images[0]];
                     }];
                 }else{
-                    [self showHint:@"最多添加4张"];
+                    [weakself showHint:@"最多添加4张"];
                 }
             }
         }else if (indexPath.section == 3){//案件受理通知书
-            if (items == self.anjianArray1.count-1) {
-                if (self.anjianArray1.count < 5) {
+            if (items == weakself.anjianArray1.count-1) {
+                if (weakself.anjianArray1.count < 5) {
                     [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
                         NSData *iData = [[NSData alloc] initWithContentsOfFile:images[0]];
                         NSString *dataString = [NSString stringWithFormat:@"%@",iData];
                         [weakself uploadImages:dataString andType:@"anjian" andFilePath:images[0]];
                     }];
                 }else{
-                    [self showHint:@"最多添加4张"];
+                    [weakself showHint:@"最多添加4张"];
                 }
             }
         }
@@ -428,7 +428,7 @@
                              @"id" : self.pModel.idString
                              };
     [self requestDataPostWithString:saveImageString params:params successBlock:^(id responseObject) {
-       
+               
         BaseModel *model = [BaseModel objectWithKeyValues:responseObject];
         [self showHint:model.msg];
         if ([model.code isEqualToString:@"0000"]) {

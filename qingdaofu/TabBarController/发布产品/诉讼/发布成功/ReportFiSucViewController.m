@@ -2,14 +2,12 @@
 //  ReportFiSucViewController.m
 //  qingdaofu
 //
-//  Created by zhixiang on 16/5/10.
+//  Created by zhixiang on 16/8/23.
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
 #import "ReportFiSucViewController.h"
-
 #import "MyReleaseViewController.h"   //我的发布
-#import "ReportFinanceViewController.h"
 #import "ReportSuitViewController.h"
 #import "UIViewController+SelectedIndex.h"
 
@@ -29,7 +27,6 @@
 
 @end
 
-//统一返回至产品页面
 @implementation ReportFiSucViewController
 
 - (void)viewDidLoad {
@@ -131,11 +128,7 @@
                 [nav popViewControllerAnimated:NO];
                 [nav popViewControllerAnimated:NO];
                 
-                if (row == 11) {
-                    ReportFinanceViewController *reportFinanceVC = [[ReportFinanceViewController alloc] init];
-                    reportFinanceVC.hidesBottomBarWhenPushed = YES;
-                    [nav pushViewController:reportFinanceVC animated:NO];
-                }else if (row == 12){
+                if (row == 12){
                     ReportSuitViewController *collectVC = [[ReportSuitViewController alloc] init];
                     collectVC.categoryString = @"2";
                     collectVC.tagString = @"1";
@@ -178,7 +171,7 @@
             cell = [[ReportSuccessCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
+        
         if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
             [cell setSeparatorInset:UIEdgeInsetsZero];
         }
@@ -250,6 +243,7 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
 /*

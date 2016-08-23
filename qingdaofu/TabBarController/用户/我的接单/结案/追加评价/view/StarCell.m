@@ -34,7 +34,7 @@
         [views autoSetViewsDimensionsToSize:CGSizeMake(100, 20)];
         
         [self.starLabel1 autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
-        [self.starLabel1 autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kBigPadding];
+        [self.starLabel1 autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:16];
         
         [self.starView1 autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.starView1 autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.starLabel1];
@@ -60,7 +60,7 @@
 {
     if (!_starLabel1) {
         _starLabel1 = [UILabel newAutoLayoutView];
-        _starLabel1.textColor = kLightGrayColor;
+        _starLabel1.textColor = kBlackColor;
         _starLabel1.font = kBigFont;
         _starLabel1.text = @"真实性";
     }
@@ -73,7 +73,7 @@
         _starView1 = [LEOStarView newAutoLayoutView];
         [_starView1 setStarImage:[UIImage imageNamed:@"evaluate_star"]];
         _starView1.markType = EMarkTypeInteger;
-        [_starView1 setStarFrontColor:kBlueColor];
+        [_starView1 setStarFrontColor:kYellowColor];
         _starView1.starBackgroundColor = UIColorFromRGB(0xeeeeee);
     }
     return _starView1;
@@ -83,7 +83,7 @@
 {
     if (!_starLabel2) {
         _starLabel2 = [UILabel newAutoLayoutView];
-        _starLabel2.textColor = kLightGrayColor;
+        _starLabel2.textColor = kBlackColor;
         _starLabel2.font = kBigFont;
         _starLabel2.text = @"配合度";
     }
@@ -96,7 +96,7 @@
         _starView2 = [LEOStarView newAutoLayoutView];
         [_starView2 setStarImage:[UIImage imageNamed:@"evaluate_star"]];
         _starView2.markType = EMarkTypeInteger;
-        [_starView2 setStarFrontColor:kBlueColor];
+        [_starView2 setStarFrontColor:kYellowColor];
         _starView2.starBackgroundColor = UIColorFromRGB(0xeeeeee);
     }
     return _starView2;
@@ -106,7 +106,7 @@
 {
     if (!_starLabel3) {
         _starLabel3 = [UILabel newAutoLayoutView];
-        _starLabel3.textColor = kLightGrayColor;
+        _starLabel3.textColor = kBlackColor;
         _starLabel3.font = kBigFont;
         _starLabel3.text = @"响应度";
     }
@@ -119,7 +119,7 @@
         _starView3 = [LEOStarView newAutoLayoutView];
         [_starView3 setStarImage:[UIImage imageNamed:@"evaluate_star"]];
         _starView3.markType = EMarkTypeInteger;
-        [_starView3 setStarFrontColor:kBlueColor];
+        [_starView3 setStarFrontColor:kYellowColor];
         _starView3.starBackgroundColor = UIColorFromRGB(0xeeeeee);
     }
     return _starView3;

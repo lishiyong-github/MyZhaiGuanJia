@@ -394,7 +394,7 @@
     NSDictionary *params = self.lawDataDictionary;
     
     QDFWeakSelf;
-    [self requestDataPostWithString:lawAuString params:params andImages:nil successBlock:^(id responseObject) {
+     [self requestDataPostWithString:lawAuString params:params successBlock:^(id responseObject) {
         
         BaseModel *personModel = [BaseModel objectWithKeyValues:responseObject];
         [weakself showHint:personModel.msg];

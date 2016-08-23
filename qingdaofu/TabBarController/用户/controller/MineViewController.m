@@ -90,8 +90,7 @@
         [_loginView setDidSelectedButton:^(NSInteger buttonTag) {
             
             [weakself tokenIsValid];
-            
-            if (buttonTag == 0|| buttonTag == 1 || buttonTag == 3 || buttonTag == 6 || buttonTag == 7 || buttonTag == 8 || buttonTag == 9 || buttonTag == 12) {//我的认证，发布，保存，保全，保函，产调，评估，设置，
+            if (buttonTag == 0|| buttonTag == 101 || buttonTag == 3 || buttonTag == 6 || buttonTag == 7 || buttonTag == 8 || buttonTag == 9 || buttonTag == 12) {//我的认证，发布，保存，保全，保函，产调，评估，设置，
                 [weakself setDidTokenValid:^(TokenModel *tokenModel) {
                     if ([tokenModel.code integerValue] == 0000 || [tokenModel.code integerValue] == 3006) {
                         switch (buttonTag) {
@@ -124,7 +123,7 @@
                                 }
                             }
                                 break;
-                            case 1:{//我的发布
+                            case 101:{//我的发布
                                 MyReleaseViewController *myReleaseVC = [[MyReleaseViewController alloc] init];
                                 myReleaseVC.hidesBottomBarWhenPushed = YES;
                                 myReleaseVC.progreStatus = @"0";
@@ -188,7 +187,7 @@
                 [weakself setDidTokenValid:^(TokenModel *tokenModel) {
                     if ([tokenModel.code integerValue] == 0000) {
                         switch (buttonTag) {
-                            case 2:{//我的接单
+                            case 102:{//我的接单
                                 MyOrderViewController *myOrderVC = [[MyOrderViewController alloc] init];
                                 myOrderVC.hidesBottomBarWhenPushed = YES;
                                 myOrderVC.status = @"-1";

@@ -213,7 +213,7 @@
                              };
     
     QDFWeakSelf;
-    [self requestDataPostWithString:suggestionString params:params andImages:nil successBlock:^(id responseObject) {
+    [self requestDataPostWithString:suggestionString params:params successBlock:^(id responseObject) {
         BaseModel *suggestModel = [BaseModel objectWithKeyValues:responseObject];
         [weakself showHint:suggestModel.msg];
         

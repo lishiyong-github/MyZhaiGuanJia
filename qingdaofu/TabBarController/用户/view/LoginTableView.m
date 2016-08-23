@@ -112,13 +112,13 @@
         QDFWeakSelf;
         [cell.button1 addAction:^(UIButton *btn) {
             if (weakself.didSelectedButton) {
-                weakself.didSelectedButton(1);
+                weakself.didSelectedButton(101);
             }
         }];
         
         [cell.button2 addAction:^(UIButton *btn) {
             if (weakself.didSelectedButton) {
-                weakself.didSelectedButton(2);
+                weakself.didSelectedButton(102);
             }
         }];
         

@@ -1,21 +1,20 @@
 //
-//  UpCell.m
+//  ExeCell.m
 //  qingdaofu
 //
-//  Created by zhixiang on 16/7/14.
+//  Created by zhixiang on 16/8/23.
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
-#import "UpCell.h"
+#import "ExeCell.h"
 
-@implementation UpCell
+@implementation ExeCell
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    
     if (self) {
-        [self.contentView addSubview:self.upButton];
+        [self.contentView addSubview:self.ceButton];
         
         [self setNeedsUpdateConstraints];
     }
@@ -26,22 +25,23 @@
 {
     if (!self.didSetupConstraints) {
         
-        [self.upButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+        [self.ceButton autoPinEdgeToSuperviewEdge:ALEdgeBottom];
+        [self.ceButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
+        [self.ceButton autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kBigPadding];
         
         self.didSetupConstraints = YES;
     }
     [super updateConstraints];
 }
-
-- (UIButton *)upButton
+- (UIButton *)ceButton
 {
-    if (!_upButton) {
-        _upButton = [UIButton newAutoLayoutView];
-        [_upButton setTitleColor:kLightGrayColor forState:0];
-        [_upButton setTitleColor:kBlueColor forState:UIControlStateSelected];
-        _upButton.titleLabel.font = kSecondFont;
+    if (!_ceButton) {
+        _ceButton = [UIButton newAutoLayoutView];
+        [_ceButton setTitleColor:kBlackColor forState:0];
+        _ceButton.titleLabel.font = kBigFont;
+        [_ceButton setContentHorizontalAlignment:1];
     }
-    return _upButton;
+    return _ceButton;
 }
 
 - (void)awakeFromNib {

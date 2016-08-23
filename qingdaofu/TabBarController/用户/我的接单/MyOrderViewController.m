@@ -37,6 +37,7 @@
 @property (nonatomic,strong) NSMutableDictionary *myOrderResonseDic;  //评价
 @property (nonatomic,strong) NSMutableDictionary *myOrderDelaysDic;
 @property (nonatomic,assign) NSInteger pageOrder;//页数
+@property (nonatomic,strong) NSString *deadTimeString;  //截止日期
 
 @end
 
@@ -296,6 +297,7 @@
         NSString *deadString = [NSString stringWithFormat:@" 截止处理时间：%@",value11];
         [cell.deadLineButton setTitle:deadString forState:0];
         [cell.deadLineButton setImage:[UIImage imageNamed:@"time"] forState:0];
+        self.deadTimeString = value11;
     }else{
         [cell.deadLineButton setHidden:YES];
     }
@@ -537,6 +539,7 @@
         myProcessingVC.idString = eModel.idString;
         myProcessingVC.categaryString = eModel.category;
         myProcessingVC.pidString = eModel.uidString;
+        myProcessingVC.deadLine = self.deadTimeString;
         [self.navigationController pushViewController:myProcessingVC animated:YES];
     }else if ([eModel.progress_status isEqualToString:@"3"]){//终止
         MyEndingViewController *myEndingVC = [[MyEndingViewController alloc] init];

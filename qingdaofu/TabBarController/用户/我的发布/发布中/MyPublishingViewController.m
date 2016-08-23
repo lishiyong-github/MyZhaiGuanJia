@@ -11,7 +11,6 @@
 #import "ApplyRecordsViewController.h"   //申请记录
 #import "AgreementViewController.h"//协议
 
-#import "ReportFinanceViewController.h"  //发布融资
 #import "ReportSuitViewController.h"  //发布催收，发布诉讼
 
 #import "BaseCommitButton.h"
@@ -396,17 +395,17 @@
         PublishingResponse *response = self.publishingDataArray[0];
         PublishingModel *rModel = response.product;
         
-        if ([rModel.category integerValue] == 1) {//融资
-            ReportFinanceViewController *reportFinanceVC = [[ReportFinanceViewController alloc] init];
-            reportFinanceVC.fiModel = rModel;
-            [self.navigationController pushViewController:reportFinanceVC animated:YES];
-        }else{//清收，诉讼
-            ReportSuitViewController *reportSuiVC = [[ReportSuitViewController alloc] init];
-            reportSuiVC.categoryString = rModel.category;
-            reportSuiVC.suResponse = response;
-            reportSuiVC.tagString = @"2";
-            [self.navigationController pushViewController:reportSuiVC animated:YES];
-        }
+        ReportSuitViewController *reportSuiVC = [[ReportSuitViewController alloc] init];
+        reportSuiVC.categoryString = rModel.category;
+        reportSuiVC.suResponse = response;
+        reportSuiVC.tagString = @"2";
+        [self.navigationController pushViewController:reportSuiVC animated:YES];
+//        if ([rModel.category integerValue] == 1) {//融资
+//            ReportFinanceViewController *reportFinanceVC = [[ReportFinanceViewController alloc] init];
+//            reportFinanceVC.fiModel = rModel;
+//            [self.navigationController pushViewController:reportFinanceVC animated:YES];
+//        }
+//    }else{//清收，诉讼
     }
 }
 

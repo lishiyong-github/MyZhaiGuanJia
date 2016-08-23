@@ -2,15 +2,15 @@
 //  UpwardTableView.m
 //  qingdaofu
 //
-//  Created by zhixiang on 16/6/3.
+//  Created by zhixiang on 16/8/23.
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
 #import "UpwardTableView.h"
-
 #import "BidOneCell.h"
 
 @implementation UpwardTableView
+
 
 - (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style
 {
@@ -131,6 +131,7 @@
         }
     }
 }
+
 
 /*
 // Only override drawRect: if you perform custom drawing.

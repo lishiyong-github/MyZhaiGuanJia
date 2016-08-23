@@ -2,7 +2,7 @@
 //  ReportSuccessCell.m
 //  qingdaofu
 //
-//  Created by zhixiang on 16/5/23.
+//  Created by zhixiang on 16/8/23.
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
@@ -18,7 +18,7 @@
         [self.contentView addSubview:self.suTypeLabel];
         [self.contentView addSubview:self.suStateLabel];
         
-        [self.contentView setNeedsUpdateConstraints];
+        [self setNeedsUpdateConstraints];
     }
     return self;
 }
@@ -73,6 +73,7 @@
 
 
 - (void)awakeFromNib {
+    [super awakeFromNib];
     // Initialization code
 }
 

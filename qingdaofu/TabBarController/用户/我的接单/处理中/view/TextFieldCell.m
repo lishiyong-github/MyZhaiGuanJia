@@ -27,8 +27,8 @@
 {
     if (!self.didSetupConstraints) {
         
-        [self.textField autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:6];
-        [self.textField autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kSmallPadding];
+        [self.textField autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:-6];
+        [self.textField autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:8];
         [self.textField autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.textField autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:0];
         
@@ -70,7 +70,7 @@
 {
     if (!_countLabel) {
         _countLabel = [UILabel newAutoLayoutView];
-        _countLabel.textColor = kLightGrayColor;
+        _countLabel.textColor = kGrayColor;
         _countLabel.font = kSecondFont;
     }
     return _countLabel;

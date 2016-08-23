@@ -400,7 +400,7 @@
     NSDictionary *params = self.perDataDictionary;
     
     QDFWeakSelf;
-    [self requestDataPostWithString:personAuString params:params andImages:nil successBlock:^(id responseObject) {
+    [self requestDataPostWithString:personAuString params:params successBlock:^(id responseObject) {
 
         BaseModel *model = [BaseModel objectWithKeyValues:responseObject];
         [weakself showHint:model.msg];
