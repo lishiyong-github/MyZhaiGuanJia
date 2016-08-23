@@ -142,7 +142,7 @@
 {
     if (!_myReleaseTableView) {
         _myReleaseTableView.translatesAutoresizingMaskIntoConstraints = NO;
-        _myReleaseTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
+        _myReleaseTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _myReleaseTableView.delegate = self;
         _myReleaseTableView.dataSource = self;
         _myReleaseTableView.backgroundColor = kBackColor;

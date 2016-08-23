@@ -8,7 +8,12 @@
 
 #import "PaceViewController.h"
 
+#import "MyScheduleViewController.h"
+
+#import "BaseCommitView.h"
 #import "BidMessageCell.h"
+#import "MineUserCell.h"
+#import "EditDebtAddressCell.h"
 
 #import "PaceResponse.h"
 #import "PaceModel.h"
@@ -17,6 +22,7 @@
 
 @property (nonatomic,assign) BOOL didSetupConstarits;
 @property (nonatomic,strong) UITableView *paceTableView;
+@property (nonatomic,strong) BaseCommitView *paceCommitView;
 @property (nonatomic,strong) NSMutableArray *paceDataArray;
 
 @property (nonatomic,assign) NSInteger pagePace;
@@ -25,6 +31,11 @@
 
 @implementation PaceViewController
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self headerRefreshOfPace];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @"处理进度";
@@ -32,22 +43,22 @@
     self.view.backgroundColor = kBackColor;
     
     [self.view addSubview:self.paceTableView];
+    [self.view addSubview:self.paceCommitView];
     [self.view addSubview:self.baseRemindImageView];
     [self.baseRemindImageView setHidden:YES];
     
-    [self.paceTableView addHeaderWithTarget:self action:@selector(headerRefreshOfPace)];
-    [self.paceTableView addFooterWithTarget:self action:@selector(footerRefreshOfPace)];
-    
     [self.view setNeedsUpdateConstraints];
-    
-    [self headerRefreshOfPace];
 }
 
 - (void)updateViewConstraints
 {
     if (!self.didSetupConstarits) {
         
-        [self.paceTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+        [self.paceTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
+        [self.paceTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.paceCommitView];
+        
+        [self.paceCommitView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+        [self.paceCommitView autoSetDimension:ALDimensionHeight toSize:kCellHeight1];
         
         [self.baseRemindImageView autoAlignAxisToSuperviewAxis:ALAxisVertical];
         [self.baseRemindImageView autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
@@ -62,13 +73,33 @@
     if (!_paceTableView) {
         _paceTableView.translatesAutoresizingMaskIntoConstraints = NO;
         _paceTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+        _paceTableView.backgroundColor = kBackColor;
+        _paceTableView.separatorColor = kSeparateColor;
         _paceTableView.delegate = self;
         _paceTableView.dataSource = self;
         _paceTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
-        _paceTableView.backgroundColor = kBackColor;
-        _paceTableView.separatorColor = kSeparateColor;
+        [_paceTableView addHeaderWithTarget:self action:@selector(headerRefreshOfPace)];
+        [_paceTableView addFooterWithTarget:self action:@selector(footerRefreshOfPace)];
     }
     return _paceTableView;
+}
+
+- (BaseCommitView *)paceCommitView
+{
+    if (!_paceCommitView) {
+        _paceCommitView = [BaseCommitView newAutoLayoutView];
+        [_paceCommitView.button setTitle:@"新增进度" forState:0];
+        
+        QDFWeakSelf;
+        [_paceCommitView.button addAction:^(UIButton *btn) {
+            NSLog(@"填写进度");
+            MyScheduleViewController *myScheduleVC = [[MyScheduleViewController alloc] init];
+            myScheduleVC.idString = weakself.idString;
+            myScheduleVC.categoryString = weakself.categoryString;
+            [weakself.navigationController pushViewController:myScheduleVC animated:YES];
+        }];
+    }
+    return _paceCommitView;
 }
 
 - (NSMutableArray *)paceDataArray
@@ -83,7 +114,11 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (self.paceDataArray.count > 0) {
-        return 1;
+        if ([self.categoryString integerValue] == 3) {
+            return 4;
+        }else{
+            return 2;
+        }
     }
     return 0;
 }
@@ -95,63 +130,84 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 145;
+//    return 145;
+    if ([self.categoryString integerValue] == 3) {
+        return kCellHeight;
+    }
+    
+    return kCellHeight;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *identifier = @"pace";
-    
-    BidMessageCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    
-    if (!cell) {
-        cell = [[BidMessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-    }
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.backgroundColor = kNavColor;
-    
-    PaceModel *model;
-    if (self.paceDataArray.count > 0) {
-        model = self.paceDataArray[indexPath.section];
-    }
-    
-    cell.timeLabel.text = [NSDate getYMDFormatterTime:model.create_time];
-    [cell.remindImageButton setHidden:YES];
-    
-    if ([self.categoryString intValue] == 3) {//诉讼，有案号及案号类型
+    static NSString *identifier;
+    if ([self.categoryString integerValue] == 3) {//诉讼
+        identifier = @"pace3";
+        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        
+        if (!cell) {
+            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.userNameButton.titleLabel.font = kFirstFont;
+        [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
+        cell.userActionButton.titleLabel.font = kBigFont;
+        [cell.userActionButton setTitleColor:kBlackColor forState:0];
+        NSArray *susongArray = @[@"案号类型",@"案号",@"处置类型",@"详情"];
+        [cell.userNameButton setTitle:susongArray[indexPath.row] forState:0];
+        
+        PaceModel *sModel;
+        if (self.paceDataArray.count > 0) {
+            sModel = self.paceDataArray[indexPath.section];
+        }
         
         NSArray *array1 = @[@"一审",@"二审",@"再审",@"执行"];
         NSArray *array2 = @[@"债权人上传处置资产",@"律师接单",@"双方洽谈",@"向法院起诉(财产保全)",@"整理诉讼材料",@"法院立案",@"向当事人发出开庭传票",@"开庭前调解",@"开庭",@"判决",@"二次开庭",@"二次判决",@"移交执行局申请执行",@"执行中提供借款人的财产线索",@"调查(公告)",@"拍卖",@"流拍",@"拍卖成功",@"付费"];
-        //诉讼的案号状态：0=>一审,1=>二审,2=>再审,3=>执行
-        NSInteger a1 = [model.audit intValue];
-        NSInteger a2 = [model.status intValue]-1;
-        NSString *caseString = [NSString getValidStringFromString:model.caseString];
-        NSString *content = [NSString getValidStringFromString:model.content];
+        NSInteger a1 = [sModel.audit intValue];
+        NSInteger a2 = [sModel.status intValue]-1;
+        NSString *caseString = [NSString getValidStringFromString:sModel.caseString];
+        NSString *content = [NSString getValidStringFromString:sModel.content];
         
-        cell.deadlineLabel.text = [NSString stringWithFormat:@"案号类型：%@",array1[a1]];
-        cell.dateLabel.text = [NSString stringWithFormat:@"案        号：%@",caseString];
-        cell.areaLabel.text = [NSString stringWithFormat:@"处置类型：%@",array2[a2]];
-        cell.addressLabel.text = [NSString stringWithFormat:@"%@%@",@"详        情：",content];
-
-    }else if([self.categoryString intValue] == 1){//融资
+        if (indexPath.row == 0) {
+            [cell.userActionButton setTitle:array1[a1] forState:0];
+        }else if (indexPath.row == 1){
+            [cell.userActionButton setTitle:caseString forState:0];
+        }else if (indexPath.row == 2){
+            [cell.userActionButton setTitle:array2[a2] forState:0];
+        }else if (indexPath.row == 3){
+            [cell.userActionButton setTitle:content forState:0];
+        }
         
-        NSArray *array3 = @[@"尽职调查",@"公证",@"抵押",@"放款",@"返点",@"其他"];
-        NSInteger a3 = [model.status intValue]-1;
-        NSString *content = [NSString getValidStringFromString:model.content];
-        
-        cell.deadlineLabel.text = [NSString stringWithFormat:@"案号类型：暂无"];
-        cell.dateLabel.text = [NSString stringWithFormat:@"案        号：暂无"];
-        cell.areaLabel.text = [NSString stringWithFormat:@"处置类型：%@",array3[a3]];
-        cell.addressLabel.text = [NSString stringWithFormat:@"%@%@",@"详        情：",content];
-    }else{//清收
-        NSArray *array4 = @[@"电话",@"上门",@"面谈"];
-        NSInteger a4 = [model.status intValue]-1;
-        NSString *content = [NSString getValidStringFromString:model.content];
-        
-        cell.deadlineLabel.text = [NSString stringWithFormat:@"案号类型：暂无"];
-        cell.dateLabel.text = [NSString stringWithFormat:@"案        号：暂无"];
-        cell.areaLabel.text = [NSString stringWithFormat:@"处置类型：%@",array4[a4]];
-        cell.addressLabel.text = [NSString stringWithFormat:@"%@%@",@"详        情：",content];
+        return cell;
+    }
+    
+    //清收
+    identifier = @"pace32";
+    MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    
+    if (!cell) {
+        cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+    }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.userNameButton.titleLabel.font = kFirstFont;
+    [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
+    cell.userActionButton.titleLabel.font = kBigFont;
+    [cell.userActionButton setTitleColor:kBlackColor forState:0];
+    NSArray *susongArray = @[@"处置类型",@"详情"];
+    [cell.userNameButton setTitle:susongArray[indexPath.row] forState:0];
+    
+    PaceModel *qModel;
+    if (self.paceDataArray.count > 0) {
+        qModel = self.paceDataArray[indexPath.section];
+    }
+    
+    NSArray *array4 = @[@"电话",@"上门",@"面谈"];
+    NSInteger a4 = [qModel.status intValue]-1;
+    NSString *content = [NSString getValidStringFromString:qModel.content];
+    if (indexPath.row == 0) {
+        [cell.userActionButton setTitle:array4[a4] forState:0];
+    }else if (indexPath.row == 1){
+        [cell.userActionButton setTitle:content forState:0];
     }
     
     return cell;
@@ -159,7 +215,24 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return kBigPadding;
+    return 35;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UILabel *headerTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 35)];
+    headerTimeLabel.textAlignment = NSTextAlignmentCenter;
+    headerTimeLabel.textColor = kLightGrayColor;
+    headerTimeLabel.font = kSmallFont;
+    
+    PaceModel *sModel;
+    if (self.paceDataArray.count > 0) {
+        sModel = self.paceDataArray[section];
+    }
+    
+    headerTimeLabel.text = [NSDate getYMDhmFormatterTime:sModel.create_time];
+    
+    return headerTimeLabel;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section

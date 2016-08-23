@@ -332,7 +332,7 @@
         cell.userActionButton.userInteractionEnabled = NO;
         
         [cell.userNameButton setTitle:@"处理进度" forState:0];
-        [cell.userActionButton setTitle:@"点击查看  " forState:0];
+        [cell.userActionButton setTitle:@"填写进度  " forState:0];
         [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
         
         return cell;

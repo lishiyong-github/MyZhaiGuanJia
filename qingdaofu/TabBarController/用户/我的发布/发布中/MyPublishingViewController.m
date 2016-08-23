@@ -391,7 +391,6 @@
 - (void)editAllMessages
 {
     if (self.publishingDataArray.count > 0) {
-        
         PublishingResponse *response = self.publishingDataArray[0];
         PublishingModel *rModel = response.product;
         
@@ -400,12 +399,6 @@
         reportSuiVC.suResponse = response;
         reportSuiVC.tagString = @"2";
         [self.navigationController pushViewController:reportSuiVC animated:YES];
-//        if ([rModel.category integerValue] == 1) {//融资
-//            ReportFinanceViewController *reportFinanceVC = [[ReportFinanceViewController alloc] init];
-//            reportFinanceVC.fiModel = rModel;
-//            [self.navigationController pushViewController:reportFinanceVC animated:YES];
-//        }
-//    }else{//清收，诉讼
     }
 }
 

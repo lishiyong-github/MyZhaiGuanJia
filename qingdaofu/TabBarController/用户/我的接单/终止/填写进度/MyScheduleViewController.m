@@ -11,6 +11,8 @@
 #import "TextFieldCell.h"
 #import "MineUserCell.h"
 #import "CaseNoCell.h"
+#import "AgentCell.h"
+#import "EditDebtAddressCell.h"
 
 #import "UIViewController+BlurView.h"
 
@@ -53,18 +55,19 @@
 {
     if (!_scheduleTableView) {
         _scheduleTableView = [UITableView newAutoLayoutView];
+        _scheduleTableView.backgroundColor = kBackColor;
+        _scheduleTableView.separatorColor = kSeparateColor;
         _scheduleTableView.delegate = self;
         _scheduleTableView.dataSource = self;
         _scheduleTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
-        _scheduleTableView.backgroundColor = kBackColor;
-        _scheduleTableView.separatorColor = kSeparateColor;
+        _scheduleTableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
 
-        if ([_scheduleTableView respondsToSelector:@selector(setSeparatorInset:)]) {
-            [_scheduleTableView setSeparatorInset:UIEdgeInsetsZero];
-        }
-        if ([_scheduleTableView respondsToSelector:@selector(setLayoutMargins:)]) {
-            [_scheduleTableView setLayoutMargins:UIEdgeInsetsZero];
-        }
+//        if ([_scheduleTableView respondsToSelector:@selector(setSeparatorInset:)]) {
+//            [_scheduleTableView setSeparatorInset:UIEdgeInsetsZero];
+//        }
+//        if ([_scheduleTableView respondsToSelector:@selector(setLayoutMargins:)]) {
+//            [_scheduleTableView setLayoutMargins:UIEdgeInsetsZero];
+//        }
 
     }
     return _scheduleTableView;
@@ -82,7 +85,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if ([self.categoryString intValue] == 3) {//诉讼
-        return 3;
+        return 4;
     }
     
     return 2;//或者2
@@ -90,14 +93,14 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([self.categoryString intValue] == 3) {
-        if (indexPath.row == 2) {
+    if ([self.categoryString intValue] == 3) {//诉讼
+        if (indexPath.row == 3) {
             return 200;
         }
         return kCellHeight;
     }
     
-    if (indexPath.row == 1) {
+    if (indexPath.row == 1) {//清收
         return 200;
     }
     return kCellHeight;
@@ -107,6 +110,107 @@
 {
     static NSString *identifier;
     if ([self.categoryString integerValue] == 3) {//诉讼
+        
+        if (indexPath.row == 0) {//AgentCell.h
+            identifier = @"schedule30";
+            AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.agentTextField.userInteractionEnabled = NO;
+            
+            cell.agentLabel.text = @"案号类型";
+            cell.agentTextField.placeholder = @"请选择案号类型";
+            [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            
+            return cell;
+            
+        }else if (indexPath.row == 1){
+            identifier = @"schedule31";
+            AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            [cell.agentButton setHidden:YES];
+            
+            cell.agentLabel.text = @"案号";
+            cell.agentTextField.placeholder = @"请输入案号";
+            
+            return cell;
+
+        }else if (indexPath.row == 2){
+            identifier = @"schedule32";
+            AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.agentTextField.userInteractionEnabled = NO;
+            
+            cell.agentLabel.text = @"处置类型";
+            cell.agentTextField.placeholder = @"请选择处置类型";
+            [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            
+            return cell;
+
+        }else if (indexPath.row == 3){
+            identifier = @"schedule33";
+            EditDebtAddressCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[EditDebtAddressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.ediLabel.text = @"进度详情";
+            cell.ediTextView.placeholder = @"请输入进度详情";
+            
+            [cell setDidEndEditing:^(NSString *text) {
+                [self.scheduleDictionary setValue:text forKey:@"content"];
+            }];
+            
+            return cell;
+        }
+    }
+    
+    //清收
+    if (indexPath.row == 0){
+        identifier = @"schedule20";
+        AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell) {
+            cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.agentTextField.userInteractionEnabled = NO;
+        cell.agentButton.userInteractionEnabled = NO;
+        
+        cell.agentLabel.text = @"处置类型";
+        cell.agentTextField.placeholder = @"请选择处置类型";
+        [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        
+        return cell;
+        
+    }else if (indexPath.row == 1){
+        identifier = @"schedule21";
+        EditDebtAddressCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell) {
+            cell = [[EditDebtAddressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.ediLabel.text = @"进度详情";
+        cell.ediTextView.placeholder = @"请输入进度详情";
+        
+        [cell setDidEndEditing:^(NSString *text) {
+            [self.scheduleDictionary setValue:text forKey:@"content"];
+        }];
+        
+        return cell;
+    }
+    
+    return nil;
+        /*
         if (indexPath.row < 2) {
             identifier = @"schedule30";
             CaseNoCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -205,40 +309,44 @@
     }];
     
     return cell;
+         */
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     QDFWeakSelf;
     if ([self.categoryString integerValue] == 3) {//诉讼
-        if (indexPath.row == 1) {
+        if (indexPath.row == 0) {//案号类型
+            NSArray *collectArr = @[@"一审",@"二审",@"再审",@"执行"];
+            [self showBlurInView:self.view withArray:collectArr andTitle:@"选择案号类型" finishBlock:^(NSString *text,NSInteger row) {
+                AgentCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+                cell.agentTextField.text = text;
+                
+                NSString *auditStr = [NSString stringWithFormat:@"%ld",(long)row - 1];
+                [weakself.scheduleDictionary setValue:auditStr forKey:@"udit"];
+                
+//                [weakself showBlurInView:self.view withArray:suitNoArr andTitle:@"选择案号类型" finishBlock:^(NSString *text,NSInteger row) {
+//                    [weakcell.caseGoButton setTitle:text forState:0];
+//                    NSString *auditStr = [NSString stringWithFormat:@"%ld",row-1];
+//                    [self.scheduleDictionary setValue:auditStr forKey:@"audit"];
+//                }];
+            }];
+        }else if (indexPath.row == 2) {
             NSArray *suitArr = @[@"债权人上传处置资产",@"律师接单",@"双方洽谈",@"向法院起诉(财产保全)",@"整理诉讼材料",@"法院立案",@"向当事人发出开庭传票",@"开庭前调解",@"开庭",@"判决",@"二次开庭",@"二次判决",@"移交执行局申请执行",@"执行中提供借款人的财产线索",@"调查(公告)",@"拍卖",@"流拍",@"拍卖成功",@"付费"];
             [self showBlurInView:self.view withArray:suitArr andTitle:@"选择处置类型" finishBlock:^(NSString *text,NSInteger row) {
-                CaseNoCell *cell = [weakself.scheduleTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-                [cell.caseGoButton setTitle:text forState:0];
-                
-                NSString *statusStr = [NSString stringWithFormat:@"%ld",(long)row];
-                [weakself.scheduleDictionary setValue:statusStr forKey:@"status"];
-            }];
-        }
-    }else if([self.categoryString integerValue] == 1){//融资
-        
-        NSArray *financeArr = @[@"尽职调查",@"公证",@"放款",@"返点",@"其他"];
-        if (indexPath.row == 0) {
-            [self showBlurInView:self.view withArray:financeArr andTitle:@"选择处置类型" finishBlock:^(NSString *text,NSInteger row) {
-                CaseNoCell *cell = [weakself.scheduleTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-                [cell.caseGoButton setTitle:text forState:0];
+                AgentCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+                cell.agentTextField.text = text;
                 
                 NSString *statusStr = [NSString stringWithFormat:@"%ld",(long)row];
                 [weakself.scheduleDictionary setValue:statusStr forKey:@"status"];
             }];
         }
     }else if ([self.categoryString integerValue] == 2){//清收
-        NSArray *collectArr = @[@"电话",@"上门",@"面谈"];
         if (indexPath.row == 0) {
+            NSArray *collectArr = @[@"电话",@"上门",@"面谈"];
             [self showBlurInView:self.view withArray:collectArr andTitle:@"选择处置类型" finishBlock:^(NSString *text,NSInteger row) {
-                CaseNoCell *cell = [weakself.scheduleTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-                [cell.caseGoButton setTitle:text forState:0];
+                AgentCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+                cell.agentTextField.text = text;
                 
                 NSString *statusStr = [NSString stringWithFormat:@"%ld",(long)row];
                 [weakself.scheduleDictionary setValue:statusStr forKey:@"status"];
@@ -258,15 +366,7 @@
     [self.view endEditing:YES];
     NSString *myScheduleString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyscheduleString];
     /*
-     status	状态	融资：
-     ［
-     1 => '尽职调查',
-     2 => '公证',
-     3 => '抵押',
-     4 => '放款',
-     5 => '返点',
-     6 => '其他',
-     ];
+     status	状态
      
      清收：[
      1 => '电话',
@@ -302,21 +402,14 @@
     NSString *contentStr = self.scheduleDictionary[@"content"]?self.scheduleDictionary[@"content"]:@"";
 
     NSDictionary *params;
-    if ([self.categoryString intValue] == 1) {//融资
-       params = @{@"token" : [self getValidateToken],
-                                 @"product_id" : self.idString,
-                                 @"category" : self.categoryString,
-                                  @"status" : statusStr,
-                                  @"content" : contentStr
-                                 };
-    }else if ([self.categoryString intValue] == 2){//清收
+    if ([self.categoryString intValue] == 2){//清收
         params = @{@"token" : [self getValidateToken],
                    @"product_id" : self.idString,
                    @"category" : self.categoryString,
                    @"status" : statusStr,
                    @"content" : contentStr
                    };
-    }else{//诉讼
+    }else if ([self.categoryString intValue] == 3){//诉讼
         params = @{@"token" : [self getValidateToken],
                    @"product_id" : self.idString,
                    @"category" : self.categoryString,
