@@ -14,8 +14,8 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        [self.contentView addSubview:self.typeImageView];
         [self.contentView addSubview:self.nameButton];
+        [self.contentView addSubview:self.typeImageView];
         [self.contentView addSubview:self.statusLabel];
         [self.contentView addSubview:self.contentLabel];
         [self.contentView addSubview:self.deadLineButton];
@@ -31,17 +31,18 @@
 {
     if (!self.didSetupConstraints) {
         
-        [self.typeImageView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
-        [self.typeImageView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kBigPadding];
-        [self.typeImageView autoSetDimensionsToSize:CGSizeMake(41, 21)];
+        [self.nameButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
+        [self.nameButton autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kBigPadding];
+        [self.nameButton autoSetDimension:ALDimensionHeight toSize:21];
+//        [self.typeImageView autoSetDimensionsToSize:CGSizeMake(41, 21)];
         
-        [self.nameButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.typeImageView];
-        [self.nameButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.typeImageView withOffset:8];
+        [self.typeImageView autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.nameButton];
+        [self.typeImageView autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.nameButton withOffset:8];
         
         [self.statusLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
-        [self.statusLabel autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.nameButton];
+        [self.statusLabel autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.typeImageView];
         
-        [self.contentLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.typeImageView withOffset:kBigPadding];
+        [self.contentLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.nameButton withOffset:kBigPadding];
         [self.contentLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft];
         [self.contentLabel autoPinEdgeToSuperviewEdge:ALEdgeRight];
 //        [self.contentLabel autoSetDimension:ALDimensionHeight toSize:120];
@@ -65,14 +66,6 @@
     [super updateConstraints];
 }
 
-- (UIImageView *)typeImageView
-{
-    if (!_typeImageView) {
-        _typeImageView = [UIImageView newAutoLayoutView];
-    }
-    return _typeImageView;
-}
-
 - (UIButton *)nameButton
 {
     if (!_nameButton) {
@@ -81,6 +74,15 @@
         _nameButton.titleLabel.font = kBigFont;
     }
     return _nameButton;
+}
+
+- (UIImageView *)typeImageView
+{
+    if (!_typeImageView) {
+        _typeImageView = [UIImageView newAutoLayoutView];
+        _typeImageView.image = [UIImage imageNamed:@"list_more"];
+    }
+    return _typeImageView;
 }
 
 - (UILabel *)statusLabel

@@ -8,8 +8,9 @@
 
 #import "AppDelegate.h"
 #import "MBResourceManager.h"
-#import "MainViewController.h"
+//#import "WXApiManager.h"
 
+#import "MainViewController.h"
 #import "IntroduceViewController.h"
 
 @interface AppDelegate ()  
@@ -37,21 +38,26 @@
         MainViewController *mainVC = [[MainViewController alloc] init];
         UINavigationController *mainNav = [[UINavigationController alloc] initWithRootViewController:mainVC];
         self.window.rootViewController = mainNav;
-        
-//        TabBarViewController *tabBarVC = [[TabBarViewController alloc] init];
-//        UINavigationController *tabBarNav = [[UINavigationController alloc] initWithRootViewController:tabBarVC];
-//        self.window.rootViewController = tabBarNav;
     }
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [[MBResourceManager sharedInstance] removeUnusedResource];
     });
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), )
 
 //    [NSThread sleepForTimeInterval:0.1];//设置启动页面时间
     
+//    [WXApi registerApp:WXAppID withDescription:@"demo 2.0"];
+
     return YES;
 }
+
+//- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+//    return  [WXApi handleOpenURL:url delegate:[WXApiManager sharedManager]];
+//}
+//
+//- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+//    return [WXApi handleOpenURL:url delegate:[WXApiManager sharedManager]];
+//}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

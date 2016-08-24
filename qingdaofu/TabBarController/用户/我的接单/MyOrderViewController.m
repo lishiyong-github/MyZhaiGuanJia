@@ -222,27 +222,26 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *identifier;//ExtendHomeCell.h
-    
-    identifier = @"myRelease0";
+    static NSString *identifier = @"myOrder0";
     ExtendHomeCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
         cell = [[ExtendHomeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.nameButton.userInteractionEnabled = NO;
+    cell.deadLineButton.userInteractionEnabled = NO;
     RowsModel *rowModel = self.myOrderDataList[indexPath.section];
     
-    //image
+    //image and name
     if ([rowModel.category intValue] == 2){//清收
-        cell.typeImageView.image = [UIImage imageNamed:@"list_collection"];
+        [cell.nameButton setImage:[UIImage imageNamed:@"list_collection"] forState:0];
     }else if ([rowModel.category intValue] == 3){//诉讼
-        cell.typeImageView.image = [UIImage imageNamed:@"list_litigation"];
+        [cell.nameButton setImage:[UIImage imageNamed:@"list_litigation"] forState:0];
     }
     
     //code
-    [cell.nameButton setTitle:rowModel.codeString forState:0];
-//    [cell.nameButton swapImage];
-//    [cell.nameButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+    NSString *codeS = [NSString stringWithFormat:@"  %@",rowModel.codeString];
+    [cell.nameButton setTitle:codeS forState:0];
     
     //status
     NSArray *statusArray = @[@"申请中",@"处理中",@"已终止",@"已结案"];
@@ -548,8 +547,6 @@
         myEndingVC.pidString = eModel.uidString;
         [self.navigationController pushViewController:myEndingVC animated:YES];
     }else if([eModel.progress_status isEqualToString:@"4"]){//结案
-        
-        RowsModel *eModel = self.myOrderDataList[indexPath.section];
         NSString *id_category = [NSString stringWithFormat:@"%@_%@",eModel.idString,eModel.category];
         NSString *value1 = self.myOrderResonseDic[id_category];
         

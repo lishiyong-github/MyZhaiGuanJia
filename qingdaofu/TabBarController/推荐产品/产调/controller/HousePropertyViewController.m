@@ -15,6 +15,8 @@
 #import "EditDebtAddressCell.h"
 #import "AgentCell.h"
 
+#import "PropertyGenerateModel.h"
+
 @interface HousePropertyViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic,strong) UITableView *housePropertyTableView;
@@ -92,9 +94,10 @@
         [_propertyFooterView addSubview:button];
         QDFWeakSelf;
         [button addAction:^(UIButton *btn) {
-            HousePayingViewController *housePayingVC = [[HousePayingViewController alloc] init];
-            [weakself.navigationController pushViewController:housePayingVC animated:YES];
+//            HousePayingViewController *housePayingVC = [[HousePayingViewController alloc] init];
+//            [weakself.navigationController pushViewController:housePayingVC animated:YES];
         }];
+        [button addTarget:self action:@selector(generateOrder) forControlEvents:UIControlEventTouchUpInside];
         
         [label autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
         [label autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
@@ -158,7 +161,7 @@
         
         QDFWeakSelf;
         [cell setDidEndEditing:^(NSString *text) {
-            [weakself.propertyDic setObject:text forKey:@""];
+            [weakself.propertyDic setObject:text forKey:@"address"];
         }];
         
         return cell;
@@ -177,7 +180,7 @@
     
     QDFWeakSelf;
     [cell setDidEndEditing:^(NSString *text) {
-        [weakself.propertyDic setObject:text forKey:@""];
+        [weakself.propertyDic setObject:text forKey:@"phone"];
     }];
     
     return cell;
@@ -206,9 +209,40 @@
         [houseChooseVC setDidSelectedRow:^(NSString *text) {
             AgentCell *cell = [tableView cellForRowAtIndexPath:indexPath];
             cell.agentTextField.text = text;
-            [weakself.propertyDic setObject:text forKey:@""];
+            [weakself.propertyDic setObject:text forKey:@"area"];
         }];
     }
+}
+
+#pragma mark - method
+- (void)generateOrder
+{
+    [self.view endEditing:YES];
+    NSString *generateString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kHousePropertyOrderString];
+    self.propertyDic[@"phone"] = [NSString getValidStringFromString:self.propertyDic[@"phone"] toString:[self getValidateMobile]];
+    [self.propertyDic setObject:[self getValidateToken] forKey:@"token"];
+    
+    NSDictionary *params = self.propertyDic;
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:generateString params:params successBlock:^(id responseObject) {
+        
+        PropertyGenerateModel *generateModel = [PropertyGenerateModel objectWithKeyValues:responseObject];
+        if ([generateModel.code isEqualToString:@"0000"]) {
+            HousePayingViewController *housePayingVC = [[HousePayingViewController alloc] init];
+            housePayingVC.genarateId = generateModel.idString;
+            housePayingVC.genarateMoney = generateModel.money;
+            housePayingVC.phoneString = params[@"phone"];
+            housePayingVC.areaString = params[@"area"];
+            housePayingVC.addressString = params[@"address"];
+            [weakself.navigationController pushViewController:housePayingVC animated:YES];
+        }else{
+            [weakself showHint:generateModel.msg];
+        }        
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
 }
 
 - (void)didReceiveMemoryWarning {

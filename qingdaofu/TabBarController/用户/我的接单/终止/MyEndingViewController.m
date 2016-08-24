@@ -205,6 +205,8 @@
         [cell.contactButton setTitle:@" 联系他" forState:0];
         [cell.contactButton setImage:[UIImage imageNamed:@"phone_blue"] forState:0];
         
+        [cell.checkButton addTarget:self action:@selector(checkOrderEndDetails) forControlEvents:UIControlEventTouchUpInside];
+        
         return cell;
         
     }else if(indexPath.section == 2){//详情
@@ -236,7 +238,7 @@
         [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
         cell.userNameButton.titleLabel.font = kFirstFont;
         [cell.userActionButton setTitleColor:kGrayColor forState:0];
-        cell.userActionButton.titleLabel.font = kBigFont;
+        cell.userActionButton.titleLabel.font = kFirstFont;
         
         NSString *rowString1 = @"借款本金";
         NSString *rowString11 = [NSString stringWithFormat:@"%@万",endModel.money];//具体借款本金

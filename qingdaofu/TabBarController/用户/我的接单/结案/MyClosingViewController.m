@@ -237,11 +237,12 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        
         NSString *checkStr = [NSString stringWithFormat:@"发布方：%@",@"滴滴滴"];
         [cell.checkButton setTitle:checkStr forState:0];
         [cell.contactButton setTitle:@" 联系他" forState:0];
         [cell.contactButton setImage:[UIImage imageNamed:@"phone_blue"] forState:0];
+        
+        [cell.checkButton addTarget:self action:@selector(checkClosingDetail) forControlEvents:UIControlEventTouchUpInside];
         
         return cell;
         
@@ -274,7 +275,7 @@
         [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
         cell.userNameButton.titleLabel.font = kFirstFont;
         [cell.userActionButton setTitleColor:kGrayColor forState:0];
-        cell.userActionButton.titleLabel.font = kBigFont;
+        cell.userActionButton.titleLabel.font = kFirstFont;
         
         NSString *rowString1 = @"借款本金";
         NSString *rowString11 = [NSString stringWithFormat:@"%@万",closeModel.money];//具体借款本金

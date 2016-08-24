@@ -120,6 +120,7 @@
 #define QDFWeakSelf QDFWeak(self)
 
 #define AppID @"1116869191"
+#define WXAppID @"wx38a01306475488e3"
 //@"1065452286" //财富
 //@"1116869191" //清道夫
 
@@ -234,7 +235,8 @@
 #define kUploadImagesString @"common/uploads"  //上传图片
 #define kPowerAdditionalMessageString @"producedata/picturedatas"  //补充图片
 
-
+#define kHousePropertyOrderString @"property/create"  //产调生成
+#define KhousePropertyConfirmOrderString @"property/pay"  //确认支付产调
 #endif
 
 

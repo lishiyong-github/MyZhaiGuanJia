@@ -79,7 +79,7 @@
 {
     if (!_evaNameLabel) {
         _evaNameLabel = [UILabel newAutoLayoutView];
-        _evaNameLabel.textColor = kBlueColor;
+        _evaNameLabel.textColor = kGrayColor;
         _evaNameLabel.font = kBigFont;
     }
     return _evaNameLabel;
@@ -102,7 +102,7 @@
 //        _evaStarImage.currentIndex = 4;
         _evaStarImage.starImage = [UIImage imageNamed:@"publish_star"];
         _evaStarImage.markType = EMarkTypeInteger;
-        _evaStarImage.starFrontColor = kBlueColor;
+        _evaStarImage.starFrontColor = kYellowColor;
         _evaStarImage.starBackgroundColor = UIColorFromRGB(0xeeeeee);
         _evaStarImage.userInteractionEnabled = NO;
     }
@@ -113,7 +113,7 @@
 {
     if (!_evaTextLabel) {
         _evaTextLabel = [UILabel newAutoLayoutView];
-        _evaTextLabel.textColor = kBlackColor;
+        _evaTextLabel.textColor = kLightGrayColor;
         _evaTextLabel.font = kFirstFont;
     }
     return _evaTextLabel;

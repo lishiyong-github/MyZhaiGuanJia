@@ -13,8 +13,8 @@
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 
-@property (nonatomic,strong) UIImageView *typeImageView;  //清收／诉讼
-@property (nonatomic,strong) UIButton *nameButton;  //name
+@property (nonatomic,strong) UIButton *nameButton;  //name //清收／诉讼
+@property (nonatomic,strong) UIImageView *typeImageView;
 @property (nonatomic,strong) UILabel *statusLabel; //发布中，处理中
 @property (nonatomic,strong) UILabel *contentLabel;  //发布详情
 

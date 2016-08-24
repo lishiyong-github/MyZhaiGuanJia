@@ -9,13 +9,12 @@
 #import "CheckDetailPublishViewController.h"
 #import "AllEvaluationViewController.h"  //所有评价
 #import "CaseViewController.h"  //经典案例
-#import "AgreementViewController.h"  //服务协议
-#import "LoginViewController.h" 
-#import "AuthentyViewController.h"
+//#import "AgreementViewController.h"  //服务协议
+//#import "LoginViewController.h"
+//#import "AuthentyViewController.h"
 
 #import "MineUserCell.h"
 #import "EvaluatePhotoCell.h"
-#import "BaseCommitButton.h"
 
 //详细信息
 #import "CompleteResponse.h"
@@ -26,12 +25,11 @@
 #import "EvaluateModel.h"
 
 #import "UIButton+WebCache.h"
-#import "UIImage+Color.h"
+//#import "UIImage+Color.h"
 @interface CheckDetailPublishViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *checkDetailTableView;
-@property (nonatomic,strong) BaseCommitButton *appAgreeButton;
 
 @property (nonatomic,strong) UIButton *rightBarBtn;
 
@@ -46,15 +44,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.navigationItem.title = [NSString stringWithFormat:@"%@信息",self.typeString];
+    self.navigationItem.title = [NSString stringWithFormat:@"%@详情",self.typeString];
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
-    if ([self.typeString isEqualToString:@"发布方"]) {
+    if (![self.typeDegreeString isEqualToString:@"1"]) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightBarBtn];
     }
 
     [self.view addSubview:self.checkDetailTableView];
-    [self.view addSubview:self.appAgreeButton];
+
     [self.view setNeedsUpdateConstraints];
     
     [self getMessageOfOrderPeople];
@@ -64,24 +62,23 @@
 {
     if (!self.didSetupConstraints) {
         
-        if ([self.typeString isEqualToString:@"申请人"]) {
-            [self.checkDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
-            [self.checkDetailTableView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kTabBarHeight];
-            
-            [self.appAgreeButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-            [self.appAgreeButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.checkDetailTableView];
-        }else{
-            if ([self.typeDegreeString isEqualToString:@"处理中"]) {
-                
-                [self.checkDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
-                [self.checkDetailTableView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kTabBarHeight];
-                
-                [self.appAgreeButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-                [self.appAgreeButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.checkDetailTableView];
-            }else{
-                [self.checkDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
-            }
-        }
+        [self.checkDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+//        if ([self.typeString isEqualToString:@"申请人"]) {
+//            
+//            [self.appAgreeButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+//            [self.appAgreeButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.checkDetailTableView];
+//        }else{
+//            if ([self.typeDegreeString isEqualToString:@"处理中"]) {
+//                
+//                [self.checkDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
+//                [self.checkDetailTableView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kTabBarHeight];
+//                
+//                [self.appAgreeButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+//                [self.appAgreeButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.checkDetailTableView];
+//            }else{
+//                [self.checkDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+//            }
+//        }
         
         self.didSetupConstraints = YES;
     }
@@ -93,10 +90,12 @@
     if (!_rightBarBtn) {
         _rightBarBtn = [UIButton buttonWithType:0];
         _rightBarBtn.bounds = CGRectMake(0, 0, 24, 24);
-        [_rightBarBtn setImage:[UIImage imageNamed:@"information_nav_remind"] forState:0];
+        [_rightBarBtn setImage:[UIImage imageNamed:@"phone_gray"] forState:0];
         QDFWeakSelf;
         [_rightBarBtn addAction:^(UIButton *btn) {
-            [weakself warnning];
+            CertificationModel *sdModel = weakself.certifiDataArray[0];
+            NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",sdModel.mobile];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
         }];
     }
     return _rightBarBtn;
@@ -106,8 +105,9 @@
 {
     if (!_checkDetailTableView) {
         _checkDetailTableView.translatesAutoresizingMaskIntoConstraints = NO;
-        _checkDetailTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
+        _checkDetailTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _checkDetailTableView.separatorColor = kSeparateColor;
+        _checkDetailTableView.backgroundColor = kBackColor;
         _checkDetailTableView.delegate = self;
         _checkDetailTableView.dataSource = self;
         _checkDetailTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
@@ -115,69 +115,69 @@
     return _checkDetailTableView;
 }
 
-- (BaseCommitButton *)appAgreeButton
-{
-    if (!_appAgreeButton) {
-        _appAgreeButton = [BaseCommitButton newAutoLayoutView];
-        
-        QDFWeakSelf;
-        if ([self.typeString isEqualToString:@"申请人"]) {
-            [_appAgreeButton setTitle:@"同意申请" forState:0];
-            [_appAgreeButton addAction:^(UIButton *btn) {
-                [weakself tokenIsValid];
-                [weakself setDidTokenValid:^(TokenModel *tModel) {
-                    if ([tModel.code integerValue] == 0000) {
-                        AgreementViewController *agreementVC = [[AgreementViewController alloc] init];
-                        agreementVC.flagString = @"1";
-                        agreementVC.idString = weakself.idString;
-                        agreementVC.categoryString = weakself.categoryString;
-                        agreementVC.pidString = weakself.pidString;
-                        [weakself.navigationController pushViewController:agreementVC animated:YES];
-                    }else if ([tModel.code integerValue] == 3006){
-                        [weakself showHint:tModel.msg];
-                        AuthentyViewController *authentyVC = [[AuthentyViewController alloc] init];
-                        authentyVC.typeAuthty = @"0";
-                        [weakself.navigationController pushViewController:authentyVC animated:YES];
-                    }else{
-                        [weakself showHint:tModel.msg];
-                        LoginViewController *loginVC = [[LoginViewController alloc] init];
-                        
-                        UINavigationController *gygy = [[UINavigationController alloc] initWithRootViewController:loginVC];
-                        [weakself presentViewController:gygy animated:YES completion:nil];
-                    }
-                }];
-            }];
-        }else{
-            //1.处理中
-            if ([self.typeDegreeString isEqualToString:@"处理中"]) {
-                [_appAgreeButton setTitle:@"已同意" forState:0];
-                [_appAgreeButton setBackgroundColor:kSelectedColor];
-                [_appAgreeButton setTitleColor:kBlackColor forState:0];
-                
-                //添加电话按钮
-                UIButton *phoneButton = [UIButton newAutoLayoutView];
-                [phoneButton setImage:[UIImage imageNamed:@"phone"] forState:0];
-                phoneButton.backgroundColor = kBlueColor;
-                [phoneButton addAction:^(UIButton *btn) {
-                    if (weakself.certifiDataArray.count > 0) {
-                        CertificationModel *model = weakself.certifiDataArray[0];
-                        NSString *phoneStr = [NSString stringWithFormat:@"telprompt://%@",model.mobile];
-                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
-                    }
-                }];
-                [self.appAgreeButton addSubview:phoneButton];
-                
-                [phoneButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.appAgreeButton];
-                [phoneButton autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.appAgreeButton];
-                [phoneButton autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.appAgreeButton];
-                [phoneButton autoSetDimension:ALDimensionWidth toSize:kTabBarHeight];
-            }else{
-                [_appAgreeButton setHidden:YES];
-            }
-        }
-    }
-    return _appAgreeButton;
-}
+//- (BaseCommitButton *)appAgreeButton
+//{
+//    if (!_appAgreeButton) {
+//        _appAgreeButton = [BaseCommitButton newAutoLayoutView];
+//        
+//        QDFWeakSelf;
+//        if ([self.typeString isEqualToString:@"申请人"]) {
+//            [_appAgreeButton setTitle:@"同意申请" forState:0];
+//            [_appAgreeButton addAction:^(UIButton *btn) {
+//                [weakself tokenIsValid];
+//                [weakself setDidTokenValid:^(TokenModel *tModel) {
+//                    if ([tModel.code integerValue] == 0000) {
+//                        AgreementViewController *agreementVC = [[AgreementViewController alloc] init];
+//                        agreementVC.flagString = @"1";
+//                        agreementVC.idString = weakself.idString;
+//                        agreementVC.categoryString = weakself.categoryString;
+//                        agreementVC.pidString = weakself.pidString;
+//                        [weakself.navigationController pushViewController:agreementVC animated:YES];
+//                    }else if ([tModel.code integerValue] == 3006){
+//                        [weakself showHint:tModel.msg];
+//                        AuthentyViewController *authentyVC = [[AuthentyViewController alloc] init];
+//                        authentyVC.typeAuthty = @"0";
+//                        [weakself.navigationController pushViewController:authentyVC animated:YES];
+//                    }else{
+//                        [weakself showHint:tModel.msg];
+//                        LoginViewController *loginVC = [[LoginViewController alloc] init];
+//                        
+//                        UINavigationController *gygy = [[UINavigationController alloc] initWithRootViewController:loginVC];
+//                        [weakself presentViewController:gygy animated:YES completion:nil];
+//                    }
+//                }];
+//            }];
+//        }else{
+//            //1.处理中
+//            if ([self.typeDegreeString isEqualToString:@"处理中"]) {
+//                [_appAgreeButton setTitle:@"已同意" forState:0];
+//                [_appAgreeButton setBackgroundColor:kSelectedColor];
+//                [_appAgreeButton setTitleColor:kBlackColor forState:0];
+//                
+//                //添加电话按钮
+//                UIButton *phoneButton = [UIButton newAutoLayoutView];
+//                [phoneButton setImage:[UIImage imageNamed:@"phone"] forState:0];
+//                phoneButton.backgroundColor = kBlueColor;
+//                [phoneButton addAction:^(UIButton *btn) {
+//                    if (weakself.certifiDataArray.count > 0) {
+//                        CertificationModel *model = weakself.certifiDataArray[0];
+//                        NSString *phoneStr = [NSString stringWithFormat:@"telprompt://%@",model.mobile];
+//                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
+//                    }
+//                }];
+//                [self.appAgreeButton addSubview:phoneButton];
+//                
+//                [phoneButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.appAgreeButton];
+//                [phoneButton autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.appAgreeButton];
+//                [phoneButton autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.appAgreeButton];
+//                [phoneButton autoSetDimension:ALDimensionWidth toSize:kTabBarHeight];
+//            }else{
+//                [_appAgreeButton setHidden:YES];
+//            }
+//        }
+//    }
+//    return _appAgreeButton;
+//}
 
 - (NSMutableArray *)certifiDataArray
 {
@@ -238,7 +238,7 @@
             if ([model.pictures isEqualToArray:@[]] || [model.pictures[0] isEqualToString:@""]) {
                 return 105;
             }else{
-                return 170;
+                return 160;
             }
         }else{
             return 145;
@@ -259,99 +259,95 @@
         if (!cell) {
             cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
-        
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
+        [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
+        cell.userNameButton.titleLabel.font = kFirstFont;
+        [cell.userActionButton setTitleColor:kGrayColor forState:0];
+        cell.userActionButton.titleLabel.font = kFirstFont;
+
         CertificationModel *cerModel;
         if (self.certifiDataArray.count > 0) {
            cerModel = self.certifiDataArray[0];
         }
         
         if ([cerModel.category integerValue] == 1) {//个人
-            NSString *tytyString = [NSString stringWithFormat:@"|  %@信息",self.typeString];
-            NSArray *pubArray = @[tytyString,@"姓名",@"身份证号码",@"身份图片",@"联系电话",@"邮箱",@"经典案例"];
+//            NSString *tytyString = [NSString stringWithFormat:@"基本信息"];
+            NSArray *pubArray = @[@"基本信息",@"姓名",@"身份证号码",@"身份图片",@"联系电话",@"邮箱"];
             [cell.userNameButton setTitle:pubArray[indexPath.row] forState:0];
             
             if (indexPath.row == 0) {
-                [cell.userNameButton setTitleColor:kBlueColor forState:0];
-                [cell.userActionButton setImage:[UIImage imageNamed:@"authentication_icon"] forState:0];
+                [cell.userNameButton setTitleColor:kBlackColor forState:0];
+                cell.userNameButton.titleLabel.font = kBigFont;
+                [cell.userActionButton setTitle:@"已认证个人" forState:0];
+                [cell.userActionButton setTitleColor:kYellowColor forState:0];
             }else if (indexPath.row == 1){
                 [cell.userActionButton setTitle:cerModel.name forState:0];
             }else if (indexPath.row == 2){
                 [cell.userActionButton setTitle:cerModel.cardno forState:0];
             }else if(indexPath.row == 3){
-                if ([cerModel.cardimg isEqualToString:@"undefined"]) {
-                    [cell.userActionButton setTitle:@"未上传" forState:0];
-                }else{
-                    [cell.userActionButton setTitle:@"已上传" forState:0];
-                }
+                [cell.userActionButton setTitle:@"已验证" forState:0];
             }else if (indexPath.row == 4){
                 [cell.userActionButton setTitle:[NSString getValidStringFromString:cerModel.mobile] forState:0];
             }else if (indexPath.row == 5){
                 [cell.userActionButton setTitle:[NSString getValidStringFromString:cerModel.email] forState:0];
-                
-            }else if (indexPath.row == 6){
-                [cell.userActionButton setTitle:@"查看" forState:0];
-                cell.userActionButton.userInteractionEnabled = NO;
-                [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
             }
+            
             return cell;
+            
         }else if ([cerModel.category integerValue] == 2){//律所
             
-            NSString *tytyString = [NSString stringWithFormat:@"|  %@信息",self.typeString];
-            NSArray *pubArray = @[tytyString,@"律所名称",@"执业证号",@"图片",@"联系人",@"联系方式",@"邮箱",@"经典案例"];
+//            NSString *tytyString = [NSString stringWithFormat:@"|  %@信息",self.typeString];
+            NSArray *pubArray = @[@"基本信息",@"律所名称",@"执业证号",@"身份图片",@"联系人",@"联系方式",@"邮箱",@"经典案例"];
             [cell.userNameButton setTitle:pubArray[indexPath.row] forState:0];
             
             if (indexPath.row == 0) {
-                [cell.userNameButton setTitleColor:kBlueColor forState:0];
-                [cell.userActionButton setImage:[UIImage imageNamed:@"authentication_icon"] forState:0];
+                [cell.userNameButton setTitleColor:kBlackColor forState:0];
+                cell.userNameButton.titleLabel.font = kBigFont;
+                [cell.userActionButton setTitle:@"已认证律所" forState:0];
+                [cell.userActionButton setTitleColor:kYellowColor forState:0];
             }else if (indexPath.row == 1){
                 [cell.userActionButton setTitle:cerModel.name forState:0];
             }else if (indexPath.row == 2){
                 [cell.userActionButton setTitle:cerModel.cardno forState:0];
             }else if(indexPath.row == 3){
-                if ([cerModel.cardimg isEqualToString:@"undefined"]) {
-                    [cell.userActionButton setTitle:@"未上传" forState:0];
-                }else{
-                    [cell.userActionButton setTitle:@"已上传" forState:0];
-                }
+                [cell.userActionButton setTitle:@"已验证" forState:0];
             }else if (indexPath.row == 4){
                 [cell.userActionButton setTitle:[NSString getValidStringFromString:cerModel.contact] forState:0];
             }else if (indexPath.row == 5){
                 [cell.userActionButton setTitle:[NSString getValidStringFromString:cerModel.mobile] forState:0];
-                
             }else if (indexPath.row == 6){
                 [cell.userActionButton setTitle:[NSString getValidStringFromString:cerModel.email] forState:0];
             }else if (indexPath.row == 7){
-                [cell.userActionButton setTitle:@"查看" forState:0];
                 cell.userActionButton.userInteractionEnabled = NO;
-                [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+                if ([cerModel.casedesc isEqualToString:@""] || !cerModel.casedesc) {
+                    [cell.userActionButton setTitle:@"暂无" forState:0];
+                }else{
+                    [cell.userActionButton setTitle:@"查看" forState:0];
+                    [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+                }
             }
             return cell;
         }else if ([cerModel.category integerValue] == 3){//公司
             
-            NSString *tytyString = [NSString stringWithFormat:@"|  %@信息",self.typeString];
-            NSArray *pubArray = @[tytyString,@"公司名称",@"营业执照号",@"图片",@"联系人",@"联系方式",@"企业邮箱",@"公司经营地址",@"公司网站",@"经典案例"];
+//            NSString *tytyString = [NSString stringWithFormat:@"|  %@信息",self.typeString];
+            NSArray *pubArray = @[@"基本信息",@"公司名称",@"营业执照号",@"身份图片",@"联系人",@"联系方式",@"企业邮箱",@"公司经营地址",@"公司网站",@"经典案例"];
             [cell.userNameButton setTitle:pubArray[indexPath.row] forState:0];
             
             if (indexPath.row == 0) {
-                [cell.userNameButton setTitleColor:kBlueColor forState:0];
-                [cell.userActionButton setImage:[UIImage imageNamed:@"authentication_icon"] forState:0];
+                [cell.userNameButton setTitleColor:kBlackColor forState:0];
+                cell.userNameButton.titleLabel.font = kBigFont;
+                [cell.userActionButton setTitle:@"已认证公司" forState:0];
+                [cell.userActionButton setTitleColor:kYellowColor forState:0];
             }else if (indexPath.row == 1){
                 [cell.userActionButton setTitle:cerModel.name forState:0];
             }else if (indexPath.row == 2){
                 [cell.userActionButton setTitle:cerModel.cardno forState:0];
             }else if(indexPath.row == 3){
-                if ([cerModel.cardimg isEqualToString:@"undefined"]) {
-                    [cell.userActionButton setTitle:@"未上传" forState:0];
-                }else{
-                    [cell.userActionButton setTitle:@"已上传" forState:0];
-                }
+                [cell.userActionButton setTitle:@"已验证" forState:0];
             }else if (indexPath.row == 4){
                 [cell.userActionButton setTitle:[NSString getValidStringFromString:cerModel.contact] forState:0];
             }else if (indexPath.row == 5){
                 [cell.userActionButton setTitle:[NSString getValidStringFromString:cerModel.mobile] forState:0];
-                
             }else if (indexPath.row == 6){
                 [cell.userActionButton setTitle:[NSString getValidStringFromString:cerModel.email] forState:0];
             }else if (indexPath.row == 7){
@@ -359,9 +355,14 @@
             }else if (indexPath.row == 8){
                 [cell.userActionButton setTitle:[NSString getValidStringFromString:cerModel.enterprisewebsite] forState:0];
             }else if (indexPath.row == 9){
-                [cell.userActionButton setTitle:@"查看" forState:0];
+                cell.userNameButton.userInteractionEnabled = NO;
                 cell.userActionButton.userInteractionEnabled = NO;
-                [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+                if ([cerModel.casedesc isEqualToString:@""] || !cerModel.casedesc) {
+                    [cell.userActionButton setTitle:@"暂无" forState:0];
+                }else{
+                    [cell.userActionButton setTitle:@"查看" forState:0];
+                    [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+                }
             }
             return cell;
         }
@@ -377,19 +378,24 @@
         }
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        [cell.userNameButton setTitleColor:kBlueColor forState:0];
         cell.userActionButton.userInteractionEnabled = NO;
+        
         if (self.allEvaDataArray.count > 0) {
             EvaluateResponse *response = self.allEvaResponse[0];
             float creditor = [response.creditor floatValue];
-            NSString *creditorStr = [NSString stringWithFormat:@"|  收到的评价(%.1f分)",creditor];
-            [cell.userNameButton setTitle:creditorStr forState:0];
             
-            [cell.userActionButton setTitle:@"查看更多" forState:0];
+            NSString *creditor1 = @"收到的评价";
+            NSString *creditor2 = [NSString stringWithFormat:@"(%.1f分)",creditor];
+            NSString *creditorStr = [NSString stringWithFormat:@"%@%@",creditor1,creditor2];
+            NSMutableAttributedString *attributeCreditor = [[NSMutableAttributedString alloc] initWithString:creditorStr];
+            [attributeCreditor addAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kBlackColor} range:NSMakeRange(0, creditor1.length)];
+            [attributeCreditor addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kBlackColor} range:NSMakeRange(creditor1.length, creditor2.length)];
+            [cell.userNameButton setAttributedTitle:attributeCreditor forState:0];
+                        
+            [cell.userActionButton setTitle:@"查看全部  " forState:0];
             [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
         }else{
-            [cell.userNameButton setTitle:@"|  收到的评价" forState:0];
+            [cell.userNameButton setTitle:@"收到的评价" forState:0];
             [cell.userActionButton setTitle:@"暂无" forState:0];
         }
         return cell;
@@ -489,26 +495,25 @@
             cerModel = self.certifiDataArray[0];
         }
         
-        if ([cerModel.category integerValue] == 1) {
-            if (indexPath.row == 6) {
-                CaseViewController *caseVC = [[CaseViewController alloc] init];
-                caseVC.caseString = cerModel.casedesc;
-                [self.navigationController pushViewController:caseVC animated:YES];
-            }
-        }else if ([cerModel.category integerValue] == 2){
+        if ([cerModel.category integerValue] == 2){
             if (indexPath.row == 7) {
-                CaseViewController *caseVC = [[CaseViewController alloc] init];
-                caseVC.caseString = cerModel.casedesc;
-                [self.navigationController pushViewController:caseVC animated:YES];
+                if ([cerModel.casedesc isEqualToString:@""] || !cerModel.casedesc) {
+                }else{
+                    CaseViewController *caseVC = [[CaseViewController alloc] init];
+                    caseVC.caseString = cerModel.casedesc;
+                    [self.navigationController pushViewController:caseVC animated:YES];
+                }
             }
         }else if ([cerModel.category integerValue] == 3){
             if (indexPath.row == 9) {
-                CaseViewController *caseVC = [[CaseViewController alloc] init];
-                caseVC.caseString = cerModel.casedesc;
-                [self.navigationController pushViewController:caseVC animated:YES];
+                if ([cerModel.casedesc isEqualToString:@""] || !cerModel.casedesc) {
+                }else{
+                    CaseViewController *caseVC = [[CaseViewController alloc] init];
+                    caseVC.caseString = cerModel.casedesc;
+                    [self.navigationController pushViewController:caseVC animated:YES];
+                }
             }
         }
-
     }else if ((indexPath.section == 1) && (indexPath.row == 0)) {//全部评价
         
         if (self.allEvaDataArray.count > 0) {
@@ -523,39 +528,39 @@
 }
 
 #pragma mark - method
-- (void)warnning
-{
-    NSString *ssss = [NSString stringWithFormat:@"是否提醒%@完善信息",self.typeString];
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"" message:ssss preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction *actionOK = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [self warnningMethod];
-    }];
-    
-    UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil];
-    
-    [alertController addAction:actionOK];
-    [alertController addAction:actionCancel];
-    
-    [self.navigationController presentViewController:alertController animated:YES completion:nil];
-}
-
-- (void)warnningMethod
-{
-    NSString *warnString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kCheckOrderToWarnning];
-    NSDictionary *params = @{@"token" : [self getValidateToken],
-                             @"id" : self.idString,
-                             @"category" : self.categoryString,
-                             @"pid" : self.pidString
-                             };
-    QDFWeakSelf;
-    [self requestDataPostWithString:warnString params:params successBlock:^(id responseObject) {
-        BaseModel *warnModel = [BaseModel objectWithKeyValues:responseObject];
-        [weakself showHint:warnModel.msg];
-    } andFailBlock:^(NSError *error) {
-        
-    }];
-}
+//- (void)warnning
+//{
+//    NSString *ssss = [NSString stringWithFormat:@"是否提醒%@完善信息",self.typeString];
+//    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"" message:ssss preferredStyle:UIAlertControllerStyleAlert];
+//    
+//    UIAlertAction *actionOK = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//        [self warnningMethod];
+//    }];
+//    
+//    UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil];
+//    
+//    [alertController addAction:actionOK];
+//    [alertController addAction:actionCancel];
+//    
+//    [self.navigationController presentViewController:alertController animated:YES completion:nil];
+//}
+//
+//- (void)warnningMethod
+//{
+//    NSString *warnString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kCheckOrderToWarnning];
+//    NSDictionary *params = @{@"token" : [self getValidateToken],
+//                             @"id" : self.idString,
+//                             @"category" : self.categoryString,
+//                             @"pid" : self.pidString
+//                             };
+//    QDFWeakSelf;
+//    [self requestDataPostWithString:warnString params:params successBlock:^(id responseObject) {
+//        BaseModel *warnModel = [BaseModel objectWithKeyValues:responseObject];
+//        [weakself showHint:warnModel.msg];
+//    } andFailBlock:^(NSError *error) {
+//        
+//    }];
+//}
 
 - (void)getMessageOfOrderPeople
 {
@@ -583,6 +588,7 @@
             
             [weakself.checkDetailTableView reloadData];
             [weakself getAllEvaluationListWithPage:@"1"];
+            
         }else{
             [weakself showHint:response.msg];
         }

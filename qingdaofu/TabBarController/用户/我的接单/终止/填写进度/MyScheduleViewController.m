@@ -138,6 +138,11 @@
             cell.agentLabel.text = @"案号";
             cell.agentTextField.placeholder = @"请输入案号";
             
+            QDFWeakSelf;
+            [cell setDidEndEditing:^(NSString *text) {
+                [weakself.scheduleDictionary setValue:text forKey:@"case"];
+            }];
+            
             return cell;
 
         }else if (indexPath.row == 2){
@@ -323,7 +328,7 @@
                 cell.agentTextField.text = text;
                 
                 NSString *auditStr = [NSString stringWithFormat:@"%ld",(long)row - 1];
-                [weakself.scheduleDictionary setValue:auditStr forKey:@"udit"];
+                [weakself.scheduleDictionary setValue:auditStr forKey:@"audit"];
                 
 //                [weakself showBlurInView:self.view withArray:suitNoArr andTitle:@"选择案号类型" finishBlock:^(NSString *text,NSInteger row) {
 //                    [weakcell.caseGoButton setTitle:text forState:0];
