@@ -93,7 +93,6 @@
 		A16175531D1291D5001BB200 /* TokenModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A16175521D1291D5001BB200 /* TokenModel.m */; };
 		A16175561D12A1CF001BB200 /* LoginTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = A16175551D12A1CF001BB200 /* LoginTableView.m */; };
 		A161755D1D138A6A001BB200 /* RecordResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A161755C1D138A6A001BB200 /* RecordResponse.m */; };
-		A161756C1D13A731001BB200 /* SkyAssociationMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = A161756B1D13A731001BB200 /* SkyAssociationMenuView.m */; };
 		A16391501D1D12110051F1D0 /* DebtCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A163914F1D1D12110051F1D0 /* DebtCell.m */; };
 		A16391541D1D13360051F1D0 /* DebtModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A16391531D1D13360051F1D0 /* DebtModel.m */; };
 		A16391571D1D22350051F1D0 /* list_chapter@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A16391551D1D22350051F1D0 /* list_chapter@2x.png */; };
@@ -209,7 +208,6 @@
 		A17964FD1CD3682A00B6AD47 /* MyDetailStoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A17964FC1CD3682A00B6AD47 /* MyDetailStoreViewController.m */; };
 		A17B74AA1D5C1CF50015D86A /* bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A17B74A81D5C1CF50015D86A /* bg@2x.png */; };
 		A17B74AB1D5C1CF50015D86A /* bg@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A17B74A91D5C1CF50015D86A /* bg@3x.png */; };
-		A17B74AF1D5C2B2F0015D86A /* HorizontalProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = A17B74AE1D5C2B2F0015D86A /* HorizontalProgressView.m */; };
 		A17B74B41D5C494E0015D86A /* progress_point_s@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A17B74B01D5C494E0015D86A /* progress_point_s@2x.png */; };
 		A17B74B51D5C494E0015D86A /* progress_point_s@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A17B74B11D5C494E0015D86A /* progress_point_s@3x.png */; };
 		A17B74B61D5C494E0015D86A /* progress_point@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A17B74B21D5C494E0015D86A /* progress_point@2x.png */; };
@@ -289,7 +287,6 @@
 		A18FC06D1D3394C900B1FCD4 /* qing@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A18FC06B1D3394C900B1FCD4 /* qing@3x.png */; };
 		A18FC0701D34C3AD00B1FCD4 /* banner_account_bitmap@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A18FC06E1D34C3AD00B1FCD4 /* banner_account_bitmap@2x.png */; };
 		A18FC0711D34C3AD00B1FCD4 /* banner_account_bitmap@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A18FC06F1D34C3AD00B1FCD4 /* banner_account_bitmap@3x.png */; };
-		A19266A21D2CDCA900DD7E9E /* ZYKeyboardUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = A19266A11D2CDCA900DD7E9E /* ZYKeyboardUtil.m */; };
 		A192B4B01CDAFAC60053FC4C /* MyScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A192B4AF1CDAFAC60053FC4C /* MyScheduleViewController.m */; };
 		A192B4B41CDB2CAF0053FC4C /* AdditionMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A192B4B31CDB2CAF0053FC4C /* AdditionMessageViewController.m */; };
 		A192B4B81CDB34030053FC4C /* PaceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A192B4B71CDB34030053FC4C /* PaceViewController.m */; };
@@ -482,6 +479,9 @@
 		A1A3191E1D6D529E0001242D /* PropertyGenerateModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A3191D1D6D529E0001242D /* PropertyGenerateModel.m */; };
 		A1A319531D6D67CE0001242D /* PayResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A319521D6D67CE0001242D /* PayResponse.m */; };
 		A1A319561D6D67E50001242D /* PayModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A319551D6D67E50001242D /* PayModel.m */; };
+		A1A319771D6D6F5D0001242D /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A1A319741D6D6F5D0001242D /* libWeChatSDK.a */; };
+		A1A319991D6D87A40001242D /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A1A319981D6D87A40001242D /* libsqlite3.0.tbd */; };
+		A1A3199D1D6D8F720001242D /* WXApiManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A3199B1D6D8F720001242D /* WXApiManager.m */; };
 		A1A34C021CE2F8F900AD454A /* MineUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A34C011CE2F8F900AD454A /* MineUserCell.m */; };
 		A1A34C161CE3148A00AD454A /* UploadFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A34C151CE3148A00AD454A /* UploadFilesViewController.m */; };
 		A1A34C231CE319C000AD454A /* bond_icon_certificate@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A34C171CE319C000AD454A /* bond_icon_certificate@2x.png */; };
@@ -799,8 +799,6 @@
 		A16175551D12A1CF001BB200 /* LoginTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginTableView.m; sourceTree = "<group>"; };
 		A161755B1D138A6A001BB200 /* RecordResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordResponse.h; sourceTree = "<group>"; };
 		A161755C1D138A6A001BB200 /* RecordResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordResponse.m; sourceTree = "<group>"; };
-		A161756A1D13A731001BB200 /* SkyAssociationMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkyAssociationMenuView.h; sourceTree = "<group>"; };
-		A161756B1D13A731001BB200 /* SkyAssociationMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkyAssociationMenuView.m; sourceTree = "<group>"; };
 		A163914E1D1D12110051F1D0 /* DebtCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebtCell.h; sourceTree = "<group>"; };
 		A163914F1D1D12110051F1D0 /* DebtCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebtCell.m; sourceTree = "<group>"; };
 		A16391521D1D13360051F1D0 /* DebtModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebtModel.h; sourceTree = "<group>"; };
@@ -978,8 +976,6 @@
 		A17964FC1CD3682A00B6AD47 /* MyDetailStoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyDetailStoreViewController.m; sourceTree = "<group>"; };
 		A17B74A81D5C1CF50015D86A /* bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg@2x.png"; sourceTree = "<group>"; };
 		A17B74A91D5C1CF50015D86A /* bg@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg@3x.png"; sourceTree = "<group>"; };
-		A17B74AD1D5C2B2F0015D86A /* HorizontalProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HorizontalProgressView.h; sourceTree = "<group>"; };
-		A17B74AE1D5C2B2F0015D86A /* HorizontalProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HorizontalProgressView.m; sourceTree = "<group>"; };
 		A17B74B01D5C494E0015D86A /* progress_point_s@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "progress_point_s@2x.png"; sourceTree = "<group>"; };
 		A17B74B11D5C494E0015D86A /* progress_point_s@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "progress_point_s@3x.png"; sourceTree = "<group>"; };
 		A17B74B21D5C494E0015D86A /* progress_point@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "progress_point@2x.png"; sourceTree = "<group>"; };
@@ -1092,8 +1088,6 @@
 		A18FC06B1D3394C900B1FCD4 /* qing@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "qing@3x.png"; sourceTree = "<group>"; };
 		A18FC06E1D34C3AD00B1FCD4 /* banner_account_bitmap@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "banner_account_bitmap@2x.png"; sourceTree = "<group>"; };
 		A18FC06F1D34C3AD00B1FCD4 /* banner_account_bitmap@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "banner_account_bitmap@3x.png"; sourceTree = "<group>"; };
-		A19266A01D2CDCA900DD7E9E /* ZYKeyboardUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZYKeyboardUtil.h; sourceTree = "<group>"; };
-		A19266A11D2CDCA900DD7E9E /* ZYKeyboardUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZYKeyboardUtil.m; sourceTree = "<group>"; };
 		A192B4AE1CDAFAC60053FC4C /* MyScheduleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyScheduleViewController.h; sourceTree = "<group>"; };
 		A192B4AF1CDAFAC60053FC4C /* MyScheduleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyScheduleViewController.m; sourceTree = "<group>"; };
 		A192B4B21CDB2CAF0053FC4C /* AdditionMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdditionMessageViewController.h; sourceTree = "<group>"; };
@@ -1369,6 +1363,12 @@
 		A1A319521D6D67CE0001242D /* PayResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PayResponse.m; sourceTree = "<group>"; };
 		A1A319541D6D67E50001242D /* PayModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayModel.h; sourceTree = "<group>"; };
 		A1A319551D6D67E50001242D /* PayModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PayModel.m; sourceTree = "<group>"; };
+		A1A319741D6D6F5D0001242D /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK.a; sourceTree = "<group>"; };
+		A1A319751D6D6F5D0001242D /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
+		A1A319761D6D6F5D0001242D /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
+		A1A319981D6D87A40001242D /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		A1A3199B1D6D8F720001242D /* WXApiManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXApiManager.m; sourceTree = "<group>"; };
+		A1A3199C1D6D8F720001242D /* WXApiManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiManager.h; sourceTree = "<group>"; };
 		A1A34C001CE2F8F900AD454A /* MineUserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MineUserCell.h; sourceTree = "<group>"; };
 		A1A34C011CE2F8F900AD454A /* MineUserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MineUserCell.m; sourceTree = "<group>"; };
 		A1A34C141CE3148A00AD454A /* UploadFilesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadFilesViewController.h; sourceTree = "<group>"; };
@@ -1598,7 +1598,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1A319991D6D87A40001242D /* libsqlite3.0.tbd in Frameworks */,
 				A16C1C371D23B2EF002CBCB0 /* AMapSearchKit.framework in Frameworks */,
+				A1A319771D6D6F5D0001242D /* libWeChatSDK.a in Frameworks */,
 				A1A0171B1C5B3BFD00027134 /* Security.framework in Frameworks */,
 				A1A017191C5B3BF600027134 /* libc++.tbd in Frameworks */,
 				A1A017171C5B3BD600027134 /* libstdc++.6.0.9.tbd in Frameworks */,
@@ -1851,15 +1853,6 @@
 				A161755C1D138A6A001BB200 /* RecordResponse.m */,
 			);
 			path = model;
-			sourceTree = "<group>";
-		};
-		A16175691D13A70F001BB200 /* SkyAssociationMenu */ = {
-			isa = PBXGroup;
-			children = (
-				A161756A1D13A731001BB200 /* SkyAssociationMenuView.h */,
-				A161756B1D13A731001BB200 /* SkyAssociationMenuView.m */,
-			);
-			path = SkyAssociationMenu;
 			sourceTree = "<group>";
 		};
 		A16391511D1D131E0051F1D0 /* model */ = {
@@ -2161,15 +2154,6 @@
 			path = view;
 			sourceTree = "<group>";
 		};
-		A17B74AC1D5C2B2F0015D86A /* HorizontalProgress */ = {
-			isa = PBXGroup;
-			children = (
-				A17B74AD1D5C2B2F0015D86A /* HorizontalProgressView.h */,
-				A17B74AE1D5C2B2F0015D86A /* HorizontalProgressView.m */,
-			);
-			path = HorizontalProgress;
-			sourceTree = "<group>";
-		};
 		A17EE3861CD86B2100ECC631 /* 关于清道夫 */ = {
 			isa = PBXGroup;
 			children = (
@@ -2322,15 +2306,6 @@
 				A18DC9FA1D2514F60021B0BF /* 960.png */,
 			);
 			path = "启动页";
-			sourceTree = "<group>";
-		};
-		A192669F1D2CDCA900DD7E9E /* Keyboard */ = {
-			isa = PBXGroup;
-			children = (
-				A19266A01D2CDCA900DD7E9E /* ZYKeyboardUtil.h */,
-				A19266A11D2CDCA900DD7E9E /* ZYKeyboardUtil.m */,
-			);
-			path = Keyboard;
 			sourceTree = "<group>";
 		};
 		A192B4AD1CDAFAAC0053FC4C /* 填写进度 */ = {
@@ -3053,6 +3028,7 @@
 		A1A016961C5A0C0300027134 = {
 			isa = PBXGroup;
 			children = (
+				A1A319981D6D87A40001242D /* libsqlite3.0.tbd */,
 				A1982B371CFFF484001770A7 /* StoreKit.framework */,
 				A1A016A11C5A0C0300027134 /* qingdaofu */,
 				A1A016BB1C5A0C0300027134 /* qingdaofuTests */,
@@ -3212,12 +3188,10 @@
 		A1A017311C5B677200027134 /* 第三方 */ = {
 			isa = PBXGroup;
 			children = (
-				A17B74AC1D5C2B2F0015D86A /* HorizontalProgress */,
-				A192669F1D2CDCA900DD7E9E /* Keyboard */,
+				A1A319721D6D6F480001242D /* WX */,
 				A163915A1D20194B0051F1D0 /* ImageBrowser */,
 				A1B0291C1D17CE6F00F32A09 /* AFNetworking */,
 				A1B028C81D1794DC00F32A09 /* SDWebImage */,
-				A16175691D13A70F001BB200 /* SkyAssociationMenu */,
 				A159F9691D0D727A00A6A024 /* MJRefresh */,
 				A159F93A1D0BEE5E00A6A024 /* MutipleChoiceImage */,
 				A1770E211CFEA2C1003579E1 /* StarView */,
@@ -3357,6 +3331,34 @@
 				A1A319551D6D67E50001242D /* PayModel.m */,
 			);
 			path = model;
+			sourceTree = "<group>";
+		};
+		A1A319721D6D6F480001242D /* WX */ = {
+			isa = PBXGroup;
+			children = (
+				A1A3199A1D6D8F5A0001242D /* Control */,
+				A1A319731D6D6F5D0001242D /* SDKExport */,
+			);
+			path = WX;
+			sourceTree = "<group>";
+		};
+		A1A319731D6D6F5D0001242D /* SDKExport */ = {
+			isa = PBXGroup;
+			children = (
+				A1A319741D6D6F5D0001242D /* libWeChatSDK.a */,
+				A1A319751D6D6F5D0001242D /* WXApi.h */,
+				A1A319761D6D6F5D0001242D /* WXApiObject.h */,
+			);
+			path = SDKExport;
+			sourceTree = "<group>";
+		};
+		A1A3199A1D6D8F5A0001242D /* Control */ = {
+			isa = PBXGroup;
+			children = (
+				A1A3199B1D6D8F720001242D /* WXApiManager.m */,
+				A1A3199C1D6D8F720001242D /* WXApiManager.h */,
+			);
+			path = Control;
 			sourceTree = "<group>";
 		};
 		A1A34C131CE313F300AD454A /* 上传文件 */ = {
@@ -4166,7 +4168,6 @@
 				A154B8F51CE1C14100884CA4 /* ReportSuitViewController.m in Sources */,
 				A1A0C8CA1D4B21FF00BC63C6 /* HouseChooseViewController.m in Sources */,
 				A1B0292B1D17CE6F00F32A09 /* AFNetworkReachabilityManager.m in Sources */,
-				A19266A21D2CDCA900DD7E9E /* ZYKeyboardUtil.m in Sources */,
 				A159F9621D0D67FA00A6A024 /* DelayResponse.m in Sources */,
 				A1B028E71D1794DC00F32A09 /* SDImageCache.m in Sources */,
 				A14190481D3228CC005DA20E /* UIViewController+Keyboard.m in Sources */,
@@ -4263,7 +4264,6 @@
 				A1770E191CFE6AB5003579E1 /* CompleteCompanyTableViewCell.m in Sources */,
 				A1A017301C5B607300027134 /* UIImage+Color.m in Sources */,
 				A17634191D065E4900CD4623 /* RowsModel.m in Sources */,
-				A161756C1D13A731001BB200 /* SkyAssociationMenuView.m in Sources */,
 				A1A016A41C5A0C0300027134 /* main.m in Sources */,
 				A19B8E501CCF532B00F8EBF2 /* NewProductViewController.m in Sources */,
 				A17F7BE91CE578EB00E882A3 /* JKCountDownButton.m in Sources */,
@@ -4312,11 +4312,11 @@
 				A14C17591D07A78E003826F8 /* NSDate+FormatterTime.m in Sources */,
 				A13EA5711D2A1928001B83A7 /* MessageResponse.m in Sources */,
 				A1A0172A1C5B422700027134 /* NetworkViewController.m in Sources */,
+				A1A3199D1D6D8F720001242D /* WXApiManager.m in Sources */,
 				A1A97E571CDC671000EDE320 /* SystemMessagesViewController.m in Sources */,
 				A159F9481D0BEE5E00A6A024 /* ZYQAssetPickerController.m in Sources */,
 				A1A017351C5B67D400027134 /* MBProgressHUD.m in Sources */,
 				A19985191CE02BFC0055A572 /* ModifyView.m in Sources */,
-				A17B74AF1D5C2B2F0015D86A /* HorizontalProgressView.m in Sources */,
 				A1A017571C5B696A00027134 /* NSObject+MJProperty.m in Sources */,
 				A1A34C341CE32C7100AD454A /* LoginViewController.m in Sources */,
 				A1718DE41CFD64CD0007DA6F /* CaseNoCell.m in Sources */,

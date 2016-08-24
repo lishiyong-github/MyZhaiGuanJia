@@ -10,9 +10,8 @@
 #import "ApplicationSuccessViewController.h"
 #import "HousePayingEditViewController.h"
 
-
-//#import "WXApiRequestHandler.h"
-//#import "WXApiManager.h"
+#import "WXApiObject.h"
+#import "WXApiManager.h"
 
 #import "BaseCommitView.h"
 
@@ -23,7 +22,7 @@
 #import "PayResponse.h"
 #import "PayModel.h"
 
-@interface HousePayingViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface HousePayingViewController ()<UITableViewDelegate,UITableViewDataSource,WXApiManagerDelegate>
 
 @property (nonatomic,strong) UITableView *powerTableView;
 @property (nonatomic,strong) BaseCommitView *powerCommitView;
@@ -197,7 +196,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {//编辑
-//        [self.navigationController popViewControllerAnimated:YES];
         HousePayingEditViewController *housePayingEditVC = [[HousePayingEditViewController alloc] init];
         [self.navigationController pushViewController:housePayingEditVC animated:YES];
     }
@@ -205,23 +203,38 @@
 
 #pragma mark - method
 - (void)confirmToGenerateTheOrder
-{
-//    [WXApi registerApp:@"wxd930ea5d5a258f4f" withDescription：@"demo 2.0"];
-    
+{    
     NSString *huhuString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,KhousePropertyConfirmOrderString];
     NSDictionary *params = @{@"id" : self.genarateId,
                              @"paytype" : @"APP",
                              @"token" : [self getValidateToken]
                              };
-    
     QDFWeakSelf;
     [self requestDataPostWithString:huhuString params:params successBlock:^(id responseObject) {
+        
+        NSDictionary *uiuiu = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
         PayResponse *payResponse = [PayResponse objectWithKeyValues:responseObject];
         
         if ([payResponse.code isEqualToString:@"0000"]) {
-            
             NSLog(@"调起微信支付");
+            
+            PayModel *payModel = payResponse.paydata;
+            // 调起微信支付
+            PayReq *reqPay = [[PayReq alloc] init];
+            reqPay.partnerId = @"1351216801";
+            reqPay.prepayId = weakself.genarateId;
+//            uiuiu[@"result"][@"paydata"][@"WXreturn"][@"prepay_id"];
+//            weakself.genarateId;
+            reqPay.nonceStr = payModel.nonceStr;
+//            uiuiu[@"result"][@"paydata"][@"WXreturn"][@"nonce_str"];
+//            payModel.nonceStr;
+            reqPay.timeStamp = (UInt32)[payModel.timeStamp integerValue];
+            reqPay.package = payModel.package;
+            reqPay.sign = payModel.paySign;
+//            uiuiu[@"result"][@"paydata"][@"WXreturn"][@"sign"];
+//            payModel.paySign;
+            [WXApi sendReq:reqPay];
             
         }else{
             [weakself showHint:payResponse.msg];
@@ -230,97 +243,6 @@
     } andFailBlock:^(NSError *error) {
         
     }];
-}
-
-/*
-#pragma mark - delegate
-- (void)managerDidRecvGetMessageReq:(GetMessageFromWXReq *)req {
-    // 微信请求App提供内容， 需要app提供内容后使用sendRsp返回
-    NSString *strTitle = [NSString stringWithFormat:@"微信请求App提供内容"];
-    NSString *strMsg = [NSString stringWithFormat:@"openID: %@", req.openID];
-    
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:strTitle
-                                                    message:strMsg
-                                                   delegate:self
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil, nil];
-//    alert.tag = kRecvGetMessageReqAlertTag;
-    [alert show];
-}
-
-- (void)managerDidRecvShowMessageReq:(ShowMessageFromWXReq *)req {
-    WXMediaMessage *msg = req.message;
-    
-    //显示微信传过来的内容
-    WXAppExtendObject *obj = msg.mediaObject;
-    
-    NSString *strTitle = [NSString stringWithFormat:@"微信请求App显示内容"];
-    NSString *strMsg = [NSString stringWithFormat:@"openID: %@, 标题：%@ \n内容：%@ \n附带信息：%@ \n缩略图:%lu bytes\n附加消息:%@\n", req.openID, msg.title, msg.description, obj.extInfo, (unsigned long)msg.thumbData.length, msg.messageExt];
-    
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:strTitle
-                                                    message:strMsg
-                                                   delegate:self
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil, nil];
-    [alert show];
-}
-
-- (void)managerDidRecvLaunchFromWXReq:(LaunchFromWXReq *)req {
-    WXMediaMessage *msg = req.message;
-    
-    //从微信启动App
-    NSString *strTitle = [NSString stringWithFormat:@"从微信启动"];
-    NSString *strMsg = [NSString stringWithFormat:@"openID: %@, messageExt:%@", req.openID, msg.messageExt];
-    
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:strTitle
-                                                    message:strMsg
-                                                   delegate:self
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil, nil];
-    [alert show];
-}
-
-- (void)managerDidRecvMessageResponse:(SendMessageToWXResp *)response {
-    NSString *strTitle = [NSString stringWithFormat:@"发送媒体消息结果"];
-    NSString *strMsg = [NSString stringWithFormat:@"errcode:%d", response.errCode];
-    
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:strTitle
-                                                    message:strMsg
-                                                   delegate:self
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil, nil];
-    [alert show];
-}
-
-- (void)managerDidRecvAddCardResponse:(AddCardToWXCardPackageResp *)response {
-    NSMutableString* cardStr = [[NSMutableString alloc] init];
-    for (WXCardItem* cardItem in response.cardAry) {
-        [cardStr appendString:[NSString stringWithFormat:@"cardid:%@ cardext:%@ cardstate:%u\n",cardItem.cardId,cardItem.extMsg,(unsigned int)cardItem.cardState]];
-    }
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"add card resp"
-                                                    message:cardStr
-                                                   delegate:self
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil, nil];
-    [alert show];
-}
-
-- (void)managerDidRecvAuthResponse:(SendAuthResp *)response {
-    NSString *strTitle = [NSString stringWithFormat:@"Auth结果"];
-    NSString *strMsg = [NSString stringWithFormat:@"code:%@,state:%@,errcode:%d", response.code, response.state, response.errCode];
-    
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:strTitle
-                                                    message:strMsg
-                                                   delegate:self
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil, nil];
-    [alert show];
-}
-*/
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 /*
