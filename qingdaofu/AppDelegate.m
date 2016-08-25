@@ -45,8 +45,6 @@
     });
 
 //    [NSThread sleepForTimeInterval:0.1];//设置启动页面时间
-    
-    //wxb4ba3c02aa476ea1
 
     [WXApi registerApp:WXAppID withDescription:@"demo 2.0"];
 
@@ -62,37 +60,6 @@
 {
     return  [WXApi handleOpenURL:url delegate:self];
 }
-
- //微信支付成功或者失败回调
--(void) onResp:(BaseResp*)resp
-{
-    NSString *strMsg = [NSString stringWithFormat:@"errcode:%d", resp.errCode];
-    NSString *strTitle;
-    
-    if([resp isKindOfClass:[SendMessageToWXResp class]])
-    {
-        strTitle = [NSString stringWithFormat:@"发送媒体消息结果"];
-    }
-    if([resp isKindOfClass:[PayResp class]]){
-        //支付返回结果，实际支付结果需要去微信服务器端查询
-        strTitle = [NSString stringWithFormat:@"支付结果"];
-        
-        switch (resp.errCode) {
-            case WXSuccess:
-                strMsg = @"支付结果：成功！";
-                NSLog(@"支付成功－PaySuccess，retcode = %d", resp.errCode);
-                break;
-                
-            default:
-                strMsg = [NSString stringWithFormat:@"支付结果：失败！retcode = %d, retstr = %@", resp.errCode,resp.errStr];
-                NSLog(@"错误，retcode = %d, retstr = %@", resp.errCode,resp.errStr);
-                break;
-        }
-    }
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:strTitle message:strMsg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-    [alert show];
-}
-//
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

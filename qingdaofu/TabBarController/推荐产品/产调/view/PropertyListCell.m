@@ -48,8 +48,6 @@
 {
     if (!_leftButton) {
         _leftButton = [UIButton newAutoLayoutView];
-//        _leftButton.layer.borderColor = kBorderColor.CGColor;
-//        _leftButton.layer.borderWidth = kLineWidth;
         _leftButton.titleLabel.font = kFirstFont;
         [_leftButton setTitleColor:kBlackColor forState:0];
     }

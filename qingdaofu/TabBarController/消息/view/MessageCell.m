@@ -35,7 +35,7 @@
         [self.timeLabel autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.userLabel];
         [self.timeLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         
-        [self.newsLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.userLabel withOffset:5];
+        [self.newsLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.userLabel withOffset:kBigPadding/2];
         [self.newsLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.userLabel];
         [self.newsLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.countLabel withOffset:-kBigPadding];
         

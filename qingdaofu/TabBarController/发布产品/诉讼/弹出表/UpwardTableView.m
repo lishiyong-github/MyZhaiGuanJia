@@ -81,6 +81,7 @@
             cell.backgroundColor = UIColorFromRGB(0xd8e5ee);
             [cell.cancelButton setTitleColor:kBlueColor forState:0];
             [cell.cancelButton setTitle:@"取消" forState:0];
+            cell.cancelButton.userInteractionEnabled = YES;
             [cell.oneButton setTitleColor:kBlackColor forState:0];
             [cell.oneButton setTitle:self.upwardTitleString forState:0];
             
@@ -92,6 +93,7 @@
             }];
         }else{
             cell.backgroundColor = kNavColor;
+            cell.cancelButton.userInteractionEnabled = NO;
             [cell.cancelButton setTitleColor:kBlackColor forState:0];
             [cell.oneButton setHidden:YES];
             [cell.cancelButton setTitle:self.upwardDataList[indexPath.row-1] forState:0];

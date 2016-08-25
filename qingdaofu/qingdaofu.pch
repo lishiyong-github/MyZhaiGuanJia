@@ -237,6 +237,8 @@
 
 #define kHousePropertyOrderString @"property/create"  //产调生成
 #define KhousePropertyConfirmOrderString @"property/pay"  //确认支付产调
+#define kHousePropertyListString @"property/index"  //产调列表
+#define kHousePorpertyEditString @"property/update"  //编辑信息
 
 #endif
 

@@ -7,19 +7,21 @@
 //
 
 #import "HousePayingEditViewController.h"
-
+#import "HousePayingViewController.h"
 #import "HouseChooseViewController.h"
 
 #import "MineUserCell.h"
 #import "EditDebtAddressCell.h"
 #import "AgentCell.h"
 
+#import "PropertyGenerateModel.h"
+
 @interface HousePayingEditViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic,strong) UITableView *housePropertyTableView;
-
 @property (nonatomic,assign) BOOL didSetupConstraints;
 
+@property (nonatomic,strong) NSMutableDictionary *payEditDic;
 
 @end
 
@@ -68,6 +70,14 @@
     return _housePropertyTableView;
 }
 
+- (NSMutableDictionary *)payEditDic
+{
+    if (!_payEditDic) {
+        _payEditDic = [NSMutableDictionary dictionary];
+    }
+    return _payEditDic;
+}
+
 #pragma mark -tableview delegate and datasoyrce
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -96,8 +106,9 @@
         cell.userNameButton.userInteractionEnabled = NO;
         
         [cell.userNameButton setTitle:@"选择区域" forState:0];
-        [cell.userActionButton setTitle:@"请选择  " forState:0];
         [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        NSString *areaS = [NSString stringWithFormat:@"%@  ",self.areaString];
+        [cell.userActionButton setTitle:areaS forState:0];
         
         return cell;
     }else if (indexPath.row == 1){//详细地址
@@ -109,10 +120,11 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.ediLabel.text = @"详细地址";
         cell.ediTextView.placeholder = @"请输入详细地址";
+        cell.ediTextView.text = self.addressString;
         
         QDFWeakSelf;
         [cell setDidEndEditing:^(NSString *text) {
-//            [weakself.propertyDic setObject:text forKey:@""];
+            [weakself.payEditDic setObject:text forKey:@"address"];
         }];
         
         return cell;
@@ -127,11 +139,11 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.agentLabel.text = @"电话号码";
     cell.agentTextField.placeholder = @"请输入手机号码";
-    cell.agentTextField.text = [self getValidateMobile];
+    cell.agentTextField.text = self.phoneString;
     
     QDFWeakSelf;
     [cell setDidEndEditing:^(NSString *text) {
-//        [weakself.propertyDic setObject:text forKey:@""];
+        [weakself.payEditDic setObject:text forKey:@"phone"];
     }];
     
     return cell;
@@ -160,14 +172,13 @@
         [houseChooseVC setDidSelectedRow:^(NSString *text) {
             MineUserCell *cell = [tableView cellForRowAtIndexPath:indexPath];
             [cell.userActionButton setTitle:text forState:0];
-            
-//            [weakself.propertyDic setObject:text forKey:@""];
+            [weakself.payEditDic setObject:text forKey:@"area"];
         }];
     }
 }
 
-
 #pragma mark - method
+/*
 - (void)back
 {
     UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:nil message:@"未保存,是否保存？" preferredStyle:UIAlertControllerStyleAlert];
@@ -184,9 +195,60 @@
 
     [self presentViewController:alertVC animated:YES completion:nil];
 }
+ */
+
 - (void)saveMessageOfPaying
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.view endEditing:YES];
+    NSString *savePayString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kHousePorpertyEditString];
+    
+    self.payEditDic[@"area"] = [NSString getValidStringFromString:self.payEditDic[@"area"] toString:self.areaString];
+    self.payEditDic[@"address"] = [NSString getValidStringFromString:self.payEditDic[@"address"] toString:self.addressString];
+    self.payEditDic[@"phone"] = [NSString getValidStringFromString:self.payEditDic[@"phone"] toString:self.phoneString];
+    [self.payEditDic setObject:self.idString forKey:@"id"];
+    [self.payEditDic setObject:[self getValidateToken] forKey:@"token"];
+    
+    NSDictionary *params = self.payEditDic;
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:savePayString params:params successBlock:^(id responseObject) {
+        
+        PropertyGenerateModel *oModel = [PropertyGenerateModel objectWithKeyValues:responseObject];
+        
+        if ([oModel.code isEqualToString:@"0000"]) {
+            if ([weakself.actString integerValue] == 2) {
+                
+                HousePayingViewController *housePayingVC = [[HousePayingViewController alloc] init];
+                housePayingVC.areaString = params[@"area"];
+                housePayingVC.addressString = params[@"address"];
+                housePayingVC.phoneString = params[@"phone"];
+                housePayingVC.genarateMoney = oModel.money;
+                housePayingVC.genarateId = oModel.idString;
+                
+                UINavigationController *naer = self.navigationController;
+                [naer popViewControllerAnimated:NO];
+                [naer pushViewController:housePayingVC animated:NO];
+            }else{
+                
+                NSDictionary *uiui = @{@"area" : params[@"area"],
+                                       @"address" : params[@"address"],
+                                       @"phone" : params[@"phone"],
+                                       @"money" : oModel.money,
+                                       @"id" : oModel.idString
+                                       };
+                
+                if (weakself.didEditMessage) {
+                    weakself.didEditMessage(uiui);
+                    [weakself.navigationController popViewControllerAnimated:YES];
+                }
+            }
+        }else{
+            [weakself showHint:oModel.msg];
+        }
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+//    [self.navigationController popViewControllerAnimated:YES];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

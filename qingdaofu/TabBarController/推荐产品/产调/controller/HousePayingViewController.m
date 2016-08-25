@@ -26,6 +26,8 @@
 
 @property (nonatomic,strong) UITableView *powerTableView;
 @property (nonatomic,strong) BaseCommitView *powerCommitView;
+@property (nonatomic,strong) NSString *idParam;
+@property (nonatomic,strong) NSDictionary *editParms;
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 
@@ -197,7 +199,19 @@
 {
     if (indexPath.section == 0) {//编辑
         HousePayingEditViewController *housePayingEditVC = [[HousePayingEditViewController alloc] init];
+        housePayingEditVC.areaString = self.editParms[@"area"]?self.editParms[@"area"]:self.areaString;
+        housePayingEditVC.addressString = self.editParms[@"address"]?self.editParms[@"address"]:self.addressString;
+        housePayingEditVC.phoneString = self.editParms[@"phone"]?self.editParms[@"phone"]:self.phoneString;
+        housePayingEditVC.idString = self.editParms[@"id"]?self.editParms[@"id"]:self.genarateId;
         [self.navigationController pushViewController:housePayingEditVC animated:YES];
+        
+        QDFWeakSelf;
+        [housePayingEditVC setDidEditMessage:^(NSDictionary *parameters) {
+            MessageCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            cell.userLabel.text = parameters[@"phone"];
+            cell.newsLabel.text = [NSString stringWithFormat:@"%@%@",parameters[@"area"],parameters[@"address"]];
+            weakself.editParms = parameters;
+        }];
     }
 }
 
@@ -205,15 +219,14 @@
 - (void)confirmToGenerateTheOrder
 {    
     NSString *huhuString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,KhousePropertyConfirmOrderString];
-    NSDictionary *params = @{@"id" : self.genarateId,
+    NSString *upIdString = self.editParms[@"id"]?self.editParms[@"id"]:self.genarateId;
+    NSDictionary *params = @{@"id" : upIdString,
                              @"paytype" : @"APP",
                              @"token" : [self getValidateToken]
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:huhuString params:params successBlock:^(id responseObject) {
-        
-        NSDictionary *uiuiu = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        
+            
         PayResponse *payResponse = [PayResponse objectWithKeyValues:responseObject];
         
         if ([payResponse.code isEqualToString:@"0000"]) {
@@ -222,18 +235,14 @@
             PayModel *payModel = payResponse.paydata;
             // 调起微信支付
             PayReq *reqPay = [[PayReq alloc] init];
-            reqPay.partnerId = @"1351216801";
-            reqPay.prepayId = weakself.genarateId;
-//            uiuiu[@"result"][@"paydata"][@"WXreturn"][@"prepay_id"];
-//            weakself.genarateId;
-            reqPay.nonceStr = payModel.nonceStr;
-//            uiuiu[@"result"][@"paydata"][@"WXreturn"][@"nonce_str"];
-//            payModel.nonceStr;
-            reqPay.timeStamp = (UInt32)[payModel.timeStamp integerValue];
+            
+            reqPay.partnerId = payModel.partnerid;
+            reqPay.prepayId = payModel.prepayid;
+            reqPay.nonceStr = payModel.noncestr;
+            reqPay.timeStamp = [payModel.timestamp intValue];
             reqPay.package = payModel.package;
             reqPay.sign = payModel.paySign;
-//            uiuiu[@"result"][@"paydata"][@"WXreturn"][@"sign"];
-//            payModel.paySign;
+            
             [WXApi sendReq:reqPay];
             
         }else{
@@ -244,6 +253,38 @@
         
     }];
 }
+
+//微信支付成功或者失败回调
+-(void) onResp:(BaseResp*)resp
+{
+    NSString *strMsg = [NSString stringWithFormat:@"errcode:%d", resp.errCode];
+    NSString *strTitle;
+    
+    if([resp isKindOfClass:[SendMessageToWXResp class]])
+    {
+        strTitle = [NSString stringWithFormat:@"发送媒体消息结果"];
+    }
+    if([resp isKindOfClass:[PayResp class]]){
+        //支付返回结果，实际支付结果需要去微信服务器端查询
+        strTitle = [NSString stringWithFormat:@"支付结果"];
+        
+        switch (resp.errCode) {
+            case WXSuccess:
+                strMsg = @"支付结果：成功！";
+                //                NSLog(@"支付成功－PaySuccess，retcode = %d", resp.errCode);
+                
+                break;
+                
+            default:
+                strMsg = [NSString stringWithFormat:@"支付结果：失败！retcode = %d, retstr = %@", resp.errCode,resp.errStr];
+                NSLog(@"错误，retcode = %d, retstr = %@", resp.errCode,resp.errStr);
+                break;
+        }
+    }
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:strTitle message:strMsg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    [alert show];
+}
+
 
 /*
 #pragma mark - Navigation
