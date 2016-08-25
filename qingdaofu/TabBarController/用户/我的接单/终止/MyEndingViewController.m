@@ -184,9 +184,10 @@
         NSString *nameStr = [NSString stringWithFormat:@"%@%@",nameStrss,endModel.codeString];
         [cell.userNameButton setTitle:nameStr forState:0];
         [cell.userNameButton setTitleColor:kLightWhiteColor forState:0];
+        cell.userNameButton.titleLabel.font = kFourFont;
         [cell.userActionButton setTitle:@"已终止" forState:0];
         [cell.userActionButton setTitleColor:kNavColor forState:0];
-        cell.userActionButton.titleLabel.font = kBigFont;
+        cell.userActionButton.titleLabel.font = kFirstFont;
         
         return cell;
         

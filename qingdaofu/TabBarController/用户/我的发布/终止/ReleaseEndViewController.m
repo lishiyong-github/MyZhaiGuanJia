@@ -174,11 +174,7 @@
             [cell.userNameButton setTitle:code forState:0];
             [cell.userNameButton setTitleColor:UIColorFromRGB(0xcfd4e8) forState:0];
             
-            /*0为待发布（保存未发布的）。 1为发布中（已发布的）。
-             2为处理中（有人已接单发布方也已同意）。
-             3为终止（只用发布方可以终止）。
-             4为结案（双方都可以申请，一方申请一方同意*/
-            [cell.userActionButton setTitle:@"终止" forState:0];
+            [cell.userActionButton setTitle:@"已终止" forState:0];
             [cell.userActionButton setTitleColor:kNavColor forState:0];
             cell.userActionButton.titleLabel.font = kBigFont;
             

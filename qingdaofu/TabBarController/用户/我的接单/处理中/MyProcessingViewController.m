@@ -52,7 +52,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(lookUpProcessingSchedule) name:@"schedule" object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(lookUpProcessingSchedule) name:@"schedule" object:nil];
 }
 
 - (void)dealloc
@@ -718,9 +718,6 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-//    if (section > 3) {
-//        return 60;
-//    }
     return kBigPadding;
 }
 

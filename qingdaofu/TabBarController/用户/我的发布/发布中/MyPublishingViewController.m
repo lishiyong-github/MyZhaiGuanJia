@@ -174,7 +174,7 @@
         
         [cell.userActionButton setTitle:@"发布中" forState:0];
         [cell.userActionButton setTitleColor:kNavColor forState:0];
-        cell.userActionButton.titleLabel.font = kBigFont;
+        cell.userActionButton.titleLabel.font = kFirstFont;
         
         return cell;
         

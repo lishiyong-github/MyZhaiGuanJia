@@ -167,7 +167,7 @@
 
         [cell.userActionButton setTitle:@"申请中" forState:0];
         [cell.userActionButton setTitleColor:kNavColor forState:0];
-        cell.userActionButton.titleLabel.font = kBigFont;
+        cell.userActionButton.titleLabel.font = kFirstFont;
         
         return cell;
         
