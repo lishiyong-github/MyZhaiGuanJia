@@ -216,11 +216,11 @@
 {
     if (!_productsTableView) {
         _productsTableView.translatesAutoresizingMaskIntoConstraints = NO;
-        _productsTableView = [[UITableView alloc ]initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
-        _productsTableView.delegate = self;
-        _productsTableView.dataSource = self;
+        _productsTableView = [[UITableView alloc ]initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _productsTableView.backgroundColor = kBackColor;
         _productsTableView.separatorColor = kSeparateColor;
+        _productsTableView.delegate = self;
+        _productsTableView.dataSource = self;
         _productsTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
         [_productsTableView addHeaderWithTarget:self action:@selector(headerRefreshWithAllProducts)];
         [_productsTableView addFooterWithTarget:self action:@selector(footerRefreshOfAllProducts)];
@@ -244,7 +244,7 @@
         _tableView11.delegate = self;
         _tableView11.dataSource = self;
         _tableView11.tableFooterView = [[UIView alloc] init];
-        _tableView11.layer.borderColor = kSeparateColor.CGColor;
+        _tableView11.layer.borderColor = kBorderColor.CGColor;
         _tableView11.layer.borderWidth = kLineWidth;
         _tableView11.backgroundColor = kNavColor;
     }
@@ -339,9 +339,76 @@
         
         NewProductListModel *proModel = self.allDataList[indexPath.section];
         
-        cell.moneyView.label1.text = [NSString getValidStringFromString:proModel.money toString:@"0"];
-        cell.moneyView.label2.text = @"借款本金(万元)";
+        //image
+        if ([proModel.category isEqualToString:@"2"]){//清收
+            [cell.typeImageView setImage:[UIImage imageNamed:@"list_collection"]];
+        }else if ([proModel.category isEqualToString:@"3"]){
+            [cell.typeImageView setImage:[UIImage imageNamed:@"list_litigation"]];
+        }
         
+        //code
+        cell.nameLabel.text = proModel.codeString;
+        
+        //借款本金
+        NSString *moneySa1 = [NSString getValidStringFromString:proModel.money toString:@"0"];
+        NSString *moneyQ = [NSString stringWithFormat:@"%@万",moneySa1];
+        NSMutableAttributedString *attrMoney = [[NSMutableAttributedString alloc] initWithString:moneyQ];
+        [attrMoney addAttributes:@{NSFontAttributeName:kBoldFont(24),NSForegroundColorAttributeName:kYellowColor} range:NSMakeRange(0, moneySa1.length)];
+        [attrMoney addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kYellowColor} range:NSMakeRange(moneySa1.length,1)];
+        [cell.moneyView.label1 setAttributedText:attrMoney];
+        cell.moneyView.label2.text = @"借款本金";
+        
+        //代理费用类型
+        if ([proModel.category isEqualToString:@"2"]){//清收
+            
+            if ([proModel.agencycommissiontype isEqualToString:@"1"]) {
+                
+                cell.pointView.label2.text = @"服务佣金";
+                
+                NSString *agencyType1 = [NSString getValidStringFromString:proModel.agencycommission toString:@"0"];
+                NSString *agencyQ = [NSString stringWithFormat:@"%@%@",agencyType1,@"%"];
+                NSMutableAttributedString *attrAgency = [[NSMutableAttributedString alloc] initWithString:agencyQ];
+                [attrAgency addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:24],NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, agencyType1.length)];
+                [attrAgency addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(agencyType1.length,1)];
+                [cell.pointView.label1 setAttributedText:attrAgency];
+                
+            }else{
+                cell.pointView.label2.text = @"固定费用";
+                
+                NSString *agencyType1 = [NSString getValidStringFromString:proModel.agencycommission toString:@"0"];
+                NSString *agencyQ = [NSString stringWithFormat:@"%@万",agencyType1];
+                NSMutableAttributedString *attrAgency = [[NSMutableAttributedString alloc] initWithString:agencyQ];
+                [attrAgency addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:24],NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, agencyType1.length)];
+                [attrAgency addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(agencyType1.length,1)];
+                [cell.pointView.label1 setAttributedText:attrAgency];
+            }
+        }else if ([proModel.category isEqualToString:@"3"]){//诉讼
+            
+            if ([proModel.agencycommissiontype isEqualToString:@"1"]) {
+                
+                cell.pointView.label2.text = @"固定费用";
+                
+                NSString *agencyType1 = [NSString getValidStringFromString:proModel.agencycommission toString:@"0"];
+                NSString *agencyQ = [NSString stringWithFormat:@"%@万",agencyType1];
+                NSMutableAttributedString *attrAgency = [[NSMutableAttributedString alloc] initWithString:agencyQ];
+                [attrAgency addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:24],NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, agencyType1.length)];
+                [attrAgency addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(agencyType1.length,1)];
+                [cell.pointView.label1 setAttributedText:attrAgency];
+                
+            }else{
+                
+                cell.pointView.label2.text = @"风险费率";
+                
+                NSString *agencyType1 = [NSString getValidStringFromString:proModel.agencycommission toString:@"0"];
+                NSString *agencyQ = [NSString stringWithFormat:@"%@%@",agencyType1,@"%"];
+                NSMutableAttributedString *attrAgency = [[NSMutableAttributedString alloc] initWithString:agencyQ];
+                [attrAgency addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:24],NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, agencyType1.length)];
+                [attrAgency addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(agencyType1.length,1)];
+                [cell.pointView.label1 setAttributedText:attrAgency];
+            }
+        }
+        
+        //债权类型
         if ([proModel.loan_type isEqualToString:@"1"]) {
             cell.rateView.label1.text = @"房产抵押";
             cell.addressLabel.text = [NSString getValidStringFromString:proModel.location toString:@"无抵押物地址"];
@@ -356,45 +423,6 @@
             cell.addressLabel.text = @"无抵押物地址";
         }
         cell.rateView.label2.text = @"债权类型";
-        
-        cell.pointView.label1.text = [NSString getValidStringFromString:proModel.agencycommission toString:@"0"];
-        if ([proModel.category isEqualToString:@"2"]){//清收
-            
-            if ([proModel.progress_status integerValue] > 1) {//list_collection_nor@2x
-                [cell.typeImageView setImage:[UIImage imageNamed:@"list_collection_nor"]];
-            }else if ([proModel.progress_status integerValue] == 1){
-                [cell.typeImageView setImage:[UIImage imageNamed:@"list_collection"]];
-            }
-            
-            if ([proModel.agencycommissiontype isEqualToString:@"1"]) {
-                cell.pointView.label2.text = @"服务佣金(%)";
-            }else{
-                cell.pointView.label2.text = @"固定费用(万元)";
-            }
-        }else if ([proModel.category isEqualToString:@"3"]){//诉讼
-            
-            if ([proModel.progress_status integerValue] > 1) {//list_litigation_nor@2x
-                [cell.typeImageView setImage:[UIImage imageNamed:@"list_litigation_nor"]];
-            }else if ([proModel.progress_status integerValue] == 1){
-                [cell.typeImageView setImage:[UIImage imageNamed:@"list_litigation"]];
-            }
-            
-            if ([proModel.agencycommissiontype isEqualToString:@"1"]) {
-                cell.pointView.label2.text = @"固定费用(万元)";
-            }else{
-                cell.pointView.label2.text = @"风险费率(%)";
-            }
-        }
-        
-        cell.nameLabel.text = proModel.codeString;
-        
-        //typeButton
-        if([proModel.progress_status integerValue] > 1){//不可点击
-            [cell.typeButton setHidden:NO];
-            [cell.typeButton setImage:[UIImage imageNamed:@"list_chapter"] forState:0];
-        }else{
-            [cell.typeButton setHidden:YES];
-        }
                 
         return cell;
         

@@ -265,16 +265,26 @@
     [orAttributeStr addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, orString.length)];
     [cell.contentLabel setAttributedText:orAttributeStr];
     
+    //remind
+    if ([rowModel.app_id isEqualToString:@"0"]) {
+        [cell.deadLineButton setHidden:NO];
+        [cell.deadLineButton setTitle:@"您有新的申请记录" forState:0];
+    }else{
+        [cell.deadLineButton setHidden:YES];
+    }
+    
     //action
     if ([rowModel.progress_status integerValue] == 1) {//发布中
         [cell.actButton1 setHidden:YES];
         [cell.actButton2 setHidden:NO];
+        
         [cell.actButton2 setTitle:@"查看申请人" forState:0];
         [cell.actButton2 setTitleColor:kBlueColor forState:0];
         cell.actButton2.layer.borderColor = kBlueColor.CGColor;
     }else if ([rowModel.progress_status integerValue] == 2) {//处理
         [cell.actButton1 setHidden:NO];
         [cell.actButton2 setHidden:NO];
+        
         cell.actButton1.layer.borderColor = kBorderColor.CGColor;
         [cell.actButton1 setTitleColor:kBlackColor forState:0];
         [cell.actButton1 setTitle:@"联系接单方" forState:0];
@@ -285,12 +295,14 @@
     }else if ([rowModel.progress_status integerValue] == 3) {//终止
         [cell.actButton1 setHidden:YES];
         [cell.actButton2 setHidden:NO];
+        
         [cell.actButton2 setTitle:@"删除订单" forState:0];
         [cell.actButton2 setTitleColor:kBlackColor forState:0];
         cell.actButton2.layer.borderColor = kBorderColor.CGColor;
     }else if ([rowModel.progress_status integerValue] == 4) {//结案
         [cell.actButton1 setHidden:NO];
         [cell.actButton2 setHidden:NO];
+        
         cell.actButton1.layer.borderColor = kBorderColor.CGColor;
         [cell.actButton1 setTitleColor:kBlackColor forState:0];
         [cell.actButton1 setTitle:@"删除订单" forState:0];
@@ -299,6 +311,7 @@
         [cell.actButton2 setTitleColor:kBlueColor forState:0];
         [cell.actButton2 setTitle:@"评价接单方" forState:0];
     }
+    
     return cell;
 }
 
@@ -319,6 +332,7 @@
         MyPublishingViewController *myPublishingVC = [[MyPublishingViewController alloc] init];
         myPublishingVC.idString = sModel.idString;
         myPublishingVC.categaryString = sModel.category;
+        myPublishingVC.app_idString = sModel.app_id;
         [self.navigationController pushViewController:myPublishingVC animated:YES];
     }else if ([sModel.progress_status isEqualToString:@"2"]){//处理中
         MyDealingViewController *myDealingVC = [[MyDealingViewController alloc] init];

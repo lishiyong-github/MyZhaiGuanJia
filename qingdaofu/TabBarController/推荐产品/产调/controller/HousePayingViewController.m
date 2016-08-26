@@ -12,6 +12,7 @@
 
 #import "WXApiObject.h"
 #import "WXApiManager.h"
+#import "WXApi.h"
 
 #import "BaseCommitView.h"
 
@@ -22,7 +23,7 @@
 #import "PayResponse.h"
 #import "PayModel.h"
 
-@interface HousePayingViewController ()<UITableViewDelegate,UITableViewDataSource,WXApiManagerDelegate>
+@interface HousePayingViewController ()<UITableViewDelegate,UITableViewDataSource,WXApiManagerDelegate,WXApiDelegate>
 
 @property (nonatomic,strong) UITableView *powerTableView;
 @property (nonatomic,strong) BaseCommitView *powerCommitView;
@@ -78,18 +79,8 @@
 {
     if (!_powerCommitView) {
         _powerCommitView = [BaseCommitView newAutoLayoutView];
-        
         [_powerCommitView.button setTitle:@"确定支付" forState:0];
-        
         [_powerCommitView.button addTarget:self action:@selector(confirmToGenerateTheOrder) forControlEvents:UIControlEventTouchUpInside];
-        
-//        QDFWeakSelf;
-//        [_powerCommitView.button addAction:^(UIButton *btn) {
-//            ApplicationSuccessViewController *applicationSuccessVC = [[ApplicationSuccessViewController alloc] init];
-//            applicationSuccessVC.successType = @"3";
-//            [weakself.navigationController pushViewController:applicationSuccessVC animated:YES];
-//        }];
-        
     }
     return _powerCommitView;
 }
@@ -284,6 +275,7 @@
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:strTitle message:strMsg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     [alert show];
 }
+
 
 
 /*

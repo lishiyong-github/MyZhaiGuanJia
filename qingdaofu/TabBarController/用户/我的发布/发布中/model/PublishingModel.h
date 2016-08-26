@@ -22,14 +22,21 @@
 @property (nonatomic,copy) NSString *licenseplate;  //车牌类型：1=>'沪牌',2=>'非沪牌',
 @property (nonatomic,copy) NSString *car;  //车信息
 @property (nonatomic,copy) NSString *category;   //类别（融资，清收，诉讼）
+@property (nonatomic,copy) NSString *province_id;
 @property (nonatomic,copy) NSString *city_id;
+@property (nonatomic,copy) NSString *district_id;
+
+//合同履行地
+@property (nonatomic,copy) NSString *place_province_id;
+@property (nonatomic,copy) NSString *place_city_id;
+@property (nonatomic,copy) NSString *place_district_id;
+
 @property (nonatomic,copy) NSString *codeString;  //产品编号
 @property (nonatomic,copy) NSString *commissionperiod;  //委托代理期限
 @property (nonatomic,copy) NSString *commitment;  //委托事项：1=>'代理诉讼',2=>'代理仲裁',3=>'代理执行',
 @property (nonatomic,copy) NSString *create_time;
 @property (nonatomic,copy) NSString *creditorfile;
 @property (nonatomic,copy) NSString *creditorinfo;
-@property (nonatomic,copy) NSString *district_id;
 @property (nonatomic,copy) NSString *guaranteemethod;  //有无抵押物
 @property (nonatomic,copy) NSString *idString;
 @property (nonatomic,copy) NSString *interestpaid;   //已付利息
@@ -46,7 +53,6 @@
 @property (nonatomic,copy) NSString *paymethod;  //付款方式：1=>'分期',2=>'一次性付清',
 @property (nonatomic,copy) NSString *performancecontract;  //合同履行地
 @property (nonatomic,copy) NSString *progress_status;
-@property (nonatomic,copy) NSString *province_id;
 @property (nonatomic,copy) NSString *rate;   //利率
 @property (nonatomic,copy) NSString *rate_cat;  //利率类型
 @property (nonatomic,copy) NSString *rebate;

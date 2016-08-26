@@ -27,8 +27,10 @@
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *publishingTableView;
 @property (nonatomic,strong) EvaTopSwitchView *publishSwitchView;
-@property (nonatomic,strong) NSMutableArray *publishingDataArray;
+@property (nonatomic,strong) UIView *applyRecordRemindView;  //新的申请记录提示信息
 
+//json
+@property (nonatomic,strong) NSMutableArray *publishingDataArray;
 
 @property (nonatomic,strong) NSString *loanTypeString1;  //债权类型
 @property (nonatomic,strong) NSString *loanTypeString2;  //债权类型内容
@@ -47,10 +49,17 @@
     [super viewDidLoad];
     self.navigationItem.title = @"产品详情";
     self.navigationItem.leftBarButtonItem = self.leftItem;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"application_record"] style:UIBarButtonItemStylePlain target:self action:@selector(showRecordList)];//application_record_spot@3x
+    
+    if ([self.app_idString isEqualToString:@"0"]) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"application_record_spot"] style:UIBarButtonItemStylePlain target:self action:@selector(showRecordList)];//application_record_spot@3x
+    }else{
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"application_record"] style:UIBarButtonItemStylePlain target:self action:@selector(showRecordList)];//application_record_spot@3x
+    }
     
     [self.view addSubview: self.publishingTableView];
     [self.view addSubview:self.publishSwitchView];
+    [self.view addSubview:self.applyRecordRemindView];
+    [self.applyRecordRemindView setHidden:YES];
     
     [self.view setNeedsUpdateConstraints];
 }
@@ -62,9 +71,14 @@
         [self.publishingTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
         [self.publishingTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.publishSwitchView];
         
+        [self.applyRecordRemindView autoPinEdgeToSuperviewEdge:ALEdgeLeft];
+        [self.applyRecordRemindView autoPinEdgeToSuperviewEdge:ALEdgeRight];
+        [self.applyRecordRemindView autoSetDimension:ALDimensionHeight toSize:kRemindHeight];
+        [self.applyRecordRemindView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.publishSwitchView];
+        
         [self.publishSwitchView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
         [self.publishSwitchView autoSetDimension:ALDimensionHeight toSize:kTabBarHeight];
-    
+        
         self.didSetupConstraints = YES;
     }
     [super updateViewConstraints];
@@ -100,6 +114,15 @@
         [_publishSwitchView.sendButton addTarget:self action:@selector(editAllMessages) forControlEvents:UIControlEventTouchUpInside];
     }
     return _publishSwitchView;
+}
+
+- (UIView *)applyRecordRemindView
+{
+    if (!_applyRecordRemindView) {
+        _applyRecordRemindView = [UIView newAutoLayoutView];
+        _applyRecordRemindView.backgroundColor = kYellowColor;
+    }
+    return _applyRecordRemindView;
 }
 
 - (NSMutableArray *)publishingDataArray

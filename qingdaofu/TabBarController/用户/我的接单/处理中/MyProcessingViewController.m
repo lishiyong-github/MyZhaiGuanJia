@@ -9,10 +9,9 @@
 #import "MyProcessingViewController.h"
 #import "DelayRequestsViewController.h"  //申请延期
 #import "CheckDetailPublishViewController.h"//查看发布方
-#import "MyScheduleViewController.h"   //填写进度
 #import "AdditionMessageViewController.h"  //查看更多
 #import "AgreementViewController.h"   //服务协议
-#import "PaceViewController.h"
+#import "PaceViewController.h" //进度
 
 #import "BaseCommitButton.h"
 
@@ -23,9 +22,9 @@
 #import "PublishingResponse.h"
 #import "PublishingModel.h"
 
-//查看进度
-#import "ScheduleResponse.h"
-#import "ScheduleModel.h"
+////查看进度
+//#import "ScheduleResponse.h"
+//#import "ScheduleModel.h"
 
 //申请延期
 #import "DelayResponse.h"
@@ -50,16 +49,6 @@
 
 @implementation MyProcessingViewController
 
-- (void)viewWillAppear:(BOOL)animated
-{
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(lookUpProcessingSchedule) name:@"schedule" object:nil];
-}
-
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"schedule" object:nil];
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @"产品详情";
@@ -77,7 +66,7 @@
     if (!self.didSetupConstraints) {
         
         [self.myProcessingTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
-        [self.myProcessingTableView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kTabBarHeight];
+        [self.myProcessingTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.processinCommitButton];
         
         [self.processinCommitButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
         [self.processinCommitButton autoSetDimension:ALDimensionHeight toSize:kTabBarHeight];
@@ -782,24 +771,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 2 && indexPath.row == 0) {
-//        PublishingResponse *resModel = self.processArray[0];
-//        PublishingModel *dealModel = resModel.product;
-
         AdditionMessageViewController *additionMessageVC = [[AdditionMessageViewController alloc] init];
         additionMessageVC.idString = self.idString;
         additionMessageVC.categoryString = self.categaryString;
         [self.navigationController pushViewController:additionMessageVC animated:YES];
-//        if ([dealModel.loan_type isEqualToString:@"4"]) {
-//            if (indexPath.row == 5) {
-//            }
-//        }else{
-//            if (indexPath.row == 6) {
-//                AdditionMessageViewController *additionMessageVC = [[AdditionMessageViewController alloc] init];
-//                additionMessageVC.idString = dealModel.idString;
-//                additionMessageVC.categoryString = dealModel.category;
-//                [self.navigationController pushViewController:additionMessageVC animated:YES];
-//            }
-//        }
     }else if (indexPath.section == 3) {//协议
         AgreementViewController *agreementVc = [[AgreementViewController alloc] init];
         agreementVc.idString = self.idString;
@@ -809,25 +784,9 @@
         PaceViewController *paceVC = [[PaceViewController alloc] init];
         paceVC.idString = self.idString;
         paceVC.categoryString = self.categaryString;
+        paceVC.existence = @"2";
         [self.navigationController pushViewController:paceVC animated:YES];
-//        if (indexPath.row == 0) {//进度
-//            
-//            if (self.scheduleOrderProArray.count > 0) {
-//            }
-//        }else if (indexPath.row ==2){//填写进度
-//            MyScheduleViewController *myScheduleVC = [[MyScheduleViewController alloc] init];
-//            myScheduleVC.idString = self.idString;
-//            myScheduleVC.categoryString = self.categaryString;
-//            [self.navigationController pushViewController:myScheduleVC animated:YES];
-//        }
-        
     }
-//    else if (indexPath.section == 4) {//申请延期
-//        DelayRequestsViewController *delayRequestVC = [[DelayRequestsViewController alloc] init];
-//        delayRequestVC.idString = self.idString;
-//        delayRequestVC.categoryString = self.categaryString;
-//        [self.navigationController pushViewController:delayRequestVC animated:YES];
-//    }
 }
 
 #pragma mark - method
@@ -882,36 +841,36 @@
             }
         }
         
-        [self lookUpProcessingSchedule];
+        [self delayRequest];
         
     } andFailBlock:^(NSError *error){
         
     }];
 }
 
-//进度
-- (void)lookUpProcessingSchedule
-{
-    NSString *scheduleString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kLookUpScheduleString];
-    NSDictionary *params = @{@"token" : [self getValidateToken],
-                             @"id" : self.idString,
-                             @"category" : self.categaryString,
-                             @"page" : @"1"
-                             };
-    QDFWeakSelf;
-    [self requestDataPostWithString:scheduleString params:params successBlock:^(id responseObject) {
-        ScheduleResponse *scheduleResponse = [ScheduleResponse objectWithKeyValues:responseObject];
-        
-        for (ScheduleModel *scheduleModel in scheduleResponse.disposing) {
-            [weakself.scheduleOrderProArray addObject:scheduleModel];
-        }
-        [weakself.myProcessingTableView reloadData];
-        [weakself delayRequest];
-        
-    } andFailBlock:^(NSError *error) {
-        
-    }];
-}
+////进度
+//- (void)lookUpProcessingSchedule
+//{
+//    NSString *scheduleString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kLookUpScheduleString];
+//    NSDictionary *params = @{@"token" : [self getValidateToken],
+//                             @"id" : self.idString,
+//                             @"category" : self.categaryString,
+//                             @"page" : @"1"
+//                             };
+//    QDFWeakSelf;
+//    [self requestDataPostWithString:scheduleString params:params successBlock:^(id responseObject) {
+//        ScheduleResponse *scheduleResponse = [ScheduleResponse objectWithKeyValues:responseObject];
+//        
+//        for (ScheduleModel *scheduleModel in scheduleResponse.disposing) {
+//            [weakself.scheduleOrderProArray addObject:scheduleModel];
+//        }
+//        [weakself.myProcessingTableView reloadData];
+//        [weakself delayRequest];
+//        
+//    } andFailBlock:^(NSError *error) {
+//        
+//    }];
+//}
 
 //申请延期状态
 - (void)delayRequest

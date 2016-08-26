@@ -67,8 +67,7 @@
         [self.powerCommitView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
         [self.powerCommitView autoSetDimension:ALDimensionHeight toSize:60];
         
-        [self.powerPickerView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [self.powerPickerView autoSetDimension:ALDimensionHeight toSize:200];
+        [self.powerPickerView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
         
         self.didSetupConstraints = YES;
     }
@@ -104,7 +103,6 @@
 {
     if (!_powerPickerView) {
         _powerPickerView = [PowerCourtView newAutoLayoutView];
-        _powerPickerView.backgroundColor = kBackColor;
         
         QDFWeakSelf;
         [_powerPickerView setDidSelectdRow:^(NSInteger component, NSInteger row,CourtProvinceModel *model) {

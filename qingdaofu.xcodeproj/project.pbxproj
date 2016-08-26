@@ -302,6 +302,7 @@
 		A192B4D21CDB52A40053FC4C /* list_icon_product@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A192B4CE1CDB52A40053FC4C /* list_icon_product@3x.png */; };
 		A192B4D31CDB52A40053FC4C /* list_icon_user@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A192B4CF1CDB52A40053FC4C /* list_icon_user@2x.png */; };
 		A192B4D41CDB52A40053FC4C /* list_icon_user@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A192B4D01CDB52A40053FC4C /* list_icon_user@3x.png */; };
+		A19506371D6FE80F00CE87B5 /* ReportDatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = A19506361D6FE80F00CE87B5 /* ReportDatePickerView.m */; };
 		A196CDE81CFBC4D300AC6C87 /* UIViewController+DismissKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = A196CDE71CFBC4D300AC6C87 /* UIViewController+DismissKeyboard.m */; };
 		A196CDEF1CFBDF4000AC6C87 /* btn_collection@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A196CDE91CFBDF4000AC6C87 /* btn_collection@2x.png */; };
 		A196CDF01CFBDF4000AC6C87 /* btn_collection@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A196CDEA1CFBDF4000AC6C87 /* btn_collection@3x.png */; };
@@ -1112,6 +1113,8 @@
 		A192B4CE1CDB52A40053FC4C /* list_icon_product@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list_icon_product@3x.png"; sourceTree = "<group>"; };
 		A192B4CF1CDB52A40053FC4C /* list_icon_user@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list_icon_user@2x.png"; sourceTree = "<group>"; };
 		A192B4D01CDB52A40053FC4C /* list_icon_user@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list_icon_user@3x.png"; sourceTree = "<group>"; };
+		A19506351D6FE80F00CE87B5 /* ReportDatePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportDatePickerView.h; sourceTree = "<group>"; };
+		A19506361D6FE80F00CE87B5 /* ReportDatePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportDatePickerView.m; sourceTree = "<group>"; };
 		A196CDE61CFBC4D300AC6C87 /* UIViewController+DismissKeyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+DismissKeyboard.h"; sourceTree = "<group>"; };
 		A196CDE71CFBC4D300AC6C87 /* UIViewController+DismissKeyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+DismissKeyboard.m"; sourceTree = "<group>"; };
 		A196CDE91CFBDF4000AC6C87 /* btn_collection@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_collection@2x.png"; sourceTree = "<group>"; };
@@ -3442,6 +3445,8 @@
 				A1A66F2E1D6C340700B0E101 /* UpwardTableView.m */,
 				A1A66F361D6C369300B0E101 /* ReportFootView.h */,
 				A1A66F371D6C369300B0E101 /* ReportFootView.m */,
+				A19506351D6FE80F00CE87B5 /* ReportDatePickerView.h */,
+				A19506361D6FE80F00CE87B5 /* ReportDatePickerView.m */,
 			);
 			path = "弹出表";
 			sourceTree = "<group>";
@@ -4195,6 +4200,7 @@
 				A1A6C84F1D669D9A00EC060E /* ImageModel.m in Sources */,
 				A19CC0921D59C181000ED568 /* ApplicationGuaranteeView.m in Sources */,
 				A159F9451D0BEE5E00A6A024 /* StandardPaths.m in Sources */,
+				A19506371D6FE80F00CE87B5 /* ReportDatePickerView.m in Sources */,
 				A187B9121D508BAA00A91A16 /* HousePropertyListViewController.m in Sources */,
 				A1B028A71D17766900F32A09 /* UploadViewController.m in Sources */,
 				A1770E161CFE6AA3003579E1 /* CompleteLawCell.m in Sources */,

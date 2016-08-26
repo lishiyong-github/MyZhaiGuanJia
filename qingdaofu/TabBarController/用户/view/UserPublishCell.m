@@ -28,13 +28,11 @@
 {
     if (!self.didSetupConstraints) {
         
-        [self.button1 autoPinEdgeToSuperviewEdge:ALEdgeLeft];
+        [self.button1 autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeRight];
         [self.button1 autoSetDimension:ALDimensionWidth toSize:kScreenWidth/2];
-        [self.button1 autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
         
-        [self.button2 autoPinEdgeToSuperviewEdge:ALEdgeRight];
+        [self.button2 autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeLeft];
         [self.button2 autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.button1];
-        [self.button2 autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.button1];
         
         [self.lined autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.button1];
         [self.lined autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.button1];

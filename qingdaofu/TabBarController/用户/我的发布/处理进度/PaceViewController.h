@@ -12,5 +12,6 @@
 
 @property (nonatomic,strong) NSString *idString;
 @property (nonatomic,strong) NSString *categoryString;
+@property (nonatomic,strong) NSString *existence; // 1-不显示添加进度，2-显示
 
 @end

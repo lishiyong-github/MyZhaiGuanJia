@@ -36,16 +36,16 @@
 {
     if (!self.didSetupConstraints) {
         
-//        [self.typeImageView autoSetDimensionsToSize:CGSizeMake(40, 18)];
+        [self.typeImageView autoSetDimensionsToSize:CGSizeMake(42, 21)];
         [self.typeImageView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kBigPadding];
         [self.typeImageView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
         
-        [self.nameLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.typeImageView withOffset:kSpacePadding];
+        [self.nameLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.typeImageView withOffset:kBigPadding];
         [self.nameLabel autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.typeImageView];
         
         [self.recommendimageView autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.nameLabel];
         [self.recommendimageView autoPinEdgeToSuperviewEdge:ALEdgeRight];
-//        [self.recommendimageView autoSetDimensionsToSize:CGSizeMake(35, 35)];
+        [self.recommendimageView autoSetDimensionsToSize:CGSizeMake(40, 40)];
         
         [self.typeButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.typeButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.nameLabel];
@@ -61,15 +61,6 @@
         
         NSArray *views = @[self.moneyView,self.pointView,self.rateView];
         [views autoSetViewsDimensionsToSize:CGSizeMake(kScreenWidth/3, 88)];
-        
-//        [self.moneyView autoPinEdgeToSuperviewEdge:ALEdgeLeft];
-//        [self.moneyView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.grayLabel];
-//        
-//        [self.pointView autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.moneyView];
-//        [self.pointView autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.moneyView];
-//        
-//        [self.rateView autoPinEdgeToSuperviewEdge:ALEdgeRight];
-//        [self.rateView autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.moneyView];
         
         [self.moneyView autoPinEdgeToSuperviewEdge:ALEdgeLeft];
         [self.moneyView autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.pointView];
@@ -148,9 +139,8 @@
         _moneyView = [MoneyView newAutoLayoutView];
         _moneyView.label1.text = @"80";
         _moneyView.label1.textColor = kYellowColor;
-//        _moneyView.label1.font = [UIFont fontWithName:@"Helvetica-Bold" size:24];
         _moneyView.label1.font = [UIFont systemFontOfSize:22];
-        _moneyView.label2.text = @"借款本金(万元)";
+        _moneyView.label2.text = @"借款本金";
     }
     return _moneyView;
 }

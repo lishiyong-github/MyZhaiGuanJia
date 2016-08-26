@@ -9,7 +9,9 @@
 #import "ApplyRecordsViewController.h"
 #import "CheckDetailPublishViewController.h"   //申请人信息
 
-#import "ApplyRecordsCell.h"
+//#import "ApplyRecordsCell.h"
+#import "MineUserCell.h"
+#import "BidOneCell.h"
 
 #import "RecordResponse.h"
 #import "UserModel.h"
@@ -19,6 +21,8 @@
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *applyRecordsTableView;
 @property (nonatomic,strong) NSMutableArray *recordsDataArray;
+
+@property (nonatomic,strong) NSString *showString;  //1-显示提示信息，2-不显示
 
 @property (nonatomic,assign) NSInteger pageRecords;
 
@@ -61,7 +65,8 @@
 - (UITableView *)applyRecordsTableView
 {
     if (!_applyRecordsTableView) {
-        _applyRecordsTableView = [UITableView newAutoLayoutView];
+        _applyRecordsTableView.translatesAutoresizingMaskIntoConstraints = NO;
+        _applyRecordsTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _applyRecordsTableView.delegate = self;
         _applyRecordsTableView.dataSource = self;
         _applyRecordsTableView.tableFooterView = [[UIView alloc] init];
@@ -71,12 +76,12 @@
         [_applyRecordsTableView addHeaderWithTarget:self action:@selector(headerRefreshOfRecords)];
         [_applyRecordsTableView addFooterWithTarget:self action:@selector(footerRefreshOfRecords)];
 
-        if ([_applyRecordsTableView respondsToSelector:@selector(setSeparatorInset:)]) {
-            [_applyRecordsTableView setSeparatorInset:UIEdgeInsetsZero];
-        }
-        if ([_applyRecordsTableView respondsToSelector:@selector(setLayoutMargins:)]) {
-            [_applyRecordsTableView setLayoutMargins:UIEdgeInsetsZero];
-        }
+//        if ([_applyRecordsTableView respondsToSelector:@selector(setSeparatorInset:)]) {
+//            [_applyRecordsTableView setSeparatorInset:UIEdgeInsetsZero];
+//        }
+//        if ([_applyRecordsTableView respondsToSelector:@selector(setLayoutMargins:)]) {
+//            [_applyRecordsTableView setLayoutMargins:UIEdgeInsetsZero];
+//        }
         
     }
     return _applyRecordsTableView;
@@ -91,35 +96,100 @@
 }
 
 #pragma mark - tableView deleagte and datasource
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    if (self.recordsDataArray.count > 0) {
+        return 2;
+    }
+    return 0;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (self.recordsDataArray.count > 0) {
-        return 1+self.recordsDataArray.count;
+        return self.recordsDataArray.count;
     }
     return 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return kCellHeight;
+//    return kCellHeight;
+    if (indexPath.section == 0) {
+        return kRemindHeight;
+    }
+    return 60;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier;
-        identifier = @"aRecords0";
-        
-        ApplyRecordsCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    
+    if (indexPath.section == 0) {
+        identifier = @"aRecords0";//BidOneCell.h
+        BidOneCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         if (!cell) {
-            cell = [[ApplyRecordsCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            cell = [[BidOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
-            [cell setSeparatorInset:UIEdgeInsetsZero];
-        }
-        if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
-            [cell setLayoutMargins:UIEdgeInsetsZero];
-        }
+        [cell.cancelButton setHidden:YES];
+        cell.backgroundColor = kBlueColor;
+        [cell.oneButton setTitle:@"只能选择一个作为接单方，选择后不能修改" forState:0];
+        [cell.oneButton setTitleColor:kNavColor forState:0];
+        cell.oneButton.titleLabel.font = kFourFont;
+        
+        return cell;
+    }
+    
+    identifier = @"aRecords1";
+    MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    if (!cell) {
+        cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+    }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.userNameButton.userInteractionEnabled = NO;
+    cell.userNameButton.titleLabel.numberOfLines = 0;
+    cell.userActionButton.layer.cornerRadius = corner1;
+    cell.userActionButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+    [cell.userActionButton autoSetDimension:ALDimensionWidth toSize:75];
+    
+    UserModel *userModel;
+    if (self.recordsDataArray.count > 0) {
+        userModel = self.recordsDataArray[indexPath.row];
+    }
+    
+    NSString *apply1 = [NSString stringWithFormat:@"申请人：%@",userModel.username];
+    NSString *apply2 = [NSDate getYMDhmFormatterTime:userModel.create_time];
+    NSString *applySrt = [NSString stringWithFormat:@"%@\n%@",apply1,apply2];
+    NSMutableAttributedString *applyAttribute = [[NSMutableAttributedString alloc] initWithString:applySrt];
+    [applyAttribute addAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kBlackColor} range:NSMakeRange(0, apply1.length)];
+    [applyAttribute addAttributes:@{NSFontAttributeName:kSecondFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(apply1.length+1, apply2.length)];
+    
+    NSMutableParagraphStyle *stytty = [[NSMutableParagraphStyle alloc] init];
+    [stytty setLineSpacing:kSpacePadding];
+    [applyAttribute addAttribute:NSParagraphStyleAttributeName value:stytty range:NSMakeRange(0, applySrt.length)];
+    
+    [cell.userNameButton setAttributedTitle:applyAttribute forState:0];
+    
+    [cell.userActionButton setTitle:@"同意" forState:0];
+    [cell.userActionButton setTitleColor:kNavColor forState:0];
+    cell.userActionButton.titleLabel.font = kFourFont;
+    cell.userActionButton.backgroundColor = kBlueColor;
+    
+    return cell;
+    
+    /*
+    ApplyRecordsCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    if (!cell) {
+        cell = [[ApplyRecordsCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+    }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//    if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
+//        [cell setSeparatorInset:UIEdgeInsetsZero];
+//    }
+//    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+//        [cell setLayoutMargins:UIEdgeInsetsZero];
+//    }
     
     if (indexPath.row == 0) {
         
@@ -162,6 +232,35 @@
     }
     
     return cell;
+     */
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (section == 1) {
+        return kBigPadding;
+    }
+    
+    return 0.1;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 0.1f;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 1) {
+        UserModel *uModel = self.recordsDataArray[indexPath.row];
+        CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+        checkDetailPublishVC.typeString = @"申请人";
+        checkDetailPublishVC.idString = self.idStr;
+        checkDetailPublishVC.categoryString = self.categaryStr;
+        checkDetailPublishVC.pidString = uModel.uidInner;
+        //                checkDetailPublishVC.evaTypeString = @"launchevaluation";
+        [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
+    }
 }
 
 #pragma mark - method

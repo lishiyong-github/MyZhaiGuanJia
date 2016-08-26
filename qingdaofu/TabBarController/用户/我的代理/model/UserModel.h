@@ -10,7 +10,7 @@
 
 @interface UserModel : NSObject
 
-@property (nonatomic,copy) NSString *idString;
+//@property (nonatomic,copy) NSString *idString;
 @property (nonatomic,copy) NSString *isstop;    //0：正常，1:停用
 @property (nonatomic,copy) NSString *username;  //代理人名字
 @property (nonatomic,copy) NSString *mobile;
@@ -29,9 +29,12 @@
 //申请记录字段
 @property (nonatomic,copy) NSString *app_id;
 @property (nonatomic,copy) NSString *category;
+@property (nonatomic,copy) NSString *idString;
 @property (nonatomic,copy) NSString *create_time;
 @property (nonatomic,copy) NSString *product_id;
 @property (nonatomic,copy) NSString *state;
 @property (nonatomic,copy) NSString *uidInner;
+//@property (nonatomic,copy) NSString *idApply;
+//@property (nonatomic,copy) NSString *categoryApply;
 
 @end

@@ -40,10 +40,13 @@
     [super viewDidLoad];
     self.navigationItem.title = @"处理进度";
     self.navigationItem.leftBarButtonItem = self.leftItem;
-    self.view.backgroundColor = kBackColor;
     
     [self.view addSubview:self.paceTableView];
-    [self.view addSubview:self.paceCommitView];
+    
+    if ([self.existence integerValue] == 2) {
+        [self.view addSubview:self.paceCommitView];
+    }
+    
     [self.view addSubview:self.baseRemindImageView];
     [self.baseRemindImageView setHidden:YES];
     
@@ -54,11 +57,15 @@
 {
     if (!self.didSetupConstarits) {
         
-        [self.paceTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
-        [self.paceTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.paceCommitView];
-        
-        [self.paceCommitView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [self.paceCommitView autoSetDimension:ALDimensionHeight toSize:kCellHeight1];
+        if ([self.existence integerValue] == 2) {
+            [self.paceTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
+            [self.paceTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.paceCommitView];
+            
+            [self.paceCommitView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+            [self.paceCommitView autoSetDimension:ALDimensionHeight toSize:kCellHeight1];
+        }else{
+            [self.paceTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+        }
         
         [self.baseRemindImageView autoAlignAxisToSuperviewAxis:ALAxisVertical];
         [self.baseRemindImageView autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
