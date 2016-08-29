@@ -17,16 +17,22 @@
 #import "PowerDetailsCell.h"
 
 #import "ImageModel.h"
+#import "PowerDetailModel.h"
 
 @interface PowerDetailsViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic,strong) UITableView *powerDetailsTableView;
-
+@property (nonatomic,strong) NSMutableArray *powerDetalArray;
 @property (nonatomic,assign) BOOL didSetupConstraints;
 
 @end
 
 @implementation PowerDetailsViewController
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self getDetailsOfPower];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -63,6 +69,14 @@
     return _powerDetailsTableView;
 }
 
+- (NSMutableArray *)powerDetalArray
+{
+    if (!_powerDetalArray) {
+        _powerDetalArray = [NSMutableArray array];
+    }
+    return _powerDetalArray;
+}
+
 #pragma mark -tableview delegate and datasoyrce
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -91,6 +105,11 @@
 {
     static NSString *identifier;
     
+    PowerModel *powerModel;
+    if (self.powerDetalArray.count > 0) {
+        powerModel = self.powerDetalArray[0];
+    }
+    
     if (indexPath.section == 0) {//保权进度
         identifier = @"power00";
         PowerDetailsCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -100,6 +119,24 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.backgroundColor = kBlueColor;
         cell.progress3.text = @"保全已出";
+        
+        if ([powerModel.status integerValue] == 1) {//等待审核//progress_point_s@3x
+            [cell.progress1 setTextColor:kBlueColor];
+            [cell.point1 setImage:[UIImage imageNamed:@"progress_point_s"] forState:0];
+        }else if ([powerModel.status integerValue] == 10){//审核通过
+            [cell.progress1 setTextColor:kBlueColor];
+            [cell.progress2 setTextColor:kBlueColor];
+            [cell.point1 setImage:[UIImage imageNamed:@"progress_point_s"] forState:0];
+            [cell.point2 setImage:[UIImage imageNamed:@"progress_point_s"] forState:0];
+            [cell.line1 setTextColor:kBlueColor];
+
+        }else if ([powerModel.status integerValue] == 20){//签订协议
+            
+        }else if ([powerModel.status integerValue] == 30){//出保全
+            
+        }else if ([powerModel.status integerValue] == 40){//完成
+            
+        }
         
         return cell;
         
@@ -131,24 +168,24 @@
         [cell.userNameButton setTitle:additionArray[indexPath.row-1] forState:0];
         
         if (indexPath.row == 1) {
-            NSInteger account = [self.pModel.account integerValue]/10000;
+            NSInteger account = [powerModel.account integerValue]/10000;
             NSString *accounts = [NSString stringWithFormat:@"%ld万",(long)account];
             [cell.userActionButton setTitle:accounts forState:0];
         }else if (indexPath.row == 2){
-            [cell.userActionButton setTitle:self.pModel.fayuan_name forState:0];
+            [cell.userActionButton setTitle:powerModel.fayuan_name forState:0];
         }else if (indexPath.row == 3){
-            if ([self.pModel.type integerValue] == 1) {
+            if ([powerModel.type integerValue] == 1) {
                 [cell.userActionButton setTitle:@"自取" forState:0];
-            }else if ([self.pModel.type integerValue] == 2){
+            }else if ([powerModel.type integerValue] == 2){
                 [cell.userActionButton setTitle:@"快递" forState:0];
             }
         }else if (indexPath.row == 4){
-            if ([self.pModel.type integerValue] == 1) {
+            if ([powerModel.type integerValue] == 1) {
                 [cell.userNameButton setTitle:@"取函地址" forState:0];
-                [cell.userActionButton setTitle:self.pModel.fayuan_address forState:0];
-            }else if ([self.pModel.type integerValue] == 2){
+                [cell.userActionButton setTitle:powerModel.fayuan_address forState:0];
+            }else if ([powerModel.type integerValue] == 2){
                 [cell.userNameButton setTitle:@"收货地址" forState:0];
-                [cell.userActionButton setTitle:self.pModel.fayuan_address forState:0];
+                [cell.userActionButton setTitle:powerModel.fayuan_address forState:0];
             }
         }
         return cell;
@@ -167,7 +204,7 @@
         
         [cell.userNameButton setTitle:@"上传的资料" forState:0];
         
-        if ([self.pModel.status integerValue] < 2) {
+        if ([powerModel.status integerValue] < 2) {
             [cell.userActionButton setTitle:@"编辑" forState:0];
             [cell.userActionButton setTitleColor:kBlueColor forState:0];
         }else{
@@ -195,16 +232,16 @@
         cell.userActionButton.titleLabel.font = kFirstFont;
 
         if (indexPath.row == 1){
-            NSString *qisuCount = [NSString stringWithFormat:@"x%lu",(unsigned long)self.pModel.qisu.count];
+            NSString *qisuCount = [NSString stringWithFormat:@"x%lu",(unsigned long)powerModel.qisu.count];
             [cell.userActionButton setTitle:qisuCount forState:0];
         }else if (indexPath.row == 2){
-            NSString *caichanCount = [NSString stringWithFormat:@"x%lu",(unsigned long)self.pModel.caichan.count];
+            NSString *caichanCount = [NSString stringWithFormat:@"x%lu",(unsigned long)powerModel.caichan.count];
             [cell.userActionButton setTitle:caichanCount forState:0];
         }else if (indexPath.row == 3){
-            NSString *zhengjuCount = [NSString stringWithFormat:@"x%lu",(unsigned long)self.pModel.zhengju.count];
+            NSString *zhengjuCount = [NSString stringWithFormat:@"x%lu",(unsigned long)powerModel.zhengju.count];
             [cell.userActionButton setTitle:zhengjuCount forState:0];
         }else if (indexPath.row == 4){
-            NSString *anjianCount = [NSString stringWithFormat:@"x%lu",(unsigned long)self.pModel.anjian.count];
+            NSString *anjianCount = [NSString stringWithFormat:@"x%lu",(unsigned long)powerModel.anjian.count];
             [cell.userActionButton setTitle:anjianCount forState:0];
         }
         return cell;
@@ -226,16 +263,18 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 2) {//上传材料
+        
+        PowerModel *powerModel = self.powerDetalArray[0];
         if (indexPath.row == 0) {
-            if ([self.pModel.status integerValue] < 2) {
+            if ([powerModel.status integerValue] < 2) {
                 PowerProtectPictureViewController *powerProtectPictureVC = [[PowerProtectPictureViewController alloc] init];
-                powerProtectPictureVC.pModel = self.pModel;
+                powerProtectPictureVC.pModel = powerModel;
                 [self.navigationController pushViewController:powerProtectPictureVC animated:YES];
             }
         }else if (indexPath.row == 1){
             NSMutableArray *fileArray1 = [NSMutableArray array];
-            for (int i=0; i<self.pModel.qisu.count; i++) {
-                ImageModel *fileModel = self.pModel.qisu[i];
+            for (int i=0; i<powerModel.qisu.count; i++) {
+                ImageModel *fileModel = powerModel.qisu[i];
                 NSString *file = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,fileModel.file];
                 [fileArray1 addObject:file];
             }
@@ -243,16 +282,16 @@
             
         }else if (indexPath.row == 2){
             NSMutableArray *fileArray2 = [NSMutableArray array];
-            for (int i=0; i<self.pModel.caichan.count; i++) {
-                ImageModel *fileModel = self.pModel.caichan[i];
+            for (int i=0; i<powerModel.caichan.count; i++) {
+                ImageModel *fileModel = powerModel.caichan[i];
                 NSString *file = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,fileModel.file];
                 [fileArray2 addObject:file];
             }
             [self showImages:fileArray2];
         }else if (indexPath.row == 3){
             NSMutableArray *fileArray3 = [NSMutableArray array];
-            for (int i=0; i<self.pModel.zhengju.count; i++) {
-                ImageModel *fileModel = self.pModel.zhengju[i];
+            for (int i=0; i<powerModel.zhengju.count; i++) {
+                ImageModel *fileModel = powerModel.zhengju[i];
                 NSString *file = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,fileModel.file];
                 [fileArray3 addObject:file];
             }
@@ -260,8 +299,8 @@
             
         }else if (indexPath.row == 4){
             NSMutableArray *fileArray4 = [NSMutableArray array];
-            for (int i=0; i<self.pModel.anjian.count; i++) {
-                ImageModel *fileModel = self.pModel.anjian[i];
+            for (int i=0; i<powerModel.anjian.count; i++) {
+                ImageModel *fileModel = powerModel.anjian[i];
                 NSString *file = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,fileModel.file];
                 [fileArray4 addObject:file];
             }
@@ -270,6 +309,33 @@
     }
 }
 
+#pragma mark - method
+- (void)getDetailsOfPower
+{
+    NSString *detailPowerString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPowerDetailString];
+    NSDictionary *params = @{@"id" : self.pModel.idString,
+                             @"token" : [self getValidateToken]
+                             };
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:detailPowerString params:params successBlock:^(id responseObject) {
+        
+        NSDictionary *ioio = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
+        PowerDetailModel *pdModel = [PowerDetailModel objectWithKeyValues:responseObject];
+        if ([pdModel.code isEqualToString:@"0000"]) {
+            [weakself.powerDetalArray removeAllObjects];
+            [weakself.powerDetalArray addObject:pdModel.result];
+            [weakself.powerDetailsTableView reloadData];
+            
+        }else{
+            [weakself showHint:pdModel.msg];
+        }
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

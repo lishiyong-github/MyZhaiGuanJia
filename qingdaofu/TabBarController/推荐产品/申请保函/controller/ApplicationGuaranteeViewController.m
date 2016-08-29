@@ -18,6 +18,10 @@
 #import "AgentCell.h"
 #import "MineUserCell.h"
 #import "TakePictureCell.h"
+#import "PowerCourtView.h"
+
+#import "CourtProvinceResponse.h"
+#import "CourtProvinceModel.h"
 
 #import "UIViewController+MutipleImageChoice.h"
 #import "UIViewController+BlurView.h"
@@ -28,6 +32,8 @@
 @property (nonatomic,strong) ApplicationGuaranteeFirstView *guaranteeFirstView;
 @property (nonatomic,strong) ApplicationGuaranteeSecondView *guaranteeSecondView;
 @property (nonatomic,strong) ApplicationGuaranteeThirdView *guaranteeThirdView;
+
+@property (nonatomic,strong) PowerCourtView *applicationPickerView;
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 
@@ -56,6 +62,9 @@
     [self.guaranteeSecondView setHidden:YES];
     [self.view addSubview:self.guaranteeThirdView];
     [self.guaranteeThirdView setHidden:YES];
+    [self.view addSubview:self.applicationPickerView];
+    [self.applicationPickerView setHidden:YES];
+
     
     [self.view setNeedsUpdateConstraints];
 }
@@ -75,6 +84,8 @@
         
         [self.guaranteeThirdView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
         [self.guaranteeThirdView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.applicationTopView];
+        
+        [self.applicationPickerView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
         
         self.didSetupConstraints = YES;
     }
@@ -96,25 +107,68 @@
 {
     if (!_guaranteeFirstView) {
         _guaranteeFirstView = [ApplicationGuaranteeFirstView newAutoLayoutView];
+//        AgentCell *cell = [_guaranteeFirstView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:4 inSection:0]];
+//        cell.agentTextField.text = [self getValidateMobile];
+        
+        [self.applicationDic setObject:@"2" forKey:@"type"];
         
         QDFWeakSelf;
+        [_guaranteeFirstView setDidEndEditting:^(NSString *text,NSInteger tag) {
+            if (tag == 3) {//案号
+                 [weakself.applicationDic setObject:text forKey:@"anhao"];
+            }else if (tag == 4){//联系方式
+                [weakself.applicationDic setObject:text forKey:@"phone"];
+            }else if (tag == 5){//金额
+                [weakself.applicationDic setObject:text forKey:@"money"];
+            }
+        }];
+        
+//        //案号
+//        AgentCell *cell3 = [_guaranteeFirstView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:3 inSection:0]];
+//        [cell3 setDidEndEditing:^(NSString *text) {
+//            [weakself.applicationDic setObject:text forKey:@"anhao"];
+//        }];
+//        
+//        AgentCell *cell4 = [_guaranteeFirstView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:4 inSection:0]];
+//        [cell4 setDidEndEditing:^(NSString *text) {
+//            [weakself.applicationDic setObject:text forKey:@"phone"];
+//        }];
+//        
+//        AgentCell *cell5 = [_guaranteeFirstView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:5 inSection:0]];
+//        [cell5 setDidEndEditing:^(NSString *text) {
+//            [weakself.applicationDic setObject:text forKey:@"money"];
+//        }];
+        
         [_guaranteeFirstView setDidSelectedRow:^(NSInteger row) {
             switch (row) {
-                case 0:{//选择法院
-                    ApplicationCourtViewController *applicationCourtVC = [[ApplicationCourtViewController alloc] init];
-                    [weakself.navigationController pushViewController:applicationCourtVC animated:YES];
-                    
-                    [applicationCourtVC setDidSelectedRow:^(NSString *nameString,NSString *idString) {
-                        AgentCell *cell = [weakself.guaranteeFirstView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-                        cell.agentTextField.text = nameString;
-                        [weakself.applicationDic setObject:idString forKey:@"fayuan_id"];
-                    }];
+                case 0:{//选择区域
+                    [weakself getCourtOfProvince];
                 }
                     break;
-                case 1:{//案件类型
+                case 1:{//选择法院
+                    if (!weakself.applicationDic[@"area_id"]) {
+                        [weakself showHint:@"请先选择区域"];
+                    }else{
+                        ApplicationCourtViewController *applicationCourtVC = [[ApplicationCourtViewController alloc] init];
+                        applicationCourtVC.area_pidString = weakself.applicationDic[@"area_pid"];
+                        applicationCourtVC.area_idString = weakself.applicationDic[@"area_id"];
+                        [weakself.navigationController pushViewController:applicationCourtVC animated:YES];
+                        
+                        [applicationCourtVC setDidSelectedRow:^(NSString *nameString,NSString *idString) {
+                            AgentCell *cell = [weakself.guaranteeFirstView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+                            cell.agentTextField.text = nameString;
+                            [weakself.applicationDic setObject:idString forKey:@"fayuan_id"];
+                            [weakself.applicationDic setObject:nameString forKey:@"fayuan_name"];
+                        }];
+                        
+                    }
+                    
+                }
+                    break;
+                case 2:{//案件类型
                     NSArray *array11 = @[@"借贷纠纷",@"房产土地",@"劳动纠纷",@"婚姻家庭",@" 合同纠纷",@"公司治理",@"知识产权",@"其他民事纠纷"];
                     [weakself showBlurInView:weakself.view withArray:array11 andTitle:@"选择案件类型" finishBlock:^(NSString *text, NSInteger row) {
-                        AgentCell *cell = [weakself.guaranteeFirstView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+                        AgentCell *cell = [weakself.guaranteeFirstView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]];
                         cell.agentTextField.text = text;
                         [weakself.applicationDic setObject:text forKey:@"category"];
                     }];
@@ -127,12 +181,8 @@
                 }
                     break;
                 case 10:{//下一步
-                    [weakself.guaranteeFirstView setHidden:YES];
-                    [weakself.guaranteeSecondView setHidden:NO];
+                    [weakself commitMessagesOfApplicationGuaranteeWithType:@"1"];
                     
-                    weakself.applicationTopView.leftBlueConstraints.constant = kScreenWidth/3;
-                    [weakself.applicationTopView.firstButton setTitleColor:kGrayColor forState:0];
-                    [weakself.applicationTopView.secondButton setTitleColor:kBlueColor forState:0];
                 }
                     break;
                 case 11:{//取函方式－快递
@@ -141,16 +191,17 @@
                     cell.agentTextField.text = @"";
                     [cell.agentButton setHidden:NO];
                     [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+                    [weakself.applicationDic setObject:@"2" forKey:@"type"];
                 }
                     break;
                 case 12:{//取函方式－自取
-                    if (weakself.applicationDic[@"court"]) {
-                        NSLog(@"自取");
+                    if (weakself.applicationDic[@"fayuan_name"]) {
                         AgentCell *cell = [weakself.guaranteeFirstView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
                         cell.agentLabel.text = @"取函地址";
                         [cell.agentButton setHidden:YES];
 
-                        cell.agentTextField.text = weakself.applicationDic[@"court"];
+                        cell.agentTextField.text = weakself.applicationDic[@"fayuan_name"];
+                        [weakself.applicationDic setObject:@"1" forKey:@"type"];
                     }else{
                         [weakself showHint:@"请先选择法院"];
                     }
@@ -247,58 +298,35 @@
     return _guaranteeThirdView;
 }
 
-/*
-- (UIView *)pickerChooseView
-{
-    if (!_pickerChooseView) {
-        _pickerChooseView = [UIView newAutoLayoutView];
-        [_pickerChooseView addSubview:self.pickerButton];
-        [_pickerChooseView addSubview:self.applicationPickerView];
-        
-        [self.pickerButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
-        [self.pickerButton autoSetDimension:ALDimensionHeight toSize:40];
-        
-        [self.applicationPickerView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [self.applicationPickerView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.pickerButton];
-    }
-    return _pickerChooseView;
-}
 
-- (UIButton *)pickerButton
-{
-    if (!_pickerButton) {
-        _pickerButton = [UIButton newAutoLayoutView];
-        [_pickerButton setTitle:@"完成" forState:0];
-        [_pickerButton setContentEdgeInsets:UIEdgeInsetsMake(0, 0, 0, kBigPadding)];
-        _pickerButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-        _pickerButton.titleLabel.font = kSecondFont;
-        [_pickerButton setTitleColor:kBlackColor forState:0];
-        _pickerButton.layer.borderColor = kLightGrayColor.CGColor;
-        _pickerButton.layer.borderWidth = kLineWidth;
-    
-        QDFWeakSelf;
-        [_pickerButton addAction:^(UIButton *btn) {
-            [weakself.pickerChooseView setHidden:YES];
-            MineUserCell *cell = [weakself.applicationTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-            [cell.userActionButton setTitle:weakself.districtStr forState:0];
-        }];
-        
-    }
-    return _pickerButton;
-}
-
-
-- (UIPickerView *)applicationPickerView
+- (PowerCourtView *)applicationPickerView
 {
     if (!_applicationPickerView) {
-        _applicationPickerView = [UIPickerView newAutoLayoutView];
-        _applicationPickerView.delegate = self;
-        _applicationPickerView.dataSource = self;
+        _applicationPickerView = [PowerCourtView newAutoLayoutView];
+        
+        QDFWeakSelf;
+        [_applicationPickerView setDidSelectdRow:^(NSInteger component, NSInteger row,CourtProvinceModel *model) {
+            if (component == 0) {//省
+                [weakself.applicationDic setObject:model.idString forKey:@"area_pid"];
+                weakself.provinceStr = model.name;
+                [weakself getCourtOfCityWithProvinceID:model.idString];
+                
+            }else if (component == 1){//市
+                [weakself.applicationDic setObject:model.idString forKey:@"area_id"];
+                weakself.cityStr = model.name;
+            }else if (component == 2){//完成
+                [weakself.applicationPickerView setHidden:YES];
+                
+                if (weakself.applicationPickerView.component2.count > 0) {
+                    AgentCell *cell = [weakself.guaranteeFirstView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+                    cell.agentTextField.text = [NSString stringWithFormat:@"%@%@",weakself.provinceStr,weakself.cityStr];
+                }
+            }
+        }];
     }
     return _applicationPickerView;
 }
 
- */
 - (NSMutableDictionary *)applicationDic
 {
     if (!_applicationDic) {
@@ -308,6 +336,56 @@
 }
 
 #pragma mark - method
+//省份
+- (void)getCourtOfProvince
+{
+    NSString *brandString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPowerCourtProvince];
+    NSDictionary *param = @{@"token" : [self getValidateToken]};
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:brandString params:param successBlock:^(id responseObject) {
+        
+        [weakself.applicationPickerView.component1 removeAllObjects];
+        
+        CourtProvinceResponse * courtResponse = [CourtProvinceResponse objectWithKeyValues:responseObject];
+        
+        for (CourtProvinceModel *proModel in courtResponse.data) {
+            [weakself.applicationPickerView.component1 addObject:proModel];
+        }
+        
+        [weakself.applicationPickerView setHidden:NO];
+        [weakself.applicationPickerView.pickerViews reloadAllComponents];
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+//市
+- (void)getCourtOfCityWithProvinceID:(NSString *)areaPid
+{
+    NSString *cityString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPowerCourtCity];
+    NSDictionary *param = @{@"token" : [self getValidateToken],
+                            @"depdrop_parents" : areaPid};
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:cityString params:param successBlock:^(id responseObject) {
+        
+        [weakself.applicationPickerView.component2 removeAllObjects];
+        
+        CourtProvinceResponse * courtResponse = [CourtProvinceResponse objectWithKeyValues:responseObject];
+        
+        for (CourtProvinceModel *cityModel in courtResponse.data) {
+            [weakself.applicationPickerView.component2 addObject:cityModel];
+        }
+        
+        weakself.applicationPickerView.typeComponent = @"2";
+        [weakself.applicationPickerView.pickerViews reloadAllComponents];
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
 - (void)uploadImages:(NSData *)imgData
 {
     NSString *uploadsString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kUploadImagesString];
@@ -315,7 +393,34 @@
                              @"extension" : @"jpg",
                              @"picture" : imgData
                              };
-//    [self req];
+}
+
+- (void)commitMessagesOfApplicationGuaranteeWithType:(NSString *)stepString
+{
+    [self.view endEditing:YES];
+    NSString *guaranteeMessageString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kApplicationGuaranteeString];
+    [self.applicationDic setObject:[self getValidateToken] forKey:@"token"];
+    NSDictionary *params = self.applicationDic;
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:guaranteeMessageString params:params successBlock:^(id responseObject) {
+        
+        if ([stepString integerValue] == 1) {
+            BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
+            if ([baseModel.code isEqualToString:@"0000"]) {
+                [weakself.guaranteeFirstView setHidden:YES];
+                [weakself.guaranteeSecondView setHidden:NO];
+    
+                weakself.applicationTopView.leftBlueConstraints.constant = kScreenWidth/3;
+                [weakself.applicationTopView.firstButton setTitleColor:kGrayColor forState:0];
+                [weakself.applicationTopView.secondButton setTitleColor:kBlueColor forState:0];
+            }else{
+                [weakself showHint:baseModel.msg];
+            }
+        }
+    } andFailBlock:^(NSError *error) {
+        
+    }];
 }
 
 - (void)didReceiveMemoryWarning {

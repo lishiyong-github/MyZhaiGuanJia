@@ -10,6 +10,7 @@
 
 @interface ApplicationGuaranteeFirstView : UIView
 @property (nonatomic,strong) void (^didSelectedRow)(NSInteger);
+@property (nonatomic,strong) void (^didEndEditting)(NSString *,NSInteger);
 
 @property (nonatomic,strong) UITableView *tableViewa;
 

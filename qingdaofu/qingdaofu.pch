@@ -233,6 +233,7 @@
 #define kPowerCourtCity @"policy/area-city" //法院市
 #define kPowerCourtString @"policy/fayuan"  //法院
 #define kPowerAssessListString @"producedata/baoquanlists" //保全列表
+#define kPowerDetailString @"producedata/audit"  //保全详情
 #define kUploadImagesString @"common/uploads"  //上传图片
 #define kPowerAdditionalMessageString @"producedata/picturedatas"  //补充图片
 
@@ -240,6 +241,13 @@
 #define KhousePropertyConfirmOrderString @"property/pay"  //确认支付产调
 #define kHousePropertyListString @"property/index"  //产调列表
 #define kHousePorpertyEditString @"property/update"  //编辑信息
+
+#define kApplicationGuaranteeString @"policy/create" //申请保函
+
+#define kReceiptAddressListString @"address/index"  //收货地址列表
+#define kReceiptNewAddressString @"address/create"  //新增地址
+#define kReceiptDefaultAddressString @"address/default"  //默认地址
+#define kReceiptDefaultCancelString @"address/recy" //删除，取消默认地址
 
 #endif
 

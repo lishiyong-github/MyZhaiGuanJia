@@ -1,16 +1,14 @@
 //
-//  CopyListCell.m
+//  ReiceptCell.m
 //  qingdaofu
 //
-//  Created by zhixiang on 16/8/3.
+//  Created by zhixiang on 16/8/29.
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
-#import "CopyListCell.h"
+#import "ReiceptCell.h"
 
-@implementation CopyListCell
-
-
+@implementation ReiceptCell
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -18,8 +16,6 @@
         [self.contentView addSubview:self.nameLabel];
         [self.contentView addSubview:self.phoneLabel];
         [self.contentView addSubview:self.addressLabel];
-//        [self.contentView addSubview:self.line];
-//        [self.contentView addSubview:self.editButton];
         
         [self setNeedsUpdateConstraints];
     }
@@ -39,14 +35,6 @@
         [self.addressLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.nameLabel];
         [self.addressLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:8];
         [self.addressLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:self.phoneLabel];
-        
-//        [self.line autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.editButton withOffset:-kBigPadding];
-//        [self.line autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kBigPadding];
-//        [self.line autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kBigPadding];
-//        [self.line autoSetDimension:ALDimensionWidth toSize:kLineWidth];
-//        
-//        [self.editButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
-//        [self.editButton autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
         
         self.didSetupConstraints = YES;
     }
@@ -83,27 +71,6 @@
     }
     return _addressLabel;
 }
-
-//- (UILabel *)line
-//{
-//    if (!_line) {
-//        _line = [UILabel newAutoLayoutView];
-//        _line.backgroundColor = kBorderColor;
-//    }
-//    return _line;
-//}
-//
-//- (UIButton *)editButton
-//{
-//    if (!_editButton) {
-//        _editButton =  [UIButton newAutoLayoutView];
-//        _editButton.titleLabel.font = kBigFont;
-//        [_editButton setTitleColor:kBlueColor forState:0];
-//    }
-//    return _editButton;
-//}
-
-
 
 - (void)awakeFromNib {
     [super awakeFromNib];

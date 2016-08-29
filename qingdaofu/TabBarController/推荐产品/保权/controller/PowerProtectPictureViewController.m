@@ -100,6 +100,14 @@
 {
     if (!_qisuArray) {
         _qisuArray = [NSMutableArray array];
+        if (self.pModel.qisu.count > 0) {
+            NSMutableArray *aa = [NSMutableArray array];
+            for (NSInteger i=0; i<self.pModel.qisu.count; i++) {
+                ImageModel *imaModel = self.pModel.qisu[i];
+                [aa addObject:imaModel.idString];
+            }
+            _qisuArray = [NSMutableArray arrayWithArray:aa];
+        }
     }
     return _qisuArray;
 }
@@ -108,6 +116,14 @@
 {
     if (!_caichanArray) {
         _caichanArray = [NSMutableArray array];
+        if (self.pModel.caichan.count > 0) {
+            NSMutableArray *bb = [NSMutableArray array];
+            for (NSInteger i=0; i<self.pModel.caichan.count; i++) {
+                ImageModel *imaModel = self.pModel.caichan[i];
+                [bb addObject:imaModel.idString];
+            }
+            _caichanArray = [NSMutableArray arrayWithArray:bb];
+        }
     }
     return _caichanArray;
 }
@@ -116,6 +132,14 @@
 {
     if (!_zhengjuArray) {
         _zhengjuArray = [NSMutableArray array];
+        if (self.pModel.zhengju.count > 0) {
+            NSMutableArray *cc = [NSMutableArray array];
+            for (NSInteger i=0; i<self.pModel.zhengju.count; i++) {
+                ImageModel *imaModel = self.pModel.zhengju[i];
+                [cc addObject:imaModel.idString];
+            }
+            _zhengjuArray = [NSMutableArray arrayWithArray:cc];
+        }
     }
     return _zhengjuArray;
 }
@@ -124,6 +148,14 @@
 {
     if (!_anjianArray) {
         _anjianArray = [NSMutableArray array];
+        if (self.pModel.anjian.count > 0) {
+            NSMutableArray *dd = [NSMutableArray array];
+            for (NSInteger i=0; i<self.pModel.anjian.count; i++) {
+                ImageModel *imaModel = self.pModel.anjian[i];
+                [dd addObject:imaModel.idString];
+            }
+            _anjianArray1 = [NSMutableArray arrayWithArray:dd];
+        }
     }
     return _anjianArray;
 }

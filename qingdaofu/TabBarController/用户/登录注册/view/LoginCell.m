@@ -73,9 +73,6 @@
         _loginSwitch = [UISwitch newAutoLayoutView];
         _loginSwitch.onTintColor = kBlueColor;
         _loginSwitch.tintColor = kSeparateColor;
-//        _loginSwitch.onImage = [UIImage imageNamed:@"right"];
-//        _loginSwitch.offImage = [UIImage imageNamed:@"list_more"];
-//        _loginSwitch.transform =  CGAffineTransformMakeScale(1, 0.75);
         [_loginSwitch addTarget:self action:@selector(tagSwitch:) forControlEvents:UIControlEventValueChanged];
     }
     return _loginSwitch;

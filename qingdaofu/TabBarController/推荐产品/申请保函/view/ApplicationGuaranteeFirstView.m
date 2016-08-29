@@ -12,9 +12,8 @@
 #import "AgentCell.h"
 #import "SuitBaseCell.h"
 
-@interface ApplicationGuaranteeFirstView ()<UITableViewDelegate,UITableViewDataSource>
+@interface ApplicationGuaranteeFirstView ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
 
-//@property (nonatomic,strong) UITableView *tableViewa;
 @property (nonatomic,strong) BaseCommitView *nextButton;
 
 @end
@@ -41,9 +40,6 @@
      
         [self.tableViewa autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
         [self.tableViewa autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.nextButton];
-        
-//        [self.tableViewa autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
-//        [self.tableViewa autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.nextButton];
         
         [self.nextButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
         [self.nextButton autoSetDimension:ALDimensionHeight toSize:kCellHeight1];
@@ -87,7 +83,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == 0) {
-        return 5;
+        return 6;
     }
     
     return 2;
@@ -107,8 +103,8 @@
 {
     static NSString *identifier;
     if (indexPath.section == 0) {
-        if (indexPath.row < 2) {//选择法院,案件类型
-            identifier = @"application00";
+        if (indexPath.row < 3) {//选择区域,选择法院,案件类型
+            identifier = @"application01";
             AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
             if (!cell) {
                 cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
@@ -117,14 +113,14 @@
             cell.agentTextField.userInteractionEnabled = NO;
             cell.agentButton.userInteractionEnabled = NO;
             
-            NSArray *arr = @[@"选择法院",@"案件类型"];
+            NSArray *arr = @[@"选择区域",@"选择法院",@"案件类型"];
             cell.agentLabel.text = arr[indexPath.row];
             cell.agentTextField.placeholder = @"请选择";
             [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
             
             return cell;
         }else{
-            identifier = @"application01";
+            identifier = @"application02";
             AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
             if (!cell) {
                 cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
@@ -132,14 +128,16 @@
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             
             NSArray *arr = @[@[@"案        号",@"联系方式",@"保函金额"],@[@"如：(2016)沪108执00211号",@"请输入手机号码",@"请输入保函金额"]];
-            cell.agentLabel.text = arr[0][indexPath.row-2];
-            cell.agentTextField.placeholder = arr[1][indexPath.row-2];
-
-            if (indexPath.row == 2) {
+            cell.agentLabel.text = arr[0][indexPath.row-3];
+            cell.agentTextField.placeholder = arr[1][indexPath.row-3];
+            cell.agentTextField.delegate = self;
+            cell.agentTextField.tag = 6*indexPath.section + indexPath.row;
+            
+            if (indexPath.row == 3) {
                 [cell.agentButton setHidden:YES];
-            }else if (indexPath.row == 3){
+            }else if (indexPath.row == 4){
                 [cell.agentButton setHidden:YES];
-            }else if(indexPath.row == 4){
+            }else if(indexPath.row == 5){
                 [cell.agentButton setHidden:NO];
                 [cell.agentButton setTitle:@"万元" forState:0];
             }
@@ -246,6 +244,14 @@
         }
     }
      */
+}
+
+#pragma mark - textField delegate
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    if (self.didEndEditting) {
+        self.didEndEditting(textField.text,textField.tag);
+    }
 }
 
 /*

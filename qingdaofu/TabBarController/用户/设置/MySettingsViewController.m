@@ -13,6 +13,7 @@
 #import "AboutViewController.h"  //关于清道夫
 #import "ModifyPassWordViewController.h"  //修改密码
 #import "MessageRemindViewController.h"   //消息提醒
+#import "ReceiptAddressViewController.h" //收货地址
 
 #import "RegisterAgreementViewController.h" //常见问答
 
@@ -65,12 +66,12 @@
 #pragma mark - tableView delegate and datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 4;
+    return 5;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == 2) {
+    if (section == 3) {
         return 4;
     }
     return 1;
@@ -84,8 +85,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier;
-//    = @"setting";
-    if (indexPath.section < 3) {
+    if (indexPath.section < 4) {
         identifier = @"setting0";
         
         MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -97,7 +97,7 @@
         cell.selectedBackgroundView = [[UIView alloc] init];
         cell.selectedBackgroundView.backgroundColor = kCellSelectedColor;
         
-        NSArray *textArray = @[@[@"修改密码"],@[@"消息提醒"],@[@"意见反馈",@"常见问答",@"联系我们",@"关于清道夫"]];
+        NSArray *textArray = @[@[@"修改密码"],@[@"消息提醒"],@[@"设置地址"],@[@"意见反馈",@"常见问答",@"联系我们",@"关于清道夫"]];
         
         [cell.userNameButton setTitle:textArray[indexPath.section][indexPath.row] forState:0];
         [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
@@ -144,7 +144,10 @@
         MessageRemindViewController *messageRemindVC = [[MessageRemindViewController alloc] init];
         [self.navigationController pushViewController:messageRemindVC animated:YES];
         
-    }else if (indexPath.section == 2){
+    }else if (indexPath.section == 2){//地址
+        ReceiptAddressViewController *receiptAddressListViewController = [[ReceiptAddressViewController alloc] init];
+        [self.navigationController pushViewController:receiptAddressListViewController animated:YES];
+    }else if (indexPath.section == 3){
         switch (indexPath.row) {
             case 0:{//意见反馈
                 SuggestionViewController *suggestionVC = [[SuggestionViewController alloc] init];

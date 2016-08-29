@@ -17,12 +17,13 @@
 @property (nonatomic,copy) NSString *fayuan_name;  //法院名字
 @property (nonatomic,copy) NSString *idString;
 @property (nonatomic,copy) NSString *number;  //保全单号
-@property (nonatomic,copy) NSString *status;  //保全状态 1-审核未通过
+@property (nonatomic,copy) NSString *status;  //保全状态 1-等待审核，10-审核通过，20-协议已签订，30-保全已出，40-完成／退保
 @property (nonatomic,copy) NSString *type; //取函方式
 
-@property (nonatomic,strong) NSMutableArray *anjian;
-@property (nonatomic,strong) NSMutableArray *caichan;
+//图片
 @property (nonatomic,strong) NSMutableArray *qisu;
+@property (nonatomic,strong) NSMutableArray *caichan;
 @property (nonatomic,strong) NSMutableArray *zhengju;
+@property (nonatomic,strong) NSMutableArray *anjian;
 
 @end

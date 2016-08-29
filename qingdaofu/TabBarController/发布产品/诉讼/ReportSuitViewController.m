@@ -50,6 +50,8 @@
 @property (nonatomic,strong) NSDictionary *cityDcitionary;
 @property (nonatomic,strong) NSDictionary *districtDictionary;
 @property (nonatomic,strong) NSString *cateString; //1-抵押物地址，2-合同履行地
+@property (nonatomic,strong) NSMutableDictionary *addressTestDict;//临时保存抵押物地址
+
 
 @end
 
@@ -178,40 +180,48 @@
         QDFWeakSelf;
         [_reportPickerView setDidSelectedComponent:^(NSInteger component, NSInteger row, NSString *idString, NSString *nameString) {
             
-            NSString *proID;
-            NSString *proName;
-            NSString *cityID;
-            NSString *cityName;
-            NSString *districtID;
-            NSString *districtName;
-            
             if (component == 0) {
-                proName = nameString;
-                proID = idString;
+                
+                [weakself.addressTestDict setObject:nameString forKey:@"proName"];
+                [weakself.addressTestDict setObject:idString forKey:@"proID"];
+
                 [weakself getCityListWithProvinceID:idString];
+                
             }else if (component == 1){
-                cityID = idString;
-                cityName = nameString;
+                
+                [weakself.addressTestDict setObject:nameString forKey:@"cityName"];
+                [weakself.addressTestDict setObject:idString forKey:@"cityID"];
                 [weakself getDistrictListWithCityID:idString];
+                
             }else if (component == 2){
-                districtID = idString;
-                districtName = nameString;
+                
+                [weakself.addressTestDict setObject:nameString forKey:@"districtName"];
+                [weakself.addressTestDict setObject:idString forKey:@"districtID"];
+                
             }else if (component == 3){
                 
-                if (proName && cityName && districtName) {//都选择
+                if (weakself.addressTestDict[@"proName"] && weakself.addressTestDict[@"cityName"] && weakself.addressTestDict[@"districtName"]) {//都选择
                     
                     if ([weakself.cateString integerValue] == 1) {
+                        
+                        //显示
                         AgentCell *cell = [weakself.suitTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:4 inSection:0]];
-                        cell.agentTextField.text = [NSString stringWithFormat:@"%@%@%@",proName,cityName,districtName];
-                        [weakself.suitDataDictionary setObject:proID forKey:@"province_id"];
-                        [weakself.suitDataDictionary setObject:cityName forKey:@"city_id"];
-                        [weakself.suitDataDictionary setObject:districtName forKey:@"district_id"];
+                        cell.agentTextField.text = [NSString stringWithFormat:@"%@%@%@",weakself.addressTestDict[@"proName"],weakself.addressTestDict[@"cityName"],weakself.addressTestDict[@"districtName"]];
+
+                        //保存参数
+                        [weakself.suitDataDictionary setObject:weakself.addressTestDict[@"proID"] forKey:@"province_id"];
+                        [weakself.suitDataDictionary setObject:weakself.addressTestDict[@"cityID"] forKey:@"city_id"];
+                        [weakself.suitDataDictionary setObject:weakself.addressTestDict[@"districtID"] forKey:@"district_id"];
+                        
                     }else if ([weakself.cateString integerValue] == 2){
+                        
+                        //显示
                         AgentCell *cell = [weakself.suitTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:9 inSection:1]];
-                        cell.agentTextField.text = [NSString stringWithFormat:@"%@%@%@",proName,cityName,districtName];
-                        [weakself.suitDataDictionary setObject:proID forKey:@"place_province_id"];
-                        [weakself.suitDataDictionary setObject:cityName forKey:@"place_city_id"];
-                        [weakself.suitDataDictionary setObject:districtName forKey:@"place_district_id"];
+                        cell.agentTextField.text = [NSString stringWithFormat:@"%@%@%@",weakself.addressTestDict[@"proName"],weakself.addressTestDict[@"cityName"],weakself.addressTestDict[@"districtName"]];
+                        
+                        [weakself.suitDataDictionary setObject:weakself.addressTestDict[@"proID"] forKey:@"place_province_id"];
+                        [weakself.suitDataDictionary setObject:weakself.addressTestDict[@"cityID"] forKey:@"place_city_id"];
+                        [weakself.suitDataDictionary setObject:weakself.addressTestDict[@"districtID"] forKey:@"place_district_id"];
                     }
                 }
             }
@@ -321,6 +331,14 @@
         }
     }
     return _creditorfiles;
+}
+
+- (NSMutableDictionary *)addressTestDict
+{
+    if (!_addressTestDict) {
+        _addressTestDict = [NSMutableDictionary dictionary];
+    }
+    return _addressTestDict;
 }
 
 #pragma mark - tableView delegate and datasource
@@ -1240,9 +1258,16 @@
     self.suitDataDictionary[@"loan_type"] = [NSString getValidStringFromString:self.suitDataDictionary[@"loan_type"] toString:self.suResponse.product.loan_type];
     self.suitDataDictionary[@"mortorage_community"] = self.suitDataDictionary[@"mortorage_community"]?self.suitDataDictionary[@"mortorage_community"]:self.suResponse.product.mortorage_community;//抵押物地址
     self.suitDataDictionary[@"seatmortgage"] = self.suitDataDictionary[@"seatmortgage"]?self.suitDataDictionary[@"seatmortgage"]:self.suResponse.product.seatmortgage; //详细地址
-    self.suitDataDictionary[@"province_id"] = @"31000";//默认上海
-    self.suitDataDictionary[@"city_id"] = @"310100";
-    self.suitDataDictionary[@"district_id"] = @"310115";
+    
+//    self.suitDataDictionary[@"province_id"] = @"31000";//默认上海
+//    self.suitDataDictionary[@"city_id"] = @"310100";
+//    self.suitDataDictionary[@"district_id"] = @"310115";
+    
+    self.suitDataDictionary[@"province_id"] = self.suitDataDictionary[@"province_id"]?self.suitDataDictionary[@"province_id"]:self.suResponse.product.province_id;//@"310000";
+    self.suitDataDictionary[@"city_id"] = self.suitDataDictionary[@"city_id"]?self.suitDataDictionary[@"city_id"]:self.suResponse.product.city_id;//@"310100";
+    self.suitDataDictionary[@"district_id"] = self.suitDataDictionary[@"district_id"]?self.suitDataDictionary[@"district_id"]:self.suResponse.product.district_id;
+    
+    
     self.suitDataDictionary[@"carbrand"] = self.suitDataDictionary[@"carbrand"]?self.suitDataDictionary[@"carbrand"]:self.suResponse.product.carbrand;   //车品牌
     self.suitDataDictionary[@"audi"] = self.suitDataDictionary[@"audi"]?self.suitDataDictionary[@"audi"]:self.suResponse.product.audi;  //车系
     self.suitDataDictionary[@"licenseplate"] = self.suitDataDictionary[@"licenseplate"]?self.suitDataDictionary[@"licenseplate"]:self.suResponse.product.licenseplate;  //车系
@@ -1259,12 +1284,9 @@
     self.suitDataDictionary[@"interestpaid"] = self.suitDataDictionary[@"interestpaid"]?self.suitDataDictionary[@"interestpaid"]:self.suResponse.product.interestpaid; //已付利息
 //    self.suitDataDictionary[@"performancecontract"] = self.suitDataDictionary[@"performancecontract"]?self.suitDataDictionary[@"performancecontract"]:self.suResponse.product.performancecontract; //合同履行地
     
-    self.suitDataDictionary[@"place_province_id"] = @"310000";
-//    self.suitDataDictionary[@"place_province_id"]?self.suitDataDictionary[@"place_province_id"]:self.suResponse.product.place_province_id;
-    self.suitDataDictionary[@"place_city_id"] = @"310100";
-//    self.suitDataDictionary[@"place_city_id"]?self.suitDataDictionary[@"place_city_id"]:self.suResponse.product.place_city_id;
-    self.suitDataDictionary[@"place_district_id"] = @"310115";
-//    self.suitDataDictionary[@"place_district_id"]?self.suitDataDictionary[@"place_district_id"]:self.suResponse.product.place_district_id;
+    self.suitDataDictionary[@"place_province_id"] = self.suitDataDictionary[@"place_province_id"]?self.suitDataDictionary[@"place_province_id"]:self.suResponse.product.place_province_id;//@"310000";
+    self.suitDataDictionary[@"place_city_id"] = self.suitDataDictionary[@"place_city_id"]?self.suitDataDictionary[@"place_city_id"]:self.suResponse.product.place_city_id;//@"310100";
+    self.suitDataDictionary[@"place_district_id"] = self.suitDataDictionary[@"place_district_id"]?self.suitDataDictionary[@"place_district_id"]:self.suResponse.product.place_district_id;//@"310115";
     
     
     //债权文件
