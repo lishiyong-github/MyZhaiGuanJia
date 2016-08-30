@@ -8,7 +8,7 @@
 
 #import "HouseCopyViewController.h"
 #import "HouseChooseViewController.h" //选择区域
-#import "CopyAddressListViewController.h" //收货地址
+#import "ReceiptAddressViewController.h" //收货地址
 
 #import "BaseCommitButton.h"
 
@@ -213,16 +213,16 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        CopyAddressListViewController *copyAddressListVC = [[CopyAddressListViewController alloc] init];
-        [self.navigationController pushViewController:copyAddressListVC animated:YES];
+        ReceiptAddressViewController *receiptAddressListVC = [[ReceiptAddressViewController alloc] init];
+        receiptAddressListVC.cateString = @"1";
+        [self.navigationController pushViewController:receiptAddressListVC animated:YES];
         
-//        QDFWeakSelf;
-//        [houseChooseVC setDidSelectedRow:^(NSString *text) {
-//            MineUserCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-//            [cell.userActionButton setTitle:text forState:0];
-//            
-////            [weakself.propertyDic setObject:text forKey:@""];
-//        }];
+        QDFWeakSelf;
+        [receiptAddressListVC setDidSelectedReceiptAddress:^(NSString *text) {
+            MineUserCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            [cell.userActionButton setTitle:text forState:0];
+            [weakself.houseCopyDic setObject:text forKey:@"address"];
+        }];
     }
 }
 

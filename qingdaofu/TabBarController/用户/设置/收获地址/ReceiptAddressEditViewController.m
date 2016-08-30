@@ -193,11 +193,11 @@
             cell.agentLabel.text = rere[indexPath.row];
             cell.agentTextField.placeholder = rtrt[indexPath.row];
             
-//            if (indexPath.row == 0) {
-//                
-//            }else{
-//                
-//            }
+            if (indexPath.row == 0) {//收件人
+                cell.agentTextField.text = self.receiModel.nickname;
+            }else{//电话
+                cell.agentTextField.text = self.receiModel.tel;
+            }
             
             QDFWeakSelf;
             [cell setDidEndEditing:^(NSString *text) {
@@ -224,6 +224,8 @@
             cell.agentTextField.placeholder = @"请选择区域";
             [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
             
+            cell.agentTextField.text = [NSString stringWithFormat:@"%@%@%@",self.receiModel.province_name,self.receiModel.city_name,self.receiModel.area_name];
+            
             return cell;
         }
         
@@ -237,6 +239,7 @@
         
         cell.ediLabel.text = @"详细地址";
         cell.ediTextView.placeholder = @"请输入详细地址";
+        cell.ediTextView.text = self.receiModel.address;
         
         QDFWeakSelf;
         [cell setDidEndEditing:^(NSString *text) {
@@ -254,9 +257,12 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.loginTextField.userInteractionEnabled = NO;
         [cell.getCodebutton setHidden:YES];
-        [self.receiptDic setObject:@"0" forKey:@"isdefault"];
-        
         cell.loginTextField.text = @"设为默认";
+        if ([self.receiModel.isdefault integerValue] == 1) {
+            [cell.loginSwitch setOn:YES];
+        }else{
+            [cell.loginSwitch setOn:NO];
+        }
         
         QDFWeakSelf;
         [cell setDidEndSwitching:^(BOOL isOpen) {
@@ -268,6 +274,7 @@
         }];
         
         return cell;
+        
     }else{
         identifier = @"reiceptEd20";
         BidOneCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -312,7 +319,21 @@
 - (void)saveReceiptAddress
 {
     [self.view endEditing:YES];
-    NSString *receiptString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kReceiptNewAddressString];
+    NSString *receiptString;
+    if (self.receiModel) {
+        receiptString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kReceiptCopyAddressString];
+        [self.receiptDic setObject:self.receiModel.idString forKey:@"id"];
+    }else{
+        receiptString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kReceiptNewAddressString];
+    }
+    
+    self.receiptDic[@"nickname"] = [NSString getValidStringFromString:self.receiptDic[@"nickname"] toString:self.receiModel.nickname];
+    self.receiptDic[@"tel"] = [NSString getValidStringFromString:self.receiptDic[@"tel"] toString:self.receiModel.tel];
+    self.receiptDic[@"province"] = [NSString getValidStringFromString:self.receiptDic[@"province"] toString:self.receiModel.province];
+    self.receiptDic[@"city"] = [NSString getValidStringFromString:self.receiptDic[@"city"] toString:self.receiModel.city];
+    self.receiptDic[@"area"] = [NSString getValidStringFromString:self.receiptDic[@"area"] toString:self.receiModel.area];
+    self.receiptDic[@"address"] = [NSString getValidStringFromString:self.receiptDic[@"address"] toString:self.receiModel.address];
+    self.receiptDic[@"isdefault"] = [NSString getValidStringFromString:self.receiptDic[@"isdefault"] toString:self.receiModel.isdefault];
     
     [self.receiptDic setObject:[self getValidateToken] forKey:@"token"];
 

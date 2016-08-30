@@ -7,15 +7,10 @@
 //
 
 #import "ApplicationGuaranteeSecondView.h"
-//#import "BaseCommitView.h"
-#import "BaseCommitButton.h"
 
-//#import "AgentCell.h"
-//#import "SuitBaseCell.h"
+#import "BaseCommitButton.h"
 #import "MineUserCell.h"
 #import "TakePictureCell.h"
-
-#import "UIViewController+MutipleImageChoice.h"
 
 @interface ApplicationGuaranteeSecondView ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -175,35 +170,8 @@
         if (weakself.didSelectedRow) {
             weakself.didSelectedRow(indexPath.section*2+indexPath.row);
         }
-        
-//        [weakself addImageWithMaxSelection:5 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
-//            if (images.count > 0) {
-//                weakcell.collectionDataList = [NSMutableArray arrayWithArray:images];
-//                [weakcell reloadData];
-//            }else{
-//                weakcell.collectionDataList = [NSMutableArray arrayWithObject:@"upload_pictures"];
-//                [weakcell reloadData];
-//            }
-//        }];
     }];
     
-    //展示图片
-    /*
-     QDFWeakSelf;
-     [cell setDidSelectedItem:^(NSInteger itemTag) {
-     
-     NSMutableArray *imgArray = [NSMutableArray array];
-     for (NSString *filePath in weakself.allImageArray) {
-     FSBasicImage *basicImage = [[FSBasicImage alloc] initWithImage:[UIImage imageWithContentsOfFile:filePath]];
-     [imgArray addObject:basicImage];
-     }
-     
-     FSBasicImageSource *photoSource = [[FSBasicImageSource alloc] initWithImages:imgArray];
-     FSImageViewerViewController *browser = [[FSImageViewerViewController alloc] initWithImageSource:photoSource];
-     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:browser];
-     [weakself presentViewController:nav animated:YES completion:nil];
-     }];
-     */
     return cell;
 }
 
@@ -215,7 +183,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     if (section == 3) {
-        return 40;
+        return 30;
     }
     return 0.1f;
 }
@@ -223,14 +191,15 @@
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     if (section == 3) {
-        UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 40)];
+        UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 30)];
         footerView.backgroundColor = kBackColor;
         
         UIButton *footerButton = [UIButton newAutoLayoutView];
-        [footerButton setImage:[UIImage imageNamed:@"right"] forState:0];
+        [footerButton setImage:[UIImage imageNamed:@"tip_message"] forState:0];
         [footerButton setTitle:@"  请确保提供的材料真实性和完整性，同时我们会保护您的隐私" forState:0];
         [footerButton setTitleColor:kLightGrayColor forState:0];
         footerButton.titleLabel.font = kTabBarFont;
+        [footerButton setContentHorizontalAlignment:1];
         [footerView addSubview:footerButton];
         
         [footerButton autoPinEdgeToSuperviewEdge:ALEdgeLeft];

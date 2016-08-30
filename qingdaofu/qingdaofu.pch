@@ -223,6 +223,12 @@
 
 #define kPropagandaString  @"capital/picture"  //轮播图
 
+//新增部分接口
+#define kDeleteProductOfMyReleaseString @"public/deleteproduct" //删除
+
+
+
+
 //新增四大模块
 #define kHouseAssessString @"producedata/estate" //房产评估
 #define kHouseCityString @"producedata/diqu" //区域
@@ -235,7 +241,7 @@
 #define kPowerAssessListString @"producedata/baoquanlists" //保全列表
 #define kPowerDetailString @"producedata/audit"  //保全详情
 #define kUploadImagesString @"common/uploads"  //上传图片
-#define kPowerAdditionalMessageString @"producedata/picturedatas"  //补充图片
+#define kPowerAdditionalMessageString @"producedata/picturedatas"  //保全补充图片
 
 #define kHousePropertyOrderString @"property/create"  //产调生成
 #define KhousePropertyConfirmOrderString @"property/pay"  //确认支付产调
@@ -243,11 +249,16 @@
 #define kHousePorpertyEditString @"property/update"  //编辑信息
 
 #define kApplicationGuaranteeString @"policy/create" //申请保函
+#define kApplicationGuaranteeListString @"policy/index" //保函列表
+#define kApplicationGuaranteeDetailString @"policy/baohan" //保函详情
+#define kApplicationAdditionalMessageString @"policy/picturedatas"  //保函补充图片
 
 #define kReceiptAddressListString @"address/index"  //收货地址列表
 #define kReceiptNewAddressString @"address/create"  //新增地址
+#define kReceiptCopyAddressString @"address/update"  //修改地址
 #define kReceiptDefaultAddressString @"address/default"  //默认地址
 #define kReceiptDefaultCancelString @"address/recy" //删除，取消默认地址
+
 
 #endif
 

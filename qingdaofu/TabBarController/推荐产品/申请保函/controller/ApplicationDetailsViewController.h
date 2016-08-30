@@ -6,8 +6,10 @@
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
-#import "BaseViewController.h"
+#import "NetworkViewController.h"
 
-@interface ApplicationDetailsViewController : BaseViewController
+@interface ApplicationDetailsViewController : NetworkViewController
+
+@property (nonatomic,strong) NSString *idString;
 
 @end

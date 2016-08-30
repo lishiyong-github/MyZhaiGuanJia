@@ -20,6 +20,7 @@
 
 #import "PublishingResponse.h"
 #import "PublishingModel.h"
+#import "UserNameModel.h"
 
 #import "ScheduleResponse.h"
 #import "ScheduleModel.h"
@@ -200,13 +201,39 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
+        UserNameModel *userNameModel = responce.username;
         
-        NSString *checkStr = [NSString stringWithFormat:@"发布方：%@",@"滴滴滴"];
+        NSString *nameStr = [NSString getValidStringFromString:userNameModel.username toString:@"未认证"];
+        NSString *checkStr = [NSString stringWithFormat:@"发布方：%@",nameStr];
         [cell.checkButton setTitle:checkStr forState:0];
         [cell.contactButton setTitle:@" 联系他" forState:0];
         [cell.contactButton setImage:[UIImage imageNamed:@"phone_blue"] forState:0];
         
-        [cell.checkButton addTarget:self action:@selector(checkOrderEndDetails) forControlEvents:UIControlEventTouchUpInside];
+        //接单方详情
+        //接单方详情
+        QDFWeakSelf;
+        [cell.checkButton addAction:^(UIButton *btn) {
+            if ([userNameModel.username isEqualToString:@""] || userNameModel.username == nil || !userNameModel.username) {
+                [self showHint:@"发布方未认证，不能查看相关信息"];
+            }else{
+                CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+                checkDetailPublishVC.typeString = @"发布方";
+                checkDetailPublishVC.idString = weakself.idString;
+                checkDetailPublishVC.categoryString = weakself.categaryString;
+                checkDetailPublishVC.pidString = weakself.pidString;
+                [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];
+            }
+        }];
+        
+        //电话
+        [cell.contactButton addAction:^(UIButton *btn) {
+            if ([userNameModel.username isEqualToString:@""] || userNameModel.username == nil || !userNameModel.username) {
+                [self showHint:@"发布方未认证，不能打电话"];
+            }else{
+                NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",userNameModel.mobile];
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
+            }
+        }];
         
         return cell;
         
@@ -274,8 +301,9 @@
             rowString55 = endModel.seatmortgage;
         }else if ([endModel.loan_type integerValue] == 2) {
             rowString44 = @"应收帐款";
-            rowString5 = [NSString stringWithFormat:@"%@万",endModel.accountr];
-            rowString55 = endModel.seatmortgage;
+            rowString5 = @"应收帐款";
+            rowString55 = [NSString stringWithFormat:@"%@万",endModel.accountr];
+
         }else if ([endModel.loan_type integerValue] == 3) {
             rowString44 = @"机动车抵押";
             rowString5 = @"机动车抵押";
@@ -361,25 +389,6 @@
 }
 
 #pragma mark - method
-- (void)checkOrderEndDetails
-{
-    PublishingResponse *responde;
-    if (self.endArray.count > 0) {
-        responde = self.endArray[0];
-    }
-    
-    if ([responde.state isEqualToString:@"1"]) {
-        CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
-        checkDetailPublishVC.idString = self.idString;
-        checkDetailPublishVC.categoryString = self.categaryString;
-        checkDetailPublishVC.pidString = self.pidString;
-        checkDetailPublishVC.typeString = @"发布方";
-        [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
-    }else{
-        [self showHint:@"发布方未认证，不能查看相关信息"];
-    }
-}
-
 - (void)getDetailMessageOfEnding
 {
     NSString *detailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProdutsDetailString];

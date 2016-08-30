@@ -21,6 +21,7 @@
 
 #import "PublishingModel.h"
 #import "PublishingResponse.h"
+#import "UserNameModel.h"
 
 @interface MyDealingViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -202,7 +203,7 @@
         
         return cell;
         
-    }else if (indexPath.section == 1){//联系发布方
+    }else if (indexPath.section == 1){//联系接单方
         identifier = @"dealing1";
         OrderPublishCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         
@@ -211,12 +212,39 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        NSString *checkStr = [NSString stringWithFormat:@"发布方：%@",@"滴滴滴"];
+        UserNameModel *userNameModel = response.username;
+        
+        NSString *nameStr = [NSString getValidStringFromString:userNameModel.jusername toString:@"未认证"];
+        NSString *checkStr = [NSString stringWithFormat:@"接单方：%@",nameStr];
         [cell.checkButton setTitle:checkStr forState:0];
         [cell.contactButton setTitle:@" 联系他" forState:0];
         [cell.contactButton setImage:[UIImage imageNamed:@"phone_blue"] forState:0];
         
-        [cell.checkButton addTarget:self action:@selector(checkPublishUserDetail) forControlEvents:UIControlEventTouchUpInside];
+        //接单方详情
+        QDFWeakSelf;
+        [cell.checkButton addAction:^(UIButton *btn) {
+            if ([userNameModel.jusername isEqualToString:@""] || userNameModel.jusername == nil || !userNameModel.jusername) {
+                [weakself showHint:@"发布方未认证，不能查看相关信息"];
+            }else{
+                CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+                checkDetailPublishVC.idString = weakself.idString;
+                checkDetailPublishVC.categoryString = weakself.categaryString;
+                checkDetailPublishVC.pidString = weakself.pidString;
+                checkDetailPublishVC.typeString = @"接单方";
+                checkDetailPublishVC.typeDegreeString = @"处理中";
+                [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];
+            }
+        }];
+        
+        //电话
+        [cell.contactButton addAction:^(UIButton *btn) {
+            if ([userNameModel.jusername isEqualToString:@""] || userNameModel.jusername == nil || !userNameModel.jusername) {
+                [self showHint:@"接单方未认证，不能打电话"];
+            }else{
+                NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",userNameModel.jmobile];
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
+            }
+        }];
         
         return cell;
         
@@ -284,8 +312,8 @@
             rowString55 = processModel.seatmortgage;
         }else if ([processModel.loan_type integerValue] == 2) {
             rowString44 = @"应收帐款";
-            rowString5 = [NSString stringWithFormat:@"%@万",processModel.accountr];
-            rowString55 = processModel.seatmortgage;
+            rowString5 = @"应收帐款";
+            rowString55 = [NSString stringWithFormat:@"%@万",processModel.accountr];;
         }else if ([processModel.loan_type integerValue] == 3) {
             rowString44 = @"机动车抵押";
             rowString5 = @"机动车抵押";
@@ -369,20 +397,9 @@
 }
 
 #pragma mark - method
-- (void)checkPublishUserDetail
-{
-    CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
-    checkDetailPublishVC.idString = self.idString;
-    checkDetailPublishVC.categoryString = self.categaryString;
-    checkDetailPublishVC.pidString = self.pidString;
-    checkDetailPublishVC.typeString = @"接单方";
-    checkDetailPublishVC.typeDegreeString = @"处理中";
-    [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
-}
-
 - (void)getDealingMessage
 {
-    NSString *detailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProdutsDetailString];
+    NSString *detailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseDetailString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"id" : self.idString,
                              @"category" : self.categaryString
@@ -390,6 +407,7 @@
     
     QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
+        
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
         
         [weakself.dealingDataList addObject:response];

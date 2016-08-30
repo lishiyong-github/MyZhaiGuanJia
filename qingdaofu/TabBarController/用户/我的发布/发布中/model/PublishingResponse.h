@@ -7,15 +7,18 @@
 //
 
 #import "BaseModel.h"
+
 @class PublishingModel;
 @class UserModel;
 @class DebtModel;
+@class UserNameModel;
 
 @interface PublishingResponse : BaseModel
 
 /* 产品详情  */
 @property (nonatomic,copy) NSString *creditor;
 @property (nonatomic,strong) PublishingModel *product;
+@property (nonatomic,strong) UserNameModel *username;  //发布方详情
 @property (nonatomic,copy) NSString *uidString;
 @property (nonatomic,strong) NSArray *borrowinginfos;  //债务人信息
 @property (nonatomic,strong) DebtModel *creditorfiles; //债权文件

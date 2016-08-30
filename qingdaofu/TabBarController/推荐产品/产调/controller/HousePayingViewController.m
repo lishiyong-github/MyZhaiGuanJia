@@ -7,7 +7,6 @@
 //
 
 #import "HousePayingViewController.h"
-#import "ApplicationSuccessViewController.h"
 #import "HousePayingEditViewController.h"
 
 #import "WXApiObject.h"

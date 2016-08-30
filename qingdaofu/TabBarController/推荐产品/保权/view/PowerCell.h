@@ -2,7 +2,7 @@
 //  PowerCell.h
 //  qingdaofu
 //
-//  Created by zhixiang on 16/8/1.
+//  Created by zhixiang on 16/8/30.
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
@@ -10,10 +10,9 @@
 
 @interface PowerCell : UITableViewCell
 
-@property (nonatomic,strong) UILabel *powerMoneyLabel;
-@property (nonatomic,strong) UILabel *powerStateLabel;
-@property (nonatomic,strong) UILabel *powerLine;
-@property (nonatomic,strong) UIButton *powerButton;
+@property (nonatomic,strong) UIButton *orderButton;
+@property (nonatomic,strong) UIImageView *moreImageView;
+@property (nonatomic,strong) UILabel *statusLabel;
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 

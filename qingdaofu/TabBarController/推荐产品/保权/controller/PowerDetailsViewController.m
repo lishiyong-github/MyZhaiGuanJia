@@ -118,24 +118,54 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.backgroundColor = kBlueColor;
-        cell.progress3.text = @"保全已出";
+        cell.progress3.text = @"保全已出";//my_preservation@2x
         
-        if ([powerModel.status integerValue] == 1) {//等待审核//progress_point_s@3x
-            [cell.progress1 setTextColor:kBlueColor];
+        [cell.button1 setImage:[UIImage imageNamed:@"my_preservation"] forState:0];
+        NSString *str1 = @"保全进度";
+        NSString *str2 = @"本平台承诺对您的案件资料和隐私严格保密！";
+        NSString *str = [NSString stringWithFormat:@"%@\n%@",str1,str2];
+        NSMutableAttributedString *attributeStr = [[NSMutableAttributedString alloc] initWithString:str];
+        [attributeStr setAttributes:@{NSForegroundColorAttributeName:kBlackColor,NSFontAttributeName:kBigFont} range:NSMakeRange(0, str1.length)];
+        [attributeStr setAttributes:@{NSForegroundColorAttributeName:kLightGrayColor,NSFontAttributeName:kSmallFont} range:NSMakeRange(str1.length+1, str2.length)];
+        
+        NSMutableParagraphStyle * paragraphStyle1 = [[NSMutableParagraphStyle alloc] init];
+        [paragraphStyle1 setLineSpacing:3];
+        [attributeStr addAttribute:NSParagraphStyleAttributeName value:paragraphStyle1 range:NSMakeRange(0, [str length])];
+        
+        [cell.button1 setAttributedTitle:attributeStr forState:0];
+        
+        if ([powerModel.status integerValue] == 1) {//未审核
+            
+        }else if ([powerModel.status integerValue] == 10){//审核成功
+            cell.progress1.textColor = kBlueColor;
             [cell.point1 setImage:[UIImage imageNamed:@"progress_point_s"] forState:0];
-        }else if ([powerModel.status integerValue] == 10){//审核通过
-            [cell.progress1 setTextColor:kBlueColor];
-            [cell.progress2 setTextColor:kBlueColor];
-            [cell.point1 setImage:[UIImage imageNamed:@"progress_point_s"] forState:0];
-            [cell.point2 setImage:[UIImage imageNamed:@"progress_point_s"] forState:0];
-            [cell.line1 setTextColor:kBlueColor];
-
         }else if ([powerModel.status integerValue] == 20){//签订协议
-            
-        }else if ([powerModel.status integerValue] == 30){//出保全
-            
+            cell.progress1.textColor = kBlueColor;
+            [cell.point1 setImage:[UIImage imageNamed:@"progress_point_s"] forState:0];
+            [cell.line1 setBackgroundColor:kBlueColor];
+            cell.progress2.textColor = kBlueColor;
+            [cell.point2 setImage:[UIImage imageNamed:@"progress_point_s"] forState:0];
+        }else if ([powerModel.status integerValue] == 30){//已出保函
+            cell.progress1.textColor = kBlueColor;
+            [cell.point1 setImage:[UIImage imageNamed:@"progress_point_s"] forState:0];
+            [cell.line1 setBackgroundColor:kBlueColor];
+            cell.progress2.textColor = kBlueColor;
+            [cell.point2 setImage:[UIImage imageNamed:@"progress_point_s"] forState:0];
+            [cell.line2 setBackgroundColor:kBlueColor];
+            cell.progress3.textColor = kBlueColor;
+            [cell.point3 setImage:[UIImage imageNamed:@"progress_point_s"] forState:0];
         }else if ([powerModel.status integerValue] == 40){//完成
-            
+            cell.progress1.textColor = kBlueColor;
+            [cell.point1 setImage:[UIImage imageNamed:@"progress_point_s"] forState:0];
+            [cell.line1 setBackgroundColor:kBlueColor];
+            cell.progress2.textColor = kBlueColor;
+            [cell.point2 setImage:[UIImage imageNamed:@"progress_point_s"] forState:0];
+            [cell.line2 setBackgroundColor:kBlueColor];
+            cell.progress3.textColor = kBlueColor;
+            [cell.point3 setImage:[UIImage imageNamed:@"progress_point_s"] forState:0];
+            [cell.line3 setBackgroundColor:kBlueColor];
+            cell.progress4.textColor = kBlueColor;
+            [cell.point4 setImage:[UIImage imageNamed:@"progress_point_s"] forState:0];
         }
         
         return cell;
@@ -168,8 +198,8 @@
         [cell.userNameButton setTitle:additionArray[indexPath.row-1] forState:0];
         
         if (indexPath.row == 1) {
-            NSInteger account = [powerModel.account integerValue]/10000;
-            NSString *accounts = [NSString stringWithFormat:@"%ld万",(long)account];
+            float account = [powerModel.account floatValue]/10000;
+            NSString *accounts = [NSString stringWithFormat:@"%2.f万",account];
             [cell.userActionButton setTitle:accounts forState:0];
         }else if (indexPath.row == 2){
             [cell.userActionButton setTitle:powerModel.fayuan_name forState:0];
@@ -269,6 +299,7 @@
             if ([powerModel.status integerValue] < 2) {
                 PowerProtectPictureViewController *powerProtectPictureVC = [[PowerProtectPictureViewController alloc] init];
                 powerProtectPictureVC.pModel = powerModel;
+                powerProtectPictureVC.navTitleString = @"保全";
                 [self.navigationController pushViewController:powerProtectPictureVC animated:YES];
             }
         }else if (indexPath.row == 1){

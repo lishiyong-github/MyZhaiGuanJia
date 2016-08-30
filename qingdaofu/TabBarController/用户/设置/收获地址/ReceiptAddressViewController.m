@@ -202,8 +202,14 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.row == 0) {
-        //        PowerDetailsViewController *powerDetailsVC = [[PowerDetailsViewController alloc] init];
-        //        [self.navigationController pushViewController:powerDetailsVC animated:YES];
+        if ([self.cateString integerValue] != 1) {//点击单元格选择
+            ReceiptModel *receiptModel = self.receiptArray[indexPath.section];
+            NSString *address = [NSString stringWithFormat:@"%@%@%@%@",receiptModel.province_name,receiptModel.city_name,receiptModel.area_name,receiptModel.address];
+            if (self.didSelectedReceiptAddress) {
+                self.didSelectedReceiptAddress(address);
+                [self.navigationController popViewControllerAnimated:YES];
+            }
+        }
     }
 }
 
@@ -214,7 +220,7 @@
     NSDictionary *params = @{@"token" : [self getValidateToken]};
     
     QDFWeakSelf;
-    [self requestDataPostWithString:sdeeString params:params successBlock:^(id responseObject) {
+    [self requestDataPostWithString:sdeeString params:params successBlock:^(id responseObject) {        
         
         if ([page integerValue] == 1) {
             [weakself.receiptArray removeAllObjects];

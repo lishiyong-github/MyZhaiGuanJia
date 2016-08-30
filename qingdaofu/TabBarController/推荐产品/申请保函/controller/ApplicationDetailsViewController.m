@@ -8,11 +8,15 @@
 
 #import "ApplicationDetailsViewController.h"
 #import "PowerProtectViewController.h"  //申请保全
-#import "PowerProtectPictureViewController.h"
+#import "PowerProtectPictureViewController.h"//修改图片
+#import "UIViewController+ImageBrowser.h"
 
 #import "MessageCell.h"
 #import "MineUserCell.h"
 #import "PowerDetailsCell.h"
+
+#import "ApplicationDetailResponse.h"
+#import "ApplicationModel.h"
 
 @interface ApplicationDetailsViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -20,10 +24,17 @@
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 
+//json
+@property (nonatomic,strong) NSMutableArray *appDetailArray;
+
 @end
 
 @implementation ApplicationDetailsViewController
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self getDetailOfApplicationGuarantee];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -59,15 +70,26 @@
     return _powerDetailsTableView;
 }
 
-#pragma mark -tableview delegate and datasoyrce
+- (NSMutableArray *)appDetailArray
+{
+    if (!_appDetailArray) {
+        _appDetailArray = [NSMutableArray array];
+    }
+    return _appDetailArray;
+}
+
+#pragma mark - tableview delegate and datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == 1) {
-        return 6;
-    }else if (section == 2){
-        return 5;
+    if (self.appDetailArray.count > 0) {
+        if (section == 1) {
+            return 6;
+        }else if (section == 2){
+            return 5;
+        }
+        return 1;
     }
-    return 1;
+    return 0;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -86,6 +108,12 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier;
+    
+    ApplicationModel *appliModel;
+    if (self.appDetailArray.count > 0) {
+        appliModel = self.appDetailArray[0];
+    }
+    
     if (indexPath.section == 0) {//保函进度
         identifier = @"power00";
         PowerDetailsCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -94,8 +122,9 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.backgroundColor = kBlueColor;
+        cell.progress3.text = @"保函已出";
         
-        [cell.button1 setImage:[UIImage imageNamed:@"right"] forState:0];
+        [cell.button1 setImage:[UIImage imageNamed:@"my_guarantee"] forState:0];
         NSString *str1 = @"保函进度";
         NSString *str2 = @"本平台承诺对您的案件资料和隐私严格保密！";
         NSString *str = [NSString stringWithFormat:@"%@\n%@",str1,str2];
@@ -108,10 +137,45 @@
         [attributeStr addAttribute:NSParagraphStyleAttributeName value:paragraphStyle1 range:NSMakeRange(0, [str length])];
         
         [cell.button1 setAttributedTitle:attributeStr forState:0];
-
+        
+        if ([appliModel.status integerValue] == 1) {//未审核
+            
+        }else if ([appliModel.status integerValue] == 10){//审核成功
+            cell.progress1.textColor = kBlueColor;
+            [cell.point1 setImage:[UIImage imageNamed:@"progress_point_s"] forState:0];
+        }else if ([appliModel.status integerValue] == 20){//签订协议
+            cell.progress1.textColor = kBlueColor;
+            [cell.point1 setImage:[UIImage imageNamed:@"progress_point_s"] forState:0];
+            [cell.line1 setBackgroundColor:kBlueColor];
+            cell.progress2.textColor = kBlueColor;
+            [cell.point2 setImage:[UIImage imageNamed:@"progress_point_s"] forState:0];
+        }else if ([appliModel.status integerValue] == 30){//已出保函
+            cell.progress1.textColor = kBlueColor;
+            [cell.point1 setImage:[UIImage imageNamed:@"progress_point_s"] forState:0];
+            [cell.line1 setBackgroundColor:kBlueColor];
+            cell.progress2.textColor = kBlueColor;
+            [cell.point2 setImage:[UIImage imageNamed:@"progress_point_s"] forState:0];
+            [cell.line2 setBackgroundColor:kBlueColor];
+            cell.progress3.textColor = kBlueColor;
+            [cell.point3 setImage:[UIImage imageNamed:@"progress_point_s"] forState:0];
+        }else if ([appliModel.status integerValue] == 40){//完成
+            cell.progress1.textColor = kBlueColor;
+            [cell.point1 setImage:[UIImage imageNamed:@"progress_point_s"] forState:0];
+            [cell.line1 setBackgroundColor:kBlueColor];
+            cell.progress2.textColor = kBlueColor;
+            [cell.point2 setImage:[UIImage imageNamed:@"progress_point_s"] forState:0];
+            [cell.line2 setBackgroundColor:kBlueColor];
+            cell.progress3.textColor = kBlueColor;
+            [cell.point3 setImage:[UIImage imageNamed:@"progress_point_s"] forState:0];
+            [cell.line3 setBackgroundColor:kBlueColor];
+            cell.progress4.textColor = kBlueColor;
+            [cell.point4 setImage:[UIImage imageNamed:@"progress_point_s"] forState:0];
+        }
+        
         return cell;
+        
     }else if (indexPath.section == 1){
-        //补充材料
+        //详情
         if (indexPath.row == 0) {
             identifier = @"application10";
             MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -134,19 +198,33 @@
         cell.userActionButton.titleLabel.font = kFirstFont;
         [cell.userActionButton setTitleColor:kGrayColor forState:0];
         
-        NSArray *additionArray = @[@"保函金额",@"管辖法院",@"案        号",@"取函方式",@"取函地址"];
+        
+        NSArray *additionArray;
+        if ([appliModel.type integerValue] == 1) {
+            additionArray = @[@"保函金额",@"管辖法院",@"案        号",@"取函方式",@"取函地址"];
+        }else if ([appliModel.type integerValue] == 2){
+            additionArray = @[@"保函金额",@"管辖法院",@"案        号",@"快递方式",@"收获地址"];
+        }
         [cell.userNameButton setTitle:additionArray[indexPath.row-1] forState:0];
         
         if (indexPath.row == 1) {
-            [cell.userActionButton setTitle:@"600万" forState:0];
+            float moneyFloat = [appliModel.money floatValue]/10000;
+            NSString *moneyStr = [NSString stringWithFormat:@"%2.f万",moneyFloat];
+            [cell.userActionButton setTitle:moneyStr forState:0];
         }else if (indexPath.row == 2){
-            [cell.userActionButton setTitle:@"上海市高级人民法院" forState:0];
+            [cell.userActionButton setTitle:appliModel.fayuan_name forState:0];
         }else if (indexPath.row == 3){
-            [cell.userActionButton setTitle:@"沪执002001号" forState:0];
+            [cell.userActionButton setTitle:appliModel.anhao forState:0];
         }else if (indexPath.row == 4){
-            [cell.userActionButton setTitle:@"快递" forState:0];
+            NSArray *typeArr = @[@"取函",@"快递"];
+            NSInteger typeInt = [appliModel.type integerValue];
+            [cell.userActionButton setTitle:typeArr[typeInt-1] forState:0];
         }else if (indexPath.row == 5){
-            [cell.userActionButton setTitle:@"上海市浦东新区浦东南路855号" forState:0];
+            if ([appliModel.type integerValue] == 1) {
+                [cell.userActionButton setTitle:appliModel.fayuan_address forState:0];
+            }else if ([appliModel.type integerValue] == 2){
+                [cell.userActionButton setTitle:appliModel.address forState:0];
+            }
         }
         
         return cell;
@@ -162,10 +240,15 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.userNameButton.userInteractionEnabled = NO;
         cell.userActionButton.userInteractionEnabled = NO;
-        
         [cell.userNameButton setTitle:@"相关材料" forState:0];
-        [cell.userActionButton setTitle:@"编辑" forState:0];
         [cell.userActionButton setTitleColor:kBlueColor forState:0];
+        
+        if ([appliModel.status integerValue] < 2) {
+            [cell.userActionButton setHidden:NO];
+            [cell.userActionButton setTitle:@"编辑" forState:0];
+        }else{
+            [cell.userActionButton setHidden:YES];
+        }
         
         return cell;
         
@@ -186,7 +269,20 @@
         
         [cell.userActionButton setTitleColor:kGrayColor forState:0];
         cell.userActionButton.titleLabel.font = kFirstFont;
-        [cell.userActionButton setTitle:@"x0" forState:0];
+        
+        if (indexPath.row == 1) {
+            NSString *number1 = [NSString stringWithFormat:@"x%lu",(unsigned long)appliModel.qisu.count];
+            [cell.userActionButton setTitle:number1 forState:0];
+        }else if (indexPath.row == 2){
+            NSString *number2 = [NSString stringWithFormat:@"x%lu",(unsigned long)appliModel.caichan.count];
+            [cell.userActionButton setTitle:number2 forState:0];
+        }else if (indexPath.row == 3){
+            NSString *number3 = [NSString stringWithFormat:@"x%lu",(unsigned long)appliModel.zhengju.count];
+            [cell.userActionButton setTitle:number3 forState:0];
+        }else if (indexPath.row == 4){
+            NSString *number4 = [NSString stringWithFormat:@"x%lu",(unsigned long)appliModel.anjian.count];
+            [cell.userActionButton setTitle:number4 forState:0];
+        }
         
         return cell;
     }
@@ -206,14 +302,81 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 2) {//相关材料
+    if (indexPath.section == 2) {//上传材料
+        
+        ApplicationModel *appliModel = self.appDetailArray[0];
         if (indexPath.row == 0) {
-            PowerProtectPictureViewController *powerProtectPictureVC = [[PowerProtectPictureViewController alloc] init];
-            [self.navigationController pushViewController:powerProtectPictureVC animated:YES];
+            if ([appliModel.status integerValue] < 2) {
+                PowerProtectPictureViewController *powerProtectPictureVC = [[PowerProtectPictureViewController alloc] init];
+                powerProtectPictureVC.aModel = appliModel;
+                powerProtectPictureVC.navTitleString = @"保函";
+                [self.navigationController pushViewController:powerProtectPictureVC animated:YES];
+            }
+        }else if (indexPath.row == 1){
+            NSMutableArray *fileArray1 = [NSMutableArray array];
+            for (int i=0; i<appliModel.qisu.count; i++) {
+                ImageModel *fileModel = appliModel.qisu[i];
+                NSString *file = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,fileModel.file];
+                [fileArray1 addObject:file];
+            }
+            [self showImages:fileArray1];
+            
+        }else if (indexPath.row == 2){
+            NSMutableArray *fileArray2 = [NSMutableArray array];
+            for (int i=0; i<appliModel.caichan.count; i++) {
+                ImageModel *fileModel = appliModel.caichan[i];
+                NSString *file = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,fileModel.file];
+                [fileArray2 addObject:file];
+            }
+            [self showImages:fileArray2];
+        }else if (indexPath.row == 3){
+            NSMutableArray *fileArray3 = [NSMutableArray array];
+            for (int i=0; i<appliModel.zhengju.count; i++) {
+                ImageModel *fileModel = appliModel.zhengju[i];
+                NSString *file = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,fileModel.file];
+                [fileArray3 addObject:file];
+            }
+            [self showImages:fileArray3];
+            
+        }else if (indexPath.row == 4){
+            NSMutableArray *fileArray4 = [NSMutableArray array];
+            for (int i=0; i<appliModel.anjian.count; i++) {
+                ImageModel *fileModel = appliModel.anjian[i];
+                NSString *file = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,fileModel.file];
+                [fileArray4 addObject:file];
+            }
+            [self showImages:fileArray4];
         }
     }
 }
 
+#pragma mark - method
+- (void)getDetailOfApplicationGuarantee
+{
+    NSString *detailAppString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kApplicationGuaranteeDetailString];
+    NSDictionary *params = @{@"id" : self.idString,
+                             @"token" : [self getValidateToken]
+                             };
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:detailAppString params:params successBlock:^(id responseObject) {
+        
+        [weakself.appDetailArray removeAllObjects];
+        
+        ApplicationDetailResponse *responde = [ApplicationDetailResponse objectWithKeyValues:responseObject];
+        
+        if ([responde.code isEqualToString:@"0000"]) {
+            [weakself.appDetailArray addObject:responde.model];
+
+            [weakself.powerDetailsTableView reloadData];
+        }else{
+            [weakself showHint:responde.msg];
+        }
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

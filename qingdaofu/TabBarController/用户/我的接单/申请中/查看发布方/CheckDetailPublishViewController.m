@@ -9,10 +9,9 @@
 #import "CheckDetailPublishViewController.h"
 #import "AllEvaluationViewController.h"  //所有评价
 #import "CaseViewController.h"  //经典案例
-//#import "AgreementViewController.h"  //服务协议
-//#import "LoginViewController.h"
-//#import "AuthentyViewController.h"
+#import "AgreementViewController.h" //同意
 
+#import "BaseCommitButton.h"
 #import "MineUserCell.h"
 #import "EvaluatePhotoCell.h"
 
@@ -25,11 +24,12 @@
 #import "EvaluateModel.h"
 
 #import "UIButton+WebCache.h"
-//#import "UIImage+Color.h"
+
 @interface CheckDetailPublishViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *checkDetailTableView;
+@property (nonatomic,strong) BaseCommitButton *appAgreeButton;
 
 @property (nonatomic,strong) UIButton *rightBarBtn;
 
@@ -53,6 +53,10 @@
 
     [self.view addSubview:self.checkDetailTableView];
 
+    if ([self.typeString isEqualToString:@"申请人"]) {
+        [self.view addSubview:self.appAgreeButton];
+    }
+    
     [self.view setNeedsUpdateConstraints];
     
     [self getMessageOfOrderPeople];
@@ -62,7 +66,18 @@
 {
     if (!self.didSetupConstraints) {
         
-        [self.checkDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+        if ([self.typeString isEqualToString:@"申请人"]) {
+            [self.checkDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
+            [self.checkDetailTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.appAgreeButton];
+            
+            [self.appAgreeButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+            [self.appAgreeButton autoSetDimension:ALDimensionHeight toSize:kTabBarHeight];
+
+        }else{
+            [self.checkDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+        }
+        
+        
 //        if ([self.typeString isEqualToString:@"申请人"]) {
 //            
 //            [self.appAgreeButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
@@ -115,24 +130,30 @@
     return _checkDetailTableView;
 }
 
-//- (BaseCommitButton *)appAgreeButton
-//{
-//    if (!_appAgreeButton) {
-//        _appAgreeButton = [BaseCommitButton newAutoLayoutView];
-//        
-//        QDFWeakSelf;
-//        if ([self.typeString isEqualToString:@"申请人"]) {
-//            [_appAgreeButton setTitle:@"同意申请" forState:0];
+- (BaseCommitButton *)appAgreeButton
+{
+    if (!_appAgreeButton) {
+        _appAgreeButton = [BaseCommitButton newAutoLayoutView];
+        [_appAgreeButton setTitle:@"同意该用户申请" forState:0];
+        
+        QDFWeakSelf;
+        [_appAgreeButton addAction:^(UIButton *btn) {
+            AgreementViewController *agreementVC = [[AgreementViewController alloc] init];
+            agreementVC.flagString = @"1";
+            agreementVC.idString = weakself.idString;
+            agreementVC.categoryString = weakself.categoryString;
+            agreementVC.pidString = weakself.pidString;
+            [weakself.navigationController pushViewController:agreementVC animated:YES];
+        }];
+        
+        /*
+        if ([self.typeString isEqualToString:@"申请人"]) {
+        
+            
 //            [_appAgreeButton addAction:^(UIButton *btn) {
 //                [weakself tokenIsValid];
 //                [weakself setDidTokenValid:^(TokenModel *tModel) {
 //                    if ([tModel.code integerValue] == 0000) {
-//                        AgreementViewController *agreementVC = [[AgreementViewController alloc] init];
-//                        agreementVC.flagString = @"1";
-//                        agreementVC.idString = weakself.idString;
-//                        agreementVC.categoryString = weakself.categoryString;
-//                        agreementVC.pidString = weakself.pidString;
-//                        [weakself.navigationController pushViewController:agreementVC animated:YES];
 //                    }else if ([tModel.code integerValue] == 3006){
 //                        [weakself showHint:tModel.msg];
 //                        AuthentyViewController *authentyVC = [[AuthentyViewController alloc] init];
@@ -147,37 +168,38 @@
 //                    }
 //                }];
 //            }];
-//        }else{
-//            //1.处理中
-//            if ([self.typeDegreeString isEqualToString:@"处理中"]) {
-//                [_appAgreeButton setTitle:@"已同意" forState:0];
-//                [_appAgreeButton setBackgroundColor:kSelectedColor];
-//                [_appAgreeButton setTitleColor:kBlackColor forState:0];
-//                
-//                //添加电话按钮
-//                UIButton *phoneButton = [UIButton newAutoLayoutView];
-//                [phoneButton setImage:[UIImage imageNamed:@"phone"] forState:0];
-//                phoneButton.backgroundColor = kBlueColor;
-//                [phoneButton addAction:^(UIButton *btn) {
-//                    if (weakself.certifiDataArray.count > 0) {
-//                        CertificationModel *model = weakself.certifiDataArray[0];
-//                        NSString *phoneStr = [NSString stringWithFormat:@"telprompt://%@",model.mobile];
-//                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
-//                    }
-//                }];
-//                [self.appAgreeButton addSubview:phoneButton];
-//                
-//                [phoneButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.appAgreeButton];
-//                [phoneButton autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.appAgreeButton];
-//                [phoneButton autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.appAgreeButton];
-//                [phoneButton autoSetDimension:ALDimensionWidth toSize:kTabBarHeight];
-//            }else{
-//                [_appAgreeButton setHidden:YES];
-//            }
-//        }
-//    }
-//    return _appAgreeButton;
-//}
+        }else{
+            //1.处理中
+            if ([self.typeDegreeString isEqualToString:@"处理中"]) {
+                [_appAgreeButton setTitle:@"已同意" forState:0];
+                [_appAgreeButton setBackgroundColor:kSelectedColor];
+                [_appAgreeButton setTitleColor:kBlackColor forState:0];
+                
+                //添加电话按钮
+                UIButton *phoneButton = [UIButton newAutoLayoutView];
+                [phoneButton setImage:[UIImage imageNamed:@"phone"] forState:0];
+                phoneButton.backgroundColor = kBlueColor;
+                [phoneButton addAction:^(UIButton *btn) {
+                    if (weakself.certifiDataArray.count > 0) {
+                        CertificationModel *model = weakself.certifiDataArray[0];
+                        NSString *phoneStr = [NSString stringWithFormat:@"telprompt://%@",model.mobile];
+                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
+                    }
+                }];
+                [self.appAgreeButton addSubview:phoneButton];
+                
+                [phoneButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.appAgreeButton];
+                [phoneButton autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.appAgreeButton];
+                [phoneButton autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.appAgreeButton];
+                [phoneButton autoSetDimension:ALDimensionWidth toSize:kTabBarHeight];
+            }else{
+                [_appAgreeButton setHidden:YES];
+            }
+        }
+         */
+    }
+    return _appAgreeButton;
+}
 
 - (NSMutableArray *)certifiDataArray
 {
@@ -528,40 +550,6 @@
 }
 
 #pragma mark - method
-//- (void)warnning
-//{
-//    NSString *ssss = [NSString stringWithFormat:@"是否提醒%@完善信息",self.typeString];
-//    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"" message:ssss preferredStyle:UIAlertControllerStyleAlert];
-//    
-//    UIAlertAction *actionOK = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//        [self warnningMethod];
-//    }];
-//    
-//    UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil];
-//    
-//    [alertController addAction:actionOK];
-//    [alertController addAction:actionCancel];
-//    
-//    [self.navigationController presentViewController:alertController animated:YES completion:nil];
-//}
-//
-//- (void)warnningMethod
-//{
-//    NSString *warnString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kCheckOrderToWarnning];
-//    NSDictionary *params = @{@"token" : [self getValidateToken],
-//                             @"id" : self.idString,
-//                             @"category" : self.categoryString,
-//                             @"pid" : self.pidString
-//                             };
-//    QDFWeakSelf;
-//    [self requestDataPostWithString:warnString params:params successBlock:^(id responseObject) {
-//        BaseModel *warnModel = [BaseModel objectWithKeyValues:responseObject];
-//        [weakself showHint:warnModel.msg];
-//    } andFailBlock:^(NSError *error) {
-//        
-//    }];
-//}
-
 - (void)getMessageOfOrderPeople
 {
     NSString *yyyString;
@@ -586,7 +574,6 @@
                 [weakself.certifiDataArray addObject:response.certification];
             }
             
-            [weakself.checkDetailTableView reloadData];
             [weakself getAllEvaluationListWithPage:@"1"];
             
         }else{
@@ -602,23 +589,28 @@
     NSString *evaluateString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kCheckOrderToEvaluationString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"page" : page,
-                             @"pid" : self.pidString
+                             @"pid" : self.pidString,
+                             @"limit" : @"10"
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:evaluateString params:params successBlock:^(id responseObject) {
         
         EvaluateResponse *response = [EvaluateResponse objectWithKeyValues:responseObject];
         
-        [weakself.allEvaResponse addObject:response];
-        
-        for (EvaluateModel *model in response.evaluate) {
-            [weakself.allEvaDataArray addObject:model];
+        if ([response.code isEqualToString:@"0000"]) {
+            [weakself.allEvaResponse addObject:response];
+            
+            for (EvaluateModel *model in response.evaluate) {
+                [weakself.allEvaDataArray addObject:model];
+            }
+        }else{
+            [weakself showHint:response.msg];
         }
+        
         [weakself.checkDetailTableView reloadData];
         
-        
     } andFailBlock:^(NSError *error) {
-        
+        [weakself.checkDetailTableView reloadData];
     }];
 }
 

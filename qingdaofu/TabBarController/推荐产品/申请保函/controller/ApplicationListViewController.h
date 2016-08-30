@@ -6,8 +6,8 @@
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
-#import "BaseViewController.h"
+#import "NetworkViewController.h"
 
-@interface ApplicationListViewController : BaseViewController
+@interface ApplicationListViewController : NetworkViewController
 
 @end

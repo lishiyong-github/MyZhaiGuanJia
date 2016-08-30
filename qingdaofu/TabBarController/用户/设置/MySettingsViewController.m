@@ -146,6 +146,7 @@
         
     }else if (indexPath.section == 2){//地址
         ReceiptAddressViewController *receiptAddressListViewController = [[ReceiptAddressViewController alloc] init];
+        receiptAddressListViewController.cateString = @"1";
         [self.navigationController pushViewController:receiptAddressListViewController animated:YES];
     }else if (indexPath.section == 3){
         switch (indexPath.row) {

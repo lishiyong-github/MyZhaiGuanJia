@@ -8,8 +8,8 @@
 
 #import "ApplyRecordsViewController.h"
 #import "CheckDetailPublishViewController.h"   //申请人信息
+#import "AgreementViewController.h" //同意申请
 
-//#import "ApplyRecordsCell.h"
 #import "MineUserCell.h"
 #import "BidOneCell.h"
 
@@ -43,7 +43,6 @@
     [self.view addSubview:self.applyRecordsTableView];
     [self.view addSubview:self.baseRemindImageView];
     [self.baseRemindImageView setHidden:YES];
-    
     
     [self.view setNeedsUpdateConstraints];
 }
@@ -176,6 +175,16 @@
     cell.userActionButton.titleLabel.font = kFourFont;
     cell.userActionButton.backgroundColor = kBlueColor;
     
+    QDFWeakSelf;
+    [cell.userActionButton addAction:^(UIButton *btn) {
+        AgreementViewController *agreementVC = [[AgreementViewController alloc] init];
+        agreementVC.flagString = @"1";
+        agreementVC.idString = userModel.idString;
+        agreementVC.categoryString = userModel.category;
+        agreementVC.pidString = userModel.uidInner;
+        [weakself.navigationController pushViewController:agreementVC animated:YES];
+    }];
+    
     return cell;
     
     /*
@@ -274,7 +283,7 @@
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:listString params:params successBlock:^(id responseObject){
-        
+            
         if ([page integerValue] == 1) {
             [weakself.recordsDataArray removeAllObjects];
         }
@@ -283,7 +292,6 @@
         
         if (response.user.count == 0) {
             _pageRecords--;
-            [weakself showHint:@"没有更多了"];
         }
         
         for (UserModel *model in response.user) {
@@ -297,6 +305,7 @@
         }
         
         [weakself.applyRecordsTableView reloadData];
+        
     } andFailBlock:^(id responseObject){
         
     }];

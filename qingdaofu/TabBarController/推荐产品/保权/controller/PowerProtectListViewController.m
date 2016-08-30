@@ -13,7 +13,7 @@
 
 #import "BaseCommitView.h"
 #import "EvaTopSwitchView.h"
-#import "MineUserCell.h"
+#import "PowerCell.h"
 #import "MessageCell.h"
 
 #import "PowerResponse.h"
@@ -178,19 +178,29 @@
 
     if (indexPath.row == 0) {
         identifier = @"listas0";
-        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        PowerCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         if (!cell) {
-            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            cell = [[PowerCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.userNameButton.userInteractionEnabled = NO;
-        cell.userActionButton.userInteractionEnabled = NO;
-
-        NSString *number = [NSString stringWithFormat:@"  %@",tModel.number];
-        [cell.userNameButton setTitle:number forState:0];
-        [cell.userNameButton setTitleColor:kGrayColor forState:0];
-        [cell.userNameButton setImage:[UIImage imageNamed:@"right"] forState:0];
-        [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        
+        cell.orderButton.userInteractionEnabled = NO;
+        
+        NSString *orderID = [NSString stringWithFormat:@"  %@",tModel.number];
+        [cell.orderButton setTitle:orderID forState:0];
+        [cell.orderButton setImage:[UIImage imageNamed:@"right"] forState:0];
+        
+        if ([tModel.status integerValue] == 1) {//审核中
+            cell.statusLabel.text = @"审核中";
+        }else if ([tModel.status integerValue] == 10) {//审核通过
+            cell.statusLabel.text = @"审核通过";
+        }else if ([tModel.status integerValue] == 20) {//协议已签订
+            cell.statusLabel.text = @"协议已签订";
+        }else if ([tModel.status integerValue] == 30) {//保函已出
+            cell.statusLabel.text = @"保全已出";
+        }else if ([tModel.status integerValue] == 40) {//完成／退保
+            cell.statusLabel.text = @"完成/退保";
+        }
         
         return cell;
         
@@ -208,8 +218,8 @@
         cell.userLabel.font = kFirstFont;
         cell.newsLabel.font = kFirstFont;
 
-        NSInteger account = [tModel.account integerValue]/10000;
-        cell.userLabel.text = [NSString stringWithFormat:@"金额：%ld万",(long)account];
+        float account = [tModel.account floatValue]/10000;
+        cell.userLabel.text = [NSString stringWithFormat:@"金额：%2.f万",account];
         cell.timeLabel.text = [NSDate getYMDhmFormatterTime:tModel.create_time];
         cell.newsLabel.text = [NSString stringWithFormat:@"法院：%@",tModel.fayuan_name];
         return cell;

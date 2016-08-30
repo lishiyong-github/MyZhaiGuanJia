@@ -20,6 +20,7 @@
 
 #import "PublishingResponse.h"
 #import "PublishingModel.h"
+#import "UserNameModel.h"
 
 //查看进度
 #import "ScheduleResponse.h"
@@ -192,13 +193,38 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
+        UserNameModel *userNameModel = reModel.username;
         
-        NSString *checkStr = [NSString stringWithFormat:@"发布方：%@",@"滴滴滴"];
+        NSString *nameStr = [NSString getValidStringFromString:userNameModel.jusername toString:@"未认证"];
+        NSString *checkStr = [NSString stringWithFormat:@"接单方：%@",nameStr];
         [cell.checkButton setTitle:checkStr forState:0];
         [cell.contactButton setTitle:@" 联系他" forState:0];
         [cell.contactButton setImage:[UIImage imageNamed:@"phone_blue"] forState:0];
         
-        [cell.checkButton addTarget:self action:@selector(checkReleaseDetails) forControlEvents:UIControlEventTouchUpInside];
+        //接单方详情
+        QDFWeakSelf;
+        [cell.checkButton addAction:^(UIButton *btn) {
+            if ([userNameModel.jusername isEqualToString:@""] || userNameModel.jusername == nil || !userNameModel.jusername) {
+                [weakself showHint:@"发布方未认证，不能查看相关信息"];
+            }else{
+                CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+                checkDetailPublishVC.idString = weakself.idString;
+                checkDetailPublishVC.categoryString = weakself.categaryString;
+                checkDetailPublishVC.pidString = weakself.pidString;
+                checkDetailPublishVC.typeString = @"接单方";
+                [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];
+            }
+        }];
+        
+        //电话
+        [cell.contactButton addAction:^(UIButton *btn) {
+            if ([userNameModel.jusername isEqualToString:@""] || userNameModel.jusername == nil || !userNameModel.jusername) {
+                [self showHint:@"接单方未认证，不能打电话"];
+            }else{
+                NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",userNameModel.jmobile];
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
+            }
+        }];
         
         return cell;
         
@@ -266,8 +292,8 @@
             rowString55 = endModel.seatmortgage;
         }else if ([endModel.loan_type integerValue] == 2) {
             rowString44 = @"应收帐款";
-            rowString5 = [NSString stringWithFormat:@"%@万",endModel.accountr];
-            rowString55 = endModel.seatmortgage;
+            rowString5 = @"应收帐款";
+            rowString55 = [NSString stringWithFormat:@"%@万",endModel.accountr];;
         }else if ([endModel.loan_type integerValue] == 3) {
             rowString44 = @"机动车抵押";
             rowString5 = @"机动车抵押";

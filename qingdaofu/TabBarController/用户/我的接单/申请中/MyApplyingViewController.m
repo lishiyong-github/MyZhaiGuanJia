@@ -16,6 +16,7 @@
 
 #import "PublishingResponse.h"
 #import "PublishingModel.h"
+#import "UserNameModel.h"
 
 @interface MyApplyingViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -182,7 +183,11 @@
         cell.userNameButton.userInteractionEnabled = NO;
         cell.userActionButton.userInteractionEnabled = NO;
         
-        [cell.userNameButton setTitle:@"发布方：" forState:0];
+        UserNameModel *userNameModel = responseModel.username;
+        
+        NSString *nameStr = [NSString getValidStringFromString:userNameModel.jusername toString:@"未认证"];
+        NSString *checkStr = [NSString stringWithFormat:@"发布方：%@",nameStr];
+        [cell.userNameButton setTitle:checkStr forState:0];
         [cell.userActionButton setTitle:@"查看详情  " forState:0];
         [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
         
@@ -251,8 +256,8 @@
             rowString55 = applyModel.seatmortgage;
         }else if ([applyModel.loan_type integerValue] == 2) {
             rowString44 = @"应收帐款";
-            rowString5 = [NSString stringWithFormat:@"%@万",applyModel.accountr];
-            rowString55 = applyModel.seatmortgage;
+            rowString5 = @"应收帐款";
+            rowString55 = [NSString stringWithFormat:@"%@万",applyModel.accountr];
         }else if ([applyModel.loan_type integerValue] == 3) {
             rowString44 = @"机动车抵押";
             rowString5 = @"机动车抵押";
@@ -540,7 +545,19 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 1) {//查看发布方
-        [self checkDetails];
+        PublishingResponse *respongr = self.myApplyArray[0];
+        UserNameModel *usModel = respongr.username;
+        if ([usModel.jusername isEqualToString:@""] || usModel.jusername == nil || !usModel.jusername) {
+            [self showHint:@"发布方未认证，不能查看相关信息"];
+        }else{
+            CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+            checkDetailPublishVC.typeString = @"发布方";
+            checkDetailPublishVC.typeDegreeString = @"1";
+            checkDetailPublishVC.idString = self.idString;
+            checkDetailPublishVC.categoryString = self.categaryString;
+            checkDetailPublishVC.pidString = self.pidString;
+        }
+        
     }else if (indexPath.section == 2 && indexPath.row == 0) {//查看更多
         
         PublishingResponse *resModel = self.myApplyArray[0];
@@ -564,27 +581,6 @@
 }
 
 #pragma mark - method
-//查看发布方
-- (void)checkDetails
-{
-    PublishingResponse *responde;
-    if (self.myApplyArray.count > 0) {
-        responde = self.myApplyArray[0];
-    }
-    
-    if ([responde.state isEqualToString:@"1"]) {
-        CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
-        checkDetailPublishVC.idString = self.idString;
-        checkDetailPublishVC.categoryString = self.categaryString;
-        checkDetailPublishVC.pidString = self.pidString;
-        checkDetailPublishVC.typeString = @"发布方";
-        checkDetailPublishVC.typeDegreeString = @"1";
-        [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
-    }else{
-        [self showHint:@"发布方未认证，不能查看相关信息"];
-    }
-}
-
 - (void)getDetailMessageOfApplying
 {
     NSString *detailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProdutsDetailString];

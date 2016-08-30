@@ -9,6 +9,7 @@
 #import "ApplicationGuaranteeViewController.h"
 #import "ApplicationCourtViewController.h"  //选择法院
 #import "ApplicationListViewController.h"   //我的保函
+#import "ReceiptAddressViewController.h"  //收货地址
 
 #import "ApplicationGuaranteeView.h"
 #import "ApplicationGuaranteeFirstView.h"
@@ -42,6 +43,12 @@
 @property (nonatomic,strong) NSString *provinceStr;
 @property (nonatomic,strong) NSString *cityStr;
 @property (nonatomic,strong) NSString *districtStr;
+
+//picture
+@property (nonatomic,strong) NSMutableArray *qisuList;
+@property (nonatomic,strong) NSMutableArray *caichanList;
+@property (nonatomic,strong) NSMutableArray *zhengjuList;
+@property (nonatomic,strong) NSMutableArray *anjianList;
 
 @end
 
@@ -123,22 +130,6 @@
             }
         }];
         
-//        //案号
-//        AgentCell *cell3 = [_guaranteeFirstView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:3 inSection:0]];
-//        [cell3 setDidEndEditing:^(NSString *text) {
-//            [weakself.applicationDic setObject:text forKey:@"anhao"];
-//        }];
-//        
-//        AgentCell *cell4 = [_guaranteeFirstView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:4 inSection:0]];
-//        [cell4 setDidEndEditing:^(NSString *text) {
-//            [weakself.applicationDic setObject:text forKey:@"phone"];
-//        }];
-//        
-//        AgentCell *cell5 = [_guaranteeFirstView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:5 inSection:0]];
-//        [cell5 setDidEndEditing:^(NSString *text) {
-//            [weakself.applicationDic setObject:text forKey:@"money"];
-//        }];
-        
         [_guaranteeFirstView setDidSelectedRow:^(NSInteger row) {
             switch (row) {
                 case 0:{//选择区域
@@ -175,8 +166,16 @@
                 }
                     break;
                 case 7:{//收货地址
-                    if (weakself.applicationDic[@"court"]) {
+                    if ([weakself.applicationDic[@"type"] integerValue] == 2) {
                         NSLog(@"选择收货地址");
+                        ReceiptAddressViewController *receiptAddressVC = [[ReceiptAddressViewController alloc] init];
+                        [weakself.navigationController pushViewController:receiptAddressVC animated:YES];
+                        
+                        [receiptAddressVC setDidSelectedReceiptAddress:^(NSString *text) {
+                            AgentCell *cell = [weakself.guaranteeFirstView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
+                            cell.agentTextField.text = text;
+                            [weakself.applicationDic setObject:text forKey:@"address"];
+                        }];
                     }
                 }
                     break;
@@ -202,6 +201,7 @@
 
                         cell.agentTextField.text = weakself.applicationDic[@"fayuan_name"];
                         [weakself.applicationDic setObject:@"1" forKey:@"type"];
+                        [weakself.applicationDic setObject:weakself.applicationDic[@"fayuan_name"] forKey:@"fayuan_address"];
                     }else{
                         [weakself showHint:@"请先选择法院"];
                     }
@@ -223,38 +223,56 @@
         QDFWeakSelf;
         [_guaranteeSecondView setDidSelectedRow:^(NSInteger tag) {
             
-            if (tag < 8) {//1,3,5,7
-                [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
-                    if (tag == 1) {//起诉书
+            if (tag < 8) {
+                NSArray *testArr;
+                if (tag == 1) {
+                    testArr = weakself.qisuList;
+                }else if (tag == 3){
+                    testArr = weakself.caichanList;
+                }else if (tag == 5){
+                    testArr = weakself.zhengjuList;
+                }else if (tag == 7){
+                    testArr = weakself.anjianList;
+                }
+                
+                if (testArr.count < 4) {
+                    [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
+                        NSData *imgData = [NSData dataWithContentsOfFile:images[0]];
+                        NSString *imgString = [NSString stringWithFormat:@"%@",imgData];
+                        [weakself uploadImages:imgString andType:@"jpg" andFilePath:@"1"];
                         
-                        for(NSInteger i = 0; i < images.count; i++) {
-                            NSData * imageData = UIImageJPEGRepresentation(images[i], 0.5);
-                            // 上传的参数名
-                            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-                        }
-                        
-                        TakePictureCell *cell = [weakself.guaranteeSecondView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-                        cell.collectionDataList = [NSMutableArray arrayWithArray:images];
-                        [cell reloadData];
-                        
-                        
-                    }else if (tag == 3){//财产保全申请书
-                        TakePictureCell *cell = [weakself.guaranteeSecondView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
-                        cell.collectionDataList = [NSMutableArray arrayWithArray:images];
-                        [cell reloadData];
-
-                    }else if (tag == 5){//相关证据材料
-                        TakePictureCell *cell = [weakself.guaranteeSecondView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:2]];
-                        cell.collectionDataList = [NSMutableArray arrayWithArray:images];
-                        [cell reloadData];
-
-                    }else if (tag == 7){//案件受理通知书
-                        TakePictureCell *cell = [weakself.guaranteeSecondView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:3]];
-                        cell.collectionDataList = [NSMutableArray arrayWithArray:images];
-                        [cell reloadData];
-
-                    }
-                }];
+                        [weakself setDidGetValidImage:^(ImageModel *imgModel) {
+                            if ([imgModel.code isEqualToString:@"0000"]) {
+                                
+                                if (tag == 1) {
+                                    TakePictureCell *cell = [weakself.guaranteeSecondView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+                                    [cell.collectionDataList insertObject:images[0] atIndex:0];
+                                    [cell reloadData];
+                                    [weakself.qisuList addObject:imgModel.fileid];
+                                    
+                                }else if (tag == 3){
+                                    TakePictureCell *cell = [weakself.guaranteeSecondView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
+                                    [cell.collectionDataList insertObject:images[0] atIndex:0];
+                                    [cell reloadData];
+                                    [weakself.caichanList addObject:imgModel.fileid];
+                                }else if (tag == 5){
+                                    TakePictureCell *cell = [weakself.guaranteeSecondView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:2]];
+                                    [cell.collectionDataList insertObject:images[0] atIndex:0];
+                                    [cell reloadData];
+                                    [weakself.zhengjuList addObject:imgModel.fileid];
+                                }else if (tag == 7){
+                                    TakePictureCell *cell = [weakself.guaranteeSecondView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:3]];
+                                    [cell.collectionDataList insertObject:images[0] atIndex:0];
+                                    [cell reloadData];
+                                    [weakself.anjianList addObject:imgModel.fileid];
+                                }
+                            }
+                        }];
+                    }];
+                }else{
+                    [weakself showHint:@"最多4张"];
+                }
+                
             }else if (tag == 11){//上一步
                 [weakself.guaranteeSecondView setHidden:YES];
                 [weakself.guaranteeFirstView setHidden:NO];
@@ -264,12 +282,8 @@
                 [weakself.applicationTopView.firstButton setTitleColor:kBlueColor forState:0];
 
             }else if (tag == 12){//立即申请
-                [weakself.guaranteeThirdView setHidden:NO];
-                [weakself.guaranteeSecondView setHidden:YES];
                 
-                weakself.applicationTopView.leftBlueConstraints.constant = kScreenWidth/3*2;
-                [weakself.applicationTopView.secondButton setTitleColor:kGrayColor forState:0];
-                [weakself.applicationTopView.thirdButton setTitleColor:kBlueColor forState:0];
+                [weakself commitMessagesOfApplicationGuaranteeWithType:@"2"];
             }
         }];
     }
@@ -284,7 +298,7 @@
         QDFWeakSelf;
         [_guaranteeThirdView setDidSelectedRow:^(NSInteger tag) {
             if (tag == 21) {//回首页
-                
+                [weakself.navigationController popViewControllerAnimated:YES];
             }else if (tag == 22){//我的保函
                 UINavigationController *nav = weakself.navigationController;
                 [nav popViewControllerAnimated:NO];
@@ -333,6 +347,38 @@
         _applicationDic = [NSMutableDictionary dictionary];
     }
     return _applicationDic;
+}
+
+- (NSMutableArray *)qisuList
+{
+    if (!_qisuList) {
+        _qisuList = [NSMutableArray array];
+    }
+    return _qisuList;
+}
+
+- (NSMutableArray *)caichanList
+{
+    if (!_caichanList) {
+        _caichanList = [NSMutableArray array];
+    }
+    return _caichanList;
+}
+
+- (NSMutableArray *)zhengjuList
+{
+    if (!_zhengjuList) {
+        _zhengjuList = [NSMutableArray array];
+    }
+    return _zhengjuList;
+}
+
+- (NSMutableArray *)anjianList
+{
+    if (!_anjianList) {
+        _anjianList = [NSMutableArray array];
+    }
+    return _anjianList;
 }
 
 #pragma mark - method
@@ -386,36 +432,70 @@
     }];
 }
 
-- (void)uploadImages:(NSData *)imgData
-{
-    NSString *uploadsString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kUploadImagesString];
-    NSDictionary *params = @{@"filetype" : @"1",
-                             @"extension" : @"jpg",
-                             @"picture" : imgData
-                             };
-}
-
 - (void)commitMessagesOfApplicationGuaranteeWithType:(NSString *)stepString
 {
     [self.view endEditing:YES];
     NSString *guaranteeMessageString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kApplicationGuaranteeString];
     [self.applicationDic setObject:[self getValidateToken] forKey:@"token"];
+    
+    //起诉
+    NSString *qisuImageStr = @"";
+    for (NSInteger i=0; i<self.qisuList.count; i++) {
+        qisuImageStr = [NSString stringWithFormat:@"%@,%@",self.qisuList[i],qisuImageStr];
+    }
+    [self.applicationDic setObject:qisuImageStr forKey:@"qisu"];
+    
+    //财产
+    NSString *caichanImageStr = @"";
+    for (NSInteger i=0; i<self.caichanList.count; i++) {
+        caichanImageStr = [NSString stringWithFormat:@"%@,%@",self.caichanList[i],caichanImageStr];
+    }
+    [self.applicationDic setObject:caichanImageStr forKey:@"caichan"];
+    
+    //证据
+    NSString *zhengjuImageStr = @"";
+    for (NSInteger i=0; i<self.zhengjuList.count; i++) {
+        zhengjuImageStr = [NSString stringWithFormat:@"%@,%@",self.zhengjuList[i],zhengjuImageStr];
+    }
+    [self.applicationDic setObject:zhengjuImageStr forKey:@"zhengju"];
+    
+    //案件
+    NSString *anjianImageStr = @"";
+    for (NSInteger i=0; i<self.anjianList.count; i++) {
+        anjianImageStr = [NSString stringWithFormat:@"%@,%@",self.anjianList[i],anjianImageStr];
+    }
+    [self.applicationDic setObject:anjianImageStr forKey:@"anjian"];
+    
     NSDictionary *params = self.applicationDic;
     
     QDFWeakSelf;
     [self requestDataPostWithString:guaranteeMessageString params:params successBlock:^(id responseObject) {
         
+        BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
+        
         if ([stepString integerValue] == 1) {
-            BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
-            if ([baseModel.code isEqualToString:@"0000"]) {
+            
+            if ([baseModel.msg isEqualToString:@"请上传起诉书的图片"] || [baseModel.msg isEqualToString:@"申请失败！起诉书不能为空。 "]) {//申请失败！起诉书不能为空。
                 [weakself.guaranteeFirstView setHidden:YES];
                 [weakself.guaranteeSecondView setHidden:NO];
-    
+                
                 weakself.applicationTopView.leftBlueConstraints.constant = kScreenWidth/3;
                 [weakself.applicationTopView.firstButton setTitleColor:kGrayColor forState:0];
                 [weakself.applicationTopView.secondButton setTitleColor:kBlueColor forState:0];
             }else{
                 [weakself showHint:baseModel.msg];
+            }
+        }else if ([stepString integerValue] == 2){
+            
+            [weakself showHint:baseModel.msg];
+            
+            if ([baseModel.code isEqualToString:@"0000"]) {
+                [weakself.guaranteeThirdView setHidden:NO];
+                [weakself.guaranteeSecondView setHidden:YES];
+                
+                weakself.applicationTopView.leftBlueConstraints.constant = kScreenWidth/3*2;
+                [weakself.applicationTopView.secondButton setTitleColor:kGrayColor forState:0];
+                [weakself.applicationTopView.thirdButton setTitleColor:kBlueColor forState:0];
             }
         }
     } andFailBlock:^(NSError *error) {

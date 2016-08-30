@@ -13,7 +13,10 @@
 +(NSDictionary *)replacedKeyFromPropertyName
 {
     return @{@"idString" : @"id",
-             @"uidInner" : @"uid"
+             @"uidInner" : @"uid",
+             @"area_name" : @"areaname.area_name",
+             @"city_name" : @"cityname.city_name",
+             @"province_name" : @"provincename.province_name"
              };
 }
 

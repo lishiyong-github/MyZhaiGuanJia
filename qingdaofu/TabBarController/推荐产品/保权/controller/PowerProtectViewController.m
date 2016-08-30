@@ -7,7 +7,6 @@
 //
 
 #import "PowerProtectViewController.h"
-#import "ApplicationSuccessViewController.h"  //提交成功
 #import "PowerProtectPictureViewController.h"  //选择材料
 #import "ApplicationCourtViewController.h" //选择法院
 #import "HouseChooseViewController.h" //收获地址

@@ -10,6 +10,8 @@
 
 @interface PowerDetailsCell : UITableViewCell
 
+@property (nonatomic,strong) NSString *status;
+
 @property (nonatomic,strong) UIButton *backButton;
 @property (nonatomic,strong) UIButton *button1;
 @property (nonatomic,strong) UIButton *button2;

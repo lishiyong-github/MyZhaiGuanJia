@@ -111,6 +111,8 @@
         [_publishSwitchView.getbutton setTitleColor:kBlackColor forState:0];
         [_publishSwitchView.sendButton setTitle:@" 编辑信息" forState:0];
         [_publishSwitchView.sendButton setImage:[UIImage imageNamed:@"edit"] forState:0];
+        
+        [_publishSwitchView.getbutton addTarget:self action:@selector(deleteThePublishing) forControlEvents:UIControlEventTouchUpInside];
         [_publishSwitchView.sendButton addTarget:self action:@selector(editAllMessages) forControlEvents:UIControlEventTouchUpInside];
     }
     return _publishSwitchView;
@@ -267,8 +269,8 @@
         rowString55 = publishModel.seatmortgage;
     }else if ([publishModel.loan_type integerValue] == 2) {
         rowString44 = @"应收帐款";
-        rowString5 = [NSString stringWithFormat:@"%@万",publishModel.accountr];
-        rowString55 = publishModel.seatmortgage;
+        rowString5 = @"应收帐款";
+        rowString55 = [NSString stringWithFormat:@"%@万",publishModel.accountr];
     }else if ([publishModel.loan_type integerValue] == 3) {
         rowString44 = @"机动车抵押";
         rowString5 = @"机动车抵押";
@@ -279,7 +281,7 @@
         rowString55 = @"1";
     }
     
-    NSArray *rowLeftArray = @[rowString1,rowString2,rowString3,rowString4,rowString5];
+    NSArray *rowLeftArray = @[rowString1,rowString2,rowString3,rowString4,rowString44];
     NSArray *rowRightArray = @[rowString11,rowString3,rowString33,rowString44,rowString55];
     
     [cell.userNameButton setTitle:rowLeftArray[indexPath.row-1] forState:0];
@@ -308,23 +310,6 @@
         additionMessageVC.categoryString = self.categaryString;
         [self.navigationController pushViewController:additionMessageVC animated:YES];
     }
-    
-//    PublishingResponse *response = self.publishingDataArray[0];
-//    PublishingModel *model = response.product;
-//    
-//    if (indexPath.section == 1) {
-//        if ([model.loan_type isEqualToString:@"4"]) {
-//            if (indexPath.row == 5) {
-//            }
-//        }else{
-//            if (indexPath.row == 6) {
-//                AdditionMessageViewController *additionMessageVC = [[AdditionMessageViewController alloc] init];
-//                additionMessageVC.idString = model.idString;
-//                additionMessageVC.categoryString = model.category;
-//                [self.navigationController pushViewController:additionMessageVC animated:YES];
-//            }
-//        }
-//    }
 }
 
 #pragma mark - method
@@ -367,6 +352,28 @@
         UINavigationController *nsop = [[UINavigationController alloc] initWithRootViewController:reportSuiVC];
         [self presentViewController:nsop animated:YES completion:nil];
     }
+}
+
+- (void)deleteThePublishing
+{
+    NSString *deletePubString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kDeleteProductOfMyReleaseString];
+    NSDictionary *params = @{@"id" : self.idString,
+                             @"category" : self.categaryString,
+                             @"token" : [self getValidateToken]
+                             };
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:deletePubString params:params successBlock:^(id responseObject) {
+        
+        BaseModel *baModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:baModel.msg];
+        if ([baModel.code isEqualToString:@"0000"]) {
+            [weakself.navigationController popViewControllerAnimated:YES];
+        }
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
