@@ -474,7 +474,7 @@
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
-        
+                
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
         [weakself.processArray addObject:response];
         [weakself.myProcessingTableView reloadData];

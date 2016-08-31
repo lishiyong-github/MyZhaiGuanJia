@@ -93,15 +93,7 @@
         QDFWeakSelf;
         [_receiptPickerView setDidSelectedComponent:^(NSInteger component, NSInteger row, NSString *idString, NSString *nameString) {
             
-            NSString *proID;
-            NSString *proName;
-            NSString *cityID;
-            NSString *cityName;
-            NSString *districtID;
-            NSString *districtName;
-            
             if (component == 0) {
-                
                 [weakself.receiptTestDic setObject:idString forKey:@"proID"];
                 [weakself.receiptTestDic setObject:nameString forKey:@"proName"];
                 [weakself getCityListsWithProvinceID:idString];

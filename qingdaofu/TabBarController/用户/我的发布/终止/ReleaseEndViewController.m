@@ -93,6 +93,8 @@
         _releaseEndCommitButton.backgroundColor = kNavColor;
         [_releaseEndCommitButton setTitleColor:kBlackColor forState:0];
         [_releaseEndCommitButton setTitle:@"删除产品" forState:0];
+        
+        [_releaseEndCommitButton addTarget:self action:@selector(deleteTheProducOfReleaseEnd) forControlEvents:UIControlEventTouchUpInside];
     }
     return _releaseEndCommitButton;
 }
@@ -378,19 +380,9 @@
 }
 
 #pragma mark - method
-- (void)checkReleaseDetails
-{
-    CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
-    checkDetailPublishVC.idString = self.idString;
-    checkDetailPublishVC.categoryString = self.categaryString;
-    checkDetailPublishVC.pidString = self.pidString;
-    checkDetailPublishVC.typeString = @"接单方";
-    [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
-}
-
 - (void)getEndMessages
 {
-    NSString *releaseString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProdutsDetailString];
+    NSString *releaseString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseDetailString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"id" : self.idString,
                              @"category" : self.categaryString
@@ -400,34 +392,34 @@
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
         [weakself.endArray addObject:response];
         [weakself.releaseEndTableView reloadData];
-        [weakself getScheduleDetails];
 
     } andFailBlock:^(NSError *error){
         
     }];
 }
 
-- (void)getScheduleDetails
+- (void)deleteTheProducOfReleaseEnd
 {
-    NSString *scheduleString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kLookUpScheduleString];
+    NSString *deletePubString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kDeleteProductOfMyReleaseString];
     NSDictionary *params = @{@"id" : self.idString,
                              @"category" : self.categaryString,
                              @"token" : [self getValidateToken]
                              };
     
     QDFWeakSelf;
-    [self requestDataPostWithString:scheduleString params:params successBlock:^(id responseObject) {
-        ScheduleResponse *scheduleResponse = [ScheduleResponse objectWithKeyValues:responseObject];
+    [self requestDataPostWithString:deletePubString params:params successBlock:^(id responseObject) {
         
-        for (ScheduleModel *scheduleModel in scheduleResponse.disposing) {
-            [weakself.scheduleReleaseEndArray addObject:scheduleModel];
+        BaseModel *baModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:baModel.msg];
+        if ([baModel.code isEqualToString:@"0000"]) {
+            [weakself.navigationController popViewControllerAnimated:YES];
         }
-        [weakself.releaseEndTableView reloadData];
         
     } andFailBlock:^(NSError *error) {
         
     }];
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -8,9 +8,13 @@
 
 #import "MySaveViewController.h"
 #import "MyDetailSaveViewController.h"
-#import "MyReleaseViewController.h"  //我的发布
+//#import "MyReleaseViewController.h"  //我的发布
+#import "ReportSuitViewController.h"  //发布
+
 
 #import "MineUserCell.h"
+//#import "MessageCell.h"
+#import "SaveCell.h"
 
 #import "ReleaseResponse.h"
 #import "RowsModel.h"
@@ -19,7 +23,9 @@
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *mySavetableView;
+@property (nonatomic,strong) UIButton *saveRightNavButton;
 
+@property (nonatomic,strong) NSMutableArray *mySaveResponse;
 @property (nonatomic,strong) NSMutableArray *mySaveDataList;
 @property (nonatomic,assign) NSInteger pageSave;
 
@@ -31,6 +37,7 @@
     [super viewDidLoad];
     self.navigationItem.title = @"我的保存";
     self.navigationItem.leftBarButtonItem = self.leftItem;
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.saveRightNavButton];
     
     [self.view addSubview:self.mySavetableView];
     [self.view addSubview:self.baseRemindImageView];
@@ -59,17 +66,48 @@
 {
     if (!_mySavetableView) {
         _mySavetableView = [UITableView newAutoLayoutView];
-        _mySavetableView.delegate = self;
-        _mySavetableView.dataSource = self;
-        _mySavetableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
         _mySavetableView.backgroundColor = kBackColor;
         _mySavetableView.separatorColor = kSeparateColor;
-        _mySavetableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
+        _mySavetableView.delegate = self;
+        _mySavetableView.dataSource = self;
+        _mySavetableView.tableFooterView = [[UIView alloc] init];
         [_mySavetableView addHeaderWithTarget:self action:@selector(refreshHeaderOfMySave)];
         [_mySavetableView addFooterWithTarget:self action:@selector(refreshFooterOfMySave)];
     }
     return _mySavetableView;
 }
+
+- (UIButton *)saveRightNavButton
+{
+    if (!_saveRightNavButton) {
+        _saveRightNavButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 44)];
+        _saveRightNavButton.titleLabel.font = kFirstFont;
+        [_saveRightNavButton setTitle:@"编辑" forState:0];
+        [_saveRightNavButton setTitleColor:kBlueColor forState:0];
+        
+        QDFWeakSelf;
+        [_saveRightNavButton addAction:^(UIButton *btn) {
+            
+            [weakself.mySavetableView setEditing:!weakself.mySavetableView.editing animated:YES];
+            
+            if (weakself.mySavetableView.editing){
+                [btn setTitle:@"完成" forState:0];
+            }else{
+                [btn setTitle:@"编辑" forState:0];
+            }
+        }];
+    }
+    return _saveRightNavButton;
+}
+
+- (NSMutableArray *)mySaveResponse
+{
+    if (!_mySaveResponse) {
+        _mySaveResponse = [NSMutableArray array];
+    }
+    return _mySaveResponse;
+}
+
 
 - (NSMutableArray *)mySaveDataList
 {
@@ -87,47 +125,57 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return kCellHeight;
+    return kCellHeight1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier = @"save";
-    MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    SaveCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
-        cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        cell = [[SaveCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
     cell.selectedBackgroundView = [[UIView alloc] init];
     cell.selectedBackgroundView.backgroundColor = kCellSelectedColor;
+    cell.codeButton.userInteractionEnabled = NO;
+    cell.actButton.userInteractionEnabled = NO;
+    [cell.actButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
     
     RowsModel *rowModel = self.mySaveDataList[indexPath.row];
-    
-    if ([rowModel.category isEqualToString:@"1"]) {//融资
-        [cell.userNameButton setImage:[UIImage imageNamed:@"list_financing"] forState:0];
-    }else if ([rowModel.category isEqualToString:@"2"]){//清收
-        [cell.userNameButton setImage:[UIImage imageNamed:@"list_collection"] forState:0];
-    }else if([rowModel.category isEqualToString:@"3"]){//诉讼
-        [cell.userNameButton setImage:[UIImage imageNamed:@"list_litigation"] forState:0];
-    }
 
-    NSString *dString = [NSString stringWithFormat:@"  %@",rowModel.codeString];
-    [cell.userNameButton setTitle:dString forState:0];
-    cell.userNameButton.userInteractionEnabled = NO;
-    NSString *timeStr = [NSDate getYMDFormatterTime:rowModel.modify_time];
-    [cell.userActionButton setTitle:timeStr forState:0];
-    [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-    cell.userActionButton.userInteractionEnabled = NO;
+    if ([rowModel.category isEqualToString:@"2"]){//清收
+        [cell.codeButton setImage:[UIImage imageNamed:@"list_collection"] forState:0];
+        NSString *dString1 = [NSString stringWithFormat:@"  清收%@",rowModel.codeString];
+        [cell.codeButton setTitle:dString1 forState:0];
+    }else if([rowModel.category isEqualToString:@"3"]){//诉讼
+        [cell.codeButton setImage:[UIImage imageNamed:@"list_litigation"] forState:0];
+        NSString *dString2 = [NSString stringWithFormat:@"  诉讼%@",rowModel.codeString];
+        [cell.codeButton setTitle:dString2 forState:0];
+    }
+    
+    cell.timeLabel.text = [NSDate getYMDhmFormatterTime:rowModel.modify_time];
     
     return cell;
 }
 
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(tableView.editing) {//是否处于编辑状态
+        return UITableViewCellEditingStyleDelete;
+    }
+    return UITableViewCellEditingStyleNone;
+}
+
+
 - (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewRowAction *editAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"直接发布" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
-        [self goToPublishWithRow:indexPath.row];
-        
-    }];
-    editAction.backgroundColor = kBlueColor;
+//    UITableViewRowAction *editAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"直接发布" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+//        [self goToPublishWithRow:indexPath.row];
+//        
+//    }];
+//    editAction.backgroundColor = kBlueColor;
+    
     
     UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"删除"  handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
         
@@ -136,18 +184,26 @@
     }];
     deleteAction.backgroundColor = kRedColor;
     
-    return @[deleteAction,editAction];
+    return @[deleteAction];
 }
+
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     RowsModel *deModel = self.mySaveDataList[indexPath.row];
-    MyDetailSaveViewController *myDetailSaveVC = [[MyDetailSaveViewController alloc] init];
-    myDetailSaveVC.idString = deModel.idString;
-    myDetailSaveVC.categaryString = deModel.category;
-    [self.navigationController pushViewController:myDetailSaveVC animated:YES];
+    
+//    ReportSuitViewController *reportSuitVC = [[ReportSuitViewController alloc] init];
+//    reportSuitVC.suResponse = self.mySaveResponse[0];
+//    reportSuitVC.categoryString = self.categaryString;
+//    reportSuitVC.tagString = @"2";
+//    [weakself.navigationController pushViewController:reportSuitVC animated:YES];
+    
+//    MyDetailSaveViewController *myDetailSaveVC = [[MyDetailSaveViewController alloc] init];
+//    myDetailSaveVC.idString = deModel.idString;
+//    myDetailSaveVC.categaryString = deModel.category;
+//    [self.navigationController pushViewController:myDetailSaveVC animated:YES];
 }
 
 #pragma mark - method
@@ -160,14 +216,16 @@
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:mySaveString params:params successBlock:^(id responseObject){
+        
         if ([page integerValue] == 1) {
             [weakself.mySaveDataList removeAllObjects];
         }
         
         ReleaseResponse *responseModel = [ReleaseResponse objectWithKeyValues:responseObject];
         
+//        [weakself.mySaveResponse addObject:responseModel];
+        
         if (responseModel.rows.count == 0) {
-            [weakself showHint:@"没有更多了"];
             _pageSave--;
         }
         
@@ -227,9 +285,9 @@
             UINavigationController *nav = self.navigationController;
             [nav popViewControllerAnimated:NO];
             
-            MyReleaseViewController *myReleaseVC = [[MyReleaseViewController alloc] init];
-            myReleaseVC.progreStatus = @"1";
-            [nav pushViewController:myReleaseVC animated:NO];
+//            MyReleaseViewController *myReleaseVC = [[MyReleaseViewController alloc] init];
+//            myReleaseVC.progreStatus = @"1";
+//            [nav pushViewController:myReleaseVC animated:NO];
         }
         
     } andFailBlock:^(NSError *error) {

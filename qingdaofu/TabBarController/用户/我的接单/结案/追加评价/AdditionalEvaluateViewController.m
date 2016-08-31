@@ -120,6 +120,8 @@
         return 80;
     }else if (indexPath.section == 2 &&indexPath.row == 1){
         return 80;
+    }else if (indexPath.section == 1 &&indexPath.row == 0){
+        return 40;
     }
     return 30;
 }
@@ -135,14 +137,14 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        if ([self.typeString isEqualToString:@"发布方"]) {//发布方给接单方
-            cell.starLabel1.text = @"真实性";
-            cell.starLabel2.text = @"配合度";
-            cell.starLabel3.text = @"响应度";
-        }else if ([self.typeString isEqualToString:@"接单方"]){//接单方给发布方
+        if ([self.typeString isEqualToString:@"发布方"]) {//发布方给接单方评价
             cell.starLabel1.text = @"态度";
             cell.starLabel2.text = @"专业知识";
             cell.starLabel3.text = @"办事效率";
+        }else if ([self.typeString isEqualToString:@"接单方"]){//接单方给发布方
+            cell.starLabel1.text = @"真实性";
+            cell.starLabel2.text = @"配合度";
+            cell.starLabel3.text = @"响应度";
         }
         
         [cell.starView1 setMarkComplete:^(CGFloat score) {
@@ -232,7 +234,7 @@
         QDFWeak(cell);
         [cell setDidSelectedItem:^(NSInteger itemTag) {
             if (itemTag == weakcell.collectionDataList.count-1) {//只允许点击最后一个collection
-                if (weakcell.collectionDataList.count < 5) {
+                if (weakcell.collectionDataList.count < 3) {
                     [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
                         
                         NSData *imData = [NSData dataWithContentsOfFile:images[0]];
@@ -250,7 +252,7 @@
                         }];
                     }];
                 }else{
-                    [weakself showHint:@"最多4张"];
+                    [weakself showHint:@"最多添加2张图片"];
                 }
             }
         }];
@@ -294,9 +296,7 @@
 
     self.evaDataDictionary[@"category"] = self.categoryString;
     self.evaDataDictionary[@"product_id"] = self.idString;
-    self.evaDataDictionary[@"type"] = self.evaString;
     self.evaDataDictionary[@"token"] = [self getValidateToken];
-    
     
     NSString *imageStr = @"";
     for (NSInteger i=0; i<self.evaImageArray.count; i++) {

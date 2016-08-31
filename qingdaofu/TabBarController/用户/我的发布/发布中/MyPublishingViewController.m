@@ -16,7 +16,6 @@
 #import "EvaTopSwitchView.h"
 
 #import "MineUserCell.h"
-#import "BidMessageCell.h"
 #import "BidOneCell.h"
 
 #import "PublishingModel.h"

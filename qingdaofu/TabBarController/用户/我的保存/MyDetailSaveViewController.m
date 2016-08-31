@@ -16,7 +16,6 @@
 #import "BaseCommitButton.h"
 
 #import "MineUserCell.h"
-#import "BidMessageCell.h"
 #import "BidOneCell.h"
 
 #import "PublishingResponse.h"

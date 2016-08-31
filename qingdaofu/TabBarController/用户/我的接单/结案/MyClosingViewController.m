@@ -15,8 +15,9 @@
 #import "AdditionalEvaluateViewController.h"  //追加评价
 #import "AdditionMessageViewController.h"     //补充信息
 #import "PaceViewController.h"   //进度
-#import "AllEvaluationViewController.h"
+//#import "AllEvaluationViewController.h"
 #import "AgreementViewController.h"
+#import "EvaluateListViewController.h"  //查看评价
 
 #import "MineUserCell.h"
 #import "OrderPublishCell.h"
@@ -121,6 +122,7 @@
         [_closingSwitchButton.getbutton setTitleColor:kBlackColor forState:0];
         [_closingSwitchButton.getbutton setTitle:@" 删除产品" forState:0];
         [_closingSwitchButton.getbutton setImage:[UIImage imageNamed:@"delete"] forState:0];
+        [_closingSwitchButton.getbutton addTarget:self action:@selector(deleteTheProducOfOrderCloseing) forControlEvents:UIControlEventTouchUpInside];
     }
     return _closingSwitchButton;
 }
@@ -254,9 +256,9 @@
             }else{
                 CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
                 checkDetailPublishVC.typeString = @"发布方";
-                checkDetailPublishVC.idString = self.idString;
-                checkDetailPublishVC.categoryString = self.categaryString;
-                checkDetailPublishVC.pidString = self.pidString;
+                checkDetailPublishVC.idString = weakself.idString;
+                checkDetailPublishVC.categoryString = weakself.categaryString;
+                checkDetailPublishVC.pidString = weakself.pidString;
                 [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];
             }
         }];
@@ -427,7 +429,7 @@
 //详情
 - (void)getDetailMessageOfClosing
 {
-    NSString *detailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProdutsDetailString];
+    NSString *detailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseDetailString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"id" : self.idString,
                              @"category" : self.categaryString
@@ -438,33 +440,35 @@
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
         [weakself.orderCloseArray addObject:response];
         [weakself.myClosingTableView reloadData];
-        [weakself lookUpSchedule];
+        
+         [weakself getOrderEvaluateDetails];
+        
     } andFailBlock:^(NSError *error){
         
     }];
 }
 
-//进度
-- (void)lookUpSchedule
-{
-    NSString *schedule = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kLookUpScheduleString];
-    NSDictionary *params = @{@"token" : [self getValidateToken],
-                             @"id" : self.idString,
-                             @"category" : self.categaryString
-                             };
-    QDFWeakSelf;
-    [self requestDataPostWithString:schedule params:params successBlock:^(id responseObject) {
-        ScheduleResponse *scheduleResponse = [ScheduleResponse objectWithKeyValues:responseObject];
-        
-        for (ScheduleModel *scheduleModel in scheduleResponse.disposing) {
-            [weakself.scheduleOrderCloArray addObject:scheduleModel];
-        }
-        [weakself.myClosingTableView reloadData];
-        [weakself getOrderEvaluateDetails];
-    } andFailBlock:^(NSError *error) {
-        
-    }];
-}
+////进度
+//- (void)lookUpSchedule
+//{
+//    NSString *schedule = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kLookUpScheduleString];
+//    NSDictionary *params = @{@"token" : [self getValidateToken],
+//                             @"id" : self.idString,
+//                             @"category" : self.categaryString
+//                             };
+//    QDFWeakSelf;
+//    [self requestDataPostWithString:schedule params:params successBlock:^(id responseObject) {
+//        ScheduleResponse *scheduleResponse = [ScheduleResponse objectWithKeyValues:responseObject];
+//        
+//        for (ScheduleModel *scheduleModel in scheduleResponse.disposing) {
+//            [weakself.scheduleOrderCloArray addObject:scheduleModel];
+//        }
+//        [weakself.myClosingTableView reloadData];
+//        [weakself getOrderEvaluateDetails];
+//    } andFailBlock:^(NSError *error) {
+//        
+//    }];
+//}
 
 //评价
 - (void)getOrderEvaluateDetails
@@ -508,48 +512,38 @@
             [weakself.closingSwitchButton.sendButton setImage:[UIImage imageNamed:@"look"] forState:0];
             
             [weakself.closingSwitchButton.sendButton addAction:^(UIButton *btn) {
-                AllEvaluationViewController *allEvaluationVC = [[AllEvaluationViewController alloc] init];
-                allEvaluationVC.idString = weakself.idString;
-                allEvaluationVC.categoryString = weakself.categaryString;
-                allEvaluationVC.evaTypeString = @"launchevaluation";
-                [weakself.navigationController pushViewController:allEvaluationVC animated:YES];
+                EvaluateListViewController *evaluateListVC = [[EvaluateListViewController alloc] init];
+                evaluateListVC.idString = weakself.idString;
+                evaluateListVC.categoryString = weakself.categaryString;
+                evaluateListVC.typeString = @"接单方";
+//                allEvaluationVC.evaTypeString = @"launchevaluation";
+                [weakself.navigationController pushViewController:evaluateListVC animated:YES];
             }];
         }
-        
-        //再次评价信息
-        /*
-        if ([response.evalua integerValue] < 2) {
-            if ([response.evalua integerValue] == 0) {
-                [weakself.closingSwitchButton setTitle:@"评价" forState:0];
-                
-            }else{
-                [weakself.closingSwitchButton setTitle:@"再次评价" forState:0];
-            }
-            
-            QDFWeakSelf;
-            [weakself.closingCommitButton addAction:^(UIButton *btn) {
-                PublishingModel *pubModel;
-                if (weakself.orderCloseArray.count > 0) {
-                    PublishingResponse *response = weakself.orderCloseArray[0];
-                    pubModel = response.product;
-                }
-                
-                AdditionalEvaluateViewController *additionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
-                additionalEvaluateVC.typeString = @"接单方";
-                additionalEvaluateVC.evaString = response.evalua;
-                additionalEvaluateVC.idString = weakself.idString;
-                additionalEvaluateVC.categoryString = weakself.categaryString;
-                additionalEvaluateVC.codeString = pubModel.codeString;
-                [weakself.navigationController pushViewController:additionalEvaluateVC animated:YES];
-            }];
-        }else{
-            [weakself.closingCommitButton setTitle:@"已结案" forState:0];
-            weakself.closingCommitButton.backgroundColor = kSelectedColor;
-            [weakself.closingCommitButton setTitleColor:kBlackColor forState:0];
-        }
-         */
 
         [weakself.myClosingTableView reloadData];
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
+- (void)deleteTheProducOfOrderCloseing
+{
+    NSString *deletePubString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kDeleteProductOfMyReleaseString];
+    NSDictionary *params = @{@"id" : self.idString,
+                             @"category" : self.categaryString,
+                             @"token" : [self getValidateToken]
+                             };
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:deletePubString params:params successBlock:^(id responseObject) {
+        
+        BaseModel *baModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:baModel.msg];
+        if ([baModel.code isEqualToString:@"0000"]) {
+            [weakself.navigationController popViewControllerAnimated:YES];
+        }
         
     } andFailBlock:^(NSError *error) {
         

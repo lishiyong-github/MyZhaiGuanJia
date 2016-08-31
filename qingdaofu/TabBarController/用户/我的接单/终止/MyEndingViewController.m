@@ -100,6 +100,8 @@
             NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",@"400-855-7022"];
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
         }];
+        
+        [_endingSwitchButton.sendButton addTarget:self action:@selector(deleteTheProducOfOrderEnd) forControlEvents:UIControlEventTouchUpInside];
     }
     return _endingSwitchButton;
 }
@@ -209,7 +211,6 @@
         [cell.contactButton setTitle:@" 联系他" forState:0];
         [cell.contactButton setImage:[UIImage imageNamed:@"phone_blue"] forState:0];
         
-        //接单方详情
         //接单方详情
         QDFWeakSelf;
         [cell.checkButton addAction:^(UIButton *btn) {
@@ -391,7 +392,7 @@
 #pragma mark - method
 - (void)getDetailMessageOfEnding
 {
-    NSString *detailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProdutsDetailString];
+    NSString *detailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseDetailString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"id" : self.idString,
                              @"category" : self.categaryString
@@ -401,33 +402,54 @@
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
         [weakself.endArray addObject:response];
         [weakself.myEndingTableView reloadData];
-        [weakself getScheduleDetails];
+//        [weakself getScheduleDetails];
     } andFailBlock:^(NSError *error){
         
     }];
 }
 
-- (void)getScheduleDetails
+- (void)deleteTheProducOfOrderEnd
 {
-    NSString *scheduleString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kLookUpScheduleString];
+    NSString *deletePubString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kDeleteProductOfMyReleaseString];
     NSDictionary *params = @{@"id" : self.idString,
                              @"category" : self.categaryString,
                              @"token" : [self getValidateToken]
                              };
+    
     QDFWeakSelf;
-    [self requestDataPostWithString:scheduleString params:params successBlock:^(id responseObject) {
+    [self requestDataPostWithString:deletePubString params:params successBlock:^(id responseObject) {
         
-        ScheduleResponse *response = [ScheduleResponse objectWithKeyValues:responseObject];
-        for (ScheduleModel *model in response.disposing) {
-            [weakself.scheduleOrderEndArray addObject:model];
+        BaseModel *baModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:baModel.msg];
+        if ([baModel.code isEqualToString:@"0000"]) {
+            [weakself.navigationController popViewControllerAnimated:YES];
         }
-        [weakself.myEndingTableView reloadData];
         
     } andFailBlock:^(NSError *error) {
         
     }];
 }
 
+//- (void)getScheduleDetails
+//{
+//    NSString *scheduleString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kLookUpScheduleString];
+//    NSDictionary *params = @{@"id" : self.idString,
+//                             @"category" : self.categaryString,
+//                             @"token" : [self getValidateToken]
+//                             };
+//    QDFWeakSelf;
+//    [self requestDataPostWithString:scheduleString params:params successBlock:^(id responseObject) {
+//        
+//        ScheduleResponse *response = [ScheduleResponse objectWithKeyValues:responseObject];
+//        for (ScheduleModel *model in response.disposing) {
+//            [weakself.scheduleOrderEndArray addObject:model];
+//        }
+//        [weakself.myEndingTableView reloadData];
+//        
+//    } andFailBlock:^(NSError *error) {
+//        
+//    }];
+//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

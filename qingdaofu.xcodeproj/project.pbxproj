@@ -87,7 +87,6 @@
 		A15F618C1D1906820060AF7B /* GuarantyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A15F618B1D1906820060AF7B /* GuarantyModel.m */; };
 		A1602E741CED8D320053F850 /* CompleteCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1602E731CED8D320053F850 /* CompleteCell.m */; };
 		A1602E771CEDA9F50053F850 /* CompletePhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = A1602E761CEDA9F50053F850 /* CompletePhotoView.m */; };
-		A1602E7A1CEDAF790053F850 /* BidMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1602E791CEDAF790053F850 /* BidMessageCell.m */; };
 		A1602E7D1CEDB3920053F850 /* BidOneCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1602E7C1CEDB3920053F850 /* BidOneCell.m */; };
 		A161754F1D1257A9001BB200 /* ApplicationStateModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A161754E1D1257A9001BB200 /* ApplicationStateModel.m */; };
 		A16175531D1291D5001BB200 /* TokenModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A16175521D1291D5001BB200 /* TokenModel.m */; };
@@ -218,7 +217,6 @@
 		A17D94341D6B017300BF5B5F /* time@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A17D94321D6B017300BF5B5F /* time@3x.png */; };
 		A17D94351D6B017300BF5B5F /* time@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A17D94331D6B017300BF5B5F /* time@2x.png */; };
 		A17EE3791CD82F4800ECC631 /* MyDetailSaveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A17EE3781CD82F4800ECC631 /* MyDetailSaveViewController.m */; };
-		A17EE37F1CD84DDF00ECC631 /* DetailBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = A17EE37E1CD84DDF00ECC631 /* DetailBaseView.m */; };
 		A17EE3821CD8518600ECC631 /* BaseCommitButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A17EE3811CD8518600ECC631 /* BaseCommitButton.m */; };
 		A17EE3851CD8559D00ECC631 /* MySettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A17EE3841CD8559D00ECC631 /* MySettingsViewController.m */; };
 		A17EE3891CD86B3E00ECC631 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A17EE3881CD86B3E00ECC631 /* AboutViewController.m */; };
@@ -316,6 +314,8 @@
 		A192B4D31CDB52A40053FC4C /* list_icon_user@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A192B4CF1CDB52A40053FC4C /* list_icon_user@2x.png */; };
 		A192B4D41CDB52A40053FC4C /* list_icon_user@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A192B4D01CDB52A40053FC4C /* list_icon_user@3x.png */; };
 		A19424A11D76743E00AC699B /* EvaluateListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A19424A01D76743E00AC699B /* EvaluateListViewController.m */; };
+		A19424A41D76CFBE00AC699B /* SaveCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A19424A31D76CFBE00AC699B /* SaveCell.m */; };
+		A19424A71D76E83F00AC699B /* HousePropertyResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A19424A61D76E83F00AC699B /* HousePropertyResultViewController.m */; };
 		A19506371D6FE80F00CE87B5 /* ReportDatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = A19506361D6FE80F00CE87B5 /* ReportDatePickerView.m */; };
 		A196CDE81CFBC4D300AC6C87 /* UIViewController+DismissKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = A196CDE71CFBC4D300AC6C87 /* UIViewController+DismissKeyboard.m */; };
 		A196CDEF1CFBDF4000AC6C87 /* btn_collection@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A196CDE91CFBDF4000AC6C87 /* btn_collection@2x.png */; };
@@ -813,8 +813,6 @@
 		A1602E731CED8D320053F850 /* CompleteCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompleteCell.m; sourceTree = "<group>"; };
 		A1602E751CEDA9F50053F850 /* CompletePhotoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompletePhotoView.h; sourceTree = "<group>"; };
 		A1602E761CEDA9F50053F850 /* CompletePhotoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompletePhotoView.m; sourceTree = "<group>"; };
-		A1602E781CEDAF790053F850 /* BidMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BidMessageCell.h; sourceTree = "<group>"; };
-		A1602E791CEDAF790053F850 /* BidMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BidMessageCell.m; sourceTree = "<group>"; };
 		A1602E7B1CEDB3920053F850 /* BidOneCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BidOneCell.h; sourceTree = "<group>"; };
 		A1602E7C1CEDB3920053F850 /* BidOneCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BidOneCell.m; sourceTree = "<group>"; };
 		A161754D1D1257A9001BB200 /* ApplicationStateModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationStateModel.h; sourceTree = "<group>"; };
@@ -1014,8 +1012,6 @@
 		A17D94331D6B017300BF5B5F /* time@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "time@2x.png"; sourceTree = "<group>"; };
 		A17EE3771CD82F4800ECC631 /* MyDetailSaveViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyDetailSaveViewController.h; sourceTree = "<group>"; };
 		A17EE3781CD82F4800ECC631 /* MyDetailSaveViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyDetailSaveViewController.m; sourceTree = "<group>"; };
-		A17EE37D1CD84DDF00ECC631 /* DetailBaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailBaseView.h; sourceTree = "<group>"; };
-		A17EE37E1CD84DDF00ECC631 /* DetailBaseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailBaseView.m; sourceTree = "<group>"; };
 		A17EE3801CD8518600ECC631 /* BaseCommitButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseCommitButton.h; sourceTree = "<group>"; };
 		A17EE3811CD8518600ECC631 /* BaseCommitButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseCommitButton.m; sourceTree = "<group>"; };
 		A17EE3831CD8559D00ECC631 /* MySettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MySettingsViewController.h; sourceTree = "<group>"; };
@@ -1154,6 +1150,10 @@
 		A192B4D01CDB52A40053FC4C /* list_icon_user@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list_icon_user@3x.png"; sourceTree = "<group>"; };
 		A194249F1D76743E00AC699B /* EvaluateListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EvaluateListViewController.h; sourceTree = "<group>"; };
 		A19424A01D76743E00AC699B /* EvaluateListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EvaluateListViewController.m; sourceTree = "<group>"; };
+		A19424A21D76CFBE00AC699B /* SaveCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaveCell.h; sourceTree = "<group>"; };
+		A19424A31D76CFBE00AC699B /* SaveCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SaveCell.m; sourceTree = "<group>"; };
+		A19424A51D76E83F00AC699B /* HousePropertyResultViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HousePropertyResultViewController.h; sourceTree = "<group>"; };
+		A19424A61D76E83F00AC699B /* HousePropertyResultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HousePropertyResultViewController.m; sourceTree = "<group>"; };
 		A19506351D6FE80F00CE87B5 /* ReportDatePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportDatePickerView.h; sourceTree = "<group>"; };
 		A19506361D6FE80F00CE87B5 /* ReportDatePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportDatePickerView.m; sourceTree = "<group>"; };
 		A196CDE61CFBC4D300AC6C87 /* UIViewController+DismissKeyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+DismissKeyboard.h"; sourceTree = "<group>"; };
@@ -2208,12 +2208,10 @@
 		A17964FE1CD368CC00B6AD47 /* view */ = {
 			isa = PBXGroup;
 			children = (
-				A17EE37D1CD84DDF00ECC631 /* DetailBaseView.h */,
-				A17EE37E1CD84DDF00ECC631 /* DetailBaseView.m */,
-				A1602E781CEDAF790053F850 /* BidMessageCell.h */,
-				A1602E791CEDAF790053F850 /* BidMessageCell.m */,
 				A1602E7B1CEDB3920053F850 /* BidOneCell.h */,
 				A1602E7C1CEDB3920053F850 /* BidOneCell.m */,
+				A19424A21D76CFBE00AC699B /* SaveCell.h */,
+				A19424A31D76CFBE00AC699B /* SaveCell.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -2302,6 +2300,8 @@
 				A187B9111D508BAA00A91A16 /* HousePropertyListViewController.m */,
 				A19F88441D517ADE00D4EC92 /* HouseCopyViewController.h */,
 				A19F88451D517ADE00D4EC92 /* HouseCopyViewController.m */,
+				A19424A51D76E83F00AC699B /* HousePropertyResultViewController.h */,
+				A19424A61D76E83F00AC699B /* HousePropertyResultViewController.m */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -4315,7 +4315,6 @@
 				A159F97D1D0D727A00A6A024 /* MJRefreshFooterView.m in Sources */,
 				A17634161D065D9A00CD4623 /* CreditorModel.m in Sources */,
 				A19F88651D51D3D300D4EC92 /* PowerProtectPictureViewController.m in Sources */,
-				A1602E7A1CEDAF790053F850 /* BidMessageCell.m in Sources */,
 				A154B8F51CE1C14100884CA4 /* ReportSuitViewController.m in Sources */,
 				A1A0C8CA1D4B21FF00BC63C6 /* HouseChooseViewController.m in Sources */,
 				A1B0292B1D17CE6F00F32A09 /* AFNetworkReachabilityManager.m in Sources */,
@@ -4401,6 +4400,7 @@
 				A1A97FAF1D5AC6EB00B6A55F /* ApplicationGuaranteeThirdView.m in Sources */,
 				A159F95A1D0D470F00A6A024 /* ScheduleResponse.m in Sources */,
 				A192385B1D74101D00C824D6 /* ReceiptActionCell.m in Sources */,
+				A19424A71D76E83F00AC699B /* HousePropertyResultViewController.m in Sources */,
 				A176912E1CD99E1E004289DD /* CheckDetailPublishViewController.m in Sources */,
 				A1B028ED1D1794DC00F32A09 /* SDWebImagePrefetcher.m in Sources */,
 				A10D7B781CEAF73C00422D7D /* MyAgentCell.m in Sources */,
@@ -4458,6 +4458,7 @@
 				A16FF5A01D0581DF00C50A0B /* NewProductListModel.m in Sources */,
 				A196CDE81CFBC4D300AC6C87 /* UIViewController+DismissKeyboard.m in Sources */,
 				A192B4B81CDB34030053FC4C /* PaceViewController.m in Sources */,
+				A19424A41D76CFBE00AC699B /* SaveCell.m in Sources */,
 				A159F97C1D0D727A00A6A024 /* MJRefreshConst.m in Sources */,
 				A13EA57F1D2A48A5001B83A7 /* CategoryModel.m in Sources */,
 				A1B0292E1D17CE6F00F32A09 /* AFURLResponseSerialization.m in Sources */,
@@ -4534,7 +4535,6 @@
 				A1A34C3D1CE32CF700AD454A /* LoginCell.m in Sources */,
 				A159F9441D0BEE5E00A6A024 /* MBResourceManager.m in Sources */,
 				A1A97E4E1CDC66D600EDE320 /* PublishMessagesViewController.m in Sources */,
-				A17EE37F1CD84DDF00ECC631 /* DetailBaseView.m in Sources */,
 				A18DC9CC1D24F02D0021B0BF /* MyLocationViewController.m in Sources */,
 				A1A66F081D6BDEAC00B0E101 /* OrderPublishCell.m in Sources */,
 				A1602E7D1CEDB3920053F850 /* BidOneCell.m in Sources */,

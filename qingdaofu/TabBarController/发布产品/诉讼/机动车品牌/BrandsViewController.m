@@ -205,7 +205,7 @@
         
     }else{
         
-        _string3 = [NSString stringWithFormat:@"%d",indexPath.row+1];
+        _string3 = [NSString stringWithFormat:@"%ld",indexPath.row+1];
         _string33 = self.licenseplateArray[indexPath.row];
         
         if (self.didSelectedRow) {

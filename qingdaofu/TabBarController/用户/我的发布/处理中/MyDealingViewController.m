@@ -230,8 +230,10 @@
                 checkDetailPublishVC.idString = weakself.idString;
                 checkDetailPublishVC.categoryString = weakself.categaryString;
                 checkDetailPublishVC.pidString = weakself.pidString;
+//                weakself.pidString;
+//                weakself.pidString;
                 checkDetailPublishVC.typeString = @"接单方";
-                checkDetailPublishVC.typeDegreeString = @"处理中";
+//                checkDetailPublishVC.typeDegreeString = @"处理中";
                 [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];
             }
         }];
@@ -407,6 +409,8 @@
     
     QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
+        
+        NSDictionary *uouo = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
         

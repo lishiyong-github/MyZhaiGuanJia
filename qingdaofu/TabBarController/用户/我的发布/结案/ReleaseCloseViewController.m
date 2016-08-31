@@ -15,7 +15,7 @@
 #import "AdditionMessageViewController.h"     //补充信息
 #import "AgreementViewController.h"            //服务协议
 #import "PaceViewController.h"
-#import "AllEvaluationViewController.h"
+#import "EvaluateListViewController.h" //查看评价
 
 #import "MineUserCell.h"
 #import "OrderPublishCell.h"
@@ -116,6 +116,7 @@
         [_releaseCloseSwitchButton.getbutton setTitleColor:kBlackColor forState:0];
         [_releaseCloseSwitchButton.getbutton setTitle:@" 删除产品" forState:0];
         [_releaseCloseSwitchButton.getbutton setImage:[UIImage imageNamed:@"delete"] forState:0];
+        [_releaseCloseSwitchButton.getbutton addTarget:self action:@selector(deleteTheProducOfReleaseClose) forControlEvents:UIControlEventTouchUpInside];
     }
     return _releaseCloseSwitchButton;
 }
@@ -421,7 +422,7 @@
 //详情
 - (void)getCloseMessages
 {
-    NSString *releaseString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProdutsDetailString];
+    NSString *releaseString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseDetailString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"id" : self.idString,
                              @"category" : self.categaryString
@@ -432,33 +433,9 @@
         [weakself.releaseArray addObject:response];
         [weakself.ReleaseCloseTableView reloadData];
         
-        [weakself getPacesDetails];
-    } andFailBlock:^(NSError *error){
-        
-    }];
-}
-
-//进度
-- (void)getPacesDetails
-{
-    NSString *scheduleString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kLookUpScheduleString];
-    NSDictionary *params = @{@"id" : self.idString,
-                             @"category" : self.categaryString,
-                             @"token" : [self getValidateToken]
-                             };
-    
-    QDFWeakSelf;
-    [self requestDataPostWithString:scheduleString params:params successBlock:^(id responseObject) {
-        
-        ScheduleResponse *response = [ScheduleResponse objectWithKeyValues:responseObject];
-        
-        for (ScheduleModel *model in response.disposing) {
-            [weakself.scheduleReleaseCloArray addObject:model];
-        }
-        [weakself.ReleaseCloseTableView reloadData];
         [weakself getEvaluateDetails];
-
-    } andFailBlock:^(NSError *error) {
+        
+    } andFailBlock:^(NSError *error){
         
     }];
 }
@@ -505,15 +482,37 @@
             [weakself.releaseCloseSwitchButton.sendButton setImage:[UIImage imageNamed:@"look"] forState:0];
             
             [weakself.releaseCloseSwitchButton.sendButton addAction:^(UIButton *btn) {
-                AllEvaluationViewController *allEvaluationVC = [[AllEvaluationViewController alloc] init];
-                allEvaluationVC.idString = weakself.idString;
-                allEvaluationVC.categoryString = weakself.categaryString;
-                allEvaluationVC.evaTypeString = @"launchevaluation";
-                [weakself.navigationController pushViewController:allEvaluationVC animated:YES];
+                EvaluateListViewController *evaluateListVC = [[EvaluateListViewController alloc] init];
+                evaluateListVC.idString = weakself.idString;
+                evaluateListVC.categoryString = weakself.categaryString;
+                evaluateListVC.typeString = @"发布方";
+                [weakself.navigationController pushViewController:evaluateListVC animated:YES];
             }];
         }
         
         [weakself.ReleaseCloseTableView reloadData];
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
+- (void)deleteTheProducOfReleaseClose
+{
+    NSString *deletePubString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kDeleteProductOfMyReleaseString];
+    NSDictionary *params = @{@"id" : self.idString,
+                             @"category" : self.categaryString,
+                             @"token" : [self getValidateToken]
+                             };
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:deletePubString params:params successBlock:^(id responseObject) {
+        
+        BaseModel *baModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:baModel.msg];
+        if ([baModel.code isEqualToString:@"0000"]) {
+            [weakself.navigationController popViewControllerAnimated:YES];
+        }
         
     } andFailBlock:^(NSError *error) {
         

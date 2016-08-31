@@ -11,6 +11,7 @@
 #import "HousePropertyViewController.h" //查询产调
 #import "HousePayingViewController.h" //支付
 #import "HousePayingEditViewController.h"  //编辑
+#import "HousePropertyResultViewController.h" //查看结果
 
 #import "BaseCommitView.h"
 
@@ -264,6 +265,11 @@
                 HouseCopyViewController *houseCopyVC = [[HouseCopyViewController alloc] init];
                 [weakself.navigationController pushViewController:houseCopyVC animated:YES];
             }];
+            
+            [cell.rightButton addAction:^(UIButton *btn) {
+                
+            }];            
+            
         }else{//退款中，已退款
             [cell.leftButton setTitleColor:kLightGrayColor forState:0];
             [cell.leftButton setTitle:@"快递原件" forState:0];
@@ -271,8 +277,15 @@
             
             QDFWeakSelf;
             [cell.leftButton addAction:^(UIButton *btn) {
-                HouseCopyViewController *houseCopyVC = [[HouseCopyViewController alloc] init];
-                [weakself.navigationController pushViewController:houseCopyVC animated:YES];
+//                HouseCopyViewController *houseCopyVC = [[HouseCopyViewController alloc] init];
+//                [weakself.navigationController pushViewController:houseCopyVC animated:YES];
+            }];
+            
+            [cell.rightButton addAction:^(UIButton *btn) {
+                HousePropertyResultViewController *housePropertyResultVC = [[HousePropertyResultViewController alloc] init];
+                housePropertyResultVC.idString = pModel.idString;
+                housePropertyResultVC.cidString = pModel.cid;
+                [weakself.navigationController pushViewController:housePropertyResultVC animated:YES];
             }];
         }
         
@@ -313,6 +326,7 @@
     [self requestDataPostWithString:listHouseString params:params successBlock:^(id responseObject) {
         
         NSDictionary *ioioio = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
         if ([page integerValue] == 1) {
             [weakself.propertyListArray removeAllObjects];
         }

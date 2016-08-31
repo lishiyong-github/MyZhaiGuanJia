@@ -583,7 +583,7 @@
 #pragma mark - method
 - (void)getDetailMessageOfApplying
 {
-    NSString *detailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProdutsDetailString];
+    NSString *detailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseDetailString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"id" : self.idString,
                              @"category" : self.categaryString

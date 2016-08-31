@@ -11,7 +11,6 @@
 #import "MyScheduleViewController.h"
 
 #import "BaseCommitView.h"
-#import "BidMessageCell.h"
 #import "MineUserCell.h"
 #import "EditDebtAddressCell.h"
 

@@ -97,23 +97,14 @@
         
         QDFWeakSelf;
         [_rightNavButton addAction:^(UIButton *btn) {
-//            weakself.editState = YES;
-//            [weakself.myStoreTableView reloadData];
             
             [weakself.myStoreTableView setEditing:!weakself.myStoreTableView.editing animated:YES];
             
-            if (weakself.myStoreTableView.editing)
-            {
-                [btn setTitle:@"删除" forState:0];
-//                [self.navigationItem.leftBarButtonItemsetTitle:@"删除"];
-            }
-            else
-            {
+            if (weakself.myStoreTableView.editing){
+                [btn setTitle:@"完成" forState:0];
+            }else{
                 [btn setTitle:@"编辑" forState:0];
-
-//                [self.navigationItem.leftBarButtonItemsetTitle:@"管理"];
             }
-            
         }];
     }
     return _rightNavButton;
@@ -156,95 +147,89 @@
     
     RowsModel *storeModel = self.storeDataList[indexPath.section];
 
-    //图片
+    //image
     if ([storeModel.category isEqualToString:@"2"]){//清收
         [cell.typeImageView setImage:[UIImage imageNamed:@"list_collection"]];
-    }else if([storeModel.category isEqualToString:@"3"]){//诉讼
+    }else if ([storeModel.category isEqualToString:@"3"]){
         [cell.typeImageView setImage:[UIImage imageNamed:@"list_litigation"]];
     }
-
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     //code
     cell.nameLabel.text = storeModel.codeString;
     
-    //抵押物地址
-    if ([storeModel.loan_type isEqualToString:@"1"]) {
-        cell.rateView.label1.font = kBoldFont2;
-        cell.rateView.label1.text = @"房产抵押";
-        cell.addressLabel.text = [NSString getValidStringFromString:storeModel.location toString:@"无抵押物地址"];
-    }else if ([storeModel.loan_type isEqualToString:@"2"]){
-        cell.rateView.label1.font = kBoldFont1;
-        cell.rateView.label1.text = @"应收账款";
-        cell.addressLabel.text = @"应收帐款";
-    }else if ([storeModel.loan_type isEqualToString:@"3"]){
-        cell.rateView.label1.font = kBoldFont1;
-        cell.rateView.label1.text = @"机动车抵押";
-        cell.addressLabel.text = @"机动车抵押";
-    }else{
-        cell.rateView.label1.font = kBoldFont2;
-        cell.rateView.label1.text = @"无抵押";
-        cell.addressLabel.text = @"无抵押";
-    }
-    
-    //moneyView
-    NSString *moneyStr1 = storeModel.money;
-    NSString *moneyStr2 = @"万";
-    NSString *moneyStr = [NSString stringWithFormat:@"%@%@",moneyStr1,moneyStr2];
-    NSMutableAttributedString *attMoneyStr = [[NSMutableAttributedString alloc] initWithString:moneyStr];
-    [attMoneyStr addAttributes:@{NSFontAttributeName:kBoldFont(24),NSForegroundColorAttributeName:kYellowColor} range:NSMakeRange(0, moneyStr1.length)];
-    [attMoneyStr addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kYellowColor} range:NSMakeRange(moneyStr1.length, moneyStr2.length)];
-    [cell.moneyView.label1 setAttributedText:attMoneyStr];
+    //借款本金
+    NSString *moneySa1 = [NSString getValidStringFromString:storeModel.money toString:@"0"];
+    NSString *moneyQ = [NSString stringWithFormat:@"%@万",moneySa1];
+    NSMutableAttributedString *attrMoney = [[NSMutableAttributedString alloc] initWithString:moneyQ];
+    [attrMoney addAttributes:@{NSFontAttributeName:kBoldFont(24),NSForegroundColorAttributeName:kYellowColor} range:NSMakeRange(0, moneySa1.length)];
+    [attrMoney addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kYellowColor} range:NSMakeRange(moneySa1.length,1)];
+    [cell.moneyView.label1 setAttributedText:attrMoney];
     cell.moneyView.label2.text = @"借款本金";
     
-    //pointView
+    //代理费用类型
     if ([storeModel.category isEqualToString:@"2"]){//清收
-        if ([storeModel.agencycommissiontype integerValue] == 1) {
-            //服务佣金
-            NSString *moneyStr1 = storeModel.agencycommission;
-            NSString *moneyStr2 = @"%";
-            NSString *moneyStr = [NSString stringWithFormat:@"%@%@",moneyStr1,moneyStr2];
-            NSMutableAttributedString *attMoneyStr = [[NSMutableAttributedString alloc] initWithString:moneyStr];
-            [attMoneyStr addAttributes:@{NSFontAttributeName:kBoldFont1,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, moneyStr1.length)];
-            [attMoneyStr addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(moneyStr1.length, moneyStr2.length)];
-            [cell.pointView.label1 setAttributedText:attMoneyStr];
+        
+        if ([storeModel.agencycommissiontype isEqualToString:@"1"]) {
+            
             cell.pointView.label2.text = @"服务佣金";
+            
+            NSString *agencyType1 = [NSString getValidStringFromString:storeModel.agencycommission toString:@"0"];
+            NSString *agencyQ = [NSString stringWithFormat:@"%@%@",agencyType1,@"%"];
+            NSMutableAttributedString *attrAgency = [[NSMutableAttributedString alloc] initWithString:agencyQ];
+            [attrAgency addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:24],NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, agencyType1.length)];
+            [attrAgency addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(agencyType1.length,1)];
+            [cell.pointView.label1 setAttributedText:attrAgency];
+            
         }else{
-            //固定费用
-            NSString *moneyStr1 = storeModel.agencycommission;
-            NSString *moneyStr2 = @"万";
-            NSString *moneyStr = [NSString stringWithFormat:@"%@%@",moneyStr1,moneyStr2];
-            NSMutableAttributedString *attMoneyStr = [[NSMutableAttributedString alloc] initWithString:moneyStr];
-            [attMoneyStr addAttributes:@{NSFontAttributeName:kBoldFont1,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, moneyStr1.length)];
-            [attMoneyStr addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(moneyStr1.length, moneyStr2.length)];
-            [cell.pointView.label1 setAttributedText:attMoneyStr];
             cell.pointView.label2.text = @"固定费用";
+            
+            NSString *agencyType1 = [NSString getValidStringFromString:storeModel.agencycommission toString:@"0"];
+            NSString *agencyQ = [NSString stringWithFormat:@"%@万",agencyType1];
+            NSMutableAttributedString *attrAgency = [[NSMutableAttributedString alloc] initWithString:agencyQ];
+            [attrAgency addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:24],NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, agencyType1.length)];
+            [attrAgency addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(agencyType1.length,1)];
+            [cell.pointView.label1 setAttributedText:attrAgency];
         }
-    }else if([storeModel.category isEqualToString:@"3"]){//诉讼
-        if ([storeModel.agencycommissiontype integerValue] == 1) {
-            //固定费用
-            NSString *moneyStr1 = storeModel.agencycommission;
-            NSString *moneyStr2 = @"万";
-            NSString *moneyStr = [NSString stringWithFormat:@"%@%@",moneyStr1,moneyStr2];
-            NSMutableAttributedString *attMoneyStr = [[NSMutableAttributedString alloc] initWithString:moneyStr];
-            [attMoneyStr addAttributes:@{NSFontAttributeName:kBoldFont1,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, moneyStr1.length)];
-            [attMoneyStr addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(moneyStr1.length, moneyStr2.length)];
-            [cell.pointView.label1 setAttributedText:attMoneyStr];
+    }else if ([storeModel.category isEqualToString:@"3"]){//诉讼
+        
+        if ([storeModel.agencycommissiontype isEqualToString:@"1"]) {
+            
             cell.pointView.label2.text = @"固定费用";
+            
+            NSString *agencyType1 = [NSString getValidStringFromString:storeModel.agencycommission toString:@"0"];
+            NSString *agencyQ = [NSString stringWithFormat:@"%@万",agencyType1];
+            NSMutableAttributedString *attrAgency = [[NSMutableAttributedString alloc] initWithString:agencyQ];
+            [attrAgency addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:24],NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, agencyType1.length)];
+            [attrAgency addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(agencyType1.length,1)];
+            [cell.pointView.label1 setAttributedText:attrAgency];
+            
         }else{
-            //代理费率
-            NSString *moneyStr1 = storeModel.agencycommission;
-            NSString *moneyStr2 = @"%";
-            NSString *moneyStr = [NSString stringWithFormat:@"%@%@",moneyStr1,moneyStr2];
-            NSMutableAttributedString *attMoneyStr = [[NSMutableAttributedString alloc] initWithString:moneyStr];
-            [attMoneyStr addAttributes:@{NSFontAttributeName:kBoldFont1,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, moneyStr1.length)];
-            [attMoneyStr addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(moneyStr1.length, moneyStr2.length)];
-            [cell.pointView.label1 setAttributedText:attMoneyStr];
-            cell.pointView.label2.text = @"代理费率";
+            
+            cell.pointView.label2.text = @"风险费率";
+            
+            NSString *agencyType1 = [NSString getValidStringFromString:storeModel.agencycommission toString:@"0"];
+            NSString *agencyQ = [NSString stringWithFormat:@"%@%@",agencyType1,@"%"];
+            NSMutableAttributedString *attrAgency = [[NSMutableAttributedString alloc] initWithString:agencyQ];
+            [attrAgency addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:24],NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, agencyType1.length)];
+            [attrAgency addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(agencyType1.length,1)];
+            [cell.pointView.label1 setAttributedText:attrAgency];
         }
     }
     
     //债权类型
+    if ([storeModel.loan_type isEqualToString:@"1"]) {
+        cell.rateView.label1.text = @"房产抵押";
+        cell.addressLabel.text = [NSString getValidStringFromString:storeModel.location toString:@"无抵押物地址"];
+    }else if ([storeModel.loan_type isEqualToString:@"2"]){
+        cell.rateView.label1.text = @"应收账款";
+        cell.addressLabel.text = @"无抵押物地址";
+    }else if ([storeModel.loan_type isEqualToString:@"3"]){
+        cell.rateView.label1.text = @"机动车抵押";
+        cell.addressLabel.text = @"无抵押物地址";
+    }else{
+        cell.rateView.label1.text = @"无抵押";
+        cell.addressLabel.text = @"无抵押物地址";
+    }
     cell.rateView.label2.text = @"债权类型";
 
     return cell;

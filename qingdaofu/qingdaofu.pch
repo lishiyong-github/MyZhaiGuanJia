@@ -226,9 +226,6 @@
 //新增部分接口
 #define kDeleteProductOfMyReleaseString @"public/deleteproduct" //删除
 
-
-
-
 //新增四大模块
 #define kHouseAssessString @"producedata/estate" //房产评估
 #define kHouseCityString @"producedata/diqu" //区域
@@ -247,6 +244,7 @@
 #define KhousePropertyConfirmOrderString @"property/pay"  //确认支付产调
 #define kHousePropertyListString @"property/index"  //产调列表
 #define kHousePorpertyEditString @"property/update"  //编辑信息
+#define kHousePropertyResultString @"property/view" //产调结果
 
 #define kApplicationGuaranteeString @"policy/create" //申请保函
 #define kApplicationGuaranteeListString @"policy/index" //保函列表

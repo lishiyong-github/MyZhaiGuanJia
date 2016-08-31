@@ -15,6 +15,7 @@
 #import "MyScheduleViewController.h"   //填写进度
 #import "DelayRequestsViewController.h"  //申请延期
 #import "AdditionalEvaluateViewController.h"  //去评价
+#import "EvaluateListViewController.h"  //查看评价
 
 #import "AllProSegView.h"
 #import "ExtendHomeCell.h"
@@ -301,12 +302,18 @@
     }
     
     //action
+    QDFWeakSelf;
     if ([rowModel.progress_status integerValue] == 1) {//申请
         [cell.actButton1 setHidden:YES];
         [cell.actButton2 setHidden:NO];
         [cell.actButton2 setTitle:@"取消申请" forState:0];
         [cell.actButton2 setTitleColor:kBlackColor forState:0];
         cell.actButton2.layer.borderColor = kBorderColor.CGColor;
+        
+        [cell.actButton2 addAction:^(UIButton *btn) {
+            [weakself goToWriteScheduleOrEvaluate:@"取消申请" withSection:indexPath.section withString:@""];
+        }];
+        
     }else if ([rowModel.progress_status integerValue] == 2) {//处理
         [cell.actButton1 setHidden:NO];
         [cell.actButton2 setHidden:NO];
@@ -317,12 +324,27 @@
         cell.actButton2.layer.borderColor = kBlueColor.CGColor;
         [cell.actButton2 setTitleColor:kBlueColor forState:0];
         [cell.actButton2 setTitle:@"填写进度" forState:0];
+        
+        [cell.actButton1 addAction:^(UIButton *btn) {
+            [weakself goToWriteScheduleOrEvaluate:@"联系发布方" withSection:indexPath.section withString:@""];
+        }];
+        
+        [cell.actButton2 addAction:^(UIButton *btn) {
+            [weakself goToWriteScheduleOrEvaluate:@"填写进度" withSection:indexPath.section withString:@""];
+        }];
+        
+        
     }else if ([rowModel.progress_status integerValue] == 3) {//终止
         [cell.actButton1 setHidden:YES];
         [cell.actButton2 setHidden:NO];
         [cell.actButton2 setTitle:@"删除订单" forState:0];
         [cell.actButton2 setTitleColor:kBlackColor forState:0];
         cell.actButton2.layer.borderColor = kBorderColor.CGColor;
+        
+        [cell.actButton2 addAction:^(UIButton *btn) {
+            [weakself goToWriteScheduleOrEvaluate:@"删除订单" withSection:indexPath.section withString:@""];
+        }];
+        
     }else if ([rowModel.progress_status integerValue] == 4) {//结案
         [cell.actButton1 setHidden:NO];
         [cell.actButton2 setHidden:NO];
@@ -332,7 +354,24 @@
         
         cell.actButton2.layer.borderColor = kBlueColor.CGColor;
         [cell.actButton2 setTitleColor:kBlueColor forState:0];
-        [cell.actButton2 setTitle:@"评价发布方" forState:0];
+        
+        NSString *id_cateStr = [NSString stringWithFormat:@"%@_%@",rowModel.idString,rowModel.category];
+        NSString *idCate = self.myOrderResonseDic[id_cateStr];
+        if ([idCate integerValue] == 0) {
+            [cell.actButton2 setTitle:@"评价发布方" forState:0];
+            [cell.actButton2 addAction:^(UIButton *btn) {
+                [weakself goToWriteScheduleOrEvaluate:@"评价发布方" withSection:indexPath.section withString:@""];
+            }];
+        }else{
+            [cell.actButton2 setTitle:@"查看评价" forState:0];
+            [cell.actButton2 addAction:^(UIButton *btn) {
+                [weakself goToWriteScheduleOrEvaluate:@"查看评价" withSection:indexPath.section withString:@""];
+            }];
+        }
+        
+        [cell.actButton1 addAction:^(UIButton *btn) {
+            [weakself goToWriteScheduleOrEvaluate:@"删除订单" withSection:indexPath.section withString:@""];
+        }];
     }
     
 
@@ -623,54 +662,95 @@
     });
 }
 
-- (void)goToWriteScheduleOrEvaluate:(NSString *)string withRow:(NSInteger)row withString:(NSString *)evaString
+- (void)goToWriteScheduleOrEvaluate:(NSString *)string withSection:(NSInteger)section withString:(NSString *)evaString
 {
-    RowsModel *model = self.myOrderDataList[row];
+    RowsModel *lModel = self.myOrderDataList[section];
     
-    if ([string isEqualToString:@"申请延期"]) {
-        [self delayRequestWithID:model.idString andCategary:model.category];
-    }else if([string isEqualToString:@"填写进度"]){
+    if ([string isEqualToString:@"取消申请"]) {
+        
+    }else if ([string isEqualToString:@"联系发布方"]){
+        if ([lModel.mobile isEqualToString:@""] || !lModel.mobile || lModel.mobile == nil) {
+            [self showHint:@"发布方未认证，不能打电话"];
+        }else{
+            NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",lModel.mobile];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
+        }
+    }else if ([string isEqualToString:@"填写进度"]){
         MyScheduleViewController *myScheduleVC = [[MyScheduleViewController alloc] init];
-        myScheduleVC.idString = model.idString;
-        myScheduleVC.categoryString = model.category;
+        myScheduleVC.idString = lModel.idString;
+        myScheduleVC.categoryString = lModel.category;
         [self.navigationController pushViewController:myScheduleVC animated:YES];
-    }else if ([string isEqualToString:@"去评价"]){
+    }else if ([string isEqualToString:@"删除订单"]){
+        [self deleteTheOrderProductWithModel:lModel];
+    }else if ([string isEqualToString:@"评价发布方"]){
         AdditionalEvaluateViewController *additionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
-        additionalEvaluateVC.idString = model.idString;
-        additionalEvaluateVC.categoryString = model.category;
+        additionalEvaluateVC.idString = lModel.idString;
+        additionalEvaluateVC.categoryString = lModel.category;
         additionalEvaluateVC.typeString = @"接单方";
         additionalEvaluateVC.evaString = evaString;
-        [self.navigationController pushViewController:additionalEvaluateVC animated:YES];
+        
+        UINavigationController *nahuh = [[UINavigationController alloc] initWithRootViewController:additionalEvaluateVC];
+        [self presentViewController:nahuh animated:YES completion:nil];
+    }else if ([string isEqualToString:@"查看评价"]){
+        EvaluateListViewController *evaluateListVC = [[EvaluateListViewController alloc] init];
+        evaluateListVC.typeString = @"接单方";
+        evaluateListVC.idString = lModel.idString;
+        evaluateListVC.categoryString = lModel.category;
+        [self.navigationController pushViewController:evaluateListVC animated:YES];
     }
 }
 
-- (void)delayRequestWithID:(NSString *)idStr andCategary:(NSString *)categaryStr
+//删除产品
+- (void)deleteTheOrderProductWithModel:(RowsModel *)lModel
 {
-    NSString *deString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kIsDelayRequestString];
-    NSDictionary *params = @{@"token" : [self getValidateToken],
-                             @"id" : idStr,
-                             @"category" : categaryStr
+    NSString *deleteProString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kDeleteProductOfMyReleaseString];
+    NSDictionary *params = @{@"id" : lModel.idString,
+                             @"category" : lModel.category,
+                             @"token" : [self getValidateToken]
                              };
+    
     QDFWeakSelf;
-    [self requestDataPostWithString:deString params:params successBlock:^(id responseObject) {
-
-        DelayResponse *response = [DelayResponse objectWithKeyValues:responseObject];
-        DelayModel *delayModel = response.delay;
+    [self requestDataPostWithString:deleteProString params:params successBlock:^(id responseObject) {
         
-        if (![delayModel.is_agree isEqualToString:@""]) {//已申请
-            [weakself showHint:@"您已申请，不能重复申请"];
-        }else if ([delayModel.delays intValue] > 7){
-            [weakself showHint:@"小于7天才可申请延期"];
-        }else{
-            DelayRequestsViewController *delayRequestsVC = [[DelayRequestsViewController alloc] init];
-            delayRequestsVC.idString = idStr;
-            delayRequestsVC.categoryString = categaryStr;
-            [weakself.navigationController pushViewController:delayRequestsVC animated:YES];
+        BaseModel *baModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:baModel.msg];
+        
+        if ([baModel.code isEqualToString:@"0000"]) {
+            [weakself refreshsHeaderOfMyOrder];
         }
+        
     } andFailBlock:^(NSError *error) {
-
+        
     }];
 }
+
+//- (void)delayRequestWithID:(NSString *)idStr andCategary:(NSString *)categaryStr
+//{
+//    NSString *deString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kIsDelayRequestString];
+//    NSDictionary *params = @{@"token" : [self getValidateToken],
+//                             @"id" : idStr,
+//                             @"category" : categaryStr
+//                             };
+//    QDFWeakSelf;
+//    [self requestDataPostWithString:deString params:params successBlock:^(id responseObject) {
+//
+//        DelayResponse *response = [DelayResponse objectWithKeyValues:responseObject];
+//        DelayModel *delayModel = response.delay;
+//        
+//        if (![delayModel.is_agree isEqualToString:@""]) {//已申请
+//            [weakself showHint:@"您已申请，不能重复申请"];
+//        }else if ([delayModel.delays intValue] > 7){
+//            [weakself showHint:@"小于7天才可申请延期"];
+//        }else{
+//            DelayRequestsViewController *delayRequestsVC = [[DelayRequestsViewController alloc] init];
+//            delayRequestsVC.idString = idStr;
+//            delayRequestsVC.categoryString = categaryStr;
+//            [weakself.navigationController pushViewController:delayRequestsVC animated:YES];
+//        }
+//    } andFailBlock:^(NSError *error) {
+//
+//    }];
+//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
