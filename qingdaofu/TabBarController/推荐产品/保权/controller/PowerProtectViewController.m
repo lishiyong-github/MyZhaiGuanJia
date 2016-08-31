@@ -93,7 +93,7 @@
         _powerCommitView = [BaseCommitView newAutoLayoutView];
         
         [_powerCommitView.button setTitle:@"点击申请" forState:0];
-        [_powerCommitView.button addTarget:self action:@selector(goToPowerApply) forControlEvents:UIControlEventTouchUpInside];
+        [_powerCommitView addTarget:self action:@selector(goToPowerApply) forControlEvents:UIControlEventTouchUpInside];
     }
     return _powerCommitView;
 }

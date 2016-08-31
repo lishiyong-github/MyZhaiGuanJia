@@ -17,7 +17,6 @@
 #import "AdditionalEvaluateViewController.h"  //去评价
 
 #import "AllProSegView.h"
-#import "AnotherHomeCell.h"
 #import "ExtendHomeCell.h"
 
 #import "ReleaseResponse.h"
@@ -639,7 +638,6 @@
         AdditionalEvaluateViewController *additionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
         additionalEvaluateVC.idString = model.idString;
         additionalEvaluateVC.categoryString = model.category;
-        additionalEvaluateVC.codeString = model.codeString;
         additionalEvaluateVC.typeString = @"接单方";
         additionalEvaluateVC.evaString = evaString;
         [self.navigationController pushViewController:additionalEvaluateVC animated:YES];

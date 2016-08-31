@@ -50,4 +50,6 @@
 @property (nonatomic,copy) NSString *loanyear;  //借款人年龄
 @property (nonatomic,copy) NSString *obligeeyear; //权利人年龄
 
+@property (nonatomic,copy) NSString *mobile;//联系接单方，联系发布方
+
 @end

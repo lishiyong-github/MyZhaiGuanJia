@@ -130,7 +130,7 @@
         [_completeCommitButton.button setTitle:@"修改认证" forState:0];
         
         QDFWeakSelf;
-        [_completeCommitButton.button addAction:^(UIButton *btn) {
+        [_completeCommitButton addAction:^(UIButton *btn) {
             AuthentyViewController *authentyVC = [[AuthentyViewController alloc] init];
             authentyVC.typeAuthty = @"1";
             [weakself.navigationController pushViewController:authentyVC animated:YES];

@@ -91,7 +91,7 @@
     if (!_powerPictureButton) {
         _powerPictureButton = [BaseCommitView newAutoLayoutView];
         [_powerPictureButton.button setTitle:@"保存" forState:0];
-        [_powerPictureButton.button addTarget:self action:@selector(saveAdditionalImages) forControlEvents:UIControlEventTouchUpInside];
+        [_powerPictureButton addTarget:self action:@selector(saveAdditionalImages) forControlEvents:UIControlEventTouchUpInside];
     }
     return _powerPictureButton;
 }

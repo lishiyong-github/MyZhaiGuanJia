@@ -224,7 +224,9 @@
             cell.agentTextField.placeholder = @"请选择区域";
             [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
             
-            cell.agentTextField.text = [NSString stringWithFormat:@"%@%@%@",self.receiModel.province_name,self.receiModel.city_name,self.receiModel.area_name];
+            if (self.receiModel) {
+                cell.agentTextField.text = [NSString stringWithFormat:@"%@%@%@",self.receiModel.province_name,self.receiModel.city_name,self.receiModel.area_name];
+            }
             
             return cell;
         }

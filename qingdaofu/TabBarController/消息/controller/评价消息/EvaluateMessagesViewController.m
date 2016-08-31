@@ -305,7 +305,7 @@
                 AdditionalEvaluateViewController *additionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
                 additionalEvaluateVC.idString = launchEvaModel.idString;
                 additionalEvaluateVC.categoryString = launchEvaModel.category;
-                additionalEvaluateVC.codeString = launchEvaModel.code;
+//                additionalEvaluateVC.codeString = launchEvaModel.code;
                 additionalEvaluateVC.evaString = launchEvaModel.frequency;
                 if ([launchEvaModel.uidInner isEqualToString:launchEvaModel.cuid]) {
                     additionalEvaluateVC.typeString = @"发布方";

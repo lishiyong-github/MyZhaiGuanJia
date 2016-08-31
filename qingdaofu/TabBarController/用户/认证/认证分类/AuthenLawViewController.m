@@ -90,7 +90,7 @@
     if (!_lawAuCommitButton) {
         _lawAuCommitButton = [BaseCommitView newAutoLayoutView];
         [_lawAuCommitButton.button setTitle:@"提交资料" forState:0];
-        [_lawAuCommitButton.button addTarget:self action:@selector(goToAuthenLawMessages) forControlEvents:UIControlEventTouchUpInside];
+        [_lawAuCommitButton addTarget:self action:@selector(goToAuthenLawMessages) forControlEvents:UIControlEventTouchUpInside];
     }
     return _lawAuCommitButton;
 }

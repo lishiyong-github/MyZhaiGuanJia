@@ -17,6 +17,7 @@
 #import "PaceViewController.h"          //查看进度
 #import "CheckDetailPublishViewController.h"  //联系接单方
 #import "AdditionalEvaluateViewController.h"  //去评价
+#import "EvaluateListViewController.h"  //查看评价
 
 //#import "AnotherHomeCell.h"
 #import "ExtendHomeCell.h"
@@ -274,6 +275,7 @@
     }
     
     //action
+    QDFWeakSelf;
     if ([rowModel.progress_status integerValue] == 1) {//发布中
         [cell.actButton1 setHidden:YES];
         [cell.actButton2 setHidden:NO];
@@ -281,6 +283,10 @@
         [cell.actButton2 setTitle:@"查看申请人" forState:0];
         [cell.actButton2 setTitleColor:kBlueColor forState:0];
         cell.actButton2.layer.borderColor = kBlueColor.CGColor;
+        
+        [cell.actButton2 addAction:^(UIButton *btn) {
+            [weakself goToCheckApplyRecordsOrAdditionMessage:@"查看申请人" withSection:indexPath.section withEvaString:@""];
+        }];
     }else if ([rowModel.progress_status integerValue] == 2) {//处理
         [cell.actButton1 setHidden:NO];
         [cell.actButton2 setHidden:NO];
@@ -292,6 +298,15 @@
         cell.actButton2.layer.borderColor = kBlueColor.CGColor;
         [cell.actButton2 setTitleColor:kBlueColor forState:0];
         [cell.actButton2 setTitle:@"查看进度" forState:0];
+        
+        [cell.actButton1 addAction:^(UIButton *btn) {
+            [weakself goToCheckApplyRecordsOrAdditionMessage:@"联系接单方" withSection:indexPath.section withEvaString:@""];
+        }];
+        
+        [cell.actButton2 addAction:^(UIButton *btn) {
+            [weakself goToCheckApplyRecordsOrAdditionMessage:@"查看进度" withSection:indexPath.section withEvaString:@""];
+        }];
+        
     }else if ([rowModel.progress_status integerValue] == 3) {//终止
         [cell.actButton1 setHidden:YES];
         [cell.actButton2 setHidden:NO];
@@ -299,6 +314,11 @@
         [cell.actButton2 setTitle:@"删除订单" forState:0];
         [cell.actButton2 setTitleColor:kBlackColor forState:0];
         cell.actButton2.layer.borderColor = kBorderColor.CGColor;
+        
+        [cell.actButton2 addAction:^(UIButton *btn) {
+            [weakself goToCheckApplyRecordsOrAdditionMessage:@"删除订单" withSection:indexPath.section withEvaString:@""];
+        }];
+        
     }else if ([rowModel.progress_status integerValue] == 4) {//结案
         [cell.actButton1 setHidden:NO];
         [cell.actButton2 setHidden:NO];
@@ -309,7 +329,26 @@
         
         cell.actButton2.layer.borderColor = kBlueColor.CGColor;
         [cell.actButton2 setTitleColor:kBlueColor forState:0];
-        [cell.actButton2 setTitle:@"评价接单方" forState:0];
+        
+        NSString *id_category = [NSString stringWithFormat:@"%@_%@",rowModel.idString,rowModel.category];
+        NSString *creditor = self.releaseDic[id_category];
+        if ([creditor integerValue] == 0) {
+            [cell.actButton2 setTitle:@"评价接单方" forState:0];
+            [cell.actButton2 addAction:^(UIButton *btn) {
+                [weakself goToCheckApplyRecordsOrAdditionMessage:@"评价接单方" withSection:indexPath.section withEvaString:@""];
+            }];
+        }else{
+            [cell.actButton2 setTitle:@"查看评价" forState:0];
+            [cell.actButton2 addAction:^(UIButton *btn) {
+                [weakself goToCheckApplyRecordsOrAdditionMessage:@"查看评价" withSection:indexPath.section withEvaString:@""];
+            }];
+        }
+        
+        [cell.actButton1 addAction:^(UIButton *btn) {
+            [weakself goToCheckApplyRecordsOrAdditionMessage:@"删除订单" withSection:indexPath.section withEvaString:@""];
+        }];
+        
+
     }
     
     return cell;
@@ -430,38 +469,78 @@
     });
 }
 
-- (void)goToCheckApplyRecordsOrAdditionMessage:(NSString *)string withRow:(NSInteger)row withEvaString:(NSString *)evaString
+
+
+- (void)goToCheckApplyRecordsOrAdditionMessage:(NSString *)string withSection:(NSInteger)section withEvaString:(NSString *)evaString
 {
-    RowsModel *model = self.releaseDataArray[row];
+    RowsModel *ymodel = self.releaseDataArray[section];
     
-   if ([string isEqualToString:@"查看申请"]){
+   if ([string isEqualToString:@"查看申请人"]){
       ApplyRecordsViewController *applyRecordsVC = [[ApplyRecordsViewController alloc] init];
-       applyRecordsVC.idStr = model.idString;
-       applyRecordsVC.categaryStr = model.category;
+       applyRecordsVC.idStr = ymodel.idString;
+       applyRecordsVC.categaryStr = ymodel.category;
       [self.navigationController pushViewController:applyRecordsVC animated:YES];
-   }
-   else if ([string isEqualToString:@"查看进度"]){
+   }else if ([string isEqualToString:@"查看进度"]){
         PaceViewController *paceVC = [[PaceViewController alloc] init];
-       paceVC.idString = model.idString;
-       paceVC.categoryString = model.category;
+       paceVC.idString = ymodel.idString;
+       paceVC.categoryString = ymodel.category;
         [self.navigationController pushViewController:paceVC animated:YES];
     }else if ([string isEqualToString:@"联系接单方"]){
-        CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
-        checkDetailPublishVC.typeString = @"接单方";
-        checkDetailPublishVC.idString = model.idString;
-        checkDetailPublishVC.categoryString = model.category;
-        checkDetailPublishVC.pidString = model.pid;
-        checkDetailPublishVC.typeDegreeString = @"处理中";
-        [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
-    }else if ([string isEqualToString:@"评价"]){
+//        CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+//        checkDetailPublishVC.typeString = @"接单方";
+//        checkDetailPublishVC.idString = ymodel.idString;
+//        checkDetailPublishVC.categoryString = ymodel.category;
+//        checkDetailPublishVC.pidString = ymodel.pid;
+////        checkDetailPublishVC.typeDegreeString = @"处理中";
+//        [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
+        
+        if ([ymodel.mobile isEqualToString:@""] || !ymodel.mobile || ymodel.mobile == nil) {
+            [self showHint:@"接单方未认证，不能打电话"];
+        }else{
+            NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",ymodel.mobile];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
+        }
+    }else if ([string isEqualToString:@"删除订单"]){
+        [self deleteTheProductsWithModel:ymodel];
+    }else if ([string isEqualToString:@"评价接单方"]){
         AdditionalEvaluateViewController *additionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
-        additionalEvaluateVC.idString = model.idString;
-        additionalEvaluateVC.categoryString = model.category;
-        additionalEvaluateVC.codeString = model.codeString;
+        additionalEvaluateVC.idString = ymodel.idString;
+        additionalEvaluateVC.categoryString = ymodel.category;
         additionalEvaluateVC.typeString = @"发布方";
         additionalEvaluateVC.evaString = evaString;
-        [self.navigationController pushViewController:additionalEvaluateVC animated:YES];
+        
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:additionalEvaluateVC];
+        [self presentViewController:nav animated:YES completion:nil];
+    }else if ([string isEqualToString:@"查看评价"]){
+        EvaluateListViewController *evaluateListVC = [[EvaluateListViewController alloc] init];
+        evaluateListVC.idString = ymodel.idString;
+        evaluateListVC.categoryString = ymodel.category;
+        evaluateListVC.typeString = @"发布方";
+        [self.navigationController pushViewController:evaluateListVC animated:YES];
     }
+}
+
+- (void)deleteTheProductsWithModel:(RowsModel *)yModel
+{
+    NSString *deleteProString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kDeleteProductOfMyReleaseString];
+    NSDictionary *params = @{@"id" : yModel.idString,
+                             @"category" : yModel.category,
+                             @"token" : [self getValidateToken]
+                             };
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:deleteProString params:params successBlock:^(id responseObject) {
+        
+        BaseModel *baModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:baModel.msg];
+        
+        if ([baModel.code isEqualToString:@"0000"]) {
+            [weakself refreshHeaderOfMyRelease];
+        }
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
 }
 
 - (void)didReceiveMemoryWarning {

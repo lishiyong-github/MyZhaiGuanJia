@@ -129,7 +129,7 @@
         [_powerListCommitView.button setTitle:@"申请保全" forState:0];
         
         QDFWeakSelf;
-        [_powerListCommitView.button addAction:^(UIButton *btn) {
+        [_powerListCommitView addAction:^(UIButton *btn) {
             UINavigationController *nav = weakself.navigationController;
             [nav popViewControllerAnimated:NO];
             [nav popViewControllerAnimated:NO];

@@ -22,7 +22,7 @@
         [self.contentView addSubview:self.evaProImageView2];
         [self.contentView addSubview:self.evaProductButton];
         
-        [self.contentView addSubview:self.remindImageButton];
+//        [self.contentView addSubview:self.remindImageButton];
         
         [self.contentView setNeedsUpdateConstraints];
     }
@@ -34,21 +34,21 @@
     if (!self.didSetupConstraints) {
         
         [self.evaNameLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
-        [self.evaNameLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kBigPadding];
+        [self.evaNameLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:8];
         
         [self.evaTimeLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.evaTimeLabel autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.evaNameLabel];
         
         [self.evaStarImage autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
-        [self.evaStarImage autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.evaNameLabel withOffset:kBigPadding];
+        [self.evaStarImage autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.evaNameLabel withOffset:kSpacePadding];
         [self.evaStarImage autoSetDimensionsToSize:CGSizeMake(60, 12)];
         
-        [self.evaTextLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.evaStarImage withOffset:kBigPadding];
+        [self.evaTextLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.evaStarImage withOffset:kSmallPadding];
         [self.evaTextLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
         [self.evaTextLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         
         [self.evaProImageView1 autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
-        [self.evaProImageView1 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.evaTextLabel withOffset:kBigPadding];
+        [self.evaProImageView1 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.evaTextLabel withOffset:kSmallPadding];
         [self.evaProImageView1 autoSetDimensionsToSize:CGSizeMake(50, 50)];
         
         [self.evaProImageView2 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.evaProImageView1 withOffset:kBigPadding];
@@ -57,7 +57,7 @@
         [self.evaProImageView2 autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.evaProImageView1];
         
         [self.evaProductButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
-        [self.evaProductButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.evaProImageView1 withOffset:kBigPadding];
+        [self.evaProductButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.evaProImageView1 withOffset:kSmallPadding];
         [self.evaProductButton autoSetDimension:ALDimensionHeight toSize:40];
         [self.evaProductButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         
@@ -68,7 +68,7 @@
         [self.evaInnerImage autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:10];
         [self.evaInnerImage autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.evaInnnerButton];
         
-        [self.remindImageButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+//        [self.remindImageButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
         
         self.didSetupConstraints = YES;
     }
@@ -114,7 +114,7 @@
     if (!_evaTextLabel) {
         _evaTextLabel = [UILabel newAutoLayoutView];
         _evaTextLabel.textColor = kLightGrayColor;
-        _evaTextLabel.font = kFirstFont;
+        _evaTextLabel.font = kSecondFont;
     }
     return _evaTextLabel;
 }
@@ -172,14 +172,14 @@
 
 
 
-- (UIButton *)remindImageButton
-{
-    if (!_remindImageButton) {
-        _remindImageButton = [UIButton newAutoLayoutView];
-        [_remindImageButton setImage:[UIImage imageNamed:@"kong"] forState:0];
-    }
-    return _remindImageButton;
-}
+//- (UIButton *)remindImageButton
+//{
+//    if (!_remindImageButton) {
+//        _remindImageButton = [UIButton newAutoLayoutView];
+//        [_remindImageButton setImage:[UIImage imageNamed:@"kong"] forState:0];
+//    }
+//    return _remindImageButton;
+//}
 
 - (void)awakeFromNib {
     // Initialization code

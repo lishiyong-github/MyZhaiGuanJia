@@ -179,69 +179,13 @@
     [cell.userActionButton addAction:^(UIButton *btn) {
         AgreementViewController *agreementVC = [[AgreementViewController alloc] init];
         agreementVC.flagString = @"1";
-        agreementVC.idString = userModel.idString;
-        agreementVC.categoryString = userModel.category;
+        agreementVC.idString = self.idStr;
+        agreementVC.categoryString = self.categaryStr;
         agreementVC.pidString = userModel.uidInner;
         [weakself.navigationController pushViewController:agreementVC animated:YES];
     }];
     
     return cell;
-    
-    /*
-    ApplyRecordsCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    if (!cell) {
-        cell = [[ApplyRecordsCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-    }
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//    if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
-//        [cell setSeparatorInset:UIEdgeInsetsZero];
-//    }
-//    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
-//        [cell setLayoutMargins:UIEdgeInsetsZero];
-//    }
-    
-    if (indexPath.row == 0) {
-        
-        cell.personLabel.textColor = kBlackColor;
-        cell.personLabel.font = kBigFont;
-        cell.personLabel.text = @"申请人";
-        
-        cell.dateLabel.textColor = kBlackColor;
-        cell.dateLabel.font = kBigFont;
-        cell.dateLabel.text = @"申请时间";
-        
-        [cell.actButton setTitleColor:kBlackColor forState:0];
-        cell.actButton.titleLabel.font = kBigFont;
-        [cell.actButton setTitle:@"操作" forState:0];
-    }else{
-        
-        [cell.lineLabel11 setHidden:YES];
-        [cell.lineLabel12 setHidden:YES];
-        
-        UserModel *userModel;
-        if (self.recordsDataArray.count > 0) {
-            userModel = self.recordsDataArray[indexPath.row-1];
-            cell.personLabel.text = userModel.mobile;
-            cell.dateLabel.text = [NSDate getYMDFormatterTime:userModel.create_time];
-            [cell.actButton setTitle:@"查看" forState:0];
-            cell.actButton.layer.borderWidth = kLineWidth;
-            cell.actButton.layer.borderColor = kBlueColor.CGColor;
-            cell.actButton.layer.cornerRadius = corner;
-            QDFWeakSelf;
-            [cell.actButton addAction:^(UIButton *btn) {
-                CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
-                checkDetailPublishVC.typeString = @"申请人";
-                checkDetailPublishVC.idString = self.idStr;
-                checkDetailPublishVC.categoryString = self.categaryStr;
-                checkDetailPublishVC.pidString = userModel.uidInner;
-//                checkDetailPublishVC.evaTypeString = @"launchevaluation";
-                [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];
-            }];
-        }
-    }
-    
-    return cell;
-     */
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section

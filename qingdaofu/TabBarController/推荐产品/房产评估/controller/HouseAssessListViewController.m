@@ -81,7 +81,7 @@
         [_houseListCommitView.button setTitle:@"房产评估" forState:0];
         
         QDFWeakSelf;
-        [_houseListCommitView.button addAction:^(UIButton *btn) {
+        [_houseListCommitView addAction:^(UIButton *btn) {
             HouseAssessViewController *houseAssessListVC = [[HouseAssessViewController alloc] init];
             [weakself.navigationController pushViewController:houseAssessListVC animated:YES];
         }];

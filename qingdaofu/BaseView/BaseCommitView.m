@@ -42,6 +42,7 @@
 {
     if (!_button) {
         _button = [BaseCommitButton newAutoLayoutView];
+        _button.userInteractionEnabled = NO;
     }
     return _button;
 }

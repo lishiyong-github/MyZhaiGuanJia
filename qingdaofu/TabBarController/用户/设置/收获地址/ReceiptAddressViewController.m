@@ -86,7 +86,7 @@
         [_receiptListCommitView.button setTitle:@"新增地址" forState:0];
         
         QDFWeakSelf;
-        [_receiptListCommitView.button addAction:^(UIButton *btn) {
+        [_receiptListCommitView addAction:^(UIButton *btn) {
             ReceiptAddressEditViewController *reiceptAddressEditVC = [[ReceiptAddressEditViewController alloc] init];
             [weakself.navigationController pushViewController:reiceptAddressEditVC animated:YES];
         }];

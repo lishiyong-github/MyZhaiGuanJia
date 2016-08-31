@@ -95,7 +95,7 @@
         [_propertyListCommitView.button setTitle:@"查询产调" forState:0];
         
         QDFWeakSelf;
-        [_propertyListCommitView.button addAction:^(UIButton *btn) {
+        [_propertyListCommitView addAction:^(UIButton *btn) {
             UINavigationController *nav = weakself.navigationController;
             [nav popViewControllerAnimated:NO];
             [nav popViewControllerAnimated:NO];

@@ -84,7 +84,7 @@
     if (!_companyAuCommitButton) {
         _companyAuCommitButton = [BaseCommitView newAutoLayoutView];
         [_companyAuCommitButton.button setTitle:@"提交资料" forState:0];
-        [_companyAuCommitButton.button addTarget:self action:@selector(goToAuthenCompanyMessages) forControlEvents:UIControlEventTouchUpInside];
+        [_companyAuCommitButton addTarget:self action:@selector(goToAuthenCompanyMessages) forControlEvents:UIControlEventTouchUpInside];
     }
     return _companyAuCommitButton;
 }

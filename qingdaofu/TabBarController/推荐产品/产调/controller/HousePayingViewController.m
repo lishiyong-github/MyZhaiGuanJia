@@ -79,7 +79,7 @@
     if (!_powerCommitView) {
         _powerCommitView = [BaseCommitView newAutoLayoutView];
         [_powerCommitView.button setTitle:@"确定支付" forState:0];
-        [_powerCommitView.button addTarget:self action:@selector(confirmToGenerateTheOrder) forControlEvents:UIControlEventTouchUpInside];
+        [_powerCommitView addTarget:self action:@selector(confirmToGenerateTheOrder) forControlEvents:UIControlEventTouchUpInside];
     }
     return _powerCommitView;
 }

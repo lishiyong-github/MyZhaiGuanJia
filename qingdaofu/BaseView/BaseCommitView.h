@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "BaseCommitButton.h"
 
-@interface BaseCommitView : UIView
+@interface BaseCommitView : UIButton
 
 @property (nonatomic,strong) BaseCommitButton *button;
 

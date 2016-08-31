@@ -135,7 +135,7 @@
         [_applicationListCommitView.button setTitle:@"申请保函" forState:0];
         
         QDFWeakSelf;
-        [_applicationListCommitView.button addAction:^(UIButton *btn) {
+        [_applicationListCommitView addAction:^(UIButton *btn) {
             UINavigationController *nav = weakself.navigationController;
             [nav popViewControllerAnimated:NO];
             

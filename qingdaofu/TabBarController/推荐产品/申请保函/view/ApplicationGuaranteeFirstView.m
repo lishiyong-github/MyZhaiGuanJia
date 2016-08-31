@@ -69,7 +69,7 @@
         [_nextButton.button setTitle:@"下一步" forState:0];
         
         QDFWeakSelf;
-        [_nextButton.button addAction:^(UIButton *btn) {
+        [_nextButton addAction:^(UIButton *btn) {
             if (weakself.didSelectedRow) {
                 weakself.didSelectedRow(10);
             }

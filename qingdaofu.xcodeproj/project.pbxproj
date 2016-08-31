@@ -181,7 +181,6 @@
 		A176912A1CD9976D004289DD /* MyClosingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A17691291CD9976D004289DD /* MyClosingViewController.m */; };
 		A176912E1CD99E1E004289DD /* CheckDetailPublishViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A176912D1CD99E1E004289DD /* CheckDetailPublishViewController.m */; };
 		A176913F1CD9D5CE004289DD /* MyReleaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A176913E1CD9D5CE004289DD /* MyReleaseViewController.m */; };
-		A17691421CD9DA0B004289DD /* AnotherHomeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A17691411CD9DA0A004289DD /* AnotherHomeCell.m */; };
 		A17691461CD9E42A004289DD /* AdditionalEvaluateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A17691451CD9E42A004289DD /* AdditionalEvaluateViewController.m */; };
 		A1770E161CFE6AA3003579E1 /* CompleteLawCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1770E151CFE6AA3003579E1 /* CompleteLawCell.m */; };
 		A1770E191CFE6AB5003579E1 /* CompleteCompanyTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1770E181CFE6AB5003579E1 /* CompleteCompanyTableViewCell.m */; };
@@ -316,6 +315,7 @@
 		A192B4D21CDB52A40053FC4C /* list_icon_product@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A192B4CE1CDB52A40053FC4C /* list_icon_product@3x.png */; };
 		A192B4D31CDB52A40053FC4C /* list_icon_user@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A192B4CF1CDB52A40053FC4C /* list_icon_user@2x.png */; };
 		A192B4D41CDB52A40053FC4C /* list_icon_user@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A192B4D01CDB52A40053FC4C /* list_icon_user@3x.png */; };
+		A19424A11D76743E00AC699B /* EvaluateListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A19424A01D76743E00AC699B /* EvaluateListViewController.m */; };
 		A19506371D6FE80F00CE87B5 /* ReportDatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = A19506361D6FE80F00CE87B5 /* ReportDatePickerView.m */; };
 		A196CDE81CFBC4D300AC6C87 /* UIViewController+DismissKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = A196CDE71CFBC4D300AC6C87 /* UIViewController+DismissKeyboard.m */; };
 		A196CDEF1CFBDF4000AC6C87 /* btn_collection@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A196CDE91CFBDF4000AC6C87 /* btn_collection@2x.png */; };
@@ -964,8 +964,6 @@
 		A176912D1CD99E1E004289DD /* CheckDetailPublishViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckDetailPublishViewController.m; sourceTree = "<group>"; };
 		A176913D1CD9D5CE004289DD /* MyReleaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyReleaseViewController.h; sourceTree = "<group>"; };
 		A176913E1CD9D5CE004289DD /* MyReleaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyReleaseViewController.m; sourceTree = "<group>"; };
-		A17691401CD9DA0A004289DD /* AnotherHomeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnotherHomeCell.h; sourceTree = "<group>"; };
-		A17691411CD9DA0A004289DD /* AnotherHomeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnotherHomeCell.m; sourceTree = "<group>"; };
 		A17691441CD9E42A004289DD /* AdditionalEvaluateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdditionalEvaluateViewController.h; sourceTree = "<group>"; };
 		A17691451CD9E42A004289DD /* AdditionalEvaluateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdditionalEvaluateViewController.m; sourceTree = "<group>"; };
 		A1770E141CFE6AA3003579E1 /* CompleteLawCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompleteLawCell.h; sourceTree = "<group>"; };
@@ -1154,6 +1152,8 @@
 		A192B4CE1CDB52A40053FC4C /* list_icon_product@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list_icon_product@3x.png"; sourceTree = "<group>"; };
 		A192B4CF1CDB52A40053FC4C /* list_icon_user@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list_icon_user@2x.png"; sourceTree = "<group>"; };
 		A192B4D01CDB52A40053FC4C /* list_icon_user@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list_icon_user@3x.png"; sourceTree = "<group>"; };
+		A194249F1D76743E00AC699B /* EvaluateListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EvaluateListViewController.h; sourceTree = "<group>"; };
+		A19424A01D76743E00AC699B /* EvaluateListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EvaluateListViewController.m; sourceTree = "<group>"; };
 		A19506351D6FE80F00CE87B5 /* ReportDatePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportDatePickerView.h; sourceTree = "<group>"; };
 		A19506361D6FE80F00CE87B5 /* ReportDatePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportDatePickerView.m; sourceTree = "<group>"; };
 		A196CDE61CFBC4D300AC6C87 /* UIViewController+DismissKeyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+DismissKeyboard.h"; sourceTree = "<group>"; };
@@ -2757,6 +2757,15 @@
 			path = images;
 			sourceTree = "<group>";
 		};
+		A194249E1D76742300AC699B /* 查看评价 */ = {
+			isa = PBXGroup;
+			children = (
+				A194249F1D76743E00AC699B /* EvaluateListViewController.h */,
+				A19424A01D76743E00AC699B /* EvaluateListViewController.m */,
+			);
+			path = "查看评价";
+			sourceTree = "<group>";
+		};
 		A196CDFF1CFC1B9A00AC6C87 /* 服务协议 */ = {
 			isa = PBXGroup;
 			children = (
@@ -3013,6 +3022,7 @@
 		A19D29631CD2084B00DAAEA7 /* 我的发布 */ = {
 			isa = PBXGroup;
 			children = (
+				A194249E1D76742300AC699B /* 查看评价 */,
 				A17F7BF91CE5DDB700E882A3 /* 查看申请 */,
 				A1718DDE1CFD569D0007DA6F /* 结案 */,
 				A1718DDA1CFD3F690007DA6F /* 终止 */,
@@ -3036,8 +3046,6 @@
 				A17691181CD981FC004289DD /* 处理中 */,
 				A176911C1CD983E8004289DD /* 终止 */,
 				A17EE39B1CD8AF2100ECC631 /* 申请中 */,
-				A17691401CD9DA0A004289DD /* AnotherHomeCell.h */,
-				A17691411CD9DA0A004289DD /* AnotherHomeCell.m */,
 				A17EE3921CD8983900ECC631 /* MyOrderViewController.h */,
 				A17EE3931CD8983900ECC631 /* MyOrderViewController.m */,
 				A17D942C1D6AB84C00BF5B5F /* ExtendHomeCell.h */,
@@ -4422,6 +4430,7 @@
 				A19B8E241CCF42E300F8EBF2 /* NSLayoutConstraint+PureLayout.m in Sources */,
 				A1A97E541CDC66FE00EDE320 /* EvaluateMessagesViewController.m in Sources */,
 				A17EE3941CD8983900ECC631 /* MyOrderViewController.m in Sources */,
+				A19424A11D76743E00AC699B /* EvaluateListViewController.m in Sources */,
 				A176913F1CD9D5CE004289DD /* MyReleaseViewController.m in Sources */,
 				A17EE3911CD8796900ECC631 /* SuggestionViewController.m in Sources */,
 				A19D294E1CD1E04300DAAEA7 /* HomeCell.m in Sources */,
@@ -4513,7 +4522,6 @@
 				A1A0B1161D7541F8009B1DB4 /* ApplicationDetailResponse.m in Sources */,
 				A1B028F01D1794DC00F32A09 /* UIImage+MultiFormat.m in Sources */,
 				A19D296D1CD208FB00DAAEA7 /* CompleteViewController.m in Sources */,
-				A17691421CD9DA0B004289DD /* AnotherHomeCell.m in Sources */,
 				A17EE3891CD86B3E00ECC631 /* AboutViewController.m in Sources */,
 				A1882F5A1D2E012C0064BD38 /* ProductsCheckFilesViewController.m in Sources */,
 				A1882F511D2DF6200064BD38 /* RegisterAgreementViewController.m in Sources */,

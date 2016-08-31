@@ -140,7 +140,7 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
     if (self.allEvaluateArray.count > 0 ) {
-        [cell.remindImageButton setHidden:YES];
+//        [cell.remindImageButton setHidden:YES];
         [cell.evaProductButton setHidden:YES];
         [cell.evaNameLabel setHidden:NO];
         [cell.evaTimeLabel setHidden:NO];
@@ -258,7 +258,7 @@
             }
         }
     }else{
-        [cell.remindImageButton setHidden:NO];
+//        [cell.remindImageButton setHidden:NO];
         [cell.evaProductButton setHidden:YES];
         [cell.evaNameLabel setHidden:YES];
         [cell.evaTimeLabel setHidden:YES];
