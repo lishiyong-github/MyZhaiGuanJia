@@ -446,7 +446,7 @@
                 [weakself.dealCommitButton setHidden:NO];
                 
                 [weakself.dealCommitButton setTitle:@"已申请结案，等待对方确认中" forState:0];
-                [weakself.dealCommitButton setBackgroundColor:kGrayColor];
+                [weakself.dealCommitButton setBackgroundColor:kBorderColor];
                 weakself.dealCommitButton.userInteractionEnabled = NO;
             }
         }

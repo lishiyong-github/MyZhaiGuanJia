@@ -10,12 +10,14 @@
 #import "PowerProtectPictureViewController.h"  //选择材料
 #import "ApplicationCourtViewController.h" //选择法院
 #import "HouseChooseViewController.h" //收获地址
+#import "ReceiptAddressViewController.h"
 #import "PowerProtectListViewController.h" //我的保全
 
 
 #import "BaseCommitView.h"
 #import "AgentCell.h"
 #import "SuitBaseCell.h" //取函方式
+#import "PowerAddressCell.h"
 #import "PowerCourtView.h"
 
 #import "UIViewController+BlurView.h"
@@ -30,6 +32,7 @@
 @property (nonatomic,strong) BaseCommitView *powerCommitView;
 @property (nonatomic,strong) PowerCourtView *powerPickerView;
 @property (nonatomic,assign) BOOL didSetupConstraints;
+@property (nonatomic,assign) BOOL chooseFlag; //改变收货地址cell的变量
 
 @property (nonatomic,strong) NSMutableDictionary *powerDic;
 @property (nonatomic,strong) NSMutableArray *powerCourtList;
@@ -159,6 +162,13 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.section == 1 && indexPath.row == 1) {
+        if (_chooseFlag) {
+            return 65;
+        }else{
+            return kCellHeight;
+        }
+    }
     return kCellHeight;
 }
 
@@ -239,11 +249,16 @@
 
                 cell.agentLabel.text = @"收货地址";
                 cell.agentTextField.placeholder = @"请选择";
-                cell.agentTextField.text = weakself.powerDic[@"address"]?weakself.powerDic[@"address"]:@"";
+                cell.agentTextField.text = @"";
+//                cell.agentTextField.text = weakself.powerDic[@"address"]?weakself.powerDic[@"address"]:@"";
                 [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
                 
             }else if (segTag == 1){//自取
                 if (weakself.powerDic[@"fayuan_id"]) {
+                    
+                    _chooseFlag = NO;
+                    [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
+                    
                     AgentCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
                     cell.agentTextField.userInteractionEnabled = NO;
                     cell.agentButton.userInteractionEnabled = NO;
@@ -263,20 +278,42 @@
         return cell;
     }
     
-    identifier = @"application11";
-    AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    if (!cell) {
-        cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+    if (_chooseFlag) {
+        identifier = @"application113";
+        PowerAddressCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell) {
+            cell = [[PowerAddressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.actButton.userInteractionEnabled = NO;
+        [cell.actButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        
+//        cell.agentTextField.userInteractionEnabled = NO;
+//        cell.agentButton.userInteractionEnabled = NO;
+//        
+//        cell.agentLabel.text = @"收货地址";
+//        cell.agentTextField.placeholder = @"请选择";
+//        [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        
+        return cell;
+    }else{
+        identifier = @"application11";
+        AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell) {
+            cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.agentTextField.userInteractionEnabled = NO;
+        cell.agentButton.userInteractionEnabled = NO;
+        
+        cell.agentLabel.text = @"收货地址";
+        cell.agentTextField.placeholder = @"请选择";
+        [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        
+        return cell;
+        
     }
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.agentTextField.userInteractionEnabled = NO;
-    cell.agentButton.userInteractionEnabled = NO;
-    
-    cell.agentLabel.text = @"收货地址";
-    cell.agentTextField.placeholder = @"请选择";
-    [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-    
-    return cell;
+    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -336,15 +373,24 @@
     }else{
         if (indexPath.row == 1) {
             if ([self.powerDic[@"type"] isEqualToString:@"2"]) {//快递
-                HouseChooseViewController *houseChooseVC = [[HouseChooseViewController alloc] init];
-                [self.navigationController pushViewController:houseChooseVC animated:YES];
+                
+                ReceiptAddressViewController *receiptAddressVC = [[ReceiptAddressViewController alloc] init];
+                receiptAddressVC.cateString = @"1";
+                [self.navigationController pushViewController:receiptAddressVC animated:YES];
                 
                 QDFWeakSelf;
-                [houseChooseVC setDidSelectedRow:^(NSString *text) {
-                    AgentCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-                    cell.agentTextField.text = text;
-                    [weakself.powerDic setObject:text forKey:@"address"];
+                [receiptAddressVC setDidSelectedReceiptAddress:^(NSString *name, NSString *phone, NSString *address) {
+                    
+                    _chooseFlag = YES;
+                    [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
+                    
+                    PowerAddressCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+                    cell.nameLabel.text = name;
+                    cell.phoneLabel.text = phone;
+                    cell.addressLabel.text = address;
+                    [weakself.powerDic setObject:address forKey:@"address"];
                 }];
+                
             }
         }
     }

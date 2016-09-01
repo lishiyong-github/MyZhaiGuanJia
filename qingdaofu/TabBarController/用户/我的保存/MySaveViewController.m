@@ -200,10 +200,10 @@
 //    reportSuitVC.tagString = @"2";
 //    [weakself.navigationController pushViewController:reportSuitVC animated:YES];
     
-//    MyDetailSaveViewController *myDetailSaveVC = [[MyDetailSaveViewController alloc] init];
-//    myDetailSaveVC.idString = deModel.idString;
-//    myDetailSaveVC.categaryString = deModel.category;
-//    [self.navigationController pushViewController:myDetailSaveVC animated:YES];
+    MyDetailSaveViewController *myDetailSaveVC = [[MyDetailSaveViewController alloc] init];
+    myDetailSaveVC.idString = deModel.idString;
+    myDetailSaveVC.categaryString = deModel.category;
+    [self.navigationController pushViewController:myDetailSaveVC animated:YES];
 }
 
 #pragma mark - method

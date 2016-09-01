@@ -10,7 +10,6 @@
 
 @interface HousePropertyResultViewController : NetworkViewController
 
-@property (nonatomic,strong) NSString *idString; //用于加密参数
-@property (nonatomic,strong) NSString *cidString; //用于加密参数
+@property (nonatomic,strong) NSString *attrString; //用于加密参数
 
 @end

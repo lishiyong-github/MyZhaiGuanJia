@@ -154,13 +154,15 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (self.receiModel) {
-        return 3;
-    }else{
-        return 2;
-    }
+//    if (self.receiModel) {
+//        return 3;
+//    }else{
+//        return 2;
+//    }
     
-    return 0;
+    return 2;
+    
+//    return 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -243,46 +245,49 @@
         return cell;
         
     }else if (indexPath.section == 1){//LoginCell.h
-        identifier = @"reiceptEd10";
-        LoginCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if (!cell) {
-            cell = [[LoginCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.loginTextField.userInteractionEnabled = NO;
-        [cell.getCodebutton setHidden:YES];
-        cell.loginTextField.text = @"设为默认";
-        if ([self.receiModel.isdefault integerValue] == 1) {
-            [cell.loginSwitch setOn:YES];
-        }else{
-            [cell.loginSwitch setOn:NO];
-        }
         
-        QDFWeakSelf;
-        [cell setDidEndSwitching:^(BOOL isOpen) {
-            if (isOpen) {
-                [weakself.receiptDic setObject:@"1" forKey:@"isdefault"];
-            }else{
-                [weakself.receiptDic setObject:@"0" forKey:@"isdefault"];
+        if (self.receiModel) {//编辑，有删除功能，无默认功能
+            identifier = @"reiceptEd20";
+            BidOneCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[BidOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
             }
-        }];
-        
-        return cell;
-        
-    }else{
-        identifier = @"reiceptEd20";
-        BidOneCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if (!cell) {
-            cell = [[BidOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        [cell.cancelButton setHidden:YES];
-        cell.oneButton.userInteractionEnabled = NO;
-        
-        [cell.oneButton setTitle:@"删除地址" forState:0];
-        [cell.oneButton setTitleColor:kRedColor forState:0];
-        return cell;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            [cell.cancelButton setHidden:YES];
+            cell.oneButton.userInteractionEnabled = NO;
+            
+            [cell.oneButton setTitle:@"删除地址" forState:0];
+            [cell.oneButton setTitleColor:kRedColor forState:0];
+            return cell;
 
+        }else{
+            
+            identifier = @"reiceptEd10";
+            LoginCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[LoginCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.loginTextField.userInteractionEnabled = NO;
+            [cell.getCodebutton setHidden:YES];
+            cell.loginTextField.text = @"设为默认";
+            if ([self.receiModel.isdefault integerValue] == 1) {
+                [cell.loginSwitch setOn:YES];
+            }else{
+                [cell.loginSwitch setOn:NO];
+            }
+            
+            QDFWeakSelf;
+            [cell setDidEndSwitching:^(BOOL isOpen) {
+                if (isOpen) {
+                    [weakself.receiptDic setObject:@"1" forKey:@"isdefault"];
+                }else{
+                    [weakself.receiptDic setObject:@"0" forKey:@"isdefault"];
+                }
+            }];
+            
+            return cell;
+        }
     }
     return nil;
 }
@@ -303,8 +308,10 @@
     
     if (indexPath.section == 0 && indexPath.row == 2) {
         [self getProvinceLists];
-    }else if (indexPath.section == 2){
-        [self DeleteReceiptAddressWithType:@"1"];
+    }else if (indexPath.section == 1){
+        if (self.receiModel) {
+            [self DeleteReceiptAddressWithType:@"1"];
+        }
     }
 }
 

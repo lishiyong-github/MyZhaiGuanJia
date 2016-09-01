@@ -10,7 +10,7 @@
 
 @interface ReceiptAddressViewController : NetworkViewController
 
-@property (nonatomic,strong) void (^didSelectedReceiptAddress)(NSString *);
+@property (nonatomic,strong) void (^didSelectedReceiptAddress)(NSString *,NSString*,NSString*);//name  phone address
 @property (nonatomic,strong) NSString *cateString;//1-单元格可点击，其余不可点击
 
 @end

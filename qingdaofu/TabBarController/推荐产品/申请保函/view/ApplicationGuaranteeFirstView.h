@@ -13,6 +13,7 @@
 @property (nonatomic,strong) void (^didEndEditting)(NSString *,NSInteger);
 
 @property (nonatomic,strong) UITableView *tableViewa;
+@property (nonatomic,assign) BOOL chooseTag;  //需要改变收货地址的变量
 
 @property (nonatomic,assign) BOOL didSrtupConstraints;
 

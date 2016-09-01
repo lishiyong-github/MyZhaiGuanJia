@@ -8,10 +8,24 @@
 
 #import "HousePropertyResultViewController.h"
 
-@interface HousePropertyResultViewController ()<UITableViewDelegate,UITableViewDataSource>
+#import "MineUserCell.h"
+#import "PropertyResultCell.h"
 
-@property (nonatomic,strong) UIWebView *propertyResultWebView;
+#import "PropertyResultResponse.h"
+#import "PropertyResultOnesModel.h"
+
+#import "UIImageView+WebCache.h"
+#import "UIViewController+ImageBrowser.h"
+
+@interface HousePropertyResultViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>
+
+@property (nonatomic,strong) UICollectionView *resultCollectionView;
+@property (nonatomic,strong) UITableView *resultTableView;
 @property (nonatomic,assign) BOOL didSetupConstarints;
+
+//json
+@property (nonatomic,strong) NSMutableArray *resultDataArray;
+@property (nonatomic,strong) NSMutableArray *resultOnesArray;
 
 @end
 
@@ -22,9 +36,9 @@
     self.title = @"产调结果";
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
-//    [self.view addSubview:self.propertyResultWebView];
-//    
-//    [self.view setNeedsUpdateConstraints];
+    [self.view addSubview:self.resultTableView];
+
+    [self.view setNeedsUpdateConstraints];
     
     [self getPropertyResultMessages];
 }
@@ -33,42 +47,146 @@
 {
     if (!self.didSetupConstarints) {
         
-        [self.propertyResultWebView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+        [self.resultTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
         
         self.didSetupConstarints = YES;
     }
     [super updateViewConstraints];
 }
 
-//- (UIWebView *)propertyResultWebView
-//{
-//    
-//}
+- (UITableView *)resultTableView
+{
+    if (!_resultTableView) {
+        _resultTableView.translatesAutoresizingMaskIntoConstraints = NO;
+        _resultTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+        _resultTableView.backgroundColor = kBackColor;
+        _resultTableView.delegate = self;
+        _resultTableView.dataSource = self;
+    }
+    return _resultTableView;
+}
 
+- (NSMutableArray *)resultDataArray
+{
+    if (!_resultDataArray) {
+        _resultDataArray = [NSMutableArray array];
+    }
+    return _resultDataArray;
+}
+
+- (NSMutableArray *)resultOnesArray
+{
+    if (!_resultOnesArray) {
+        _resultOnesArray = [NSMutableArray array];
+    }
+    return _resultOnesArray;
+}
+
+#pragma mark - datasource
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+   return self.resultDataArray.count+self.resultOnesArray.count;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 1;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 0) {
+        return kCellHeight1;
+    }
+    return 200;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *identifier;
+    
+    if (indexPath.section == 0) {//MineUserCell.h
+        identifier = @"resultCell0";
+        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell) {
+            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.backgroundColor = kBackColor;
+        [cell.userActionButton setHidden:YES];
+        cell.userNameButton.titleLabel.numberOfLines = 0;
+        
+        PropertyResultOnesModel *onesModel = self.resultOnesArray[0];
+        
+        NSString *codeStr1 = [NSString stringWithFormat:@"产调编号：%@",onesModel.orderId];
+        NSString *codeStr2 = [NSString stringWithFormat:@"产调地址：%@",onesModel.address];
+        NSString *codeStr = [NSString stringWithFormat:@"%@\n%@",codeStr1,codeStr2];
+        NSMutableAttributedString *codeAttributeStr = [[NSMutableAttributedString alloc] initWithString:codeStr];
+        [codeAttributeStr addAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kBlackColor} range:NSMakeRange(0, codeStr1.length)];
+        [codeAttributeStr addAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kBlackColor} range:NSMakeRange(codeStr1.length+1, codeStr2.length)];
+        
+        NSMutableParagraphStyle *stypew = [[NSMutableParagraphStyle alloc] init];
+        [stypew setLineSpacing:kSpacePadding];
+        [codeAttributeStr addAttribute:NSParagraphStyleAttributeName value:stypew range:NSMakeRange(0, codeStr.length)];
+        [cell.userNameButton setAttributedTitle:codeAttributeStr forState:0];
+        
+        return cell;
+    }
+    
+    identifier = @"resultCell1";
+    PropertyResultCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    if (!cell) {
+        cell = [[PropertyResultCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+    }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    NSString *showString = self.resultDataArray[indexPath.section-1];
+    NSURL *showUrl = [NSURL URLWithString:showString];
+    [cell.showImageView sd_setImageWithURL:showUrl placeholderImage:[UIImage imageNamed:@""] options:SDWebImageRetryFailed];
+    
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    if (section == 0) {
+        return 0.1f;
+    }
+    return kBigPadding;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 0.1;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self showImages:self.resultDataArray currentIndex:indexPath.section-1];
+}
+
+#pragma mark - method
 - (void)getPropertyResultMessages
 {
     NSString *resultString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kHousePropertyResultString];
     
-    NSString *codeStr = [NSString stringWithFormat:@"%@%@",self.cidString,self.idString];
-//    NSData *data = [codeStr dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-//    data = [];
-//
-//    NSData *data = [input dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-//    data = [GTMBase64 encodeData:data];
-//    NSString *base64String = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-//    return base64String;
-    
-    
-//    NSString *dser = [NSString stringWithFormat:@"%d",base64_decode(urlencode(self.cidString,self.idString))];
-    
     NSDictionary *params = @{@"token" : [self getValidateToken],
-                             @"id" : codeStr
+                             @"id" : self.attrString
                              };
     
+    QDFWeakSelf;
     [self requestDataPostWithString:resultString params:params successBlock:^(id responseObject) {
         
-        NSDictionary *ipip = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        NSDictionary *uuii;
+        PropertyResultResponse *respondey = [PropertyResultResponse objectWithKeyValues:responseObject];
+        
+        if ([respondey.code isEqualToString:@"0000"]) {
+            weakself.resultDataArray = [NSMutableArray arrayWithObjects:@"http://image.1001fang.com/chandiao-59421/57c7a25ec394f.jpg",@"http://image.1001fang.com/chandiao-59421/57c7a25f39c25.jpg",@"http://image.1001fang.com/chandiao-59421/57c7a25fa87a0.jpg",@"http://image.1001fang.com/chandiao-59421/57c7a2601c714.jpg",@"http://image.1001fang.com/chandiao-59421/57c7a2607eede.jpg", nil];
+
+//            [weakself.resultDataArray addObject:respondey.data];
+            [weakself.resultOnesArray addObject:respondey.ones];
+        }
+        
+        [weakself.resultTableView reloadData];
         
     } andFailBlock:^(NSError *error) {
         

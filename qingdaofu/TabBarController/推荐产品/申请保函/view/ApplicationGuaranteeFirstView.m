@@ -11,6 +11,7 @@
 
 #import "AgentCell.h"
 #import "SuitBaseCell.h"
+#import "PowerAddressCell.h"
 
 @interface ApplicationGuaranteeFirstView ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
 
@@ -96,6 +97,13 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.section == 1 && indexPath.row == 1) {
+        if (_chooseTag) {
+            return 65;
+        }else{
+            return kCellHeight;
+        }
+    }
     return kCellHeight;
 }
 
@@ -173,20 +181,37 @@
         
         return cell;
     }else{
-        identifier = @"application11";
-        AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if (!cell) {
-            cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        
+        if (_chooseTag) {//收货地址
+            identifier = @"application112";
+            PowerAddressCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[PowerAddressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.actButton.userInteractionEnabled = NO;
+            [cell.actButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            
+            return cell;
+
+        }else{
+            identifier = @"application11";
+            AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.agentTextField.userInteractionEnabled = NO;
+            cell.agentButton.userInteractionEnabled = NO;
+            
+            cell.agentLabel.text = @"收货地址";
+            cell.agentTextField.placeholder = @"请选择";
+            [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            
+            return cell;
+            
         }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.agentTextField.userInteractionEnabled = NO;
-        cell.agentButton.userInteractionEnabled = NO;
         
-        cell.agentLabel.text = @"收货地址";
-        cell.agentTextField.placeholder = @"请选择";
-        [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-        
-        return cell;
     }
     return nil;
 }

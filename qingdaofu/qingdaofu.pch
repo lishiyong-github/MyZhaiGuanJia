@@ -245,6 +245,7 @@
 #define kHousePropertyListString @"property/index"  //产调列表
 #define kHousePorpertyEditString @"property/update"  //编辑信息
 #define kHousePropertyResultString @"property/view" //产调结果
+#define kHousePropertyCopyString @"property/express" //产调快递
 
 #define kApplicationGuaranteeString @"policy/create" //申请保函
 #define kApplicationGuaranteeListString @"policy/index" //保函列表

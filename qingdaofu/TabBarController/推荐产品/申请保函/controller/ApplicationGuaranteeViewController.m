@@ -16,9 +16,11 @@
 #import "ApplicationGuaranteeSecondView.h"
 #import "ApplicationGuaranteeThirdView.h"
 
+#import "SuitBaseCell.h"   //取函方式
 #import "AgentCell.h"
 #import "MineUserCell.h"
-#import "TakePictureCell.h"
+#import "TakePictureCell.h"   //选择图片
+#import "PowerAddressCell.h"  //收货地址
 #import "PowerCourtView.h"
 
 #import "CourtProvinceResponse.h"
@@ -114,8 +116,6 @@
 {
     if (!_guaranteeFirstView) {
         _guaranteeFirstView = [ApplicationGuaranteeFirstView newAutoLayoutView];
-//        AgentCell *cell = [_guaranteeFirstView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:4 inSection:0]];
-//        cell.agentTextField.text = [self getValidateMobile];
         
         [self.applicationDic setObject:@"2" forKey:@"type"];
         
@@ -169,12 +169,19 @@
                     if ([weakself.applicationDic[@"type"] integerValue] == 2) {
                         NSLog(@"选择收货地址");
                         ReceiptAddressViewController *receiptAddressVC = [[ReceiptAddressViewController alloc] init];
+                        receiptAddressVC.cateString = @"1";
                         [weakself.navigationController pushViewController:receiptAddressVC animated:YES];
                         
-                        [receiptAddressVC setDidSelectedReceiptAddress:^(NSString *text) {
-                            AgentCell *cell = [weakself.guaranteeFirstView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
-                            cell.agentTextField.text = text;
-                            [weakself.applicationDic setObject:text forKey:@"address"];
+                        [receiptAddressVC setDidSelectedReceiptAddress:^(NSString *name,NSString*phone,NSString *address) {
+                            
+                            weakself.guaranteeFirstView.chooseTag = YES;
+                            [weakself.guaranteeFirstView.tableViewa reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
+                            
+                            PowerAddressCell *cell = [weakself.guaranteeFirstView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
+                            cell.nameLabel.text = name;
+                            cell.phoneLabel.text = phone;
+                            cell.addressLabel.text = address;
+                            [weakself.applicationDic setObject:address forKey:@"address"];
                         }];
                     }
                 }
@@ -195,6 +202,10 @@
                     break;
                 case 12:{//取函方式－自取
                     if (weakself.applicationDic[@"fayuan_name"]) {
+                        
+                        weakself.guaranteeFirstView.chooseTag = NO;
+                        [weakself.guaranteeFirstView.tableViewa reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
+                        
                         AgentCell *cell = [weakself.guaranteeFirstView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
                         cell.agentLabel.text = @"取函地址";
                         [cell.agentButton setHidden:YES];
@@ -203,6 +214,8 @@
                         [weakself.applicationDic setObject:@"1" forKey:@"type"];
                         [weakself.applicationDic setObject:weakself.applicationDic[@"fayuan_name"] forKey:@"fayuan_address"];
                     }else{
+                        SuitBaseCell *cell = [weakself.guaranteeFirstView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
+                        cell.segment.selectedSegmentIndex = 0;
                         [weakself showHint:@"请先选择法院"];
                     }
                 }
@@ -222,7 +235,6 @@
         
         QDFWeakSelf;
         [_guaranteeSecondView setDidSelectedRow:^(NSInteger tag) {
-            
             if (tag < 8) {
                 NSArray *testArr;
                 if (tag == 1) {

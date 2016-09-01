@@ -248,45 +248,43 @@
                 housePayingVC.genarateMoney = pModel.money;
                 [weakself.navigationController pushViewController:housePayingVC animated:YES];
             }];
+        }else if ([pModel.status integerValue] == 2 || [pModel.status integerValue] == 3 || [pModel.status integerValue] == 4){//已处理，退款中，已退款
             
-        }else if ([pModel.status integerValue] == 2){//成功
-            NSString *str1 = @"快递原件";
-            NSString *str2 = @"(24小时有效)";
-            NSString *str = [NSMutableString stringWithFormat:@"%@%@",str1,str2];
-            NSMutableAttributedString *kdTitle = [[NSMutableAttributedString alloc] initWithString:str];
-            [kdTitle setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kBlackColor} range:NSMakeRange(0, str1.length)];
-            [kdTitle setAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kRedColor} range:NSMakeRange(str1.length, str2.length)];
-            [cell.leftButton setAttributedTitle:kdTitle forState:0];
+            if ([pModel.canExpress integerValue] == 1) {//可快递
+                NSString *str1 = @"快递原件";
+                NSString *str2 = @"(24小时有效)";
+                NSString *str = [NSMutableString stringWithFormat:@"%@%@",str1,str2];
+                NSMutableAttributedString *kdTitle = [[NSMutableAttributedString alloc] initWithString:str];
+                [kdTitle setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kBlackColor} range:NSMakeRange(0, str1.length)];
+                [kdTitle setAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kRedColor} range:NSMakeRange(str1.length, str2.length)];
+                [cell.leftButton setAttributedTitle:kdTitle forState:0];
+            }else if([pModel.canExpress integerValue] == 1){//不可快递
+                [cell.leftButton setTitleColor:kLightGrayColor forState:0];
+                [cell.leftButton setTitle:@"快递原件" forState:0];
+            }
             
             [cell.rightButton setTitle:@"查看结果" forState:0];
             
             QDFWeakSelf;
-            [cell.leftButton addAction:^(UIButton *btn) {
-                HouseCopyViewController *houseCopyVC = [[HouseCopyViewController alloc] init];
-                [weakself.navigationController pushViewController:houseCopyVC animated:YES];
+            [cell.leftButton addAction:^(UIButton *btn) {//快递原件
+                if ([pModel.canExpress integerValue] == 1) {
+                    HouseCopyViewController *houseCopyVC = [[HouseCopyViewController alloc] init];
+                    [weakself.navigationController pushViewController:houseCopyVC animated:YES];
+                }else{
+                    [weakself showHint:pModel.canExpressMsg];
+                }
             }];
             
             [cell.rightButton addAction:^(UIButton *btn) {
-                
-            }];            
-            
-        }else{//退款中，已退款
-            [cell.leftButton setTitleColor:kLightGrayColor forState:0];
-            [cell.leftButton setTitle:@"快递原件" forState:0];
-            [cell.rightButton setTitle:@"查看结果" forState:0];
-            
-            QDFWeakSelf;
-            [cell.leftButton addAction:^(UIButton *btn) {
-//                HouseCopyViewController *houseCopyVC = [[HouseCopyViewController alloc] init];
-//                [weakself.navigationController pushViewController:houseCopyVC animated:YES];
+                if ([pModel.type isEqualToString:@"tips"]) {
+                    [weakself showHint:pModel.attr];
+                }else if ([pModel.type isEqualToString:@"view"]){
+                    HousePropertyResultViewController *housePropertyResultVC = [[HousePropertyResultViewController alloc] init];
+                    housePropertyResultVC.attrString = pModel.attr;
+                    [weakself.navigationController pushViewController:housePropertyResultVC animated:YES];
+                }
             }];
             
-            [cell.rightButton addAction:^(UIButton *btn) {
-                HousePropertyResultViewController *housePropertyResultVC = [[HousePropertyResultViewController alloc] init];
-                housePropertyResultVC.idString = pModel.idString;
-                housePropertyResultVC.cidString = pModel.cid;
-                [weakself.navigationController pushViewController:housePropertyResultVC animated:YES];
-            }];
         }
         
         return cell;

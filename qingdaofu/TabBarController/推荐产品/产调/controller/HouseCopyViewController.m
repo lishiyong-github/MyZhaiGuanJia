@@ -218,10 +218,10 @@
         [self.navigationController pushViewController:receiptAddressListVC animated:YES];
         
         QDFWeakSelf;
-        [receiptAddressListVC setDidSelectedReceiptAddress:^(NSString *text) {
+        [receiptAddressListVC setDidSelectedReceiptAddress:^(NSString *name,NSString *phone,NSString *address) {
             MineUserCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-            [cell.userActionButton setTitle:text forState:0];
-            [weakself.houseCopyDic setObject:text forKey:@"address"];
+            [cell.userActionButton setTitle:address forState:0];
+            [weakself.houseCopyDic setObject:address forKey:@"address"];
         }];
     }
 }

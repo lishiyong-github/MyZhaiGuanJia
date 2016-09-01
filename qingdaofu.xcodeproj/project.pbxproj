@@ -317,6 +317,10 @@
 		A19424A41D76CFBE00AC699B /* SaveCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A19424A31D76CFBE00AC699B /* SaveCell.m */; };
 		A19424A71D76E83F00AC699B /* HousePropertyResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A19424A61D76E83F00AC699B /* HousePropertyResultViewController.m */; };
 		A19506371D6FE80F00CE87B5 /* ReportDatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = A19506361D6FE80F00CE87B5 /* ReportDatePickerView.m */; };
+		A19657151D77BD7000F846D4 /* PowerAddressCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A19657141D77BD7000F846D4 /* PowerAddressCell.m */; };
+		A19657181D77F8BB00F846D4 /* PropertyResultResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A19657171D77F8BB00F846D4 /* PropertyResultResponse.m */; };
+		A196571B1D77F90D00F846D4 /* PropertyResultOnesModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A196571A1D77F90D00F846D4 /* PropertyResultOnesModel.m */; };
+		A19657241D780E0000F846D4 /* PropertyResultCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A19657231D780E0000F846D4 /* PropertyResultCell.m */; };
 		A196CDE81CFBC4D300AC6C87 /* UIViewController+DismissKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = A196CDE71CFBC4D300AC6C87 /* UIViewController+DismissKeyboard.m */; };
 		A196CDEF1CFBDF4000AC6C87 /* btn_collection@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A196CDE91CFBDF4000AC6C87 /* btn_collection@2x.png */; };
 		A196CDF01CFBDF4000AC6C87 /* btn_collection@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A196CDEA1CFBDF4000AC6C87 /* btn_collection@3x.png */; };
@@ -1156,6 +1160,14 @@
 		A19424A61D76E83F00AC699B /* HousePropertyResultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HousePropertyResultViewController.m; sourceTree = "<group>"; };
 		A19506351D6FE80F00CE87B5 /* ReportDatePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportDatePickerView.h; sourceTree = "<group>"; };
 		A19506361D6FE80F00CE87B5 /* ReportDatePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportDatePickerView.m; sourceTree = "<group>"; };
+		A19657131D77BD7000F846D4 /* PowerAddressCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PowerAddressCell.h; sourceTree = "<group>"; };
+		A19657141D77BD7000F846D4 /* PowerAddressCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PowerAddressCell.m; sourceTree = "<group>"; };
+		A19657161D77F8BB00F846D4 /* PropertyResultResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PropertyResultResponse.h; sourceTree = "<group>"; };
+		A19657171D77F8BB00F846D4 /* PropertyResultResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PropertyResultResponse.m; sourceTree = "<group>"; };
+		A19657191D77F90D00F846D4 /* PropertyResultOnesModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PropertyResultOnesModel.h; sourceTree = "<group>"; };
+		A196571A1D77F90D00F846D4 /* PropertyResultOnesModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PropertyResultOnesModel.m; sourceTree = "<group>"; };
+		A19657221D780E0000F846D4 /* PropertyResultCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PropertyResultCell.h; sourceTree = "<group>"; };
+		A19657231D780E0000F846D4 /* PropertyResultCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PropertyResultCell.m; sourceTree = "<group>"; };
 		A196CDE61CFBC4D300AC6C87 /* UIViewController+DismissKeyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+DismissKeyboard.h"; sourceTree = "<group>"; };
 		A196CDE71CFBC4D300AC6C87 /* UIViewController+DismissKeyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+DismissKeyboard.m"; sourceTree = "<group>"; };
 		A196CDE91CFBDF4000AC6C87 /* btn_collection@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_collection@2x.png"; sourceTree = "<group>"; };
@@ -2315,6 +2327,8 @@
 				A19F887B1D51E98000D4EC92 /* CopyCell.m */,
 				A19F88801D51F07A00D4EC92 /* CopyListCell.h */,
 				A19F88811D51F07A00D4EC92 /* CopyListCell.m */,
+				A19657221D780E0000F846D4 /* PropertyResultCell.h */,
+				A19657231D780E0000F846D4 /* PropertyResultCell.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -3457,6 +3471,10 @@
 				A18D504B1D6E7E9000B6BF0D /* PropertyListResponse.m */,
 				A18D504D1D6E7EA700B6BF0D /* PropertyListModel.h */,
 				A18D504E1D6E7EA700B6BF0D /* PropertyListModel.m */,
+				A19657161D77F8BB00F846D4 /* PropertyResultResponse.h */,
+				A19657171D77F8BB00F846D4 /* PropertyResultResponse.m */,
+				A19657191D77F90D00F846D4 /* PropertyResultOnesModel.h */,
+				A196571A1D77F90D00F846D4 /* PropertyResultOnesModel.m */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -3745,6 +3763,8 @@
 				A19D94501D644ADF00DE89FC /* PowerCourtView.m */,
 				A1A0B1171D754F4E009B1DB4 /* PowerCell.h */,
 				A1A0B1181D754F4E009B1DB4 /* PowerCell.m */,
+				A19657131D77BD7000F846D4 /* PowerAddressCell.h */,
+				A19657141D77BD7000F846D4 /* PowerAddressCell.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -4291,6 +4311,7 @@
 				A17EE38D1CD86FB700ECC631 /* ContactUsViewController.m in Sources */,
 				A17F7BF51CE5C52700E882A3 /* NewPublishCell.m in Sources */,
 				A17964FD1CD3682A00B6AD47 /* MyDetailStoreViewController.m in Sources */,
+				A196571B1D77F90D00F846D4 /* PropertyResultOnesModel.m in Sources */,
 				A1A97E5B1CDC74D800EDE320 /* NewsCell.m in Sources */,
 				A15F618C1D1906820060AF7B /* GuarantyModel.m in Sources */,
 				A1A0C8CD1D4B2FC500BC63C6 /* AssessSuccessViewController.m in Sources */,
@@ -4323,6 +4344,7 @@
 				A14190481D3228CC005DA20E /* UIViewController+Keyboard.m in Sources */,
 				A16856AC1CE9CBA5006A0887 /* ProDetailHeadFootView.m in Sources */,
 				A1AEC97C1D3F7D870082813F /* NewsTableViewCell.m in Sources */,
+				A19657181D77F8BB00F846D4 /* PropertyResultResponse.m in Sources */,
 				A187B9001D50336500A91A16 /* BaseCommitView.m in Sources */,
 				A1A6C84F1D669D9A00EC060E /* ImageModel.m in Sources */,
 				A19CC0921D59C181000ED568 /* ApplicationGuaranteeView.m in Sources */,
@@ -4330,11 +4352,13 @@
 				A19506371D6FE80F00CE87B5 /* ReportDatePickerView.m in Sources */,
 				A187B9121D508BAA00A91A16 /* HousePropertyListViewController.m in Sources */,
 				A1B028A71D17766900F32A09 /* UploadViewController.m in Sources */,
+				A19657241D780E0000F846D4 /* PropertyResultCell.m in Sources */,
 				A1770E161CFE6AA3003579E1 /* CompleteLawCell.m in Sources */,
 				A19238511D7406C000C824D6 /* ReceiptAddressViewController.m in Sources */,
 				A19238581D740FDC00C824D6 /* ReiceptCell.m in Sources */,
 				A19B8E531CCF533B00F8EBF2 /* ProductsViewController.m in Sources */,
 				A1A0C8D31D4B442D00BC63C6 /* ApplicationGuaranteeViewController.m in Sources */,
+				A19657151D77BD7000F846D4 /* PowerAddressCell.m in Sources */,
 				A15F61841D18DF1F0060AF7B /* GuarantyViewController.m in Sources */,
 				A1B6FD621D4F53F10059690B /* PowerDetailsViewController.m in Sources */,
 				A1522BF91D1005F000135C72 /* EvaluateResponse.m in Sources */,
