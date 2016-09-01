@@ -247,13 +247,16 @@
     NSString *orString3;
     if ([rowModel.loan_type integerValue] == 1) {
         orString2 = [NSString stringWithFormat: @"   债权类型：房产抵押"];
-        orString3 = [NSString stringWithFormat:@"   抵押物地址：%@",rowModel.mortorage_community];
+        orString3 = [NSString stringWithFormat:@"   抵押物地址：%@",rowModel.seatmortgage];
     }else if ([rowModel.loan_type integerValue] == 2){
         orString2 = [NSString stringWithFormat: @"   债权类型：应收帐款"];
-        orString3 = [NSString stringWithFormat:@"   应收帐款：%@万",rowModel.mortorage_community];
+        orString3 = [NSString stringWithFormat:@"   应收帐款：%@万",rowModel.accountr];
     }else if ([rowModel.loan_type integerValue] == 3){
         orString2 = [NSString stringWithFormat: @"   债权类型：机动车抵押"];
-        orString3 = [NSString stringWithFormat:@"   机动车抵押：%@",rowModel.mortorage_community];
+        NSArray *plateArray = @[@"沪牌",@"非沪牌"];
+        NSInteger plateInt = [rowModel.licenseplate integerValue] - 1;
+        NSString *carSdd = [NSString stringWithFormat:@"%@%@%@",rowModel.carbrand,rowModel.audi,plateArray[plateInt]];
+        orString3 = [NSString stringWithFormat:@"   机动车抵押：%@",carSdd];
     }else if ([rowModel.loan_type integerValue] == 4){
         orString2 = [NSString stringWithFormat: @"   债权类型：无抵押"];
         orString3 = [NSString stringWithFormat:@"   无抵押"];
@@ -412,6 +415,9 @@
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:myReleaseString params:params successBlock:^(id responseObject) {
+        
+        NSDictionary *ipip = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
         
         if ([page intValue] == 1) {
             [weakself.releaseDataArray removeAllObjects];

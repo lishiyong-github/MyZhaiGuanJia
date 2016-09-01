@@ -1,13 +1,13 @@
 //
-//  LineLabel.h
+//  BaseRemindButton.h
 //  qingdaofu
 //
-//  Created by zhixiang on 16/5/4.
+//  Created by zhixiang on 16/9/1.
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface LineLabel : UILabel
+@interface BaseRemindButton : UIButton
 
 @end

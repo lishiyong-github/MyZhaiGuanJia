@@ -105,15 +105,17 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (self.recordsDataArray.count > 0) {
+    if (section == 0) {
+        return 1;
+    }else{
         return self.recordsDataArray.count;
     }
+    
     return 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    return kCellHeight;
     if (indexPath.section == 0) {
         return kRemindHeight;
     }

@@ -10,14 +10,11 @@
 
 @interface RowsModel : NSObject
 
-
-
 @property (nonatomic,copy) NSString *codeString;  //产品编号
 @property (nonatomic,copy) NSString *category;   //类型：1为融资。2为清收。3为诉讼。
 @property (nonatomic,copy) NSString *idString;    //对应产品表的ID
 @property (nonatomic,copy) NSString *product_id;  //申请状态表对应产品表的ID
 @property (nonatomic,copy) NSString *progress_status;   //进展状态：0为待发布（保存未发布的）。 1为发布中（已发布的）。2为处理中（有人已接单发布方也已同意）。3为终止（只用发布方可以终止）。4为结案（双方都可以申请，一方申请一方同意）
-
 
 @property (nonatomic,copy) NSString *app_id;  //接单方申请的状态：0为申请中（接单方刚发起申请）。1为申请成功（发布方已同意接单方的申请）。2为收藏（接单方将数据收藏但为申请）。
 @property (nonatomic,copy) NSString *applyclose;  //状态：3为终止。4为结案
@@ -38,7 +35,11 @@
 @property (nonatomic,copy) NSString *mortgagecategory; //抵押物类型
 @property (nonatomic,copy) NSString *seatmortgage;  //抵押物所在地（省市区）
 @property (nonatomic,copy) NSString *mortorage_community;  //小区名（详细地址）
-@property (nonatomic,copy) NSString *account;  //应收帐款
+@property (nonatomic,copy) NSString *accountr;  //应收帐款
+@property (nonatomic,copy) NSString *audi; //车信息
+@property (nonatomic,copy) NSString *carbrand;//车信息
+@property (nonatomic,copy) NSString *licenseplate;//车信息
+
 @property (nonatomic,copy) NSString *location;
 @property (nonatomic,copy) NSString *rate;   //利率
 @property (nonatomic,copy) NSString *rate_cat;  //利率类型：1为天。2为月

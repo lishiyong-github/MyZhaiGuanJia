@@ -111,7 +111,7 @@
             _pageOrder = 1;
             switch (segTag) {
                 case 111:{//全部
-                    weakself.status = @"-1";
+                    weakself.status = @"0";
                     weakself.progresStatus = @"0";
                     [weakself refreshsHeaderOfMyOrder];
                 }
@@ -268,13 +268,16 @@
     NSString *orString3;
     if ([rowModel.loan_type integerValue] == 1) {
         orString2 = [NSString stringWithFormat: @"   债权类型：房产抵押"];
-        orString3 = [NSString stringWithFormat:@"   抵押物地址：%@",rowModel.mortorage_community];
+        orString3 = [NSString stringWithFormat:@"   抵押物地址：%@",rowModel.seatmortgage];
     }else if ([rowModel.loan_type integerValue] == 2){
         orString2 = [NSString stringWithFormat: @"   债权类型：应收帐款"];
-        orString3 = [NSString stringWithFormat:@"   应收帐款：%@万",rowModel.mortorage_community];
+        orString3 = [NSString stringWithFormat:@"   应收帐款：%@万",rowModel.accountr];
     }else if ([rowModel.loan_type integerValue] == 3){
         orString2 = [NSString stringWithFormat: @"   债权类型：机动车抵押"];
-        orString3 = [NSString stringWithFormat:@"   机动车抵押：%@",rowModel.mortorage_community];
+        NSArray *plateArray = @[@"沪牌",@"非沪牌"];
+        NSInteger plateInt = [rowModel.licenseplate integerValue] - 1;
+        NSString *carSdd = [NSString stringWithFormat:@"%@%@%@",rowModel.carbrand,rowModel.audi,plateArray[plateInt]];
+        orString3 = [NSString stringWithFormat:@"   机动车抵押：%@",carSdd];
     }else if ([rowModel.loan_type integerValue] == 4){
         orString2 = [NSString stringWithFormat: @"   债权类型：无抵押"];
         orString3 = [NSString stringWithFormat:@"   无抵押"];
@@ -288,7 +291,7 @@
     [cell.contentLabel setAttributedText:orAttributeStr];
     
     //deadlineLabel
-    if ([rowModel.progress_status intValue] == 2){//处理中（距离单子处理还剩一周，显示截至日期）
+    if ([rowModel.progress_status intValue] == 2){//处理中（距离单子处理还剩一周，显示截止日期）
         [cell.deadLineButton setHidden:NO];
         
         NSString *id_category = [NSString stringWithFormat:@"%@_%@",rowModel.idString,rowModel.category];
@@ -332,7 +335,6 @@
         [cell.actButton2 addAction:^(UIButton *btn) {
             [weakself goToWriteScheduleOrEvaluate:@"填写进度" withSection:indexPath.section withString:@""];
         }];
-        
         
     }else if ([rowModel.progress_status integerValue] == 3) {//终止
         [cell.actButton1 setHidden:YES];
@@ -667,7 +669,7 @@
     RowsModel *lModel = self.myOrderDataList[section];
     
     if ([string isEqualToString:@"取消申请"]) {
-        
+        [self cancelTheProductApplyWithModel:lModel];
     }else if ([string isEqualToString:@"联系发布方"]){
         if ([lModel.mobile isEqualToString:@""] || !lModel.mobile || lModel.mobile == nil) {
             [self showHint:@"发布方未认证，不能打电话"];
@@ -698,6 +700,28 @@
         evaluateListVC.categoryString = lModel.category;
         [self.navigationController pushViewController:evaluateListVC animated:YES];
     }
+}
+
+- (void)cancelTheProductApplyWithModel:(RowsModel *)aModel
+{
+    NSString *cancelString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kCancelProductOfMyOrderString];
+    NSDictionary *params = @{@"id" : aModel.idString,
+                             @"token" : [self getValidateToken]
+                             };
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:cancelString params:params successBlock:^(id responseObject) {
+        
+        BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:baseModel.msg];
+        
+        if ([baseModel.code isEqualToString:@"0000"]) {
+            [weakself refreshsHeaderOfMyOrder];
+        }
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
 }
 
 //删除产品

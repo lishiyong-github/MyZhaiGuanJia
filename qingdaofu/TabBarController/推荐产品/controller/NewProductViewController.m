@@ -65,11 +65,6 @@
     [self.view setNeedsUpdateConstraints];
     
     QDFWeakSelf;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        if (weakself.propagandaDic.allKeys.count == 0) {
-            [weakself getPropagandaChar];
-        }
-    });
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [weakself chechAppNewVersion];
     });
@@ -430,6 +425,10 @@
             [weakself.productsDataListArray addObject:listModel];
         }
         [weakself.mainTableView reloadData];
+        
+        if (weakself.propagandaDic.allKeys.count == 0) {
+            [weakself getPropagandaChar];
+        }
     } andFailBlock:^(NSError *error) {
         
     }];

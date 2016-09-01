@@ -1329,16 +1329,17 @@
                 }
             }else{
                 
-                
                 ReportFiSucViewController *reportFiSucVC = [[ReportFiSucViewController alloc] init];
                 if ([weakself.categoryString integerValue] == 1) {
                     reportFiSucVC.reportType = @"清收";
                 }else{
                     reportFiSucVC.reportType = @"诉讼";
                 }
-                UINavigationController *jijij = [[UINavigationController alloc] initWithRootViewController:reportFiSucVC];
-                [jijij popViewControllerAnimated:NO];
-                [weakself.navigationController pushViewController:reportFiSucVC animated:YES];
+                
+                [weakself dismissViewControllerAnimated:YES completion:^{
+//                    UINavigationController *jijij = [[UINavigationController alloc] initWithRootViewController:reportFiSucVC];
+//                    [jijij pushViewController:reportFiSucVC animated:YES];
+                }];
             }
         }
         

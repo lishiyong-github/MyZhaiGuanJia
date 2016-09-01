@@ -10,11 +10,10 @@
 #import "AdditionMessageViewController.h"  //补充信息
 #import "ApplyRecordsViewController.h"   //申请记录
 #import "AgreementViewController.h"//协议
-
 #import "ReportSuitViewController.h"  //发布催收，发布诉讼
 
 #import "EvaTopSwitchView.h"
-
+#import "BaseRemindButton.h"
 #import "MineUserCell.h"
 #import "BidOneCell.h"
 
@@ -26,7 +25,7 @@
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *publishingTableView;
 @property (nonatomic,strong) EvaTopSwitchView *publishSwitchView;
-@property (nonatomic,strong) UIView *applyRecordRemindView;  //新的申请记录提示信息
+@property (nonatomic,strong) BaseRemindButton *applyRecordRemindButton;  //新的申请记录提示信息
 
 //json
 @property (nonatomic,strong) NSMutableArray *publishingDataArray;
@@ -57,9 +56,10 @@
     
     [self.view addSubview: self.publishingTableView];
     [self.view addSubview:self.publishSwitchView];
-    [self.view addSubview:self.applyRecordRemindView];
-    [self.applyRecordRemindView setHidden:YES];
     
+    if ([self.app_idString isEqualToString:@"0"]) {
+        [self.view addSubview:self.applyRecordRemindButton];
+    }
     [self.view setNeedsUpdateConstraints];
 }
 
@@ -67,16 +67,24 @@
 {
     if (!self.didSetupConstraints) {
         
-        [self.publishingTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
-        [self.publishingTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.publishSwitchView];
-        
-        [self.applyRecordRemindView autoPinEdgeToSuperviewEdge:ALEdgeLeft];
-        [self.applyRecordRemindView autoPinEdgeToSuperviewEdge:ALEdgeRight];
-        [self.applyRecordRemindView autoSetDimension:ALDimensionHeight toSize:kRemindHeight];
-        [self.applyRecordRemindView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.publishSwitchView];
-        
-        [self.publishSwitchView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [self.publishSwitchView autoSetDimension:ALDimensionHeight toSize:kTabBarHeight];
+        if ([self.app_idString isEqualToString:@"0"]) {
+            [self.publishingTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
+            [self.publishingTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.applyRecordRemindButton];
+            
+            [self.applyRecordRemindButton autoPinEdgeToSuperviewEdge:ALEdgeLeft];
+            [self.applyRecordRemindButton autoPinEdgeToSuperviewEdge:ALEdgeRight];
+            [self.applyRecordRemindButton autoSetDimension:ALDimensionHeight toSize:kRemindHeight];
+            [self.applyRecordRemindButton autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.publishSwitchView];
+            
+            [self.publishSwitchView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+            [self.publishSwitchView autoSetDimension:ALDimensionHeight toSize:kTabBarHeight];
+        }else{
+            [self.publishingTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
+            [self.publishingTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.publishSwitchView];
+            
+            [self.publishSwitchView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+            [self.publishSwitchView autoSetDimension:ALDimensionHeight toSize:kTabBarHeight];
+        }
         
         self.didSetupConstraints = YES;
     }
@@ -117,13 +125,15 @@
     return _publishSwitchView;
 }
 
-- (UIView *)applyRecordRemindView
+- (BaseRemindButton *)applyRecordRemindButton
 {
-    if (!_applyRecordRemindView) {
-        _applyRecordRemindView = [UIView newAutoLayoutView];
-        _applyRecordRemindView.backgroundColor = kYellowColor;
+    if (!_applyRecordRemindButton) {
+        _applyRecordRemindButton = [BaseRemindButton newAutoLayoutView];
+        [_applyRecordRemindButton setTitle:@"新的申请记录，点击查看  " forState:0];
+        [_applyRecordRemindButton setImage:[UIImage imageNamed:@"more_white"] forState:0];
+        [_applyRecordRemindButton addTarget:self action:@selector(showRecordList) forControlEvents:UIControlEventTouchUpInside];
     }
-    return _applyRecordRemindView;
+    return _applyRecordRemindButton;
 }
 
 - (NSMutableArray *)publishingDataArray
@@ -314,7 +324,7 @@
 #pragma mark - method
 - (void)getDetailMessages
 {
-    NSString *detailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProdutsDetailString];
+    NSString *detailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseDetailString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"id" : self.idString,
                              @"category" : self.categaryString

@@ -14,6 +14,7 @@
 #import "PaceViewController.h" //进度
 
 #import "BaseCommitButton.h"
+#import "BaseRemindButton.h"
 
 #import "MineUserCell.h"
 #import "OrderPublishCell.h"
@@ -32,6 +33,7 @@
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *myProcessingTableView;
 @property (nonatomic,strong) BaseCommitButton *processinCommitButton;
+@property (nonatomic,strong) BaseRemindButton *processRemindButton;
 
 @property (nonatomic,strong) NSMutableArray *processArray;
 @property (nonatomic,strong) NSMutableArray *scheduleOrderProArray;
@@ -46,6 +48,11 @@
 
 @implementation MyProcessingViewController
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self getDetailMessageOfProcessing];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @"产品详情";
@@ -53,9 +60,10 @@
     
     [self.view addSubview:self.myProcessingTableView];
     [self.view addSubview:self.processinCommitButton];
-    [self.view setNeedsUpdateConstraints];
+    [self.view addSubview:self.processRemindButton];
+    [self.processRemindButton setHidden:YES];
     
-    [self getDetailMessageOfProcessing];
+    [self.view setNeedsUpdateConstraints];
 }
 
 - (void)updateViewConstraints
@@ -64,6 +72,11 @@
         
         [self.myProcessingTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
         [self.myProcessingTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.processinCommitButton];
+        
+        [self.processRemindButton autoPinEdgeToSuperviewEdge:ALEdgeLeft];
+        [self.processRemindButton autoPinEdgeToSuperviewEdge:ALEdgeRight];
+        [self.processRemindButton autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.processinCommitButton];
+        [self.processRemindButton autoSetDimension:ALDimensionHeight toSize:kRemindHeight];
         
         [self.processinCommitButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
         [self.processinCommitButton autoSetDimension:ALDimensionHeight toSize:kTabBarHeight];
@@ -93,6 +106,20 @@
         _processinCommitButton.layer.borderWidth = kLineWidth;
     }
     return _processinCommitButton;
+}
+
+- (BaseRemindButton *)processRemindButton
+{
+    if (!_processRemindButton) {
+        _processRemindButton = [BaseRemindButton newAutoLayoutView];
+        
+        QDFWeakSelf;
+        [_processRemindButton addAction:^(UIButton *btn) {
+            DelayRequestsViewController *delayRequetsVC = [[DelayRequestsViewController alloc] init];
+            [weakself.navigationController pushViewController:delayRequetsVC animated:YES];
+        }];
+    }
+    return _processRemindButton;
 }
 
 - (NSMutableArray *)processArray
@@ -445,26 +472,6 @@
 }
 
 #pragma mark - method
-////查看发布方
-//- (void)checkProcessingDetail
-//{
-//    PublishingResponse *responde;
-//    if (self.processArray.count > 0) {
-//        responde = self.processArray[0];
-//    }
-//    
-//    if ([responde.state isEqualToString:@"1"]) {
-//        CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
-//        checkDetailPublishVC.idString = self.idString;
-//        checkDetailPublishVC.categoryString = self.categaryString;
-//        checkDetailPublishVC.pidString = self.pidString;
-//        checkDetailPublishVC.typeString = @"发布方";
-//        [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
-//    }else{
-//        [self showHint:@"发布方未认证，不能查看相关信息"];
-//    }
-//}
-
 - (void)getDetailMessageOfProcessing
 {
     NSString *detailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseDetailString];
@@ -474,6 +481,7 @@
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
+        
                 
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
         [weakself.processArray addObject:response];
@@ -496,7 +504,9 @@
             }
         }
         
-        [self delayRequest];
+        [weakself.myProcessingTableView reloadData];
+        
+        [weakself delayRequest];
         
     } andFailBlock:^(NSError *error){
         
@@ -538,8 +548,19 @@
     QDFWeakSelf;
     [self requestDataPostWithString:deString params:params successBlock:^(id responseObject) {
         DelayResponse *response = [DelayResponse objectWithKeyValues:responseObject];
-        [weakself.delayArray addObject:response];
-        [weakself.myProcessingTableView reloadData];
+        
+        DelayModel *delayModel = response.delay;
+        PublishingModel *puModel = response.product;
+        if (delayModel.is_agree == nil || [delayModel.is_agree isEqualToString:@""]) {
+            if ([puModel.applyclose isEqualToString:@"4"]) {
+                if ([delayModel.delays integerValue] <= 7) {
+                    [weakself.processRemindButton setHidden:NO];
+                    NSString *delayS = [NSString stringWithFormat:@"还有%@天就要到达约定结案日期，点击申请延期 ",delayModel.delays];
+                    [weakself.processRemindButton setTitle:delayS forState:0];
+                    [weakself.processRemindButton setImage:[UIImage imageNamed:@"more_white"] forState:0];
+                }
+            }
+        }
         
     } andFailBlock:^(NSError *error) {
         

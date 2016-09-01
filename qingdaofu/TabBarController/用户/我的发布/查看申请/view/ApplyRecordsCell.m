@@ -71,10 +71,11 @@
     return _personLabel;
 }
 
-- (LineLabel *)lineLabel11
+- (UILabel *)lineLabel11
 {
     if (!_lineLabel11) {
-        _lineLabel11 = [LineLabel newAutoLayoutView];
+        _lineLabel11 = [UILabel newAutoLayoutView];
+        _lineLabel11.backgroundColor = kSeparateColor;
     }
     return _lineLabel11;
 }
@@ -90,10 +91,11 @@
     return _dateLabel;
 }
 
-- (LineLabel *)lineLabel12
+- (UILabel *)lineLabel12
 {
     if (!_lineLabel12) {
-        _lineLabel12 = [LineLabel newAutoLayoutView];
+        _lineLabel12 = [UILabel newAutoLayoutView];
+        _lineLabel12.backgroundColor = kSeparateColor;
     }
     return _lineLabel12;
 }

@@ -91,6 +91,7 @@
         [_myApplyingButton setTitleColor:kBlackColor forState:0];
         _myApplyingButton.titleLabel.font = kFirstFont;
         _myApplyingButton.backgroundColor = kNavColor;
+        [_myApplyingButton addTarget:self action:@selector(cancelTheProductApply) forControlEvents:UIControlEventTouchUpInside];
     }
     return _myApplyingButton;
 }
@@ -590,11 +591,36 @@
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
+        
+        NSDictionary *sosos = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
         [weakself.myApplyArray addObject:response];
         [weakself.myApplyingTableView reloadData];
         
     } andFailBlock:^(NSError *error){
+        
+    }];
+}
+
+- (void)cancelTheProductApply
+{
+    NSString *cancelString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kCancelProductOfMyOrderString];
+    NSDictionary *params = @{@"id" : self.idString,
+                             @"token" : [self getValidateToken]
+                             };
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:cancelString params:params successBlock:^(id responseObject) {
+        
+        BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:baseModel.msg];
+        
+        if ([baseModel.code isEqualToString:@"0000"]) {
+            [weakself.navigationController popViewControllerAnimated:YES];
+        }
+        
+    } andFailBlock:^(NSError *error) {
         
     }];
 }

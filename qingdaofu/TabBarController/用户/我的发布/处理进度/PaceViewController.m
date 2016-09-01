@@ -268,7 +268,6 @@
         
         if (response.disposing.count == 0) {
             _pagePace--;
-            [weakself showHint:@"没有更多了"];
         }
         
         for (PaceModel *paceModel in response.disposing) {

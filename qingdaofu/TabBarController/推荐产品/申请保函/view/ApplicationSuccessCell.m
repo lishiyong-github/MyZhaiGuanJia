@@ -81,10 +81,11 @@
     return _appLabel1;
 }
 
-- (LineLabel *)appLine
+- (UILabel *)appLine
 {
     if (!_appLine) {
-        _appLine = [LineLabel newAutoLayoutView];
+        _appLine = [UILabel newAutoLayoutView];
+        _appLine.backgroundColor = kSeparateColor;
     }
     return _appLine;
 }
