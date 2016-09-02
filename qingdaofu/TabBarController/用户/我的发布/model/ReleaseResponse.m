@@ -13,6 +13,7 @@
 + (NSDictionary *)replacedKeyFromPropertyName
 {
     return @{@"creditor" : @"result.creditor",
+             @"mobile" : @"result.mobile",
              @"delays" : @"result.delays",
              @"page" : @"result.page",
              @"rows" : @"result.rows"

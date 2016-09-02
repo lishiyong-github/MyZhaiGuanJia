@@ -9,7 +9,7 @@
 #import "MyEndingViewController.h"
 #import "CheckDetailPublishViewController.h"  //查看发布方
 #import "MyScheduleViewController.h"    //填写进度
-#import "AdditionMessageViewController.h" //查看更多
+#import "AdditionMessagesViewController.h" //查看更多
 #import "PaceViewController.h"
 #import "AgreementViewController.h"
 
@@ -370,9 +370,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     if (indexPath.section == 2 && indexPath.row == 0) {
-        AdditionMessageViewController *additionMessageVC = [[AdditionMessageViewController alloc] init];
+        AdditionMessagesViewController *additionMessageVC = [[AdditionMessagesViewController alloc] init];
         additionMessageVC.idString = self.idString;
         additionMessageVC.categoryString = self.categaryString;
         [self.navigationController pushViewController:additionMessageVC animated:YES];

@@ -14,7 +14,8 @@
 {
     return @{
              @"delay" : @"result.delay",
-             @"product" : @"result.product"
+             @"product" : @"result.product",
+             @"uid" : @"result.uid"
              };
 }
 

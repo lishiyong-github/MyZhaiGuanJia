@@ -7,7 +7,7 @@
 //
 
 #import "MyDetailSaveViewController.h"
-#import "AdditionMessageViewController.h"
+#import "AdditionMessagesViewController.h"
 
 #import "ReportSuitViewController.h"  //发布
 
@@ -357,14 +357,14 @@
                 
         if ([responseModel.product.loan_type isEqualToString:@"4"]) {
             if ((indexPath.section == 1) && (indexPath.row == 5)) {//查看补充信息
-                AdditionMessageViewController *additionMessage = [[AdditionMessageViewController alloc] init];
+                AdditionMessagesViewController *additionMessage = [[AdditionMessagesViewController alloc] init];
                 additionMessage.idString = self.idString;
                 additionMessage.categoryString = self.categaryString;
                 [self.navigationController pushViewController:additionMessage animated:YES];
             }
         }else{
             if ((indexPath.section == 1) && (indexPath.row == 6)) {//查看补充信息
-                AdditionMessageViewController *additionMessage = [[AdditionMessageViewController alloc] init];
+                AdditionMessagesViewController *additionMessage = [[AdditionMessagesViewController alloc] init];
                 additionMessage.idString = self.idString;
                 additionMessage.categoryString = self.categaryString;
                 [self.navigationController pushViewController:additionMessage animated:YES];

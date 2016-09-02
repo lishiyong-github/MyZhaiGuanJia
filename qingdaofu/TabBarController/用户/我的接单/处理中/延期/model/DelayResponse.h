@@ -14,5 +14,6 @@
 
 @property (nonatomic,strong) DelayModel *delay;
 @property (nonatomic,strong) PublishingModel *product;
+@property (nonatomic,copy) NSString *uid;
 
 @end

@@ -13,11 +13,11 @@
 #import "ReleaseEndViewController.h"   //终止
 #import "ReleaseCloseViewController.h"  //结案
 
-#import "ApplyRecordsViewController.h"     //查看申请
+#import "ApplyRecordViewController.h"     //查看申请
 #import "PaceViewController.h"          //查看进度
 #import "CheckDetailPublishViewController.h"  //联系接单方
 #import "AdditionalEvaluateViewController.h"  //去评价
-#import "EvaluateListViewController.h"  //查看评价
+#import "EvaluateListsViewController.h"  //查看评价
 
 //#import "AnotherHomeCell.h"
 #import "ExtendHomeCell.h"
@@ -478,7 +478,7 @@
     RowsModel *ymodel = self.releaseDataArray[section];
     
    if ([string isEqualToString:@"查看申请人"]){
-      ApplyRecordsViewController *applyRecordsVC = [[ApplyRecordsViewController alloc] init];
+      ApplyRecordViewController *applyRecordsVC = [[ApplyRecordViewController alloc] init];
        applyRecordsVC.idStr = ymodel.idString;
        applyRecordsVC.categaryStr = ymodel.category;
       [self.navigationController pushViewController:applyRecordsVC animated:YES];
@@ -514,7 +514,7 @@
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:additionalEvaluateVC];
         [self presentViewController:nav animated:YES completion:nil];
     }else if ([string isEqualToString:@"查看评价"]){
-        EvaluateListViewController *evaluateListVC = [[EvaluateListViewController alloc] init];
+        EvaluateListsViewController *evaluateListVC = [[EvaluateListsViewController alloc] init];
         evaluateListVC.idString = ymodel.idString;
         evaluateListVC.categoryString = ymodel.category;
         evaluateListVC.typeString = @"发布方";

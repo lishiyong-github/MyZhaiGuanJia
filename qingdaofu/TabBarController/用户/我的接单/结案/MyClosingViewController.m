@@ -13,11 +13,10 @@
 
 #import "CheckDetailPublishViewController.h"  //查看发布方
 #import "AdditionalEvaluateViewController.h"  //追加评价
-#import "AdditionMessageViewController.h"     //补充信息
+#import "AdditionMessagesViewController.h"     //补充信息
 #import "PaceViewController.h"   //进度
-//#import "AllEvaluationViewController.h"
 #import "AgreementViewController.h"
-#import "EvaluateListViewController.h"  //查看评价
+#import "EvaluateListsViewController.h"  //查看评价
 
 #import "MineUserCell.h"
 #import "OrderPublishCell.h"
@@ -408,7 +407,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 2 && indexPath.row == 0) {
-        AdditionMessageViewController *additionMessageVC = [[AdditionMessageViewController alloc] init];
+        AdditionMessagesViewController *additionMessageVC = [[AdditionMessagesViewController alloc] init];
         additionMessageVC.idString = self.idString;
         additionMessageVC.categoryString = self.categaryString;
         [self.navigationController pushViewController:additionMessageVC animated:YES];
@@ -512,7 +511,7 @@
             [weakself.closingSwitchButton.sendButton setImage:[UIImage imageNamed:@"look"] forState:0];
             
             [weakself.closingSwitchButton.sendButton addAction:^(UIButton *btn) {
-                EvaluateListViewController *evaluateListVC = [[EvaluateListViewController alloc] init];
+                EvaluateListsViewController *evaluateListVC = [[EvaluateListsViewController alloc] init];
                 evaluateListVC.idString = weakself.idString;
                 evaluateListVC.categoryString = weakself.categaryString;
                 evaluateListVC.typeString = @"接单方";

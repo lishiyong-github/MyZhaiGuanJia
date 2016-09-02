@@ -9,7 +9,7 @@
 #import "ReleaseEndViewController.h"
 
 #import "CheckDetailPublishViewController.h"  //查看发布方
-#import "AdditionMessageViewController.h" //查看更多
+#import "AdditionMessagesViewController.h" //查看更多
 #import "AgreementViewController.h"   //服务协议
 #import "PaceViewController.h"
 
@@ -362,7 +362,7 @@
 {
     
     if (indexPath.section == 2 && indexPath.row == 0) {
-        AdditionMessageViewController *additionMessageVC = [[AdditionMessageViewController alloc] init];
+        AdditionMessagesViewController *additionMessageVC = [[AdditionMessagesViewController alloc] init];
         additionMessageVC.idString = self.idString;
         additionMessageVC.categoryString = self.categaryString;
         [self.navigationController pushViewController:additionMessageVC animated:YES];

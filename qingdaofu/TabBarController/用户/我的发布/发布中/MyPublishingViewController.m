@@ -7,8 +7,8 @@
 //
 
 #import "MyPublishingViewController.h"
-#import "AdditionMessageViewController.h"  //补充信息
-#import "ApplyRecordsViewController.h"   //申请记录
+#import "AdditionMessagesViewController.h"  //补充信息
+#import "ApplyRecordViewController.h"   //申请记录
 #import "AgreementViewController.h"//协议
 #import "ReportSuitViewController.h"  //发布催收，发布诉讼
 
@@ -314,7 +314,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 1 && indexPath.row == 0) {
-        AdditionMessageViewController *additionMessageVC = [[AdditionMessageViewController alloc] init];
+        AdditionMessagesViewController *additionMessageVC = [[AdditionMessagesViewController alloc] init];
         additionMessageVC.idString = self.idString;
         additionMessageVC.categoryString = self.categaryString;
         [self.navigationController pushViewController:additionMessageVC animated:YES];
@@ -341,7 +341,7 @@
 
 - (void)showRecordList
 {
-    ApplyRecordsViewController *applyRecordsVC = [[ApplyRecordsViewController alloc] init];
+    ApplyRecordViewController *applyRecordsVC = [[ApplyRecordViewController alloc] init];
     applyRecordsVC.idStr = self.idString;
     applyRecordsVC.categaryStr = self.categaryString;
     [self.navigationController pushViewController:applyRecordsVC animated:YES];

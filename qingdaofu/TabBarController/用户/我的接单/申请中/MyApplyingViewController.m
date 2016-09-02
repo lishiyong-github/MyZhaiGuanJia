@@ -8,7 +8,7 @@
 
 #import "MyApplyingViewController.h"
 #import "CheckDetailPublishViewController.h"  //查看发布方
-#import "AdditionMessageViewController.h"  //查看更多
+#import "AdditionMessagesViewController.h"  //查看更多
 #import "AgreementViewController.h"
 
 #import "BaseCommitButton.h"
@@ -560,24 +560,10 @@
         }
         
     }else if (indexPath.section == 2 && indexPath.row == 0) {//查看更多
-        
-        PublishingResponse *resModel = self.myApplyArray[0];
-        PublishingModel *dealModel = resModel.product;
-        if ([dealModel.loan_type isEqualToString:@"4"]) {
-            if (indexPath.row == 5) {
-                AdditionMessageViewController *additionMessageVC = [[AdditionMessageViewController alloc] init];
-                additionMessageVC.idString = dealModel.idString;
-                additionMessageVC.categoryString = dealModel.category;
-                [self.navigationController pushViewController:additionMessageVC animated:YES];
-            }
-        }else{
-            if (indexPath.row == 6) {
-                AdditionMessageViewController *additionMessageVC = [[AdditionMessageViewController alloc] init];
-                additionMessageVC.idString = dealModel.idString;
-                additionMessageVC.categoryString = dealModel.category;
-                [self.navigationController pushViewController:additionMessageVC animated:YES];
-            }
-        }
+        AdditionMessagesViewController *additionMessageVC = [[AdditionMessagesViewController alloc] init];
+        additionMessageVC.idString = self.idString;
+        additionMessageVC.categoryString = self.categaryString;
+        [self.navigationController pushViewController:additionMessageVC animated:YES];
     }
 }
 

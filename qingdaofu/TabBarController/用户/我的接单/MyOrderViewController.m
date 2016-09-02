@@ -15,7 +15,7 @@
 #import "MyScheduleViewController.h"   //填写进度
 #import "DelayRequestsViewController.h"  //申请延期
 #import "AdditionalEvaluateViewController.h"  //去评价
-#import "EvaluateListViewController.h"  //查看评价
+#import "EvaluateListsViewController.h"  //查看评价
 
 #import "AllProSegView.h"
 #import "ExtendHomeCell.h"
@@ -34,8 +34,10 @@
 
 //json解析
 @property (nonatomic,strong) NSMutableArray *myOrderDataList;
-@property (nonatomic,strong) NSMutableDictionary *myOrderResonseDic;  //评价
+@property (nonatomic,strong) NSMutableDictionary *myOrderCreditorDic;  //评价
 @property (nonatomic,strong) NSMutableDictionary *myOrderDelaysDic;
+@property (nonatomic,strong) NSMutableDictionary *myOrderMobileDic;
+
 @property (nonatomic,assign) NSInteger pageOrder;//页数
 @property (nonatomic,strong) NSString *deadTimeString;  //截止日期
 
@@ -176,12 +178,12 @@
     return _myOrderDataList;
 }
 
-- (NSMutableDictionary *)myOrderResonseDic
+- (NSMutableDictionary *)myOrderCreditorDic
 {
-    if (!_myOrderResonseDic) {
-        _myOrderResonseDic = [NSMutableDictionary dictionary];
+    if (!_myOrderCreditorDic) {
+        _myOrderCreditorDic = [NSMutableDictionary dictionary];
     }
-    return _myOrderResonseDic;
+    return _myOrderCreditorDic;
 }
 
 - (NSMutableDictionary *)myOrderDelaysDic
@@ -190,6 +192,14 @@
         _myOrderDelaysDic = [NSMutableDictionary dictionary];
     }
     return _myOrderDelaysDic;
+}
+
+- (NSMutableDictionary *)myOrderMobileDic
+{
+    if (!_myOrderMobileDic) {
+        _myOrderMobileDic = [NSMutableDictionary dictionary];
+    }
+    return _myOrderMobileDic;
 }
 
 #pragma mark - tableView delegate and datasource
@@ -212,7 +222,7 @@
 //    }else if ([orderModel.progress_status integerValue] == 4){
 //        
 //        NSString *id_category = [NSString stringWithFormat:@"%@_%@",orderModel.idString,orderModel.category];
-//        NSString *value = self.myOrderResonseDic[id_category];
+//        NSString *value = self.myOrderCreditorDic[id_category];
 //        if ([value integerValue] >= 2) {//不能评价
 //            return 160;
 //        }
@@ -313,8 +323,11 @@
         [cell.actButton2 setTitleColor:kBlackColor forState:0];
         cell.actButton2.layer.borderColor = kBorderColor.CGColor;
         
+        NSString *id_cateStr = [NSString stringWithFormat:@"%@_%@",rowModel.idString,rowModel.category];
+        NSString *idCate = self.myOrderMobileDic[id_cateStr];
+        
         [cell.actButton2 addAction:^(UIButton *btn) {
-            [weakself goToWriteScheduleOrEvaluate:@"取消申请" withSection:indexPath.section withString:@""];
+            [weakself goToWriteScheduleOrEvaluate:@"取消申请" withSection:indexPath.section withString:idCate];
         }];
         
     }else if ([rowModel.progress_status integerValue] == 2) {//处理
@@ -358,7 +371,7 @@
         [cell.actButton2 setTitleColor:kBlueColor forState:0];
         
         NSString *id_cateStr = [NSString stringWithFormat:@"%@_%@",rowModel.idString,rowModel.category];
-        NSString *idCate = self.myOrderResonseDic[id_cateStr];
+        NSString *idCate = self.myOrderCreditorDic[id_cateStr];
         if ([idCate integerValue] == 0) {
             [cell.actButton2 setTitle:@"评价发布方" forState:0];
             [cell.actButton2 addAction:^(UIButton *btn) {
@@ -532,7 +545,7 @@
         [cell.secondButton setHidden:YES];
         
         NSString *id_category = [NSString stringWithFormat:@"%@_%@",rowModel.idString,rowModel.category];
-        NSString *value = self.myOrderResonseDic[id_category];
+        NSString *value = self.myOrderCreditorDic[id_category];
         if ([value integerValue] >= 2) {
             [cell.thirdButton setHidden:YES];
         }else{
@@ -588,7 +601,7 @@
         [self.navigationController pushViewController:myEndingVC animated:YES];
     }else if([eModel.progress_status isEqualToString:@"4"]){//结案
         NSString *id_category = [NSString stringWithFormat:@"%@_%@",eModel.idString,eModel.category];
-        NSString *value1 = self.myOrderResonseDic[id_category];
+        NSString *value1 = self.myOrderCreditorDic[id_category];
         
         MyClosingViewController *myClosingVC = [[MyClosingViewController alloc] init];
         myClosingVC.idString = eModel.idString;
@@ -615,7 +628,9 @@
         
         if ([page intValue] == 1) {
             [weakself.myOrderDataList removeAllObjects];
-            [weakself.myOrderResonseDic removeAllObjects];
+            [weakself.myOrderCreditorDic removeAllObjects];
+            [weakself.myOrderDelaysDic removeAllObjects];
+            [weakself.myOrderMobileDic removeAllObjects];
         }
         
         ReleaseResponse *responceModel = [ReleaseResponse objectWithKeyValues:responseObject];
@@ -625,8 +640,9 @@
             _pageOrder -- ;
         }
         
-        [weakself.myOrderResonseDic setValuesForKeysWithDictionary:responceModel.creditor];
+        [weakself.myOrderCreditorDic setValuesForKeysWithDictionary:responceModel.creditor];
         [weakself.myOrderDelaysDic setValuesForKeysWithDictionary:responceModel.delays];
+        [weakself.myOrderMobileDic setValuesForKeysWithDictionary:responceModel.mobile];
         
         for (RowsModel *orderModel in responceModel.rows) {
             [weakself.myOrderDataList addObject:orderModel];
@@ -669,7 +685,7 @@
     RowsModel *lModel = self.myOrderDataList[section];
     
     if ([string isEqualToString:@"取消申请"]) {
-        [self cancelTheProductApplyWithModel:lModel];
+        [self cancelTheProductApplyWithID:evaString];
     }else if ([string isEqualToString:@"联系发布方"]){
         if ([lModel.mobile isEqualToString:@""] || !lModel.mobile || lModel.mobile == nil) {
             [self showHint:@"发布方未认证，不能打电话"];
@@ -694,7 +710,7 @@
         UINavigationController *nahuh = [[UINavigationController alloc] initWithRootViewController:additionalEvaluateVC];
         [self presentViewController:nahuh animated:YES completion:nil];
     }else if ([string isEqualToString:@"查看评价"]){
-        EvaluateListViewController *evaluateListVC = [[EvaluateListViewController alloc] init];
+        EvaluateListsViewController *evaluateListVC = [[EvaluateListsViewController alloc] init];
         evaluateListVC.typeString = @"接单方";
         evaluateListVC.idString = lModel.idString;
         evaluateListVC.categoryString = lModel.category;
@@ -702,10 +718,10 @@
     }
 }
 
-- (void)cancelTheProductApplyWithModel:(RowsModel *)aModel
+- (void)cancelTheProductApplyWithID:(NSString *)idStr
 {
     NSString *cancelString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kCancelProductOfMyOrderString];
-    NSDictionary *params = @{@"id" : aModel.idString,
+    NSDictionary *params = @{@"id" : idStr,
                              @"token" : [self getValidateToken]
                              };
     

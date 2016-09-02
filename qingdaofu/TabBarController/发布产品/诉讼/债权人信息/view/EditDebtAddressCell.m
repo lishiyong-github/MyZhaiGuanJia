@@ -29,7 +29,7 @@
     if (!self.didSetupConstraints) {
         
         [self.ediLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
-        [self.ediLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:13];
+        [self.ediLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kBigPadding];
         
         [self.ediTextView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:5];
         [self.ediTextView autoPinEdgeToSuperviewEdge:ALEdgeBottom];

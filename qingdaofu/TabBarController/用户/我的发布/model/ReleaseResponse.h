@@ -13,6 +13,7 @@
 
 @property (nonatomic,strong) NSDictionary *delays;
 @property (nonatomic,strong) NSDictionary *creditor;
+@property (nonatomic,strong) NSDictionary *mobile;
 @property (nonatomic,copy) NSString *page;
 @property (nonatomic,strong) NSMutableArray *rows;
 

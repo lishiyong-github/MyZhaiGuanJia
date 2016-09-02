@@ -10,11 +10,13 @@
 
 #import "CheckDetailPublishViewController.h"  //查看发布方
 #import "PaceViewController.h"    //查看进度
-#import "AdditionMessageViewController.h"  //补充信息
-#import "AgreementViewController.h"
+#import "AdditionMessagesViewController.h"  //补充信息
+#import "AgreementViewController.h"  //协议
+#import "DelayHandleViewController.h"  //延期处理
 
 #import "EvaTopSwitchView.h"
 #import "BaseCommitButton.h"
+#import "BaseRemindButton.h"
 
 #import "MineUserCell.h"
 #import "OrderPublishCell.h"
@@ -23,12 +25,16 @@
 #import "PublishingResponse.h"
 #import "UserNameModel.h"
 
+#import "DelayResponse.h"
+#import "DelayModel.h"
+
 @interface MyDealingViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,strong) UITableView *dealingTableView;
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) EvaTopSwitchView *dealFootView;
 @property (nonatomic,strong) BaseCommitButton *dealCommitButton;
+@property (nonatomic,strong) BaseRemindButton *dealRemindButton;
 
 @property (nonatomic,strong) NSMutableArray *dealingDataList;
 
@@ -56,6 +62,8 @@
     [self.view addSubview:self.dealCommitButton];
     [self.dealCommitButton setHidden:YES];
     [self.dealFootView setHidden:YES];
+    [self.view addSubview:self.dealRemindButton];
+    [self.dealRemindButton setHidden:YES];
     
     [self.view setNeedsUpdateConstraints];
 }
@@ -73,6 +81,11 @@
         [self.dealCommitButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
         [self.dealCommitButton autoSetDimension:ALDimensionHeight toSize:kTabBarHeight];
         
+        [self.dealRemindButton autoPinEdgeToSuperviewEdge:ALEdgeLeft];
+        [self.dealRemindButton autoPinEdgeToSuperviewEdge:ALEdgeRight];
+        [self.dealRemindButton autoSetDimension:ALDimensionHeight toSize:kRemindHeight];
+        [self.dealRemindButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kTabBarHeight];
+
         self.didSetupConstraints = YES;
     }
     [super updateViewConstraints];
@@ -120,6 +133,22 @@
         [_dealCommitButton setTitleColor:kNavColor forState:0];
     }
     return _dealCommitButton;
+}
+
+- (BaseRemindButton *)dealRemindButton
+{
+    if (!_dealRemindButton) {
+        _dealRemindButton = [BaseRemindButton newAutoLayoutView];
+        [_dealRemindButton setTitle:@"收到申请延期，点击处理  " forState:0];
+        [_dealRemindButton setImage:[UIImage imageNamed:@"more_white"] forState:0];
+        
+        QDFWeakSelf;
+        [_dealRemindButton addAction:^(UIButton *btn) {
+            DelayHandleViewController *delayHandleVC = [[DelayHandleViewController alloc] init];
+            [weakself.navigationController pushViewController:delayHandleVC animated:YES];
+        }];
+    }
+    return _dealRemindButton;
 }
 
 - (NSMutableArray *)dealingDataList
@@ -381,7 +410,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 2 && indexPath.row == 0) {
-        AdditionMessageViewController *additionMessageVC = [[AdditionMessageViewController alloc] init];
+        AdditionMessagesViewController *additionMessageVC = [[AdditionMessagesViewController alloc] init];
         additionMessageVC.idString = self.idString;
         additionMessageVC.categoryString = self.categaryString;
         [self.navigationController pushViewController:additionMessageVC animated:YES];
@@ -409,7 +438,7 @@
     
     QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
-                
+        
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
         
         [weakself.dealingDataList addObject:response];
@@ -448,9 +477,37 @@
                 weakself.dealCommitButton.userInteractionEnabled = NO;
             }
         }
-
+        [weakself delayRequestFromOrder];
         
     } andFailBlock:^(NSError *error){
+        
+    }];
+}
+
+//申请延期状态(接单方发起延期)
+- (void)delayRequestFromOrder
+{
+    NSString *deString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kIsDelayRequestString];
+    NSDictionary *params = @{@"token" : [self getValidateToken],
+                             @"id" : self.idString,
+                             @"category" : self.categaryString
+                             };
+    QDFWeakSelf;
+    [self requestDataPostWithString:deString params:params successBlock:^(id responseObject) {
+        
+        NSDictionary *opopo = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
+        DelayResponse *response = [DelayResponse objectWithKeyValues:responseObject];
+        
+        DelayModel *delayModel = response.delay;
+        PublishingModel *puModel = response.product;
+
+        if ([delayModel.is_agree isEqualToString:@""] || !delayModel.is_agree) {
+        }else if([delayModel.is_agree integerValue] == 0 && [response.uid integerValue] == [puModel.uidInner integerValue]){
+            [weakself.dealRemindButton setHidden:NO];
+        }
+        
+    } andFailBlock:^(NSError *error) {
         
     }];
 }

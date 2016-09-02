@@ -1,12 +1,12 @@
 //
-//  AdditionMessageViewController.m
+//  AdditionMessagesViewController.m
 //  qingdaofu
 //
-//  Created by zhixiang on 16/5/5.
+//  Created by zhixiang on 16/9/2.
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
-#import "AdditionMessageViewController.h"
+#import "AdditionMessagesViewController.h"
 
 #import "ProductsCheckDetailViewController.h"   //债权人信息，债务人信息
 #import "ProductsCheckFilesViewController.h"  //债权文件
@@ -18,7 +18,8 @@
 
 #import "DebtModel.h"
 
-@interface AdditionMessageViewController ()<UITableViewDataSource,UITableViewDelegate>
+
+@interface AdditionMessagesViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *addMessageTableView;
@@ -26,7 +27,7 @@
 
 @end
 
-@implementation AdditionMessageViewController
+@implementation AdditionMessagesViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -73,7 +74,7 @@
     return _addMessageDataArray;
 }
 
-#pragma mark - 
+#pragma mark -
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (self.addMessageDataArray.count > 0) {
@@ -168,7 +169,7 @@
                 rate_cat = @"月";
             }
         }
-
+        
         if (messageModel.repaymethod) {
             if ([messageModel.repaymethod intValue] == 1) {
                 repaymethod = @"一次性到期还本付息";
@@ -199,7 +200,7 @@
         
         PublishingResponse *meResponse;
         if (self.addMessageDataArray.count > 0) {
-           meResponse = self.addMessageDataArray[0];
+            meResponse = self.addMessageDataArray[0];
         }
         
         NSString *creditorfile = @"查看";
@@ -233,7 +234,7 @@
     if (self.addMessageDataArray.count > 0) {
         response = self.addMessageDataArray[0];
     }
-
+    
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.row == 11) {//债权人件
         ProductsCheckFilesViewController *productsCheckFilesVC = [[ProductsCheckFilesViewController alloc] init];

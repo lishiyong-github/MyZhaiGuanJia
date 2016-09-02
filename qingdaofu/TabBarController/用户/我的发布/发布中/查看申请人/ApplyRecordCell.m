@@ -1,14 +1,14 @@
 //
-//  ApplyRecordsCell.m
+//  ApplyRecordCell.m
 //  qingdaofu
 //
-//  Created by zhixiang on 16/5/16.
+//  Created by zhixiang on 16/9/2.
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
-#import "ApplyRecordsCell.h"
+#import "ApplyRecordCell.h"
 
-@implementation ApplyRecordsCell
+@implementation ApplyRecordCell
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -38,7 +38,7 @@
         
         [self.personLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft];
         [self.personLabel autoSetDimension:ALDimensionWidth toSize:kScreenWidth/3];
-
+        
         [self.lineLabel11 autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kSmallPadding];
         [self.lineLabel11 autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kSmallPadding];
         [self.lineLabel11 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.personLabel];
@@ -111,6 +111,7 @@
 }
 
 - (void)awakeFromNib {
+    [super awakeFromNib];
     // Initialization code
 }
 

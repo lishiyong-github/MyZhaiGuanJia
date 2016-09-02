@@ -23,27 +23,6 @@
     [super viewDidLoad];
     
     [self setUpMessage];
-    
-//    self.view.backgroundColor = kBackColor;
-//    
-//    //修改导航栏的边界黑线
-////    self.edgesForExtendedLayout = UIRectEdgeNone ;
-////    self.extendedLayoutIncludesOpaqueBars = NO ;
-////    self.automaticallyAdjustsScrollViewInsets = NO ;
-//        
-//    //设置导航条的字体颜色
-//    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:kBlackColor,NSFontAttributeName:kNavFont}];
-//    
-//    //去除系统效果
-//    self.navigationController.navigationBar.translucent = NO;
-//    
-//    //设置导航栏颜色
-//    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:kNavColor] forBarMetrics:UIBarMetricsDefault];
-//    
-//    self.automaticallyAdjustsScrollViewInsets = NO;
-//    
-//    //右滑返回
-//    self.navigationController.interactivePopGestureRecognizer.delegate = self;
 }
 
 
@@ -112,6 +91,12 @@
 - (void)back
 {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+//返回主页
+- (void)anotherBack
+{
+    
 }
 
 //- (void)backAnother

@@ -1,14 +1,14 @@
 //
-//  RecordResponse.m
+//  ApplyRecordResponse.m
 //  qingdaofu
 //
-//  Created by zhixiang on 16/6/17.
+//  Created by zhixiang on 16/9/2.
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
-#import "RecordResponse.h"
+#import "ApplyRecordResponse.h"
 
-@implementation RecordResponse
+@implementation ApplyRecordResponse
 
 + (NSDictionary *)objectClassInArray
 {

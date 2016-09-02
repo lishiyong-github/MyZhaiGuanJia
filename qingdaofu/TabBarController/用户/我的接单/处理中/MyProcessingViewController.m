@@ -9,7 +9,7 @@
 #import "MyProcessingViewController.h"
 #import "DelayRequestsViewController.h"  //申请延期
 #import "CheckDetailPublishViewController.h"//查看发布方
-#import "AdditionMessageViewController.h"  //查看更多
+#import "AdditionMessagesViewController.h"  //查看更多
 #import "AgreementViewController.h"   //服务协议
 #import "PaceViewController.h" //进度
 
@@ -112,12 +112,6 @@
 {
     if (!_processRemindButton) {
         _processRemindButton = [BaseRemindButton newAutoLayoutView];
-        
-        QDFWeakSelf;
-        [_processRemindButton addAction:^(UIButton *btn) {
-            DelayRequestsViewController *delayRequetsVC = [[DelayRequestsViewController alloc] init];
-            [weakself.navigationController pushViewController:delayRequetsVC animated:YES];
-        }];
     }
     return _processRemindButton;
 }
@@ -453,7 +447,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 2 && indexPath.row == 0) {
-        AdditionMessageViewController *additionMessageVC = [[AdditionMessageViewController alloc] init];
+        AdditionMessagesViewController *additionMessageVC = [[AdditionMessagesViewController alloc] init];
         additionMessageVC.idString = self.idString;
         additionMessageVC.categoryString = self.categaryString;
         [self.navigationController pushViewController:additionMessageVC animated:YES];
@@ -551,14 +545,47 @@
         
         DelayModel *delayModel = response.delay;
         PublishingModel *puModel = response.product;
+        
         if (delayModel.is_agree == nil || [delayModel.is_agree isEqualToString:@""]) {
-            if ([puModel.applyclose isEqualToString:@"4"]) {
+            if (![puModel.applyclose isEqualToString:@"4"]) {
                 if ([delayModel.delays integerValue] <= 7) {
                     [weakself.processRemindButton setHidden:NO];
                     NSString *delayS = [NSString stringWithFormat:@"还有%@天就要到达约定结案日期，点击申请延期 ",delayModel.delays];
                     [weakself.processRemindButton setTitle:delayS forState:0];
                     [weakself.processRemindButton setImage:[UIImage imageNamed:@"more_white"] forState:0];
+                    [weakself.processRemindButton addAction:^(UIButton *btn) {
+                        DelayRequestsViewController *delayRequetsVC = [[DelayRequestsViewController alloc] init];
+                        [weakself.navigationController pushViewController:delayRequetsVC animated:YES];
+                    }];
                 }
+            }else{
+                NSLog(@"结案申请中，不能申请延期");
+                [weakself.processRemindButton setHidden:NO];
+                [weakself.processRemindButton setTitle:@"结案申请中，不能申请延期  " forState:0];
+                [weakself.processRemindButton setImage:[UIImage imageNamed:@"closed"] forState:0];
+                
+                [weakself.processRemindButton addAction:^(UIButton *btn) {
+                    [weakself.processRemindButton setHidden:YES];
+                }];
+            }
+        }else{
+            //已申请：0申请中,1同意，2拒绝，3作废，
+            if ([delayModel.is_agree integerValue] == 0) {
+                [weakself.processRemindButton setHidden:NO];
+                [weakself.processRemindButton setTitle:@"延期申请中，请等待  " forState:0];
+                [weakself.processRemindButton setImage:[UIImage imageNamed:@"closed"] forState:0];
+            }else if ([delayModel.is_agree integerValue] == 1){
+                [weakself.processRemindButton setHidden:NO];
+                [weakself.processRemindButton setTitle:@"已申请延期，等待对方确认  " forState:0];
+                [weakself.processRemindButton setImage:[UIImage imageNamed:@"closed"] forState:0];
+            }else if ([delayModel.is_agree integerValue] == 2){
+                [weakself.processRemindButton setHidden:NO];
+                [weakself.processRemindButton setTitle:@"延期申请失败，请抓紧处理  " forState:0];
+                [weakself.processRemindButton setImage:[UIImage imageNamed:@"closed"] forState:0];
+            }else if ([delayModel.is_agree integerValue] == 3){
+                [weakself.processRemindButton setHidden:NO];
+                [weakself.processRemindButton setTitle:@"延期申请失败，请抓紧处理  " forState:0];
+                [weakself.processRemindButton setImage:[UIImage imageNamed:@"closed"] forState:0];
             }
         }
         

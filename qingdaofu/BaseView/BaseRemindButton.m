@@ -14,7 +14,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = kYellowColor;
+        self.backgroundColor = kRemindTipColor;
         self.titleLabel.font = kFourFont;
         [self setTitleColor:kNavColor forState:0];
         [self swapImage];

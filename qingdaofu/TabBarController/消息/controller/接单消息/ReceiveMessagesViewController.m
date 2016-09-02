@@ -16,7 +16,7 @@
 #import "ReleaseEndViewController.h"//我的发布－终止
 #import "ReleaseCloseViewController.h"//我的发布－结案
 
-#import "ApplyRecordsViewController.h"  //申请记录
+#import "ApplyRecordViewController.h"  //申请记录
 #import "PaceViewController.h"
 
 #import "ProductsDetailsViewController.h" //产品详情
@@ -252,7 +252,7 @@
                 }else{
                     if ([messageModel.app_id integerValue] == 0) {//申请中
                         if ([messageModel.fuid isEqualToString:messageModel.belonguid]) {//发布方
-                            ApplyRecordsViewController *applyRecordsVC = [[ApplyRecordsViewController alloc] init];
+                            ApplyRecordViewController *applyRecordsVC = [[ApplyRecordViewController alloc] init];
                             applyRecordsVC.idStr = messageModel.category_id.idString;
                             applyRecordsVC.categaryStr = messageModel.category_id.category;
                             [weakself.navigationController pushViewController:applyRecordsVC animated:YES];

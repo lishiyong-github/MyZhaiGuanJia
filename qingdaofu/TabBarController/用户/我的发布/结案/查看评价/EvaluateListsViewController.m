@@ -1,12 +1,13 @@
 //
-//  EvaluateListViewController.m
+//  EvaluateListsViewController.m
 //  qingdaofu
 //
-//  Created by zhixiang on 16/8/31.
+//  Created by zhixiang on 16/9/2.
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
-#import "EvaluateListViewController.h"
+#import "EvaluateListsViewController.h"
+
 #import "AdditionalEvaluateViewController.h" //追加评价
 
 #import "BaseCommitView.h"
@@ -17,7 +18,7 @@
 #import "EvaluateModel.h"  //收到的评价
 #import "LaunchEvaluateModel.h"  //给出的评价
 
-@interface EvaluateListViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface EvaluateListsViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic,strong) UITableView *evaluateListTableView;
 @property (nonatomic,strong) BaseCommitView *evaluateCommitView;
@@ -29,7 +30,7 @@
 
 @end
 
-@implementation EvaluateListViewController
+@implementation EvaluateListsViewController
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -171,25 +172,25 @@
         }
         
         cell.evaNameLabel.text = evaluateModel.mobiles;
-//        @"mimii";
+        //        @"mimii";
         cell.evaTimeLabel.text = [NSDate getYMDhmFormatterTime:evaluateModel.create_time];
-//        @"2016-09-09 12:12";
+        //        @"2016-09-09 12:12";
         cell.evaStarImage.currentIndex = [evaluateModel.creditor integerValue];
         cell.evaTextLabel.text = evaluateModel.content;
-//        @"不错不错不错";
+        //        @"不错不错不错";
         
-//        if (evaluateModel.pictures.count < 2) {
-//            [cell.evaProImageView2 setHidden:YES];
-//            
-//            
-//            
-//        }else{
-//            [cell.evaProImageView1 setHidden:NO];
-//            [cell.evaProImageView2 setHidden:NO];
-//        }
+        //        if (evaluateModel.pictures.count < 2) {
+        //            [cell.evaProImageView2 setHidden:YES];
+        //
+        //
+        //
+        //        }else{
+        //            [cell.evaProImageView1 setHidden:NO];
+        //            [cell.evaProImageView2 setHidden:NO];
+        //        }
         [cell.evaProImageView1 setBackgroundColor:kRedColor];
         [cell.evaProImageView2 setBackgroundColor:kYellowColor];
-
+        
         return cell;
     }
     
@@ -202,7 +203,7 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         [cell.userActionButton setHidden:YES];
-
+        
         NSString *evaGetString = [NSString stringWithFormat:@"发出的评价（ %lu ）",(unsigned long)self.launchEvaluateArray.count];
         [cell.userNameButton setTitle:evaGetString forState:0];
         
@@ -225,7 +226,7 @@
     
     cell.evaNameLabel.textColor = kBlueColor;
     cell.evaNameLabel.text = @"自己";
-//    launchEvaluateModel.mobiles;
+    //    launchEvaluateModel.mobiles;
     //        @"mimii";
     cell.evaTimeLabel.text = [NSDate getYMDhmFormatterTime:launchEvaluateModel.create_time];
     //        @"2016-09-09 12:12";
@@ -233,10 +234,10 @@
     cell.evaTextLabel.text = launchEvaluateModel.content;
     //        @"不错不错不错";
     
-//    cell.evaNameLabel.text = @"自己";
-//    cell.evaTimeLabel.text = @"2016-12-12 17:20";
-//    cell.evaStarImage.currentIndex = 1;
-//    cell.evaTextLabel.text = @"差评差评差评";
+    //    cell.evaNameLabel.text = @"自己";
+    //    cell.evaTimeLabel.text = @"2016-12-12 17:20";
+    //    cell.evaStarImage.currentIndex = 1;
+    //    cell.evaTextLabel.text = @"差评差评差评";
     [cell.evaProImageView1 setBackgroundColor:kRedColor];
     [cell.evaProImageView2 setBackgroundColor:kYellowColor];
     

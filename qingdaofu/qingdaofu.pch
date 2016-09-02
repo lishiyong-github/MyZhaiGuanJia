@@ -68,6 +68,7 @@
 #define kDarkGrayColor UIColorFromRGB(0x37485b) //深灰色
 #define kBorderColor UIColorFromRGB(0xcccccc)  //描边颜色
 #define kLightWhiteColor  UIColorFromRGB(0xdcecff)  //浅白色
+#define kRemindTipColor UIColorFromRGB(0xf4ae5c)//提示框的颜色
 
 //背景色
 #define kNavColor UIColorFromRGB(0xffffff)  //导航栏颜色1(白色)

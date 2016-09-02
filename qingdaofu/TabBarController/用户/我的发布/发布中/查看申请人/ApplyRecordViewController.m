@@ -1,22 +1,24 @@
 //
-//  ApplyRecordsViewController.m
+//  ApplyRecordViewController.m
 //  qingdaofu
 //
-//  Created by zhixiang on 16/5/13.
+//  Created by zhixiang on 16/9/2.
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
-#import "ApplyRecordsViewController.h"
+#import "ApplyRecordViewController.h"
+
 #import "CheckDetailPublishViewController.h"   //申请人信息
 #import "AgreementViewController.h" //同意申请
 
 #import "MineUserCell.h"
 #import "BidOneCell.h"
 
-#import "RecordResponse.h"
+#import "ApplyRecordResponse.h"
 #import "UserModel.h"
 
-@interface ApplyRecordsViewController ()<UITableViewDataSource,UITableViewDelegate>
+
+@interface ApplyRecordViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *applyRecordsTableView;
@@ -26,9 +28,10 @@
 
 @property (nonatomic,assign) NSInteger pageRecords;
 
+
 @end
 
-@implementation ApplyRecordsViewController
+@implementation ApplyRecordViewController
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -39,7 +42,7 @@
     [super viewDidLoad];
     self.navigationItem.title = @"申请记录";
     self.navigationItem.leftBarButtonItem = self.leftItem;
-
+    
     [self.view addSubview:self.applyRecordsTableView];
     [self.view addSubview:self.baseRemindImageView];
     [self.baseRemindImageView setHidden:YES];
@@ -55,7 +58,7 @@
         
         [self.baseRemindImageView autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
         [self.baseRemindImageView autoAlignAxisToSuperviewAxis:ALAxisVertical];
-
+        
         self.didSetupConstraints = YES;
     }
     [super updateViewConstraints];
@@ -74,13 +77,13 @@
         _applyRecordsTableView.separatorInset = UIEdgeInsetsZero;
         [_applyRecordsTableView addHeaderWithTarget:self action:@selector(headerRefreshOfRecords)];
         [_applyRecordsTableView addFooterWithTarget:self action:@selector(footerRefreshOfRecords)];
-
-//        if ([_applyRecordsTableView respondsToSelector:@selector(setSeparatorInset:)]) {
-//            [_applyRecordsTableView setSeparatorInset:UIEdgeInsetsZero];
-//        }
-//        if ([_applyRecordsTableView respondsToSelector:@selector(setLayoutMargins:)]) {
-//            [_applyRecordsTableView setLayoutMargins:UIEdgeInsetsZero];
-//        }
+        
+        //        if ([_applyRecordsTableView respondsToSelector:@selector(setSeparatorInset:)]) {
+        //            [_applyRecordsTableView setSeparatorInset:UIEdgeInsetsZero];
+        //        }
+        //        if ([_applyRecordsTableView respondsToSelector:@selector(setLayoutMargins:)]) {
+        //            [_applyRecordsTableView setLayoutMargins:UIEdgeInsetsZero];
+        //        }
         
     }
     return _applyRecordsTableView;
@@ -229,12 +232,12 @@
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:listString params:params successBlock:^(id responseObject){
-            
+        
         if ([page integerValue] == 1) {
             [weakself.recordsDataArray removeAllObjects];
         }
         
-        RecordResponse *response = [RecordResponse objectWithKeyValues:responseObject];
+        ApplyRecordResponse *response = [ApplyRecordResponse objectWithKeyValues:responseObject];
         
         if (response.user.count == 0) {
             _pageRecords--;
