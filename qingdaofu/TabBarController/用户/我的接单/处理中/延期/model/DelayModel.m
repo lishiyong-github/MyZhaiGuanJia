@@ -10,4 +10,9 @@
 
 @implementation DelayModel
 
++ (NSDictionary *)replacedKeyFromPropertyName
+{
+    return @{@"id_delay" : @"id"};
+}
+
 @end

@@ -19,6 +19,8 @@
         [self.contentView addSubview:self.countLabel];
         
         [self.contentView setNeedsUpdateConstraints];
+        
+        self.topTextViewConstraints = [self.textField autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:-6];
     }
     return self;
 }
@@ -27,7 +29,6 @@
 {
     if (!self.didSetupConstraints) {
         
-        [self.textField autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:-6];
         [self.textField autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:8];
         [self.textField autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.textField autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:0];

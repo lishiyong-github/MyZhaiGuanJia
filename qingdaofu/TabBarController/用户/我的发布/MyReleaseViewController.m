@@ -527,7 +527,8 @@
     NSString *deleteProString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kDeleteProductOfMyReleaseString];
     NSDictionary *params = @{@"id" : yModel.idString,
                              @"category" : yModel.category,
-                             @"token" : [self getValidateToken]
+                             @"token" : [self getValidateToken],
+                             @"type" : @"2"
                              };
     
     QDFWeakSelf;

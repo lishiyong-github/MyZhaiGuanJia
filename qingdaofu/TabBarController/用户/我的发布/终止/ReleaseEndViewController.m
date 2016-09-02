@@ -360,7 +360,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     if (indexPath.section == 2 && indexPath.row == 0) {
         AdditionMessagesViewController *additionMessageVC = [[AdditionMessagesViewController alloc] init];
         additionMessageVC.idString = self.idString;
@@ -401,9 +400,17 @@
 - (void)deleteTheProducOfReleaseEnd
 {
     NSString *deletePubString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kDeleteProductOfMyReleaseString];
-    NSDictionary *params = @{@"id" : self.idString,
+    
+    NSString *deleteId;
+    if (self.endArray.count > 0) {
+        PublishingResponse *responder = self.endArray[0];
+        deleteId = responder.username.deleteId;
+    }
+    
+    NSDictionary *params = @{@"id" : deleteId,
                              @"category" : self.categaryString,
-                             @"token" : [self getValidateToken]
+                             @"token" : [self getValidateToken],
+                             @"type" : @"2"
                              };
     
     QDFWeakSelf;

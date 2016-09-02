@@ -410,9 +410,17 @@
 - (void)deleteTheProducOfOrderEnd
 {
     NSString *deletePubString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kDeleteProductOfMyReleaseString];
-    NSDictionary *params = @{@"id" : self.idString,
+    
+    NSString *deleteId;
+    if (self.endArray.count > 0) {
+        PublishingResponse *responder = self.endArray[0];
+        deleteId = responder.username.deleteId;
+    }
+    
+    NSDictionary *params = @{@"id" : deleteId,
                              @"category" : self.categaryString,
-                             @"token" : [self getValidateToken]
+                             @"token" : [self getValidateToken],
+                             @"type" : @"1"
                              };
     
     QDFWeakSelf;

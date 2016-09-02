@@ -592,7 +592,7 @@
 - (void)cancelTheProductApply
 {
     NSString *cancelString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kCancelProductOfMyOrderString];
-    NSDictionary *params = @{@"id" : self.idString,
+    NSDictionary *params = @{@"id" : self.cancelIdString,
                              @"token" : [self getValidateToken]
                              };
     

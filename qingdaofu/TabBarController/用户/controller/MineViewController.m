@@ -190,7 +190,7 @@
                             case 102:{//我的接单
                                 MyOrderViewController *myOrderVC = [[MyOrderViewController alloc] init];
                                 myOrderVC.hidesBottomBarWhenPushed = YES;
-                                myOrderVC.status = @"0";
+                                myOrderVC.status = @"-1";
                                 myOrderVC.progresStatus = @"0";
                                 [weakself.navigationController pushViewController:myOrderVC animated:YES];
                             }

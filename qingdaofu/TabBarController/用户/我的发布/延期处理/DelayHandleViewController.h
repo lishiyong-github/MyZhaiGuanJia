@@ -10,4 +10,6 @@
 
 @interface DelayHandleViewController : NetworkViewController
 
+@property (nonatomic,strong) NSString *delayIdStr;  //整合ID
+
 @end

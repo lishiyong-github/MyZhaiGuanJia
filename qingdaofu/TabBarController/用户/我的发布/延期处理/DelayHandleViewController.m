@@ -30,6 +30,8 @@
     [self.view addSubview:self.delayHandleTableView];
     
     [self.view setNeedsUpdateConstraints];
+    
+    [self getDelayDetails];
 }
 
 - (void)updateViewConstraints
@@ -100,6 +102,13 @@
         cell.reActButton3.layer.cornerRadius = corner1;
         cell.reActButton3.titleLabel.font = kFirstFont;
         
+        QDFWeakSelf;
+        [cell setDidSelectedActbutton:^(NSInteger tag, UIButton *btn) {
+            if (tag > 77) {
+                [weakself delayRequestActionWithType:tag];
+            }
+        }];
+        
         return cell;
         
     }else if (indexPath.row == 1){//ExeCell.h
@@ -131,11 +140,57 @@
     cell.ediLabel.text = @"延期原因：";
     cell.ediLabel.font = kFirstFont;
 
-    cell.ediTextView.text = @"延期原因延期原因延期原因延期原因延期原因延期原因延期原因延期原因延期原因延期原因延期原因延期原因";
     cell.ediTextView.textColor = kGrayColor;
     cell.ediTextView.font = kFirstFont;
+    cell.ediTextView.editable = NO;
+    cell.ediTextView.text = @"延期原因延期原因延期原因延期原因延期原因延期原因延期原因延期原因延期原因延期原因延期原因延期原因";
     
     return cell;
+}
+
+#pragma mark - method
+- (void)getDelayDetails
+{
+    NSString *delayDetaiString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kDelayDetailsOfMyReleaseString];
+    NSDictionary *params = @{@"id" : self.delayIdStr,
+                             @"token" : [self getValidateToken]
+                             };
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:delayDetaiString params:params successBlock:^(id responseObject) {
+        NSDictionary *hiihi = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        NSString *hoho;
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
+- (void)delayRequestActionWithType:(NSInteger )typeInt
+{
+    NSString *delayActString;
+    if (typeInt == 78) {//拒绝
+        delayActString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kDisAgreeProductOfMyReleaseString];
+    }else if(typeInt == 79){//同意
+        delayActString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kAgreeProductOfMyReleaseString];
+    }
+    NSDictionary *params = @{@"id" : self.delayIdStr,
+                             @"token" : [self getValidateToken]
+                             };
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:delayActString params:params successBlock:^(id responseObject) {
+        BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:baseModel.msg];
+        
+        if ([baseModel.code isEqualToString:@"0000"]) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"delay" object:nil];
+            [weakself.navigationController popViewControllerAnimated:YES];
+        }
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
 }
 
 - (void)didReceiveMemoryWarning {

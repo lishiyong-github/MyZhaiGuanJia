@@ -49,7 +49,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-     [self getDealingMessage];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(delayRequestFromOrder) name:@"delay" object:nil];
 }
 
 - (void)viewDidLoad {
@@ -66,6 +66,8 @@
     [self.dealRemindButton setHidden:YES];
     
     [self.view setNeedsUpdateConstraints];
+    
+    [self getDealingMessage];
 }
 
 - (void)updateViewConstraints
@@ -141,12 +143,6 @@
         _dealRemindButton = [BaseRemindButton newAutoLayoutView];
         [_dealRemindButton setTitle:@"收到申请延期，点击处理  " forState:0];
         [_dealRemindButton setImage:[UIImage imageNamed:@"more_white"] forState:0];
-        
-        QDFWeakSelf;
-        [_dealRemindButton addAction:^(UIButton *btn) {
-            DelayHandleViewController *delayHandleVC = [[DelayHandleViewController alloc] init];
-            [weakself.navigationController pushViewController:delayHandleVC animated:YES];
-        }];
     }
     return _dealRemindButton;
 }
@@ -439,6 +435,8 @@
     QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
         
+        NSDictionary *aoaoa = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
         
         [weakself.dealingDataList addObject:response];
@@ -495,7 +493,7 @@
     QDFWeakSelf;
     [self requestDataPostWithString:deString params:params successBlock:^(id responseObject) {
         
-        NSDictionary *opopo = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        NSDictionary *aoaoa = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
         DelayResponse *response = [DelayResponse objectWithKeyValues:responseObject];
         
@@ -505,6 +503,12 @@
         if ([delayModel.is_agree isEqualToString:@""] || !delayModel.is_agree) {
         }else if([delayModel.is_agree integerValue] == 0 && [response.uid integerValue] == [puModel.uidInner integerValue]){
             [weakself.dealRemindButton setHidden:NO];
+            QDFWeakSelf;
+            [weakself.dealRemindButton addAction:^(UIButton *btn) {
+                DelayHandleViewController *delayHandleVC = [[DelayHandleViewController alloc] init];
+                delayHandleVC.delayIdStr = delayModel.id_delay;
+                [weakself.navigationController pushViewController:delayHandleVC animated:YES];
+            }];
         }
         
     } andFailBlock:^(NSError *error) {

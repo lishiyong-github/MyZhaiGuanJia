@@ -10,6 +10,7 @@
 
 @interface UserNameModel : NSObject
 
+@property (nonatomic,copy) NSString *deleteId; //删除
 @property (nonatomic,copy) NSString *app_id;
 @property (nonatomic,copy) NSString *jmobile;
 @property (nonatomic,copy) NSString *jusername;//接单方，发布方

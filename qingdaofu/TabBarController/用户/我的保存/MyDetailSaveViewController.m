@@ -281,7 +281,8 @@
                 reportSuitVC.suResponse = response;
                 reportSuitVC.categoryString = self.categaryString;
                 reportSuitVC.tagString = @"2";
-                [weakself.navigationController pushViewController:reportSuitVC animated:YES];
+                UINavigationController *nasss = [[UINavigationController alloc] initWithRootViewController:reportSuitVC];
+                [nasss presentViewController:reportSuitVC animated:YES completion:nil];
             }];
         }
         return cell;

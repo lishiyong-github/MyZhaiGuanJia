@@ -19,4 +19,6 @@
 @property (nonatomic,strong) void (^didEndEditing)(NSString *text);
 @property (nonatomic,copy) void (^touchBeginPoint)(CGPoint);
 
+@property (nonatomic,strong) NSLayoutConstraint *topTextViewConstraints;
+
 @end

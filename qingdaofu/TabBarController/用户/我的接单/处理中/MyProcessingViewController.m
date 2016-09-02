@@ -548,13 +548,15 @@
         
         if (delayModel.is_agree == nil || [delayModel.is_agree isEqualToString:@""]) {
             if (![puModel.applyclose isEqualToString:@"4"]) {
-                if ([delayModel.delays integerValue] <= 7) {
+                if ([delayModel.delays integerValue] <= 7 && [delayModel.delays integerValue] > 0) {
                     [weakself.processRemindButton setHidden:NO];
                     NSString *delayS = [NSString stringWithFormat:@"还有%@天就要到达约定结案日期，点击申请延期 ",delayModel.delays];
                     [weakself.processRemindButton setTitle:delayS forState:0];
                     [weakself.processRemindButton setImage:[UIImage imageNamed:@"more_white"] forState:0];
                     [weakself.processRemindButton addAction:^(UIButton *btn) {
                         DelayRequestsViewController *delayRequetsVC = [[DelayRequestsViewController alloc] init];
+                        delayRequetsVC.idString = weakself.idString;
+                        delayRequetsVC.categoryString = weakself.categaryString;
                         [weakself.navigationController pushViewController:delayRequetsVC animated:YES];
                     }];
                 }
@@ -565,7 +567,7 @@
                 [weakself.processRemindButton setImage:[UIImage imageNamed:@"closed"] forState:0];
                 
                 [weakself.processRemindButton addAction:^(UIButton *btn) {
-                    [weakself.processRemindButton setHidden:YES];
+                    [btn setHidden:YES];
                 }];
             }
         }else{
@@ -587,6 +589,11 @@
                 [weakself.processRemindButton setTitle:@"延期申请失败，请抓紧处理  " forState:0];
                 [weakself.processRemindButton setImage:[UIImage imageNamed:@"closed"] forState:0];
             }
+            
+            [weakself.processRemindButton addAction:^(UIButton *btn) {
+                [btn setHidden:YES];
+            }];
+            
         }
         
     } andFailBlock:^(NSError *error) {

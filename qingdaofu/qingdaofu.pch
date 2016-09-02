@@ -227,6 +227,9 @@
 //新增部分接口
 #define kDeleteProductOfMyReleaseString @"public/deleteproduct" //删除
 #define kCancelProductOfMyOrderString @"public/cancels" //接单申请中取消申请
+#define kAgreeProductOfMyReleaseString @"public/coufirm"  //发布方同意申请延期
+#define kDisAgreeProductOfMyReleaseString @"public/cancel"  //发布方取消同意申请延期
+#define kDelayDetailsOfMyReleaseString @"public/time"  //发布方查看延期详情
 
 //新增四大模块
 #define kHouseAssessString @"producedata/estate" //房产评估

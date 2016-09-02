@@ -436,6 +436,8 @@
     QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
         
+        NSDictionary *wowow = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
         [weakself.orderCloseArray addObject:response];
         [weakself.myClosingTableView reloadData];
@@ -446,28 +448,6 @@
         
     }];
 }
-
-////进度
-//- (void)lookUpSchedule
-//{
-//    NSString *schedule = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kLookUpScheduleString];
-//    NSDictionary *params = @{@"token" : [self getValidateToken],
-//                             @"id" : self.idString,
-//                             @"category" : self.categaryString
-//                             };
-//    QDFWeakSelf;
-//    [self requestDataPostWithString:schedule params:params successBlock:^(id responseObject) {
-//        ScheduleResponse *scheduleResponse = [ScheduleResponse objectWithKeyValues:responseObject];
-//        
-//        for (ScheduleModel *scheduleModel in scheduleResponse.disposing) {
-//            [weakself.scheduleOrderCloArray addObject:scheduleModel];
-//        }
-//        [weakself.myClosingTableView reloadData];
-//        [weakself getOrderEvaluateDetails];
-//    } andFailBlock:^(NSError *error) {
-//        
-//    }];
-//}
 
 //评价
 - (void)getOrderEvaluateDetails
@@ -530,9 +510,17 @@
 - (void)deleteTheProducOfOrderCloseing
 {
     NSString *deletePubString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kDeleteProductOfMyReleaseString];
-    NSDictionary *params = @{@"id" : self.idString,
+    
+    NSString *deleteId;
+    if (self.orderCloseArray.count > 0) {
+        PublishingResponse *responder = self.orderCloseArray[0];
+        deleteId = responder.username.deleteId;
+    }
+    
+    NSDictionary *params = @{@"id" : deleteId,
                              @"category" : self.categaryString,
-                             @"token" : [self getValidateToken]
+                             @"token" : [self getValidateToken],
+                             @"type" : @"1"
                              };
     
     QDFWeakSelf;

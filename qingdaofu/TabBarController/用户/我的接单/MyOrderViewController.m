@@ -113,7 +113,7 @@
             _pageOrder = 1;
             switch (segTag) {
                 case 111:{//全部
-                    weakself.status = @"0";
+                    weakself.status = @"-1";
                     weakself.progresStatus = @"0";
                     [weakself refreshsHeaderOfMyOrder];
                 }
@@ -581,10 +581,15 @@
 {
     RowsModel *eModel = self.myOrderDataList[indexPath.section];
    if ([eModel.progress_status isEqualToString:@"1"]){//申请中
+       
+       NSString *id_category = [NSString stringWithFormat:@"%@_%@",eModel.idString,eModel.category];
+       NSString *value2 = self.myOrderMobileDic[id_category];
+
        MyApplyingViewController *myApplyingVC = [[MyApplyingViewController alloc] init];
        myApplyingVC.idString = eModel.idString;
        myApplyingVC.categaryString = eModel.category;
        myApplyingVC.pidString = eModel.uidString;
+       myApplyingVC.cancelIdString = value2;
        [self.navigationController pushViewController:myApplyingVC animated:YES];
     }else if ([eModel.progress_status isEqualToString:@"2"]){//处理中
         MyProcessingViewController *myProcessingVC = [[MyProcessingViewController alloc] init];
@@ -699,7 +704,11 @@
         myScheduleVC.categoryString = lModel.category;
         [self.navigationController pushViewController:myScheduleVC animated:YES];
     }else if ([string isEqualToString:@"删除订单"]){
-        [self deleteTheOrderProductWithModel:lModel];
+        
+        NSString *id_cateStr = [NSString stringWithFormat:@"%@_%@",lModel.idString,lModel.category];
+        NSString *idCate = self.myOrderMobileDic[id_cateStr];
+        
+        [self deleteTheOrderProductWithModel:lModel andDeleteID:idCate];
     }else if ([string isEqualToString:@"评价发布方"]){
         AdditionalEvaluateViewController *additionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
         additionalEvaluateVC.idString = lModel.idString;
@@ -724,7 +733,6 @@
     NSDictionary *params = @{@"id" : idStr,
                              @"token" : [self getValidateToken]
                              };
-    
     QDFWeakSelf;
     [self requestDataPostWithString:cancelString params:params successBlock:^(id responseObject) {
         
@@ -741,12 +749,13 @@
 }
 
 //删除产品
-- (void)deleteTheOrderProductWithModel:(RowsModel *)lModel
+- (void)deleteTheOrderProductWithModel:(RowsModel *)lModel andDeleteID:(NSString *)deleteID
 {
     NSString *deleteProString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kDeleteProductOfMyReleaseString];
-    NSDictionary *params = @{@"id" : lModel.idString,
+    NSDictionary *params = @{@"id" : deleteID,
                              @"category" : lModel.category,
-                             @"token" : [self getValidateToken]
+                             @"token" : [self getValidateToken],
+                             @"type" : @"1"
                              };
     
     QDFWeakSelf;

@@ -283,15 +283,11 @@
     
     //发布方：态度。接单方：真实性
     self.evaDataDictionary[@"serviceattitude"] = [NSString getValidStringFromString:self.evaDataDictionary[@"serviceattitude"] toString:@""];
-//    [self.evaDataDictionary[@"serviceattitude"]?self.evaDataDictionary[@"serviceattitude"]:@"";
     //发布方：专业知识。接单方：响应度
     self.evaDataDictionary[@"professionalknowledge"] = [NSString getValidStringFromString:self.evaDataDictionary[@"professionalknowledge"] toString:@""];
-//    self.evaDataDictionary[@"professionalknowledge"]?self.evaDataDictionary[@"professionalknowledge"]:@"";
     //发布方：办事效率。接单方：响应度
     self.evaDataDictionary[@"workefficiency"] = [NSString getValidStringFromString:self.evaDataDictionary[@"workefficiency"] toString:@""];
-//    self.evaDataDictionary[@"workefficiency"]?self.evaDataDictionary[@"workefficiency"]:@"";
     self.evaDataDictionary[@"content"] = [NSString getValidStringFromString:self.evaDataDictionary[@"content"] toString:@"优质，专业，高效，快捷"];
-//    self.evaDataDictionary[@"content"]?self.evaDataDictionary[@"content"]:@"优质，专业，高效，快捷";
     //优质，专业，高效，快捷
 
     self.evaDataDictionary[@"category"] = self.categoryString;
