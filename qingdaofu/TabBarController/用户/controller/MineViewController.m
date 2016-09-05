@@ -90,7 +90,7 @@
         [_loginView setDidSelectedButton:^(NSInteger buttonTag) {
             
             [weakself tokenIsValid];
-            if (buttonTag == 0|| buttonTag == 101 || buttonTag == 3 || buttonTag == 6 || buttonTag == 7 || buttonTag == 8 || buttonTag == 9 || buttonTag == 12) {//我的认证，发布，保存，保全，保函，产调，评估，设置，
+            if (buttonTag == 0|| buttonTag == 101 || buttonTag == 4 || buttonTag == 8 || buttonTag == 9 || buttonTag == 10 || buttonTag == 11 || buttonTag == 16) {//我的认证，发布，保存，保全，保函，产调，评估，设置，
                 [weakself setDidTokenValid:^(TokenModel *tokenModel) {
                     if ([tokenModel.code integerValue] == 0000 || [tokenModel.code integerValue] == 3006) {
                         switch (buttonTag) {
@@ -130,37 +130,37 @@
                                 [weakself.navigationController pushViewController:myReleaseVC animated:YES];
                             }
                                 break;
-                            case 3:{//我的保存
+                            case 4:{//我的保存
                                 MySaveViewController *mySaveVC = [[MySaveViewController alloc] init];
                                 mySaveVC.hidesBottomBarWhenPushed = YES;
                                 [weakself.navigationController pushViewController:mySaveVC animated:YES];
                             }
                                 break;
-                            case 6:{//我的保全
+                            case 8:{//我的保全
                                 PowerProtectListViewController *powerProtectListVC = [[PowerProtectListViewController alloc] init];
                                 powerProtectListVC.hidesBottomBarWhenPushed = YES;
                                 [weakself.navigationController pushViewController:powerProtectListVC animated:YES];
                             }
                                 break;
-                            case 7:{//我的保函
+                            case 9:{//我的保函
                                 ApplicationListViewController *applicationListVC = [[ApplicationListViewController alloc] init];
                                 applicationListVC.hidesBottomBarWhenPushed = YES;
                                 [weakself.navigationController pushViewController:applicationListVC animated:YES];
                             }
                                 break;
-                            case 8:{//我的产调
+                            case 10:{//我的产调
                                 HousePropertyListViewController *housePropertyListVC = [[HousePropertyListViewController alloc] init];
                                 housePropertyListVC.hidesBottomBarWhenPushed = YES;
                                 [weakself.navigationController pushViewController:housePropertyListVC animated:YES];
                             }
                                 break;
-                            case 9:{//我的房产评估结果
+                            case 11:{//我的房产评估结果
                                 HouseAssessListViewController *houseAssessListVC = [[HouseAssessListViewController alloc] init];
                                 houseAssessListVC.hidesBottomBarWhenPushed = YES;
                                 [weakself.navigationController pushViewController:houseAssessListVC animated:YES];
                             }
                                 break;
-                            case 12:{//我的设置
+                            case 16:{//我的设置
                                 MySettingsViewController *mySettingVC = [[MySettingsViewController alloc] init];
                                 mySettingVC.hidesBottomBarWhenPushed = YES;
                                 [weakself.navigationController pushViewController:mySettingVC animated:YES];
@@ -175,12 +175,6 @@
                         
                         UINavigationController *msss = [[UINavigationController alloc] initWithRootViewController:loginVC];
                         [weakself presentViewController:msss animated:YES completion:nil];
-                        
-                        
-//                        UINavigationController *loginNavs = [[UINavigationController alloc] initWithRootViewController:loginNavs];
-                        
-                        
-//                        [weakself.navigationController pushViewController:loginVC animated:YES];
                     }
                 }];
             }else{
@@ -195,13 +189,13 @@
                                 [weakself.navigationController pushViewController:myOrderVC animated:YES];
                             }
                                 break;
-                            case 4:{//我的收藏
+                            case 5:{//我的收藏
                                 MyStoreViewController *myStoreVC = [[MyStoreViewController alloc] init];
                                 myStoreVC.hidesBottomBarWhenPushed = YES;
                                 [weakself.navigationController pushViewController:myStoreVC animated:YES];
                             }
                                 break;
-                            case 9:{//我的代理
+                            case 12:{//我的代理
                                 MyAgentListViewController *myAgentListVC = [[MyAgentListViewController alloc] init];
                                 myAgentListVC.hidesBottomBarWhenPushed = YES;
                                 

@@ -36,7 +36,6 @@
 @property (nonatomic,strong) NSMutableArray *myOrderDataList;
 @property (nonatomic,strong) NSMutableDictionary *myOrderCreditorDic;  //评价
 @property (nonatomic,strong) NSMutableDictionary *myOrderDelaysDic;
-@property (nonatomic,strong) NSMutableDictionary *myOrderMobileDic;
 
 @property (nonatomic,assign) NSInteger pageOrder;//页数
 @property (nonatomic,strong) NSString *deadTimeString;  //截止日期
@@ -194,14 +193,6 @@
     return _myOrderDelaysDic;
 }
 
-- (NSMutableDictionary *)myOrderMobileDic
-{
-    if (!_myOrderMobileDic) {
-        _myOrderMobileDic = [NSMutableDictionary dictionary];
-    }
-    return _myOrderMobileDic;
-}
-
 #pragma mark - tableView delegate and datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -323,11 +314,8 @@
         [cell.actButton2 setTitleColor:kBlackColor forState:0];
         cell.actButton2.layer.borderColor = kBorderColor.CGColor;
         
-        NSString *id_cateStr = [NSString stringWithFormat:@"%@_%@",rowModel.idString,rowModel.category];
-        NSString *idCate = self.myOrderMobileDic[id_cateStr];
-        
         [cell.actButton2 addAction:^(UIButton *btn) {
-            [weakself goToWriteScheduleOrEvaluate:@"取消申请" withSection:indexPath.section withString:idCate];
+            [weakself goToWriteScheduleOrEvaluate:@"取消申请" withSection:indexPath.section withString:@""];
         }];
         
     }else if ([rowModel.progress_status integerValue] == 2) {//处理
@@ -581,15 +569,12 @@
 {
     RowsModel *eModel = self.myOrderDataList[indexPath.section];
    if ([eModel.progress_status isEqualToString:@"1"]){//申请中
-       
-       NSString *id_category = [NSString stringWithFormat:@"%@_%@",eModel.idString,eModel.category];
-       NSString *value2 = self.myOrderMobileDic[id_category];
 
        MyApplyingViewController *myApplyingVC = [[MyApplyingViewController alloc] init];
        myApplyingVC.idString = eModel.idString;
        myApplyingVC.categaryString = eModel.category;
        myApplyingVC.pidString = eModel.uidString;
-       myApplyingVC.cancelIdString = value2;
+       myApplyingVC.cancelIdString = eModel.applyid;
        [self.navigationController pushViewController:myApplyingVC animated:YES];
     }else if ([eModel.progress_status isEqualToString:@"2"]){//处理中
         MyProcessingViewController *myProcessingVC = [[MyProcessingViewController alloc] init];
@@ -603,6 +588,7 @@
         myEndingVC.idString = eModel.idString;
         myEndingVC.categaryString = eModel.category;
         myEndingVC.pidString = eModel.uidString;
+        myEndingVC.deleteId = eModel.applyid;
         [self.navigationController pushViewController:myEndingVC animated:YES];
     }else if([eModel.progress_status isEqualToString:@"4"]){//结案
         NSString *id_category = [NSString stringWithFormat:@"%@_%@",eModel.idString,eModel.category];
@@ -612,6 +598,7 @@
         myClosingVC.idString = eModel.idString;
         myClosingVC.categaryString = eModel.category;
         myClosingVC.pidString = eModel.uidString;
+        myClosingVC.deleteId = eModel.applyid;
         myClosingVC.evaString = value1;
         [self.navigationController pushViewController:myClosingVC animated:YES];
     }
@@ -635,19 +622,17 @@
             [weakself.myOrderDataList removeAllObjects];
             [weakself.myOrderCreditorDic removeAllObjects];
             [weakself.myOrderDelaysDic removeAllObjects];
-            [weakself.myOrderMobileDic removeAllObjects];
         }
         
         ReleaseResponse *responceModel = [ReleaseResponse objectWithKeyValues:responseObject];
         
         if (responceModel.rows.count == 0) {
-            [weakself showHint:@"没有更多了"];
             _pageOrder -- ;
+            [weakself showHint:@"没有更多了"];
         }
         
         [weakself.myOrderCreditorDic setValuesForKeysWithDictionary:responceModel.creditor];
         [weakself.myOrderDelaysDic setValuesForKeysWithDictionary:responceModel.delays];
-        [weakself.myOrderMobileDic setValuesForKeysWithDictionary:responceModel.mobile];
         
         for (RowsModel *orderModel in responceModel.rows) {
             [weakself.myOrderDataList addObject:orderModel];
@@ -690,12 +675,12 @@
     RowsModel *lModel = self.myOrderDataList[section];
     
     if ([string isEqualToString:@"取消申请"]) {
-        [self cancelTheProductApplyWithID:evaString];
+        [self cancelTheProductApplyWithID:lModel.applyid];
     }else if ([string isEqualToString:@"联系发布方"]){
-        if ([lModel.mobile isEqualToString:@""] || !lModel.mobile || lModel.mobile == nil) {
+        if ([lModel.applymobile isEqualToString:@""] || !lModel.applymobile || lModel.applymobile == nil) {
             [self showHint:@"发布方未认证，不能打电话"];
         }else{
-            NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",lModel.mobile];
+            NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",lModel.applymobile];
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
         }
     }else if ([string isEqualToString:@"填写进度"]){
@@ -704,11 +689,7 @@
         myScheduleVC.categoryString = lModel.category;
         [self.navigationController pushViewController:myScheduleVC animated:YES];
     }else if ([string isEqualToString:@"删除订单"]){
-        
-        NSString *id_cateStr = [NSString stringWithFormat:@"%@_%@",lModel.idString,lModel.category];
-        NSString *idCate = self.myOrderMobileDic[id_cateStr];
-        
-        [self deleteTheOrderProductWithModel:lModel andDeleteID:idCate];
+        [self deleteTheOrderProductWithModel:lModel];
     }else if ([string isEqualToString:@"评价发布方"]){
         AdditionalEvaluateViewController *additionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
         additionalEvaluateVC.idString = lModel.idString;
@@ -749,10 +730,10 @@
 }
 
 //删除产品
-- (void)deleteTheOrderProductWithModel:(RowsModel *)lModel andDeleteID:(NSString *)deleteID
+- (void)deleteTheOrderProductWithModel:(RowsModel *)lModel
 {
     NSString *deleteProString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kDeleteProductOfMyReleaseString];
-    NSDictionary *params = @{@"id" : deleteID,
+    NSDictionary *params = @{@"id" : lModel.applyid,
                              @"category" : lModel.category,
                              @"token" : [self getValidateToken],
                              @"type" : @"1"

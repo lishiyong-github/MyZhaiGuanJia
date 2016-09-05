@@ -82,7 +82,7 @@
     if (!_evaluateCommitView) {
         _evaluateCommitView = [BaseCommitView newAutoLayoutView];
         [_evaluateCommitView.button setTitle:@"追加评价" forState:0];
-        
+       
         QDFWeakSelf;
         [_evaluateCommitView addAction:^(UIButton *btn) {
             AdditionalEvaluateViewController *additionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
@@ -94,6 +94,7 @@
             UINavigationController *nasi = [[UINavigationController alloc] initWithRootViewController:additionalEvaluateVC];
             [weakself presentViewController:nasi animated:YES completion:nil];
         }];
+        
     }
     return _evaluateCommitView;
 }

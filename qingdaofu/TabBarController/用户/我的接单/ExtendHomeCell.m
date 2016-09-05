@@ -121,6 +121,7 @@
 {
     if (!_actButton1) {
         _actButton1 = [UIButton newAutoLayoutView];
+        _actButton1.backgroundColor = kNavColor;
         _actButton1.layer.borderWidth = kLineWidth;
         _actButton1.layer.borderColor = kBorderColor.CGColor;
         _actButton1.layer.cornerRadius = corner1;
@@ -134,6 +135,7 @@
 {
     if (!_actButton2) {
         _actButton2 = [UIButton newAutoLayoutView];
+        _actButton2.backgroundColor = kNavColor;
         _actButton2.layer.borderWidth = kLineWidth;
         _actButton2.layer.borderColor = kBlueColor.CGColor;
         _actButton2.layer.cornerRadius = corner;

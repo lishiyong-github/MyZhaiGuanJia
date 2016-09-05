@@ -65,8 +65,11 @@
         
         NSArray *views2 = @[self.point1,self.point2,self.point3,self.point4];
         [views2 autoAlignViewsToAxis:ALAxisHorizontal];
+        [views2 autoSetViewsDimensionsToSize:CGSizeMake(5, 5)];
+        
         [self.point1 autoAlignAxis:ALAxisVertical toSameAxisOfView:self.progress1];
-        [self.point1 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.progress1];
+        [self.point1 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.progress1 withOffset:kSmallPadding];
+        
         [self.point2 autoAlignAxis:ALAxisVertical toSameAxisOfView:self.progress2];
         [self.point3 autoAlignAxis:ALAxisVertical toSameAxisOfView:self.progress3];
         [self.point4 autoAlignAxis:ALAxisVertical toSameAxisOfView:self.progress4];
@@ -78,6 +81,7 @@
         [self.line1 autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.point1];
         [self.line1 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.point1 withOffset:5];
         [self.line1 autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.point2 withOffset:-5];
+        [self.line1 autoSetDimension:ALDimensionHeight toSize:kLineWidth];
         
         [self.line2 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.point2 withOffset:5];
         [self.line2 autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.point3 withOffset:-5];
@@ -112,19 +116,6 @@
         [_button1 setTitleEdgeInsets:UIEdgeInsetsMake(0, kBigPadding, 0, 0)];
         [_button1 setImage:[UIImage imageNamed:@"right"] forState:0];
         _button1.userInteractionEnabled = NO;
-
-        NSString *str1 = @"保全进度";
-        NSString *str2 = @"本平台承诺对您的案件资料和隐私严格保密！";
-        NSString *str = [NSString stringWithFormat:@"%@\n%@",str1,str2];
-        NSMutableAttributedString *attributeStr = [[NSMutableAttributedString alloc] initWithString:str];
-        [attributeStr setAttributes:@{NSForegroundColorAttributeName:kBlackColor,NSFontAttributeName:kBigFont} range:NSMakeRange(0, str1.length)];
-        [attributeStr setAttributes:@{NSForegroundColorAttributeName:kLightGrayColor,NSFontAttributeName:kSmallFont} range:NSMakeRange(str1.length+1, str2.length)];
-        
-        NSMutableParagraphStyle * paragraphStyle1 = [[NSMutableParagraphStyle alloc] init];
-        [paragraphStyle1 setLineSpacing:3];
-        [attributeStr addAttribute:NSParagraphStyleAttributeName value:paragraphStyle1 range:NSMakeRange(0, [str length])];
-       
-        [_button1 setAttributedTitle:attributeStr forState:0];
     }
     return _button1;
 }
@@ -149,7 +140,6 @@
         _progress1.textColor = kLightGrayColor;
         _progress1.font = kSecondFont;
         _progress1.textAlignment = NSTextAlignmentCenter;
-//        _progress1.backgroundColor = kRedColor;
     }
     return _progress1;
 }
@@ -162,7 +152,6 @@
         _progress2.textColor = kLightGrayColor;
         _progress2.font = kSecondFont;
         _progress2.textAlignment = NSTextAlignmentCenter;
-//        _progress2.backgroundColor = kYellowColor;
     }
     return _progress2;
 }
@@ -176,7 +165,6 @@
         _progress3.textColor = kLightGrayColor;
         _progress3.font = kSecondFont;
         _progress3.textAlignment = NSTextAlignmentCenter;
-//        _progress3.backgroundColor = kBlueColor;
     }
     return _progress3;
 }
@@ -190,7 +178,6 @@
         _progress4.textColor = kLightGrayColor;
         _progress4.font = kSecondFont;
         _progress4.textAlignment = NSTextAlignmentCenter;
-//        _progress4.backgroundColor = kGrayColor;
     }
     return _progress4;
 }

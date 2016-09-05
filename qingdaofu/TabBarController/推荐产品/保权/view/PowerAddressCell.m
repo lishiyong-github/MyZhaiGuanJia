@@ -31,15 +31,16 @@
         [self.nameLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
         [self.nameLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kSmallPadding];
         
-        [self.phoneLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.actButton withOffset:-kBigPadding];
+        [self.phoneLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.actButton];
         [self.phoneLabel autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.nameLabel];
         
         [self.addressLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
         [self.addressLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.nameLabel withOffset:kSmallPadding];
-        [self.addressLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:self.phoneLabel];
+        [self.addressLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.actButton];
         
         [self.actButton autoPinEdgeToSuperviewEdge:ALEdgeRight];
         [self.actButton autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
+        [self.actButton autoSetDimensionsToSize:CGSizeMake(30, 30)];
         
         self.didSetupConstraints = YES;
     }

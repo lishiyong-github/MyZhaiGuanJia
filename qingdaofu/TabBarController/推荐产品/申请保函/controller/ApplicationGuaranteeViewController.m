@@ -487,7 +487,7 @@
         
         if ([stepString integerValue] == 1) {
             
-            if ([baseModel.msg isEqualToString:@"请上传起诉书的图片"] || [baseModel.msg isEqualToString:@"申请失败！起诉书不能为空。 "]) {//申请失败！起诉书不能为空。
+            if ([baseModel.msg isEqualToString:@"请上传起诉书的图片"] || [baseModel.msg isEqualToString:@"申请失败！起诉书不能为空。 "] || [baseModel.msg isEqualToString:@"起诉书不能为空。 "]) {//申请失败！起诉书不能为空。
                 [weakself.guaranteeFirstView setHidden:YES];
                 [weakself.guaranteeSecondView setHidden:NO];
                 

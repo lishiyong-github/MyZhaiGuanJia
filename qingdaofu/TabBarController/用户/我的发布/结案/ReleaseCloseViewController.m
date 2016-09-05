@@ -501,13 +501,7 @@
 {
     NSString *deletePubString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kDeleteProductOfMyReleaseString];
     
-    NSString *deleteId;
-    if (self.releaseArray.count > 0) {
-        PublishingResponse *responder = self.releaseArray[0];
-        deleteId = responder.username.deleteId;
-    }
-    
-    NSDictionary *params = @{@"id" : deleteId,
+    NSDictionary *params = @{@"id" : self.idString,
                              @"category" : self.categaryString,
                              @"token" : [self getValidateToken],
                              @"type" : @"2"

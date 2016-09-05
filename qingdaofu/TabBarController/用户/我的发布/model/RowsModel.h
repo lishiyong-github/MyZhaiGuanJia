@@ -21,6 +21,8 @@
 @property (nonatomic,copy) NSString *applyclosefrom;   //发起申请人的uid
 @property (nonatomic,copy) NSString *pid;   //申请人的uid
 @property (nonatomic,copy) NSString *uidString;  //申请人的uid
+@property (nonatomic,copy) NSString *applyid;  //删除ID
+@property (nonatomic,copy) NSString *applymobile;//联系接单方，联系发布方
 
 @property (nonatomic,copy) NSString *create_time;  //
 @property (nonatomic,copy) NSString *modify_time;  //收藏时间
@@ -51,6 +53,5 @@
 @property (nonatomic,copy) NSString *loanyear;  //借款人年龄
 @property (nonatomic,copy) NSString *obligeeyear; //权利人年龄
 
-@property (nonatomic,copy) NSString *mobile;//联系接单方，联系发布方
 
 @end

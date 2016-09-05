@@ -99,16 +99,14 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    return 75;
     if (self.messagePubArray.count > 0) {
         MessageModel *model = self.messagePubArray[indexPath.section];
         
         CGSize titleSize = CGSizeMake(kScreenWidth - 55, MAXFLOAT);
         CGSize actualsize = [model.contents boundingRectWithSize:titleSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName :kFirstFont} context:nil].size;
         
-        return 50 + MAX(actualsize.height, 17);
+        return 40 + MAX(actualsize.height, 16);
     }
-    //    return 75;
     return 0;
 
 }
@@ -183,6 +181,8 @@
     QDFWeakSelf;
     [self requestDataPostWithString:mesString params:params successBlock:^(id responseObject) {
         
+        NSDictionary *sisis = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
         if ([page integerValue] == 1) {
             [weakself.messagePubArray removeAllObjects];
         }
@@ -230,6 +230,7 @@
 {
     NSString *isReadString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMessageIsReadString];
     NSDictionary *params = @{@"id" : model.idStr,
+                             @"pid" : model.category_id.idString,
                              @"token" : [self getValidateToken]
                              };
     [self requestDataPostWithString:isReadString params:params successBlock:^(id responseObject) {

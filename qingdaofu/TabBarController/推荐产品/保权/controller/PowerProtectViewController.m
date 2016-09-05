@@ -250,7 +250,6 @@
                 cell.agentLabel.text = @"收货地址";
                 cell.agentTextField.placeholder = @"请选择";
                 cell.agentTextField.text = @"";
-//                cell.agentTextField.text = weakself.powerDic[@"address"]?weakself.powerDic[@"address"]:@"";
                 [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
                 
             }else if (segTag == 1){//自取

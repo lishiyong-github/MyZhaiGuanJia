@@ -496,10 +496,10 @@
 ////        checkDetailPublishVC.typeDegreeString = @"处理中";
 //        [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
         
-        if ([ymodel.mobile isEqualToString:@""] || !ymodel.mobile || ymodel.mobile == nil) {
+        if ([ymodel.applymobile isEqualToString:@""] || !ymodel.applymobile || ymodel.applymobile == nil) {
             [self showHint:@"接单方未认证，不能打电话"];
         }else{
-            NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",ymodel.mobile];
+            NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",ymodel.applymobile];
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
         }
     }else if ([string isEqualToString:@"删除订单"]){

@@ -232,10 +232,9 @@
         
     }else{
         if (self.didSelectedButton) {
-            self.didSelectedButton(indexPath.section*3+indexPath.row);
+            self.didSelectedButton(indexPath.section*4+indexPath.row);
         }
     }    
-    
     
 //    if (indexPath.section > 1) {//我的代理收藏保存设置
 //    }else if(indexPath.section == 0){//登录

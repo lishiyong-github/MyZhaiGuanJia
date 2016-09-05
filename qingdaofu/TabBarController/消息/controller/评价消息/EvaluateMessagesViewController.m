@@ -171,7 +171,7 @@
     if ([_tagString isEqualToString:@"send"]) {
         LaunchEvaluateModel *model = self.launchEvaListArray[indexPath.section];
         if ([model.pictures isEqualToArray:@[]] || [model.pictures[0] isEqualToString:@""]) {
-            return 185;
+            return 175;
         }else{
             return 245;
         }
@@ -179,9 +179,9 @@
     
     EvaluateModel *model = self.evaluateListArray[indexPath.section];
     if ([model.pictures isEqualToArray:@[]] || [model.pictures[0] isEqualToString:@""]) {
-        return 145;
+        return 140;
     }else{
-        return 205;
+        return 200;
     }
     
     return 0;

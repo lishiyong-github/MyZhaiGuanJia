@@ -96,14 +96,13 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    return 75;
     if (self.messageSysArray.count > 0) {
         MessageModel *model = self.messageSysArray[indexPath.section];
         
         CGSize titleSize = CGSizeMake(kScreenWidth - 55, MAXFLOAT);
         CGSize actualsize = [model.contents boundingRectWithSize:titleSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName :kFirstFont} context:nil].size;
         
-        return 40 + MAX(actualsize.height, 17);
+        return 40 + MAX(actualsize.height, 16);
     }
     return 0;
 }
@@ -136,11 +135,6 @@
     
     cell.timeLabel.text = [NSDate getYMDhmFormatterTime:model.create_time];
     cell.contextLabel.text = model.contents;
-    
-    
-//    [cell.typeButton setTitle:@"申请消息" forState:0];
-//    cell.timeLabel.text = @"2016-12-12 10:10";
-//    cell.contextLabel.text = @"您发布的融资RZ201601010001有心得申请记录";
     
     return cell;
 }
@@ -226,6 +220,7 @@
 {
     NSString *isReadString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMessageIsReadString];
     NSDictionary *params = @{@"id" : idStr,
+                             @"pid" : categoryModel.idString,
                              @"token" : [self getValidateToken]
                              };
     QDFWeakSelf;

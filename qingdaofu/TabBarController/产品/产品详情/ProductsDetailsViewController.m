@@ -148,11 +148,11 @@
 {
     if (!_productsDetailsTableView) {
         _productsDetailsTableView = [UITableView newAutoLayoutView];
+        _productsDetailsTableView.backgroundColor = kBackColor;
+        _leftTableView.separatorColor = kSeparateColor;
         _productsDetailsTableView.delegate = self;
         _productsDetailsTableView.dataSource = self;
         _productsDetailsTableView.tableFooterView = [[UIView alloc] init];
-        _productsDetailsTableView.backgroundColor = kBackColor;
-        _leftTableView.separatorColor = kSeparateColor;
     }
     return _productsDetailsTableView;
 }

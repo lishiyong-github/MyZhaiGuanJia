@@ -507,30 +507,6 @@
     }];
 }
 
-////进度
-//- (void)lookUpProcessingSchedule
-//{
-//    NSString *scheduleString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kLookUpScheduleString];
-//    NSDictionary *params = @{@"token" : [self getValidateToken],
-//                             @"id" : self.idString,
-//                             @"category" : self.categaryString,
-//                             @"page" : @"1"
-//                             };
-//    QDFWeakSelf;
-//    [self requestDataPostWithString:scheduleString params:params successBlock:^(id responseObject) {
-//        ScheduleResponse *scheduleResponse = [ScheduleResponse objectWithKeyValues:responseObject];
-//        
-//        for (ScheduleModel *scheduleModel in scheduleResponse.disposing) {
-//            [weakself.scheduleOrderProArray addObject:scheduleModel];
-//        }
-//        [weakself.myProcessingTableView reloadData];
-//        [weakself delayRequest];
-//        
-//    } andFailBlock:^(NSError *error) {
-//        
-//    }];
-//}
-
 //申请延期状态
 - (void)delayRequest
 {
@@ -562,13 +538,13 @@
                 }
             }else{
                 NSLog(@"结案申请中，不能申请延期");
-                [weakself.processRemindButton setHidden:NO];
-                [weakself.processRemindButton setTitle:@"结案申请中，不能申请延期  " forState:0];
-                [weakself.processRemindButton setImage:[UIImage imageNamed:@"closed"] forState:0];
-                
-                [weakself.processRemindButton addAction:^(UIButton *btn) {
-                    [btn setHidden:YES];
-                }];
+                [weakself.processRemindButton setHidden:YES];
+//                [weakself.processRemindButton setTitle:@"结案申请中，不能申请延期  " forState:0];
+//                [weakself.processRemindButton setImage:[UIImage imageNamed:@"closed"] forState:0];
+//                
+//                [weakself.processRemindButton addAction:^(UIButton *btn) {
+//                    [btn setHidden:YES];
+//                }];
             }
         }else{
             //已申请：0申请中,1同意，2拒绝，3作废，
