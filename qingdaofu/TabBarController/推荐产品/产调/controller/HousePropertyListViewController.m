@@ -229,14 +229,18 @@
             [cell.rightButton setTitle:@"立即支付" forState:0];
             
             [cell.leftButton addAction:^(UIButton *btn) {
-                HousePayingEditViewController *housePayingEditVC = [[HousePayingEditViewController alloc] init];
-                housePayingEditVC.areaString = pModel.city;
-                housePayingEditVC.addressString = pModel.address;
-                housePayingEditVC.phoneString = pModel.phone;
-                housePayingEditVC.idString = pModel.idString;
-                housePayingEditVC.moneyString = pModel.money;
-                housePayingEditVC.actString = @"2";
-                [weakself.navigationController pushViewController:housePayingEditVC animated:YES];
+//                HousePayingEditViewController *housePayingEditVC = [[HousePayingEditViewController alloc] init];
+//                housePayingEditVC.areaString = pModel.city;
+//                housePayingEditVC.addressString = pModel.address;
+//                housePayingEditVC.phoneString = pModel.phone;
+//                housePayingEditVC.idString = pModel.idString;
+//                housePayingEditVC.moneyString = pModel.money;
+//                housePayingEditVC.actString = @"2";
+//                [weakself.navigationController pushViewController:housePayingEditVC animated:YES];
+                
+                HouseCopyViewController *houseCopyVC = [[HouseCopyViewController alloc] init];
+                [weakself.navigationController pushViewController:houseCopyVC animated:YES];
+                
             }];
             
             [cell.rightButton addAction:^(UIButton *btn) {

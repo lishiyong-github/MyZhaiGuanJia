@@ -548,7 +548,7 @@
     if (indexPath.section == 1) {//查看发布方
         PublishingResponse *respongr = self.myApplyArray[0];
         UserNameModel *usModel = respongr.username;
-        if ([usModel.jusername isEqualToString:@""] || usModel.jusername == nil || !usModel.jusername) {
+        if ([usModel.username isEqualToString:@""] || usModel.username == nil || !usModel.username) {
             [self showHint:@"发布方未认证，不能查看相关信息"];
         }else{
             CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
@@ -557,6 +557,7 @@
             checkDetailPublishVC.idString = self.idString;
             checkDetailPublishVC.categoryString = self.categaryString;
             checkDetailPublishVC.pidString = self.pidString;
+            [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
         }
         
     }else if (indexPath.section == 2 && indexPath.row == 0) {//查看更多

@@ -14,8 +14,6 @@
 
 #import "CopyCell.h"
 #import "MineUserCell.h"
-#import "EditDebtAddressCell.h"
-#import "AgentCell.h"
 
 @interface HouseCopyViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -26,6 +24,7 @@
 
 //json
 @property (nonatomic,strong) NSMutableDictionary *houseCopyDic;
+@property (nonatomic,strong) NSString *refreshString;  //刷新单元格标志
 
 
 @end
@@ -77,7 +76,7 @@
 {
     if (!_copyFooterButton) {
         _copyFooterButton = [BaseCommitButton newAutoLayoutView];
-        [_copyFooterButton setTitle:@"点击支付" forState:0];
+        [_copyFooterButton setTitle:@"确认发货" forState:0];
         
         QDFWeakSelf;
         [_copyFooterButton addAction:^(UIButton *btn) {
@@ -88,13 +87,18 @@
     return _copyFooterButton;
 }
 
+- (NSMutableDictionary *)houseCopyDic
+{
+    if (!_houseCopyDic) {
+        _houseCopyDic = [NSMutableDictionary dictionary];
+    }
+    return _houseCopyDic;
+}
+
 #pragma mark -tableview delegate and datasoyrce
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == 0) {
-        return 1;
-    }
-    return 2;
+    return 1;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -105,7 +109,11 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        return 68;
+        if ([self.refreshString integerValue] == 1) {
+            return 68;
+        }else{
+            return kCellHeight;
+        }
     }
     return kCellHeight;
 }
@@ -116,72 +124,47 @@
     if (indexPath.section == 0) {
         identifier = @"copy00";
         
-        /*
-        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if (!cell) {
-            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        if ([self.refreshString integerValue] == 1) {
+            CopyCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[CopyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.soButton.userInteractionEnabled = NO;
+            
+            return cell;
+        }else{
+            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.userActionButton.userInteractionEnabled = NO;
+            cell.userNameButton.userInteractionEnabled = NO;
+            
+            [cell.userNameButton setTitle:@"  请选择地址" forState:0];
+            [cell.userNameButton setImage:[UIImage imageNamed:@"address"] forState:0];
+            [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            
+            return cell;
         }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.userActionButton.userInteractionEnabled = NO;
-        cell.userNameButton.userInteractionEnabled = NO;
-        
-        [cell.userNameButton setTitle:@"  请选择地址" forState:0];
-        [cell.userNameButton setImage:[UIImage imageNamed:@"address"] forState:0];
-        [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-        
-        return cell;
-         */
-        
-        CopyCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if (!cell) {
-            cell = [[CopyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.soButton.userInteractionEnabled = NO;
-        
-        [cell.imageViewcc setImage:[UIImage imageNamed:@"address"]];
-        cell.nameLabel.text = @"李丽莉";
-        cell.phoneLabel.text = @"123456789909";
-        cell.addressLabel.text = @"上海市浦东新区浦东南路9855号世界广场34楼";
-        [cell.soButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-        
-        return cell;
+        return nil;
     }
     
     //section == 1
-    if (indexPath.row == 1) {//快递费
-        identifier = @"copy10";
-        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if (!cell) {
-            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.userActionButton.userInteractionEnabled = NO;
-        cell.userNameButton.userInteractionEnabled = NO;
-        
-        [cell.userNameButton setTitle:@"快递费" forState:0];
-        [cell.userActionButton setTitle:@"¥8" forState:0];
-        [cell.userActionButton setTitleColor:kRedColor forState:0];
-        
-        return cell;
-    }else{
-        identifier = @"copy11";
-        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if (!cell) {
-            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        NSMutableAttributedString *title = [cell.userNameButton setAttributeString:@"  微信支付" withColor:kBlackColor andSecond:@"（仅支持微信支付）" withColor:kLightGrayColor withFont:13];
-        [cell.userNameButton setAttributedTitle:title forState:0];
-        [cell.userNameButton setImage:[UIImage imageNamed:@"wechat"] forState:0];
-        
-        [cell.userActionButton setImage:[UIImage imageNamed:@"choosed"] forState:0];
-        
-        return cell;
+    identifier = @"copy10";
+    MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    if (!cell) {
+        cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.userActionButton.userInteractionEnabled = NO;
+    cell.userNameButton.userInteractionEnabled = NO;
     
-    return nil;
+    [cell.userNameButton setTitle:@"快递方式" forState:0];
+    [cell.userActionButton setTitle:@"到付" forState:0];
+    
+    return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -219,11 +202,32 @@
         
         QDFWeakSelf;
         [receiptAddressListVC setDidSelectedReceiptAddress:^(NSString *name,NSString *phone,NSString *address) {
-            MineUserCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-            [cell.userActionButton setTitle:address forState:0];
+            
+            if ([weakself.refreshString integerValue] == 1) {
+                
+            }else{
+                weakself.refreshString = @"1";
+                [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+            }
+            
+            CopyCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            [cell.imageViewcc setImage:[UIImage imageNamed:@"address"]];            [cell.soButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            cell.nameLabel.text = name;
+            cell.phoneLabel.text = phone;
+            cell.addressLabel.text = address;
+            
             [weakself.houseCopyDic setObject:address forKey:@"address"];
         }];
     }
+}
+
+#pragma mark - method
+- (void)commitToExpress
+{
+    [self.view endEditing:YES];
+    NSString *expressString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kHousePropertyCopyString];
+    
+    NSDictionary *params = @{};
 }
 
 

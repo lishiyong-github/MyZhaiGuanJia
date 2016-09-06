@@ -269,7 +269,7 @@
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:appGuaranteeString params:params successBlock:^(id responseObject) {
-        
+                
         if ([page integerValue] == 1) {
             [weakself.guaranteeListArray removeAllObjects];
         }

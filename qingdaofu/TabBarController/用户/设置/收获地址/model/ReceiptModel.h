@@ -10,7 +10,7 @@
 
 @interface ReceiptModel : NSObject
 
-@property (nonatomic,copy) NSString *address;
+@property (nonatomic,copy) NSString *address;  
 @property (nonatomic,copy) NSString *createtime;
 @property (nonatomic,copy) NSString *idString;
 @property (nonatomic,copy) NSString *isdefault;

@@ -167,6 +167,9 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.section == 0 && indexPath.row == 3) {
+        return 60;
+    }
     return kCellHeight;
 }
 

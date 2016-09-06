@@ -568,39 +568,43 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     RowsModel *eModel = self.myOrderDataList[indexPath.section];
-   if ([eModel.progress_status isEqualToString:@"1"]){//申请中
-
-       MyApplyingViewController *myApplyingVC = [[MyApplyingViewController alloc] init];
-       myApplyingVC.idString = eModel.idString;
-       myApplyingVC.categaryString = eModel.category;
-       myApplyingVC.pidString = eModel.uidString;
-       myApplyingVC.cancelIdString = eModel.applyid;
-       [self.navigationController pushViewController:myApplyingVC animated:YES];
-    }else if ([eModel.progress_status isEqualToString:@"2"]){//处理中
-        MyProcessingViewController *myProcessingVC = [[MyProcessingViewController alloc] init];
-        myProcessingVC.idString = eModel.idString;
-        myProcessingVC.categaryString = eModel.category;
-        myProcessingVC.pidString = eModel.uidString;
-        myProcessingVC.deadLine = self.deadTimeString;
-        [self.navigationController pushViewController:myProcessingVC animated:YES];
-    }else if ([eModel.progress_status isEqualToString:@"3"]){//终止
-        MyEndingViewController *myEndingVC = [[MyEndingViewController alloc] init];
-        myEndingVC.idString = eModel.idString;
-        myEndingVC.categaryString = eModel.category;
-        myEndingVC.pidString = eModel.uidString;
-        myEndingVC.deleteId = eModel.applyid;
-        [self.navigationController pushViewController:myEndingVC animated:YES];
-    }else if([eModel.progress_status isEqualToString:@"4"]){//结案
-        NSString *id_category = [NSString stringWithFormat:@"%@_%@",eModel.idString,eModel.category];
-        NSString *value1 = self.myOrderCreditorDic[id_category];
-        
-        MyClosingViewController *myClosingVC = [[MyClosingViewController alloc] init];
-        myClosingVC.idString = eModel.idString;
-        myClosingVC.categaryString = eModel.category;
-        myClosingVC.pidString = eModel.uidString;
-        myClosingVC.deleteId = eModel.applyid;
-        myClosingVC.evaString = value1;
-        [self.navigationController pushViewController:myClosingVC animated:YES];
+    
+    if ([eModel.is_del integerValue] == 1) {//产品已被删除
+        [self showHint:@"该产品已被删除，不能查看详细信息"];
+    }else{
+        if ([eModel.progress_status isEqualToString:@"1"]){//申请中
+            MyApplyingViewController *myApplyingVC = [[MyApplyingViewController alloc] init];
+            myApplyingVC.idString = eModel.idString;
+            myApplyingVC.categaryString = eModel.category;
+            myApplyingVC.pidString = eModel.uidString;
+            myApplyingVC.cancelIdString = eModel.applyid;
+            [self.navigationController pushViewController:myApplyingVC animated:YES];
+        }else if ([eModel.progress_status isEqualToString:@"2"]){//处理中
+            MyProcessingViewController *myProcessingVC = [[MyProcessingViewController alloc] init];
+            myProcessingVC.idString = eModel.idString;
+            myProcessingVC.categaryString = eModel.category;
+            myProcessingVC.pidString = eModel.uidString;
+            myProcessingVC.deadLine = self.deadTimeString;
+            [self.navigationController pushViewController:myProcessingVC animated:YES];
+        }else if ([eModel.progress_status isEqualToString:@"3"]){//终止
+            MyEndingViewController *myEndingVC = [[MyEndingViewController alloc] init];
+            myEndingVC.idString = eModel.idString;
+            myEndingVC.categaryString = eModel.category;
+            myEndingVC.pidString = eModel.uidString;
+            myEndingVC.deleteId = eModel.applyid;
+            [self.navigationController pushViewController:myEndingVC animated:YES];
+        }else if([eModel.progress_status isEqualToString:@"4"]){//结案
+            NSString *id_category = [NSString stringWithFormat:@"%@_%@",eModel.idString,eModel.category];
+            NSString *value1 = self.myOrderCreditorDic[id_category];
+            
+            MyClosingViewController *myClosingVC = [[MyClosingViewController alloc] init];
+            myClosingVC.idString = eModel.idString;
+            myClosingVC.categaryString = eModel.category;
+            myClosingVC.pidString = eModel.uidString;
+            myClosingVC.deleteId = eModel.applyid;
+            myClosingVC.evaString = value1;
+            [self.navigationController pushViewController:myClosingVC animated:YES];
+        }
     }
 }
 

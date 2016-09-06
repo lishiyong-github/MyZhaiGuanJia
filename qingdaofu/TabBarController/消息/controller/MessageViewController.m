@@ -139,7 +139,7 @@
             }else{
                 [cell.newsCountButton setHidden:NO];
                 if ([childDic[@"number"] integerValue] > 99) {
-                    [cell.newsCountButton setTitle:@"99+" forState:0];
+                    [cell.newsCountButton setTitle:@"99" forState:0];
                 }else{
                     [cell.newsCountButton setTitle:childDic[@"number"] forState:0];
                 }
@@ -147,23 +147,6 @@
         }
         return cell;
     }
-    
-//    //最近消息
-//    identifier = @"newMessages";
-//    
-//    MessageCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-//    if (!cell) {
-//        cell = [[MessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-//    }
-//    
-//    [cell setSeparatorInset:UIEdgeInsetsMake(0, kBigPadding, 0, 0)];
-//    
-//    cell.userLabel.text = @"用户1234567888";
-//    cell.timeLabel.text = @"2016-02-10 10:12";
-//    cell.newsLabel.text = @"最新消息最新消息最新消息";
-//    cell.countLabel.text = @"40";
-//    
-//    return cell;
     return nil;
 }
 

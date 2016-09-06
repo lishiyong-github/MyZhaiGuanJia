@@ -40,7 +40,7 @@
         
         [self.addressLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.nameLabel];
         [self.addressLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kBigPadding];
-//        [self.addressLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.soButton withOffset:-kBigPadding];
+        [self.phoneLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.soButton withOffset:-kBigPadding];
         
         [self.soButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.soButton autoAlignAxisToSuperviewAxis:ALAxisHorizontal];

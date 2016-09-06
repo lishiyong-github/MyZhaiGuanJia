@@ -248,6 +248,8 @@
     
     if (self.allEvaDataArray.count > 0) {
         return 2;
+    }else{
+        return 1;
     }
     return 0;
 }
@@ -258,9 +260,9 @@
         if (self.allEvaDataArray.count > 0) {
             EvaluateModel *model = self.allEvaDataArray[0];
             if ([model.pictures isEqualToArray:@[]] || [model.pictures[0] isEqualToString:@""]) {
-                return 105;
+                return 90;
             }else{
-                return 160;
+                return 145;
             }
         }else{
             return 145;

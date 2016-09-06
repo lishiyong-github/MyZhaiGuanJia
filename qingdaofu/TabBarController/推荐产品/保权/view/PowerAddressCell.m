@@ -73,7 +73,6 @@
         _addressLabel = [UILabel newAutoLayoutView];
         _addressLabel.font = kSecondFont;
         _addressLabel.textColor = kGrayColor;
-        _addressLabel.numberOfLines = 0;
     }
     return _addressLabel;
 }

@@ -448,6 +448,17 @@
 {
     [self.view endEditing:YES];
     NSString *guaranteeMessageString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kApplicationGuaranteeString];
+    
+    self.applicationDic[@"area_pid"] = [NSString getValidStringFromString:self.applicationDic[@"area_pid"] toString:@""];
+    self.applicationDic[@"area_id"] = [NSString getValidStringFromString:self.applicationDic[@"area_id"] toString:@""];
+    self.applicationDic[@"fayuan_id"] = [NSString getValidStringFromString:self.applicationDic[@"fayuan_id"] toString:@""];
+    self.applicationDic[@"fayuan_name"] = [NSString getValidStringFromString:self.applicationDic[@"fayuan_name"] toString:@""];
+    self.applicationDic[@"anhao"] = [NSString getValidStringFromString:self.applicationDic[@"anhao"] toString:@""];
+    self.applicationDic[@"phone"] = [NSString getValidStringFromString:self.applicationDic[@"phone"] toString:@""];
+    self.applicationDic[@"money"] = [NSString getValidStringFromString:self.applicationDic[@"money"] toString:@""];
+    self.applicationDic[@"fayuan_address"] = [NSString getValidStringFromString:self.applicationDic[@"fayuan_address"] toString:@""];
+    self.applicationDic[@"address"] = [NSString getValidStringFromString:self.applicationDic[@"address"] toString:@""];
+
     [self.applicationDic setObject:[self getValidateToken] forKey:@"token"];
     
     //起诉
@@ -486,8 +497,7 @@
         BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
         
         if ([stepString integerValue] == 1) {
-            
-            if ([baseModel.msg isEqualToString:@"请上传起诉书的图片"] || [baseModel.msg isEqualToString:@"申请失败！起诉书不能为空。 "] || [baseModel.msg isEqualToString:@"起诉书不能为空。 "]) {//申请失败！起诉书不能为空。
+            if ([baseModel.msg containsString:@"起诉书"]) {
                 [weakself.guaranteeFirstView setHidden:YES];
                 [weakself.guaranteeSecondView setHidden:NO];
                 

@@ -21,9 +21,9 @@
 @property (nonatomic,copy) NSString *type; //取函方式
 
 //图片
-@property (nonatomic,strong) NSMutableArray *qisu;
-@property (nonatomic,strong) NSMutableArray *caichan;
-@property (nonatomic,strong) NSMutableArray *zhengju;
-@property (nonatomic,strong) NSMutableArray *anjian;
+@property (nonatomic,strong) NSMutableArray *qisus;
+@property (nonatomic,strong) NSMutableArray *caichans;
+@property (nonatomic,strong) NSMutableArray *zhengjus;
+@property (nonatomic,strong) NSMutableArray *anjians;
 
 @end

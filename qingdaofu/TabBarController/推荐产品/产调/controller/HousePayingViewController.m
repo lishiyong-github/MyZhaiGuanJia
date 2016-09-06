@@ -15,7 +15,7 @@
 
 #import "BaseCommitView.h"
 
-#import "MessageCell.h"
+#import "ReiceptCell.h"
 #import "MineUserCell.h"
 
 //pay
@@ -98,7 +98,16 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        return 65;
+//        return 65;
+        NSString *addressStr = [NSString stringWithFormat:@"%@%@",self.areaString,self.addressString];
+        
+        CGSize titleSize = CGSizeMake(kScreenWidth - kBigPadding*2, MAXFLOAT);
+        CGSize actualSize = [addressStr boundingRectWithSize:titleSize options:NSStringDrawingUsesDeviceMetrics attributes:@{NSFontAttributeName:kSecondFont} context:nil].size;
+        
+        return 45+MAX(actualSize.height, 15.5);
+//        CGSize titleSize = CGSizeMake(kScreenWidth-kBigPadding*2, MAXFLOAT);
+//        CGSize actualsize = [addressStr boundingRectWithSize:titleSize options:NSStringDrawingUsesDeviceMetrics attributes:@{NSFontAttributeName :kSecondFont} context:nil].size;
+        
     }
     return kCellHeight;
 }
@@ -108,19 +117,16 @@
     static NSString *identifier;
     if (indexPath.section == 0) {//基本信息
         identifier = @"pay0";
-        MessageCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        ReiceptCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         if (!cell) {
-            cell = [[MessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            cell = [[ReiceptCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        [cell.actButton setHidden:YES];
-        [cell.countLabel setHidden:YES];
-        cell.timeLabel.font = kBigFont;
-        cell.timeLabel.textColor = kBlueColor;
+//        cell.addressLabel.numberOfLines = 1;
         
-        cell.userLabel.text = self.phoneString;
-        cell.timeLabel.text = @"编辑";
-        cell.newsLabel.text = [NSString stringWithFormat:@"%@%@",self.areaString,self.addressString];
+        cell.nameLabel.text = self.phoneString;
+        cell.phoneLabel.text = @"编辑";
+        cell.addressLabel.text = [NSString stringWithFormat:@"%@%@",self.areaString,self.addressString];
         
         return cell;
         
@@ -197,9 +203,9 @@
         
         QDFWeakSelf;
         [housePayingEditVC setDidEditMessage:^(NSDictionary *parameters) {
-            MessageCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-            cell.userLabel.text = parameters[@"phone"];
-            cell.newsLabel.text = [NSString stringWithFormat:@"%@%@",parameters[@"area"],parameters[@"address"]];
+            ReiceptCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            cell.nameLabel.text = parameters[@"phone"];
+            cell.addressLabel.text = [NSString stringWithFormat:@"%@%@",parameters[@"area"],parameters[@"address"]];
             weakself.editParms = parameters;
         }];
     }

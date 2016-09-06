@@ -180,9 +180,7 @@
         PropertyResultResponse *respondey = [PropertyResultResponse objectWithKeyValues:responseObject];
         
         if ([respondey.code isEqualToString:@"0000"]) {
-            weakself.resultDataArray = [NSMutableArray arrayWithObjects:@"http://image.1001fang.com/chandiao-59421/57c7a25ec394f.jpg",@"http://image.1001fang.com/chandiao-59421/57c7a25f39c25.jpg",@"http://image.1001fang.com/chandiao-59421/57c7a25fa87a0.jpg",@"http://image.1001fang.com/chandiao-59421/57c7a2601c714.jpg",@"http://image.1001fang.com/chandiao-59421/57c7a2607eede.jpg", nil];
-
-//            [weakself.resultDataArray addObject:respondey.data];
+            [weakself.resultDataArray addObject:respondey.data];
             [weakself.resultOnesArray addObject:respondey.ones];
         }
         

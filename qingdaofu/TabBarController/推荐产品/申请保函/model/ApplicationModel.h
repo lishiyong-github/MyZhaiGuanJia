@@ -32,10 +32,10 @@
 @property (nonatomic,copy) NSString *updated_by;
 
 //图片
-@property (nonatomic,strong) NSMutableArray *qisu;//起诉
-@property (nonatomic,strong) NSMutableArray *caichan;//财产
-@property (nonatomic,strong) NSMutableArray *zhengju;//证据
-@property (nonatomic,strong) NSMutableArray *anjian;//案件
+@property (nonatomic,strong) NSMutableArray *qisus;//起诉
+@property (nonatomic,strong) NSMutableArray *caichans;//财产
+@property (nonatomic,strong) NSMutableArray *zhengjus;//证据
+@property (nonatomic,strong) NSMutableArray *anjians;//案件
 
 
 

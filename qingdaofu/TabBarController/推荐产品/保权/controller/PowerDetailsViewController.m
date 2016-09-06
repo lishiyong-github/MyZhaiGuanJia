@@ -262,16 +262,16 @@
         cell.userActionButton.titleLabel.font = kFirstFont;
 
         if (indexPath.row == 1){
-            NSString *qisuCount = [NSString stringWithFormat:@"x%lu",(unsigned long)powerModel.qisu.count];
+            NSString *qisuCount = [NSString stringWithFormat:@"x%lu",(unsigned long)powerModel.qisus.count];
             [cell.userActionButton setTitle:qisuCount forState:0];
         }else if (indexPath.row == 2){
-            NSString *caichanCount = [NSString stringWithFormat:@"x%lu",(unsigned long)powerModel.caichan.count];
+            NSString *caichanCount = [NSString stringWithFormat:@"x%lu",(unsigned long)powerModel.caichans.count];
             [cell.userActionButton setTitle:caichanCount forState:0];
         }else if (indexPath.row == 3){
-            NSString *zhengjuCount = [NSString stringWithFormat:@"x%lu",(unsigned long)powerModel.zhengju.count];
+            NSString *zhengjuCount = [NSString stringWithFormat:@"x%lu",(unsigned long)powerModel.zhengjus.count];
             [cell.userActionButton setTitle:zhengjuCount forState:0];
         }else if (indexPath.row == 4){
-            NSString *anjianCount = [NSString stringWithFormat:@"x%lu",(unsigned long)powerModel.anjian.count];
+            NSString *anjianCount = [NSString stringWithFormat:@"x%lu",(unsigned long)powerModel.anjians.count];
             [cell.userActionButton setTitle:anjianCount forState:0];
         }
         return cell;
@@ -304,8 +304,8 @@
             }
         }else if (indexPath.row == 1){
             NSMutableArray *fileArray1 = [NSMutableArray array];
-            for (int i=0; i<powerModel.qisu.count; i++) {
-                ImageModel *fileModel = powerModel.qisu[i];
+            for (int i=0; i<powerModel.qisus.count; i++) {
+                ImageModel *fileModel = powerModel.qisus[i];
                 NSString *file = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,fileModel.file];
                 [fileArray1 addObject:file];
             }
@@ -313,16 +313,16 @@
             
         }else if (indexPath.row == 2){
             NSMutableArray *fileArray2 = [NSMutableArray array];
-            for (int i=0; i<powerModel.caichan.count; i++) {
-                ImageModel *fileModel = powerModel.caichan[i];
+            for (int i=0; i<powerModel.caichans.count; i++) {
+                ImageModel *fileModel = powerModel.caichans[i];
                 NSString *file = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,fileModel.file];
                 [fileArray2 addObject:file];
             }
             [self showImages:fileArray2];
         }else if (indexPath.row == 3){
             NSMutableArray *fileArray3 = [NSMutableArray array];
-            for (int i=0; i<powerModel.zhengju.count; i++) {
-                ImageModel *fileModel = powerModel.zhengju[i];
+            for (int i=0; i<powerModel.zhengjus.count; i++) {
+                ImageModel *fileModel = powerModel.zhengjus[i];
                 NSString *file = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,fileModel.file];
                 [fileArray3 addObject:file];
             }
@@ -330,8 +330,8 @@
             
         }else if (indexPath.row == 4){
             NSMutableArray *fileArray4 = [NSMutableArray array];
-            for (int i=0; i<powerModel.anjian.count; i++) {
-                ImageModel *fileModel = powerModel.anjian[i];
+            for (int i=0; i<powerModel.anjians.count; i++) {
+                ImageModel *fileModel = powerModel.anjians[i];
                 NSString *file = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,fileModel.file];
                 [fileArray4 addObject:file];
             }

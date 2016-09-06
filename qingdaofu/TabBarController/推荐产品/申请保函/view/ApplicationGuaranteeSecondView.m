@@ -202,7 +202,7 @@
         [footerButton setContentHorizontalAlignment:1];
         [footerView addSubview:footerButton];
         
-        [footerButton autoPinEdgeToSuperviewEdge:ALEdgeLeft];
+        [footerButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
         [footerButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [footerButton autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
         

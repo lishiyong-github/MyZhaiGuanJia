@@ -116,7 +116,17 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 0) {
-        return 60;
+        ReceiptModel *receiptModel;
+        NSString *addressStr;
+        if (self.receiptArray.count > 0) {
+            receiptModel = self.receiptArray[indexPath.section];
+            addressStr = [NSString stringWithFormat:@"%@%@%@%@",receiptModel.province_name,receiptModel.city_name,receiptModel.area_name,receiptModel.address];
+        }
+        
+        CGSize titleSize = CGSizeMake(kScreenWidth-kBigPadding*2, MAXFLOAT);
+        CGSize actualsize = [addressStr boundingRectWithSize:titleSize options:NSStringDrawingUsesDeviceMetrics attributes:@{NSFontAttributeName :kSecondFont} context:nil].size;
+        
+        return 45 + MAX(actualsize.height, 15.5);
     }
     return 40;
 }
@@ -140,7 +150,7 @@
         
         cell.nameLabel.text = receiptModel.nickname;
         cell.phoneLabel.text = receiptModel.tel;
-        cell.addressLabel.text = receiptModel.address;
+        cell.addressLabel.text = [NSString stringWithFormat:@"%@%@%@%@",receiptModel.province_name,receiptModel.city_name,receiptModel.area_name,receiptModel.address];
         
         return cell;
     }
@@ -171,11 +181,6 @@
     [cell setDidSelectedActbutton:^(NSInteger actTag,UIButton *actButton) {
         if (actTag == 77) {//默认
             [weakself setDefaultAddressWithID:receiptModel.idString];
-//            if ([receiptModel.isdefault integerValue] == 1) {
-//                [weakself DeleteReceiptAddressWithID:receiptModel.idString AndType:@"2"];
-//            }else{
-//            }
-            
         }else if (actTag == 78){//删除
             [weakself DeleteReceiptAddressWithID:receiptModel.idString AndType:@"1"];
         }else if (actTag == 79){//编辑

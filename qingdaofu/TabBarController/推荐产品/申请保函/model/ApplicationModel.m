@@ -18,10 +18,10 @@
 
 + (NSDictionary *)objectClassInArray
 {
-    return @{@"qisu" : @"ImageModel",
-             @"caichan" : @"ImageModel",
-             @"zhengju" : @"ImageModel",
-             @"anjian" : @"ImageModel"
+    return @{@"qisus" : @"ImageModel",
+             @"caichans" : @"ImageModel",
+             @"zhengjus" : @"ImageModel",
+             @"anjians" : @"ImageModel"
              };
 }
 

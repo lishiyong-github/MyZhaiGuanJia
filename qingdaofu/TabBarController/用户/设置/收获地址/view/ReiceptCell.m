@@ -27,14 +27,14 @@
     if (!self.didSetupConstraints) {
         
         [self.nameLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
-        [self.nameLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kBigPadding];
+        [self.nameLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kSmallPadding];
         
         [self.phoneLabel autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.nameLabel];
         [self.phoneLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         
         [self.addressLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.nameLabel];
-        [self.addressLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:8];
-        [self.addressLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:self.phoneLabel];
+        [self.addressLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.nameLabel withOffset:kSpacePadding];
+        [self.addressLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         
         self.didSetupConstraints = YES;
     }

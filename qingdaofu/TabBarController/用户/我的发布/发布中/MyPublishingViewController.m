@@ -368,7 +368,8 @@
     NSString *deletePubString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kDeleteProductOfMyReleaseString];
     NSDictionary *params = @{@"id" : self.idString,
                              @"category" : self.categaryString,
-                             @"token" : [self getValidateToken]
+                             @"token" : [self getValidateToken],
+                             @"type" : @"2"
                              };
     
     QDFWeakSelf;

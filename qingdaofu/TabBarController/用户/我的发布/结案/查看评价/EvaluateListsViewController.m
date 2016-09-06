@@ -18,6 +18,8 @@
 #import "EvaluateModel.h"  //收到的评价
 #import "LaunchEvaluateModel.h"  //给出的评价
 
+#import "UIButton+WebCache.h"
+
 @interface EvaluateListsViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic,strong) UITableView *evaluateListTableView;
@@ -132,11 +134,25 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row == 0) {
-        return kCellHeight;
+    
+    if (indexPath.section == 0 && indexPath.row > 0) {
+        EvaluateModel *evaModel = self.evaluateArray[indexPath.row-1];
+        if (evaModel.pictures.count > 0) {
+            return 145;
+        }else{
+            return 80;
+        }
+        
+    }else if (indexPath.section == 1 && indexPath.row > 0){
+        LaunchEvaluateModel *launchEvaModel = self.launchEvaluateArray[indexPath.row-1];
+        if (launchEvaModel.pictures.count > 0) {
+            return 145;
+        }else{
+            return 80;
+        }
     }
     
-    return 145;
+    return kCellHeight;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -173,24 +189,31 @@
         }
         
         cell.evaNameLabel.text = evaluateModel.mobiles;
-        //        @"mimii";
         cell.evaTimeLabel.text = [NSDate getYMDhmFormatterTime:evaluateModel.create_time];
-        //        @"2016-09-09 12:12";
         cell.evaStarImage.currentIndex = [evaluateModel.creditor integerValue];
         cell.evaTextLabel.text = evaluateModel.content;
-        //        @"不错不错不错";
         
-        //        if (evaluateModel.pictures.count < 2) {
-        //            [cell.evaProImageView2 setHidden:YES];
-        //
-        //
-        //
-        //        }else{
-        //            [cell.evaProImageView1 setHidden:NO];
-        //            [cell.evaProImageView2 setHidden:NO];
-        //        }
-        [cell.evaProImageView1 setBackgroundColor:kRedColor];
-        [cell.evaProImageView2 setBackgroundColor:kYellowColor];
+        if (evaluateModel.pictures.count == 0) {
+            [cell.evaProImageView1 setHidden:YES];
+            [cell.evaProImageView2 setHidden:YES];
+        }else if (evaluateModel.pictures.count == 1){
+            [cell.evaProImageView1 setHidden:NO];
+            [cell.evaProImageView2 setHidden:YES];
+            NSString *imgString1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,evaluateModel.pictures[0]];
+            NSURL *imgUrl1 = [NSURL URLWithString:imgString1];
+            [cell.evaProImageView1 sd_setImageWithURL:imgUrl1 forState:0 placeholderImage:[UIImage imageNamed:@""]];
+        }else{
+            [cell.evaProImageView1 setHidden:NO];
+            [cell.evaProImageView2 setHidden:NO];
+            
+            NSString *imgString1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,evaluateModel.pictures[0]];
+            NSURL *imgUrl1 = [NSURL URLWithString:imgString1];
+            [cell.evaProImageView1 sd_setImageWithURL:imgUrl1 forState:0 placeholderImage:[UIImage imageNamed:@""]];
+
+            NSString *imgString2 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,evaluateModel.pictures[0]];
+            NSURL *imgUrl2 = [NSURL URLWithString:imgString2];
+            [cell.evaProImageView1 sd_setImageWithURL:imgUrl2 forState:0 placeholderImage:[UIImage imageNamed:@""]];
+        }
         
         return cell;
     }
@@ -227,21 +250,32 @@
     
     cell.evaNameLabel.textColor = kBlueColor;
     cell.evaNameLabel.text = @"自己";
-    //    launchEvaluateModel.mobiles;
-    //        @"mimii";
     cell.evaTimeLabel.text = [NSDate getYMDhmFormatterTime:launchEvaluateModel.create_time];
-    //        @"2016-09-09 12:12";
     cell.evaStarImage.currentIndex = [launchEvaluateModel.creditor integerValue];
     cell.evaTextLabel.text = launchEvaluateModel.content;
-    //        @"不错不错不错";
     
-    //    cell.evaNameLabel.text = @"自己";
-    //    cell.evaTimeLabel.text = @"2016-12-12 17:20";
-    //    cell.evaStarImage.currentIndex = 1;
-    //    cell.evaTextLabel.text = @"差评差评差评";
-    [cell.evaProImageView1 setBackgroundColor:kRedColor];
-    [cell.evaProImageView2 setBackgroundColor:kYellowColor];
-    
+    if (launchEvaluateModel.pictures.count == 0) {
+        [cell.evaProImageView1 setHidden:YES];
+        [cell.evaProImageView2 setHidden:YES];
+    }else if (launchEvaluateModel.pictures.count == 1){
+        [cell.evaProImageView1 setHidden:NO];
+        [cell.evaProImageView2 setHidden:YES];
+        NSString *imgString1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,launchEvaluateModel.pictures[0]];
+        NSURL *imgUrl1 = [NSURL URLWithString:imgString1];
+        [cell.evaProImageView1 sd_setImageWithURL:imgUrl1 forState:0 placeholderImage:[UIImage imageNamed:@""]];
+    }else{
+        [cell.evaProImageView1 setHidden:NO];
+        [cell.evaProImageView2 setHidden:NO];
+        
+        NSString *imgString1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,launchEvaluateModel.pictures[0]];
+        NSURL *imgUrl1 = [NSURL URLWithString:imgString1];
+        [cell.evaProImageView1 sd_setImageWithURL:imgUrl1 forState:0 placeholderImage:[UIImage imageNamed:@""]];
+        
+        NSString *imgString2 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,launchEvaluateModel.pictures[0]];
+        NSURL *imgUrl2 = [NSURL URLWithString:imgString2];
+        [cell.evaProImageView1 sd_setImageWithURL:imgUrl2 forState:0 placeholderImage:[UIImage imageNamed:@""]];
+        
+    }
     return cell;
     
 }
@@ -270,7 +304,7 @@
     
     QDFWeakSelf;
     [self requestDataPostWithString:allEvaContainString params:params successBlock:^(id responseObject) {
-        
+                
         [weakself.evaluateArray removeAllObjects];
         [weakself.launchEvaluateArray removeAllObjects];
         

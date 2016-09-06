@@ -102,19 +102,19 @@
         _qisuArray = [NSMutableArray array];
         
         if ([self.navTitleString isEqualToString:@"保全"]) {
-            if (self.pModel.qisu.count > 0) {
+            if (self.pModel.qisus.count > 0) {
                 NSMutableArray *aa = [NSMutableArray array];
-                for (NSInteger i=0; i<self.pModel.qisu.count; i++) {
-                    ImageModel *imaModel = self.pModel.qisu[i];
+                for (NSInteger i=0; i<self.pModel.qisus.count; i++) {
+                    ImageModel *imaModel = self.pModel.qisus[i];
                     [aa addObject:imaModel.idString];
                 }
                 _qisuArray = [NSMutableArray arrayWithArray:aa];
             }
         }else if ([self.navTitleString isEqualToString:@"保函"]){
-            if (self.aModel.qisu.count > 0) {
+            if (self.aModel.qisus.count > 0) {
                 NSMutableArray *aa = [NSMutableArray array];
-                for (NSInteger i=0; i<self.aModel.qisu.count; i++) {
-                    ImageModel *imaModel = self.aModel.qisu[i];
+                for (NSInteger i=0; i<self.aModel.qisus.count; i++) {
+                    ImageModel *imaModel = self.aModel.qisus[i];
                     [aa addObject:imaModel.idString];
                 }
                 _qisuArray = [NSMutableArray arrayWithArray:aa];
@@ -130,19 +130,19 @@
         _caichanArray = [NSMutableArray array];
         
         if ([self.navTitleString isEqualToString:@"保全"]) {
-            if (self.pModel.caichan.count > 0) {
+            if (self.pModel.caichans.count > 0) {
                 NSMutableArray *bb = [NSMutableArray array];
-                for (NSInteger i=0; i<self.pModel.caichan.count; i++) {
-                    ImageModel *imaModel = self.pModel.caichan[i];
+                for (NSInteger i=0; i<self.pModel.caichans.count; i++) {
+                    ImageModel *imaModel = self.pModel.caichans[i];
                     [bb addObject:imaModel.idString];
                 }
                 _caichanArray = [NSMutableArray arrayWithArray:bb];
             }
         }else if ([self.navTitleString isEqualToString:@"保函"]){
-            if (self.aModel.caichan.count > 0) {
+            if (self.aModel.caichans.count > 0) {
                 NSMutableArray *bb = [NSMutableArray array];
-                for (NSInteger i=0; i<self.aModel.caichan.count; i++) {
-                    ImageModel *imaModel = self.aModel.caichan[i];
+                for (NSInteger i=0; i<self.aModel.caichans.count; i++) {
+                    ImageModel *imaModel = self.aModel.caichans[i];
                     [bb addObject:imaModel.idString];
                 }
                 _caichanArray = [NSMutableArray arrayWithArray:bb];
@@ -158,19 +158,19 @@
         _zhengjuArray = [NSMutableArray array];
         
         if ([self.navTitleString isEqualToString:@"保全"]) {
-            if (self.pModel.zhengju.count > 0) {
+            if (self.pModel.zhengjus.count > 0) {
                 NSMutableArray *cc = [NSMutableArray array];
-                for (NSInteger i=0; i<self.pModel.zhengju.count; i++) {
-                    ImageModel *imaModel = self.pModel.zhengju[i];
+                for (NSInteger i=0; i<self.pModel.zhengjus.count; i++) {
+                    ImageModel *imaModel = self.pModel.zhengjus[i];
                     [cc addObject:imaModel.idString];
                 }
                 _zhengjuArray = [NSMutableArray arrayWithArray:cc];
             }
         }else if ([self.navTitleString isEqualToString:@"保函"]){
-            if (self.aModel.zhengju.count > 0) {
+            if (self.aModel.zhengjus.count > 0) {
                 NSMutableArray *cc = [NSMutableArray array];
-                for (NSInteger i=0; i<self.aModel.zhengju.count; i++) {
-                    ImageModel *imaModel = self.aModel.zhengju[i];
+                for (NSInteger i=0; i<self.aModel.zhengjus.count; i++) {
+                    ImageModel *imaModel = self.aModel.zhengjus[i];
                     [cc addObject:imaModel.idString];
                 }
                 _zhengjuArray = [NSMutableArray arrayWithArray:cc];
@@ -186,19 +186,19 @@
         _anjianArray = [NSMutableArray array];
         
         if ([self.navTitleString isEqualToString:@"保全"]) {
-            if (self.pModel.anjian.count > 0) {
+            if (self.pModel.anjians.count > 0) {
                 NSMutableArray *dd = [NSMutableArray array];
-                for (NSInteger i=0; i<self.pModel.anjian.count; i++) {
-                    ImageModel *imaModel = self.pModel.anjian[i];
+                for (NSInteger i=0; i<self.pModel.anjians.count; i++) {
+                    ImageModel *imaModel = self.pModel.anjians[i];
                     [dd addObject:imaModel.idString];
                 }
                 _anjianArray = [NSMutableArray arrayWithArray:dd];
             }
         }else if ([self.navTitleString isEqualToString:@"保函"]){
-            if (self.aModel.anjian.count > 0) {
+            if (self.aModel.anjians.count > 0) {
                 NSMutableArray *dd = [NSMutableArray array];
-                for (NSInteger i=0; i<self.aModel.anjian.count; i++) {
-                    ImageModel *imaModel = self.aModel.anjian[i];
+                for (NSInteger i=0; i<self.aModel.anjians.count; i++) {
+                    ImageModel *imaModel = self.aModel.anjians[i];
                     [dd addObject:imaModel.idString];
                 }
                 _anjianArray = [NSMutableArray arrayWithArray:dd];
@@ -213,10 +213,10 @@
     if (!_qisuArray1) {
         
         if ([self.navTitleString isEqualToString:@"保全"]) {
-            if (self.pModel.qisu.count > 0) {
+            if (self.pModel.qisus.count > 0) {
                 NSMutableArray *aaaa = [NSMutableArray array];
-                for (NSInteger i=0; i<self.pModel.qisu.count; i++) {
-                    ImageModel *imaModel = self.pModel.qisu[i];
+                for (NSInteger i=0; i<self.pModel.qisus.count; i++) {
+                    ImageModel *imaModel = self.pModel.qisus[i];
                     NSString *files = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imaModel.file];
                     [aaaa addObject:files];
                 }
@@ -226,10 +226,10 @@
                 _qisuArray1 = [NSMutableArray arrayWithObject:@"upload_pictures"];
             }
         }else if ([self.navTitleString isEqualToString:@"保函"]){
-            if (self.aModel.qisu.count > 0) {
+            if (self.aModel.qisus.count > 0) {
                 NSMutableArray *aaaa = [NSMutableArray array];
-                for (NSInteger i=0; i<self.aModel.qisu.count; i++) {
-                    ImageModel *imaModel = self.aModel.qisu[i];
+                for (NSInteger i=0; i<self.aModel.qisus.count; i++) {
+                    ImageModel *imaModel = self.aModel.qisus[i];
                     NSString *files = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imaModel.file];
                     [aaaa addObject:files];
                 }
@@ -247,10 +247,10 @@
     if (!_caichanArray1) {
         
         if ([self.navTitleString isEqualToString:@"保全"]) {
-            if (self.pModel.caichan.count > 0) {
+            if (self.pModel.caichans.count > 0) {
                 NSMutableArray *bbbb = [NSMutableArray array];
-                for (NSInteger i=0; i<self.pModel.caichan.count; i++) {
-                    ImageModel *imaModel = self.pModel.caichan[i];
+                for (NSInteger i=0; i<self.pModel.caichans.count; i++) {
+                    ImageModel *imaModel = self.pModel.caichans[i];
                     NSString *files = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imaModel.file];
                     [bbbb addObject:files];
                 }
@@ -260,10 +260,10 @@
                 _caichanArray1 = [NSMutableArray arrayWithObject:@"upload_pictures"];
             }
         }else if ([self.navTitleString isEqualToString:@"保函"]){
-            if (self.aModel.caichan.count > 0) {
+            if (self.aModel.caichans.count > 0) {
                 NSMutableArray *bbbb = [NSMutableArray array];
-                for (NSInteger i=0; i<self.aModel.caichan.count; i++) {
-                    ImageModel *imaModel = self.aModel.caichan[i];
+                for (NSInteger i=0; i<self.aModel.caichans.count; i++) {
+                    ImageModel *imaModel = self.aModel.caichans[i];
                     NSString *files = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imaModel.file];
                     [bbbb addObject:files];
                 }
@@ -282,10 +282,10 @@
     if (!_zhengjuArray1) {
         
         if ([self.navTitleString isEqualToString:@"保全"]) {
-            if (self.pModel.zhengju.count > 0) {
+            if (self.pModel.zhengjus.count > 0) {
                 NSMutableArray *cccc = [NSMutableArray array];
-                for (NSInteger i=0; i<self.pModel.zhengju.count; i++) {
-                    ImageModel *imaModel = self.pModel.zhengju[i];
+                for (NSInteger i=0; i<self.pModel.zhengjus.count; i++) {
+                    ImageModel *imaModel = self.pModel.zhengjus[i];
                     NSString *files = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imaModel.file];
                     [cccc addObject:files];
                 }
@@ -295,10 +295,10 @@
                 _zhengjuArray1 = [NSMutableArray arrayWithObject:@"upload_pictures"];
             }
         }else if ([self.navTitleString isEqualToString:@"保函"]){
-            if (self.aModel.zhengju.count > 0) {
+            if (self.aModel.zhengjus.count > 0) {
                 NSMutableArray *cccc = [NSMutableArray array];
-                for (NSInteger i=0; i<self.aModel.zhengju.count; i++) {
-                    ImageModel *imaModel = self.aModel.zhengju[i];
+                for (NSInteger i=0; i<self.aModel.zhengjus.count; i++) {
+                    ImageModel *imaModel = self.aModel.zhengjus[i];
                     NSString *files = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imaModel.file];
                     [cccc addObject:files];
                 }
@@ -317,10 +317,10 @@
     if (!_anjianArray1) {
         
         if ([self.navTitleString isEqualToString:@"保全"]) {
-            if (self.pModel.anjian.count > 0) {
+            if (self.pModel.anjians.count > 0) {
                 NSMutableArray *dddd = [NSMutableArray array];
-                for (NSInteger i=0; i<self.pModel.anjian.count; i++) {
-                    ImageModel *imaModel = self.pModel.anjian[i];
+                for (NSInteger i=0; i<self.pModel.anjians.count; i++) {
+                    ImageModel *imaModel = self.pModel.anjians[i];
                     NSString *files = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imaModel.file];
                     [dddd addObject:files];
                 }
@@ -330,10 +330,10 @@
                 _anjianArray1 = [NSMutableArray arrayWithObject:@"upload_pictures"];
             }
         }else if ([self.navTitleString isEqualToString:@"保函"]){
-            if (self.aModel.anjian.count > 0) {
+            if (self.aModel.anjians.count > 0) {
                 NSMutableArray *dddd = [NSMutableArray array];
-                for (NSInteger i=0; i<self.aModel.anjian.count; i++) {
-                    ImageModel *imaModel = self.aModel.anjian[i];
+                for (NSInteger i=0; i<self.aModel.anjians.count; i++) {
+                    ImageModel *imaModel = self.aModel.anjians[i];
                     NSString *files = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imaModel.file];
                     [dddd addObject:files];
                 }

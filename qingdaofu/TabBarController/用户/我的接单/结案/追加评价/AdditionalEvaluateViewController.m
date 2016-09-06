@@ -243,7 +243,9 @@
                         
                         [weakself setDidGetValidImage:^(ImageModel *imageModel) {
                             if ([imageModel.code isEqualToString:@"0000"]) {
-                                [weakself.evaImageArray addObject:imageModel.fileid];
+//                                [weakself.evaImageArray addObject:imageModel.fileid];
+                                [weakself.evaImageArray addObject:imageModel.url];
+
                                 [weakcell.collectionDataList insertObject:images[0] atIndex:0];
                                 [weakcell reloadData];
                             }else{
@@ -298,7 +300,7 @@
     for (NSInteger i=0; i<self.evaImageArray.count; i++) {
         imageStr = [NSString stringWithFormat:@"%@,%@",self.evaImageArray[i],imageStr];
     }
-    [self.evaDataDictionary setObject:imageStr forKey:@"pictures"];
+    [self.evaDataDictionary setObject:imageStr forKey:@"picture"];
     
     NSDictionary *params = self.evaDataDictionary;
     

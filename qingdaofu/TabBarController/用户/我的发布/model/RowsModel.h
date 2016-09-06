@@ -23,6 +23,7 @@
 @property (nonatomic,copy) NSString *uidString;  //申请人的uid
 @property (nonatomic,copy) NSString *applyid;  //删除ID
 @property (nonatomic,copy) NSString *applymobile;//联系接单方，联系发布方
+@property (nonatomic,copy) NSString *is_del; //产品是否删除 0-未删除，1-已删除
 
 @property (nonatomic,copy) NSString *create_time;  //
 @property (nonatomic,copy) NSString *modify_time;  //收藏时间
