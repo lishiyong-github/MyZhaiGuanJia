@@ -31,11 +31,12 @@
         
         [self.userLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kBigPadding];
         [self.userLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
+        [self.userLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding*2+45];
         
-        [self.timeLabel autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.userLabel];
+        [self.timeLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kSpacePadding];
         [self.timeLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         
-        [self.newsLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.userLabel withOffset:kBigPadding/2];
+        [self.newsLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.userLabel withOffset:kBigPadding];
         [self.newsLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.userLabel];
         [self.newsLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.countLabel withOffset:-kBigPadding];
         
@@ -45,6 +46,7 @@
         
         [self.countLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.actButton withOffset:5];
         [self.countLabel autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.newsLabel];
+        [self.countLabel autoSetDimensionsToSize:CGSizeMake(18, 18)];
         
         [self.actButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.actButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.newsLabel];

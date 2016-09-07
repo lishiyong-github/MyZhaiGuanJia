@@ -15,7 +15,6 @@
 
 #import "DebtModel.h"
 
-#import "UIView+UITextColor.h"
 #import "UIButton+WebCache.h"
 #import "UIViewController+ImageBrowser.h"
 

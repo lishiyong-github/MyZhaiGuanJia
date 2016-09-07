@@ -12,7 +12,7 @@
 
 @property (nonatomic,copy) NSString *address; //详细地址
 @property (nonatomic,copy) NSString *canExpress;  //0－不可快递。1－可快递
-@property (nonatomic,copy) NSString *canExpressMsg; //不可点击的原因
+@property (nonatomic,copy) NSString *canExpressmsg; //不可点击的原因
 @property (nonatomic,copy) NSString *cid;  //第三方产调ID
 @property (nonatomic,copy) NSString *city;  //市
 @property (nonatomic,copy) NSString *expressId;  //快递单ID

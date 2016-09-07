@@ -13,7 +13,6 @@
 #import "MyAgentCell.h"
 #import "BaseCommitButton.h"
 
-#import "UIView+UITextColor.h"
 
 @interface MyAgentViewController ()<UITableViewDataSource,UITableViewDelegate>
 

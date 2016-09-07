@@ -141,6 +141,15 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 1) {
+        PropertyListModel *pModel;
+//        if (self.propertyListArray.count > 0) {
+//            pModel = self.propertyListArray[indexPath.section];
+//            NSString *addressStr = [NSString stringWithFormat:@"%@%@",pModel.city,pModel.address];
+//            CGSize titleSize = CGSizeMake(kScreenWidth-kBigPadding*2, MAXFLOAT);
+//            CGSize actualSize = [addressStr boundingRectWithSize:titleSize options:NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName:kBigFont} context:nil].size;
+//            
+//            return 45 + MAX(actualSize.height, 19);//62
+//        }
         return 62;
     }else if (indexPath.row == 2){
         return 40;
@@ -192,7 +201,7 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.timeLabel.textColor = kGrayColor;
-        cell.timeLabel.font = kBigFont;
+        cell.timeLabel.font = kBigFont;  //money
         [cell.countLabel setHidden:YES];
         [cell.actButton setBackgroundColor:[UIColor clearColor]];
         [cell.actButton setTitleColor:kLightGrayColor forState:0];
@@ -229,18 +238,14 @@
             [cell.rightButton setTitle:@"立即支付" forState:0];
             
             [cell.leftButton addAction:^(UIButton *btn) {
-//                HousePayingEditViewController *housePayingEditVC = [[HousePayingEditViewController alloc] init];
-//                housePayingEditVC.areaString = pModel.city;
-//                housePayingEditVC.addressString = pModel.address;
-//                housePayingEditVC.phoneString = pModel.phone;
-//                housePayingEditVC.idString = pModel.idString;
-//                housePayingEditVC.moneyString = pModel.money;
-//                housePayingEditVC.actString = @"2";
-//                [weakself.navigationController pushViewController:housePayingEditVC animated:YES];
-                
-                HouseCopyViewController *houseCopyVC = [[HouseCopyViewController alloc] init];
-                [weakself.navigationController pushViewController:houseCopyVC animated:YES];
-                
+                HousePayingEditViewController *housePayingEditVC = [[HousePayingEditViewController alloc] init];
+                housePayingEditVC.areaString = pModel.city;
+                housePayingEditVC.addressString = pModel.address;
+                housePayingEditVC.phoneString = pModel.phone;
+                housePayingEditVC.idString = pModel.idString;
+                housePayingEditVC.moneyString = pModel.money;
+                housePayingEditVC.actString = @"2";
+                [weakself.navigationController pushViewController:housePayingEditVC animated:YES];
             }];
             
             [cell.rightButton addAction:^(UIButton *btn) {
@@ -252,7 +257,7 @@
                 housePayingVC.genarateMoney = pModel.money;
                 [weakself.navigationController pushViewController:housePayingVC animated:YES];
             }];
-        }else if ([pModel.status integerValue] == 2 || [pModel.status integerValue] == 3 || [pModel.status integerValue] == 4){//已处理，退款中，已退款
+        }else{//2已处理，3退款中，4已退款
             
             if ([pModel.canExpress integerValue] == 1) {//可快递
                 NSString *str1 = @"快递原件";
@@ -262,7 +267,7 @@
                 [kdTitle setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kBlackColor} range:NSMakeRange(0, str1.length)];
                 [kdTitle setAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kRedColor} range:NSMakeRange(str1.length, str2.length)];
                 [cell.leftButton setAttributedTitle:kdTitle forState:0];
-            }else if([pModel.canExpress integerValue] == 1){//不可快递
+            }else{//不可快递
                 [cell.leftButton setTitleColor:kLightGrayColor forState:0];
                 [cell.leftButton setTitle:@"快递原件" forState:0];
             }
@@ -275,7 +280,7 @@
                     HouseCopyViewController *houseCopyVC = [[HouseCopyViewController alloc] init];
                     [weakself.navigationController pushViewController:houseCopyVC animated:YES];
                 }else{
-                    [weakself showHint:pModel.canExpressMsg];
+                    [weakself showHint:pModel.canExpressmsg];
                 }
             }];
             

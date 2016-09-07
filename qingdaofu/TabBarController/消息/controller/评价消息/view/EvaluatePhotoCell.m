@@ -22,8 +22,6 @@
         [self.contentView addSubview:self.evaProImageView2];
         [self.contentView addSubview:self.evaProductButton];
         
-//        [self.contentView addSubview:self.remindImageButton];
-        
         [self.contentView setNeedsUpdateConstraints];
     }
     return self;
@@ -67,9 +65,7 @@
         
         [self.evaInnerImage autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:10];
         [self.evaInnerImage autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.evaInnnerButton];
-        
-//        [self.remindImageButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
-        
+                
         self.didSetupConstraints = YES;
     }
     [super updateConstraints];
@@ -169,17 +165,6 @@
     }
     return _evaInnerImage;
 }
-
-
-
-//- (UIButton *)remindImageButton
-//{
-//    if (!_remindImageButton) {
-//        _remindImageButton = [UIButton newAutoLayoutView];
-//        [_remindImageButton setImage:[UIImage imageNamed:@"kong"] forState:0];
-//    }
-//    return _remindImageButton;
-//}
 
 - (void)awakeFromNib {
     // Initialization code

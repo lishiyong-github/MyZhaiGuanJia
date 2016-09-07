@@ -304,7 +304,7 @@
     
     QDFWeakSelf;
     [self requestDataPostWithString:allEvaContainString params:params successBlock:^(id responseObject) {
-                
+        
         [weakself.evaluateArray removeAllObjects];
         [weakself.launchEvaluateArray removeAllObjects];
         

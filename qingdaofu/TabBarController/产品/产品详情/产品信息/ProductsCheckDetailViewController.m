@@ -13,6 +13,7 @@
 #import "UIButton+WebCache.h"
 #import "UIViewController+ImageBrowser.h"
 
+
 @interface ProductsCheckDetailViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupconstraints;
