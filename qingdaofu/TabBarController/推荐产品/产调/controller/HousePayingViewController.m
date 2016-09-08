@@ -14,6 +14,7 @@
 #import "WXApi.h"
 
 #import "BaseCommitView.h"
+#import "ELAlertView.h"
 
 #import "ReiceptCell.h"
 #import "MineUserCell.h"
@@ -44,6 +45,8 @@
     [self.view addSubview:self.powerCommitView];
     
     [self.view setNeedsUpdateConstraints];
+    
+    [self shwoAlertViewWithType:@"1"];
 }
 
 - (void)updateViewConstraints
@@ -105,8 +108,6 @@
         CGSize actualSize = [addressStr boundingRectWithSize:titleSize options:NSStringDrawingUsesDeviceMetrics attributes:@{NSFontAttributeName:kSecondFont} context:nil].size;
         
         return 45+MAX(actualSize.height, 15.5);
-//        CGSize titleSize = CGSizeMake(kScreenWidth-kBigPadding*2, MAXFLOAT);
-//        CGSize actualsize = [addressStr boundingRectWithSize:titleSize options:NSStringDrawingUsesDeviceMetrics attributes:@{NSFontAttributeName :kSecondFont} context:nil].size;
         
     }
     return kCellHeight;
@@ -152,6 +153,8 @@
             cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.userNameButton.userInteractionEnabled = NO;
+        cell.userActionButton.userInteractionEnabled = NO;
         
         [cell.userNameButton setTitle:@"服务时间" forState:0];
         [cell.userActionButton setTitle:@"工作日9:00-16:30  " forState:0];
@@ -208,6 +211,8 @@
             cell.addressLabel.text = [NSString stringWithFormat:@"%@%@",parameters[@"area"],parameters[@"address"]];
             weakself.editParms = parameters;
         }];
+    }else if (indexPath.section == 2){
+        [self shwoAlertViewWithType:@"2"];
     }
 }
 
@@ -281,6 +286,21 @@
     [alert show];
 }
 
+- (void)shwoAlertViewWithType:(NSString *)type
+{
+    UIButton *showButton1 = [UIButton newAutoLayoutView];
+    showButton1.backgroundColor = UIColorFromRGB1(0x333333, 0.3);
+    [[UIApplication sharedApplication].keyWindow addSubview:showButton1];
+    [showButton1 autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+    [showButton1 addAction:^(UIButton *btn) {
+        [btn removeFromSuperview];
+    }];
+    if ([type integerValue] == 1) {
+        [showButton1 setImage:[UIImage imageNamed:@"payimage"] forState:0];
+    }else{
+        [showButton1 setImage:[UIImage imageNamed:@"image_tip"] forState:0];
+    }
+}
 
 
 /*

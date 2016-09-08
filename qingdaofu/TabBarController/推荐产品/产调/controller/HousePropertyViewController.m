@@ -92,6 +92,7 @@
         [button setTitleColor:kNavColor forState:0];
         button.titleLabel.font = kBigFont;
         [_propertyFooterView addSubview:button];
+        
         QDFWeakSelf;
         [button addAction:^(UIButton *btn) {
 //            HousePayingViewController *housePayingVC = [[HousePayingViewController alloc] init];

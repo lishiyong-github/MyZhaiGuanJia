@@ -18,6 +18,13 @@
 		A10D7B871CEB1BE000422D7D /* UIView+UITextColor.m in Sources */ = {isa = PBXBuildFile; fileRef = A10D7B861CEB1BE000422D7D /* UIView+UITextColor.m */; };
 		A10D7B8B1CEB246700422D7D /* DebtCreditMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A10D7B8A1CEB246700422D7D /* DebtCreditMessageViewController.m */; };
 		A116300E1D2107F000E2D321 /* ProductsCheckDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A116300D1D2107F000E2D321 /* ProductsCheckDetailViewController.m */; };
+		A11A32211D815D2F00B855A7 /* ELAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = A11A321C1D815D2F00B855A7 /* ELAlertView.m */; };
+		A11A32221D815D2F00B855A7 /* NYAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = A11A321E1D815D2F00B855A7 /* NYAlertView.m */; };
+		A11A32231D815D2F00B855A7 /* UIView+HitTestEdgeInsets.m in Sources */ = {isa = PBXBuildFile; fileRef = A11A32201D815D2F00B855A7 /* UIView+HitTestEdgeInsets.m */; };
+		A11A32261D816BE400B855A7 /* payimage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A11A32241D816BE400B855A7 /* payimage@2x.png */; };
+		A11A32271D816BE400B855A7 /* payimage@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A11A32251D816BE400B855A7 /* payimage@3x.png */; };
+		A11A322A1D816F6C00B855A7 /* image_tip@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A11A32281D816F6C00B855A7 /* image_tip@2x.png */; };
+		A11A322B1D816F6C00B855A7 /* image_tip@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A11A32291D816F6C00B855A7 /* image_tip@3x.png */; };
 		A13EA56D1D2A062F001B83A7 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A13EA56C1D2A062F001B83A7 /* CollectionViewCell.m */; };
 		A13EA5711D2A1928001B83A7 /* MessageResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A13EA5701D2A1928001B83A7 /* MessageResponse.m */; };
 		A13EA5741D2A193B001B83A7 /* MessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A13EA5731D2A193B001B83A7 /* MessageModel.m */; };
@@ -533,6 +540,8 @@
 		A1A34C371CE32C8000AD454A /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A34C361CE32C8000AD454A /* RegisterViewController.m */; };
 		A1A34C3A1CE32C9300AD454A /* ForgetPassViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A34C391CE32C9300AD454A /* ForgetPassViewController.m */; };
 		A1A34C3D1CE32CF700AD454A /* LoginCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A34C3C1CE32CF700AD454A /* LoginCell.m */; };
+		A1A3BE1B1D7FDD2D00CA5F56 /* UIViewController+AlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A3BE1A1D7FDD2D00CA5F56 /* UIViewController+AlertView.m */; };
+		A1A3BE1E1D7FEEA700CA5F56 /* MiAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A3BE1D1D7FEEA700CA5F56 /* MiAlertView.m */; };
 		A1A5C73E1D374E6E00173533 /* conserve_investment_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A5C73C1D374E6E00173533 /* conserve_investment_icon@2x.png */; };
 		A1A5C73F1D374E6E00173533 /* conserve_investment_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A5C73D1D374E6E00173533 /* conserve_investment_icon@3x.png */; };
 		A1A5C7421D374ED200173533 /* conserve_loan_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A5C7401D374ED200173533 /* conserve_loan_icon@2x.png */; };
@@ -710,6 +719,16 @@
 		A10D7B8A1CEB246700422D7D /* DebtCreditMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebtCreditMessageViewController.m; sourceTree = "<group>"; };
 		A116300C1D2107F000E2D321 /* ProductsCheckDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductsCheckDetailViewController.h; sourceTree = "<group>"; };
 		A116300D1D2107F000E2D321 /* ProductsCheckDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductsCheckDetailViewController.m; sourceTree = "<group>"; };
+		A11A321B1D815D2F00B855A7 /* ELAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELAlertView.h; sourceTree = "<group>"; };
+		A11A321C1D815D2F00B855A7 /* ELAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ELAlertView.m; sourceTree = "<group>"; };
+		A11A321D1D815D2F00B855A7 /* NYAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NYAlertView.h; sourceTree = "<group>"; };
+		A11A321E1D815D2F00B855A7 /* NYAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NYAlertView.m; sourceTree = "<group>"; };
+		A11A321F1D815D2F00B855A7 /* UIView+HitTestEdgeInsets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+HitTestEdgeInsets.h"; sourceTree = "<group>"; };
+		A11A32201D815D2F00B855A7 /* UIView+HitTestEdgeInsets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+HitTestEdgeInsets.m"; sourceTree = "<group>"; };
+		A11A32241D816BE400B855A7 /* payimage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "payimage@2x.png"; sourceTree = "<group>"; };
+		A11A32251D816BE400B855A7 /* payimage@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "payimage@3x.png"; sourceTree = "<group>"; };
+		A11A32281D816F6C00B855A7 /* image_tip@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "image_tip@2x.png"; sourceTree = "<group>"; };
+		A11A32291D816F6C00B855A7 /* image_tip@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "image_tip@3x.png"; sourceTree = "<group>"; };
 		A13EA56B1D2A062F001B83A7 /* CollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewCell.h; sourceTree = "<group>"; };
 		A13EA56C1D2A062F001B83A7 /* CollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewCell.m; sourceTree = "<group>"; };
 		A13EA56F1D2A1928001B83A7 /* MessageResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageResponse.h; sourceTree = "<group>"; };
@@ -1473,6 +1492,10 @@
 		A1A34C391CE32C9300AD454A /* ForgetPassViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForgetPassViewController.m; sourceTree = "<group>"; };
 		A1A34C3B1CE32CF700AD454A /* LoginCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginCell.h; sourceTree = "<group>"; };
 		A1A34C3C1CE32CF700AD454A /* LoginCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginCell.m; sourceTree = "<group>"; };
+		A1A3BE191D7FDD2D00CA5F56 /* UIViewController+AlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+AlertView.h"; sourceTree = "<group>"; };
+		A1A3BE1A1D7FDD2D00CA5F56 /* UIViewController+AlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+AlertView.m"; sourceTree = "<group>"; };
+		A1A3BE1C1D7FEEA700CA5F56 /* MiAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiAlertView.h; sourceTree = "<group>"; };
+		A1A3BE1D1D7FEEA700CA5F56 /* MiAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MiAlertView.m; sourceTree = "<group>"; };
 		A1A5C73C1D374E6E00173533 /* conserve_investment_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conserve_investment_icon@2x.png"; sourceTree = "<group>"; };
 		A1A5C73D1D374E6E00173533 /* conserve_investment_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conserve_investment_icon@3x.png"; sourceTree = "<group>"; };
 		A1A5C7401D374ED200173533 /* conserve_loan_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conserve_loan_icon@2x.png"; sourceTree = "<group>"; };
@@ -1759,6 +1782,19 @@
 				A16BA13F1CEC11B600A7010C /* EditDebtCreditMessageViewController.m */,
 			);
 			path = "债权人信息";
+			sourceTree = "<group>";
+		};
+		A11A321A1D815D2F00B855A7 /* ELAlertView */ = {
+			isa = PBXGroup;
+			children = (
+				A11A321B1D815D2F00B855A7 /* ELAlertView.h */,
+				A11A321C1D815D2F00B855A7 /* ELAlertView.m */,
+				A11A321D1D815D2F00B855A7 /* NYAlertView.h */,
+				A11A321E1D815D2F00B855A7 /* NYAlertView.m */,
+				A11A321F1D815D2F00B855A7 /* UIView+HitTestEdgeInsets.h */,
+				A11A32201D815D2F00B855A7 /* UIView+HitTestEdgeInsets.m */,
+			);
+			path = ELAlertView;
 			sourceTree = "<group>";
 		};
 		A13EA56E1D2A1905001B83A7 /* model */ = {
@@ -2421,6 +2457,10 @@
 		A192B4BC1CDB45EB0053FC4C /* images */ = {
 			isa = PBXGroup;
 			children = (
+				A11A32281D816F6C00B855A7 /* image_tip@2x.png */,
+				A11A32291D816F6C00B855A7 /* image_tip@3x.png */,
+				A11A32241D816BE400B855A7 /* payimage@2x.png */,
+				A11A32251D816BE400B855A7 /* payimage@3x.png */,
 				A19441801D79246A003CA99F /* closed@2x.png */,
 				A19441811D79246A003CA99F /* closed@3x.png */,
 				A19657281D7828F400F846D4 /* more_white@2x.png */,
@@ -3317,6 +3357,10 @@
 				A1BC16651D40CA190008E2DE /* UITabBar+Badge.m */,
 				A1AD9B941D499729001F3076 /* UIView+LBExtension.h */,
 				A1AD9B951D499729001F3076 /* UIView+LBExtension.m */,
+				A1A3BE191D7FDD2D00CA5F56 /* UIViewController+AlertView.h */,
+				A1A3BE1A1D7FDD2D00CA5F56 /* UIViewController+AlertView.m */,
+				A1A3BE1C1D7FEEA700CA5F56 /* MiAlertView.h */,
+				A1A3BE1D1D7FEEA700CA5F56 /* MiAlertView.m */,
 			);
 			path = "工具类";
 			sourceTree = "<group>";
@@ -3324,6 +3368,7 @@
 		A1A017311C5B677200027134 /* 第三方 */ = {
 			isa = PBXGroup;
 			children = (
+				A11A321A1D815D2F00B855A7 /* ELAlertView */,
 				A1A319721D6D6F480001242D /* WX */,
 				A163915A1D20194B0051F1D0 /* ImageBrowser */,
 				A1B0291C1D17CE6F00F32A09 /* AFNetworking */,
@@ -3908,6 +3953,7 @@
 				A196CDF81CFBE54200AC6C87 /* more@3x.png in Resources */,
 				A1A69DD61D62BDF10053FFED /* upload_positive_image@2x.png in Resources */,
 				A192B4D11CDB52A40053FC4C /* list_icon_product@2x.png in Resources */,
+				A11A32271D816BE400B855A7 /* payimage@3x.png in Resources */,
 				A199852D1CE07A010055A572 /* publish_star_s@3x.png in Resources */,
 				A19BBC631D52E73100D8F23A /* order@2x.png in Resources */,
 				A1A97E421CDC666400EDE320 /* news_order_icon@2x.png in Resources */,
@@ -3935,7 +3981,9 @@
 				A18D50571D6EEE7F00B6BF0D /* stop@3x.png in Resources */,
 				A192B4C81CDB492B0053FC4C /* list_icon_preservation@3x.png in Resources */,
 				A19EFBDE1D5D713400C813D8 /* center@3x.png in Resources */,
+				A11A32261D816BE400B855A7 /* payimage@2x.png in Resources */,
 				A19F884D1D51C18000D4EC92 /* bar_nav_back@2x.png in Resources */,
+				A11A322B1D816F6C00B855A7 /* image_tip@3x.png in Resources */,
 				A17B80151D221C3A0071405F /* list_collection_nor@2x.png in Resources */,
 				A1A97E411CDC666400EDE320 /* news_evaluate_icon@3x.png in Resources */,
 				A1770E3B1CFEDEED003579E1 /* list_litigation@3x.png in Resources */,
@@ -4066,6 +4114,7 @@
 				A1718DF11CFD6C490007DA6F /* list_icon_cutout@2x.png in Resources */,
 				A1718DD61CFD38E70007DA6F /* apply@2x.png in Resources */,
 				A1A3190D1D6D36770001242D /* phone_gray@2x.png in Resources */,
+				A11A322A1D816F6C00B855A7 /* image_tip@2x.png in Resources */,
 				A1FB266A1CF2E52B00B66608 /* select_oepn@3x.png in Resources */,
 				A1A0B1211D7566B0009B1DB4 /* my_preservation@3x.png in Resources */,
 				A14C17601D07F692003826F8 /* list_litigation_nor@2x.png in Resources */,
@@ -4305,6 +4354,7 @@
 				A1E4AFB71CD0C674001A5E9E /* SingleButton.m in Sources */,
 				A1A017531C5B696A00027134 /* MJPropertyType.m in Sources */,
 				A19B8E281CCF447200F8EBF2 /* TabBarItem.m in Sources */,
+				A11A32211D815D2F00B855A7 /* ELAlertView.m in Sources */,
 				A18F14191CF6D6A100B14318 /* AllEvaluationViewController.m in Sources */,
 				A1B0292C1D17CE6F00F32A09 /* AFSecurityPolicy.m in Sources */,
 				A17EE38D1CD86FB700ECC631 /* ContactUsViewController.m in Sources */,
@@ -4348,6 +4398,7 @@
 				A187B9001D50336500A91A16 /* BaseCommitView.m in Sources */,
 				A1A6C84F1D669D9A00EC060E /* ImageModel.m in Sources */,
 				A19CC0921D59C181000ED568 /* ApplicationGuaranteeView.m in Sources */,
+				A11A32221D815D2F00B855A7 /* NYAlertView.m in Sources */,
 				A159F9451D0BEE5E00A6A024 /* StandardPaths.m in Sources */,
 				A19506371D6FE80F00CE87B5 /* ReportDatePickerView.m in Sources */,
 				A187B9121D508BAA00A91A16 /* HousePropertyListViewController.m in Sources */,
@@ -4464,6 +4515,7 @@
 				A16175561D12A1CF001BB200 /* LoginTableView.m in Sources */,
 				A1B028EE1D1794DC00F32A09 /* UIButton+WebCache.m in Sources */,
 				A19CC0951D59E049000ED568 /* ApplicationGuaranteeSecondView.m in Sources */,
+				A1A3BE1E1D7FEEA700CA5F56 /* MiAlertView.m in Sources */,
 				A19F88461D517ADE00D4EC92 /* HouseCopyViewController.m in Sources */,
 				A19D94401D64062C00DE89FC /* AssessResonse.m in Sources */,
 				A1A66F2C1D6C33D600B0E101 /* ReportFiSucViewController.m in Sources */,
@@ -4503,8 +4555,10 @@
 				A1A34C341CE32C7100AD454A /* LoginViewController.m in Sources */,
 				A1718DE41CFD64CD0007DA6F /* CaseNoCell.m in Sources */,
 				A19D943D1D63FDF200DE89FC /* AssessModel.m in Sources */,
+				A11A32231D815D2F00B855A7 /* UIView+HitTestEdgeInsets.m in Sources */,
 				A17634201D067AB200CD4623 /* PublishingModel.m in Sources */,
 				A1FB265F1CF2CD8900B66608 /* SearchViewController.m in Sources */,
+				A1A3BE1B1D7FDD2D00CA5F56 /* UIViewController+AlertView.m in Sources */,
 				A16BA1461CEC2ECB00A7010C /* EditDebtAddressCell.m in Sources */,
 				A1B0292F1D17CE6F00F32A09 /* AFURLSessionManager.m in Sources */,
 				A145B2AC1CEEF579003A93B7 /* EvaluateSendCell.m in Sources */,
