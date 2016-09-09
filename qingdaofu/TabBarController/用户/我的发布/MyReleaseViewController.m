@@ -416,9 +416,6 @@
     QDFWeakSelf;
     [self requestDataPostWithString:myReleaseString params:params successBlock:^(id responseObject) {
         
-        NSDictionary *ipip = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        
-        
         if ([page intValue] == 1) {
             [weakself.releaseDataArray removeAllObjects];
             [weakself.releaseDic removeAllObjects];

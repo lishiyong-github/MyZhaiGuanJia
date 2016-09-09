@@ -237,21 +237,23 @@
                 if (weakcell.collectionDataList.count < 3) {
                     [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
                         
-                        NSData *imData = [NSData dataWithContentsOfFile:images[0]];
-                        NSString *imString = [NSString stringWithFormat:@"%@",imData];
-                        [weakself uploadImages:imString andType:@"jgp" andFilePath:images[0]];
-                        
-                        [weakself setDidGetValidImage:^(ImageModel *imageModel) {
-                            if ([imageModel.code isEqualToString:@"0000"]) {
-//                                [weakself.evaImageArray addObject:imageModel.fileid];
-                                [weakself.evaImageArray addObject:imageModel.url];
-
-                                [weakcell.collectionDataList insertObject:images[0] atIndex:0];
-                                [weakcell reloadData];
-                            }else{
-                                [weakself showHint:imageModel.msg];
-                            }
-                        }];
+                        if (images.count > 0) {
+                            NSData *imData = [NSData dataWithContentsOfFile:images[0]];
+                            NSString *imString = [NSString stringWithFormat:@"%@",imData];
+                            [weakself uploadImages:imString andType:@"jgp" andFilePath:images[0]];
+                            
+                            [weakself setDidGetValidImage:^(ImageModel *imageModel) {
+                                if ([imageModel.code isEqualToString:@"0000"]) {
+                                    //                                [weakself.evaImageArray addObject:imageModel.fileid];
+                                    [weakself.evaImageArray addObject:imageModel.url];
+                                    
+                                    [weakcell.collectionDataList insertObject:images[0] atIndex:0];
+                                    [weakcell reloadData];
+                                }else{
+                                    [weakself showHint:imageModel.msg];
+                                }
+                            }];
+                        }
                     }];
                 }else{
                     [weakself showHint:@"最多添加2张图片"];

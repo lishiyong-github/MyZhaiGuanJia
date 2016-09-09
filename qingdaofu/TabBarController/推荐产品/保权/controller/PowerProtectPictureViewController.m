@@ -10,10 +10,12 @@
 
 #import "BaseCommitView.h"
 #import "UIViewController+MutipleImageChoice.h"
+#import "UIViewController+ImageBrowser.h"
 #import "TakePictureCell.h"
 #import "MineUserCell.h"
 
 #import "ImageModel.h"
+
 
 @interface PowerProtectPictureViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -33,6 +35,7 @@
 @property (nonatomic,strong) NSMutableArray *caichanArray1;
 @property (nonatomic,strong) NSMutableArray *zhengjuArray1;
 @property (nonatomic,strong) NSMutableArray *anjianArray1;
+@property (nonatomic,strong) NSDictionary *exampleDic;
 
 @end
 
@@ -43,7 +46,7 @@
     self.title = @"完善资料";
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"查看示例" style:UIBarButtonItemStylePlain target:self action:@selector(sddd)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"查看示例" style:UIBarButtonItemStylePlain target:self action:@selector(viewExample)];
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kBlueColor} forState:0];
     
     [self.view addSubview:self.powerPictureTableView];
@@ -52,9 +55,39 @@
     [self.view setNeedsUpdateConstraints];
 }
 
-- (void)sddd
+- (void)viewExample
 {
-    
+    if (self.exampleDic.allKeys.count == 0) {
+        NSString *viewExampleString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kViewExampleString];
+        NSDictionary *params = @{@"token" : [self getValidateToken]};
+        
+        QDFWeakSelf;
+        [self requestDataPostWithString:viewExampleString params:params successBlock:^(id responseObject) {
+            NSDictionary *sisis = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+            weakself.exampleDic = sisis;
+            
+            NSArray *pArray = [NSArray arrayWithObjects:sisis[@"baodan1ios"],sisis[@"baodan2ios"],sisis[@"baodan3ios"], nil];
+            NSArray *aArray = [NSArray arrayWithObjects:sisis[@"baohan1ios"], nil];
+            
+            if (weakself.pModel) {//保权
+                [weakself showImages:pArray];
+            }else if (weakself.aModel){//保函
+                [weakself showImages:aArray];
+            }
+            
+        } andFailBlock:^(NSError *error) {
+            
+        }];
+    }else{
+        NSArray *pArray = [NSArray arrayWithObjects:self.exampleDic[@"baodan1ios"],self.exampleDic[@"baodan2ios"],self.exampleDic[@"baodan3ios"], nil];
+        NSArray *aArray = [NSArray arrayWithObjects:self.exampleDic[@"baohan1ios"], nil];
+        
+        if (self.pModel) {//保权
+            [self showImages:pArray];
+        }else if (self.aModel){//保函
+            [self showImages:aArray];
+        }
+    }
 }
 
 - (void)updateViewConstraints
@@ -411,9 +444,13 @@
             if (items == weakself.qisuArray1.count-1) {
                 if (weakself.qisuArray1.count < 5) {
                     [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
-                        NSData *iData = [[NSData alloc] initWithContentsOfFile:images[0]];
-                        NSString *dataString = [NSString stringWithFormat:@"%@",iData];
-                        [weakself uploadImages:dataString andType:@"qisu" andFilePath:images[0]];
+                        
+                        if (images.count > 0) {
+                            NSData *iData = [[NSData alloc] initWithContentsOfFile:images[0]];
+                            NSString *dataString = [NSString stringWithFormat:@"%@",iData];
+                            [weakself uploadImages:dataString andType:@"qisu" andFilePath:images[0]];
+                            
+                        }
                     }];
                 }else{
                     [weakself showHint:@"最多添加4张"];
@@ -423,9 +460,13 @@
             if (items == weakself.caichanArray1.count-1) {
                 if (weakself.caichanArray1.count < 5) {
                     [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
-                        NSData *iData = [[NSData alloc] initWithContentsOfFile:images[0]];
-                        NSString *dataString = [NSString stringWithFormat:@"%@",iData];
-                        [weakself uploadImages:dataString andType:@"caichan" andFilePath:images[0]];
+                        
+                        if (images.count > 0) {
+                            NSData *iData = [[NSData alloc] initWithContentsOfFile:images[0]];
+                            NSString *dataString = [NSString stringWithFormat:@"%@",iData];
+                            [weakself uploadImages:dataString andType:@"caichan" andFilePath:images[0]];
+                            
+                        }
                     }];
                 }else{
                     [weakself showHint:@"最多添加4张"];
@@ -435,9 +476,14 @@
             if (items == weakself.zhengjuArray1.count-1) {
                 if (weakself.zhengjuArray1.count < 5) {
                     [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
-                        NSData *iData = [[NSData alloc] initWithContentsOfFile:images[0]];
-                        NSString *dataString = [NSString stringWithFormat:@"%@",iData];
-                        [weakself uploadImages:dataString andType:@"zhengju" andFilePath:images[0]];
+                        
+                        if (images.count > 0) {
+                            NSData *iData = [[NSData alloc] initWithContentsOfFile:images[0]];
+                            NSString *dataString = [NSString stringWithFormat:@"%@",iData];
+                            [weakself uploadImages:dataString andType:@"zhengju" andFilePath:images[0]];
+                            
+                        }
+                        
                     }];
                 }else{
                     [weakself showHint:@"最多添加4张"];
@@ -447,9 +493,14 @@
             if (items == weakself.anjianArray1.count-1) {
                 if (weakself.anjianArray1.count < 5) {
                     [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
-                        NSData *iData = [[NSData alloc] initWithContentsOfFile:images[0]];
-                        NSString *dataString = [NSString stringWithFormat:@"%@",iData];
-                        [weakself uploadImages:dataString andType:@"anjian" andFilePath:images[0]];
+                        
+                        if (images.count > 0) {
+                            NSData *iData = [[NSData alloc] initWithContentsOfFile:images[0]];
+                            NSString *dataString = [NSString stringWithFormat:@"%@",iData];
+                            [weakself uploadImages:dataString andType:@"anjian" andFilePath:images[0]];
+                            
+                        }
+                        
                     }];
                 }else{
                     [weakself showHint:@"最多添加4张"];

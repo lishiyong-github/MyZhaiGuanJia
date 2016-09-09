@@ -19,6 +19,7 @@
 #import "LaunchEvaluateModel.h"  //给出的评价
 
 #import "UIButton+WebCache.h"
+#import "UIViewController+ImageBrowser.h"
 
 @interface EvaluateListsViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -201,18 +202,32 @@
             [cell.evaProImageView2 setHidden:YES];
             NSString *imgString1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,evaluateModel.pictures[0]];
             NSURL *imgUrl1 = [NSURL URLWithString:imgString1];
-            [cell.evaProImageView1 sd_setImageWithURL:imgUrl1 forState:0 placeholderImage:[UIImage imageNamed:@""]];
+            [cell.evaProImageView1 sd_setImageWithURL:imgUrl1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+            
+            QDFWeakSelf;
+            [cell.evaProImageView1 addAction:^(UIButton *btn) {
+                [weakself showImages:@[imgUrl1]];
+            }];
+            
         }else{
             [cell.evaProImageView1 setHidden:NO];
             [cell.evaProImageView2 setHidden:NO];
             
             NSString *imgString1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,evaluateModel.pictures[0]];
             NSURL *imgUrl1 = [NSURL URLWithString:imgString1];
-            [cell.evaProImageView1 sd_setImageWithURL:imgUrl1 forState:0 placeholderImage:[UIImage imageNamed:@""]];
+            [cell.evaProImageView1 sd_setImageWithURL:imgUrl1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
 
             NSString *imgString2 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,evaluateModel.pictures[0]];
             NSURL *imgUrl2 = [NSURL URLWithString:imgString2];
-            [cell.evaProImageView1 sd_setImageWithURL:imgUrl2 forState:0 placeholderImage:[UIImage imageNamed:@""]];
+            [cell.evaProImageView2 sd_setImageWithURL:imgUrl2 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+            
+            QDFWeakSelf;
+            [cell.evaProImageView1 addAction:^(UIButton *btn) {
+                [weakself showImages:@[imgUrl1,imgUrl2]];
+            }];
+            [cell.evaProImageView2 addAction:^(UIButton *btn) {
+                [weakself showImages:@[imgUrl1,imgUrl2]];
+            }];
         }
         
         return cell;
@@ -262,18 +277,32 @@
         [cell.evaProImageView2 setHidden:YES];
         NSString *imgString1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,launchEvaluateModel.pictures[0]];
         NSURL *imgUrl1 = [NSURL URLWithString:imgString1];
-        [cell.evaProImageView1 sd_setImageWithURL:imgUrl1 forState:0 placeholderImage:[UIImage imageNamed:@""]];
+        [cell.evaProImageView1 sd_setImageWithURL:imgUrl1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+        
+        QDFWeakSelf;
+        [cell.evaProImageView1 addAction:^(UIButton *btn) {
+            [weakself showImages:@[imgUrl1]];
+        }];
+        
     }else{
         [cell.evaProImageView1 setHidden:NO];
         [cell.evaProImageView2 setHidden:NO];
         
         NSString *imgString1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,launchEvaluateModel.pictures[0]];
         NSURL *imgUrl1 = [NSURL URLWithString:imgString1];
-        [cell.evaProImageView1 sd_setImageWithURL:imgUrl1 forState:0 placeholderImage:[UIImage imageNamed:@""]];
+        [cell.evaProImageView1 sd_setImageWithURL:imgUrl1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
         
         NSString *imgString2 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,launchEvaluateModel.pictures[0]];
         NSURL *imgUrl2 = [NSURL URLWithString:imgString2];
-        [cell.evaProImageView1 sd_setImageWithURL:imgUrl2 forState:0 placeholderImage:[UIImage imageNamed:@""]];
+        [cell.evaProImageView2 sd_setImageWithURL:imgUrl2 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+        
+        QDFWeakSelf;
+        [cell.evaProImageView1 addAction:^(UIButton *btn) {
+            [weakself showImages:@[imgUrl1,imgUrl2]];
+        }];
+        [cell.evaProImageView2 addAction:^(UIButton *btn) {
+            [weakself showImages:@[imgUrl1,imgUrl2]];
+        }];
         
     }
     return cell;
@@ -304,6 +333,8 @@
     
     QDFWeakSelf;
     [self requestDataPostWithString:allEvaContainString params:params successBlock:^(id responseObject) {
+        
+        NSDictionary *apapa = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
         [weakself.evaluateArray removeAllObjects];
         [weakself.launchEvaluateArray removeAllObjects];

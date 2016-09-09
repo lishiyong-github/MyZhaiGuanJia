@@ -409,18 +409,22 @@
         }
         
         //债权类型
+        //债权类型
         if ([proModel.loan_type isEqualToString:@"1"]) {
             cell.rateView.label1.text = @"房产抵押";
-            cell.addressLabel.text = [NSString getValidStringFromString:proModel.location toString:@"无抵押物地址"];
+            NSString *location = [NSString getValidStringFromString:proModel.location toString:@"无抵押物地址"];
+            cell.addressLabel.text = [NSString stringWithFormat:@"抵押物地址：%@",location];
         }else if ([proModel.loan_type isEqualToString:@"2"]){
             cell.rateView.label1.text = @"应收账款";
-            cell.addressLabel.text = @"无抵押物地址";
+            cell.addressLabel.text = [NSString stringWithFormat:@"应收账款：%@万",proModel.accountr];
         }else if ([proModel.loan_type isEqualToString:@"3"]){
             cell.rateView.label1.text = @"机动车抵押";
-            cell.addressLabel.text = @"无抵押物地址";
+            NSArray *licenseplate = @[@"沪牌",@"非沪牌"];
+            NSString *license = licenseplate[[proModel.licenseplate integerValue] -1];
+            cell.addressLabel.text = [NSString stringWithFormat:@"机动车抵押：%@%@%@",proModel.carbrand,proModel.audi,license];
         }else{
             cell.rateView.label1.text = @"无抵押";
-            cell.addressLabel.text = @"无抵押物地址";
+            cell.addressLabel.text = @"无抵押";
         }
         cell.rateView.label2.text = @"债权类型";
                 

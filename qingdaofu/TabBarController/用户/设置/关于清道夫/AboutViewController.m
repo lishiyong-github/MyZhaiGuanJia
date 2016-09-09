@@ -54,16 +54,16 @@
 {
     if (!_aboutTableView) {
         _aboutTableView = [UITableView newAutoLayoutView];
+        _aboutTableView.separatorColor = kSeparateColor;
+        _aboutTableView.backgroundColor = kBackColor;
         _aboutTableView.delegate = self;
         _aboutTableView.dataSource = self;
-        _aboutTableView.separatorColor = kSeparateColor;
         _aboutTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
         _aboutTableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 142)];
         [_aboutTableView.tableHeaderView addSubview:self.aboutHeaderView];
-        _aboutTableView.backgroundColor = kBackColor;
         
         [self.aboutHeaderView autoAlignAxisToSuperviewAxis:ALAxisVertical];
-        [self.aboutHeaderView autoSetDimensionsToSize:CGSizeMake(85, 120)];
+        [self.aboutHeaderView autoSetDimensionsToSize:CGSizeMake(85, 100)];
         [self.aboutHeaderView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:30];
     }
     return _aboutTableView;
@@ -73,6 +73,7 @@
 {
     if (!_aboutHeaderView) {
         _aboutHeaderView = [SingleButton newAutoLayoutView];
+        _aboutHeaderView.spaceConstraints.constant = 0;
         [_aboutHeaderView.button setImage:[UIImage imageNamed:@"logo"] forState:0];
         _aboutHeaderView.label.font = kSecondFont;
         _aboutHeaderView.label.textColor = kLightGrayColor;

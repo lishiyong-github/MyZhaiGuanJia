@@ -243,20 +243,27 @@
         [cell setDidSelectedSeg:^(NSInteger segTag) {
             if (segTag == 0) {//快递
                 AgentCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
-                cell.agentTextField.userInteractionEnabled = NO;
-                cell.agentButton.userInteractionEnabled = NO;
-                [self.powerDic setObject:@"2" forKey:@"type"]; //默认选择快递
+//                cell.agentTextField.userInteractionEnabled = NO;
+//                cell.agentButton.userInteractionEnabled = NO;
+//                [self.powerDic setObject:@"2" forKey:@"type"]; //默认选择快递
 
+//                cell.agentLabel.text = @"收货地址";
+//                cell.agentTextField.placeholder = @"请选择";
+//                cell.agentTextField.text = @"";
+//                [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+                cell.agentTextField.userInteractionEnabled = YES;
+                [cell.agentButton setHidden:YES];
+                [self.powerDic setObject:@"2" forKey:@"type"]; //默认选择快递
+                
                 cell.agentLabel.text = @"收货地址";
-                cell.agentTextField.placeholder = @"请选择";
-                cell.agentTextField.text = @"";
-                [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+                cell.agentTextField.placeholder = @"请输入收货地址";
+                cell.agentTextField.text = weakself.powerDic[@"address"];
                 
             }else if (segTag == 1){//自取
                 if (weakself.powerDic[@"fayuan_id"]) {
                     
-                    _chooseFlag = NO;
-                    [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
+//                    _chooseFlag = NO;
+//                    [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
                     
                     AgentCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
                     cell.agentTextField.userInteractionEnabled = NO;
@@ -302,15 +309,23 @@
             cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.agentTextField.userInteractionEnabled = NO;
-        cell.agentButton.userInteractionEnabled = NO;
+//        cell.agentTextField.userInteractionEnabled = NO;
+//        cell.agentButton.userInteractionEnabled = NO;
+//        
+//        cell.agentLabel.text = @"收货地址";
+//        cell.agentTextField.placeholder = @"请选择";
+//        [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
         
+        [cell.agentButton setHidden:YES];
         cell.agentLabel.text = @"收货地址";
-        cell.agentTextField.placeholder = @"请选择";
-        [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        cell.agentTextField.placeholder = @"请输入收货地址";
+        
+        QDFWeakSelf;
+        [cell setDidEndEditing:^(NSString *text) {
+            [weakself.powerDic setObject:text forKey:@"address"];
+        }];
         
         return cell;
-        
     }
     return nil;
 }
@@ -369,30 +384,31 @@
                 [weakself.powerDic setObject:gygyg forKey:@"category"];
             }];
         }
-    }else{
-        if (indexPath.row == 1) {
-            if ([self.powerDic[@"type"] isEqualToString:@"2"]) {//快递
-                
-                ReceiptAddressViewController *receiptAddressVC = [[ReceiptAddressViewController alloc] init];
-                receiptAddressVC.cateString = @"1";
-                [self.navigationController pushViewController:receiptAddressVC animated:YES];
-                
-                QDFWeakSelf;
-                [receiptAddressVC setDidSelectedReceiptAddress:^(NSString *name, NSString *phone, NSString *address) {
-                    
-                    _chooseFlag = YES;
-                    [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
-                    
-                    PowerAddressCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-                    cell.nameLabel.text = name;
-                    cell.phoneLabel.text = phone;
-                    cell.addressLabel.text = address;
-                    [weakself.powerDic setObject:address forKey:@"address"];
-                }];
-                
-            }
-        }
     }
+//    else{//section == 1
+//        if (indexPath.row == 1) {
+//            if ([self.powerDic[@"type"] isEqualToString:@"2"]) {//快递
+//                
+//                ReceiptAddressViewController *receiptAddressVC = [[ReceiptAddressViewController alloc] init];
+//                receiptAddressVC.cateString = @"1";
+//                [self.navigationController pushViewController:receiptAddressVC animated:YES];
+//                
+//                QDFWeakSelf;
+//                [receiptAddressVC setDidSelectedReceiptAddress:^(NSString *name, NSString *phone, NSString *address) {
+//                    
+//                    _chooseFlag = YES;
+//                    [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
+//                    
+//                    PowerAddressCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+//                    cell.nameLabel.text = name;
+//                    cell.phoneLabel.text = phone;
+//                    cell.addressLabel.text = address;
+//                    [weakself.powerDic setObject:address forKey:@"address"];
+//                }];
+//                
+//            }
+//        }
+//    }
 }
 
 #pragma mark - method

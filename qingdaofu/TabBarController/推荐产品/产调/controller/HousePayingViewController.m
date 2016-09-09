@@ -14,7 +14,6 @@
 #import "WXApi.h"
 
 #import "BaseCommitView.h"
-#import "ELAlertView.h"
 
 #import "ReiceptCell.h"
 #import "MineUserCell.h"

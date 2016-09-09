@@ -331,9 +331,7 @@
     
     QDFWeakSelf;
     [self requestDataPostWithString:listHouseString params:params successBlock:^(id responseObject) {
-        
-        NSDictionary *ioioio = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        
+                
         if ([page integerValue] == 1) {
             [weakself.propertyListArray removeAllObjects];
         }

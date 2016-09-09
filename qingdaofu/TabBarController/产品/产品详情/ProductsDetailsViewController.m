@@ -27,12 +27,13 @@
 
 //model
 //产品信息
-#import "PublishingResponse.h"
-#import "PublishingModel.h"
+#import "NewProductResponse.h"
+#import "PublishingModel.h"//产品详情
+#import "CertificationModel.h" //发布人详情
+#import "NumberModel.h" //申请次数
 
 //发布人信息
 #import "CompleteResponse.h"
-#import "CertificationModel.h"
 
 //收藏状态
 #import "ApplicationStateModel.h"
@@ -41,22 +42,18 @@
 #import "EvaluateResponse.h"
 #import "EvaluateModel.h"
 
-
-
 @interface ProductsDetailsViewController ()<UITableViewDataSource,UITableViewDelegate>
 
+@property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UIImage *shadowImage;
 @property (nonatomic,strong) UIButton *leftItemButton;
 @property (nonatomic,strong) UIButton *rightItemButton;
-@property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *productsDetailsTableView;
 @property (nonatomic,strong) BaseCommitButton *proDetailsCommitButton;
 @property (nonatomic,strong)  UIView *headerView;
-
 @property (nonatomic,strong) ProdLeftView *leftTableView;
 
 //json
-@property (nonatomic,strong) NSMutableArray *recommendDataArray;
 @property (nonatomic,strong) NSString *typetString;//收藏状态
 @property (nonatomic,strong) NSArray *messageArray1;
 @property (nonatomic,strong) NSArray *messageArray11;
@@ -68,8 +65,10 @@
 
 @property (nonatomic,strong) NSString *switchType; //切换产品详情or发布方信息
 
-
+@property (nonatomic,strong) NSMutableArray *recommendDataArray;
 @property (nonatomic,strong) NSMutableArray *certifiDataArray;
+@property (nonatomic,strong) NSMutableArray *numberDataArray;
+
 @property (nonatomic,strong) NSMutableArray *allEvaResponse;
 @property (nonatomic,strong) NSMutableArray *allEvaDataArray;
 
@@ -184,7 +183,7 @@
         QDFWeak(productSwitchView);
         QDFWeakSelf;
         [productSwitchView setDidSelectedButton:^(NSInteger tag) {
-            if (tag == 33) {
+            if (tag == 33) {//产品信息
                 [weakproductSwitchView.getbutton setTitleColor:kBlueColor forState:0];
                 [weakproductSwitchView.sendButton setTitleColor:kBlackColor forState:0];
                 weakproductSwitchView.leftBlueConstraints.constant = 0;
@@ -196,16 +195,20 @@
                     [weakself.productsDetailsTableView reloadData];
                 }
                 
-            }else{
-                PublishingResponse *qModel = self.recommendDataArray[0];
-                if ([qModel.state isEqualToString:@"1"]){
+            }else{//发布人信息
+                CertificationModel *certifiteModel;
+                if (self.certificationArray1.count > 0) {
+                    certifiteModel = self.certifiDataArray[0];
+                }
+                if ([certifiteModel.state isEqualToString:@"1"]){
                     [weakproductSwitchView.sendButton setTitleColor:kBlueColor forState:0];
                     [weakproductSwitchView.getbutton setTitleColor:kBlackColor forState:0];
                     weakproductSwitchView.leftBlueConstraints.constant = kScreenWidth/2;
                     weakself.switchType = @"34";
                     
-                    if (weakself.certificationArray1.count == 0) {
-                        [weakself getMessageOfPublishPerson];
+                    if (weakself.certifiDataArray.count == 0) {
+//                        [weakself getMessageOfPublishPerson];
+                        [weakself getDetailMessage];
                     }else{
                         [weakself.productsDetailsTableView reloadData];
                     }
@@ -245,6 +248,14 @@
     return _certifiDataArray;
 }
 
+- (NSMutableArray *)numberDataArray
+{
+    if (!_numberDataArray) {
+        _numberDataArray = [NSMutableArray array];
+    }
+    return _numberDataArray;
+}
+
 #pragma mark - tableView deleagate and datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -265,7 +276,7 @@
             }else{
                 //发布人信息
                 if (self.certificationArray1.count > 0) {
-                    return self.certificationArray1.count+3;
+                    return self.certificationArray1.count+1;
                 }
             }
         }
@@ -307,13 +318,10 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier;
-    PublishingResponse *ewModel;
-    PublishingModel *proModel;
-    if (self.recommendDataArray.count > 0) {
-        ewModel = self.recommendDataArray[0];
-        proModel = ewModel.product;
-    }
+    
     if (indexPath.section == 0) {
+        
+        PublishingModel *proModel = self.recommendDataArray[0];
         if (indexPath.row == 0) {//产品详情
             identifier = @"proDetais00";
             ProDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -414,12 +422,14 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.backgroundColor = kNavColor;
         
+        NumberModel *numberModel = self.numberDataArray[0];
+        
         cell.numberButton1.fLabel1.text = @"浏览次数";
-        cell.numberButton1.fLabel2.text = @"30";
+        cell.numberButton1.fLabel2.text = [NSString getValidStringFromString:proModel.browsenumber toString:@"0"];
         cell.numberButton2.fLabel1.text = @"申请次数";
-        cell.numberButton2.fLabel2.text = @"3";
+        cell.numberButton2.fLabel2.text = [NSString getValidStringFromString:numberModel.shenqing toString:@"0"];
         cell.numberButton3.fLabel1.text = @"收藏次数";
-        cell.numberButton3.fLabel2.text = @"3";
+        cell.numberButton3.fLabel2.text = [NSString getValidStringFromString:numberModel.shoucang toString:@"0"];
 
         return cell;
     }
@@ -436,6 +446,7 @@
             [cell.userActionButton setHidden:YES];
             
             return cell;
+            
         }else if(indexPath.row > 0 && indexPath.row < self.messageArray1.count+1){//基本信息详情
             identifier = @"proDetais11";
             MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -697,160 +708,205 @@
 //产品详情
 - (void)getDetailMessage
 {
-    NSString *detailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProdutsDetailString];
+    NSString *detailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductDetailString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"id" : self.idString,
                              @"category" : self.categoryString
                              };
     QDFWeakSelf;
-    [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){        
+    [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
         
-        PublishingResponse *respModel = [PublishingResponse objectWithKeyValues:responseObject];
+        NSDictionary *qoqo = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
-        NSArray *categoryArr = @[@"清收",@"诉讼"];
-        NSArray *cateStr = categoryArr[[weakself.categoryString integerValue] -2];
-        weakself.navigationItem.title = [NSString stringWithFormat:@"%@%@",cateStr,respModel.product.codeString];
-        [weakself.recommendDataArray addObject:respModel];
-        [weakself applicationForOrdersStates];
+        NewProductResponse *respModel = [NewProductResponse objectWithKeyValues:responseObject];
         
-        //************产品信息*********///
-        //金额
-        NSString *moneyStr1 = [NSString stringWithFormat:@"%@万",respModel.product.money];
-        
-        NSString *loan_typeStr = @"暂无";//债权类型
-        if ([respModel.product.loan_type intValue] == 1) {
-            loan_typeStr = @"房产抵押";
-        }else if ([respModel.product.loan_type intValue] == 2){
-            loan_typeStr = @"应收账款";
-        }else if ([respModel.product.loan_type intValue] == 3){
-            loan_typeStr = @"机动车抵押";
-        }else{
-            loan_typeStr = @"无抵押";
-        }
-        
-        //代理费用类型
-        NSString *agencycommissiontypeStr = @"暂无";
-        //代理费用
-        NSString *agencycommissionStr1 = @"暂无";
-        if ([respModel.product.agencycommissiontype intValue] == 1) {
-            if ([respModel.product.category integerValue] == 2) {
-                agencycommissiontypeStr = @"服务佣金";
-                agencycommissionStr1 = [NSString stringWithFormat:@"%@%@",[NSString getValidStringFromString:respModel.product.agencycommission toString:@"0"],@"%"];
+        if ([respModel.code isEqualToString:@"0000"]) {
+            
+            [weakself.numberDataArray addObject:respModel.number]; //申请次数
+            
+            PublishingModel *dataModel = respModel.data;
+            
+            ////////////////*********产品详情*********/////////////////////////
+            NSArray *categoryArr = @[@"清收",@"诉讼"];
+            NSArray *cateStr = categoryArr[[weakself.categoryString integerValue] -2];
+            weakself.navigationItem.title = [NSString stringWithFormat:@"%@%@",cateStr,dataModel.codeString];
+            [weakself.recommendDataArray addObject:dataModel];
+            
+            //************产品信息*********///
+            //金额
+            NSString *moneyStr1 = [NSString stringWithFormat:@"%@万",dataModel.money];
+            
+            NSString *loan_typeStr = @"暂无";//债权类型
+            if ([dataModel.loan_type intValue] == 1) {
+                loan_typeStr = @"房产抵押";
+            }else if ([dataModel.loan_type intValue] == 2){
+                loan_typeStr = @"应收账款";
+            }else if ([dataModel.loan_type intValue] == 3){
+                loan_typeStr = @"机动车抵押";
             }else{
-                agencycommissiontypeStr = @"固定费用";
-                agencycommissionStr1 = [NSString stringWithFormat:@"%@万",[NSString getValidStringFromString:respModel.product.agencycommission toString:@"0"]];
+                loan_typeStr = @"无抵押";
             }
-        }else if ([respModel.product.agencycommissiontype intValue] ==2){
-            if ([respModel.product.category integerValue] == 2) {
-                agencycommissiontypeStr = @"固定费用";
-                agencycommissionStr1 = [NSString stringWithFormat:@"%@万",[NSString getValidStringFromString:respModel.product.agencycommission toString:@"0"]];
-            }else{
-                agencycommissiontypeStr = @"风险费率";
-                agencycommissionStr1 = [NSString stringWithFormat:@"%@%@",[NSString getValidStringFromString:respModel.product.agencycommission toString:@"0"],@"%"];
-            }
-        }
-        
-        if ([respModel.product.loan_type intValue] == 1) {//房产抵押
-            NSString *mortorage_communityStr1 = [NSString getValidStringFromString:respModel.product.mortorage_community];
-            NSString *seatmortgageStr1 = [NSString getValidStringFromString:respModel.product.seatmortgage];
             
-            weakself.messageArray1 = @[@"借款本金",@"费用类型",@"代理费用",@"债权类型",@"抵押物地址",@"详细地址"];
-            weakself.messageArray11 = @[moneyStr1,agencycommissiontypeStr,agencycommissionStr1,loan_typeStr,mortorage_communityStr1,seatmortgageStr1];
-        }else if ([respModel.product.loan_type intValue] == 3){//机动车抵押
-            NSString *carStr1 = [NSString getValidStringFromString:respModel.car];
-            NSString *licenseStr1 = [NSString getValidStringFromString:respModel.license];
-            
-            weakself.messageArray1 = @[@"借款本金",@"费用类型",@"代理费用",@"债权类型",@"机动车抵押",@"车牌类型"];
-            weakself.messageArray11 = @[moneyStr1,agencycommissiontypeStr,agencycommissionStr1,loan_typeStr,carStr1,licenseStr1];
-        }else if ([respModel.product.loan_type intValue] == 2){//应收帐款
-            NSString *accountrStr1 = [NSString getValidStringFromString:respModel.product.accountr toString:@"0"];
-            NSString *account11 = [NSString stringWithFormat:@"%@万",accountrStr1];
-            
-            weakself.messageArray1 = @[@"借款本金",@"费用类型",@"代理费用",@"债权类型",@"应收帐款"];
-            weakself.messageArray11 = @[moneyStr1,agencycommissiontypeStr,agencycommissionStr1,loan_typeStr,account11];
-        }else{
-            
-            weakself.messageArray1 = @[@"借款本金",@"费用类型",@"代理费用",@"债权类型"];
-            weakself.messageArray11 = @[moneyStr1,agencycommissiontypeStr,agencycommissionStr1,loan_typeStr];
-        }
-        ///*************////
-        
-        //补充信息
-        NSString *rate = [NSString getValidStringFromString:respModel.product.rate]; //借款利率
-        NSString *term = [NSString getValidStringFromString:respModel.product.term];   //借款期限
-        NSString *repaymethod = @"暂无";//还款方式
-        NSString *obligor = @"暂无";  //债务人主体
-        NSString *commissionperiod = [NSString getValidStringFromString:respModel.product.commissionperiod]; //委托代理期限
-        if (![commissionperiod isEqualToString:@"暂无"]) {
-            commissionperiod = [NSString stringWithFormat:@"%@月",commissionperiod];
-        }
-        NSString *paidmoney = [NSString getValidStringFromString:respModel.product.paidmoney];//已付本金
-        if (![paidmoney isEqualToString:@"暂无"]) {
-            paidmoney = [NSString stringWithFormat:@"%@元",paidmoney];
-        }
-        NSString *interestpaid = [NSString getValidStringFromString:respModel.product.interestpaid]; //已付利息
-        if (![interestpaid isEqualToString:@"暂无"]) {
-            interestpaid = [NSString stringWithFormat:@"%@元",interestpaid];
-        }
-        NSString *performancecontract = [NSString getValidStringFromString:respModel.product.performancecontract];  //合同履行地
-        NSString *creditorfile = @"查看";  //债权文件
-        NSString *creditorinfo;  //债权人信息
-        NSString *borrowinginfo;  //债务人信息
-        
-        if (respModel.product.rate_cat) {
-            if ([respModel.product.rate_cat intValue] == 1) {
-                if (![rate isEqualToString:@"暂无"]) {//借款期限
-                    rate = [NSString stringWithFormat:@"%@%@/天",rate,@"%"];
+            //代理费用类型
+            NSString *agencycommissiontypeStr = @"暂无";
+            //代理费用
+            NSString *agencycommissionStr1 = @"暂无";
+            if ([dataModel.agencycommissiontype intValue] == 1) {
+                if ([dataModel.category integerValue] == 2) {
+                    agencycommissiontypeStr = @"服务佣金";
+                    agencycommissionStr1 = [NSString stringWithFormat:@"%@%@",[NSString getValidStringFromString:dataModel.agencycommission toString:@"0"],@"%"];
+                }else{
+                    agencycommissiontypeStr = @"固定费用";
+                    agencycommissionStr1 = [NSString stringWithFormat:@"%@万",[NSString getValidStringFromString:dataModel.agencycommission toString:@"0"]];
                 }
-                if (![term isEqualToString:@"暂无"]) {//借款利率
-                    term = [NSString stringWithFormat:@"%@天",term];
-                }
-            }else{
-                if (![rate isEqualToString:@"暂无"]) {
-                    rate = [NSString stringWithFormat:@"%@%@/月",rate,@"%"];
-                }
-                if (![term isEqualToString:@"暂无"]) {
-                    term = [NSString stringWithFormat:@"%@个月",term];
+            }else if ([dataModel.agencycommissiontype intValue] ==2){
+                if ([dataModel.category integerValue] == 2) {
+                    agencycommissiontypeStr = @"固定费用";
+                    agencycommissionStr1 = [NSString stringWithFormat:@"%@万",[NSString getValidStringFromString:dataModel.agencycommission toString:@"0"]];
+                }else{
+                    agencycommissiontypeStr = @"风险费率";
+                    agencycommissionStr1 = [NSString stringWithFormat:@"%@%@",[NSString getValidStringFromString:dataModel.agencycommission toString:@"0"],@"%"];
                 }
             }
-        }
-        
-        if (respModel.product.repaymethod) {
-            if ([respModel.product.repaymethod intValue] == 1) {
-                repaymethod = @"一次性到期还本付息";
-            }else if([respModel.product.repaymethod intValue] == 2){
-                repaymethod = @"按月付息，到期还本";
+            
+            if ([dataModel.loan_type intValue] == 1) {//房产抵押
+                NSString *mortorage_communityStr1 = [NSString getValidStringFromString:dataModel.mortorage_community];
+                NSString *seatmortgageStr1 = [NSString getValidStringFromString:dataModel.seatmortgage];
+                
+                weakself.messageArray1 = @[@"借款本金",@"费用类型",@"代理费用",@"债权类型",@"抵押物地址",@"详细地址"];
+                weakself.messageArray11 = @[moneyStr1,agencycommissiontypeStr,agencycommissionStr1,loan_typeStr,mortorage_communityStr1,seatmortgageStr1];
+            }else if ([dataModel.loan_type intValue] == 3){//机动车抵押
+                NSString *carStr1 = [NSString getValidStringFromString:dataModel.car];
+                NSString *licenseStr1 = [NSString getValidStringFromString:dataModel.licenseplate];
+                weakself.messageArray1 = @[@"借款本金",@"费用类型",@"代理费用",@"债权类型",@"机动车抵押",@"车牌类型"];
+                weakself.messageArray11 = @[moneyStr1,agencycommissiontypeStr,agencycommissionStr1,loan_typeStr,carStr1,licenseStr1];
+            }else if ([dataModel.loan_type intValue] == 2){//应收帐款
+                NSString *accountrStr1 = [NSString getValidStringFromString:dataModel.accountr toString:@"0"];
+                NSString *account11 = [NSString stringWithFormat:@"%@万",accountrStr1];
+                
+                weakself.messageArray1 = @[@"借款本金",@"费用类型",@"代理费用",@"债权类型",@"应收帐款"];
+                weakself.messageArray11 = @[moneyStr1,agencycommissiontypeStr,agencycommissionStr1,loan_typeStr,account11];
             }else{
-                repaymethod = @"其他";
+                
+                weakself.messageArray1 = @[@"借款本金",@"费用类型",@"代理费用",@"债权类型"];
+                weakself.messageArray11 = @[moneyStr1,agencycommissiontypeStr,agencycommissionStr1,loan_typeStr];
             }
-        }
-        if (respModel.product.obligor) {
-            if ([respModel.product.obligor intValue] == 1) {
-                obligor = @"自然人";
-            }else if([respModel.product.obligor intValue] == 2){
-                obligor = @"法人";
-            }else{
-                obligor = @"其他";
+            ///*************////
+            
+            //补充信息
+            NSString *rate = [NSString getValidStringFromString:dataModel.rate]; //借款利率
+            NSString *term = [NSString getValidStringFromString:dataModel.term];   //借款期限
+            NSString *repaymethod = @"暂无";//还款方式
+            NSString *obligor = @"暂无";  //债务人主体
+            NSString *commissionperiod = [NSString getValidStringFromString:dataModel.commissionperiod]; //委托代理期限
+            if (![commissionperiod isEqualToString:@"暂无"]) {
+                commissionperiod = [NSString stringWithFormat:@"%@月",commissionperiod];
             }
-        }
-        
-        if (respModel.creditorinfos.count > 0) {
+            NSString *paidmoney = [NSString getValidStringFromString:dataModel.paidmoney];//已付本金
+            if (![paidmoney isEqualToString:@"暂无"]) {
+                paidmoney = [NSString stringWithFormat:@"%@元",paidmoney];
+            }
+            NSString *interestpaid = [NSString getValidStringFromString:dataModel.interestpaid]; //已付利息
+            if (![interestpaid isEqualToString:@"暂无"]) {
+                interestpaid = [NSString stringWithFormat:@"%@元",interestpaid];
+            }
+            NSString *performancecontract = [NSString getValidStringFromString:dataModel.performancecontract];  //合同履行地
+            NSString *creditorfile = @"查看";  //债权文件
+            NSString *creditorinfo;  //债权人信息
+            NSString *borrowinginfo;  //债务人信息
+            
+            if (dataModel.rate_cat) {
+                if ([dataModel.rate_cat intValue] == 1) {
+                    if (![rate isEqualToString:@"暂无"]) {//借款期限
+                        rate = [NSString stringWithFormat:@"%@%@/天",rate,@"%"];
+                    }
+                    if (![term isEqualToString:@"暂无"]) {//借款利率
+                        term = [NSString stringWithFormat:@"%@天",term];
+                    }
+                }else{
+                    if (![rate isEqualToString:@"暂无"]) {
+                        rate = [NSString stringWithFormat:@"%@%@/月",rate,@"%"];
+                    }
+                    if (![term isEqualToString:@"暂无"]) {
+                        term = [NSString stringWithFormat:@"%@个月",term];
+                    }
+                }
+            }
+            
+            if (dataModel.repaymethod) {
+                if ([dataModel.repaymethod intValue] == 1) {
+                    repaymethod = @"一次性到期还本付息";
+                }else if([dataModel.repaymethod intValue] == 2){
+                    repaymethod = @"按月付息，到期还本";
+                }else{
+                    repaymethod = @"其他";
+                }
+            }
+            if (dataModel.obligor) {
+                if ([dataModel.obligor intValue] == 1) {
+                    obligor = @"自然人";
+                }else if([dataModel.obligor intValue] == 2){
+                    obligor = @"法人";
+                }else{
+                    obligor = @"其他";
+                }
+            }
+            
+            //        if (dataModel.creditorinfos.count > 0) {
             creditorinfo = @"查看";
-        }else{
-            creditorinfo = @"暂无";
-        }
-        
-        if (respModel.borrowinginfos.count > 0) {
+            //        }else{
+            //            creditorinfo = @"暂无";
+            //        }
+            
+            //        if (respModel.borrowinginfos.count > 0) {
             borrowinginfo = @"查看";
+            //        }else{
+            //            borrowinginfo = @"暂无";
+            //        }
+            
+            weakself.messageArray2 = @[@"借款利率",@"借款期限",@"还款方式",@"债务人主体",@"委托代理期限",@"已付本金",@"已付利息",@"合同履行地",@"债权文件",@"债权人信息",@"债务人信息"];
+            weakself.messageArray22 = @[rate,term,repaymethod,obligor,commissionperiod,paidmoney,interestpaid,performancecontract,creditorfile,creditorinfo,borrowinginfo];
+            
+            [weakself.productsDetailsTableView reloadData];
+            
+            
+            //////////////////////*********发布人详情*********/////////////////////////
+            CertificationModel *certificationModel = respModel.certification;
+            [weakself.certifiDataArray addObject:certificationModel];
+            
+            NSString *definedStr;
+            if ([certificationModel.cardimg isEqualToString:@"undefined"]) {
+                definedStr = @"未上传";
+            }else{
+                definedStr = @"已上传";
+            }
+            NSString *emailQ = [NSString getValidStringFromString:certificationModel.email];
+            NSString *addressQ = [NSString getValidStringFromString:certificationModel.address];
+            NSString *enterprisewebsiteQ = [NSString getValidStringFromString:certificationModel.enterprisewebsite];
+            NSString *casedescQ = [NSString getValidStringFromString:certificationModel.casedesc];
+            if (![casedescQ isEqualToString:@"暂无"]) {
+                casedescQ = @"查看";
+            }
+            
+            if ([certificationModel.category integerValue] == 1) {//个人
+                weakself.certificationArray1 = @[@"基本信息",@"姓名",@"身份证号码",@"身份图片",@"联系电话",@"邮箱"];
+                weakself.certificationArray11 = @[@"已认证个人",certificationModel.name,certificationModel.cardno,definedStr,certificationModel.mobile,emailQ];
+            }else if ([certificationModel.category integerValue] == 2){//律所
+                weakself.certificationArray1 = @[@"基本信息",@"律所名称",@"执业证号",@"图片",@"联系人",@"联系方式",@"邮箱",@"经典案例"];
+                weakself.certificationArray11 = @[@"已认证律所",certificationModel.name,certificationModel.cardno,definedStr,certificationModel.contact,certificationModel.mobile,emailQ,casedescQ];
+                weakself.casedesc = certificationModel.casedesc;
+            }else if ([certificationModel.category integerValue] == 3){//公司
+                weakself.certificationArray1 = @[@"基本信息",@"公司名称",@"营业执照号",@"图片",@"联系人",@"联系方式",@"企业邮箱",@"公司经营地址",@"公司网站",@"经典案例"];
+                weakself.certificationArray11 = @[@"已认证公司",certificationModel.name,certificationModel.cardno,definedStr,certificationModel.contact,certificationModel.mobile,emailQ,addressQ,enterprisewebsiteQ,casedescQ];
+                weakself.casedesc = certificationModel.casedesc;
+            }
         }else{
-            borrowinginfo = @"暂无";
+            [weakself showHint:respModel.msg];
         }
         
-        weakself.messageArray2 = @[@"借款利率",@"借款期限",@"还款方式",@"债务人主体",@"委托代理期限",@"已付本金",@"已付利息",@"合同履行地",@"债权文件",@"债权人信息",@"债务人信息"];
-        weakself.messageArray22 = @[rate,term,repaymethod,obligor,commissionperiod,paidmoney,interestpaid,performancecontract,creditorfile,creditorinfo,borrowinginfo];
-        
-        [weakself.productsDetailsTableView reloadData];
+        [weakself applicationForOrdersStates];
     } andFailBlock:^(NSError *error){
+        [weakself applicationForOrdersStates];
     }];
 }
 
@@ -865,9 +921,9 @@
     QDFWeakSelf;
     [self requestDataPostWithString:houseString params:params successBlock:^(id responseObject) {
         ApplicationStateModel *stateModel = [ApplicationStateModel objectWithKeyValues:responseObject];
-        PublishingResponse *rModel = weakself.recommendDataArray[0];
+        PublishingModel *rModel = weakself.recommendDataArray[0];
         
-        if ((stateModel.app_id == nil || [stateModel.app_id intValue] == 2) && [rModel.product.progress_status integerValue] == 1) {
+        if ((stateModel.app_id == nil || [stateModel.app_id intValue] == 2) && [rModel.progress_status integerValue] == 1) {
             [weakself.proDetailsCommitButton setTitleColor:kNavColor forState:0];
             [weakself.proDetailsCommitButton setTitle:@"立即申请" forState:0];
             [weakself.proDetailsCommitButton addTarget: weakself action:@selector(applicationCommit) forControlEvents:UIControlEventTouchUpInside];
@@ -899,12 +955,12 @@
                 }];
             }
             
-        }else if (([stateModel.app_id intValue] == 0) && ([rModel.product.progress_status intValue] == 1)) {//已申请
+        }else if (([stateModel.app_id intValue] == 0) && ([rModel.progress_status intValue] == 1)) {//已申请
             [weakself.proDetailsCommitButton setTitleColor:kBlackColor forState:0];
             [weakself.proDetailsCommitButton setTitle:@"已申请" forState:0];
             [weakself.proDetailsCommitButton setBackgroundColor:kSelectedColor];
             weakself.proDetailsCommitButton.userInteractionEnabled = NO;
-        }else if ([rModel.product.progress_status intValue] == 2){//申请成功
+        }else if ([rModel.progress_status intValue] == 2){//申请成功
             if ([stateModel.app_id integerValue] == 1) {//自己申请成功
                 [weakself.proDetailsCommitButton setTitleColor:kBlackColor forState:0];
                 [weakself.proDetailsCommitButton setTitle:@"申请成功" forState:0];
@@ -944,8 +1000,7 @@
 {
     sender.selected = !sender.selected;
     
-    PublishingResponse *rightResponse = self.recommendDataArray[0];
-    PublishingModel *rightModel = rightResponse.product;
+    PublishingModel *rightModel = self.recommendDataArray[0];
     
     NSString *rightString;
     NSDictionary *params;
@@ -985,6 +1040,7 @@
     }];
 }
 
+/*
 //发布人信息
 - (void)getMessageOfPublishPerson
 {
@@ -1005,30 +1061,30 @@
         if ([response.code isEqualToString:@"0000"]) {
             
             NSString *definedStr;
-            if ([response.certification.cardimg isEqualToString:@"undefined"]) {
+            if ([certificationModel.cardimg isEqualToString:@"undefined"]) {
                 definedStr = @"未上传";
             }else{
                 definedStr = @"已上传";
             }
-            NSString *emailQ = [NSString getValidStringFromString:response.certification.email];
-            NSString *addressQ = [NSString getValidStringFromString:response.certification.address];
-            NSString *enterprisewebsiteQ = [NSString getValidStringFromString:response.certification.enterprisewebsite];
-            NSString *casedescQ = [NSString getValidStringFromString:response.certification.casedesc];
+            NSString *emailQ = [NSString getValidStringFromString:certificationModel.email];
+            NSString *addressQ = [NSString getValidStringFromString:certificationModel.address];
+            NSString *enterprisewebsiteQ = [NSString getValidStringFromString:certificationModel.enterprisewebsite];
+            NSString *casedescQ = [NSString getValidStringFromString:certificationModel.casedesc];
             if (![casedescQ isEqualToString:@"暂无"]) {
                 casedescQ = @"查看";
             }
             
-            if ([response.certification.category integerValue] == 1) {//个人
+            if ([certificationModel.category integerValue] == 1) {//个人
                 weakself.certificationArray1 = @[@"基本信息",@"姓名",@"身份证号码",@"身份图片",@"联系电话",@"邮箱"];
-                weakself.certificationArray11 = @[@"已认证个人",response.certification.name,response.certification.cardno,definedStr,response.certification.mobile,emailQ];
-            }else if ([response.certification.category integerValue] == 2){//律所
+                weakself.certificationArray11 = @[@"已认证个人",certificationModel.name,certificationModel.cardno,definedStr,certificationModel.mobile,emailQ];
+            }else if ([certificationModel.category integerValue] == 2){//律所
                 weakself.certificationArray1 = @[@"基本信息",@"律所名称",@"执业证号",@"图片",@"联系人",@"联系方式",@"邮箱",@"经典案例"];
-                weakself.certificationArray11 = @[@"已认证律所",response.certification.name,response.certification.cardno,definedStr,response.certification.contact,response.certification.mobile,emailQ,casedescQ];
-                weakself.casedesc = response.certification.casedesc;
-            }else if ([response.certification.category integerValue] == 3){//公司
+                weakself.certificationArray11 = @[@"已认证律所",certificationModel.name,certificationModel.cardno,definedStr,certificationModel.contact,certificationModel.mobile,emailQ,casedescQ];
+                weakself.casedesc = certificationModel.casedesc;
+            }else if ([certificationModel.category integerValue] == 3){//公司
                 weakself.certificationArray1 = @[@"基本信息",@"公司名称",@"营业执照号",@"图片",@"联系人",@"联系方式",@"企业邮箱",@"公司经营地址",@"公司网站",@"经典案例"];
-                weakself.certificationArray11 = @[@"已认证公司",response.certification.name,response.certification.cardno,definedStr,response.certification.contact,response.certification.mobile,emailQ,addressQ,enterprisewebsiteQ,casedescQ];
-                weakself.casedesc = response.certification.casedesc;
+                weakself.certificationArray11 = @[@"已认证公司",certificationModel.name,certificationModel.cardno,definedStr,certificationModel.contact,certificationModel.mobile,emailQ,addressQ,enterprisewebsiteQ,casedescQ];
+                weakself.casedesc = certificationModel.casedesc;
             }
             [weakself getAllEvaluationListWithPage:@"1"];
             
@@ -1039,6 +1095,7 @@
         
     }];
 }
+ */
 
 
 - (void)getAllEvaluationListWithPage:(NSString *)page

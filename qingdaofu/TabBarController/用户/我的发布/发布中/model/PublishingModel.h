@@ -16,7 +16,7 @@
 @property (nonatomic,copy) NSString *applyclose;  //状态：3为终止。4为结案
 @property (nonatomic,copy) NSString *applyclosefrom;  //发起申请人的uid
 @property (nonatomic,copy) NSString *borrowinginfo;
-@property (nonatomic,copy) NSString *browsenumber;
+@property (nonatomic,copy) NSString *browsenumber; //浏览次数
 @property (nonatomic,copy) NSString *carbrand;  //机动车抵押：机动车品牌
 @property (nonatomic,copy) NSString *audi;  //车系
 @property (nonatomic,copy) NSString *licenseplate;  //车牌类型：1=>'沪牌',2=>'非沪牌',

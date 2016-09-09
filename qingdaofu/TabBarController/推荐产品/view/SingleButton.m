@@ -25,6 +25,8 @@
         [self addSubview:self.label];
         
         [self setNeedsUpdateConstraints];
+        
+       self.spaceConstraints =  [self.label autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.button withOffset:kBigPadding];
     }
     return self;
 }
@@ -36,11 +38,11 @@
         [self.button autoAlignAxisToSuperviewAxis:ALAxisVertical];
         [self.button autoSetDimensionsToSize:CGSizeMake(80, 80)];
         
-        [self.label autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.button withOffset:kBigPadding];
+       
         [self.label autoPinEdgeToSuperviewEdge:ALEdgeLeft];
         [self.label autoPinEdgeToSuperviewEdge:ALEdgeRight];
         [self.label autoSetDimension:ALDimensionHeight toSize:20];
-        
+
 //        [self.label autoAlignAxis:ALAxisVertical toSameAxisOfView:self.button];
 //        [self.label autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
         

@@ -198,7 +198,8 @@
 
 #define kProductsListString @"capital/list"    //产品列表
 #define kProductsRecommendListString  @"capital/recommendlist"   //推荐产品列表
-#define kProdutsDetailString @"capital/view"    //产品详情
+#define kProdutsDetailString @"capital/view"    //产品详情1
+#define kProductDetailString @"capital/shoucanss"  //产品详情2(最新的)
 #define kEndProductsString   @"public/wxclosedswidget"   //发布中的产品可结案
 #define kProductHouseStateString @"capital/shoucans"  //申请状态
 #define kProductHouseString @"capital/shenqing"   //申请接单
@@ -214,7 +215,6 @@
 #define kMySavePublishEditString @"publish/editcollection" //我的保存详情里面的编辑发布
 #define kMyStoreString @"apply/myshoucang"  //我的收藏
 #define kDeleteStoreString @"public/deletes"   //删除收藏,取消收藏
-
 
 #define kMyAgentString @"certification/agentlist"   //我的代理
 #define kMyAgentDetailString @"certification/agentexhibition"  //代理详情
@@ -256,6 +256,7 @@
 #define kApplicationGuaranteeListString @"policy/index" //保函列表
 #define kApplicationGuaranteeDetailString @"policy/baohan" //保函详情
 #define kApplicationAdditionalMessageString @"policy/picturedatas"  //保函补充图片
+#define kViewExampleString @"capital/pictures"  //显示示例
 
 #define kReceiptAddressListString @"address/index"  //收货地址列表
 #define kReceiptNewAddressString @"address/create"  //新增地址

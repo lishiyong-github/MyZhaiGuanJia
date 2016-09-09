@@ -127,6 +127,8 @@
                 [weakself.applicationDic setObject:text forKey:@"phone"];
             }else if (tag == 5){//金额
                 [weakself.applicationDic setObject:text forKey:@"money"];
+            }else if (tag == 7){//收货地址
+                [weakself.applicationDic setObject:text forKey:@"address"];
             }
         }];
         
@@ -165,27 +167,27 @@
                     }];
                 }
                     break;
-                case 7:{//收货地址
-                    if ([weakself.applicationDic[@"type"] integerValue] == 2) {
-                        NSLog(@"选择收货地址");
-                        ReceiptAddressViewController *receiptAddressVC = [[ReceiptAddressViewController alloc] init];
-                        receiptAddressVC.cateString = @"1";
-                        [weakself.navigationController pushViewController:receiptAddressVC animated:YES];
-                        
-                        [receiptAddressVC setDidSelectedReceiptAddress:^(NSString *name,NSString*phone,NSString *address) {
-                            
-                            weakself.guaranteeFirstView.chooseTag = YES;
-                            [weakself.guaranteeFirstView.tableViewa reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
-                            
-                            PowerAddressCell *cell = [weakself.guaranteeFirstView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
-                            cell.nameLabel.text = name;
-                            cell.phoneLabel.text = phone;
-                            cell.addressLabel.text = address;
-                            [weakself.applicationDic setObject:address forKey:@"address"];
-                        }];
-                    }
-                }
-                    break;
+//                case 7:{//收货地址
+//                    if ([weakself.applicationDic[@"type"] integerValue] == 2) {
+//                        NSLog(@"选择收货地址");
+//                        ReceiptAddressViewController *receiptAddressVC = [[ReceiptAddressViewController alloc] init];
+//                        receiptAddressVC.cateString = @"1";
+//                        [weakself.navigationController pushViewController:receiptAddressVC animated:YES];
+//                        
+//                        [receiptAddressVC setDidSelectedReceiptAddress:^(NSString *name,NSString*phone,NSString *address) {
+//                            
+//                            weakself.guaranteeFirstView.chooseTag = YES;
+//                            [weakself.guaranteeFirstView.tableViewa reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
+//                            
+//                            PowerAddressCell *cell = [weakself.guaranteeFirstView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
+//                            cell.nameLabel.text = name;
+//                            cell.phoneLabel.text = phone;
+//                            cell.addressLabel.text = address;
+//                            [weakself.applicationDic setObject:address forKey:@"address"];
+//                        }];
+//                    }
+//                }
+//                    break;
                 case 10:{//下一步
                     [weakself commitMessagesOfApplicationGuaranteeWithType:@"1"];
                     
@@ -193,23 +195,39 @@
                     break;
                 case 11:{//取函方式－快递
                     AgentCell *cell = [weakself.guaranteeFirstView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
+//                    cell.agentLabel.text = @"收获地址";
+//                    cell.agentTextField.text = @"";
+//                    [cell.agentButton setHidden:NO];
+//                    [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+//                    [weakself.applicationDic setObject:@"2" forKey:@"type"];
+                    
+                    
+                    cell.agentTextField.userInteractionEnabled = YES;
+                    [cell.agentButton setHidden:YES];
+                    
                     cell.agentLabel.text = @"收获地址";
-                    cell.agentTextField.text = @"";
-                    [cell.agentButton setHidden:NO];
-                    [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+                    cell.agentTextField.text = weakself.applicationDic[@"address"];
                     [weakself.applicationDic setObject:@"2" forKey:@"type"];
                 }
                     break;
                 case 12:{//取函方式－自取
                     if (weakself.applicationDic[@"fayuan_name"]) {
                         
-                        weakself.guaranteeFirstView.chooseTag = NO;
-                        [weakself.guaranteeFirstView.tableViewa reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
+//                        weakself.guaranteeFirstView.chooseTag = NO;
+//                        [weakself.guaranteeFirstView.tableViewa reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
+                        
+//                        AgentCell *cell = [weakself.guaranteeFirstView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
+//                        cell.agentLabel.text = @"取函地址";
+//                        [cell.agentButton setHidden:YES];
+//
+//                        cell.agentTextField.text = weakself.applicationDic[@"fayuan_name"];
+//                        [weakself.applicationDic setObject:@"1" forKey:@"type"];
+//                        [weakself.applicationDic setObject:weakself.applicationDic[@"fayuan_name"] forKey:@"fayuan_address"];
                         
                         AgentCell *cell = [weakself.guaranteeFirstView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
-                        cell.agentLabel.text = @"取函地址";
                         [cell.agentButton setHidden:YES];
-
+                        cell.agentTextField.userInteractionEnabled = NO;
+                        cell.agentLabel.text = @"取函地址";
                         cell.agentTextField.text = weakself.applicationDic[@"fayuan_name"];
                         [weakself.applicationDic setObject:@"1" forKey:@"type"];
                         [weakself.applicationDic setObject:weakself.applicationDic[@"fayuan_name"] forKey:@"fayuan_address"];
@@ -249,38 +267,42 @@
                 
                 if (testArr.count < 4) {
                     [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
-                        NSData *imgData = [NSData dataWithContentsOfFile:images[0]];
-                        NSString *imgString = [NSString stringWithFormat:@"%@",imgData];
-                        [weakself uploadImages:imgString andType:@"jpg" andFilePath:@"1"];
                         
-                        [weakself setDidGetValidImage:^(ImageModel *imgModel) {
-                            if ([imgModel.code isEqualToString:@"0000"]) {
-                                
-                                if (tag == 1) {
-                                    TakePictureCell *cell = [weakself.guaranteeSecondView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-                                    [cell.collectionDataList insertObject:images[0] atIndex:0];
-                                    [cell reloadData];
-                                    [weakself.qisuList addObject:imgModel.fileid];
+                        if (images.count > 0) {
+                            NSData *imgData = [NSData dataWithContentsOfFile:images[0]];
+                            NSString *imgString = [NSString stringWithFormat:@"%@",imgData];
+                            [weakself uploadImages:imgString andType:@"jpg" andFilePath:@"1"];
+                            
+                            [weakself setDidGetValidImage:^(ImageModel *imgModel) {
+                                if ([imgModel.code isEqualToString:@"0000"]) {
                                     
-                                }else if (tag == 3){
-                                    TakePictureCell *cell = [weakself.guaranteeSecondView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
-                                    [cell.collectionDataList insertObject:images[0] atIndex:0];
-                                    [cell reloadData];
-                                    [weakself.caichanList addObject:imgModel.fileid];
-                                }else if (tag == 5){
-                                    TakePictureCell *cell = [weakself.guaranteeSecondView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:2]];
-                                    [cell.collectionDataList insertObject:images[0] atIndex:0];
-                                    [cell reloadData];
-                                    [weakself.zhengjuList addObject:imgModel.fileid];
-                                }else if (tag == 7){
-                                    TakePictureCell *cell = [weakself.guaranteeSecondView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:3]];
-                                    [cell.collectionDataList insertObject:images[0] atIndex:0];
-                                    [cell reloadData];
-                                    [weakself.anjianList addObject:imgModel.fileid];
+                                    if (tag == 1) {
+                                        TakePictureCell *cell = [weakself.guaranteeSecondView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+                                        [cell.collectionDataList insertObject:images[0] atIndex:0];
+                                        [cell reloadData];
+                                        [weakself.qisuList addObject:imgModel.fileid];
+                                        
+                                    }else if (tag == 3){
+                                        TakePictureCell *cell = [weakself.guaranteeSecondView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
+                                        [cell.collectionDataList insertObject:images[0] atIndex:0];
+                                        [cell reloadData];
+                                        [weakself.caichanList addObject:imgModel.fileid];
+                                    }else if (tag == 5){
+                                        TakePictureCell *cell = [weakself.guaranteeSecondView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:2]];
+                                        [cell.collectionDataList insertObject:images[0] atIndex:0];
+                                        [cell reloadData];
+                                        [weakself.zhengjuList addObject:imgModel.fileid];
+                                    }else if (tag == 7){
+                                        TakePictureCell *cell = [weakself.guaranteeSecondView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:3]];
+                                        [cell.collectionDataList insertObject:images[0] atIndex:0];
+                                        [cell reloadData];
+                                        [weakself.anjianList addObject:imgModel.fileid];
+                                    }
                                 }
-                            }
-                        }];
+                            }];
+                        }
                     }];
+                        
                 }else{
                     [weakself showHint:@"最多4张"];
                 }

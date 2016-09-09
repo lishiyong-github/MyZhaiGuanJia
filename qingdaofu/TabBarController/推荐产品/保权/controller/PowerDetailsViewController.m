@@ -215,7 +215,7 @@
                 [cell.userActionButton setTitle:powerModel.fayuan_address forState:0];
             }else if ([powerModel.type integerValue] == 2){
                 [cell.userNameButton setTitle:@"收货地址" forState:0];
-                [cell.userActionButton setTitle:powerModel.fayuan_address forState:0];
+                [cell.userActionButton setTitle:powerModel.address forState:0];
             }
         }
         return cell;

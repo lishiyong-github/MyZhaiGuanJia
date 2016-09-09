@@ -10,6 +10,8 @@
 
 @interface SingleButton : UIButton
 
+@property (nonatomic,strong) NSLayoutConstraint *spaceConstraints;
+
 @property (nonatomic,strong) UIButton *button;
 @property (nonatomic,strong) UILabel *label;
 

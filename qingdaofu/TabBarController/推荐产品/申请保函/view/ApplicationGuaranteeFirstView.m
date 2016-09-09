@@ -201,15 +201,22 @@
                 cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.agentTextField.userInteractionEnabled = NO;
-            cell.agentButton.userInteractionEnabled = NO;
+//            cell.agentTextField.userInteractionEnabled = NO;
+//            cell.agentButton.userInteractionEnabled = NO;
+//            
+//            cell.agentLabel.text = @"收货地址";
+//            cell.agentTextField.placeholder = @"请选择";
+//            [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            
+            [cell.agentButton setHidden:YES];
+            cell.agentTextField.userInteractionEnabled = YES;
             
             cell.agentLabel.text = @"收货地址";
-            cell.agentTextField.placeholder = @"请选择";
-            [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            cell.agentTextField.placeholder = @"请输入收货地址";
+            cell.agentTextField.delegate = self;
+            cell.agentTextField.tag = 6*indexPath.section + indexPath.row;
             
             return cell;
-            
         }
         
     }

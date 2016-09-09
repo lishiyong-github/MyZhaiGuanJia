@@ -133,7 +133,8 @@
         for (NSInteger t=0; t<self.propagandaDic.allKeys.count/2; t++) {
             
             NSString *tyString = [NSString stringWithFormat:@"banner%dios",t+1];
-            NSString *urlString = [NSString stringWithFormat:@"http://%@",self.propagandaDic[tyString]];
+//            NSString *urlString = [NSString stringWithFormat:@"http://%@",self.propagandaDic[tyString]];
+            NSString *urlString = self.propagandaDic[tyString];
             NSURL *tyURL = [NSURL URLWithString:urlString];
             
             UIButton *imageButton = [[UIButton alloc] initWithFrame:CGRectMake(kScreenWidth*t, 0, kScreenWidth, 110)];
@@ -338,16 +339,19 @@
     //债权类型
     if ([newModel.loan_type isEqualToString:@"1"]) {
         cell.rateView.label1.text = @"房产抵押";
-        cell.addressLabel.text = [NSString getValidStringFromString:newModel.location toString:@"无抵押物地址"];
+        NSString *location = [NSString getValidStringFromString:newModel.location toString:@"无抵押物地址"];
+        cell.addressLabel.text = [NSString stringWithFormat:@"抵押物地址：%@",location];
     }else if ([newModel.loan_type isEqualToString:@"2"]){
         cell.rateView.label1.text = @"应收账款";
-        cell.addressLabel.text = @"无抵押物地址";
+        cell.addressLabel.text = [NSString stringWithFormat:@"应收账款：%@万",newModel.accountr];
     }else if ([newModel.loan_type isEqualToString:@"3"]){
         cell.rateView.label1.text = @"机动车抵押";
-        cell.addressLabel.text = @"无抵押物地址";
+        NSArray *licenseplate = @[@"沪牌",@"非沪牌"];
+        NSString *license = licenseplate[[newModel.licenseplate integerValue] -1];
+        cell.addressLabel.text = [NSString stringWithFormat:@"机动车抵押：%@%@%@",newModel.carbrand,newModel.audi,license];
     }else{
         cell.rateView.label1.text = @"无抵押";
-        cell.addressLabel.text = @"无抵押物地址";
+        cell.addressLabel.text = @"无抵押";
     }
     cell.rateView.label2.text = @"债权类型";
     
@@ -419,7 +423,10 @@
     QDFWeakSelf;
     [self requestDataPostWithString:recommendString params:params successBlock:^(id responseObject) {
         
+        NSDictionary *aoaooa = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
         [weakself.productsDataListArray removeAllObjects];
+        
         NewProductModel *model = [NewProductModel objectWithKeyValues:responseObject];
         for (NewProductListModel *listModel in model.result) {
             [weakself.productsDataListArray addObject:listModel];

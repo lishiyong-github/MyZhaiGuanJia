@@ -149,21 +149,26 @@
         QDFWeakSelf;
         [cell.pictureButton1 addAction:^(UIButton *btn) {//正面照
             [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
-                NSData *imgData = [NSData dataWithContentsOfFile:images[0]];
-                NSString *imgStr = [NSString stringWithFormat:@"%@",imgData];
-                [self.comDataDictionary setValue:imgStr forKey:@"cardimgs"];
-                [btn setImage:[UIImage imageWithContentsOfFile:images[0]] forState:0];
+                if (images.count > 0) {
+                    NSData *imgData = [NSData dataWithContentsOfFile:images[0]];
+                    NSString *imgStr = [NSString stringWithFormat:@"%@",imgData];
+                    [self.comDataDictionary setValue:imgStr forKey:@"cardimgs"];
+                    [btn setImage:[UIImage imageWithContentsOfFile:images[0]] forState:0];
+                }
             }];
         }];
         
         [cell.pictureButton2 addAction:^(UIButton *btn) {//反面照
             [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
-                NSData *imgData = [NSData dataWithContentsOfFile:images[0]];
-                NSString *imgStr = [NSString stringWithFormat:@"%@",imgData];
                 
-                //                [self.perDataDictionary setValue:imgStr forKey:@"cardimgs"];
-                
-                [btn setImage:[UIImage imageWithContentsOfFile:images[0]] forState:0];
+                if (images.count > 0) {
+                    NSData *imgData = [NSData dataWithContentsOfFile:images[0]];
+                    NSString *imgStr = [NSString stringWithFormat:@"%@",imgData];
+                    
+                    //                [self.perDataDictionary setValue:imgStr forKey:@"cardimgs"];
+                    
+                    [btn setImage:[UIImage imageWithContentsOfFile:images[0]] forState:0];
+                }
             }];
         }];
         

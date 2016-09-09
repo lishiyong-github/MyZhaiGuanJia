@@ -262,24 +262,29 @@
     QDFWeak(cell);
     [cell setDidSelectedItem:^(NSInteger tag) {
         [weakself addImageWithMaxSelection:2 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
-            NSData *tData;
-            NSString *ttt = @"";
-            NSString *tStr = @"";
-            for (int i=0; i<images.count; i++) {
-                tData = [NSData dataWithContentsOfFile:images[i]];
-                ttt = [NSString stringWithFormat:@"%@",tData];
-                tStr = [NSString stringWithFormat:@"%@:%@",tStr,ttt];
+            
+            if (images.count > 0) {
+                
+                NSData *tData;
+                NSString *ttt = @"";
+                NSString *tStr = @"";
+                for (int i=0; i<images.count; i++) {
+                    tData = [NSData dataWithContentsOfFile:images[i]];
+                    ttt = [NSString stringWithFormat:@"%@",tData];
+                    tStr = [NSString stringWithFormat:@"%@:%@",tStr,ttt];
+                }
+                if ([weakself.categoryString integerValue] == 1) {//债权人信息
+                    [self.editDictionary setValue:tStr forKey:@"creditorcardimages"];
+                    [self.editDictionary setValue:images forKey:@"creditorcardimage"];
+                    
+                }else if ([weakself.categoryString integerValue] == 2){//债务人信息
+                    [self.editDictionary setValue:tStr forKey:@"borrowingcardimages"];
+                    [self.editDictionary setValue:images forKey:@"borrowingcardimage"];
+                }
+                weakcell.collectionDataList = [NSMutableArray arrayWithArray:images];
+                [weakcell reloadData];
             }
-            if ([weakself.categoryString integerValue] == 1) {//债权人信息
-                [self.editDictionary setValue:tStr forKey:@"creditorcardimages"];
-                [self.editDictionary setValue:images forKey:@"creditorcardimage"];
-
-            }else if ([weakself.categoryString integerValue] == 2){//债务人信息
-                [self.editDictionary setValue:tStr forKey:@"borrowingcardimages"];
-                [self.editDictionary setValue:images forKey:@"borrowingcardimage"];
-            }
-            weakcell.collectionDataList = [NSMutableArray arrayWithArray:images];
-            [weakcell reloadData];
+            
         }];
     }];
     
