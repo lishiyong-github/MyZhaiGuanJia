@@ -8,6 +8,10 @@
 
 #import "BaseModel.h"
 
+@class DelayHandleModel;
+
 @interface DelayHandleResponse : BaseModel
+
+@property (nonatomic,strong) DelayHandleModel *data;
 
 @end

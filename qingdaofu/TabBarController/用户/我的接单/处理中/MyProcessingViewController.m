@@ -524,7 +524,7 @@
         
         if (delayModel.is_agree == nil || [delayModel.is_agree isEqualToString:@""]) {
             if (![puModel.applyclose isEqualToString:@"4"]) {
-                if ([delayModel.delays integerValue] <= 7 && [delayModel.delays integerValue] > 0) {
+                if ([delayModel.delays integerValue] > 7 && [delayModel.delays integerValue] > 0) {
                     [weakself.processRemindButton setHidden:NO];
                     NSString *delayS = [NSString stringWithFormat:@"还有%@天就要到达约定结案日期，点击申请延期 ",delayModel.delays];
                     [weakself.processRemindButton setTitle:delayS forState:0];
@@ -554,11 +554,11 @@
                 [weakself.processRemindButton setImage:[UIImage imageNamed:@"closed"] forState:0];
             }else if ([delayModel.is_agree integerValue] == 1){
                 [weakself.processRemindButton setHidden:NO];
-                [weakself.processRemindButton setTitle:@"已申请延期，等待对方确认  " forState:0];
+                [weakself.processRemindButton setTitle:@"对方已同意延期  " forState:0];
                 [weakself.processRemindButton setImage:[UIImage imageNamed:@"closed"] forState:0];
             }else if ([delayModel.is_agree integerValue] == 2){
                 [weakself.processRemindButton setHidden:NO];
-                [weakself.processRemindButton setTitle:@"延期申请失败，请抓紧处理  " forState:0];
+                [weakself.processRemindButton setTitle:@"对方已拒绝延期，请抓紧处理  " forState:0];
                 [weakself.processRemindButton setImage:[UIImage imageNamed:@"closed"] forState:0];
             }else if ([delayModel.is_agree integerValue] == 3){
                 [weakself.processRemindButton setHidden:NO];

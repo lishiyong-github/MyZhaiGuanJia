@@ -10,4 +10,9 @@
 
 @implementation DelayHandleResponse
 
++ (NSDictionary *)replacedKeyFromPropertyName
+{
+    return @{@"data" : @"result.data"};
+}
+
 @end

@@ -602,6 +602,8 @@
 		A1A6C84F1D669D9A00EC060E /* ImageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A6C84E1D669D9A00EC060E /* ImageModel.m */; };
 		A1A7D08A1D6583FF00E84329 /* PowerResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A7D0891D6583FF00E84329 /* PowerResponse.m */; };
 		A1A7D08D1D65840F00E84329 /* PowerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A7D08C1D65840F00E84329 /* PowerModel.m */; };
+		A1A828171D8647B000796006 /* DelayHandleResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A828161D8647B000796006 /* DelayHandleResponse.m */; };
+		A1A8281A1D8647D300796006 /* DelayHandleModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A828191D8647D300796006 /* DelayHandleModel.m */; };
 		A1A97E1A1CDC388E00EDE320 /* information_nav_remind@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A97E181CDC388E00EDE320 /* information_nav_remind@2x.png */; };
 		A1A97E1B1CDC388E00EDE320 /* information_nav_remind@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A97E191CDC388E00EDE320 /* information_nav_remind@3x.png */; };
 		A1A97E1E1CDC3F8000EDE320 /* nav_tip@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A97E1C1CDC3F8000EDE320 /* nav_tip@2x.png */; };
@@ -1563,6 +1565,10 @@
 		A1A7D0891D6583FF00E84329 /* PowerResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PowerResponse.m; sourceTree = "<group>"; };
 		A1A7D08B1D65840F00E84329 /* PowerModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PowerModel.h; sourceTree = "<group>"; };
 		A1A7D08C1D65840F00E84329 /* PowerModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PowerModel.m; sourceTree = "<group>"; };
+		A1A828151D8647B000796006 /* DelayHandleResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DelayHandleResponse.h; sourceTree = "<group>"; };
+		A1A828161D8647B000796006 /* DelayHandleResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DelayHandleResponse.m; sourceTree = "<group>"; };
+		A1A828181D8647D300796006 /* DelayHandleModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DelayHandleModel.h; sourceTree = "<group>"; };
+		A1A828191D8647D300796006 /* DelayHandleModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DelayHandleModel.m; sourceTree = "<group>"; };
 		A1A97E181CDC388E00EDE320 /* information_nav_remind@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "information_nav_remind@2x.png"; sourceTree = "<group>"; };
 		A1A97E191CDC388E00EDE320 /* information_nav_remind@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "information_nav_remind@3x.png"; sourceTree = "<group>"; };
 		A1A97E1C1CDC3F8000EDE320 /* nav_tip@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_tip@2x.png"; sourceTree = "<group>"; };
@@ -2772,6 +2778,7 @@
 		A194416A1D790BC1003CA99F /* 延期处理 */ = {
 			isa = PBXGroup;
 			children = (
+				A1A828141D86476700796006 /* model */,
 				A194416B1D790BF8003CA99F /* DelayHandleViewController.h */,
 				A194416C1D790BF8003CA99F /* DelayHandleViewController.m */,
 			);
@@ -3621,6 +3628,17 @@
 			path = model;
 			sourceTree = "<group>";
 		};
+		A1A828141D86476700796006 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				A1A828151D8647B000796006 /* DelayHandleResponse.h */,
+				A1A828161D8647B000796006 /* DelayHandleResponse.m */,
+				A1A828181D8647D300796006 /* DelayHandleModel.h */,
+				A1A828191D8647D300796006 /* DelayHandleModel.m */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
 		A1A97E481CDC669300EDE320 /* 发布消息 */ = {
 			isa = PBXGroup;
 			children = (
@@ -4421,6 +4439,7 @@
 				A19D94481D64430400DE89FC /* CourtProvinceResponse.m in Sources */,
 				A16486BE1D011FE900B442C1 /* MarkingViewController.m in Sources */,
 				A1522BEB1D0FB17B00135C72 /* PaceModel.m in Sources */,
+				A1A828171D8647B000796006 /* DelayHandleResponse.m in Sources */,
 				A159F9571D0D456700A6A024 /* ScheduleModel.m in Sources */,
 				A16E47BA1D1A8C4800870B8A /* FourCell.m in Sources */,
 				A19D29741CD2158100DAAEA7 /* AuthenPersonViewController.m in Sources */,
@@ -4564,6 +4583,7 @@
 				A18B26481CEAA699005526C5 /* MainViewController.m in Sources */,
 				A19B8E4A1CCF530900F8EBF2 /* MineViewController.m in Sources */,
 				A16391781D20194B0051F1D0 /* FSPlaceholderImages.m in Sources */,
+				A1A8281A1D8647D300796006 /* DelayHandleModel.m in Sources */,
 				9CEA216B1CE2140C002C5BA7 /* UIButton+Addition.m in Sources */,
 				A16856801CE99358006A0887 /* ProductsDetailsProViewController.m in Sources */,
 				A14C17681D0AE577003826F8 /* UserModel.m in Sources */,

@@ -694,9 +694,7 @@
     
     QDFWeakSelf;
     [self requestDataPostWithString:allProString params:params successBlock:^(id responseObject) {
-        
-        NSDictionary *aoaoao = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        
+                
         if ([page intValue] == 1) {
             [weakself.allDataList removeAllObjects];
         }

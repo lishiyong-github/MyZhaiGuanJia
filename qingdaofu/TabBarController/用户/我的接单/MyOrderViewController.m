@@ -742,7 +742,6 @@
                              @"token" : [self getValidateToken],
                              @"type" : @"1"
                              };
-    
     QDFWeakSelf;
     [self requestDataPostWithString:deleteProString params:params successBlock:^(id responseObject) {
         

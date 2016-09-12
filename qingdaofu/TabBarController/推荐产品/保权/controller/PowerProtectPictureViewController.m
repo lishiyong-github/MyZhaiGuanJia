@@ -455,6 +455,8 @@
                 }else{
                     [weakself showHint:@"最多添加4张"];
                 }
+            }else{
+                [weakself deleteOneImageWithType:@"qisu" andIndex:items];
             }
         }else if (indexPath.section == 1){//财产保全申请书
             if (items == weakself.caichanArray1.count-1) {
@@ -465,12 +467,13 @@
                             NSData *iData = [[NSData alloc] initWithContentsOfFile:images[0]];
                             NSString *dataString = [NSString stringWithFormat:@"%@",iData];
                             [weakself uploadImages:dataString andType:@"caichan" andFilePath:images[0]];
-                            
                         }
                     }];
                 }else{
                     [weakself showHint:@"最多添加4张"];
                 }
+            }else{
+                [weakself deleteOneImageWithType:@"caichan" andIndex:items];
             }
         }else if (indexPath.section == 2){//相关证据材料
             if (items == weakself.zhengjuArray1.count-1) {
@@ -488,6 +491,8 @@
                 }else{
                     [weakself showHint:@"最多添加4张"];
                 }
+            }else{
+                [weakself deleteOneImageWithType:@"zhengju" andIndex:items];
             }
         }else if (indexPath.section == 3){//案件受理通知书
             if (items == weakself.anjianArray1.count-1) {
@@ -505,6 +510,8 @@
                 }else{
                     [weakself showHint:@"最多添加4张"];
                 }
+            }else{
+                [weakself deleteOneImageWithType:@"anjian" andIndex:items];
             }
         }
      }];
@@ -642,6 +649,36 @@
     } andFailBlock:^(NSError *error) {
         
     }];
+}
+
+- (void)deleteOneImageWithType:(NSString *)type andIndex:(NSInteger)index
+{
+    UIAlertController *alertCon = [UIAlertController alertControllerWithTitle:@"" message:@"确认删除该图片?" preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    QDFWeakSelf;
+    UIAlertAction *act1 = [UIAlertAction actionWithTitle:@"是" style:0 handler:^(UIAlertAction * _Nonnull action) {
+        if ([type isEqualToString:@"qisu"]) {//起诉
+            [weakself.qisuArray removeObjectAtIndex:index];
+            [weakself.qisuArray1 removeObjectAtIndex:index];
+        }else if ([type isEqualToString:@"caichan"]){
+            [weakself.caichanArray removeObjectAtIndex:index];
+            [weakself.caichanArray1 removeObjectAtIndex:index];
+        }else if ([type isEqualToString:@"zhengju"]){
+            [weakself.zhengjuArray removeObjectAtIndex:index];
+            [weakself.zhengjuArray1 removeObjectAtIndex:index];
+        }else if ([type isEqualToString:@"anjian"]){
+            [weakself.anjianArray removeObjectAtIndex:index];
+            [weakself.anjianArray1 removeObjectAtIndex:index];
+        }
+        [weakself.powerPictureTableView reloadData];
+    }];
+    
+    UIAlertAction *act0 = [UIAlertAction actionWithTitle:@"否" style:0 handler:nil];
+    
+    [alertCon addAction:act0];
+    [alertCon addAction:act1];
+    
+    [self presentViewController:alertCon animated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning {

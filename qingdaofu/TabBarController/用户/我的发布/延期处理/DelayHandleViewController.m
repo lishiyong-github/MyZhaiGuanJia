@@ -13,10 +13,15 @@
 #import "ExeCell.h"
 #import "EditDebtAddressCell.h"
 
+#import "DelayHandleResponse.h"
+#import "DelayHandleModel.h"
+
 @interface DelayHandleViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic,strong) UITableView *delayHandleTableView;
 @property (nonatomic,assign) BOOL didSetupConstraints;
+
+@property (nonatomic,strong) NSMutableArray *delayHandleArray;
 
 @end
 
@@ -59,10 +64,22 @@
     return _delayHandleTableView;
 }
 
+- (NSMutableArray *)delayHandleArray
+{
+    if (!_delayHandleArray) {
+        _delayHandleArray = [NSMutableArray array];
+    }
+    return _delayHandleArray;
+}
+
 #pragma mark - delegate and datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 3;
+    if (self.delayHandleArray.count > 0) {
+        return 3;
+    }
+    
+    return 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -72,6 +89,14 @@
     }else if (indexPath.row == 1){
         return 30;
     }
+    
+//    DelayHandleModel *delayHandleModel = self.delayHandleArray[0];
+//    
+//    CGSize totalSize = CGSizeMake(kScreenWidth-kBigPadding*2-80, MAXFLOAT);
+//    CGSize actualSize = [delayHandleModel.dalay_reason boundingRectWithSize:totalSize options:NSStringDrawingUsesDeviceMetrics attributes:@{NSFontAttributeName:kFourFont} context:nil].size;
+//    
+//    return 27 + MAX(actualSize.height, 16.7);
+    
     return 80;
 }
 
@@ -118,10 +143,11 @@
             cell = [[ExeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
         cell.separatorInset = UIEdgeInsetsMake(0, kScreenWidth, 0, 0);
         
-        NSString *delayDay = [NSString stringWithFormat:@"延期天数：%@天",@"3"];
+        DelayHandleModel *delayHandleModel = self.delayHandleArray[0];
+        
+        NSString *delayDay = [NSString stringWithFormat:@"延期天数：%@天",delayHandleModel.delay_days];
         [cell.ceButton setTitle:delayDay forState:0];
         cell.ceButton.titleLabel.font = kFirstFont;
         
@@ -137,13 +163,15 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.leftTextViewConstraints.constant = 82;
     
+    DelayHandleModel *delayHandleModel = self.delayHandleArray[0];
+
     cell.ediLabel.text = @"延期原因：";
     cell.ediLabel.font = kFirstFont;
 
     cell.ediTextView.textColor = kGrayColor;
     cell.ediTextView.font = kFirstFont;
     cell.ediTextView.editable = NO;
-    cell.ediTextView.text = @"延期原因延期原因延期原因延期原因延期原因延期原因延期原因延期原因延期原因延期原因延期原因延期原因";
+    cell.ediTextView.text = delayHandleModel.dalay_reason;
     
     return cell;
 }
@@ -158,8 +186,16 @@
     
     QDFWeakSelf;
     [self requestDataPostWithString:delayDetaiString params:params successBlock:^(id responseObject) {
-        NSDictionary *hiihi = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        NSString *hoho;
+        
+        DelayHandleResponse *responsev = [DelayHandleResponse objectWithKeyValues:responseObject];
+        
+        if ([responsev.code isEqualToString:@"0000"]) {
+            [weakself.delayHandleArray addObject:responsev.data];
+        }else{
+            [weakself showHint:responsev.msg];
+        }
+        
+        [weakself.delayHandleTableView reloadData];
         
     } andFailBlock:^(NSError *error) {
         
