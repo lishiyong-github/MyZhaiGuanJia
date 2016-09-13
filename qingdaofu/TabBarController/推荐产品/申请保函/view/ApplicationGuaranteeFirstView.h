@@ -11,6 +11,7 @@
 @interface ApplicationGuaranteeFirstView : UIView
 @property (nonatomic,strong) void (^didSelectedRow)(NSInteger);
 @property (nonatomic,strong) void (^didEndEditting)(NSString *,NSInteger);
+@property (nonatomic,copy) void (^touchBeginPoint)(CGPoint);
 
 @property (nonatomic,strong) UITableView *tableViewa;
 @property (nonatomic,assign) BOOL chooseTag;  //需要改变收货地址的变量

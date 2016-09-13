@@ -180,8 +180,14 @@
         PropertyResultResponse *respondey = [PropertyResultResponse objectWithKeyValues:responseObject];
         
         if ([respondey.code isEqualToString:@"0000"]) {
-            [weakself.resultDataArray addObject:respondey.data];
-            [weakself.resultOnesArray addObject:respondey.ones];
+            
+            if (respondey.data) {
+                [weakself.resultDataArray addObject:respondey.data];
+            }
+            
+            if (respondey.ones) {
+                [weakself.resultOnesArray addObject:respondey.ones];
+            }
         }
         
         [weakself.resultTableView reloadData];

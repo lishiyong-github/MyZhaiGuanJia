@@ -16,6 +16,7 @@
 #import "BaseCommitView.h"
 #import "PersonCell.h"
 
+#import "UIButton+WebCache.h"
 #import "UIViewController+MutipleImageChoice.h"
 
 @interface AuthenCompanyViewController ()<UITableViewDataSource,UITableViewDelegate>
@@ -26,6 +27,8 @@
 
 @property (nonatomic,strong) NSMutableDictionary *comDataDictionary;
 @property (nonatomic,strong) NSMutableArray *imageArray;
+@property (nonatomic,strong) NSString *imgFileIdString1;
+@property (nonatomic,strong) NSString *imgFileIdString2;
 
 @end
 
@@ -143,8 +146,27 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        [cell.pictureButton1 setImage:[UIImage imageNamed:@"upload_positive_image"] forState:0];
-        [cell.pictureButton2 setImage:[UIImage imageNamed:@"upload_opposite_image"] forState:0];
+        if (self.responseModel.certification.cardimgs.count == 0) {
+            [cell.pictureButton1 setImage:[UIImage imageNamed:@"upload_positive_image"] forState:0];
+            [cell.pictureButton2 setImage:[UIImage imageNamed:@"upload_opposite_image"] forState:0];
+        }else if (self.responseModel.certification.cardimgs.count == 1){
+            NSString *newimage1 = [self.responseModel.certification.cardimgs[0] substringWithRange:NSMakeRange(1, [self.responseModel.certification.cardimgs[0] length])];
+            NSString *newimageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,newimage1];
+            NSURL *newimageUrl1 = [NSURL URLWithString:newimageStr1];
+            [cell.pictureButton1 sd_setImageWithURL:newimageUrl1 forState:0 placeholderImage:[UIImage imageNamed:@"upload_opposite_image"]];
+            [cell.pictureButton2 setImage:[UIImage imageNamed:@"upload_opposite_image"] forState:0];
+        }else if(self.responseModel.certification.cardimgs.count >= 2){
+            NSString *newimage1 = [self.responseModel.certification.cardimgs[0] substringWithRange:NSMakeRange(1, [self.responseModel.certification.cardimgs[0] length])];
+            NSString *newimageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,newimage1];
+            NSURL *newimageUrl1 = [NSURL URLWithString:newimageStr1];
+            [cell.pictureButton1 sd_setImageWithURL:newimageUrl1 forState:0 placeholderImage:[UIImage imageNamed:@"upload_opposite_image"]];
+            [cell.pictureButton2 setImage:[UIImage imageNamed:@"upload_opposite_image"] forState:0];
+            
+            NSString *newimage2 = [self.responseModel.certification.cardimgs[1] substringWithRange:NSMakeRange(1, [self.responseModel.certification.cardimgs[1] length])];
+            NSString *newimageStr2 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,newimage2];
+            NSURL *newimageUrl2 = [NSURL URLWithString:newimageStr2];
+            [cell.pictureButton2 sd_setImageWithURL:newimageUrl2 forState:0 placeholderImage:[UIImage imageNamed:@"upload_opposite_image"]];
+        }
         
         QDFWeakSelf;
         [cell.pictureButton1 addAction:^(UIButton *btn) {//正面照
@@ -152,8 +174,16 @@
                 if (images.count > 0) {
                     NSData *imgData = [NSData dataWithContentsOfFile:images[0]];
                     NSString *imgStr = [NSString stringWithFormat:@"%@",imgData];
-                    [self.comDataDictionary setValue:imgStr forKey:@"cardimgs"];
-                    [btn setImage:[UIImage imageWithContentsOfFile:images[0]] forState:0];
+                    
+                    [weakself uploadImages:imgStr andType:nil andFilePath:nil];
+                    [weakself setDidGetValidImage:^(ImageModel *imgModel) {
+                        if ([imgModel.code isEqualToString:@"0000"]) {
+                            [btn setImage:[UIImage imageWithContentsOfFile:images[0]] forState:0];
+                            weakself.imgFileIdString1 = imgModel.url;
+                        }
+                    }];
+                    
+//                    [self.comDataDictionary setValue:imgStr forKey:@"cardimgs"];
                 }
             }];
         }];
@@ -165,9 +195,13 @@
                     NSData *imgData = [NSData dataWithContentsOfFile:images[0]];
                     NSString *imgStr = [NSString stringWithFormat:@"%@",imgData];
                     
-                    //                [self.perDataDictionary setValue:imgStr forKey:@"cardimgs"];
-                    
-                    [btn setImage:[UIImage imageWithContentsOfFile:images[0]] forState:0];
+                    [weakself uploadImages:imgStr andType:nil andFilePath:nil];
+                    [weakself setDidGetValidImage:^(ImageModel *imgModel) {
+                        if ([imgModel.code isEqualToString:@"0000"]) {
+                            [btn setImage:[UIImage imageWithContentsOfFile:images[0]] forState:0];
+                            weakself.imgFileIdString2 = imgModel.url;
+                        }
+                    }];
                 }
             }];
         }];
@@ -363,6 +397,12 @@
 - (void)goToAuthenCompanyMessages
 {
     [self.view endEditing:YES];
+    
+    if (self.imgFileIdString1 && self.imgFileIdString2) {
+        NSString *imgFileIdStr = [NSString stringWithFormat:@"'%@','%@'",self.imgFileIdString1,self.imgFileIdString2];
+        [self.comDataDictionary setObject:imgFileIdStr forKey:@"cardimg"];
+    }
+    
     NSString *comAuString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kAuthenString];
     /*
      @"category" : @"3",
@@ -383,8 +423,15 @@
         self.comDataDictionary[@"mobile"] = self.responseModel.certification.mobile?self.responseModel.certification.mobile:[self getValidateMobile];
     }
     if (!self.comDataDictionary[@"cardimgs"]) {
-        NSString *imgStr = self.responseModel.certification.cardimg?self.responseModel.certification.cardimg:@"";
-        [self.comDataDictionary setValue:imgStr forKey:@"cardimg"];
+        
+        for (NSInteger i=0; i<self.responseModel.certification.cardimgs.count; i++) {
+            NSString *img1 = @"";
+            NSString *imgS = [NSString stringWithFormat:@"%@,%@",self.responseModel.certification.cardimgs[i],img1];
+            [self.comDataDictionary setObject:imgS forKey:@"cardimgs"];
+        }
+        
+//        NSString *imgStr = self.responseModel.certification.cardimg?self.responseModel.certification.cardimg:@"";
+//        [self.comDataDictionary setValue:imgStr forKey:@"cardimg"];
     }
 
     self.comDataDictionary[@"name"] = self.comDataDictionary[@"name"]?self.comDataDictionary[@"name"]:self.responseModel.certification.name;
@@ -409,10 +456,10 @@
     
     QDFWeakSelf;
     [self requestDataPostWithString:comAuString params:params successBlock:^(id responseObject) {
-        BaseModel *personModel = [BaseModel objectWithKeyValues:responseObject];
-        [weakself showHint:personModel.msg];
+        BaseModel *companyModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:companyModel.msg];
         
-        if ([personModel.code isEqualToString:@"0000"]) {
+        if ([companyModel.code isEqualToString:@"0000"]) {
             UINavigationController *personNav = weakself.navigationController;
             [personNav popViewControllerAnimated:NO];
             [personNav popViewControllerAnimated:NO];

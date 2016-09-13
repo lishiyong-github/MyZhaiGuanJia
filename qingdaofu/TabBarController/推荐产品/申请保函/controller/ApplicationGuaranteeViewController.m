@@ -74,8 +74,14 @@
     [self.view addSubview:self.applicationPickerView];
     [self.applicationPickerView setHidden:YES];
 
-    
     [self.view setNeedsUpdateConstraints];
+    
+    [self addKeyboardObserver];
+}
+
+- (void)dealloc
+{
+    [self removeKeyboardObserver];
 }
 
 - (void)updateViewConstraints
@@ -120,6 +126,10 @@
         [self.applicationDic setObject:@"2" forKey:@"type"];
         
         QDFWeakSelf;
+        [_guaranteeFirstView setTouchBeginPoint:^(CGPoint point) {
+            weakself.touchPoint = point;
+        }];
+        
         [_guaranteeFirstView setDidEndEditting:^(NSString *text,NSInteger tag) {
             if (tag == 3) {//案号
                  [weakself.applicationDic setObject:text forKey:@"anhao"];
@@ -275,7 +285,6 @@
                             
                             [weakself setDidGetValidImage:^(ImageModel *imgModel) {
                                 if ([imgModel.code isEqualToString:@"0000"]) {
-                                    
                                     if (tag == 1) {
                                         TakePictureCell *cell = [weakself.guaranteeSecondView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
                                         [cell.collectionDataList insertObject:images[0] atIndex:0];

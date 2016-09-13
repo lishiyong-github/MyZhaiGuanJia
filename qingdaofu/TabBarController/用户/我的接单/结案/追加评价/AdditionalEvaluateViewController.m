@@ -258,6 +258,22 @@
                 }else{
                     [weakself showHint:@"最多添加2张图片"];
                 }
+            }else{
+                UIAlertController *alertContr = [UIAlertController alertControllerWithTitle:@"" message:@"确认删除该图片" preferredStyle:0];
+                UIAlertAction *acty1 = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//                    [weakself.evaImageArray removeObjectAtIndex:itemTag];
+//                    [weakself.additionalTableView reloadData];
+                    
+                    [weakself.evaImageArray removeObjectAtIndex:itemTag];
+                    [weakcell.collectionDataList removeObjectAtIndex:itemTag];
+                    [weakcell reloadData];
+
+                }];
+                UIAlertAction *acty0 = [UIAlertAction actionWithTitle:@"否" style:0 handler:nil];
+                [alertContr addAction:acty0];
+                [alertContr addAction:acty1];
+                
+                [weakself presentViewController:alertContr animated:YES completion:nil];
             }
         }];
         

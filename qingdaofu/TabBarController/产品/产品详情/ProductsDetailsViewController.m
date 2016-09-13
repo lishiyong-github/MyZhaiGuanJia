@@ -715,9 +715,7 @@
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
-        
-        NSDictionary *qoqo = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        
+                
         NewProductResponse *respModel = [NewProductResponse objectWithKeyValues:responseObject];
         
         if ([respModel.code isEqualToString:@"0000"]) {

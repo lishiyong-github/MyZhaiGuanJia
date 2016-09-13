@@ -360,9 +360,7 @@
     
     QDFWeakSelf;
     [self requestDataPostWithString:detailAppString params:params successBlock:^(id responseObject) {
-        
-        NSDictionary *wowow = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        
+                
         [weakself.appDetailArray removeAllObjects];
         
         ApplicationDetailResponse *responde = [ApplicationDetailResponse objectWithKeyValues:responseObject];

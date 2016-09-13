@@ -41,15 +41,20 @@
 
 @implementation CompleteViewController
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self showCompleteMessages];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     if ([self.categoryString intValue] == 1) {
-        self.navigationItem.title = @"个人信息";
+        self.navigationItem.title = @"个人认证成功";
     }else if ([self.categoryString intValue] == 2){
-        self.navigationItem.title = @"律所信息";
+        self.navigationItem.title = @"律所认证成功";
     }else{
-        self.navigationItem.title = @"公司信息";
+        self.navigationItem.title = @"公司认证成功";
     }
     
     self.navigationItem.leftBarButtonItem = self.leftItem;
@@ -57,9 +62,8 @@
     
     [self.view addSubview:self.completeTableView];
     [self.view addSubview:self.completeCommitButton];
-    [self.view setNeedsUpdateConstraints];
     
-    [self showCompleteMessages];
+    [self.view setNeedsUpdateConstraints];
 }
 
 - (void)updateViewConstraints
@@ -67,10 +71,10 @@
     if (!self.didSetupConstraints) {
         
         [self.completeTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
-        [self.completeTableView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kTabBarHeight];
+        [self.completeTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.completeCommitButton];
         
         [self.completeCommitButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [self.completeCommitButton autoSetDimension:ALDimensionHeight toSize:kTabBarHeight];
+        [self.completeCommitButton autoSetDimension:ALDimensionHeight toSize:kCellHeight1];
         
         self.didSetupConstraints = YES;
     }
@@ -81,29 +85,25 @@
 {
     if (!_navRightButton) {
         _navRightButton = [UIButton buttonWithType:0];
-        _navRightButton.frame = CGRectMake(0, 0, 24, 24);
-        [_navRightButton setImage:[UIImage imageNamed:@"nav_tip"] forState:0];
+        _navRightButton.frame = CGRectMake(0, 0, 70, 30);
+        _navRightButton.layer.cornerRadius = corner;
+        _navRightButton.layer.masksToBounds = YES;
+        _navRightButton.layer.borderColor = kBlueColor.CGColor;
+        _navRightButton.layer.borderWidth = kLineWidth;
+        [_navRightButton setTitle:@"编辑资料" forState:0];
+        _navRightButton.titleLabel.font = kFirstFont;
+        [_navRightButton setTitleColor:kBlueColor forState:0];
         
-        UIImageView *remindImageView = [UIImageView newAutoLayoutView];
-        remindImageView.image = [UIImage imageNamed:@"tip_image"];
-        [_navRightButton addSubview:remindImageView];
-        [remindImageView autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:_navRightButton withOffset:5];
-        [remindImageView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:_navRightButton];
-        [remindImageView setHidden:YES];
-        
+        QDFWeakSelf;
         [_navRightButton addAction:^(UIButton *btn) {
-            btn.selected = !btn.selected;
-            
-            if (btn.selected) {
-                [remindImageView setHidden:NO];
-            }else{
-                [remindImageView setHidden:YES];
+            if (weakself.completeDataArray.count > 0) {
+                CompleteResponse *compleResponse = weakself.completeDataArray[0];
+                if ([compleResponse.completionRate integerValue] < 1) {
+                    [weakself goToEditCompleteMessagesWithResponseModel:weakself.completeDataArray[0]];
+                }else{
+                    [weakself showHint:@"认证信息已完善，不能编辑资料了"];
+                }
             }
-            
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [remindImageView setHidden:YES];
-                btn.selected = NO;
-            });
         }];
     }
     return _navRightButton;
@@ -353,17 +353,6 @@
     } andFailBlock:^(NSError *error){
         
     }];
-}
-
-- (void)showRemindMessage:(UIBarButtonItem *)barButton
-{
-    UIButton *remindButton = [UIButton newAutoLayoutView];
-    [self.view addSubview:remindButton];
-    
-    [remindButton autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:-10];
-    [remindButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:5];
-    [remindButton autoSetDimensionsToSize:CGSizeMake(100, 40)];
-    remindButton.backgroundColor = kBlueColor;
 }
 
 //跳转

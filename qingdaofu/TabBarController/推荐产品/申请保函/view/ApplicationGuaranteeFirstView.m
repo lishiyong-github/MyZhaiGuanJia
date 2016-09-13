@@ -286,6 +286,19 @@
     }
 }
 
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    if (self.touchBeginPoint) {
+        self.touchBeginPoint(CGPointMake(self.center.x, self.bottom-120));
+    }
+    return YES;
+}
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
+
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

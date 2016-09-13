@@ -10,6 +10,7 @@
 
 @interface CertificationModel : NSObject
 
+@property (nonatomic,strong) NSArray *cardimgs;   //cardimg
 @property (nonatomic,copy) NSString *address;   //联系地址
 @property (nonatomic,copy) NSString *canModify;
 @property (nonatomic,copy) NSString *cardimg;   //cardimg

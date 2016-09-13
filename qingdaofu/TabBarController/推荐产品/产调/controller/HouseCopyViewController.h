@@ -10,4 +10,6 @@
 
 @interface HouseCopyViewController : NetworkViewController
 
+@property (nonatomic,strong) NSString *jid; //产调查询ID
+
 @end

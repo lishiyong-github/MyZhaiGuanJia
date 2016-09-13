@@ -50,6 +50,8 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"保存" style:UIBarButtonItemStylePlain target:self action:@selector(saveReceiptAddress)];
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kBlueColor} forState:0];
     
+    [self setupForDismissKeyboard];
+    
     [self.view addSubview:self.receiptEditTableView];
     [self.view addSubview:self.receiptPickerView];
     [self.receiptPickerView setHidden:YES];

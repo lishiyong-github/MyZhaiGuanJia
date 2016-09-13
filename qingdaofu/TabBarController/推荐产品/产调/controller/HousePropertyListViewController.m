@@ -141,15 +141,6 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 1) {
-        PropertyListModel *pModel;
-//        if (self.propertyListArray.count > 0) {
-//            pModel = self.propertyListArray[indexPath.section];
-//            NSString *addressStr = [NSString stringWithFormat:@"%@%@",pModel.city,pModel.address];
-//            CGSize titleSize = CGSizeMake(kScreenWidth-kBigPadding*2, MAXFLOAT);
-//            CGSize actualSize = [addressStr boundingRectWithSize:titleSize options:NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName:kBigFont} context:nil].size;
-//            
-//            return 45 + MAX(actualSize.height, 19);//62
-//        }
         return 62;
     }else if (indexPath.row == 2){
         return 40;
@@ -278,6 +269,7 @@
             [cell.leftButton addAction:^(UIButton *btn) {//快递原件
                 if ([pModel.canExpress integerValue] == 1) {
                     HouseCopyViewController *houseCopyVC = [[HouseCopyViewController alloc] init];
+                    houseCopyVC.jid = pModel.idString;
                     [weakself.navigationController pushViewController:houseCopyVC animated:YES];
                 }else{
                     [weakself showHint:pModel.canExpressmsg];

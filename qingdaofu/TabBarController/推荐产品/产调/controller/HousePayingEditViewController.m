@@ -39,6 +39,8 @@
     [self.view addSubview:self.housePropertyTableView];
     
     [self.view setNeedsUpdateConstraints];
+    
+    [self addKeyboardObserver];
 }
 
 -(void)dealloc

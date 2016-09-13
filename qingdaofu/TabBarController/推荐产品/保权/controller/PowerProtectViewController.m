@@ -57,6 +57,8 @@
     [self.powerPickerView setHidden:YES];
     
     [self.view setNeedsUpdateConstraints];
+    
+    [self addKeyboardObserver];
 }
 
 - (void)updateViewConstraints
@@ -207,6 +209,11 @@
             cell.agentTextField.placeholder = powerDetailArr[indexPath.row-3];
             
             QDFWeakSelf;
+            
+            [cell setTouchBeginPoint:^(CGPoint point) {
+                weakself.touchPoint = point;
+            }];
+            
             if (indexPath.row == 3){//联系方式
                 [cell.agentButton setHidden:YES];
                 cell.agentTextField.text = [weakself getValidateMobile];
@@ -321,6 +328,10 @@
         cell.agentTextField.placeholder = @"请输入收货地址";
         
         QDFWeakSelf;
+        [cell setTouchBeginPoint:^(CGPoint point) {
+            weakself.touchPoint = point;
+        }];
+        
         [cell setDidEndEditing:^(NSString *text) {
             [weakself.powerDic setObject:text forKey:@"address"];
         }];

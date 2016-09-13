@@ -386,64 +386,6 @@
     return kBigPadding;
 }
 
-/*
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-    if (section == 4) {
-        UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 60)];
-        footerView.backgroundColor = kBackColor;
-        
-        UIButton *applyButton = [UIButton newAutoLayoutView];
-        applyButton.titleLabel.font = kTabBarFont;
-        [applyButton setTitleColor:kGrayColor forState:0];
-        
-        DelayResponse *delayResponss;
-        DelayModel *delayModel;
-        PublishingModel *puModel;
-        if (self.delayArray.count > 0) {
-            delayResponss = self.delayArray[0];
-            delayModel = delayResponss.delay;
-            puModel = delayResponss.product;
-        }
-        
-        if (delayModel.is_agree == nil || [delayModel.is_agree isEqualToString:@""]) {
-            if (![puModel.applyclose isEqualToString:@"4"]) {
-                if ([delayModel.delays integerValue] <= 7) {
-                    //未申请
-                    [applyButton setImage:[UIImage imageNamed:@"conserve_tip_icon"] forState:0];
-                   NSString *delay = [delayModel.delays integerValue]>=0?delayModel.delays:@"0";
-                    NSString *de = [NSString stringWithFormat:@"  距离案件处理结束日期还有%@天，可提前7天申请延期，只可申请一次",delay];
-                    [applyButton setTitle:de forState:0];
-
-                }
-            }else{
-                [applyButton setTitle:@"  结案申请中，不能申请延期" forState:0];
-            }
-        }else{
-            [applyButton setImage:[UIImage imageNamed:@"conserve_wait_icon"] forState:0];
-            
-            //已申请：0申请中,1同意，2拒绝，3作废，
-            if ([delayModel.is_agree intValue] == 0) {
-                [applyButton setTitle:@"  申请中" forState:0];
-            }else if ([delayModel.is_agree intValue] == 1){
-                [applyButton setTitle:@"  申请成功，等待发布确认" forState:0];
-            }else if ([delayModel.is_agree intValue] == 2){
-                [applyButton setTitle:@"  发布方已拒绝" forState:0];
-            }else if ([delayModel.is_agree intValue] == 3){
-                [applyButton setTitle:@"  作废" forState:0];
-            }
-        }
-    
-        [footerView addSubview:applyButton];
-        [applyButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
-        [applyButton autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:5];
-        
-        return footerView;
-    }
-    return nil;
-}
- */
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 2 && indexPath.row == 0) {
@@ -524,7 +466,7 @@
         
         if (delayModel.is_agree == nil || [delayModel.is_agree isEqualToString:@""]) {
             if (![puModel.applyclose isEqualToString:@"4"]) {
-                if ([delayModel.delays integerValue] > 7 && [delayModel.delays integerValue] > 0) {
+                if ([delayModel.delays integerValue] <= 7 && [delayModel.delays integerValue] > 0) {
                     [weakself.processRemindButton setHidden:NO];
                     NSString *delayS = [NSString stringWithFormat:@"还有%@天就要到达约定结案日期，点击申请延期 ",delayModel.delays];
                     [weakself.processRemindButton setTitle:delayS forState:0];
@@ -539,12 +481,6 @@
             }else{
                 NSLog(@"结案申请中，不能申请延期");
                 [weakself.processRemindButton setHidden:YES];
-//                [weakself.processRemindButton setTitle:@"结案申请中，不能申请延期  " forState:0];
-//                [weakself.processRemindButton setImage:[UIImage imageNamed:@"closed"] forState:0];
-//                
-//                [weakself.processRemindButton addAction:^(UIButton *btn) {
-//                    [btn setHidden:YES];
-//                }];
             }
         }else{
             //已申请：0申请中,1同意，2拒绝，3作废，
@@ -592,10 +528,7 @@
          [weakself showHint:sModel.msg];
         
         if ([sModel.code isEqualToString:@"0000"]) {//成功
-            [weakself.navigationController popViewControllerAnimated:YES];
-//            [weakself.processinCommitButton setBackgroundColor:kBorderColor];
-//            [weakself.processinCommitButton setTitle:@"已申请结案，等待对方确认中" forState:0];
-        }
+            [weakself.navigationController popViewControllerAnimated:YES];        }
         
     } andFailBlock:^(NSError *error) {
         

@@ -36,16 +36,8 @@
     self.title = @"填写快递信息";
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
-    [self setupForDismissKeyboard];
-    
     [self.view addSubview:self.houseCopyTableView];
-    
     [self.view setNeedsUpdateConstraints];
-}
-
-- (void)dealloc
-{
-    [self removeKeyboardObserver];
 }
 
 - (void)updateViewConstraints
@@ -82,6 +74,7 @@
         [_copyFooterButton addAction:^(UIButton *btn) {
 //            AssessSuccessViewController *assessSuccessVC = [[AssessSuccessViewController alloc] init];
 //            [weakself.navigationController pushViewController:assessSuccessVC animated:YES];
+            [weakself commitToExpress];
         }];
     }
     return _copyFooterButton;
@@ -134,6 +127,7 @@
             
             return cell;
         }else{
+            identifier = @"copy01";
             MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
             if (!cell) {
                 cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
@@ -216,6 +210,9 @@
             cell.phoneLabel.text = phone;
             cell.addressLabel.text = address;
             
+            [weakself.houseCopyDic setObject:name forKey:@"name"];
+            [weakself.houseCopyDic setObject:phone forKey:@"phone"];
+//            [weakself.houseCopyDic setObject:address forKey:@"cityid"];
             [weakself.houseCopyDic setObject:address forKey:@"address"];
         }];
     }
@@ -227,7 +224,22 @@
     [self.view endEditing:YES];
     NSString *expressString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kHousePropertyCopyString];
     
-    NSDictionary *params = @{};
+    [self.houseCopyDic setObject:self.jid forKey:@"jid"];
+    [self.houseCopyDic setObject:[self getValidateToken] forKey:@"token"];
+    
+    NSDictionary *params = self.houseCopyDic;
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:expressString params:params successBlock:^(id responseObject) {
+        BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:baseModel.msg];
+        if ([baseModel.code isEqualToString:@"0000"]) {
+            [weakself.navigationController popViewControllerAnimated:YES];
+        }
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
 }
 
 

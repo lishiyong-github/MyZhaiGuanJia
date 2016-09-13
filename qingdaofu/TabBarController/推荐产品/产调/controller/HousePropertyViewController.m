@@ -41,6 +41,13 @@
     [self.view addSubview:self.propertyFooterView];
     
     [self.view setNeedsUpdateConstraints];
+    
+    [self addKeyboardObserver];
+}
+
+- (void)dealloc
+{
+    [self removeKeyboardObserver];
 }
 
 - (void)updateViewConstraints
@@ -93,11 +100,6 @@
         button.titleLabel.font = kBigFont;
         [_propertyFooterView addSubview:button];
         
-        QDFWeakSelf;
-        [button addAction:^(UIButton *btn) {
-//            HousePayingViewController *housePayingVC = [[HousePayingViewController alloc] init];
-//            [weakself.navigationController pushViewController:housePayingVC animated:YES];
-        }];
         [button addTarget:self action:@selector(generateOrder) forControlEvents:UIControlEventTouchUpInside];
         
         [label autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
@@ -160,7 +162,11 @@
         cell.ediLabel.text = @"详细地址";
         cell.ediTextView.placeholder = @"请输入详细地址";
         
-        QDFWeakSelf;
+         QDFWeakSelf;
+        [cell setTouchBeginPoint:^(CGPoint point) {
+            weakself.touchPoint = point;
+        }];
+       
         [cell setDidEndEditing:^(NSString *text) {
             [weakself.propertyDic setObject:text forKey:@"address"];
         }];

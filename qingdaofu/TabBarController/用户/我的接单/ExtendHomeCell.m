@@ -49,6 +49,7 @@
         [self.contentLabel autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.actButton1 withOffset:-7];
         
         [self.deadLineButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
+        [self.deadLineButton autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.actButton1 withOffset:kBigPadding];
         [self.deadLineButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.actButton1];
         
         NSArray *views = @[self.actButton1,self.actButton2];
@@ -113,6 +114,9 @@
         _deadLineButton = [UIButton newAutoLayoutView];
         [_deadLineButton setTitleColor:kBlueColor forState:0];
         _deadLineButton.titleLabel.font = kSmallFont;
+        _deadLineButton.titleLabel.numberOfLines = 0;
+        _deadLineButton.contentHorizontalAlignment = 1;
+        _deadLineButton.titleEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0);
     }
     return _deadLineButton;
 }

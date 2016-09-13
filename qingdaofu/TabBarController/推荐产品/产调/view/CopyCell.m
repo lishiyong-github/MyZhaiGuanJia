@@ -32,8 +32,8 @@
         [self.imageViewcc autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
         [self.imageViewcc autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
         
-        [self.nameLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.imageViewcc withOffset:kBigPadding];
-        [self.nameLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:12];
+        [self.nameLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.imageViewcc withOffset:kSpacePadding];
+        [self.nameLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kBigPadding];
         
         [self.phoneLabel autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.nameLabel];
         [self.phoneLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.soButton withOffset:-kBigPadding];

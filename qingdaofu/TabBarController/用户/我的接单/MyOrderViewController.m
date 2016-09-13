@@ -297,7 +297,7 @@
         
         NSString *id_category = [NSString stringWithFormat:@"%@_%@",rowModel.idString,rowModel.category];
         NSString *value11 = self.myOrderDelaysDic[id_category];
-        NSString *deadString = [NSString stringWithFormat:@" 截止处理时间：%@",value11];
+        NSString *deadString = [NSString stringWithFormat:@"截止处理时间：%@",value11];
         [cell.deadLineButton setTitle:deadString forState:0];
         [cell.deadLineButton setImage:[UIImage imageNamed:@"time"] forState:0];
         self.deadTimeString = value11;
@@ -376,183 +376,7 @@
             [weakself goToWriteScheduleOrEvaluate:@"删除订单" withSection:indexPath.section withString:@""];
         }];
     }
-    
-
     return cell;
-    
-    /*
-    identifier = @"myRelease1";
-    AnotherHomeCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    if (!cell) {
-        cell = [[AnotherHomeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-    }
-    
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.typeLabel.textColor = kBlueColor;
-    
-    RowsModel *rowModel = self.myOrderDataList[indexPath.section];
-    
-    cell.nameLabel.text = rowModel.codeString;
-    //typeImageView  nameLabel*/
-    //清收－－借款本金（万元），代理费用，债权类型
-    //诉讼－－借款本金（万元），代理费用（或风险费率  具体看用户自己选择），债权类型
-    /*
-    if ([rowModel.category intValue] == 1) {//融资
-        cell.typeImageView.image = [UIImage imageNamed:@"list_financing"];
-        if ([rowModel.progress_status intValue] > 2) {
-            cell.typeImageView.image = [UIImage imageNamed:@"list_financing_nor"];
-        }
-        
-        NSString *seatmortgageS1 = [NSString getValidStringFromString:rowModel.seatmortgage];
-        NSString *mortorage_communityS1 = [NSString getValidStringFromString:rowModel.mortorage_community];
-        cell.addressLabel.text = [NSString stringWithFormat:@"%@%@",seatmortgageS1,mortorage_communityS1];
-        cell.pointView.label1.text = [NSString getValidStringFromString:rowModel.rebate toString:@"0"];
-        cell.pointView.label2.text = @"返点(%)";
-        cell.rateView.label1.text = [NSString getValidStringFromString:rowModel.rate toString:@"0"];
-        if ([rowModel.rate_cat integerValue] == 1) {
-            cell.rateView.label2.text = @"借款利率(%/天)";
-        }else{
-            cell.rateView.label2.text = @"借款利率(%/月)";
-        }
-        
-    }else if ([rowModel.category intValue] == 2){//催收
-        cell.typeImageView.image = [UIImage imageNamed:@"list_collection"];
-        if ([rowModel.progress_status intValue] > 2) {
-            cell.typeImageView.image = [UIImage imageNamed:@"list_collection_nor"];
-        }
-        
-        cell.pointView.label1.text = [NSString getValidStringFromString:rowModel.agencycommission toString:@"0"];
-        if ([rowModel.agencycommissiontype isEqualToString:@"1"]) {
-            cell.pointView.label2.text = @"服务佣金(%)";
-        }else{
-            cell.pointView.label2.text = @"固定费用(万元)";
-        }
-
-        if ([rowModel.loan_type isEqualToString:@"1"]) {
-            cell.rateView.label1.text = @"房产抵押";
-            NSString *seatmortgageS2 = [NSString getValidStringFromString:rowModel.seatmortgage];
-            NSString *mortorage_communityS2 = [NSString getValidStringFromString:rowModel.mortorage_community];
-            cell.addressLabel.text = [NSString stringWithFormat:@"%@%@",seatmortgageS2,mortorage_communityS2];
-        }else if ([rowModel.loan_type isEqualToString:@"2"]){
-            cell.rateView.label1.text = @"应收账款";
-            cell.addressLabel.text = @"无抵押物地址";
-        }else if ([rowModel.loan_type isEqualToString:@"3"]){
-            cell.rateView.label1.text = @"机动车抵押";
-            cell.addressLabel.text = @"无抵押物地址";
-        }else{
-            cell.rateView.label1.text = @"无抵押";
-            cell.addressLabel.text = @"无抵押物地址";
-        }
-        cell.rateView.label2.text = @"债权类型";
-    }else if ([rowModel.category intValue] == 3){//诉讼
-        cell.typeImageView.image = [UIImage imageNamed:@"list_litigation"];
-        if ([rowModel.progress_status intValue] > 2) {
-            cell.typeImageView.image = [UIImage imageNamed:@"list_litigation_nor"];
-        }
-        
-        cell.pointView.label1.text = [NSString getValidStringFromString:rowModel.agencycommission toString:@"0"];
-        if ([rowModel.agencycommissiontype isEqualToString:@"1"]) {
-            cell.pointView.label2.text = @"固定费用(万元)";
-        }else{
-            cell.pointView.label2.text = @"风险费率(%)";
-        }
-        
-        if ([rowModel.loan_type isEqualToString:@"1"]) {
-            cell.rateView.label1.text = @"房产抵押";
-            NSString *seatmortgageS3 = [NSString getValidStringFromString:rowModel.seatmortgage];
-            NSString *mortorage_communityS3 = [NSString getValidStringFromString:rowModel.mortorage_community];
-            cell.addressLabel.text = [NSString stringWithFormat:@"%@%@",seatmortgageS3,mortorage_communityS3];
-        }else if ([rowModel.loan_type isEqualToString:@"2"]){
-            cell.rateView.label1.text = @"应收账款";
-            cell.addressLabel.text = @"无抵押物地址";
-        }else if ([rowModel.loan_type isEqualToString:@"3"]){
-            cell.rateView.label1.text = @"机动车抵押";
-            cell.addressLabel.text = @"无抵押物地址";
-        }else if([rowModel.loan_type isEqualToString:@"4"]){
-            cell.rateView.label1.text = @"无抵押";
-            cell.addressLabel.text = @"无抵押物地址";
-        }
-        cell.rateView.label2.text = @"债权类型";
-    }
-    
-    /*typeLabel*/
-    /*
-    if ([rowModel.progress_status integerValue]  == 0) {
-        [cell.typeLabel setHidden:NO];
-        cell.typeLabel.text = @"待申请";
-        [cell.typeButton setHidden:YES];
-    }else if ([rowModel.progress_status integerValue]  == 1){
-        [cell.typeLabel setHidden:NO];
-        cell.typeLabel.text = @"申请中";
-        [cell.typeButton setHidden:YES];
-    }else if ([rowModel.progress_status integerValue]  == 2){
-        [cell.typeLabel setHidden:NO];
-        cell.typeLabel.text = @"处理中";
-        [cell.typeButton setHidden:YES];
-    }else if ([rowModel.progress_status integerValue]  == 3){
-        [cell.typeLabel setHidden:NO];
-        cell.typeLabel.text = @"终止";
-        [cell.typeButton setHidden:YES];
-    }else if([rowModel.progress_status integerValue]  == 4){
-        [cell.typeLabel setHidden:YES];
-        [cell.typeButton setHidden:NO];
-        [cell.typeButton setImage:[UIImage imageNamed:@"list_chapter"] forState:0];
-    }
-
-    cell.moneyView.label1.text = [NSString getValidStringFromString:rowModel.money toString:@"0"];
-    cell.moneyView.label2.text = @"借款本金(万元)";
-    
-    if (([rowModel.progress_status intValue] == 1) || ([rowModel.progress_status intValue] == 3)) {//申请中，终止
-        [cell.firstButton setHidden:YES];
-        [cell.secondButton setHidden:YES];
-        [cell.thirdButton setHidden:YES];
-    }else if ([rowModel.progress_status intValue] == 2){//处理中（距离单子处理还剩一周，显示截至日期）
-        [cell.firstButton setHidden:NO];
-        [cell.secondButton setHidden:NO];
-        [cell.thirdButton setHidden:NO];
-        
-        
-        NSString *id_category = [NSString stringWithFormat:@"%@_%@",rowModel.idString,rowModel.category];
-        NSString *value11 = self.myOrderDelaysDic[id_category];
-        NSString *deadString = [NSString stringWithFormat:@"截止日期：%@",value11];
-        [cell.firstButton setTitle:deadString forState:0];
-        [cell.secondButton setTitle:@"申请延期" forState:0];
-        [cell.thirdButton setTitle:@"填写进度" forState:0];
-        
-        QDFWeakSelf;
-        [cell.secondButton addAction:^(UIButton *btn) {
-            [weakself goToWriteScheduleOrEvaluate:@"申请延期" withRow:indexPath.section withString:@""];
-        }];
-        
-        [cell.thirdButton addAction:^(UIButton *btn) {
-            [weakself goToWriteScheduleOrEvaluate:@"填写进度" withRow:indexPath.section withString:@""];
-        }];
-        
-    }else {//结案
-        [cell.firstButton setHidden:YES];
-        [cell.secondButton setHidden:YES];
-        
-        NSString *id_category = [NSString stringWithFormat:@"%@_%@",rowModel.idString,rowModel.category];
-        NSString *value = self.myOrderCreditorDic[id_category];
-        if ([value integerValue] >= 2) {
-            [cell.thirdButton setHidden:YES];
-        }else{
-            [cell.thirdButton setHidden:NO];
-            
-            if ([value integerValue] == 0) {
-                [cell.thirdButton setTitle:@"去评价" forState:0];
-            }else{
-                [cell.thirdButton setTitle:@"再次评价" forState:0];
-            }
-            QDFWeakSelf;
-            [cell.thirdButton addAction:^(UIButton *btn) {
-                [weakself goToWriteScheduleOrEvaluate:@"去评价" withRow:indexPath.section withString:value];
-            }];
-        }
-    }
-    
-    return cell;
-    */
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -620,8 +444,9 @@
     QDFWeakSelf;
     [self requestDataPostWithString:myOrderString params:params successBlock:^(id responseObject) {
         
-        NSDictionary *sususu = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        NSDictionary *apapa = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
+                
         if ([page intValue] == 1) {
             [weakself.myOrderDataList removeAllObjects];
             [weakself.myOrderCreditorDic removeAllObjects];
