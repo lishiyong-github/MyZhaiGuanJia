@@ -189,6 +189,8 @@
     QDFWeakSelf;
     [self requestDataPostWithString:mesString params:params successBlock:^(id responseObject) {
         
+        NSDictionary *wpwp = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
         if ([page integerValue] == 1) {
             [weakself.messageReceiveArray removeAllObjects];
         }
@@ -278,8 +280,12 @@
                         paceVC.idString = messageModel.category_id.idString;
                         paceVC.categoryString = messageModel.category_id.category;
                         [weakself.navigationController pushViewController:paceVC animated:YES];
-                    }else if ([messageModel.type integerValue] == 19){//申请延期
-                        NSLog(@"申请延期");
+                    }else if ([messageModel.type integerValue] == 19){//申请延期(接单方申请延期，发布方是否同意)                        NSLog(@"申请延期");
+                        MyDealingViewController *myDealingVC = [[MyDealingViewController alloc] init];
+                        myDealingVC.idString = messageModel.category_id.idString;
+                        myDealingVC.categaryString = messageModel.category_id.category;
+                        myDealingVC.pidString = messageModel.uidInner;
+                        [weakself.navigationController pushViewController:myDealingVC animated:YES];
                     }else{
                         MyDealingViewController *myDealingVC = [[MyDealingViewController alloc] init];
                         myDealingVC.idString = messageModel.category_id.idString;

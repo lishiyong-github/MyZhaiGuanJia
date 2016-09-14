@@ -31,8 +31,8 @@
 @property (nonatomic,strong) UITableView *suitTableView;
 @property (nonatomic,strong) ReportFootView *repSuitFootButton;
 @property (nonatomic,strong) UIButton *suitRightButton;
-@property (nonatomic,strong) PowerCourtView *reportPickerView;
-@property (nonatomic,strong) ReportDatePickerView *datePickerView;
+@property (nonatomic,strong) PowerCourtView *reportPickerView; //省市区
+@property (nonatomic,strong) ReportDatePickerView *datePickerView;//逾期
 
 @property (nonatomic,strong) NSMutableArray *suitDataList;  //收起展开
 @property (nonatomic,strong) NSMutableArray *sTextArray;
@@ -243,6 +243,7 @@
             
             AgentCell *cell = [weakself.suitTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:5 inSection:1]];
             cell.agentTextField.text = [NSString stringWithFormat:huhu,date];
+            [weakself.suitDataDictionary setObject:huhu forKey:@"start"];
         }];
     }
     return _datePickerView;
@@ -938,7 +939,7 @@
                 [self showTitleOfUpwardView:@"13"];
             }
                 break;
-            case 9:{
+            case 9:{//逾期日期
                 [self.reportPickerView setHidden:NO];
                 
                 self.cateString = @"2";
@@ -1282,8 +1283,8 @@
     self.suitDataDictionary[@"commissionperiod"] = self.suitDataDictionary[@"commissionperiod"]?self.suitDataDictionary[@"commissionperiod"]:self.suResponse.product.commissionperiod;  //委托代理期限
     self.suitDataDictionary[@"paidmoney"] = self.suitDataDictionary[@"paidmoney"]?self.suitDataDictionary[@"paidmoney"]:self.suResponse.product.paidmoney;//已付本金
     self.suitDataDictionary[@"interestpaid"] = self.suitDataDictionary[@"interestpaid"]?self.suitDataDictionary[@"interestpaid"]:self.suResponse.product.interestpaid; //已付利息
-//    self.suitDataDictionary[@"performancecontract"] = self.suitDataDictionary[@"performancecontract"]?self.suitDataDictionary[@"performancecontract"]:self.suResponse.product.performancecontract; //合同履行地
-    
+//    self.suitDataDictionary[@"performancecontract"] = self.suitDataDictionary[@"performancecontract"]?self.suitDataDictionary[@"performancecontract"]:self.suResponse.product.performancecontract;
+    //合同履行地
     self.suitDataDictionary[@"place_province_id"] = self.suitDataDictionary[@"place_province_id"]?self.suitDataDictionary[@"place_province_id"]:self.suResponse.product.place_province_id;//@"310000";
     self.suitDataDictionary[@"place_city_id"] = self.suitDataDictionary[@"place_city_id"]?self.suitDataDictionary[@"place_city_id"]:self.suResponse.product.place_city_id;//@"310100";
     self.suitDataDictionary[@"place_district_id"] = self.suitDataDictionary[@"place_district_id"]?self.suitDataDictionary[@"place_district_id"]:self.suResponse.product.place_district_id;//@"310115";

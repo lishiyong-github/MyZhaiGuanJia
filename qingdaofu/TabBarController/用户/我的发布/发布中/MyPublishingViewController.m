@@ -331,6 +331,9 @@
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
+        
+        NSDictionary *qpqp = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
         [weakself.publishingDataArray addObject:response];
         [weakself.publishingTableView reloadData];  
