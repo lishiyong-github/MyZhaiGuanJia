@@ -34,6 +34,7 @@
 @property (nonatomic,copy) NSString *codeString;  //产品编号
 @property (nonatomic,copy) NSString *commissionperiod;  //委托代理期限
 @property (nonatomic,copy) NSString *commitment;  //委托事项：1=>'代理诉讼',2=>'代理仲裁',3=>'代理执行',
+@property (nonatomic,copy) NSString *start; //逾期日期
 @property (nonatomic,copy) NSString *create_time;
 @property (nonatomic,copy) NSString *creditorfile;
 @property (nonatomic,copy) NSString *creditorinfo;

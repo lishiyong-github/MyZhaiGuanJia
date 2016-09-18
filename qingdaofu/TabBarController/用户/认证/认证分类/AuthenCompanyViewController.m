@@ -9,6 +9,7 @@
 #import "AuthenCompanyViewController.h"
 
 #import "AuthentyWaitingViewController.h"   //认证成功
+#import "CaseViewController.h" //经典案例
 
 #import "TakePictureCell.h"
 #import "EditDebtAddressCell.h"
@@ -26,7 +27,6 @@
 @property (nonatomic,strong) BaseCommitView *companyAuCommitButton;
 
 @property (nonatomic,strong) NSMutableDictionary *comDataDictionary;
-@property (nonatomic,strong) NSMutableArray *imageArray;
 @property (nonatomic,strong) NSString *imgFileIdString1;
 @property (nonatomic,strong) NSString *imgFileIdString2;
 
@@ -100,15 +100,6 @@
     return _comDataDictionary;
 }
 
-- (NSMutableArray *)imageArray
-{
-    if (!_imageArray) {
-        _imageArray = [NSMutableArray array];
-    }
-    return _imageArray;
-}
-
-
 #pragma mark - tableView delegate and datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -139,7 +130,7 @@
     static NSString *identifier;
     CertificationModel *certificationModel = self.responseModel.certification;
     if (indexPath.section == 0) {
-        identifier = @"authenPer0";
+        identifier = @"authenCom0";
         PersonCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         if (!cell) {
             cell = [[PersonCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
@@ -174,16 +165,14 @@
                 if (images.count > 0) {
                     NSData *imgData = [NSData dataWithContentsOfFile:images[0]];
                     NSString *imgStr = [NSString stringWithFormat:@"%@",imgData];
-                    
                     [weakself uploadImages:imgStr andType:nil andFilePath:nil];
+                    
                     [weakself setDidGetValidImage:^(ImageModel *imgModel) {
                         if ([imgModel.code isEqualToString:@"0000"]) {
                             [btn setImage:[UIImage imageWithContentsOfFile:images[0]] forState:0];
                             weakself.imgFileIdString1 = imgModel.url;
                         }
                     }];
-                    
-//                    [self.comDataDictionary setValue:imgStr forKey:@"cardimgs"];
                 }
             }];
         }];
@@ -194,8 +183,8 @@
                 if (images.count > 0) {
                     NSData *imgData = [NSData dataWithContentsOfFile:images[0]];
                     NSString *imgStr = [NSString stringWithFormat:@"%@",imgData];
-                    
                     [weakself uploadImages:imgStr andType:nil andFilePath:nil];
+                    
                     [weakself setDidGetValidImage:^(ImageModel *imgModel) {
                         if ([imgModel.code isEqualToString:@"0000"]) {
                             [btn setImage:[UIImage imageWithContentsOfFile:images[0]] forState:0];
@@ -209,7 +198,7 @@
         return cell;
         
     }else if (indexPath.section == 1){
-        identifier = @"authenPer1";
+        identifier = @"authenCom1";
         AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         
         if (!cell) {
@@ -267,7 +256,7 @@
     }else{
         
         if (indexPath.row < 4) {
-            identifier = @"authenPer2";
+            identifier = @"authenCom2";
             
             AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
             
@@ -317,26 +306,27 @@
             return cell;
         }
         
-        identifier = @"authenPer3";
-        
-        AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        identifier = @"authenCom3";
+        QDFWeakSelf;
+        EditDebtAddressCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         
         if (!cell) {
-            cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            cell = [[EditDebtAddressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.agentTextField.userInteractionEnabled = NO;
-        cell.agentButton.userInteractionEnabled = NO;
         
-        cell.agentLabel.text = @"经典案例";
-        cell.agentTextField.placeholder = @"请输入诉讼、清收等成功案例";
-        cell.agentTextField.text = certificationModel.casedesc;
-        [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-        
+        cell.leftTextViewConstraints.constant = 105;
+        cell.ediLabel.text = @"经典案例";
+        cell.ediTextView.placeholder = @"关于律所在清收等方面的成功案例，有利于发布方更加青睐你";
+        cell.ediTextView.font = kFirstFont;
+        cell.ediTextView.text = certificationModel.casedesc;
+        [cell setTouchBeginPoint:^(CGPoint point) {
+            weakself.touchPoint = point;
+        }];
         QDFWeak(cell);
         [cell setDidEndEditing:^(NSString *text) {
-            weakcell.agentTextField.text = text;
-            [self.comDataDictionary setValue:text forKey:@"casedesc"];
+            weakcell.ediTextView.text = text;
+            [weakself.comDataDictionary setValue:text forKey:@"casedesc"];
         }];
         
         return cell;
@@ -370,27 +360,9 @@
         headerView.font = kSecondFont;
         headerView.text = @"请上传公司营业执照图片";
         headerView.textColor = kGrayColor;
-        
-//        NSString *str1 = @"上传验证身份证件照或名片图片";
-//        NSString *str2 = @"（必填）";
-//        NSString *str3 = [NSString stringWithFormat:@"%@%@",str1,str2];
-//
-//        NSMutableAttributedString *attributeStr = [[NSMutableAttributedString alloc] initWithString:str3];
-//
-//        [attributeStr setAttributes:@{NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, str1.length)];
-//        [attributeStr setAttributes:@{NSForegroundColorAttributeName:kBlackColor} range:NSMakeRange(str1.length, str2.length)];
-//
-//        [headerView setAttributedText:attributeStr];
         return headerView;
     }
     return nil;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.section == 2 && indexPath.row == 2) {
-        [self showHint:@"经典案例"];
-    }
 }
 
 #pragma mark - commit messages

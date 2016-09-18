@@ -293,30 +293,6 @@
             
             return cell;
         }
-        
-//        identifier = @"authenPer3";
-//        
-//        EditDebtAddressCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-//        
-//        if (!cell) {
-//            cell = [[EditDebtAddressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-//        }
-//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//        cell.leftTextViewConstraints.constant = 105;
-//        cell.ediLabel.text = @"经典案例";
-//        cell.ediTextView.placeholder = @"关于个人在融资等方面的成功案例，有利于发布方更加青睐你";
-//        cell.ediTextView.text = certificationModel.casedesc;
-//        [cell setTouchBeginPoint:^(CGPoint point) {
-//            weakself.touchPoint = point;
-//        }];
-//        
-//        QDFWeak(cell);
-//        [cell setDidEndEditing:^(NSString *text) {
-//            weakcell.ediTextView.text = text;
-//            [weakself.perDataDictionary setValue:text forKey:@"casedesc"];
-//        }];
-//        
-//        return cell;
     }
     
     return nil;
@@ -405,17 +381,20 @@
         [weakself showHint:model.msg];
         
         if ([model.code isEqualToString:@"0000"]) {
-            UINavigationController *nav = weakself.navigationController;
-            [nav popViewControllerAnimated:NO];
-            [nav popViewControllerAnimated:NO];
-            [nav popViewControllerAnimated:NO];
-            
-            AuthentyWaitingViewController *waitingVC = [[AuthentyWaitingViewController alloc] init];
-            waitingVC.categoryString = weakself.categoryString;
-            waitingVC.hidesBottomBarWhenPushed = YES;
-            [nav pushViewController:waitingVC animated:NO];
+            if (weakself.respnseModel) {//update
+                UINavigationController *nav = weakself.navigationController;
+                [nav popViewControllerAnimated:NO];
+                [nav popViewControllerAnimated:NO];
+                [nav popViewControllerAnimated:NO];
+                
+                AuthentyWaitingViewController *waitingVC = [[AuthentyWaitingViewController alloc] init];
+                waitingVC.categoryString = weakself.categoryString;
+                waitingVC.hidesBottomBarWhenPushed = YES;
+                [nav pushViewController:waitingVC animated:NO];
+            }else{//add
+                [weakself.navigationController popViewControllerAnimated:YES];
+            }
         }
-        
     } andFailBlock:^(NSError *error) {
     
     }];

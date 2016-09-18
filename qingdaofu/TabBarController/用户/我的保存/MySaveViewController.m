@@ -7,13 +7,11 @@
 //
 
 #import "MySaveViewController.h"
-#import "MyDetailSaveViewController.h"
-//#import "MyReleaseViewController.h"  //我的发布
+//#import "MyDetailSaveViewController.h"
 #import "ReportSuitViewController.h"  //发布
 
 
 #import "MineUserCell.h"
-//#import "MessageCell.h"
 #import "SaveCell.h"
 
 #import "ReleaseResponse.h"
@@ -33,6 +31,11 @@
 
 @implementation MySaveViewController
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self refreshHeaderOfMySave];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @"我的保存";
@@ -44,8 +47,6 @@
     [self.baseRemindImageView setHidden:YES];
     
     [self.view setNeedsUpdateConstraints];
-    
-    [self refreshHeaderOfMySave];
 }
 
 - (void)updateViewConstraints
@@ -191,19 +192,18 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
     RowsModel *deModel = self.mySaveDataList[indexPath.row];
-    
+    [self editSaveDetailMessageWithRowModel:deModel];
 //    ReportSuitViewController *reportSuitVC = [[ReportSuitViewController alloc] init];
 //    reportSuitVC.suResponse = self.mySaveResponse[0];
 //    reportSuitVC.categoryString = self.categaryString;
 //    reportSuitVC.tagString = @"2";
 //    [weakself.navigationController pushViewController:reportSuitVC animated:YES];
     
-    MyDetailSaveViewController *myDetailSaveVC = [[MyDetailSaveViewController alloc] init];
-    myDetailSaveVC.idString = deModel.idString;
-    myDetailSaveVC.categaryString = deModel.category;
-    [self.navigationController pushViewController:myDetailSaveVC animated:YES];
+//    MyDetailSaveViewController *myDetailSaveVC = [[MyDetailSaveViewController alloc] init];
+//    myDetailSaveVC.idString = deModel.idString;
+//    myDetailSaveVC.categaryString = deModel.category;
+//    [self.navigationController pushViewController:myDetailSaveVC animated:YES];
 }
 
 #pragma mark - method
@@ -320,6 +320,35 @@
             }
         }
         
+    } andFailBlock:^(NSError *error){
+        
+    }];
+}
+
+#pragma mark - 再次编辑
+- (void)editSaveDetailMessageWithRowModel:(RowsModel *)rowModel
+{
+    NSString *sDetailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProdutsDetailString];
+    NSDictionary *params = @{@"token" : [self getValidateToken],
+                             @"id" : rowModel.idString,
+                             @"category" : rowModel.category
+                             };
+    QDFWeakSelf;
+    [self requestDataPostWithString:sDetailString params:params successBlock:^(id responseObject){
+        
+        PublishingResponse *responseModel = [PublishingResponse objectWithKeyValues:responseObject];
+        
+        if ([responseModel.code isEqualToString:@"0000"]) {
+            ReportSuitViewController *reportSuitVC = [[ReportSuitViewController alloc] init];
+            reportSuitVC.categoryString = rowModel.category;
+            reportSuitVC.suResponse = responseModel;
+            reportSuitVC.tagString = @"2";
+            
+            UINavigationController *nabc = [[UINavigationController alloc] initWithRootViewController:reportSuitVC];
+            [weakself presentViewController:nabc animated:YES completion:nil];
+        }else{
+            [weakself showHint:responseModel.msg];
+        }
     } andFailBlock:^(NSError *error){
         
     }];

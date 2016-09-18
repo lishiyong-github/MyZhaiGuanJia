@@ -10,6 +10,9 @@
 
 @interface CaseViewController : NetworkViewController
 
-@property (nonatomic,strong) NSString *caseString;
+@property (nonatomic,strong) void (^didEndFinish)(NSString *);
+
+@property (nonatomic,strong) NSString *caseString;//显示经典案例的url
+@property (nonatomic,strong) NSString *toString;  //1-编辑经典案例 0-显示经典案例
 
 @end

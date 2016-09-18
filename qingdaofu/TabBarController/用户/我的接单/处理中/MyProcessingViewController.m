@@ -418,7 +418,6 @@
     QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
         
-                
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
         [weakself.processArray addObject:response];
         [weakself.myProcessingTableView reloadData];
@@ -430,6 +429,10 @@
                 [weakself.processinCommitButton setImage:[UIImage imageNamed:@"end"] forState:0];
                 [weakself.processinCommitButton setTitle:@" 申请结案" forState:0];
                 [weakself.processinCommitButton addTarget:self action:@selector(endProduct) forControlEvents:UIControlEventTouchUpInside];
+                
+                //延期申请状态
+                [weakself delayRequest];
+                
             }else if ([response.product.applyclose integerValue] == 4 && [response.product.applyclosefrom isEqualToString:response.product.uidInner]){
                 [weakself.processinCommitButton setBackgroundColor:kBlueColor];
                 [weakself.processinCommitButton setTitle:@"同意结案" forState:0];
@@ -441,8 +444,6 @@
         }
         
         [weakself.myProcessingTableView reloadData];
-        
-        [weakself delayRequest];
         
     } andFailBlock:^(NSError *error){
         

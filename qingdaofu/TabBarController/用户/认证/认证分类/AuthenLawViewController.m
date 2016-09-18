@@ -25,11 +25,10 @@
 @property (nonatomic,strong) BaseCommitView *lawAuCommitButton;
 @property (nonatomic,strong) UIAlertController *alertController;
 
-@property (nonatomic,strong) NSString *pictureString;
-@property (nonatomic,strong) UIImage *pictureImage1;
-@property (nonatomic,strong) UIImage *pictureImage2;
-
+//json
 @property (nonatomic,strong) NSMutableDictionary *lawDataDictionary;
+@property (nonatomic,strong) NSString *imgFileIdString1;
+@property (nonatomic,strong) NSString *imgFileIdString2;
 
 @end
 
@@ -39,9 +38,6 @@
     [super viewDidLoad];
     self.navigationItem.title = @"认证律所";
     self.navigationItem.leftBarButtonItem = self.leftItem;
-    
-    self.pictureImage1 = [UIImage imageNamed:@"btn_camera"];
-    self.pictureImage2  = [UIImage imageNamed:@"btn_camera"];
     
     [self setupForDismissKeyboard];
     
@@ -123,6 +119,8 @@
 {
     if (indexPath.section == 0) {
         return 105 + kBigPadding*2;
+    }else if (indexPath.section == 2 && indexPath.row == 2){
+        return 60;
     }
     return kCellHeight;
 }
@@ -151,8 +149,14 @@
                 if (images.count > 0) {
                     NSData *imgData = [NSData dataWithContentsOfFile:images[0]];
                     NSString *imgStr = [NSString stringWithFormat:@"%@",imgData];
+                    [weakself uploadImages:imgStr andType:nil andFilePath:nil];
                     
-                    [btn setImage:[UIImage imageWithContentsOfFile:images[0]] forState:0];
+                    [weakself setDidGetValidImage:^(ImageModel *imgModel) {
+                        if ([imgModel.code isEqualToString:@"0000"]) {
+                            [btn setImage:[UIImage imageWithContentsOfFile:images[0]] forState:0];
+                            weakself.imgFileIdString1 = imgModel.url;
+                        }
+                    }];
                 }
             }];
         }];
@@ -163,10 +167,14 @@
                 if (images.count > 0) {
                     NSData *imgData = [NSData dataWithContentsOfFile:images[0]];
                     NSString *imgStr = [NSString stringWithFormat:@"%@",imgData];
+                    [weakself uploadImages:imgStr andType:nil andFilePath:nil];
                     
-                    //                [self.perDataDictionary setValue:imgStr forKey:@"cardimgs"];
-                    
-                    [btn setImage:[UIImage imageWithContentsOfFile:images[0]] forState:0];
+                    [weakself setDidGetValidImage:^(ImageModel *imgModel) {
+                        if ([imgModel.code isEqualToString:@"0000"]) {
+                            [btn setImage:[UIImage imageWithContentsOfFile:images[0]] forState:0];
+                            weakself.imgFileIdString2 = imgModel.url;
+                        }
+                    }];
                 }
             }];
         }];
@@ -259,22 +267,6 @@
         }
         
         identifier = @"authenLaw3";
-        AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        
-        if (!cell) {
-            cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.agentTextField.userInteractionEnabled = NO;
-        cell.agentButton.userInteractionEnabled = NO;
-        cell.agentLabel.text = @"经典案例";
-        cell.agentTextField.placeholder = @"请输入诉讼、清收等成功案例";
-        [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-        
-        return cell;
-        
-        /*
-        identifier = @"authenLaw3";
         QDFWeakSelf;
         EditDebtAddressCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         
@@ -283,7 +275,7 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        cell.leftTextViewConstraints.constant = 105;
+        cell.leftTextViewConstraints.constant = 88;
         cell.ediLabel.text = @"经典案例";
         cell.ediTextView.placeholder = @"关于律所在清收等方面的成功案例，有利于发布方更加青睐你";
         cell.ediTextView.font = kFirstFont;
@@ -298,7 +290,6 @@
         }];
 
         return cell;
-         */
     }
     
     return nil;
@@ -330,33 +321,22 @@
         headerView.text = @"请上传律所执业图片";
         headerView.textColor = kGrayColor;
         
-//        NSString *str1 = @"上传验证身份证件照或名片图片";
-//        NSString *str2 = @"（必填）";
-//        NSString *str3 = [NSString stringWithFormat:@"%@%@",str1,str2];
-//
-//        NSMutableAttributedString *attributeStr = [[NSMutableAttributedString alloc] initWithString:str3];
-//
-//        [attributeStr setAttributes:@{NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, str1.length)];
-//        [attributeStr setAttributes:@{NSForegroundColorAttributeName:kBlackColor} range:NSMakeRange(str1.length, str2.length)];
-//
-//        [headerView setAttributedText:attributeStr];
         return headerView;
     }
     return nil;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.section == 2 || indexPath.row == 2) {
-        NSLog(@"经典案例");
-        [self showHint:@"经典案例"];
-    }
-}
 
 #pragma mark - commit messages
 - (void)goToAuthenLawMessages
 {
     [self.view endEditing:YES];
+    
+    if (self.imgFileIdString1 && self.imgFileIdString2) {
+        NSString *imgFileIdStr = [NSString stringWithFormat:@"'%@','%@'",self.imgFileIdString1,self.imgFileIdString2];
+        [self.lawDataDictionary setObject:imgFileIdStr forKey:@"cardimg"];
+    }
+
     NSString *lawAuString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kAuthenString];
     /*
      @"category" : @"2",

@@ -445,6 +445,9 @@
                 [weakself.dealCommitButton setHidden:YES];
                 [weakself.dealFootView setHidden:NO];
                 
+                //接单方法起的延期申请状态
+                [weakself delayRequestFromOrder];
+                
                 QDFWeakSelf;
                 [_dealFootView setDidSelectedButton:^(NSInteger tag) {
                     NSString *messages;
@@ -473,7 +476,6 @@
                 weakself.dealCommitButton.userInteractionEnabled = NO;
             }
         }
-        [weakself delayRequestFromOrder];
         
     } andFailBlock:^(NSError *error){
         
@@ -509,18 +511,6 @@
         }else{
             [weakself.dealRemindButton setHidden:YES];
         }
-        
-//        if ([delayModel.is_agree integerValue] == 0 && [response.uid integerValue] == [puModel.uidInner integerValue]) {
-//            [weakself.dealRemindButton setHidden:NO];
-//            QDFWeakSelf;
-//            [weakself.dealRemindButton addAction:^(UIButton *btn) {
-//                DelayHandleViewController *delayHandleVC = [[DelayHandleViewController alloc] init];
-//                delayHandleVC.delayIdStr = delayModel.id_delay;
-//                [weakself.navigationController pushViewController:delayHandleVC animated:YES];
-//            }];
-//        }else{
-//            [weakself.dealRemindButton setHidden:YES];
-//        }
         
     } andFailBlock:^(NSError *error) {
         
