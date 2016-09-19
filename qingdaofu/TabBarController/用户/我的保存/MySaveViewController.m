@@ -303,7 +303,8 @@
     NSString *deleteSaveString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kDeleteSaveString];
     NSDictionary *params = @{@"id" : deleteModel.idString,
                              @"category" : deleteModel.category,
-                             @"token" : [self getValidateToken]
+                             @"token" : [self getValidateToken],
+                             @"type" : @"2"
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:deleteSaveString params:params successBlock:^(id responseObject){

@@ -89,6 +89,10 @@
 		A15F61841D18DF1F0060AF7B /* GuarantyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A15F61831D18DF1F0060AF7B /* GuarantyViewController.m */; };
 		A15F61891D1905940060AF7B /* GuarantyResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A15F61881D1905940060AF7B /* GuarantyResponse.m */; };
 		A15F618C1D1906820060AF7B /* GuarantyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A15F618B1D1906820060AF7B /* GuarantyModel.m */; };
+		A160245C1D8FBE43002E2236 /* CallPhoneButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A160245B1D8FBE43002E2236 /* CallPhoneButton.m */; };
+		A160245F1D8FBED8002E2236 /* customer_service_hotline@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A160245D1D8FBED8002E2236 /* customer_service_hotline@2x.png */; };
+		A16024601D8FBED8002E2236 /* customer_service_hotline@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A160245E1D8FBED8002E2236 /* customer_service_hotline@3x.png */; };
+		A16024631D8FD2EC002E2236 /* CreditorFileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A16024621D8FD2EC002E2236 /* CreditorFileModel.m */; };
 		A1602E741CED8D320053F850 /* CompleteCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1602E731CED8D320053F850 /* CompleteCell.m */; };
 		A1602E771CEDA9F50053F850 /* CompletePhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = A1602E761CEDA9F50053F850 /* CompletePhotoView.m */; };
 		A1602E7D1CEDB3920053F850 /* BidOneCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1602E7C1CEDB3920053F850 /* BidOneCell.m */; };
@@ -829,6 +833,12 @@
 		A15F61881D1905940060AF7B /* GuarantyResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GuarantyResponse.m; sourceTree = "<group>"; };
 		A15F618A1D1906820060AF7B /* GuarantyModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuarantyModel.h; sourceTree = "<group>"; };
 		A15F618B1D1906820060AF7B /* GuarantyModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GuarantyModel.m; sourceTree = "<group>"; };
+		A160245A1D8FBE43002E2236 /* CallPhoneButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallPhoneButton.h; sourceTree = "<group>"; };
+		A160245B1D8FBE43002E2236 /* CallPhoneButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallPhoneButton.m; sourceTree = "<group>"; };
+		A160245D1D8FBED8002E2236 /* customer_service_hotline@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "customer_service_hotline@2x.png"; sourceTree = "<group>"; };
+		A160245E1D8FBED8002E2236 /* customer_service_hotline@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "customer_service_hotline@3x.png"; sourceTree = "<group>"; };
+		A16024611D8FD2EC002E2236 /* CreditorFileModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreditorFileModel.h; sourceTree = "<group>"; };
+		A16024621D8FD2EC002E2236 /* CreditorFileModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreditorFileModel.m; sourceTree = "<group>"; };
 		A1602E721CED8D310053F850 /* CompleteCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompleteCell.h; sourceTree = "<group>"; };
 		A1602E731CED8D320053F850 /* CompleteCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompleteCell.m; sourceTree = "<group>"; };
 		A1602E751CEDA9F50053F850 /* CompletePhotoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompletePhotoView.h; sourceTree = "<group>"; };
@@ -1942,6 +1952,8 @@
 				A1EBC27C1D82672B005B29A0 /* NewProductResponse.m */,
 				A1EBC27E1D8286A7005B29A0 /* NumberModel.h */,
 				A1EBC27F1D8286A7005B29A0 /* NumberModel.m */,
+				A16024611D8FD2EC002E2236 /* CreditorFileModel.h */,
+				A16024621D8FD2EC002E2236 /* CreditorFileModel.m */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -2451,6 +2463,8 @@
 		A192B4BC1CDB45EB0053FC4C /* images */ = {
 			isa = PBXGroup;
 			children = (
+				A160245D1D8FBED8002E2236 /* customer_service_hotline@2x.png */,
+				A160245E1D8FBED8002E2236 /* customer_service_hotline@3x.png */,
 				A11A32281D816F6C00B855A7 /* image_tip@2x.png */,
 				A11A32291D816F6C00B855A7 /* image_tip@3x.png */,
 				A11A32241D816BE400B855A7 /* payimage@2x.png */,
@@ -3047,6 +3061,8 @@
 				A187B8FF1D50336500A91A16 /* BaseCommitView.m */,
 				A19657251D78273C00F846D4 /* BaseRemindButton.h */,
 				A19657261D78273C00F846D4 /* BaseRemindButton.m */,
+				A160245A1D8FBE43002E2236 /* CallPhoneButton.h */,
+				A160245B1D8FBE43002E2236 /* CallPhoneButton.m */,
 			);
 			path = BaseView;
 			sourceTree = "<group>";
@@ -4110,6 +4126,7 @@
 				A1A69DE41D62F9D90053FFED /* certification_success_banner@2x.png in Resources */,
 				A19EFBED1D5D77D300C813D8 /* release_proceedings@2x.png in Resources */,
 				A1A97E311CDC5C3A00EDE320 /* list_icon_firm@3x.png in Resources */,
+				A160245F1D8FBED8002E2236 /* customer_service_hotline@2x.png in Resources */,
 				A19F88621D51D03F00D4EC92 /* tipss@3x.png in Resources */,
 				A1A69DE51D62F9D90053FFED /* certification_success_banner@3x.png in Resources */,
 				A19BBC4F1D52D1CE00D8F23A /* img_assessment@3x.png in Resources */,
@@ -4265,6 +4282,7 @@
 				A13EA57B1D2A3D67001B83A7 /* tips@2x.png in Resources */,
 				A19985261CE071D40055A572 /* conserve_risk_icon@2x.png in Resources */,
 				A19BBC951D52F18D00D8F23A /* tab_user_s@2x.png in Resources */,
+				A16024601D8FBED8002E2236 /* customer_service_hotline@3x.png in Resources */,
 				A19BBC701D52E97700D8F23A /* list_icon_agent@3x.png in Resources */,
 				A1A5C7571D3750EA00173533 /* conserve_rights_icon@3x.png in Resources */,
 				A19EFBEA1D5D77D300C813D8 /* logow@3x.png in Resources */,
@@ -4421,6 +4439,7 @@
 				A1982B361CFFD730001770A7 /* CompanyWebSiteViewController.m in Sources */,
 				A1718E0E1CFD84B60007DA6F /* AuthenCompanyViewController.m in Sources */,
 				A1A97E6D1CDC98EB00EDE320 /* MyDealingViewController.m in Sources */,
+				A160245C1D8FBE43002E2236 /* CallPhoneButton.m in Sources */,
 				A187B90C1D5073FE00A91A16 /* HousePayingViewController.m in Sources */,
 				A19D944B1D64436B00DE89FC /* CourtProvinceModel.m in Sources */,
 				A159F9871D0E7EFF00A6A024 /* SuitBaseCell.m in Sources */,
@@ -4545,6 +4564,7 @@
 				A159F97C1D0D727A00A6A024 /* MJRefreshConst.m in Sources */,
 				A13EA57F1D2A48A5001B83A7 /* CategoryModel.m in Sources */,
 				A1B0292E1D17CE6F00F32A09 /* AFURLResponseSerialization.m in Sources */,
+				A16024631D8FD2EC002E2236 /* CreditorFileModel.m in Sources */,
 				A1770E241CFEA2C1003579E1 /* LEOStarView.m in Sources */,
 				A16856A51CE9B864006A0887 /* DebtDocumnetsViewController.m in Sources */,
 				A19BBC9B1D53100000D8F23A /* ProDetailNumberCell.m in Sources */,

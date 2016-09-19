@@ -257,8 +257,11 @@
             NSString *huhu = [guDateString substringToIndex:10];
             
             AgentCell *cell = [weakself.suitTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:5 inSection:1]];
-            cell.agentTextField.text = [NSString stringWithFormat:huhu,date];
-            [weakself.suitDataDictionary setObject:huhu forKey:@"start"];
+//            cell.agentTextField.text = [NSString stringWithFormat:huhu];
+            cell.agentTextField.text = huhu;
+            
+            NSString *timeSp = [NSString stringWithFormat:@"%f", [date timeIntervalSince1970]];
+            [weakself.suitDataDictionary setObject:timeSp forKey:@"start"];
         }];
     }
     return _datePickerView;
@@ -1328,49 +1331,47 @@
         
         if ([suitModel.code isEqualToString:@"0000"]) {
             if ([typeString intValue] == 0) {//保存
-                if (self.suResponse) {
+                if ([self.tagString integerValue] == 1) {//直接保存
+                    
+                    [weakself dismissViewControllerAnimated:YES completion:^{
+                        MySaveViewController *mySaveVC = [[MySaveViewController alloc] init];
+                        mySaveVC.hidesBottomBarWhenPushed = YES;
+                        [weakself.navigationController pushViewController:mySaveVC animated:NO];
+                    }];
+                    
+                }else if ([self.tagString integerValue] == 2){//保存中保存
+                    [weakself dismissViewControllerAnimated:YES completion:nil];
+                }
+            }else if ([typeString intValue] == 1){//发布
+                [weakself dismissViewControllerAnimated:YES completion:^{
                     ReportFiSucViewController *reportFiSucVC = [[ReportFiSucViewController alloc] init];
-                    if ([weakself.categoryString integerValue] == 1) {
+                    if ([weakself.categoryString integerValue] == 2) {
                         reportFiSucVC.reportType = @"清收";
-                    }else{
+                    }else if([weakself.categoryString integerValue] == 3){
                         reportFiSucVC.reportType = @"诉讼";
                     }
+                    reportFiSucVC.hidesBottomBarWhenPushed = YES;
                     [weakself.navigationController pushViewController:reportFiSucVC animated:YES];
-                }else{
-                    UINavigationController *nav = weakself.navigationController;
-                    [nav popViewControllerAnimated:NO];
-                    
-                    MySaveViewController *mySaveVC = [[MySaveViewController alloc] init];
-                    mySaveVC.hidesBottomBarWhenPushed = YES;
-                    [nav pushViewController:mySaveVC animated:NO];
-                }
-            }else{
-                
-                ReportFiSucViewController *reportFiSucVC = [[ReportFiSucViewController alloc] init];
-                if ([weakself.categoryString integerValue] == 1) {
-                    reportFiSucVC.reportType = @"清收";
-                }else{
-                    reportFiSucVC.reportType = @"诉讼";
-                }
-                
-                [weakself dismissViewControllerAnimated:YES completion:^{
-//                    UINavigationController *jijij = [[UINavigationController alloc] initWithRootViewController:reportFiSucVC];
-//                    [jijij pushViewController:reportFiSucVC animated:YES];
                 }];
             }
         }
-        
     } andFailBlock:^(NSError *error) {
         
     }];
 }
 
+
+
 - (void)back
 {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"是否保存" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"保存" otherButtonTitles:@"不保存", nil];
-    actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
-    
-    [actionSheet showInView:self.view];
+    if ([self.tagString integerValue] == 3) {//发布中
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }else{
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"是否保存" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"保存" otherButtonTitles:@"不保存", nil];
+        actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
+        
+        [actionSheet showInView:self.view];
+    }
 }
 
 #pragma mark - actionsheet delegate

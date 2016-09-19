@@ -10,6 +10,7 @@
 #import "ProductsCheckFileDetailsViewController.h"
 
 #import "MineUserCell.h"
+#import "CreditorFileModel.h"
 
 #import "DebtModel.h"
 #import "UIViewController+ImageBrowser.h"
@@ -68,7 +69,7 @@
     return _imaDataArray;
 }
 
-#pragma makr - tableView datasource
+#pragma mark - tableView datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return 6;
@@ -110,17 +111,16 @@
     
     [self.imaDataArray removeAllObjects];
     
+//    DebtModel *self.debtFileModel = [[DebtModel alloc] init];
+//    self.debtFileModel = self.fileResponse.creditorfiles;
     
-    DebtModel *zModel = [[DebtModel alloc] init];
-    zModel = self.fileResponse.creditorfiles;
-
     switch (indexPath.row) {
         case 0:{
-            if (zModel.imgnotarization == nil || [zModel.imgnotarization isEqualToArray:@[@""]]) {//未上传
+            if (self.debtFileModel.imgnotarization == nil || [self.debtFileModel.imgnotarization isEqualToArray:@[@""]] || self.debtFileModel.imgnotarization.count == 0) {//未上传
                 [self showHint:@"未上传公证书"];
             }else{
-                for (NSInteger k=0; k<zModel.imgnotarization.count; k++) {
-                    NSString *aaaaa = zModel.imgnotarization[k];
+                for (NSInteger k=0; k<self.debtFileModel.imgnotarization.count; k++) {
+                    NSString *aaaaa = self.debtFileModel.imgnotarization[k];
                     NSString *subStr = [aaaaa substringWithRange:NSMakeRange(1, aaaaa.length-2)];
                     NSString *str = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subStr];
                     NSURL *subUrl = [NSURL URLWithString:str];
@@ -131,11 +131,11 @@
         }
             break;
         case 1:{
-            if (zModel.imgcontract == nil || [zModel.imgcontract isEqualToArray:@[@""]]) {//未上传
+            if (self.debtFileModel.imgcontract == nil || [self.debtFileModel.imgcontract isEqualToArray:@[@""]] || self.debtFileModel.imgcontract.count == 0) {//未上传
                 [self showHint:@"未上传借款合同"];
             }else{
-                for (NSInteger k=0; k<zModel.imgcontract.count; k++) {
-                    NSString *aaaaa = zModel.imgcontract[k];
+                for (NSInteger k=0; k<self.debtFileModel.imgcontract.count; k++) {
+                    NSString *aaaaa = self.debtFileModel.imgcontract[k];
                     NSString *subStr = [aaaaa substringWithRange:NSMakeRange(1, aaaaa.length-2)];
                     NSString *str = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subStr];
                     NSURL *subUrl = [NSURL URLWithString:str];
@@ -146,11 +146,11 @@
         }
             break;
         case 2:{
-            if (zModel.imgcreditor == nil || [zModel.imgcreditor isEqualToArray:@[@""]]) {//未上传
+            if (self.debtFileModel.imgcreditor == nil || [self.debtFileModel.imgcreditor isEqualToArray:@[@""]] || self.debtFileModel.imgcreditor.count == 0) {//未上传
                 [self showHint:@"未上传他项权证"];
             }else{
-                for (NSInteger k=0; k<zModel.imgcreditor.count; k++) {
-                    NSString *aaaaa = zModel.imgcreditor[k];
+                for (NSInteger k=0; k<self.debtFileModel.imgcreditor.count; k++) {
+                    NSString *aaaaa = self.debtFileModel.imgcreditor[k];
                     NSString *subStr = [aaaaa substringWithRange:NSMakeRange(1, aaaaa.length-2)];
                     NSString *str = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subStr];
                     NSURL *subUrl = [NSURL URLWithString:str];
@@ -161,11 +161,11 @@
         }
             break;
         case 3:{
-            if (zModel.imgpick == nil || [zModel.imgpick isEqualToArray:@[@""]]) {//未上传
+            if (self.debtFileModel.imgpick == nil || [self.debtFileModel.imgpick isEqualToArray:@[@""]] || self.debtFileModel.imgpick.count == 0) {//未上传
                 [self showHint:@"未上传收款凭证"];
             }else{
-                for (NSInteger k=0; k<zModel.imgpick.count; k++) {
-                    NSString *aaaaa = zModel.imgpick[k];
+                for (NSInteger k=0; k<self.debtFileModel.imgpick.count; k++) {
+                    NSString *aaaaa = self.debtFileModel.imgpick[k];
                     NSString *subStr = [aaaaa substringWithRange:NSMakeRange(1, aaaaa.length-2)];
                     NSString *str = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subStr];
                     NSURL *subUrl = [NSURL URLWithString:str];
@@ -176,11 +176,11 @@
         }
             break;
         case 4:{
-            if (zModel.imgshouju == nil || [zModel.imgshouju isEqualToArray:@[@""]]) {//未上传
+            if (self.debtFileModel.imgshouju == nil || [self.debtFileModel.imgshouju isEqualToArray:@[@""]] || self.debtFileModel.imgshouju.count == 0) {//未上传
                 [self showHint:@"未上传收据"];
             }else{
-                for (NSInteger k=0; k<zModel.imgshouju.count; k++) {
-                    NSString *aaaaa = zModel.imgshouju[k];
+                for (NSInteger k=0; k<self.debtFileModel.imgshouju.count; k++) {
+                    NSString *aaaaa = self.debtFileModel.imgshouju[k];
                     NSString *subStr = [aaaaa substringWithRange:NSMakeRange(1, aaaaa.length-2)];
                     NSString *str = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subStr];
                     NSURL *subUrl = [NSURL URLWithString:str];
@@ -191,11 +191,11 @@
         }
             break;
         case 5:{
-            if (zModel.imgbenjin == nil || [zModel.imgbenjin isEqualToArray:@[@""]]) {//未上传
+            if (self.debtFileModel.imgbenjin == nil || [self.debtFileModel.imgbenjin isEqualToArray:@[@""]] || self.debtFileModel.imgbenjin.count == 0) {//未上传
                 [self showHint:@"未上传还款凭证"];
             }else{
-                for (NSInteger k=0; k<zModel.imgbenjin.count; k++) {
-                    NSString *aaaaa = zModel.imgbenjin[k];
+                for (NSInteger k=0; k<self.debtFileModel.imgbenjin.count; k++) {
+                    NSString *aaaaa = self.debtFileModel.imgbenjin[k];
                     NSString *subStr = [aaaaa substringWithRange:NSMakeRange(1, aaaaa.length-2)];
                     NSString *str = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subStr];
                     NSURL *subUrl = [NSURL URLWithString:str];
@@ -208,6 +208,104 @@
         default:
             break;
     }
+    
+    
+    /*
+    switch (indexPath.row) {
+        case 0:{
+            if (self.debtFileModel.imgnotarization == nil || [self.debtFileModel.imgnotarization isEqualToArray:@[@""]]) {//未上传
+                [self showHint:@"未上传公证书"];
+            }else{
+                for (NSInteger k=0; k<self.debtFileModel.imgnotarization.count; k++) {
+                    NSString *aaaaa = self.debtFileModel.imgnotarization[k];
+                    NSString *subStr = [aaaaa substringWithRange:NSMakeRange(1, aaaaa.length-2)];
+                    NSString *str = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subStr];
+                    NSURL *subUrl = [NSURL URLWithString:str];
+                    [self.imaDataArray addObject:subUrl];
+                }
+                [self showImages:self.imaDataArray];
+            }
+        }
+            break;
+        case 1:{
+            if (self.debtFileModel.imgcontract == nil || [self.debtFileModel.imgcontract isEqualToArray:@[@""]]) {//未上传
+                [self showHint:@"未上传借款合同"];
+            }else{
+                for (NSInteger k=0; k<self.debtFileModel.imgcontract.count; k++) {
+                    NSString *aaaaa = self.debtFileModel.imgcontract[k];
+                    NSString *subStr = [aaaaa substringWithRange:NSMakeRange(1, aaaaa.length-2)];
+                    NSString *str = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subStr];
+                    NSURL *subUrl = [NSURL URLWithString:str];
+                    [self.imaDataArray addObject:subUrl];
+                }
+                [self showImages:self.imaDataArray];
+            }
+        }
+            break;
+        case 2:{
+            if (self.debtFileModel.imgcreditor == nil || [self.debtFileModel.imgcreditor isEqualToArray:@[@""]]) {//未上传
+                [self showHint:@"未上传他项权证"];
+            }else{
+                for (NSInteger k=0; k<self.debtFileModel.imgcreditor.count; k++) {
+                    NSString *aaaaa = self.debtFileModel.imgcreditor[k];
+                    NSString *subStr = [aaaaa substringWithRange:NSMakeRange(1, aaaaa.length-2)];
+                    NSString *str = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subStr];
+                    NSURL *subUrl = [NSURL URLWithString:str];
+                    [self.imaDataArray addObject:subUrl];
+                }
+                [self showImages:self.imaDataArray];
+            }
+        }
+            break;
+        case 3:{
+            if (self.debtFileModel.imgpick == nil || [self.debtFileModel.imgpick isEqualToArray:@[@""]]) {//未上传
+                [self showHint:@"未上传收款凭证"];
+            }else{
+                for (NSInteger k=0; k<self.debtFileModel.imgpick.count; k++) {
+                    NSString *aaaaa = self.debtFileModel.imgpick[k];
+                    NSString *subStr = [aaaaa substringWithRange:NSMakeRange(1, aaaaa.length-2)];
+                    NSString *str = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subStr];
+                    NSURL *subUrl = [NSURL URLWithString:str];
+                    [self.imaDataArray addObject:subUrl];
+                }
+                [self showImages:self.imaDataArray];
+            }
+        }
+            break;
+        case 4:{
+            if (self.debtFileModel.imgshouju == nil || [self.debtFileModel.imgshouju isEqualToArray:@[@""]]) {//未上传
+                [self showHint:@"未上传收据"];
+            }else{
+                for (NSInteger k=0; k<self.debtFileModel.imgshouju.count; k++) {
+                    NSString *aaaaa = self.debtFileModel.imgshouju[k];
+                    NSString *subStr = [aaaaa substringWithRange:NSMakeRange(1, aaaaa.length-2)];
+                    NSString *str = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subStr];
+                    NSURL *subUrl = [NSURL URLWithString:str];
+                    [self.imaDataArray addObject:subUrl];
+                }
+                [self showImages:self.imaDataArray];
+            }
+        }
+            break;
+        case 5:{
+            if (self.debtFileModel.imgbenjin == nil || [self.debtFileModel.imgbenjin isEqualToArray:@[@""]]) {//未上传
+                [self showHint:@"未上传还款凭证"];
+            }else{
+                for (NSInteger k=0; k<self.debtFileModel.imgbenjin.count; k++) {
+                    NSString *aaaaa = self.debtFileModel.imgbenjin[k];
+                    NSString *subStr = [aaaaa substringWithRange:NSMakeRange(1, aaaaa.length-2)];
+                    NSString *str = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subStr];
+                    NSURL *subUrl = [NSURL URLWithString:str];
+                    [self.imaDataArray addObject:subUrl];
+                }
+                [self showImages:self.imaDataArray];
+            }
+        }
+            break;
+        default:
+            break;
+    }
+     */
 }
 
 - (void)didReceiveMemoryWarning {

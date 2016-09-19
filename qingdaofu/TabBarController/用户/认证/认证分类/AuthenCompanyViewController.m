@@ -120,6 +120,8 @@
 {
     if (indexPath.section == 0) {
         return 105 + kBigPadding*2;
+    }else if (indexPath.section == 2 && indexPath.row == 4){
+        return 60;
     }
     
     return kCellHeight;
@@ -307,7 +309,6 @@
         }
         
         identifier = @"authenCom3";
-        QDFWeakSelf;
         EditDebtAddressCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         
         if (!cell) {
@@ -315,14 +316,17 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        cell.leftTextViewConstraints.constant = 105;
+        cell.leftTextViewConstraints.constant = 98;
         cell.ediLabel.text = @"经典案例";
-        cell.ediTextView.placeholder = @"关于律所在清收等方面的成功案例，有利于发布方更加青睐你";
+        cell.ediTextView.placeholder = @"请输入清收或诉讼成功案例";
         cell.ediTextView.font = kFirstFont;
         cell.ediTextView.text = certificationModel.casedesc;
+        
+        QDFWeakSelf;
         [cell setTouchBeginPoint:^(CGPoint point) {
             weakself.touchPoint = point;
         }];
+        
         QDFWeak(cell);
         [cell setDidEndEditing:^(NSString *text) {
             weakcell.ediTextView.text = text;

@@ -14,6 +14,7 @@
 #import "MineUserCell.h"
 #import "EditDebtAddressCell.h"
 #import "AgentCell.h"
+#import "CallPhoneButton.h"
 
 #import "PropertyGenerateModel.h"
 
@@ -21,7 +22,6 @@
 
 @property (nonatomic,strong) UITableView *housePropertyTableView;
 @property (nonatomic,strong) UIView *propertyFooterView;
-
 @property (nonatomic,assign) BOOL didSetupConstraints;
 
 @property (nonatomic,strong) NSMutableDictionary *propertyDic;

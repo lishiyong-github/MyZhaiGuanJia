@@ -12,10 +12,12 @@
 #import "AgentCell.h"
 #import "SuitBaseCell.h"
 #import "PowerAddressCell.h"
+#import "CallPhoneButton.h"
 
 @interface ApplicationGuaranteeFirstView ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
 
 @property (nonatomic,strong) BaseCommitView *nextButton;
+@property (nonatomic,strong) CallPhoneButton *callPhonebutton;
 
 @end
 
@@ -29,6 +31,7 @@
         
         [self addSubview:self.tableViewa];
         [self addSubview:self.nextButton];
+        [self addSubview:self.callPhonebutton];
         
         [self setNeedsUpdateConstraints];
     }
@@ -44,6 +47,10 @@
         
         [self.nextButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
         [self.nextButton autoSetDimension:ALDimensionHeight toSize:kCellHeight1];
+        
+        [self.callPhonebutton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
+        [self.callPhonebutton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:100];
+        [self.callPhonebutton autoSetDimensionsToSize:CGSizeMake(50, 50)];
         
         self.didSrtupConstraints = YES;
     }
@@ -77,6 +84,14 @@
         }];
     }
     return _nextButton;
+}
+
+- (CallPhoneButton *)callPhonebutton
+{
+    if (!_callPhonebutton) {
+        _callPhonebutton = [CallPhoneButton newAutoLayoutView];
+    }
+    return _callPhonebutton;
 }
 
 #pragma mark - delegate datasource

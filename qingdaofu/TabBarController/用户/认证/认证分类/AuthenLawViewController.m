@@ -267,7 +267,6 @@
         }
         
         identifier = @"authenLaw3";
-        QDFWeakSelf;
         EditDebtAddressCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         
         if (!cell) {
@@ -277,9 +276,11 @@
         
         cell.leftTextViewConstraints.constant = 88;
         cell.ediLabel.text = @"经典案例";
-        cell.ediTextView.placeholder = @"关于律所在清收等方面的成功案例，有利于发布方更加青睐你";
+        cell.ediTextView.placeholder = @"请输入清收或诉讼成功案例";
         cell.ediTextView.font = kFirstFont;
         cell.ediTextView.text = certificationModel.casedesc;
+        
+        QDFWeakSelf;
         [cell setTouchBeginPoint:^(CGPoint point) {
             weakself.touchPoint = point;
         }];

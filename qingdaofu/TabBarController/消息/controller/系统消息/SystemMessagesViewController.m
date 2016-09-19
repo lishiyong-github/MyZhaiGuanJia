@@ -222,7 +222,6 @@
 {
     NSString *isReadString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMessageIsReadString];
     NSDictionary *params = @{@"id" : idStr,
-                             @"pid" : categoryModel.idString,
                              @"token" : [self getValidateToken]
                              };
     QDFWeakSelf;

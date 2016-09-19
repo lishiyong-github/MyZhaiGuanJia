@@ -15,7 +15,8 @@
     return @{@"appCount" : @"result.appCount",
              @"certification" : @"result.certification",
              @"data" : @"result.data",
-             @"number" : @"result.number"
+             @"number" : @"result.number",
+             @"add" : @"result.add"
              };
 }
 

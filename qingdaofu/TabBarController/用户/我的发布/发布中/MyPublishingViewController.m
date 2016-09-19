@@ -360,7 +360,7 @@
         ReportSuitViewController *reportSuiVC = [[ReportSuitViewController alloc] init];
         reportSuiVC.categoryString = rModel.category;
         reportSuiVC.suResponse = response;
-        reportSuiVC.tagString = @"2";
+        reportSuiVC.tagString = @"3";
         UINavigationController *nsop = [[UINavigationController alloc] initWithRootViewController:reportSuiVC];
         [self presentViewController:nsop animated:YES completion:nil];
     }

@@ -186,7 +186,7 @@
 
 #define kMessageTypeAndNumbersString @"message/type" //消息
 #define kMessageIsReadString @"message/read" //消息未读变已读
-#define kMessageOfPublishString @"message/index"  //发布消息
+#define kMessageOfPublishString @"message/index"  //发布消息，接单消息
 #define kMessageOfEvaluateString @"apply/listdata" //评价消息
 #define kMessageOfDeleteString @"apply/deleteeva"  //删除评价
 

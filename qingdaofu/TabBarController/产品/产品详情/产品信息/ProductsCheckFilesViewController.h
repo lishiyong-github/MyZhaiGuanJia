@@ -8,9 +8,13 @@
 
 #import "NetworkViewController.h"
 #import "PublishingResponse.h"
+#import "CreditorFileModel.h"
+#import "DebtModel.h"  //债权文件
 
 @interface ProductsCheckFilesViewController : NetworkViewController
 
 @property (nonatomic,strong) PublishingResponse *fileResponse;
+@property (nonatomic,strong) CreditorFileModel *crediFileModel;
+@property (nonatomic,strong) DebtModel *debtFileModel;
 
 @end

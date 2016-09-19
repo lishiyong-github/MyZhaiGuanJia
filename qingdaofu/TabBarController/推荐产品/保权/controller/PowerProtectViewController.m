@@ -19,9 +19,8 @@
 #import "SuitBaseCell.h" //取函方式
 #import "PowerAddressCell.h"
 #import "PowerCourtView.h"
-
+#import "CallPhoneButton.h"
 #import "UIViewController+BlurView.h"
-
 
 #import "CourtProvinceResponse.h"
 #import "CourtProvinceModel.h"
@@ -31,7 +30,9 @@
 @property (nonatomic,strong) UITableView *powerTableView;
 @property (nonatomic,strong) BaseCommitView *powerCommitView;
 @property (nonatomic,strong) PowerCourtView *powerPickerView;
+@property (nonatomic,strong) CallPhoneButton *callPhonebutton;
 @property (nonatomic,assign) BOOL didSetupConstraints;
+
 @property (nonatomic,assign) BOOL chooseFlag; //改变收货地址cell的变量
 
 @property (nonatomic,strong) NSMutableDictionary *powerDic;
@@ -53,9 +54,10 @@
     
     [self.view addSubview:self.powerTableView];
     [self.view addSubview:self.powerCommitView];
+    [self.view addSubview:self.callPhonebutton];
     [self.view addSubview:self.powerPickerView];
     [self.powerPickerView setHidden:YES];
-    
+
     [self.view setNeedsUpdateConstraints];
     
     [self addKeyboardObserver];
@@ -70,6 +72,10 @@
         
         [self.powerCommitView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
         [self.powerCommitView autoSetDimension:ALDimensionHeight toSize:60];
+        
+        [self.callPhonebutton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
+        [self.callPhonebutton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:100];
+        [self.callPhonebutton autoSetDimensionsToSize:CGSizeMake(50, 50)];
         
         [self.powerPickerView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
         
@@ -129,6 +135,14 @@
         }];
     }
     return _powerPickerView;
+}
+
+- (CallPhoneButton *)callPhonebutton
+{
+    if (!_callPhonebutton) {
+        _callPhonebutton = [CallPhoneButton newAutoLayoutView];
+    }
+    return _callPhonebutton;
 }
 
 -(NSMutableDictionary *)powerDic

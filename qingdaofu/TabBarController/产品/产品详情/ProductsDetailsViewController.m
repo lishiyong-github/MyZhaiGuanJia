@@ -11,6 +11,10 @@
 #import "CheckDetailPublishViewController.h" //发布人信息
 #import "AllEvaluationViewController.h"  //全部评价
 #import "CaseViewController.h"  //经典案例
+//#import "DebtDocumnetsViewController.h"  //查看债权文件
+#import "ProductsCheckDetailViewController.h"  //债权人信息
+#import "ProductsCheckFilesViewController.h"  //债权文件
+
 
 #import "UIImage+Color.h"
 #import "BaseCommitButton.h"
@@ -31,6 +35,7 @@
 #import "PublishingModel.h"//产品详情
 #import "CertificationModel.h" //发布人详情
 #import "NumberModel.h" //申请次数
+#import "CreditorFileModel.h"  //债权文件
 
 //发布人信息
 #import "CompleteResponse.h"
@@ -65,9 +70,10 @@
 
 @property (nonatomic,strong) NSString *switchType; //切换产品详情or发布方信息
 
-@property (nonatomic,strong) NSMutableArray *recommendDataArray;
-@property (nonatomic,strong) NSMutableArray *certifiDataArray;
-@property (nonatomic,strong) NSMutableArray *numberDataArray;
+@property (nonatomic,strong) NSMutableArray *recommendDataArray; //产品信息
+@property (nonatomic,strong) NSMutableArray *certifiDataArray;  //身份认证信息
+@property (nonatomic,strong) NSMutableArray *numberDataArray; //浏览次数信息
+@property (nonatomic,strong) NSMutableArray *fileDataArray;  //债权文件信息
 
 @property (nonatomic,strong) NSMutableArray *allEvaResponse;
 @property (nonatomic,strong) NSMutableArray *allEvaDataArray;
@@ -151,7 +157,7 @@
         _leftTableView.separatorColor = kSeparateColor;
         _productsDetailsTableView.delegate = self;
         _productsDetailsTableView.dataSource = self;
-        _productsDetailsTableView.tableFooterView = [[UIView alloc] init];
+        _productsDetailsTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
     }
     return _productsDetailsTableView;
 }
@@ -254,6 +260,14 @@
         _numberDataArray = [NSMutableArray array];
     }
     return _numberDataArray;
+}
+
+- (NSMutableArray *)fileDataArray
+{
+    if (!_fileDataArray) {
+        _fileDataArray = [NSMutableArray array];
+    }
+    return _fileDataArray;
 }
 
 #pragma mark - tableView deleagate and datasource
@@ -674,7 +688,24 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if ([self.switchType isEqualToString:@"33"]) {//产品信息
-        
+        if (indexPath.section == 1 && indexPath.row == 18) {//债权文件
+            ProductsCheckFilesViewController *productsCheckFilesVC = [[ProductsCheckFilesViewController alloc] init];
+            CreditorFileModel *crediFileModel = self.fileDataArray[0];
+            productsCheckFilesVC.debtFileModel = crediFileModel.creditorfile;
+            [self.navigationController pushViewController:productsCheckFilesVC animated:YES];
+        }else if (indexPath.section == 1 && indexPath.row == 19){//债权人信息
+            ProductsCheckDetailViewController *productsCheckDetailVC = [[ProductsCheckDetailViewController alloc] init];
+            productsCheckDetailVC.categoryString = @"1";
+            CreditorFileModel *crediFileModel = self.fileDataArray[0];
+            productsCheckDetailVC.listArray = crediFileModel.creditorinfo;
+            [self.navigationController pushViewController:productsCheckDetailVC animated:YES];
+        }else if (indexPath.section == 1 && indexPath.row == 20){//债务人信息
+            ProductsCheckDetailViewController *productsCheckDetailVC = [[ProductsCheckDetailViewController alloc] init];
+            productsCheckDetailVC.categoryString = @"2";
+            CreditorFileModel *crediFileModel = self.fileDataArray[0];
+            productsCheckDetailVC.listArray = crediFileModel.borrowinginfo;
+            [self.navigationController pushViewController:productsCheckDetailVC animated:YES];
+        }
     }else if ([self.switchType isEqualToString:@"34"]){//发布人信息
         if (indexPath.row == self.certificationArray1.count+1) {//所有评价
             if (self.allEvaDataArray.count > 0) {
@@ -686,7 +717,7 @@
                 [self.navigationController pushViewController:allEvaluationVC animated:YES];
             }
         }else if (indexPath.row == self.certificationArray1.count-1){//经典案例
-            if ([self.casedesc isEqualToString:@"查看"]) {
+            if (self.casedesc) {
                 CaseViewController *caseVC = [[CaseViewController alloc] init];
                 caseVC.caseString = self.casedesc;
                 [self.navigationController pushViewController:caseVC animated:YES];
@@ -715,12 +746,15 @@
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
+        
+        NSDictionary *qpwp = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
                 
         NewProductResponse *respModel = [NewProductResponse objectWithKeyValues:responseObject];
         
         if ([respModel.code isEqualToString:@"0000"]) {
             
             [weakself.numberDataArray addObject:respModel.number]; //申请次数
+            [weakself.fileDataArray addObject:respModel.add];  //债权文件
             
             PublishingModel *dataModel = respModel.data;
             
@@ -749,7 +783,7 @@
             NSString *agencycommissiontypeStr = @"暂无";
             //代理费用
             NSString *agencycommissionStr1 = @"暂无";
-            if ([dataModel.agencycommissiontype intValue] == 1) {
+            if ([dataModel.agencycommissiontype intValue] == 1) {//
                 if ([dataModel.category integerValue] == 2) {
                     agencycommissiontypeStr = @"服务佣金";
                     agencycommissionStr1 = [NSString stringWithFormat:@"%@%@",[NSString getValidStringFromString:dataModel.agencycommission toString:@"0"],@"%"];
@@ -768,7 +802,7 @@
             }
             
             if ([dataModel.loan_type intValue] == 1) {//房产抵押
-                NSString *mortorage_communityStr1 = [NSString getValidStringFromString:dataModel.mortorage_community];
+                NSString *mortorage_communityStr1 = [NSString getValidStringFromString:respModel.add.address];
                 NSString *seatmortgageStr1 = [NSString getValidStringFromString:dataModel.seatmortgage];
                 
                 weakself.messageArray1 = @[@"借款本金",@"费用类型",@"代理费用",@"债权类型",@"抵押物地址",@"详细地址"];
@@ -789,49 +823,19 @@
                 weakself.messageArray1 = @[@"借款本金",@"费用类型",@"代理费用",@"债权类型"];
                 weakself.messageArray11 = @[moneyStr1,agencycommissiontypeStr,agencycommissionStr1,loan_typeStr];
             }
-            ///*************////
-            
-            //补充信息
+            ///****** 补充信息 *******//////
             NSString *rate = [NSString getValidStringFromString:dataModel.rate]; //借款利率
+            if (![rate isEqualToString:@"暂无"]) {
+                rate = [NSString stringWithFormat:@"%@%@/月",rate,@"%"];
+            }
+
             NSString *term = [NSString getValidStringFromString:dataModel.term];   //借款期限
+            if (![term isEqualToString:@"暂无"]) {
+                term = [NSString stringWithFormat:@"%@个月",term];
+            }
+            
             NSString *repaymethod = @"暂无";//还款方式
-            NSString *obligor = @"暂无";  //债务人主体
-            NSString *commissionperiod = [NSString getValidStringFromString:dataModel.commissionperiod]; //委托代理期限
-            if (![commissionperiod isEqualToString:@"暂无"]) {
-                commissionperiod = [NSString stringWithFormat:@"%@月",commissionperiod];
-            }
-            NSString *paidmoney = [NSString getValidStringFromString:dataModel.paidmoney];//已付本金
-            if (![paidmoney isEqualToString:@"暂无"]) {
-                paidmoney = [NSString stringWithFormat:@"%@元",paidmoney];
-            }
-            NSString *interestpaid = [NSString getValidStringFromString:dataModel.interestpaid]; //已付利息
-            if (![interestpaid isEqualToString:@"暂无"]) {
-                interestpaid = [NSString stringWithFormat:@"%@元",interestpaid];
-            }
-            NSString *performancecontract = [NSString getValidStringFromString:dataModel.performancecontract];  //合同履行地
-            NSString *creditorfile = @"查看";  //债权文件
-            NSString *creditorinfo;  //债权人信息
-            NSString *borrowinginfo;  //债务人信息
-            
-            if (dataModel.rate_cat) {
-                if ([dataModel.rate_cat intValue] == 1) {
-                    if (![rate isEqualToString:@"暂无"]) {//借款期限
-                        rate = [NSString stringWithFormat:@"%@%@/天",rate,@"%"];
-                    }
-                    if (![term isEqualToString:@"暂无"]) {//借款利率
-                        term = [NSString stringWithFormat:@"%@天",term];
-                    }
-                }else{
-                    if (![rate isEqualToString:@"暂无"]) {
-                        rate = [NSString stringWithFormat:@"%@%@/月",rate,@"%"];
-                    }
-                    if (![term isEqualToString:@"暂无"]) {
-                        term = [NSString stringWithFormat:@"%@个月",term];
-                    }
-                }
-            }
-            
-            if (dataModel.repaymethod) {
+            if (dataModel.repaymethod) {//还款方式
                 if ([dataModel.repaymethod intValue] == 1) {
                     repaymethod = @"一次性到期还本付息";
                 }else if([dataModel.repaymethod intValue] == 2){
@@ -840,7 +844,9 @@
                     repaymethod = @"其他";
                 }
             }
-            if (dataModel.obligor) {
+            
+            NSString *obligor = @"暂无";  //债务人主体
+            if (dataModel.obligor) {//债务人主体
                 if ([dataModel.obligor intValue] == 1) {
                     obligor = @"自然人";
                 }else if([dataModel.obligor intValue] == 2){
@@ -850,20 +856,43 @@
                 }
             }
             
-            //        if (dataModel.creditorinfos.count > 0) {
-            creditorinfo = @"查看";
-            //        }else{
-            //            creditorinfo = @"暂无";
-            //        }
+            NSString *start = @"暂无";  //逾期日期
+            if (dataModel.start) {
+                start = [NSDate getYMDFormatterTime:dataModel.start];
+            }
             
-            //        if (respModel.borrowinginfos.count > 0) {
-            borrowinginfo = @"查看";
-            //        }else{
-            //            borrowinginfo = @"暂无";
-            //        }
+            NSString *commissionperiod = [NSString getValidStringFromString:dataModel.commissionperiod]; //委托代理期限
+            if (![commissionperiod isEqualToString:@"暂无"]) {
+                commissionperiod = [NSString stringWithFormat:@"%@个月",commissionperiod];
+            }
             
-            weakself.messageArray2 = @[@"借款利率",@"借款期限",@"还款方式",@"债务人主体",@"委托代理期限",@"已付本金",@"已付利息",@"合同履行地",@"债权文件",@"债权人信息",@"债务人信息"];
-            weakself.messageArray22 = @[rate,term,repaymethod,obligor,commissionperiod,paidmoney,interestpaid,performancecontract,creditorfile,creditorinfo,borrowinginfo];
+            NSString *paidmoney = [NSString getValidStringFromString:dataModel.paidmoney];//已付本金
+            if (![paidmoney isEqualToString:@"暂无"]) {
+                paidmoney = [NSString stringWithFormat:@"%@元",paidmoney];
+            }
+            
+            NSString *interestpaid = [NSString getValidStringFromString:dataModel.interestpaid]; //已付利息
+            if (![interestpaid isEqualToString:@"暂无"]) {
+                interestpaid = [NSString stringWithFormat:@"%@元",interestpaid];
+            }
+            
+            NSString *performancecontract = [NSString getValidStringFromString:dataModel.performancecontract];  //合同履行地
+            
+            NSString *creditorfile = @"查看";  //债权文件
+            
+            CreditorFileModel *fileModel = respModel.add;
+            NSString *creditorinfo = @"暂无";  //债权人信息
+            if (fileModel.creditorinfo.count > 0) {
+                creditorinfo = @"查看";
+            }
+            
+            NSString *borrowinginfo = @"暂无";  //债务人信息
+            if (fileModel.borrowinginfo.count > 0) {
+                creditorinfo = @"查看";
+            }
+            
+            weakself.messageArray2 = @[@"借款利率",@"借款期限",@"还款方式",@"债务人主体",@"逾期日期",@"委托代理期限",@"已付本金",@"已付利息",@"合同履行地",@"债权文件",@"债权人信息",@"债务人信息"];
+            weakself.messageArray22 = @[rate,term,repaymethod,obligor,start,commissionperiod,paidmoney,interestpaid,performancecontract,creditorfile,creditorinfo,borrowinginfo];
             
             [weakself.productsDetailsTableView reloadData];
             

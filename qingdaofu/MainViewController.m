@@ -272,7 +272,7 @@
                     collectVC.categoryString = @"2";
                     collectVC.tagString = @"1";
                     collectVC.hidesBottomBarWhenPushed = YES;
-//                    [viewController pushViewController:collectVC animated:YES];
+                    
                     UINavigationController *nav1 = [[UINavigationController alloc] initWithRootViewController:collectVC];
                     
                     [viewController presentViewController:nav1 animated:YES completion:nil];
