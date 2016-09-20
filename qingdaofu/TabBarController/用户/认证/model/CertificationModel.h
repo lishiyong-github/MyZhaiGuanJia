@@ -10,10 +10,11 @@
 
 @interface CertificationModel : NSObject
 
-@property (nonatomic,strong) NSArray *cardimgs;   //cardimg
+@property (nonatomic,strong) NSMutableArray *img;  //最新图片
+//@property (nonatomic,strong) NSArray *cardimg;   //cardimg
 @property (nonatomic,copy) NSString *address;   //联系地址
 @property (nonatomic,copy) NSString *canModify;
-@property (nonatomic,copy) NSString *cardimg;   //cardimg
+//@property (nonatomic,copy) NSString *cardimg;   //cardimg
 @property (nonatomic,copy) NSString *cardno;   //证件号号码
 @property (nonatomic,copy) NSString *casedesc;   //案例说明
 @property (nonatomic,copy) NSString *category;  //1为个人。2为律所。3为公司。

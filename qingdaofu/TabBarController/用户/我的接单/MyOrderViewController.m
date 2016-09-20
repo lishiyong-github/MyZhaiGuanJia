@@ -394,7 +394,7 @@
     RowsModel *eModel = self.myOrderDataList[indexPath.section];
     
     if ([eModel.is_del integerValue] == 1) {//产品已被删除
-        [self showHint:@"该产品已被删除，不能查看详细信息"];
+        [self showHint:@"该产品已被删除，不能查看详情"];
     }else{
         if ([eModel.progress_status isEqualToString:@"1"]){//申请中
             MyApplyingViewController *myApplyingVC = [[MyApplyingViewController alloc] init];

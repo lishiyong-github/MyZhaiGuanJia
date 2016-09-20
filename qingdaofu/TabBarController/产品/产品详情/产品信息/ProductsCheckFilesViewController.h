@@ -15,6 +15,6 @@
 
 @property (nonatomic,strong) PublishingResponse *fileResponse;
 @property (nonatomic,strong) CreditorFileModel *crediFileModel;
-@property (nonatomic,strong) DebtModel *debtFileModel;
+@property (nonatomic,strong) DebtModel *debtFileModel; //产品详情
 
 @end

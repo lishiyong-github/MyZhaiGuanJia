@@ -170,13 +170,14 @@
     [cell.debtTelLabel setAttributedText:telStr];
     
     //联系地址
-    cell.debtAddressLabel.text = @"联系地址";
     if ([self.categoryString integerValue] == 1) {
         NSString *rere = [NSString getValidStringFromString:deModel.creditoraddress];
-        cell.debtAddressLabel.text = [NSString stringWithFormat:@"联系地址    %@",rere];
+        NSMutableAttributedString *rereStr = [cell.debtAddressLabel setAttributeString:@"联系地址    " withColor:kBlackColor andSecond:rere withColor:kLightGrayColor withFont:12];
+        [cell.debtAddressLabel setAttributedText:rereStr];
     }else{
         NSString *rere = [NSString getValidStringFromString:deModel.borrowingaddress];
-        cell.debtAddressLabel.text = [NSString stringWithFormat:@"联系地址    %@",rere];
+        NSMutableAttributedString *rereStr = [cell.debtAddressLabel setAttributeString:@"联系地址    " withColor:kBlackColor andSecond:rere withColor:kLightGrayColor withFont:12];
+        [cell.debtAddressLabel setAttributedText:rereStr];
     }
 
     //证件号

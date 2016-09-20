@@ -11,20 +11,20 @@
 @interface DebtModel : NSObject
 
 //债权人信息
-@property (nonatomic,copy) NSString *creditorname;
-@property (nonatomic,copy) NSString *creditormobile;
-@property (nonatomic,copy) NSString *creditoraddress;
-@property (nonatomic,copy) NSString *creditorcardcode;
-@property (nonatomic,copy) NSString *creditorcardimages;
-@property (nonatomic,strong) NSMutableArray *creditorcardimage;
+@property (nonatomic,copy) NSString *creditorname;  //姓名
+@property (nonatomic,copy) NSString *creditormobile; //电话
+@property (nonatomic,copy) NSString *creditoraddress; //地址
+@property (nonatomic,copy) NSString *creditorcardcode; //律所编号
+@property (nonatomic,copy) NSString *creditorcardimages; //上传图片形式
+@property (nonatomic,strong) NSMutableArray *creditorcardimage;//获取图片的形式
 
 //债务人信息
-@property (nonatomic,copy) NSString *borrowingname;
-@property (nonatomic,copy) NSString *borrowingmobile;
-@property (nonatomic,copy) NSString *borrowingaddress;
-@property (nonatomic,copy) NSString *borrowingcardcode;
-@property (nonatomic,copy) NSString *borrowingcardimages;
-@property (nonatomic,strong) NSMutableArray *borrowingcardimage;
+@property (nonatomic,copy) NSString *borrowingname;//姓名
+@property (nonatomic,copy) NSString *borrowingmobile;//电话
+@property (nonatomic,copy) NSString *borrowingaddress;//地址
+@property (nonatomic,copy) NSString *borrowingcardcode;//律所编号
+@property (nonatomic,copy) NSString *borrowingcardimages;//上传图片的格式
+@property (nonatomic,strong) NSMutableArray *borrowingcardimage;//获取图片的格式
 
 //债权文件
 @property (nonatomic,strong) NSArray *imgnotarization;  //公证书

@@ -237,9 +237,10 @@
 #pragma mark - method
 - (void)messageIsReadWithMessageModel:(MessageModel *)messageModel
 {
+    NSString *category_idStr = [NSString getValidStringFromString:messageModel.category_id.idString toString:@""];
     NSString *isReadString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMessageIsReadString];
     NSDictionary *params = @{@"id" : messageModel.idStr,
-                             @"pid" : messageModel.category_id.idString,
+                             @"pid" : category_idStr,
                              @"token" : [self getValidateToken]
                              };
     QDFWeakSelf;

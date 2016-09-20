@@ -17,16 +17,29 @@
 
 /* 产品详情  */
 @property (nonatomic,copy) NSString *creditor;
-@property (nonatomic,strong) PublishingModel *product;
-@property (nonatomic,strong) UserNameModel *username;  //发布方详情
-@property (nonatomic,copy) NSString *uidString;
-@property (nonatomic,strong) NSArray *borrowinginfos;  //债务人信息
+@property (nonatomic,copy) NSString *pid;
 @property (nonatomic,strong) DebtModel *creditorfiles; //债权文件
-@property (nonatomic,strong) NSArray *creditorinfos;//债权人信息
-@property (nonatomic,copy) NSString *guaranteemethods;
+@property (nonatomic,strong) NSMutableArray *creditorinfos;//债权人信息
+@property (nonatomic,strong) NSMutableArray *borrowinginfos;  //债务人信息
+
 @property (nonatomic,copy) NSString *car; //车信息
+@property (nonatomic,copy) NSString *uidString;
+@property (nonatomic,copy) NSString *guaranteemethods;
 @property (nonatomic,copy) NSString *license;//车牌类型
 @property (nonatomic,copy) NSString *state;  //判断有没有认证(1-已认证，其他－未认证)
+
+@property (nonatomic,strong) PublishingModel *product;
+@property (nonatomic,strong) UserNameModel *username;  //发布方详情
+
+//省市区的名字
+@property (nonatomic,copy) NSString *province_id;
+@property (nonatomic,copy) NSString *city_id;
+@property (nonatomic,copy) NSString *district_id;
+@property (nonatomic,copy) NSString *performancecontract;  //合同履行地
+@property (nonatomic,copy) NSString *place_province_id;
+@property (nonatomic,copy) NSString *place_city_id;
+@property (nonatomic,copy) NSString *place_district_id;
+
 
 /* 代理人详情 */
 @property (nonatomic,strong) NSMutableArray *user;

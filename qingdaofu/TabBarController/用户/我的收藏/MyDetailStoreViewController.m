@@ -127,20 +127,7 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.backgroundColor = kNavColor1;
         
-        if ([proModel.category intValue] == 1) {//融资
-            //上边
-            cell.deRateLabel.text = @"返点(%)";
-            cell.deRateLabel1.text = [NSString getValidStringFromString:proModel.rebate toString:@"0"];
-            
-            //右边
-            if ([proModel.rate_cat integerValue] == 1) {
-                cell.deTypeView.fLabel1.text = @"借款利率(%/天)";
-            }else{
-                cell.deTypeView.fLabel1.text = @"借款利率(%/月)";
-            }
-            cell.deTypeView.fLabel2.text = [NSString getValidStringFromString:proModel.rate toString:@"0"];
-            
-        }else if ([proModel.category intValue] == 2){//清收
+       if ([proModel.category intValue] == 2){//清收
             //上边
             if ([proModel.agencycommissiontype isEqualToString:@"1"]) {
                 cell.deRateLabel.text = @"服务佣金(%)";

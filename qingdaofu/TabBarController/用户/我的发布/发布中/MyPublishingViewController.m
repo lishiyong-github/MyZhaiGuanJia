@@ -40,7 +40,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [self getDetailMessages];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getDetailMessages) name:@"refresh" object:nil];
 }
 
 - (void)viewDidLoad {
@@ -61,6 +61,8 @@
         [self.view addSubview:self.applyRecordRemindButton];
     }
     [self.view setNeedsUpdateConstraints];
+    
+    [self getDetailMessages];
 }
 
 - (void)updateViewConstraints
@@ -335,8 +337,12 @@
         NSDictionary *qpqp = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
-        [weakself.publishingDataArray addObject:response];
-        [weakself.publishingTableView reloadData];  
+        if ([response.code isEqualToString:@"0000"]) {
+            [weakself.publishingDataArray removeAllObjects];
+            [weakself.publishingDataArray addObject:response];
+            [weakself.publishingTableView reloadData];
+        }
+        
     } andFailBlock:^(NSError *error){
         
     }];

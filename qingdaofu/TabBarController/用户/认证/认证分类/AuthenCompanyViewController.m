@@ -139,23 +139,23 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        if (self.responseModel.certification.cardimgs.count == 0) {
+        if (self.responseModel.certification.img.count == 0) {
             [cell.pictureButton1 setImage:[UIImage imageNamed:@"upload_positive_image"] forState:0];
             [cell.pictureButton2 setImage:[UIImage imageNamed:@"upload_opposite_image"] forState:0];
-        }else if (self.responseModel.certification.cardimgs.count == 1){
-            NSString *newimage1 = [self.responseModel.certification.cardimgs[0] substringWithRange:NSMakeRange(1, [self.responseModel.certification.cardimgs[0] length])];
+        }else if (self.responseModel.certification.img.count == 1){
+            NSString *newimage1 = [self.responseModel.certification.img[0] substringWithRange:NSMakeRange(1, [self.responseModel.certification.img[0] length])];
             NSString *newimageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,newimage1];
             NSURL *newimageUrl1 = [NSURL URLWithString:newimageStr1];
             [cell.pictureButton1 sd_setImageWithURL:newimageUrl1 forState:0 placeholderImage:[UIImage imageNamed:@"upload_opposite_image"]];
             [cell.pictureButton2 setImage:[UIImage imageNamed:@"upload_opposite_image"] forState:0];
-        }else if(self.responseModel.certification.cardimgs.count >= 2){
-            NSString *newimage1 = [self.responseModel.certification.cardimgs[0] substringWithRange:NSMakeRange(1, [self.responseModel.certification.cardimgs[0] length])];
+        }else if(self.responseModel.certification.img.count >= 2){
+            NSString *newimage1 = [self.responseModel.certification.img[0] substringWithRange:NSMakeRange(1, [self.responseModel.certification.img[0] length])];
             NSString *newimageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,newimage1];
             NSURL *newimageUrl1 = [NSURL URLWithString:newimageStr1];
             [cell.pictureButton1 sd_setImageWithURL:newimageUrl1 forState:0 placeholderImage:[UIImage imageNamed:@"upload_opposite_image"]];
             [cell.pictureButton2 setImage:[UIImage imageNamed:@"upload_opposite_image"] forState:0];
             
-            NSString *newimage2 = [self.responseModel.certification.cardimgs[1] substringWithRange:NSMakeRange(1, [self.responseModel.certification.cardimgs[1] length])];
+            NSString *newimage2 = [self.responseModel.certification.img[1] substringWithRange:NSMakeRange(1, [self.responseModel.certification.img[1] length])];
             NSString *newimageStr2 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,newimage2];
             NSURL *newimageUrl2 = [NSURL URLWithString:newimageStr2];
             [cell.pictureButton2 sd_setImageWithURL:newimageUrl2 forState:0 placeholderImage:[UIImage imageNamed:@"upload_opposite_image"]];
@@ -172,7 +172,7 @@
                     [weakself setDidGetValidImage:^(ImageModel *imgModel) {
                         if ([imgModel.code isEqualToString:@"0000"]) {
                             [btn setImage:[UIImage imageWithContentsOfFile:images[0]] forState:0];
-                            weakself.imgFileIdString1 = imgModel.url;
+                            weakself.imgFileIdString1 = imgModel.fileid;
                         }
                     }];
                 }
@@ -190,7 +190,7 @@
                     [weakself setDidGetValidImage:^(ImageModel *imgModel) {
                         if ([imgModel.code isEqualToString:@"0000"]) {
                             [btn setImage:[UIImage imageWithContentsOfFile:images[0]] forState:0];
-                            weakself.imgFileIdString2 = imgModel.url;
+                            weakself.imgFileIdString2 = imgModel.fileid;
                         }
                     }];
                 }
@@ -375,8 +375,16 @@
     [self.view endEditing:YES];
     
     if (self.imgFileIdString1 && self.imgFileIdString2) {
-        NSString *imgFileIdStr = [NSString stringWithFormat:@"'%@','%@'",self.imgFileIdString1,self.imgFileIdString2];
-        [self.comDataDictionary setObject:imgFileIdStr forKey:@"cardimg"];
+        NSString *imgFileIdStr = [NSString stringWithFormat:@"'%@,%@'",self.imgFileIdString1,self.imgFileIdString2];
+        [self.comDataDictionary setObject:imgFileIdStr forKey:@"cardimgimg"];
+    }else if(self.imgFileIdString1 || self.imgFileIdString2){
+        NSString *img1;
+        NSString *img2 = @"";
+        for (int i=0; i<self.responseModel.certification.img.count; i++) {
+            img1 = self.responseModel.certification.img[i];
+            img2 = [NSString stringWithFormat:@"'%@,%@'",img1,img2];
+        }
+        [self.comDataDictionary setObject:img2 forKey:@"cardimgimg"];
     }
     
     NSString *comAuString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kAuthenString];
@@ -390,7 +398,7 @@
      @"contact" : @"",    //联系人
      @"address" : @"",   //联系地址
      @"enterprisewebsite" : @"",  //公司网址
-     @"cardimg" : @"",  //证件图片
+     @"img" : @"",  //证件图片
      @"type" : @"update",  //add=>’添加认证’。update=>’修改认证’。
      @"token" : [weakself getValidateToken]
      */
@@ -398,18 +406,7 @@
     if (!self.comDataDictionary[@"mobile"]) {
         self.comDataDictionary[@"mobile"] = self.responseModel.certification.mobile?self.responseModel.certification.mobile:[self getValidateMobile];
     }
-    if (!self.comDataDictionary[@"cardimgs"]) {
-        
-        for (NSInteger i=0; i<self.responseModel.certification.cardimgs.count; i++) {
-            NSString *img1 = @"";
-            NSString *imgS = [NSString stringWithFormat:@"%@,%@",self.responseModel.certification.cardimgs[i],img1];
-            [self.comDataDictionary setObject:imgS forKey:@"cardimgs"];
-        }
-        
-//        NSString *imgStr = self.responseModel.certification.cardimg?self.responseModel.certification.cardimg:@"";
-//        [self.comDataDictionary setValue:imgStr forKey:@"cardimg"];
-    }
-
+    
     self.comDataDictionary[@"name"] = self.comDataDictionary[@"name"]?self.comDataDictionary[@"name"]:self.responseModel.certification.name;
     self.comDataDictionary[@"cardno"] = self.comDataDictionary[@"cardno"]?self.comDataDictionary[@"cardno"]:self.responseModel.certification.cardno;
     self.comDataDictionary[@"contact"] = self.comDataDictionary[@"contact"]?self.comDataDictionary[@"contact"]:self.responseModel.certification.contact;
@@ -436,15 +433,10 @@
         [weakself showHint:companyModel.msg];
         
         if ([companyModel.code isEqualToString:@"0000"]) {
-            UINavigationController *personNav = weakself.navigationController;
-            [personNav popViewControllerAnimated:NO];
-            [personNav popViewControllerAnimated:NO];
-            [personNav popViewControllerAnimated:NO];
-            
             AuthentyWaitingViewController *waitingVC = [[AuthentyWaitingViewController alloc] init];
             waitingVC.categoryString = weakself.categoryString;
             waitingVC.hidesBottomBarWhenPushed = YES;
-            [personNav pushViewController:waitingVC animated:NO];
+            [self.navigationController pushViewController:waitingVC animated:YES];
         }
     } andFailBlock:^(NSError *error) {
         

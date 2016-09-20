@@ -260,7 +260,7 @@
 //            cell.agentTextField.text = [NSString stringWithFormat:huhu];
             cell.agentTextField.text = huhu;
             
-            NSString *timeSp = [NSString stringWithFormat:@"%f", [date timeIntervalSince1970]];
+            NSString *timeSp = [NSString stringWithFormat:@"%0.f", [date timeIntervalSince1970]];
             [weakself.suitDataDictionary setObject:timeSp forKey:@"start"];
         }];
     }
@@ -529,24 +529,20 @@
             if ([_number intValue] == 1) {//抵押物地址
                 cell.agentTextField.userInteractionEnabled = NO;
                 cell.agentTextField.placeholder = @"请选择";
-                cell.agentTextField.text = suModel.mortorage_community?suModel.mortorage_community:self.suitDataDictionary[@"mortorage_community"];
+                
+                NSString *mortorageName;
+                if (self.suResponse.province_id && self.suResponse.city_id && self.suResponse.district_id) {
+                    mortorageName = [NSString stringWithFormat:@"%@%@%@",self.suResponse.province_id,self.suResponse.city_id,self.suResponse.district_id];
+                }
+                cell.agentTextField.text = mortorageName?mortorageName:self.suitDataDictionary[@"mortorage_community"];
                 
                 [cell.agentButton setHidden:NO];
                 [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
                 
             }else if ([_number intValue] == 3){//机动车抵押
                 cell.agentTextField.userInteractionEnabled = NO;
-                NSString *carbr = @"";
-                if (self.suitDataDictionary[@"carbrandstr"]) {
-                    carbr = [NSString stringWithFormat:@"%@%@%@",self.suitDataDictionary[@"carbrandstr"],self.suitDataDictionary[@"audistr"],self.suitDataDictionary[@"licenseplatestr"]];
-                }
+                cell.agentTextField.text = self.suitDataDictionary[@"car"]?self.suitDataDictionary[@"car"]:self.suResponse.car;
                 
-                NSString *carLisenceStr;
-                if (self.suResponse.car && self.suResponse.license) {
-                    carLisenceStr = [NSString stringWithFormat:@"%@%@",self.suResponse.car,self.suResponse.license];
-                }
-                
-                cell.agentTextField.text = carLisenceStr?carLisenceStr:carbr;
                 [cell.agentButton setHidden:NO];
                 [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
                 
@@ -630,11 +626,13 @@
             weakself.touchPoint = point;
         }];
         
+        NSString *rateS;
         if (self.suitDataDictionary[@"rate"]) {
-            cell.agentTextField.text = self.suitDataDictionary[@"rate"];
+            rateS = self.suitDataDictionary[@"rate"];
         }else{
-            cell.agentTextField.text = suModel.rate?suModel.rate:@"";
+            rateS = [NSString getValidStringFromString:suModel.rate toString:@""];
         }
+        cell.agentTextField.text = rateS;
         
         [cell setDidEndEditing:^(NSString *text) {
             [self.suitDataDictionary setValue:text forKey:@"rate"];
@@ -658,10 +656,11 @@
         [cell setTouchBeginPoint:^(CGPoint point) {
             weakself.touchPoint = point;
         }];
+        
         if (self.suitDataDictionary[@"term"]) {
             cell.agentTextField.text = self.suitDataDictionary[@"term"];
         }else{
-            cell.agentTextField.text = suModel.term?suModel.term:@"";
+            cell.agentTextField.text = [NSString getValidStringFromString:suModel.term toString:@""];
         }
         
         [cell setDidEndEditing:^(NSString *text) {
@@ -731,9 +730,20 @@
         cell.agentTextField.userInteractionEnabled = NO;
         cell.agentButton.userInteractionEnabled = NO;
         cell.leftdAgentContraints.constant = 115;
+        [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        
         cell.agentLabel.text = self.sTextArray[1][indexPath.row];
         cell.agentTextField.placeholder = self.sHolderArray[1][indexPath.row];
-        [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        
+        NSString *startTime = [NSDate getYMDFormatterTime:self.suResponse.product.start];
+        if ([startTime isEqualToString:@"1970-01-01"]) {
+            startTime = @"";
+        }
+        NSString *startTime1 = [NSDate getYMDFormatterTime:self.suitDataDictionary[@"start"]];
+        if ([startTime1 isEqualToString:@"1970-01-01"]) {
+            startTime1 = nil;
+        }
+        cell.agentTextField.text = startTime1?startTime1:startTime;
         
         return cell;
         
@@ -754,17 +764,10 @@
         [cell.agentButton setTitle:@"月" forState:0];
         
         if (suModel.commissionperiod) {
-            [cell.agentButton setTitle:suModel.commissionperiod forState:0];
             cell.agentTextField.text = suModel.commissionperiod;
         }else{
-//            NSString *eeee = self.suitDataDictionary[@"commissionperiod_str"]?self.suitDataDictionary[@"commissionperiod_str"]:@"请选择";
-//            [cell.agentButton setTitle:eeee forState:0];
-            cell.agentTextField.text = self.suitDataDictionary[@"commissionperiod_str"];
+            cell.agentTextField.text = self.suitDataDictionary[@"commissionperiod"];
         }
-        
-//        cell.agentButton.tag = 14;
-//        [cell.agentButton addTarget:self action:@selector(showTitleOfUpwardViews:) forControlEvents:UIControlEventTouchUpInside];
-        
         return cell;
     }else if (indexPath.row == 7){//已付本金
         identifier = @"suitSect17";
@@ -919,12 +922,16 @@
                     [weakself.suitDataDictionary setValue:brandNo forKey:@"carbrand"];
                     [weakself.suitDataDictionary setValue:audiNo forKey:@"audi"];
                     [weakself.suitDataDictionary setValue:licenseNo forKey:@"licenseplate"];
-                    [weakself.suitDataDictionary setValue:brand forKey:@"carbrandstr"];
-                    [weakself.suitDataDictionary setValue:audi forKey:@"audistr"];
-                    [weakself.suitDataDictionary setValue:license forKey:@"licenseplatestr"];
+                    
+                    NSString *carStr = [NSString stringWithFormat:@"%@%@%@",brand,audi,license];
+                    [weakself.suitDataDictionary setValue:carStr forKey:@"car"];
+                    
+//                    [weakself.suitDataDictionary setValue:brand forKey:@"carbrandstr"];
+//                    [weakself.suitDataDictionary setValue:audi forKey:@"audistr"];
+//                    [weakself.suitDataDictionary setValue:license forKey:@"licenseplatestr"];
                     
                     AgentCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-                    cell.agentTextField.text = [NSString stringWithFormat:@"%@%@%@",brand,audi,license];
+                    cell.agentTextField.text = [NSString stringWithFormat:@"%@",carStr];
                 }];
             }else if ([_number intValue] == 1){//房产抵押
                 [self.reportPickerView setHidden:NO];
@@ -1168,7 +1175,6 @@
                 
                 NSString *value = [NSString stringWithFormat:@"%ld",(long)row];
                 [weakself.suitDataDictionary setValue:value forKey:@"commissionperiod"];
-                [weakself.suitDataDictionary setValue:text forKey:@"commissionperiod_str"];
             }];
         }
             break;
@@ -1272,21 +1278,17 @@
     NSString *reFinanceString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPublishCollection];
     
     /* 参数 */
-    self.suitDataDictionary[@"money"] = [NSString getValidStringFromString:self.suitDataDictionary[@"money"] toString:self.suResponse.product.money];
+    self.suitDataDictionary[@"money"] = [NSString getValidStringFromString:self.suitDataDictionary[@"money"] toString:self.suResponse.product.money];//金额
     self.suitDataDictionary[@"agencycommission"] = [NSString getValidStringFromString:self.suitDataDictionary[@"agencycommission"] toString:self.suResponse.product.agencycommission];//代理费用
     self.suitDataDictionary[@"agencycommissiontype"] = [NSString getValidStringFromString:self.suitDataDictionary[@"agencycommissiontype"] toString:self.suResponse.product.agencycommissiontype];//代理费用类型
 
     self.suitDataDictionary[@"loan_type"] = [NSString getValidStringFromString:self.suitDataDictionary[@"loan_type"] toString:self.suResponse.product.loan_type];//债权类型
-    self.suitDataDictionary[@"mortorage_community"] = self.suitDataDictionary[@"mortorage_community"]?self.suitDataDictionary[@"mortorage_community"]:self.suResponse.product.mortorage_community;//抵押物地址
-    self.suitDataDictionary[@"seatmortgage"] = self.suitDataDictionary[@"seatmortgage"]?self.suitDataDictionary[@"seatmortgage"]:self.suResponse.product.seatmortgage; //详细地址
-    
-//    self.suitDataDictionary[@"province_id"] = @"31000";//默认上海
-//    self.suitDataDictionary[@"city_id"] = @"310100";
-//    self.suitDataDictionary[@"district_id"] = @"310115";
-    
+
+    //抵押物地址
     self.suitDataDictionary[@"province_id"] = self.suitDataDictionary[@"province_id"]?self.suitDataDictionary[@"province_id"]:self.suResponse.product.province_id;//@"310000";
     self.suitDataDictionary[@"city_id"] = self.suitDataDictionary[@"city_id"]?self.suitDataDictionary[@"city_id"]:self.suResponse.product.city_id;//@"310100";
     self.suitDataDictionary[@"district_id"] = self.suitDataDictionary[@"district_id"]?self.suitDataDictionary[@"district_id"]:self.suResponse.product.district_id;
+    self.suitDataDictionary[@"seatmortgage"] = self.suitDataDictionary[@"seatmortgage"]?self.suitDataDictionary[@"seatmortgage"]:self.suResponse.product.seatmortgage; //详细地址
     
     self.suitDataDictionary[@"carbrand"] = self.suitDataDictionary[@"carbrand"]?self.suitDataDictionary[@"carbrand"]:self.suResponse.product.carbrand;   //车品牌
     self.suitDataDictionary[@"audi"] = self.suitDataDictionary[@"audi"]?self.suitDataDictionary[@"audi"]:self.suResponse.product.audi;  //车系
@@ -1297,13 +1299,12 @@
     self.suitDataDictionary[@"rate"] = self.suitDataDictionary[@"rate"]?self.suitDataDictionary[@"rate"]:self.suResponse.product.rate;  //借款利率
     self.suitDataDictionary[@"rate_cat"] = @"2";//借款利率单位 1-天，2-月，现在只有月
     self.suitDataDictionary[@"term"] = self.suitDataDictionary[@"term"]?self.suitDataDictionary[@"term"]:self.suResponse.product.term;//借款期限
-    self.suitDataDictionary[@"repaymethod"] = self.suitDataDictionary[@"repaymethod"]?self.suitDataDictionary[@"repaymethod"]:self.suResponse.product.repaymethod;//付款方式
+    self.suitDataDictionary[@"repaymethod"] = self.suitDataDictionary[@"repaymethod"]?self.suitDataDictionary[@"repaymethod"]:self.suResponse.product.repaymethod;//还款方式
     self.suitDataDictionary[@"obligor"] = self.suitDataDictionary[@"obligor"]?self.suitDataDictionary[@"obligor"]:self.suResponse.product.obligor;//债务人主体
     self.suitDataDictionary[@"start"] = self.suitDataDictionary[@"start"]?self.suitDataDictionary[@"start"]:self.suResponse.product.start;//逾期日期
     self.suitDataDictionary[@"commissionperiod"] = self.suitDataDictionary[@"commissionperiod"]?self.suitDataDictionary[@"commissionperiod"]:self.suResponse.product.commissionperiod;  //委托代理期限
     self.suitDataDictionary[@"paidmoney"] = self.suitDataDictionary[@"paidmoney"]?self.suitDataDictionary[@"paidmoney"]:self.suResponse.product.paidmoney;//已付本金
     self.suitDataDictionary[@"interestpaid"] = self.suitDataDictionary[@"interestpaid"]?self.suitDataDictionary[@"interestpaid"]:self.suResponse.product.interestpaid; //已付利息
-    self.suitDataDictionary[@"performancecontract"] = self.suitDataDictionary[@"performancecontract"]?self.suitDataDictionary[@"performancecontract"]:self.suResponse.product.performancecontract;//合同履行地
     
     self.suitDataDictionary[@"place_province_id"] = self.suitDataDictionary[@"place_province_id"]?self.suitDataDictionary[@"place_province_id"]:self.suResponse.product.place_province_id;//@"310000";
     self.suitDataDictionary[@"place_city_id"] = self.suitDataDictionary[@"place_city_id"]?self.suitDataDictionary[@"place_city_id"]:self.suResponse.product.place_city_id;//@"310100";
@@ -1332,7 +1333,6 @@
         if ([suitModel.code isEqualToString:@"0000"]) {
             if ([typeString intValue] == 0) {//保存
                 if ([self.tagString integerValue] == 1) {//直接保存
-                    
                     [weakself dismissViewControllerAnimated:YES completion:^{
                         MySaveViewController *mySaveVC = [[MySaveViewController alloc] init];
                         mySaveVC.hidesBottomBarWhenPushed = YES;
@@ -1343,24 +1343,28 @@
                     [weakself dismissViewControllerAnimated:YES completion:nil];
                 }
             }else if ([typeString intValue] == 1){//发布
-                [weakself dismissViewControllerAnimated:YES completion:^{
-                    ReportFiSucViewController *reportFiSucVC = [[ReportFiSucViewController alloc] init];
-                    if ([weakself.categoryString integerValue] == 2) {
-                        reportFiSucVC.reportType = @"清收";
-                    }else if([weakself.categoryString integerValue] == 3){
-                        reportFiSucVC.reportType = @"诉讼";
-                    }
-                    reportFiSucVC.hidesBottomBarWhenPushed = YES;
-                    [weakself.navigationController pushViewController:reportFiSucVC animated:YES];
-                }];
+                if ([self.tagString integerValue] == 3) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh" object:nil];
+                    [weakself dismissViewControllerAnimated:YES completion:nil];
+                }else{
+                    
+                    [weakself dismissViewControllerAnimated:YES completion:^{
+                        ReportFiSucViewController *reportFiSucVC = [[ReportFiSucViewController alloc] init];
+                        if ([weakself.categoryString integerValue] == 2) {
+                            reportFiSucVC.reportType = @"清收";
+                        }else if([weakself.categoryString integerValue] == 3){
+                            reportFiSucVC.reportType = @"诉讼";
+                        }
+                        reportFiSucVC.hidesBottomBarWhenPushed = YES;
+                        [weakself.navigationController pushViewController:reportFiSucVC animated:YES];
+                    }];
+                }
             }
         }
     } andFailBlock:^(NSError *error) {
         
     }];
 }
-
-
 
 - (void)back
 {

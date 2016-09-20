@@ -688,23 +688,29 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if ([self.switchType isEqualToString:@"33"]) {//产品信息
-        if (indexPath.section == 1 && indexPath.row == 18) {//债权文件
+        if (indexPath.section == 1 && indexPath.row == 1+self.messageArray1.count+1+1+self.messageArray2.count-1-2) {//债权文件
             ProductsCheckFilesViewController *productsCheckFilesVC = [[ProductsCheckFilesViewController alloc] init];
             CreditorFileModel *crediFileModel = self.fileDataArray[0];
             productsCheckFilesVC.debtFileModel = crediFileModel.creditorfile;
             [self.navigationController pushViewController:productsCheckFilesVC animated:YES];
-        }else if (indexPath.section == 1 && indexPath.row == 19){//债权人信息
-            ProductsCheckDetailViewController *productsCheckDetailVC = [[ProductsCheckDetailViewController alloc] init];
-            productsCheckDetailVC.categoryString = @"1";
-            CreditorFileModel *crediFileModel = self.fileDataArray[0];
-            productsCheckDetailVC.listArray = crediFileModel.creditorinfo;
-            [self.navigationController pushViewController:productsCheckDetailVC animated:YES];
-        }else if (indexPath.section == 1 && indexPath.row == 20){//债务人信息
-            ProductsCheckDetailViewController *productsCheckDetailVC = [[ProductsCheckDetailViewController alloc] init];
-            productsCheckDetailVC.categoryString = @"2";
-            CreditorFileModel *crediFileModel = self.fileDataArray[0];
-            productsCheckDetailVC.listArray = crediFileModel.borrowinginfo;
-            [self.navigationController pushViewController:productsCheckDetailVC animated:YES];
+        }else if (indexPath.section == 1 && indexPath.row == 1+self.messageArray1.count+1+1+self.messageArray2.count-1-1){//债权人信息
+            CreditorFileModel *filesModel = self.fileDataArray[0];
+            if (filesModel.creditorinfo.count > 0) {
+                ProductsCheckDetailViewController *productsCheckDetailVC = [[ProductsCheckDetailViewController alloc] init];
+                productsCheckDetailVC.categoryString = @"1";
+                CreditorFileModel *crediFileModel = self.fileDataArray[0];
+                productsCheckDetailVC.listArray = crediFileModel.creditorinfo;
+                [self.navigationController pushViewController:productsCheckDetailVC animated:YES];
+            }
+        }else if (indexPath.section == 1 && indexPath.row == 1+self.messageArray1.count+1+1+self.messageArray2.count-1){//债务人信息
+            CreditorFileModel *filesModel = self.fileDataArray[0];
+            if (filesModel.borrowinginfo.count > 0) {
+                ProductsCheckDetailViewController *productsCheckDetailVC = [[ProductsCheckDetailViewController alloc] init];
+                productsCheckDetailVC.categoryString = @"2";
+                CreditorFileModel *crediFileModel = self.fileDataArray[0];
+                productsCheckDetailVC.listArray = crediFileModel.borrowinginfo;
+                [self.navigationController pushViewController:productsCheckDetailVC animated:YES];
+            }
         }
     }else if ([self.switchType isEqualToString:@"34"]){//发布人信息
         if (indexPath.row == self.certificationArray1.count+1) {//所有评价
@@ -859,6 +865,9 @@
             NSString *start = @"暂无";  //逾期日期
             if (dataModel.start) {
                 start = [NSDate getYMDFormatterTime:dataModel.start];
+                if ([start isEqualToString:@"1970-01-01"]) {
+                    start = @"暂无";
+                }
             }
             
             NSString *commissionperiod = [NSString getValidStringFromString:dataModel.commissionperiod]; //委托代理期限
@@ -898,15 +907,14 @@
             
             
             //////////////////////*********发布人详情*********/////////////////////////
-            CertificationModel *certificationModel = respModel.certification;
-            [weakself.certifiDataArray addObject:certificationModel];
-            
-            NSString *definedStr;
-            if ([certificationModel.cardimg isEqualToString:@"undefined"]) {
-                definedStr = @"未上传";
-            }else{
-                definedStr = @"已上传";
+            CertificationModel *certificationModel;
+            if (respModel.certification) {
+                certificationModel = respModel.certification;
+                [weakself.certifiDataArray addObject:certificationModel];
             }
+            
+            NSString *definedStr = @"已认证";
+            
             NSString *emailQ = [NSString getValidStringFromString:certificationModel.email];
             NSString *addressQ = [NSString getValidStringFromString:certificationModel.address];
             NSString *enterprisewebsiteQ = [NSString getValidStringFromString:certificationModel.enterprisewebsite];

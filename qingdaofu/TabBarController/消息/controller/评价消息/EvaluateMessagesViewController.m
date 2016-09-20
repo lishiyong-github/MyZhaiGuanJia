@@ -391,8 +391,11 @@
     NSString *listString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMessageOfEvaluateString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"page" : page};
-    [self requestDataPostWithString:listString params:params successBlock:^(id responseObject) {        
-        if (_pageList == 1) {
+    [self requestDataPostWithString:listString params:params successBlock:^(id responseObject) {
+        
+        NSDictionary *aoao = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
+        if ([page integerValue] == 1) {
             [self.evaluateListArray removeAllObjects];
             [self.launchEvaListArray removeAllObjects];
         }

@@ -154,7 +154,7 @@
                     [weakself setDidGetValidImage:^(ImageModel *imgModel) {
                         if ([imgModel.code isEqualToString:@"0000"]) {
                             [btn setImage:[UIImage imageWithContentsOfFile:images[0]] forState:0];
-                            weakself.imgFileIdString1 = imgModel.url;
+                            weakself.imgFileIdString1 = imgModel.fileid;
                         }
                     }];
                 }
@@ -172,7 +172,7 @@
                     [weakself setDidGetValidImage:^(ImageModel *imgModel) {
                         if ([imgModel.code isEqualToString:@"0000"]) {
                             [btn setImage:[UIImage imageWithContentsOfFile:images[0]] forState:0];
-                            weakself.imgFileIdString2 = imgModel.url;
+                            weakself.imgFileIdString2 = imgModel.fileid;
                         }
                     }];
                 }
@@ -334,8 +334,16 @@
     [self.view endEditing:YES];
     
     if (self.imgFileIdString1 && self.imgFileIdString2) {
-        NSString *imgFileIdStr = [NSString stringWithFormat:@"'%@','%@'",self.imgFileIdString1,self.imgFileIdString2];
-        [self.lawDataDictionary setObject:imgFileIdStr forKey:@"cardimg"];
+        NSString *imgFileIdStr = [NSString stringWithFormat:@"'%@,%@'",self.imgFileIdString1,self.imgFileIdString2];
+        [self.lawDataDictionary setObject:imgFileIdStr forKey:@"cardimgimg"];
+    }else if(self.imgFileIdString1 || self.imgFileIdString2){
+        NSString *img1;
+        NSString *img2 = @"";
+        for (int i=0; i<self.responseModel.certification.img.count; i++) {
+            img1 = self.responseModel.certification.img[i];
+            img2 = [NSString stringWithFormat:@"'%@,%@'",img1,img2];
+        }
+        [self.lawDataDictionary setObject:img2 forKey:@"cardimgimg"];
     }
 
     NSString *lawAuString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kAuthenString];
@@ -347,17 +355,13 @@
      @"mobile" : @"13052358968",  //联系方式
      @"email" : @"1234678@qq.com",    //邮箱
      @"casedesc" : @"",  //案例
-     @"cardimg" : @"",  //证件图片
+     @"img" : @"",  //证件图片
      @"type" : @"update",  //add=>’添加认证’。update=>’修改认证’。
      @"token" : [weakself getValidateToken]
      */
     
     if (!self.lawDataDictionary[@"mobile"]) {
         self.lawDataDictionary[@"mobile"] = self.responseModel.certification.mobile?self.responseModel.certification.mobile:[self getValidateMobile];
-    }
-    if (!self.lawDataDictionary[@"cardimgs"]) {
-        NSString *imgStr = self.responseModel.certification.cardimg?self.responseModel.certification.cardimg:@"";
-        [self.lawDataDictionary setValue:imgStr forKey:@"cardimg"];
     }
     
     self.lawDataDictionary[@"name"] = self.lawDataDictionary[@"name"]?self.lawDataDictionary[@"name"]:self.responseModel.certification.name;

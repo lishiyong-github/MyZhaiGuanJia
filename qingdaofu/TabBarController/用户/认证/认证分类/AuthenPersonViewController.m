@@ -23,8 +23,8 @@
 @property (nonatomic,strong) BaseCommitView *personAuCommitButton;
 
 @property (nonatomic,strong) NSMutableDictionary *perDataDictionary;
-@property (nonatomic,strong) NSMutableDictionary *perImageDictionary;
-@property (nonatomic,strong) NSMutableArray *imageArray;
+@property (nonatomic,strong) NSString *imgFileIdString1;
+@property (nonatomic,strong) NSString *imgFileIdString2;
 
 @end
 
@@ -95,22 +95,6 @@
     return _perDataDictionary;
 }
 
-- (NSMutableDictionary *)perImageDictionary
-{
-    if (!_perImageDictionary) {
-        _perImageDictionary = [NSMutableDictionary dictionary];
-    }
-    return _perImageDictionary;
-}
-
-- (NSMutableArray *)imageArray
-{
-    if (!_imageArray) {
-        _imageArray = [NSMutableArray array];
-    }
-    return _imageArray;
-}
-
 #pragma mark - tableView delegate and datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -157,14 +141,16 @@
         
         [cell.pictureButton1 addAction:^(UIButton *btn) {//正面照
             [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
+                
                 if (images.count > 0) {
-                    NSData *imData = [NSData dataWithContentsOfFile:images[0]];
-                    NSString *imString = [NSString stringWithFormat:@"%@",imData];
-                    [weakself uploadImages:imString andType:nil andFilePath:nil];
+                    NSData *imgData = [NSData dataWithContentsOfFile:images[0]];
+                    NSString *imgStr = [NSString stringWithFormat:@"%@",imgData];
+                    [weakself uploadImages:imgStr andType:nil andFilePath:nil];
+                    
                     [weakself setDidGetValidImage:^(ImageModel *imgModel) {
                         if ([imgModel.code isEqualToString:@"0000"]) {
-                            [weakself.imageArray addObject:imgModel.fileid];
                             [btn setImage:[UIImage imageWithContentsOfFile:images[0]] forState:0];
+                            weakself.imgFileIdString1 = imgModel.fileid;
                         }
                     }];
                 }
@@ -175,8 +161,16 @@
             [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
                 
                 if (images.count > 0) {
-                    [btn setImage:[UIImage imageWithContentsOfFile:images[0]] forState:0];
+                    NSData *imgData = [NSData dataWithContentsOfFile:images[0]];
+                    NSString *imgStr = [NSString stringWithFormat:@"%@",imgData];
+                    [weakself uploadImages:imgStr andType:nil andFilePath:nil];
                     
+                    [weakself setDidGetValidImage:^(ImageModel *imgModel) {
+                        if ([imgModel.code isEqualToString:@"0000"]) {
+                            [btn setImage:[UIImage imageWithContentsOfFile:images[0]] forState:0];
+                            weakself.imgFileIdString2 = imgModel.fileid;
+                        }
+                    }];
                 }
             }];
         }];
@@ -191,10 +185,10 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        if ([certificationModel.cardimg isEqualToString:@""] || !certificationModel.cardimg) {
+        if ([certificationModel.img isEqualToString:@""] || !certificationModel.img) {
             cell.collectionDataList = [NSMutableArray arrayWithObjects:@"btn_camera", nil];
         }else{
-            NSString *subString = [certificationModel.cardimg substringWithRange:NSMakeRange(1, certificationModel.cardimg.length-2)];
+            NSString *subString = [certificationModel.img substringWithRange:NSMakeRange(1, certificationModel.img.length-2)];
             NSString *urlString = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subString];
             NSURL *url = [NSURL URLWithString:urlString];
             cell.collectionDataList = [NSMutableArray arrayWithObject:url];
@@ -205,7 +199,7 @@
             [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
                 NSData *imgData = [NSData dataWithContentsOfFile:images[0]];
                 NSString *imgStr = [NSString stringWithFormat:@"%@",imgData];
-                [self.perDataDictionary setValue:imgStr forKey:@"cardimgs"];
+                [self.perDataDictionary setValue:imgStr forKey:@"imgs"];
                 weakcell.collectionDataList = [NSMutableArray arrayWithArray:images];
                 [weakcell reloadData];
                 
@@ -344,14 +338,25 @@
 - (void)goToAuthenMessages
 {
     [self.view endEditing:YES];
+    
+    if (self.imgFileIdString1 && self.imgFileIdString2) {
+        NSString *imgFileIdStr = [NSString stringWithFormat:@"'%@,%@'",self.imgFileIdString1,self.imgFileIdString2];
+        [self.perDataDictionary setObject:imgFileIdStr forKey:@"cardimgimg"];
+    }else if(self.imgFileIdString1 || self.imgFileIdString2){
+        NSString *img1;
+        NSString *img2 = @"";
+        for (int i=0; i<self.respnseModel.certification.img.count; i++) {
+            img1 = self.respnseModel.certification.img[i];
+            img2 = [NSString stringWithFormat:@"'%@,%@'",img1,img2];
+        }
+        [self.perDataDictionary setObject:img2 forKey:@"cardimgimg"];
+    }
+
+    
     NSString *personAuString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kAuthenString];
     
     if (!self.perDataDictionary[@"mobile"]) {
         self.perDataDictionary[@"mobile"] = self.respnseModel.certification.mobile?self.respnseModel.certification.mobile:[self getValidateMobile];
-    }
-    if (!self.perDataDictionary[@"cardimgs"]) {
-        NSString *imgStr = self.respnseModel.certification.cardimg?self.respnseModel.certification.cardimg:@"";
-        [self.perDataDictionary setValue:imgStr forKey:@"cardimg"];
     }
     
     self.perDataDictionary[@"name"] = self.perDataDictionary[@"name"]?self.perDataDictionary[@"name"]:self.respnseModel.certification.name;

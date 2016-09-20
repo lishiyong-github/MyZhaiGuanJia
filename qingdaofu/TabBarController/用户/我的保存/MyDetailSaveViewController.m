@@ -178,23 +178,7 @@
         NSString *string4;
         NSString *imageString4;
         NSString *string44;
-        if ([saveModel.category intValue] == 1) {//融资
-            string22 = @"融资";
-            if ([saveModel.rate_cat intValue] == 1) {
-                string3 = @"  借款利率(%/天)";
-            }else if ([saveModel.rate_cat intValue] == 2){
-                string3 = @"  借款利率(%/月)";
-            }
-            imageString3 = @"conserve_interest_icon";
-            string33 = [NSString getValidStringFromString:saveModel.rate toString:@"0"];
-            string4 = @"  返点(%)";
-            imageString4 = @"conserve_rebate_icon";
-            string44 = [NSString getValidStringFromString:saveModel.rebate toString:@"0"];
-            
-            _loanTypeString1 = @"  抵押物地址";
-            _loanTypeString2 = [NSString getValidStringFromString:saveModel.seatmortgage toString:@"无抵押物地址"];
-            _loanTypeImage = @"conserve_seat_icon";
-        }else if ([saveModel.category intValue] == 2){//清收
+       if ([saveModel.category intValue] == 2){//清收
             string22 = @"清收";
             if ([saveModel.agencycommissiontype intValue] == 1) {
                 string3 = @"  服务佣金(%)";
