@@ -10,10 +10,11 @@
 
 @implementation CertificationModel
 
-+ (NSDictionary *)objectClassInArray
++ (NSDictionary *)replacedKeyFromPropertyName
 {
     return @{@"uidInner" : @"uid",
-             @"idString" : @"id"};
+             @"idString" : @"id"
+             };
 }
 
 @end

@@ -16,5 +16,5 @@
 @property (nonatomic,copy) NSString *jusername;//接单方，发布方
 @property (nonatomic,copy) NSString *mobile;
 @property (nonatomic,copy) NSString *username; //本人
-
+@property (nonatomic,copy) NSString *delay; //截至处理日期
 @end

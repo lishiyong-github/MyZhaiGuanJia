@@ -11,7 +11,6 @@
 #import "CheckDetailPublishViewController.h" //发布人信息
 #import "AllEvaluationViewController.h"  //全部评价
 #import "CaseViewController.h"  //经典案例
-//#import "DebtDocumnetsViewController.h"  //查看债权文件
 #import "ProductsCheckDetailViewController.h"  //债权人信息
 #import "ProductsCheckFilesViewController.h"  //债权文件
 
@@ -809,15 +808,18 @@
             
             if ([dataModel.loan_type intValue] == 1) {//房产抵押
                 NSString *mortorage_communityStr1 = [NSString getValidStringFromString:respModel.add.address];
-                NSString *seatmortgageStr1 = [NSString getValidStringFromString:dataModel.seatmortgage];
+//                NSString *seatmortgageStr1 = [NSString getValidStringFromString:dataModel.seatmortgage];
                 
-                weakself.messageArray1 = @[@"借款本金",@"费用类型",@"代理费用",@"债权类型",@"抵押物地址",@"详细地址"];
-                weakself.messageArray11 = @[moneyStr1,agencycommissiontypeStr,agencycommissionStr1,loan_typeStr,mortorage_communityStr1,seatmortgageStr1];
+                weakself.messageArray1 = @[@"借款本金",@"费用类型",@"代理费用",@"债权类型",@"抵押物地址"];
+                weakself.messageArray11 = @[moneyStr1,agencycommissiontypeStr,agencycommissionStr1,loan_typeStr,mortorage_communityStr1];
             }else if ([dataModel.loan_type intValue] == 3){//机动车抵押
-                NSString *carStr1 = [NSString getValidStringFromString:dataModel.car];
-                NSString *licenseStr1 = [NSString getValidStringFromString:dataModel.licenseplate];
-                weakself.messageArray1 = @[@"借款本金",@"费用类型",@"代理费用",@"债权类型",@"机动车抵押",@"车牌类型"];
-                weakself.messageArray11 = @[moneyStr1,agencycommissiontypeStr,agencycommissionStr1,loan_typeStr,carStr1,licenseStr1];
+                NSArray *licenceArr = @[@"沪牌",@"非沪牌"];
+                NSString *licenseStr1 = licenceArr[[dataModel.licenseplate integerValue] -1];
+                NSString *carsStr = [NSString stringWithFormat:@"%@%@/%@",dataModel.carbrand,dataModel.audi,licenseStr1];
+                
+//                NSString *carStr1 = [NSString getValidStringFromString:dataModel.car];
+                weakself.messageArray1 = @[@"借款本金",@"费用类型",@"代理费用",@"债权类型",@"机动车抵押"];
+                weakself.messageArray11 = @[moneyStr1,agencycommissiontypeStr,agencycommissionStr1,loan_typeStr,carsStr];
             }else if ([dataModel.loan_type intValue] == 2){//应收帐款
                 NSString *accountrStr1 = [NSString getValidStringFromString:dataModel.accountr toString:@"0"];
                 NSString *account11 = [NSString stringWithFormat:@"%@万",accountrStr1];

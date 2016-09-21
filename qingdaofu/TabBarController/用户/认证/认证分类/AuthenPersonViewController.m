@@ -25,6 +25,8 @@
 @property (nonatomic,strong) NSMutableDictionary *perDataDictionary;
 @property (nonatomic,strong) NSString *imgFileIdString1;
 @property (nonatomic,strong) NSString *imgFileIdString2;
+@property (nonatomic,strong) NSString *imgFileUrlString1;
+@property (nonatomic,strong) NSString *imgFileUrlString2;
 
 @end
 
@@ -176,38 +178,6 @@
         }];
         
         return cell;
-        /*
-        identifier = @"authenPer0";
-        TakePictureCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        
-        if (!cell) {
-            cell = [[TakePictureCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        if ([certificationModel.img isEqualToString:@""] || !certificationModel.img) {
-            cell.collectionDataList = [NSMutableArray arrayWithObjects:@"btn_camera", nil];
-        }else{
-            NSString *subString = [certificationModel.img substringWithRange:NSMakeRange(1, certificationModel.img.length-2)];
-            NSString *urlString = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subString];
-            NSURL *url = [NSURL URLWithString:urlString];
-            cell.collectionDataList = [NSMutableArray arrayWithObject:url];
-        }
-        
-        QDFWeak(cell);
-        [cell setDidSelectedItem:^(NSInteger itemTag) {
-            [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
-                NSData *imgData = [NSData dataWithContentsOfFile:images[0]];
-                NSString *imgStr = [NSString stringWithFormat:@"%@",imgData];
-                [self.perDataDictionary setValue:imgStr forKey:@"imgs"];
-                weakcell.collectionDataList = [NSMutableArray arrayWithArray:images];
-                [weakcell reloadData];
-                
-            }];
-        }];
-        return cell;
-         */
-        
     }else if (indexPath.section == 1){
         identifier = @"authenPer1";
         AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -339,19 +309,29 @@
 {
     [self.view endEditing:YES];
     
-    if (self.imgFileIdString1 && self.imgFileIdString2) {
-        NSString *imgFileIdStr = [NSString stringWithFormat:@"'%@,%@'",self.imgFileIdString1,self.imgFileIdString2];
+    if (self.imgFileIdString1 && self.imgFileIdString2) {//两张都修改了
+        NSString *imgFileIdStr = [NSString stringWithFormat:@"%@,%@",self.imgFileIdString1,self.imgFileIdString2];
         [self.perDataDictionary setObject:imgFileIdStr forKey:@"cardimgimg"];
-    }else if(self.imgFileIdString1 || self.imgFileIdString2){
-        NSString *img1;
-        NSString *img2 = @"";
-        for (int i=0; i<self.respnseModel.certification.img.count; i++) {
-            img1 = self.respnseModel.certification.img[i];
-            img2 = [NSString stringWithFormat:@"'%@,%@'",img1,img2];
-        }
-        [self.perDataDictionary setObject:img2 forKey:@"cardimgimg"];
+        NSString *imgFileUrlStr = [NSString stringWithFormat:@"'%@','%@'",self.imgFileUrlString1,self.imgFileUrlString2];
+        [self.perDataDictionary setObject:imgFileUrlStr forKey:@"cardimg"];
+    }else if(!self.imgFileIdString1 && !self.imgFileIdString2){//两张都未修改
+        [self.perDataDictionary setObject:self.respnseModel.certification.cardimgimg forKey:@"cardimgimg"];
+        [self.perDataDictionary setObject:self.respnseModel.certification.cardimg forKey:@"cardimg"];
+    }else if (self.imgFileIdString1 && !self.imgFileIdString2){//修改第一张
+        NSArray *imgArr2 = [ImageModel objectArrayWithKeyValuesArray:self.respnseModel.certification.img];
+        ImageModel *imgModel2 = imgArr2[1];
+        NSString *imgFileIdStr2 = [NSString stringWithFormat:@"%@,%@",self.imgFileIdString1,imgModel2.idString];
+        [self.perDataDictionary setObject:imgFileIdStr2 forKey:@"cardimgimg"];
+        NSString *imgFileUrlStr2 = [NSString stringWithFormat:@"'%@','%@'",self.imgFileUrlString1,imgModel2.file];
+        [self.perDataDictionary setObject:imgFileUrlStr2 forKey:@"cardimg"];
+    }else if (!self.imgFileIdString1 && self.imgFileIdString2){//修改第二张
+        NSArray *imgArr1 = [ImageModel objectArrayWithKeyValuesArray:self.respnseModel.certification.img];
+        ImageModel *imgModel1 = imgArr1[0];
+        NSString *imgFileIdStr1 = [NSString stringWithFormat:@"%@,%@",imgModel1.idString,self.imgFileIdString2];
+        [self.perDataDictionary setObject:imgFileIdStr1 forKey:@"cardimgimg"];
+        NSString *imgFileUrlStr1 = [NSString stringWithFormat:@"'%@','%@'",imgModel1.file,self.imgFileUrlString2];
+        [self.perDataDictionary setObject:imgFileUrlStr1 forKey:@"cardimg"];
     }
-
     
     NSString *personAuString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kAuthenString];
     

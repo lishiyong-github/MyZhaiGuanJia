@@ -215,13 +215,13 @@
                 }
             }
         
-            if (self.yyModel.creditorinfos.count > 0) {
+            if (self.yyModel.creditorinfo.count > 0) {
                 creditorinfo = @"查看";
             }else{
                 creditorinfo = @"暂无";
             }
             
-            if (self.yyModel.borrowinginfos.count > 0) {
+            if (self.yyModel.borrowinginfo.count > 0) {
                 borrowinginfo = @"查看";
             }else{
                 borrowinginfo = @"暂无";
@@ -241,18 +241,18 @@
                 }
                     break;
                 case 12:{//债权人信息
-                    if (weakself.yyModel.creditorinfos.count > 0) {
+                    if (weakself.yyModel.creditorinfo.count > 0) {
                         ProductsCheckDetailViewController *productsCheckDetailVC = [[ProductsCheckDetailViewController alloc] init];
-                        productsCheckDetailVC.listArray = weakself.yyModel.creditorinfos;
+                        productsCheckDetailVC.listArray = weakself.yyModel.creditorinfo;
                         productsCheckDetailVC.categoryString = @"1";
                         [weakself.navigationController pushViewController:productsCheckDetailVC animated:YES];
                     }
                 }
                     break;
                 case 13:{//债务人信息
-                    if (weakself.yyModel.borrowinginfos.count > 0) {
+                    if (weakself.yyModel.borrowinginfo.count > 0) {
                         ProductsCheckDetailViewController *productsCheckDetailVC = [[ProductsCheckDetailViewController alloc] init];
-                        productsCheckDetailVC.listArray = weakself.yyModel.borrowinginfos;
+                        productsCheckDetailVC.listArray = weakself.yyModel.borrowinginfo;
                         productsCheckDetailVC.categoryString = @"2";
                         [weakself.navigationController pushViewController:productsCheckDetailVC animated:YES];
                     }

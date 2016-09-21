@@ -200,7 +200,7 @@
             nameStrss = @"诉讼";
         }
         NSString *nameStr = [NSString stringWithFormat:@"%@%@",nameStrss,processModel.codeString];
-        NSString *timeStr = [NSString stringWithFormat:@" (截止%@)",self.deadLine];
+        NSString *timeStr = [NSString stringWithFormat:@" (截止%@)",response.username.delay];
         NSString *allStr = [NSString stringWithFormat:@"%@%@",nameStr,timeStr];
         NSMutableAttributedString *allAttribute = [[NSMutableAttributedString alloc] initWithString:allStr];
         [allAttribute setAttributes:@{NSFontAttributeName:kFourFont,NSForegroundColorAttributeName:kLightWhiteColor} range:NSMakeRange(0, nameStr.length)];
@@ -417,6 +417,8 @@
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
+        
+        NSDictionary *apap = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
         [weakself.processArray addObject:response];

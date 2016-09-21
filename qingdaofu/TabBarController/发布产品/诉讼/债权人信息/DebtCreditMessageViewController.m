@@ -147,7 +147,8 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     [cell.debtEditButton setTitle:@"编辑" forState:0];
     
-    DebtModel *deModel = self.debtArray[indexPath.section];
+    NSArray *deArraya = [DebtModel objectArrayWithKeyValuesArray:self.debtArray];
+    DebtModel *deModel = deArraya[indexPath.section];
     
     //姓名
     NSString *name;

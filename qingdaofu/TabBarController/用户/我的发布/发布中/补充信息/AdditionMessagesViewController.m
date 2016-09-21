@@ -78,7 +78,12 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (self.addMessageDataArray.count > 0) {
-        return 12;
+        PublishingResponse *responrf = self.addMessageDataArray[0];
+        if ([responrf.product.loan_type integerValue] == 4) {//1,2,3,4
+            return 12+4;
+        }else{
+            return 12+5;
+        }
     }
     return 0;
 }
@@ -97,10 +102,47 @@
     }
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.userNameButton.titleLabel.font = kFirstFont;
+    [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
+    cell.userActionButton.titleLabel.font = kBigFont;
+    [cell.userActionButton setTitleColor:kGrayColor forState:0];
     
     PublishingResponse *messageResonse = self.addMessageDataArray[0];
     PublishingModel *messageModel = messageResonse.product;
-        
+    //金额
+    NSString *money = [NSString stringWithFormat:@"%@万",[NSString getValidStringFromString:messageModel.money]];
+    //代理费用
+    NSString *agencycommission;
+    NSArray *agencyArr1;
+    //代理费用类型
+    NSString *agencycommissiontype;
+    NSArray *agencyArr2;
+    if ([messageModel.category integerValue] == 2) {//清收
+        agencyArr1 = @[@"%",@"万"];
+        agencyArr2 = @[@"服务佣金",@"固定费用"];
+    }else if ([messageModel.category integerValue] == 3){
+        agencyArr1 = @[@"万",@"%"];
+        agencyArr2 = @[@"固定费用",@"代理费率"];
+    }
+    agencycommission = [NSString stringWithFormat:@"%@%@",[NSString getValidStringFromString:messageModel.agencycommission],agencyArr1[[messageModel.agencycommissiontype integerValue] -1]];
+    agencycommissiontype = agencyArr2[[messageModel.agencycommissiontype integerValue] -1];
+    
+    //债权类型
+    NSString *loanType;
+    NSString *loanString;
+    if ([messageModel.loan_type integerValue] == 1) {
+        loanType = @"房产抵押";
+        loanString = messageModel.seatmortgage;
+    }else if ([messageModel.loan_type integerValue] == 2){
+        loanType = @"应收账款";
+        loanString = [NSString stringWithFormat:@"%@元",messageModel.accountr];
+    }else if ([messageModel.loan_type integerValue] == 3){
+        loanType = @"机动车抵押";
+        loanString = [NSString stringWithFormat:@"%@",messageResonse.car];
+    }else if ([messageModel.loan_type integerValue] == 4){
+        loanType = @"无抵押";
+    }
+    
     NSString *rate = [NSString getValidStringFromString:messageModel.rate]; //借款利率
     if (![rate isEqualToString:@"暂无"]) {
         rate = [NSString stringWithFormat:@"%@%@/月",messageModel.rate,@"%"];
@@ -144,29 +186,31 @@
         }
     }
     
-    PublishingResponse *meResponse;
-    if (self.addMessageDataArray.count > 0) {
-        meResponse = self.addMessageDataArray[0];
-    }
-    
     NSString *creditorfile = @"查看";
     
     NSString *creditorinfo;//债权人信息
-    if (meResponse.creditorinfos.count > 0) {
+    if (messageResonse.creditorinfo.count > 0) {
         creditorinfo = @"查看";
     }else{
         creditorinfo = @"暂无";
     }
     
     NSString *borrowinginfo;
-    if (meResponse.borrowinginfos.count > 0) {//债务人信息
+    if (messageResonse.borrowinginfo.count > 0) {//债务人信息
         borrowinginfo = @"查看";
     }else{
         borrowinginfo = @"暂无";
     }
     
-    NSArray *dataList1 = @[@"借款利率",@"借款期限",@"还款方式",@"债务人主体",@"逾期日期",@"委托代理期限",@"已付本金(元)",@"已付利息(元)",@"合同履行地",@"债权文件",@"债权人信息",@"债务人信息"];
-    NSArray *dataList2 = @[rate,term,repaymethod,obligor,start,commissionperiod,paidmoney,interestpaid,performancecontract,creditorfile,creditorinfo,borrowinginfo];
+    NSArray *dataList1;
+    NSArray *dataList2;
+    if ([messageModel.loan_type integerValue] == 4) {
+        dataList1 = @[@"借款本金",@"费用类型",@"代理费用",@"债权类型",@"借款利率",@"借款期限",@"还款方式",@"债务人主体",@"逾期日期",@"委托代理期限",@"已付本金(元)",@"已付利息(元)",@"合同履行地",@"债权文件",@"债权人信息",@"债务人信息"];
+        dataList2 = @[money,agencycommissiontype,agencycommission,loanType,rate,term,repaymethod,obligor,start,commissionperiod,paidmoney,interestpaid,performancecontract,creditorfile,creditorinfo,borrowinginfo];
+    }else{
+        dataList1 = @[@"借款本金",@"费用类型",@"代理费用",@"债权类型",loanType,@"借款利率",@"借款期限",@"还款方式",@"债务人主体",@"逾期日期",@"委托代理期限",@"已付本金(元)",@"已付利息(元)",@"合同履行地",@"债权文件",@"债权人信息",@"债务人信息"];
+        dataList2 = @[money,agencycommissiontype,agencycommission,loanType,loanString,rate,term,repaymethod,obligor,start,commissionperiod,paidmoney,interestpaid,performancecontract,creditorfile,creditorinfo,borrowinginfo];
+    }
     [cell.userNameButton setTitle:dataList1[indexPath.row] forState:0];
     [cell.userActionButton setTitle:dataList2[indexPath.row] forState:0];
     cell.userActionButton.userInteractionEnabled = NO;
@@ -180,28 +224,50 @@
     DebtModel *debtModel;
     if (self.addMessageDataArray.count > 0) {
         response = self.addMessageDataArray[0];
-        debtModel = response.creditorfiles;
+        debtModel = response.creditorfile;
     }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (indexPath.row == 9) {//债权文件
-        ProductsCheckFilesViewController *productsCheckFilesVC = [[ProductsCheckFilesViewController alloc] init];
-        productsCheckFilesVC.debtFileModel = debtModel;
-        [self.navigationController pushViewController:productsCheckFilesVC animated:YES];
-        
-    }else if (indexPath.row == 10){//债权人信息
-        if (response.creditorinfos.count > 0) {
-            ProductsCheckDetailViewController *productsCheckDetailVC = [[ProductsCheckDetailViewController alloc] init];
-            productsCheckDetailVC.categoryString = @"1";
-            productsCheckDetailVC.listArray = response.creditorinfos;
-            [self.navigationController pushViewController:productsCheckDetailVC animated:YES];
+    
+    if ([response.product.loan_type integerValue] == 4) {
+        if (indexPath.row == 13) {//债权文件
+            ProductsCheckFilesViewController *productsCheckFilesVC = [[ProductsCheckFilesViewController alloc] init];
+            productsCheckFilesVC.debtFileModel = debtModel;
+            [self.navigationController pushViewController:productsCheckFilesVC animated:YES];
+        }else if (indexPath.row == 14){//债权人信息
+            if (response.creditorinfo.count > 0) {
+                ProductsCheckDetailViewController *productsCheckDetailVC = [[ProductsCheckDetailViewController alloc] init];
+                productsCheckDetailVC.categoryString = @"1";
+                productsCheckDetailVC.listArray = response.creditorinfo;
+                [self.navigationController pushViewController:productsCheckDetailVC animated:YES];
+            }
+        }else if (indexPath.row == 15){//债务人信息
+            if (response.borrowinginfo.count > 0) {
+                ProductsCheckDetailViewController *productsCheckDetailVC = [[ProductsCheckDetailViewController alloc] init];
+                productsCheckDetailVC.categoryString = @"2";
+                productsCheckDetailVC.listArray = response.borrowinginfo;
+                [self.navigationController pushViewController:productsCheckDetailVC animated:YES];
+            }
         }
-    }else if (indexPath.row == 11){//债务人信息
-        if (response.borrowinginfos.count > 0) {
-            ProductsCheckDetailViewController *productsCheckDetailVC = [[ProductsCheckDetailViewController alloc] init];
-            productsCheckDetailVC.categoryString = @"2";
-            productsCheckDetailVC.listArray = response.borrowinginfos;
-            [self.navigationController pushViewController:productsCheckDetailVC animated:YES];
+    }else{
+        if (indexPath.row == 14) {//债权文件
+            ProductsCheckFilesViewController *productsCheckFilesVC = [[ProductsCheckFilesViewController alloc] init];
+            productsCheckFilesVC.debtFileModel = debtModel;
+            [self.navigationController pushViewController:productsCheckFilesVC animated:YES];
+        }else if (indexPath.row == 15){//债权人信息
+            if (response.creditorinfo.count > 0) {
+                ProductsCheckDetailViewController *productsCheckDetailVC = [[ProductsCheckDetailViewController alloc] init];
+                productsCheckDetailVC.categoryString = @"1";
+                productsCheckDetailVC.listArray = response.creditorinfo;
+                [self.navigationController pushViewController:productsCheckDetailVC animated:YES];
+            }
+        }else if (indexPath.row == 16){//债务人信息
+            if (response.borrowinginfo.count > 0) {
+                ProductsCheckDetailViewController *productsCheckDetailVC = [[ProductsCheckDetailViewController alloc] init];
+                productsCheckDetailVC.categoryString = @"2";
+                productsCheckDetailVC.listArray = response.borrowinginfo;
+                [self.navigationController pushViewController:productsCheckDetailVC animated:YES];
+            }
         }
     }
 }
@@ -209,13 +275,15 @@
 #pragma mark - method
 - (void)getAdditionalMessages
 {
-    NSString *messageString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProdutsDetailString];
+    NSString *messageString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseDetailString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"id" : self.idString,
                              @"category" : self.categoryString
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:messageString params:params successBlock:^(id responseObject){
+        
+        NSDictionary *qpqp = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
         

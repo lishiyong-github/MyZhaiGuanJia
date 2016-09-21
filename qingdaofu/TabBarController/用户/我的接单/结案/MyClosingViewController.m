@@ -517,7 +517,7 @@
         deleteId = responder.username.deleteId;
     }
     
-    NSDictionary *params = @{@"id" : self.deleteId,
+    NSDictionary *params = @{@"id" : deleteId,
                              @"category" : self.categaryString,
                              @"token" : [self getValidateToken],
                              @"type" : @"1"

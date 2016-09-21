@@ -90,11 +90,7 @@
 #pragma mark - method
 - (void)back
 {
-    UINavigationController *nav = self.navigationController;
-    [nav popViewControllerAnimated:NO];
-    [nav popViewControllerAnimated:NO];
-    [nav popViewControllerAnimated:NO];
-    [nav popViewControllerAnimated:NO];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 //返回主页

@@ -224,33 +224,28 @@
         [cell.evaAdditionButton setHidden:YES];
         
         //图片
-        if (evaModel.pictures.count == 1) {
-            if ([evaModel.pictures[0] isEqualToString:@""]) {//没有图片
-                cell.topProConstraints.constant = 90;
-                [cell.evaProImageViews1 setHidden:YES];
-                [cell.evaProImageViews2 setHidden:YES];
-            }else{//有图片
-                cell.topProConstraints.constant = 150;
-                [cell.evaProImageViews1 setHidden:NO];
-                [cell.evaProImageViews2 setHidden:YES];
-                NSString *str1 = [evaModel.pictures[0] substringWithRange:NSMakeRange(1, [evaModel.pictures[0] length]-2)];
-                NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str1];
-                NSURL *url1 = [NSURL URLWithString:imageStr1];
-                
-                [cell.evaProImageViews1 sd_setBackgroundImageWithURL:url1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
-                [cell.evaProImageViews1 addAction:^(UIButton *btn) {
-                    [weakself showImages:@[url1]];
-                }];
-            }
-        }else if (evaModel.pictures.count >= 2){
+        if (evaModel.pictures.count == 0) {
+            cell.topProConstraints.constant = 90;
+            [cell.evaProImageViews1 setHidden:YES];
+            [cell.evaProImageViews2 setHidden:YES];
+        }else if (evaModel.pictures.count == 1){
+            cell.topProConstraints.constant = 150;
+            [cell.evaProImageViews1 setHidden:NO];
+            [cell.evaProImageViews2 setHidden:YES];
+            NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,evaModel.pictures[0]];
+            NSURL *url1 = [NSURL URLWithString:imageStr1];
+            
+            [cell.evaProImageViews1 sd_setBackgroundImageWithURL:url1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+            [cell.evaProImageViews1 addAction:^(UIButton *btn) {
+                [weakself showImages:@[url1]];
+            }];
+        }else{
             cell.topProConstraints.constant = 150;
             [cell.evaProImageViews1 setHidden:NO];
             [cell.evaProImageViews2 setHidden:NO];
-            NSString *str1 = [evaModel.pictures[0] substringWithRange:NSMakeRange(1, [evaModel.pictures[0] length]-2)];
-            NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str1];
+            NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,evaModel.pictures[0]];
             NSURL *url1 = [NSURL URLWithString:imageStr1];
-            NSString *str2 = [evaModel.pictures[1] substringWithRange:NSMakeRange(1, [evaModel.pictures[1] length]-2)];
-            NSString *imageStr2 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str2];
+            NSString *imageStr2 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,evaModel.pictures[1]];
             NSURL *url2 = [NSURL URLWithString:imageStr2];
             
             [cell.evaProImageViews1 sd_setBackgroundImageWithURL:url1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
@@ -305,7 +300,6 @@
                 AdditionalEvaluateViewController *additionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
                 additionalEvaluateVC.idString = launchEvaModel.idString;
                 additionalEvaluateVC.categoryString = launchEvaModel.category;
-//                additionalEvaluateVC.codeString = launchEvaModel.code;
                 additionalEvaluateVC.evaString = launchEvaModel.frequency;
                 if ([launchEvaModel.uidInner isEqualToString:launchEvaModel.cuid]) {
                     additionalEvaluateVC.typeString = @"发布方";
@@ -315,33 +309,28 @@
         }
         
         //图片
-        if (launchEvaModel.pictures.count == 1) {
-            if ([launchEvaModel.pictures[0] isEqualToString:@""]) {//没有图片
-                cell.topProConstraints.constant = 90;
-                [cell.evaProImageViews1 setHidden:YES];
-                [cell.evaProImageViews2 setHidden:YES];
-            }else{//有图片
-                cell.topProConstraints.constant = 150;
-                [cell.evaProImageViews1 setHidden:NO];
-                [cell.evaProImageViews2 setHidden:YES];
-                NSString *str1 = [launchEvaModel.pictures[0] substringWithRange:NSMakeRange(1, [launchEvaModel.pictures[0] length]-2)];
-                NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str1];
-                NSURL *url1 = [NSURL URLWithString:imageStr1];
-                
-                [cell.evaProImageViews1 sd_setBackgroundImageWithURL:url1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
-                [cell.evaProImageViews1 addAction:^(UIButton *btn) {
-                    [weakself showImages:@[url1]];
-                }];
-            }
+        if (launchEvaModel.pictures.count == 0) {
+            cell.topProConstraints.constant = 90;
+            [cell.evaProImageViews1 setHidden:YES];
+            [cell.evaProImageViews2 setHidden:YES];
+        }else if (launchEvaModel.pictures.count == 1){
+            cell.topProConstraints.constant = 150;
+            [cell.evaProImageViews1 setHidden:NO];
+            [cell.evaProImageViews2 setHidden:YES];
+            NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,launchEvaModel.pictures[0]];
+            NSURL *url1 = [NSURL URLWithString:imageStr1];
+            
+            [cell.evaProImageViews1 sd_setBackgroundImageWithURL:url1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+            [cell.evaProImageViews1 addAction:^(UIButton *btn) {
+                [weakself showImages:@[url1]];
+            }];
         }else if (launchEvaModel.pictures.count >= 2){
             cell.topProConstraints.constant = 150;
             [cell.evaProImageViews1 setHidden:NO];
             [cell.evaProImageViews2 setHidden:NO];
-            NSString *str1 = [launchEvaModel.pictures[0] substringWithRange:NSMakeRange(1, [launchEvaModel.pictures[0] length]-2)];
-            NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str1];
+            NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,launchEvaModel.pictures[0]];
             NSURL *url1 = [NSURL URLWithString:imageStr1];
-            NSString *str2 = [launchEvaModel.pictures[1] substringWithRange:NSMakeRange(1, [launchEvaModel.pictures[1] length]-2)];
-            NSString *imageStr2 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str2];
+            NSString *imageStr2 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,launchEvaModel.pictures[1]];
             NSURL *url2 = [NSURL URLWithString:imageStr2];
             
             [cell.evaProImageViews1 sd_setBackgroundImageWithURL:url1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];

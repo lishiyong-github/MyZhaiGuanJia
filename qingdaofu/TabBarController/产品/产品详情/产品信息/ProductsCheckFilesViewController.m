@@ -20,8 +20,6 @@
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *fileTableView;
 
-@property (nonatomic,strong) NSMutableArray *imaDataArray;
-
 @end
 
 @implementation ProductsCheckFilesViewController
@@ -59,14 +57,6 @@
         _fileTableView.separatorInset = UIEdgeInsetsMake(0, kBigPadding, 0, 0);
     }
     return _fileTableView;
-}
-
-- (NSMutableArray *)imaDataArray
-{
-    if (!_imaDataArray) {
-        _imaDataArray = [NSMutableArray array];
-    }
-    return _imaDataArray;
 }
 
 #pragma mark - tableView datasource
@@ -109,24 +99,20 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    [self.imaDataArray removeAllObjects];
-    
-//    DebtModel *self.debtFileModel = [[DebtModel alloc] init];
-//    self.debtFileModel = self.fileResponse.creditorfiles;
-    
     switch (indexPath.row) {
         case 0:{
             if (self.debtFileModel.imgnotarization == nil || [self.debtFileModel.imgnotarization isEqualToArray:@[@""]] || self.debtFileModel.imgnotarization.count == 0) {//未上传
                 [self showHint:@"未上传公证书"];
             }else{
+                NSMutableArray *imaShowArray = [NSMutableArray array];
                 for (NSInteger k=0; k<self.debtFileModel.imgnotarization.count; k++) {
                     NSString *aaaaa = self.debtFileModel.imgnotarization[k];
                     NSString *subStr = [aaaaa substringWithRange:NSMakeRange(1, aaaaa.length-2)];
                     NSString *str = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subStr];
                     NSURL *subUrl = [NSURL URLWithString:str];
-                    [self.imaDataArray addObject:subUrl];
+                    [imaShowArray addObject:subUrl];
                 }
-                [self showImages:self.imaDataArray];
+                [self showImages:imaShowArray];
             }
         }
             break;
@@ -134,14 +120,15 @@
             if (self.debtFileModel.imgcontract == nil || [self.debtFileModel.imgcontract isEqualToArray:@[@""]] || self.debtFileModel.imgcontract.count == 0) {//未上传
                 [self showHint:@"未上传借款合同"];
             }else{
+                NSMutableArray *imaShowArray = [NSMutableArray array];
                 for (NSInteger k=0; k<self.debtFileModel.imgcontract.count; k++) {
                     NSString *aaaaa = self.debtFileModel.imgcontract[k];
                     NSString *subStr = [aaaaa substringWithRange:NSMakeRange(1, aaaaa.length-2)];
                     NSString *str = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subStr];
                     NSURL *subUrl = [NSURL URLWithString:str];
-                    [self.imaDataArray addObject:subUrl];
+                    [imaShowArray addObject:subUrl];
                 }
-                [self showImages:self.imaDataArray];
+                [self showImages:imaShowArray];
             }
         }
             break;
@@ -149,14 +136,15 @@
             if (self.debtFileModel.imgcreditor == nil || [self.debtFileModel.imgcreditor isEqualToArray:@[@""]] || self.debtFileModel.imgcreditor.count == 0) {//未上传
                 [self showHint:@"未上传他项权证"];
             }else{
+                NSMutableArray *imaShowArray = [NSMutableArray array];
                 for (NSInteger k=0; k<self.debtFileModel.imgcreditor.count; k++) {
                     NSString *aaaaa = self.debtFileModel.imgcreditor[k];
                     NSString *subStr = [aaaaa substringWithRange:NSMakeRange(1, aaaaa.length-2)];
                     NSString *str = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subStr];
                     NSURL *subUrl = [NSURL URLWithString:str];
-                    [self.imaDataArray addObject:subUrl];
+                    [imaShowArray addObject:subUrl];
                 }
-                [self showImages:self.imaDataArray];
+                [self showImages:imaShowArray];
             }
         }
             break;
@@ -164,14 +152,15 @@
             if (self.debtFileModel.imgpick == nil || [self.debtFileModel.imgpick isEqualToArray:@[@""]] || self.debtFileModel.imgpick.count == 0) {//未上传
                 [self showHint:@"未上传收款凭证"];
             }else{
+                NSMutableArray *imaShowArray = [NSMutableArray array];
                 for (NSInteger k=0; k<self.debtFileModel.imgpick.count; k++) {
                     NSString *aaaaa = self.debtFileModel.imgpick[k];
                     NSString *subStr = [aaaaa substringWithRange:NSMakeRange(1, aaaaa.length-2)];
                     NSString *str = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subStr];
                     NSURL *subUrl = [NSURL URLWithString:str];
-                    [self.imaDataArray addObject:subUrl];
+                    [imaShowArray addObject:subUrl];
                 }
-                [self showImages:self.imaDataArray];
+                [self showImages:imaShowArray];
             }
         }
             break;
@@ -179,14 +168,15 @@
             if (self.debtFileModel.imgshouju == nil || [self.debtFileModel.imgshouju isEqualToArray:@[@""]] || self.debtFileModel.imgshouju.count == 0) {//未上传
                 [self showHint:@"未上传收据"];
             }else{
+                NSMutableArray *imaShowArray = [NSMutableArray array];
                 for (NSInteger k=0; k<self.debtFileModel.imgshouju.count; k++) {
                     NSString *aaaaa = self.debtFileModel.imgshouju[k];
                     NSString *subStr = [aaaaa substringWithRange:NSMakeRange(1, aaaaa.length-2)];
                     NSString *str = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subStr];
                     NSURL *subUrl = [NSURL URLWithString:str];
-                    [self.imaDataArray addObject:subUrl];
+                    [imaShowArray addObject:subUrl];
                 }
-                [self showImages:self.imaDataArray];
+                [self showImages:imaShowArray];
             }
         }
             break;
@@ -194,14 +184,15 @@
             if (self.debtFileModel.imgbenjin == nil || [self.debtFileModel.imgbenjin isEqualToArray:@[@""]] || self.debtFileModel.imgbenjin.count == 0) {//未上传
                 [self showHint:@"未上传还款凭证"];
             }else{
+                NSMutableArray *imaShowArray = [NSMutableArray array];
                 for (NSInteger k=0; k<self.debtFileModel.imgbenjin.count; k++) {
                     NSString *aaaaa = self.debtFileModel.imgbenjin[k];
                     NSString *subStr = [aaaaa substringWithRange:NSMakeRange(1, aaaaa.length-2)];
                     NSString *str = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subStr];
                     NSURL *subUrl = [NSURL URLWithString:str];
-                    [self.imaDataArray addObject:subUrl];
+                    [imaShowArray addObject:subUrl];
                 }
-                [self showImages:self.imaDataArray];
+                [self showImages:imaShowArray];
             }
         }
             break;
@@ -221,9 +212,9 @@
                     NSString *subStr = [aaaaa substringWithRange:NSMakeRange(1, aaaaa.length-2)];
                     NSString *str = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subStr];
                     NSURL *subUrl = [NSURL URLWithString:str];
-                    [self.imaDataArray addObject:subUrl];
+                    [imaShowArray addObject:subUrl];
                 }
-                [self showImages:self.imaDataArray];
+                [self showImages:imaShowArray];
             }
         }
             break;
@@ -236,9 +227,9 @@
                     NSString *subStr = [aaaaa substringWithRange:NSMakeRange(1, aaaaa.length-2)];
                     NSString *str = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subStr];
                     NSURL *subUrl = [NSURL URLWithString:str];
-                    [self.imaDataArray addObject:subUrl];
+                    [imaShowArray addObject:subUrl];
                 }
-                [self showImages:self.imaDataArray];
+                [self showImages:imaShowArray];
             }
         }
             break;
@@ -251,9 +242,9 @@
                     NSString *subStr = [aaaaa substringWithRange:NSMakeRange(1, aaaaa.length-2)];
                     NSString *str = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subStr];
                     NSURL *subUrl = [NSURL URLWithString:str];
-                    [self.imaDataArray addObject:subUrl];
+                    [imaShowArray addObject:subUrl];
                 }
-                [self showImages:self.imaDataArray];
+                [self showImages:imaShowArray];
             }
         }
             break;
@@ -266,9 +257,9 @@
                     NSString *subStr = [aaaaa substringWithRange:NSMakeRange(1, aaaaa.length-2)];
                     NSString *str = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subStr];
                     NSURL *subUrl = [NSURL URLWithString:str];
-                    [self.imaDataArray addObject:subUrl];
+                    [imaShowArray addObject:subUrl];
                 }
-                [self showImages:self.imaDataArray];
+                [self showImages:imaShowArray];
             }
         }
             break;
@@ -281,9 +272,9 @@
                     NSString *subStr = [aaaaa substringWithRange:NSMakeRange(1, aaaaa.length-2)];
                     NSString *str = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subStr];
                     NSURL *subUrl = [NSURL URLWithString:str];
-                    [self.imaDataArray addObject:subUrl];
+                    [imaShowArray addObject:subUrl];
                 }
-                [self showImages:self.imaDataArray];
+                [self showImages:imaShowArray];
             }
         }
             break;
@@ -296,9 +287,9 @@
                     NSString *subStr = [aaaaa substringWithRange:NSMakeRange(1, aaaaa.length-2)];
                     NSString *str = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,subStr];
                     NSURL *subUrl = [NSURL URLWithString:str];
-                    [self.imaDataArray addObject:subUrl];
+                    [imaShowArray addObject:subUrl];
                 }
-                [self showImages:self.imaDataArray];
+                [self showImages:imaShowArray];
             }
         }
             break;

@@ -29,6 +29,8 @@
 @property (nonatomic,strong) NSMutableDictionary *lawDataDictionary;
 @property (nonatomic,strong) NSString *imgFileIdString1;
 @property (nonatomic,strong) NSString *imgFileIdString2;
+@property (nonatomic,strong) NSString *imgFileUrlString1;
+@property (nonatomic,strong) NSString *imgFileUrlString2;
 
 @end
 
@@ -333,17 +335,28 @@
 {
     [self.view endEditing:YES];
     
-    if (self.imgFileIdString1 && self.imgFileIdString2) {
-        NSString *imgFileIdStr = [NSString stringWithFormat:@"'%@,%@'",self.imgFileIdString1,self.imgFileIdString2];
+    if (self.imgFileIdString1 && self.imgFileIdString2) {//两张都修改了
+        NSString *imgFileIdStr = [NSString stringWithFormat:@"%@,%@",self.imgFileIdString1,self.imgFileIdString2];
         [self.lawDataDictionary setObject:imgFileIdStr forKey:@"cardimgimg"];
-    }else if(self.imgFileIdString1 || self.imgFileIdString2){
-        NSString *img1;
-        NSString *img2 = @"";
-        for (int i=0; i<self.responseModel.certification.img.count; i++) {
-            img1 = self.responseModel.certification.img[i];
-            img2 = [NSString stringWithFormat:@"'%@,%@'",img1,img2];
-        }
-        [self.lawDataDictionary setObject:img2 forKey:@"cardimgimg"];
+        NSString *imgFileUrlStr = [NSString stringWithFormat:@"'%@','%@'",self.imgFileUrlString1,self.imgFileUrlString2];
+        [self.lawDataDictionary setObject:imgFileUrlStr forKey:@"cardimg"];
+    }else if(!self.imgFileIdString1 && !self.imgFileIdString2){//两张都未修改
+        [self.lawDataDictionary setObject:self.responseModel.certification.cardimgimg forKey:@"cardimgimg"];
+        [self.lawDataDictionary setObject:self.responseModel.certification.cardimg forKey:@"cardimg"];
+    }else if (self.imgFileIdString1 && !self.imgFileIdString2){//修改第一张
+        NSArray *imgArr2 = [ImageModel objectArrayWithKeyValuesArray:self.responseModel.certification.img];
+        ImageModel *imgModel2 = imgArr2[1];
+        NSString *imgFileIdStr2 = [NSString stringWithFormat:@"%@,%@",self.imgFileIdString1,imgModel2.idString];
+        [self.lawDataDictionary setObject:imgFileIdStr2 forKey:@"cardimgimg"];
+        NSString *imgFileUrlStr2 = [NSString stringWithFormat:@"'%@','%@'",self.imgFileUrlString1,imgModel2.file];
+        [self.lawDataDictionary setObject:imgFileUrlStr2 forKey:@"cardimg"];
+    }else if (!self.imgFileIdString1 && self.imgFileIdString2){//修改第二张
+        NSArray *imgArr1 = [ImageModel objectArrayWithKeyValuesArray:self.responseModel.certification.img];
+        ImageModel *imgModel1 = imgArr1[0];
+        NSString *imgFileIdStr1 = [NSString stringWithFormat:@"%@,%@",imgModel1.idString,self.imgFileIdString2];
+        [self.lawDataDictionary setObject:imgFileIdStr1 forKey:@"cardimgimg"];
+        NSString *imgFileUrlStr1 = [NSString stringWithFormat:@"'%@','%@'",imgModel1.file,self.imgFileUrlString2];
+        [self.lawDataDictionary setObject:imgFileUrlStr1 forKey:@"cardimg"];
     }
 
     NSString *lawAuString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kAuthenString];

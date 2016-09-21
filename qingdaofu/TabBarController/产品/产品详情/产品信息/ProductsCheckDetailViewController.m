@@ -88,15 +88,14 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     [cell.debtEditButton setHidden:YES];
 
-    DebtModel *deModel = self.listArray[indexPath.section];
+    NSArray *deArrays = [DebtModel objectArrayWithKeyValuesArray:self.listArray];
+    DebtModel *deModel = deArrays[indexPath.section];
     
     NSString *name = @"";
     if ([self.categoryString integerValue] == 1) {//债权人信息
-        NSString *nn = [NSString stringWithFormat:@"%@",deModel.creditorname];
-        name = [NSString getValidStringFromString:nn];
+        name = [NSString getValidStringFromString:deModel.creditorname];
     }else{//债务人信息
-        NSString *nnn = [NSString stringWithFormat:@"%@",deModel.borrowingname];
-        name = [NSString getValidStringFromString:nnn];
+        name = [NSString getValidStringFromString:deModel.borrowingname];
     }
     NSMutableAttributedString *nameStr = [cell.debtNameLabel setAttributeString:@"姓        名    " withColor:kBlackColor andSecond:name withColor:kLightGrayColor withFont:14];
     [cell.debtNameLabel setAttributedText:nameStr];

@@ -42,9 +42,9 @@
 @property (nonatomic,strong) NSMutableDictionary *suitDataDictionary;
 @property (nonatomic,strong) NSString *rowString;    //债权类型
 @property (nonatomic,strong) NSString *number;//1.抵押物地址，2.应收帐款，3.机动车抵押，4.无抵押
-@property (nonatomic,strong) NSMutableArray *creditorInfos;
+@property (nonatomic,strong) NSMutableArray *creditorInfo;
 @property (nonatomic,strong) NSMutableArray *borrowinginfos;
-@property (nonatomic,strong) NSMutableDictionary *creditorfiles;
+@property (nonatomic,strong) NSMutableDictionary *creditorfile;
 //省市区
 @property (nonatomic,strong) NSDictionary *provinceDictionary;
 @property (nonatomic,strong) NSDictionary *cityDcitionary;
@@ -303,53 +303,53 @@
     return _sHolderArray;
 }
 
-- (NSMutableArray *)creditorInfos
+- (NSMutableArray *)creditorInfo
 {
-    if (!_creditorInfos) {
-        _creditorInfos = [NSMutableArray array];
-        for (DebtModel *model in self.suResponse.creditorinfos) {
-            [_creditorInfos addObject:model];
+    if (!_creditorInfo) {
+        _creditorInfo = [NSMutableArray array];
+        for (DebtModel *model in self.suResponse.creditorinfo) {
+            [_creditorInfo addObject:model];
         }
     }
-    return _creditorInfos;
+    return _creditorInfo;
 }
 
 - (NSMutableArray *)borrowinginfos
 {
     if (!_borrowinginfos) {
         _borrowinginfos = [NSMutableArray array];
-        for (DebtModel *model in self.suResponse.borrowinginfos) {
+        for (DebtModel *model in self.suResponse.borrowinginfo) {
             [_borrowinginfos addObject:model];
         }
     }
     return _borrowinginfos;
 }
 
-- (NSMutableDictionary *)creditorfiles
+- (NSMutableDictionary *)creditorfile
 {
-    if (!_creditorfiles) {
-        _creditorfiles = [NSMutableDictionary dictionary];
+    if (!_creditorfile) {
+        _creditorfile = [NSMutableDictionary dictionary];
         
-        if (self.suResponse.creditorfiles.imgnotarization) {
-            [_creditorfiles setObject:self.suResponse.creditorfiles.imgnotarization forKey:@"imgnotarization"];
+        if (self.suResponse.creditorfile.imgnotarization) {
+            [_creditorfile setObject:self.suResponse.creditorfile.imgnotarization forKey:@"imgnotarization"];
         }
-        if (self.suResponse.creditorfiles.imgcontract) {
-            [_creditorfiles setObject:self.suResponse.creditorfiles.imgcontract forKey:@"imgcontract"];
+        if (self.suResponse.creditorfile.imgcontract) {
+            [_creditorfile setObject:self.suResponse.creditorfile.imgcontract forKey:@"imgcontract"];
         }
-        if (self.suResponse.creditorfiles.imgcreditor) {
-            [_creditorfiles setObject:self.suResponse.creditorfiles.imgcreditor forKey:@"imgcreditor"];
+        if (self.suResponse.creditorfile.imgcreditor) {
+            [_creditorfile setObject:self.suResponse.creditorfile.imgcreditor forKey:@"imgcreditor"];
         }
-        if (self.suResponse.creditorfiles.imgpick) {
-            [_creditorfiles setObject:self.suResponse.creditorfiles.imgpick forKey:@"imgpick"];
+        if (self.suResponse.creditorfile.imgpick) {
+            [_creditorfile setObject:self.suResponse.creditorfile.imgpick forKey:@"imgpick"];
         }
-        if (self.suResponse.creditorfiles.imgshouju) {
-            [_creditorfiles setObject:self.suResponse.creditorfiles.imgbenjin forKey:@"imgshouju"];
+        if (self.suResponse.creditorfile.imgshouju) {
+            [_creditorfile setObject:self.suResponse.creditorfile.imgbenjin forKey:@"imgshouju"];
         }
-        if (self.suResponse.creditorfiles.imgbenjin) {
-            [_creditorfiles setObject:self.suResponse.creditorfiles.imgshouju forKey:@"imgbenjin"];
+        if (self.suResponse.creditorfile.imgbenjin) {
+            [_creditorfile setObject:self.suResponse.creditorfile.imgshouju forKey:@"imgbenjin"];
         }
     }
-    return _creditorfiles;
+    return _creditorfile;
 }
 
 - (NSMutableDictionary *)addressTestDict
@@ -925,11 +925,6 @@
                     
                     NSString *carStr = [NSString stringWithFormat:@"%@%@%@",brand,audi,license];
                     [weakself.suitDataDictionary setValue:carStr forKey:@"car"];
-                    
-//                    [weakself.suitDataDictionary setValue:brand forKey:@"carbrandstr"];
-//                    [weakself.suitDataDictionary setValue:audi forKey:@"audistr"];
-//                    [weakself.suitDataDictionary setValue:license forKey:@"licenseplatestr"];
-                    
                     AgentCell *cell = [tableView cellForRowAtIndexPath:indexPath];
                     cell.agentTextField.text = [NSString stringWithFormat:@"%@",carStr];
                 }];
@@ -978,21 +973,21 @@
                 break;
             case 10:{//债权文件
                 UploadFilesViewController *uploadFilesVC = [[UploadFilesViewController alloc] init];
-                uploadFilesVC.filesDic = self.creditorfiles;
+                uploadFilesVC.filesDic = self.creditorfile;
                 uploadFilesVC.tagString = self.tagString;
                 [self.navigationController pushViewController:uploadFilesVC animated:YES];
                 
                 QDFWeakSelf;
                 [uploadFilesVC setChooseImages:^(NSDictionary *imageDic) {
                     weakself.suitDataDictionary = [NSMutableDictionary dictionaryWithDictionary:imageDic];
-                    weakself.creditorfiles = [NSMutableDictionary dictionaryWithDictionary:imageDic];
+                    weakself.creditorfile = [NSMutableDictionary dictionaryWithDictionary:imageDic];
                 }];
             }
                 break;
             case 11:{//债权人信息
                 DebtCreditMessageViewController *debtCreditMessageVC = [[DebtCreditMessageViewController alloc] init];
                 debtCreditMessageVC.categoryString = @"1";
-                debtCreditMessageVC.debtArray = self.creditorInfos;
+                debtCreditMessageVC.debtArray = self.creditorInfo;
                 debtCreditMessageVC.tagString = self.tagString;
                 [self.navigationController pushViewController:debtCreditMessageVC animated:YES];
                 
@@ -1002,14 +997,15 @@
                     NSString *qqq = @"";
                     NSString *endStr = @"";
                     for (NSInteger i=0; i<arrays.count; i++) {
-                        DebtModel *model = arrays[i];
+                        NSArray *sqsq = [DebtModel objectArrayWithKeyValuesArray:arrays];
+                        DebtModel *model = sqsq[i];
                         qqq = [NSString stringWithFormat:@"creditorname-%ld=%@,creditormobile-%ld=%@,creditorcardcode-%ld=%@,creditoraddress-%ld=%@,creditorcardimage-%ld=%@",(long)i,model.creditorname,(long)i,model.creditormobile,(long)i,model.creditorcardcode,(long)i,model.creditoraddress,(long)i,model.creditorcardimages];
                         
                         endStr = [NSString stringWithFormat:@"%@,%@",endStr,qqq];
                     }
                     
-                    weakself.creditorInfos = [NSMutableArray arrayWithArray:arrays];
-                    [weakself.suitDataDictionary setValue:endStr forKey:@"creditorinfos"];
+                    weakself.creditorInfo = [NSMutableArray arrayWithArray:arrays];
+                    [weakself.suitDataDictionary setValue:endStr forKey:@"creditorinfo"];
                 }];
             }
                 break;
@@ -1025,12 +1021,12 @@
                     NSString *ppp = @"";
                     NSString *endStr = @"";
                     for (NSInteger i=0; i<arrays.count; i++) {
-                        DebtModel *model = arrays[i];
-                        ppp = [NSString stringWithFormat:@"borrowingname-%ld=%@,borrowingmobile-%ld=%@,borrowingaddress-%ld=%@,borrowingcardcode-%ld=%@,borrowingcardimage-%ld=%@",(long)i,model.borrowingname,(long)i,model.borrowingmobile,(long)i,model.borrowingaddress,(long)i,model.borrowingcardcode,(long)i,model.borrowingcardimages];
+                        NSArray *sqsq = [DebtModel objectArrayWithKeyValuesArray:arrays];
+                        DebtModel *model = sqsq[i];                        ppp = [NSString stringWithFormat:@"borrowingname-%ld=%@,borrowingmobile-%ld=%@,borrowingaddress-%ld=%@,borrowingcardcode-%ld=%@,borrowingcardimage-%ld=%@",(long)i,model.borrowingname,(long)i,model.borrowingmobile,(long)i,model.borrowingaddress,(long)i,model.borrowingcardcode,(long)i,model.borrowingcardimages];
                         endStr = [NSString stringWithFormat:@"%@,%@",endStr,ppp];
                     }
                     weakself.borrowinginfos = [NSMutableArray arrayWithArray:arrays];
-                    [weakself.suitDataDictionary setValue:endStr forKey:@"borrowinginfos"];
+                    [weakself.suitDataDictionary setValue:endStr forKey:@"borrowinginfo"];
                 }];
             }
                 break;

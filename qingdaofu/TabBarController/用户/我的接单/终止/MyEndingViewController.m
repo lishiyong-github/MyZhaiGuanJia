@@ -409,9 +409,12 @@
 
 - (void)deleteTheProducOfOrderEnd
 {
+    PublishingResponse *respofn;
+    if (self.endArray.count > 0) {
+        respofn = self.endArray[0];
+    }
     NSString *deletePubString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kDeleteProductOfMyReleaseString];
-    
-    NSDictionary *params = @{@"id" : self.deleteId,
+    NSDictionary *params = @{@"id" : respofn.username.deleteId,
                              @"category" : self.categaryString,
                              @"token" : [self getValidateToken],
                              @"type" : @"1"

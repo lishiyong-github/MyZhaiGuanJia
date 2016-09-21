@@ -38,6 +38,15 @@
     [self.view setNeedsUpdateConstraints];
 }
 
+- (void)back
+{
+    UINavigationController *nav = self.navigationController;
+    [nav popViewControllerAnimated:NO];
+    [nav popViewControllerAnimated:NO];
+    [nav popViewControllerAnimated:NO];
+    [nav popViewControllerAnimated:NO];
+}
+
 - (void)updateViewConstraints
 {
     if (!self.didSetupConstraints) {

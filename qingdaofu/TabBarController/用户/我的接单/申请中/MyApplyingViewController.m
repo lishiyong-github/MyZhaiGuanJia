@@ -186,7 +186,7 @@
         
         UserNameModel *userNameModel = responseModel.username;
         
-        NSString *nameStr = [NSString getValidStringFromString:userNameModel.jusername toString:@"未认证"];
+        NSString *nameStr = [NSString getValidStringFromString:userNameModel.username toString:@"未认证"];
         NSString *checkStr = [NSString stringWithFormat:@"发布方：%@",nameStr];
         [cell.userNameButton setTitle:checkStr forState:0];
         [cell.userActionButton setTitle:@"查看详情  " forState:0];
@@ -592,11 +592,15 @@
 
 - (void)cancelTheProductApply
 {
+    PublishingResponse *respofn;
+    if (self.myApplyArray.count > 0) {
+        respofn = self.myApplyArray[0];
+    }
+    
     NSString *cancelString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kCancelProductOfMyOrderString];
-    NSDictionary *params = @{@"id" : self.cancelIdString,
+    NSDictionary *params = @{@"id" : respofn.username.deleteId,
                              @"token" : [self getValidateToken]
                              };
-    
     QDFWeakSelf;
     [self requestDataPostWithString:cancelString params:params successBlock:^(id responseObject) {
         

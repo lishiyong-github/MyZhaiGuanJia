@@ -17,6 +17,8 @@
 #import "BaseCommitView.h"
 #import "PersonCell.h"
 
+#import "ImageModel.h"
+
 #import "UIButton+WebCache.h"
 #import "UIViewController+MutipleImageChoice.h"
 
@@ -29,6 +31,8 @@
 @property (nonatomic,strong) NSMutableDictionary *comDataDictionary;
 @property (nonatomic,strong) NSString *imgFileIdString1;
 @property (nonatomic,strong) NSString *imgFileIdString2;
+@property (nonatomic,strong) NSString *imgFileUrlString1;
+@property (nonatomic,strong) NSString *imgFileUrlString2;
 
 @end
 
@@ -142,21 +146,24 @@
         if (self.responseModel.certification.img.count == 0) {
             [cell.pictureButton1 setImage:[UIImage imageNamed:@"upload_positive_image"] forState:0];
             [cell.pictureButton2 setImage:[UIImage imageNamed:@"upload_opposite_image"] forState:0];
-        }else if (self.responseModel.certification.img.count == 1){
-            NSString *newimage1 = [self.responseModel.certification.img[0] substringWithRange:NSMakeRange(1, [self.responseModel.certification.img[0] length])];
-            NSString *newimageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,newimage1];
+        }else if (self.responseModel.certification.img.count == 1){            NSArray *imgArray = [ImageModel objectArrayWithKeyValuesArray:self.responseModel.certification.img];
+            ImageModel *imageModel1 = imgArray[0];
+            NSString *qooqo = [NSString stringWithFormat:@"%@",imageModel1.file];
+            NSString *newimageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,qooqo];
             NSURL *newimageUrl1 = [NSURL URLWithString:newimageStr1];
             [cell.pictureButton1 sd_setImageWithURL:newimageUrl1 forState:0 placeholderImage:[UIImage imageNamed:@"upload_opposite_image"]];
             [cell.pictureButton2 setImage:[UIImage imageNamed:@"upload_opposite_image"] forState:0];
         }else if(self.responseModel.certification.img.count >= 2){
-            NSString *newimage1 = [self.responseModel.certification.img[0] substringWithRange:NSMakeRange(1, [self.responseModel.certification.img[0] length])];
-            NSString *newimageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,newimage1];
+            NSArray *imgArray1 = [ImageModel objectArrayWithKeyValuesArray:self.responseModel.certification.img];
+            ImageModel *imageModel1 = imgArray1[0];
+            NSString *newimageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imageModel1.file];
             NSURL *newimageUrl1 = [NSURL URLWithString:newimageStr1];
             [cell.pictureButton1 sd_setImageWithURL:newimageUrl1 forState:0 placeholderImage:[UIImage imageNamed:@"upload_opposite_image"]];
             [cell.pictureButton2 setImage:[UIImage imageNamed:@"upload_opposite_image"] forState:0];
             
-            NSString *newimage2 = [self.responseModel.certification.img[1] substringWithRange:NSMakeRange(1, [self.responseModel.certification.img[1] length])];
-            NSString *newimageStr2 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,newimage2];
+            NSArray *imgArray2 = [ImageModel objectArrayWithKeyValuesArray:self.responseModel.certification.img];
+            ImageModel *imageModel2 = imgArray2[1];
+            NSString *newimageStr2 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imageModel2.file];
             NSURL *newimageUrl2 = [NSURL URLWithString:newimageStr2];
             [cell.pictureButton2 sd_setImageWithURL:newimageUrl2 forState:0 placeholderImage:[UIImage imageNamed:@"upload_opposite_image"]];
         }
@@ -173,6 +180,7 @@
                         if ([imgModel.code isEqualToString:@"0000"]) {
                             [btn setImage:[UIImage imageWithContentsOfFile:images[0]] forState:0];
                             weakself.imgFileIdString1 = imgModel.fileid;
+                            weakself.imgFileUrlString1 = imgModel.url;
                         }
                     }];
                 }
@@ -181,7 +189,6 @@
         
         [cell.pictureButton2 addAction:^(UIButton *btn) {//反面照
             [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
-                
                 if (images.count > 0) {
                     NSData *imgData = [NSData dataWithContentsOfFile:images[0]];
                     NSString *imgStr = [NSString stringWithFormat:@"%@",imgData];
@@ -191,6 +198,7 @@
                         if ([imgModel.code isEqualToString:@"0000"]) {
                             [btn setImage:[UIImage imageWithContentsOfFile:images[0]] forState:0];
                             weakself.imgFileIdString2 = imgModel.fileid;
+                            weakself.imgFileUrlString2 = imgModel.url;
                         }
                     }];
                 }
@@ -374,17 +382,28 @@
 {
     [self.view endEditing:YES];
     
-    if (self.imgFileIdString1 && self.imgFileIdString2) {
-        NSString *imgFileIdStr = [NSString stringWithFormat:@"'%@,%@'",self.imgFileIdString1,self.imgFileIdString2];
+    if (self.imgFileIdString1 && self.imgFileIdString2) {//两张都修改了
+        NSString *imgFileIdStr = [NSString stringWithFormat:@"%@,%@",self.imgFileIdString1,self.imgFileIdString2];
         [self.comDataDictionary setObject:imgFileIdStr forKey:@"cardimgimg"];
-    }else if(self.imgFileIdString1 || self.imgFileIdString2){
-        NSString *img1;
-        NSString *img2 = @"";
-        for (int i=0; i<self.responseModel.certification.img.count; i++) {
-            img1 = self.responseModel.certification.img[i];
-            img2 = [NSString stringWithFormat:@"'%@,%@'",img1,img2];
-        }
-        [self.comDataDictionary setObject:img2 forKey:@"cardimgimg"];
+        NSString *imgFileUrlStr = [NSString stringWithFormat:@"'%@','%@'",self.imgFileUrlString1,self.imgFileUrlString2];
+        [self.comDataDictionary setObject:imgFileUrlStr forKey:@"cardimg"];
+    }else if(!self.imgFileIdString1 && !self.imgFileIdString2){//两张都未修改
+        [self.comDataDictionary setObject:self.responseModel.certification.cardimgimg forKey:@"cardimgimg"];
+        [self.comDataDictionary setObject:self.responseModel.certification.cardimg forKey:@"cardimg"];
+    }else if (self.imgFileIdString1 && !self.imgFileIdString2){//修改第一张
+        NSArray *imgArr2 = [ImageModel objectArrayWithKeyValuesArray:self.responseModel.certification.img];
+        ImageModel *imgModel2 = imgArr2[1];
+        NSString *imgFileIdStr2 = [NSString stringWithFormat:@"%@,%@",self.imgFileIdString1,imgModel2.idString];
+        [self.comDataDictionary setObject:imgFileIdStr2 forKey:@"cardimgimg"];
+        NSString *imgFileUrlStr2 = [NSString stringWithFormat:@"'%@','%@'",self.imgFileUrlString1,imgModel2.file];
+        [self.comDataDictionary setObject:imgFileUrlStr2 forKey:@"cardimg"];
+    }else if (!self.imgFileIdString1 && self.imgFileIdString2){//修改第二张
+        NSArray *imgArr1 = [ImageModel objectArrayWithKeyValuesArray:self.responseModel.certification.img];
+        ImageModel *imgModel1 = imgArr1[0];
+        NSString *imgFileIdStr1 = [NSString stringWithFormat:@"%@,%@",imgModel1.idString,self.imgFileIdString2];
+        [self.comDataDictionary setObject:imgFileIdStr1 forKey:@"cardimgimg"];
+        NSString *imgFileUrlStr1 = [NSString stringWithFormat:@"'%@','%@'",imgModel1.file,self.imgFileUrlString2];
+        [self.comDataDictionary setObject:imgFileUrlStr1 forKey:@"cardimg"];
     }
     
     NSString *comAuString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kAuthenString];
