@@ -81,7 +81,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == 1) {
-        return 5;
+        return 7;
     }else if (section == 2){
         return 5;
     }
@@ -194,7 +194,13 @@
         cell.userActionButton.titleLabel.font = kFirstFont;
         [cell.userActionButton setTitleColor:kGrayColor forState:0];
 
-        NSArray *additionArray = @[@"保全金额",@"管辖法院",@"取函方式",@"收获地址"];
+        NSArray *additionArray;
+        if ([powerModel.type integerValue] == 1) {
+            additionArray =  @[@"保全金额",@"管辖法院",@"案件类型",@"联系方式",@"取函方式",@"取函地址"];;
+        }else if ([powerModel.type integerValue] == 2){
+            additionArray =  @[@"保全金额",@"管辖法院",@"案件类型",@"联系方式",@"取函方式",@"收获地址"];
+        }
+        
         [cell.userNameButton setTitle:additionArray[indexPath.row-1] forState:0];
         
         if (indexPath.row == 1) {
@@ -204,12 +210,16 @@
         }else if (indexPath.row == 2){
             [cell.userActionButton setTitle:powerModel.fayuan_name forState:0];
         }else if (indexPath.row == 3){
+            [cell.userActionButton setTitle:powerModel.category forState:0];
+        }else if (indexPath.row == 4){
+            [cell.userActionButton setTitle:powerModel.phone forState:0];
+        }else if (indexPath.row == 5){
             if ([powerModel.type integerValue] == 1) {
                 [cell.userActionButton setTitle:@"自取" forState:0];
             }else if ([powerModel.type integerValue] == 2){
                 [cell.userActionButton setTitle:@"快递" forState:0];
             }
-        }else if (indexPath.row == 4){
+        }else if (indexPath.row == 6){
             if ([powerModel.type integerValue] == 1) {
                 [cell.userNameButton setTitle:@"取函地址" forState:0];
                 [cell.userActionButton setTitle:powerModel.fayuan_address forState:0];
@@ -350,7 +360,8 @@
     
     QDFWeakSelf;
     [self requestDataPostWithString:detailPowerString params:params successBlock:^(id responseObject) {
-                
+        
+        NSDictionary *apapa = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         PowerDetailModel *pdModel = [PowerDetailModel objectWithKeyValues:responseObject];
         if ([pdModel.code isEqualToString:@"0000"]) {
             [weakself.powerDetalArray removeAllObjects];

@@ -83,7 +83,7 @@
 {
     if (self.appDetailArray.count > 0) {
         if (section == 1) {
-            return 6;
+            return 8;
         }else if (section == 2){
             return 5;
         }
@@ -201,9 +201,9 @@
         
         NSArray *additionArray;
         if ([appliModel.type integerValue] == 1) {
-            additionArray = @[@"保函金额",@"管辖法院",@"案        号",@"取函方式",@"取函地址"];
+            additionArray = @[@"保函金额",@"管辖法院",@"案件类型",@"案        号",@"联系方式",@"取函方式",@"取函地址"];
         }else if ([appliModel.type integerValue] == 2){
-            additionArray = @[@"保函金额",@"管辖法院",@"案        号",@"快递方式",@"收获地址"];
+            additionArray = @[@"保函金额",@"管辖法院",@"案件类型",@"案        号",@"联系方式",@"快递方式",@"收获地址"];
         }
         [cell.userNameButton setTitle:additionArray[indexPath.row-1] forState:0];
         
@@ -214,12 +214,16 @@
         }else if (indexPath.row == 2){
             [cell.userActionButton setTitle:appliModel.fayuan_name forState:0];
         }else if (indexPath.row == 3){
-            [cell.userActionButton setTitle:appliModel.anhao forState:0];
+            [cell.userActionButton setTitle:appliModel.category forState:0];
         }else if (indexPath.row == 4){
+            [cell.userActionButton setTitle:appliModel.anhao forState:0];
+        }else if (indexPath.row == 5){
+            [cell.userActionButton setTitle:appliModel.phone forState:0];
+        }else if (indexPath.row == 6){
             NSArray *typeArr = @[@"取函",@"快递"];
             NSInteger typeInt = [appliModel.type integerValue];
             [cell.userActionButton setTitle:typeArr[typeInt-1] forState:0];
-        }else if (indexPath.row == 5){
+        }else if (indexPath.row == 7){
             if ([appliModel.type integerValue] == 1) {
                 [cell.userActionButton setTitle:appliModel.fayuan_address forState:0];
             }else if ([appliModel.type integerValue] == 2){

@@ -277,7 +277,6 @@
                 
                 if (testArr.count < 4) {
                     [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
-                        
                         if (images.count > 0) {
                             NSData *imgData = [NSData dataWithContentsOfFile:images[0]];
                             NSString *imgString = [NSString stringWithFormat:@"%@",imgData];
@@ -311,7 +310,6 @@
                             }];
                         }
                     }];
-                        
                 }else{
                     [weakself showHint:@"最多4张"];
                 }
@@ -528,7 +526,7 @@
         BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
         
         if ([stepString integerValue] == 1) {
-            if ([baseModel.msg containsString:@"起诉书"]) {
+            if ([baseModel.msg containsString:@"上传"]) {
                 [weakself.guaranteeFirstView setHidden:YES];
                 [weakself.guaranteeSecondView setHidden:NO];
                 

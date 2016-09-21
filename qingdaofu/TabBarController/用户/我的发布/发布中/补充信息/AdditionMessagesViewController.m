@@ -164,7 +164,13 @@
         commissionperiod = [NSString stringWithFormat:@"%@个月",commissionperiod];
     }
     NSString *paidmoney = [NSString getValidStringFromString:messageModel.paidmoney];  //已付本金
+    if (![paidmoney isEqualToString:@"暂无"]) {
+        paidmoney = [NSString stringWithFormat:@"%@元",paidmoney];
+    }
     NSString *interestpaid = [NSString getValidStringFromString:messageModel.interestpaid];  //已付利息
+    if (![interestpaid isEqualToString:@"暂无"]) {
+        interestpaid = [NSString stringWithFormat:@"%@元",interestpaid];
+    }
     NSString *performancecontract = [NSString getValidStringFromString:messageModel.performancecontract];  //合同履行地
     
     if (messageModel.repaymethod) {
@@ -205,10 +211,10 @@
     NSArray *dataList1;
     NSArray *dataList2;
     if ([messageModel.loan_type integerValue] == 4) {
-        dataList1 = @[@"借款本金",@"费用类型",@"代理费用",@"债权类型",@"借款利率",@"借款期限",@"还款方式",@"债务人主体",@"逾期日期",@"委托代理期限",@"已付本金(元)",@"已付利息(元)",@"合同履行地",@"债权文件",@"债权人信息",@"债务人信息"];
+        dataList1 = @[@"借款本金",@"费用类型",@"代理费用",@"债权类型",@"借款利率",@"借款期限",@"还款方式",@"债务人主体",@"逾期日期",@"委托代理期限",@"已付本金",@"已付利息",@"合同履行地",@"债权文件",@"债权人信息",@"债务人信息"];
         dataList2 = @[money,agencycommissiontype,agencycommission,loanType,rate,term,repaymethod,obligor,start,commissionperiod,paidmoney,interestpaid,performancecontract,creditorfile,creditorinfo,borrowinginfo];
     }else{
-        dataList1 = @[@"借款本金",@"费用类型",@"代理费用",@"债权类型",loanType,@"借款利率",@"借款期限",@"还款方式",@"债务人主体",@"逾期日期",@"委托代理期限",@"已付本金(元)",@"已付利息(元)",@"合同履行地",@"债权文件",@"债权人信息",@"债务人信息"];
+        dataList1 = @[@"借款本金",@"费用类型",@"代理费用",@"债权类型",loanType,@"借款利率",@"借款期限",@"还款方式",@"债务人主体",@"逾期日期",@"委托代理期限",@"已付本金",@"已付利息",@"合同履行地",@"债权文件",@"债权人信息",@"债务人信息"];
         dataList2 = @[money,agencycommissiontype,agencycommission,loanType,loanString,rate,term,repaymethod,obligor,start,commissionperiod,paidmoney,interestpaid,performancecontract,creditorfile,creditorinfo,borrowinginfo];
     }
     [cell.userNameButton setTitle:dataList1[indexPath.row] forState:0];

@@ -12,7 +12,7 @@
 
 @property (nonatomic,copy) NSString *address;  //收获地址
 @property (nonatomic,copy) NSString *anhao;  //案号
-@property (nonatomic,copy) NSString *category; //案件类型
+@property (nonatomic,copy) NSString *category; //案件类型（汉字）
 @property (nonatomic,copy) NSString *area_id;
 @property (nonatomic,copy) NSString *area_name;
 @property (nonatomic,copy) NSString *area_pid;

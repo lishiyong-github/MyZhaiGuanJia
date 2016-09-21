@@ -10,6 +10,12 @@
 
 @interface PowerModel : NSObject
 
+@property (nonatomic,copy) NSString *area_id;  //保全金额
+@property (nonatomic,copy) NSString *area_pid;  //保全金额
+@property (nonatomic,copy) NSString *cardNo;  //案号
+@property (nonatomic,copy) NSString *phone;  //电话
+@property (nonatomic,copy) NSString *category;  //案件类型
+
 @property (nonatomic,copy) NSString *account;  //保全金额
 @property (nonatomic,copy) NSString *address;  //快递地址
 @property (nonatomic,copy) NSString *create_time;//申请时间
