@@ -35,6 +35,11 @@
 
 @implementation HousePayingViewController
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [WXApi handleOpenURL:nil delegate:self];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"支付中";
@@ -232,6 +237,8 @@
         if ([payResponse.code isEqualToString:@"0000"]) {
             NSLog(@"调起微信支付");
             
+             [WXApi handleOpenURL:nil delegate:self];
+            
             PayModel *payModel = payResponse.paydata;
             // 调起微信支付
             PayReq *reqPay = [[PayReq alloc] init];
@@ -252,6 +259,19 @@
     } andFailBlock:^(NSError *error) {
         
     }];
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+    BOOL success = [WXApi handleOpenURL:url delegate:self];
+    
+    if (success) {
+        NSLog(@"成功");
+    }else{
+        NSLog(@"失败");
+    }
+    
+    return  success;
 }
 
 //微信支付成功或者失败回调

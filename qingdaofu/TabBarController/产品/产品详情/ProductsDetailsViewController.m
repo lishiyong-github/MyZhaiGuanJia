@@ -808,16 +808,12 @@
             
             if ([dataModel.loan_type intValue] == 1) {//房产抵押
                 NSString *mortorage_communityStr1 = [NSString getValidStringFromString:respModel.add.address];
-//                NSString *seatmortgageStr1 = [NSString getValidStringFromString:dataModel.seatmortgage];
-                
                 weakself.messageArray1 = @[@"借款本金",@"费用类型",@"代理费用",@"债权类型",@"抵押物地址"];
                 weakself.messageArray11 = @[moneyStr1,agencycommissiontypeStr,agencycommissionStr1,loan_typeStr,mortorage_communityStr1];
             }else if ([dataModel.loan_type intValue] == 3){//机动车抵押
                 NSArray *licenceArr = @[@"沪牌",@"非沪牌"];
                 NSString *licenseStr1 = licenceArr[[dataModel.licenseplate integerValue] -1];
                 NSString *carsStr = [NSString stringWithFormat:@"%@%@/%@",dataModel.carbrand,dataModel.audi,licenseStr1];
-                
-//                NSString *carStr1 = [NSString getValidStringFromString:dataModel.car];
                 weakself.messageArray1 = @[@"借款本金",@"费用类型",@"代理费用",@"债权类型",@"机动车抵押"];
                 weakself.messageArray11 = @[moneyStr1,agencycommissiontypeStr,agencycommissionStr1,loan_typeStr,carsStr];
             }else if ([dataModel.loan_type intValue] == 2){//应收帐款
@@ -937,11 +933,13 @@
                 weakself.certificationArray11 = @[@"已认证公司",certificationModel.name,certificationModel.cardno,definedStr,certificationModel.contact,certificationModel.mobile,emailQ,addressQ,enterprisewebsiteQ,casedescQ];
                 weakself.casedesc = certificationModel.casedesc;
             }
+            
+            [weakself applicationForOrdersStates];
+            
         }else{
             [weakself showHint:respModel.msg];
         }
         
-        [weakself applicationForOrdersStates];
     } andFailBlock:^(NSError *error){
         [weakself applicationForOrdersStates];
     }];
@@ -958,8 +956,12 @@
     QDFWeakSelf;
     [self requestDataPostWithString:houseString params:params successBlock:^(id responseObject) {
         ApplicationStateModel *stateModel = [ApplicationStateModel objectWithKeyValues:responseObject];
-        PublishingModel *rModel = weakself.recommendDataArray[0];
         
+        
+        PublishingModel *rModel;
+        if (self.recommendDataArray.count > 0) {
+            rModel = self.recommendDataArray[0];
+        }
         if ((stateModel.app_id == nil || [stateModel.app_id intValue] == 2) && [rModel.progress_status integerValue] == 1) {
             [weakself.proDetailsCommitButton setTitleColor:kNavColor forState:0];
             [weakself.proDetailsCommitButton setTitle:@"立即申请" forState:0];

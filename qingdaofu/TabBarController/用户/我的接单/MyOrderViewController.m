@@ -538,8 +538,9 @@
 
 - (void)cancelTheProductApplyWithID:(NSString *)idStr
 {
+    NSString *idsss = [NSString getValidStringFromString:idStr toString:@""];
     NSString *cancelString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kCancelProductOfMyOrderString];
-    NSDictionary *params = @{@"id" : idStr,
+    NSDictionary *params = @{@"id" : idsss,
                              @"token" : [self getValidateToken]
                              };
     QDFWeakSelf;

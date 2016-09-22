@@ -7,6 +7,7 @@
 //
 
 #import "WXApiManager.h"
+#import "HousePayingViewController.h" //支付页面
 
 @implementation WXApiManager
 

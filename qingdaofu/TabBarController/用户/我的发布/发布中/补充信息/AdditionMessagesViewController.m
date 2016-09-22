@@ -171,7 +171,14 @@
     if (![interestpaid isEqualToString:@"暂无"]) {
         interestpaid = [NSString stringWithFormat:@"%@元",interestpaid];
     }
-    NSString *performancecontract = [NSString getValidStringFromString:messageModel.performancecontract];  //合同履行地
+    
+    NSString *performancecontract;
+//    = [NSString getValidStringFromString:messageModel.performancecontract];  //合同履行地
+    if (messageResonse.place_province_id && messageResonse.place_city_id && messageResonse.place_district_id) {
+        performancecontract = [NSString stringWithFormat:@"%@%@%@",messageResonse.place_province_id,messageResonse.place_city_id,messageResonse.place_district_id];
+    }else{
+        performancecontract = @"暂无";
+    }
     
     if (messageModel.repaymethod) {
         if ([messageModel.repaymethod intValue] == 1) {

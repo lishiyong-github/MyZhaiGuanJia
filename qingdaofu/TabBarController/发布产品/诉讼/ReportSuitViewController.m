@@ -841,10 +841,12 @@
         cell.agentTextField.placeholder = @"请选择";
         [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
         
-        if (self.suitDataDictionary[@"performancecontract"]) {
-            cell.agentTextField.text = self.suitDataDictionary[@"performancecontract"];
+        NSString *performancecontractName;
+        if (self.suResponse.place_province_id && self.suResponse.place_city_id && self.suResponse.place_district_id) {
+            performancecontractName = [NSString stringWithFormat:@"%@%@%@",self.suResponse.place_province_id,self.suResponse.place_city_id,self.suResponse.place_district_id];
+            cell.agentTextField.text = performancecontractName;
         }else{
-            cell.agentTextField.text = suModel.performancecontract?suModel.performancecontract:@"";
+            cell.agentTextField.text = self.suitDataDictionary[@"performancecontract"]?self.suitDataDictionary[@"performancecontract"]:@"";
         }
         
         return cell;
