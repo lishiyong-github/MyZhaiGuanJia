@@ -8,6 +8,7 @@
 
 #import "HousePayingViewController.h"
 #import "HousePayingEditViewController.h"
+#import "HousePropertyListViewController.h" //产调列表
 
 #import "WXApiObject.h"
 #import "WXApiManager.h"
@@ -37,7 +38,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [WXApi handleOpenURL:nil delegate:self];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ResponseResult) name:@"PaySuccess" object:nil];
 }
 
 - (void)viewDidLoad {
@@ -235,74 +236,38 @@
         PayResponse *payResponse = [PayResponse objectWithKeyValues:responseObject];
         
         if ([payResponse.code isEqualToString:@"0000"]) {
-            NSLog(@"调起微信支付");
-            
-             [WXApi handleOpenURL:nil delegate:self];
             
             PayModel *payModel = payResponse.paydata;
             // 调起微信支付
             PayReq *reqPay = [[PayReq alloc] init];
-            
             reqPay.partnerId = payModel.partnerid;
             reqPay.prepayId = payModel.prepayid;
             reqPay.nonceStr = payModel.noncestr;
             reqPay.timeStamp = [payModel.timestamp intValue];
             reqPay.package = payModel.package;
             reqPay.sign = payModel.paySign;
-            
             [WXApi sendReq:reqPay];
-            
         }else{
             [weakself showHint:payResponse.msg];
         }
-        
     } andFailBlock:^(NSError *error) {
         
     }];
 }
 
-- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+- (void)ResponseResult
 {
-    BOOL success = [WXApi handleOpenURL:url delegate:self];
-    
-    if (success) {
-        NSLog(@"成功");
-    }else{
-        NSLog(@"失败");
-    }
-    
-    return  success;
-}
-
-//微信支付成功或者失败回调
--(void) onResp:(BaseResp*)resp
-{
-    NSString *strMsg = [NSString stringWithFormat:@"errcode:%d", resp.errCode];
-    NSString *strTitle;
-    
-    if([resp isKindOfClass:[SendMessageToWXResp class]])
-    {
-        strTitle = [NSString stringWithFormat:@"发送媒体消息结果"];
-    }
-    if([resp isKindOfClass:[PayResp class]]){
-        //支付返回结果，实际支付结果需要去微信服务器端查询
-        strTitle = [NSString stringWithFormat:@"支付结果"];
-        
-        switch (resp.errCode) {
-            case WXSuccess:
-                strMsg = @"支付结果：成功！";
-                //                NSLog(@"支付成功－PaySuccess，retcode = %d", resp.errCode);
-                
-                break;
-                
-            default:
-                strMsg = [NSString stringWithFormat:@"支付结果：失败！retcode = %d, retstr = %@", resp.errCode,resp.errStr];
-                NSLog(@"错误，retcode = %d, retstr = %@", resp.errCode,resp.errStr);
-                break;
-        }
-    }
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:strTitle message:strMsg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-    [alert show];
+    UIAlertController *alertFV = [UIAlertController alertControllerWithTitle:@"" message:@"支付成功" preferredStyle:UIAlertControllerStyleAlert];
+    QDFWeakSelf;
+    UIAlertAction *actr = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        HousePropertyListViewController *housePropertyListVC = [[HousePropertyListViewController alloc] init];
+        UINavigationController *nagg = weakself.navigationController;
+        [nagg popViewControllerAnimated:NO];
+        [nagg popViewControllerAnimated:NO];
+        [nagg pushViewController:housePropertyListVC animated:NO];
+    }];
+    [alertFV addAction:actr];
+    [self presentViewController:alertFV animated:YES completion:nil];
 }
 
 - (void)shwoAlertViewWithType:(NSString *)type

@@ -188,9 +188,7 @@
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:mesString params:params successBlock:^(id responseObject) {
-        
-        NSDictionary *wpwp = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        
+                
         if ([page integerValue] == 1) {
             [weakself.messageReceiveArray removeAllObjects];
         }

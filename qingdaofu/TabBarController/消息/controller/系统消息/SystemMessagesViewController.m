@@ -170,9 +170,7 @@
     
     QDFWeakSelf;
     [self requestDataPostWithString:mesString params:params successBlock:^(id responseObject) {
-        
-        NSDictionary *spsps = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-                
+                        
         if ([page integerValue] == 1) {
             [weakself.messageSysArray removeAllObjects];
         }

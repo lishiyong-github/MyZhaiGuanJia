@@ -333,9 +333,7 @@
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
-        
-        NSDictionary *qpqp = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        
+                
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
         if ([response.code isEqualToString:@"0000"]) {
             [weakself.publishingDataArray removeAllObjects];

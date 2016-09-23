@@ -31,7 +31,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = @"补充信息";
+    self.navigationItem.title = @"全部信息";
     self.navigationItem.leftBarButtonItem = self.leftItem;
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kBlueColor} forState:0];
     
@@ -295,9 +295,7 @@
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:messageString params:params successBlock:^(id responseObject){
-        
-        NSDictionary *qpqp = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        
+                
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
         
         [weakself.addMessageDataArray addObject:response];

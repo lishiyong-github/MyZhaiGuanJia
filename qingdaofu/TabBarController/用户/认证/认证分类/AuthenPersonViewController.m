@@ -153,6 +153,7 @@
                         if ([imgModel.code isEqualToString:@"0000"]) {
                             [btn setImage:[UIImage imageWithContentsOfFile:images[0]] forState:0];
                             weakself.imgFileIdString1 = imgModel.fileid;
+                            weakself.imgFileUrlString1 = imgModel.url;
                         }
                     }];
                 }
@@ -171,6 +172,7 @@
                         if ([imgModel.code isEqualToString:@"0000"]) {
                             [btn setImage:[UIImage imageWithContentsOfFile:images[0]] forState:0];
                             weakself.imgFileIdString2 = imgModel.fileid;
+                            weakself.imgFileUrlString2 = imgModel.url;
                         }
                     }];
                 }
@@ -315,21 +317,41 @@
         NSString *imgFileUrlStr = [NSString stringWithFormat:@"'%@','%@'",self.imgFileUrlString1,self.imgFileUrlString2];
         [self.perDataDictionary setObject:imgFileUrlStr forKey:@"cardimg"];
     }else if(!self.imgFileIdString1 && !self.imgFileIdString2){//两张都未修改
-        [self.perDataDictionary setObject:self.respnseModel.certification.cardimgimg forKey:@"cardimgimg"];
-        [self.perDataDictionary setObject:self.respnseModel.certification.cardimg forKey:@"cardimg"];
+        if (self.respnseModel.certification.cardimgimg) {
+            [self.perDataDictionary setObject:self.respnseModel.certification.cardimgimg forKey:@"cardimgimg"];
+        }
+        if (self.respnseModel.certification.cardimg) {
+            [self.perDataDictionary setObject:self.respnseModel.certification.cardimg forKey:@"cardimg"];
+        }
     }else if (self.imgFileIdString1 && !self.imgFileIdString2){//修改第一张
         NSArray *imgArr2 = [ImageModel objectArrayWithKeyValuesArray:self.respnseModel.certification.img];
-        ImageModel *imgModel2 = imgArr2[1];
-        NSString *imgFileIdStr2 = [NSString stringWithFormat:@"%@,%@",self.imgFileIdString1,imgModel2.idString];
+        ImageModel *imgModel2;
+        NSString *imgFileIdStr2;
+        NSString *imgFileUrlStr2;
+        if (imgArr2.count == 2) {
+            imgModel2 = imgArr2[1];
+            imgFileIdStr2 = [NSString stringWithFormat:@"%@,%@",self.imgFileIdString1,imgModel2.idString];
+            imgFileUrlStr2 = [NSString stringWithFormat:@"'%@','%@'",self.imgFileUrlString1,imgModel2.file];
+        }else{
+            imgFileIdStr2 = [NSString stringWithFormat:@"%@",self.imgFileIdString1];
+            imgFileUrlStr2 = [NSString stringWithFormat:@"'%@'",self.imgFileUrlString1];
+        }
         [self.perDataDictionary setObject:imgFileIdStr2 forKey:@"cardimgimg"];
-        NSString *imgFileUrlStr2 = [NSString stringWithFormat:@"'%@','%@'",self.imgFileUrlString1,imgModel2.file];
         [self.perDataDictionary setObject:imgFileUrlStr2 forKey:@"cardimg"];
     }else if (!self.imgFileIdString1 && self.imgFileIdString2){//修改第二张
         NSArray *imgArr1 = [ImageModel objectArrayWithKeyValuesArray:self.respnseModel.certification.img];
-        ImageModel *imgModel1 = imgArr1[0];
-        NSString *imgFileIdStr1 = [NSString stringWithFormat:@"%@,%@",imgModel1.idString,self.imgFileIdString2];
+        ImageModel *imgModel1;
+        NSString *imgFileIdStr1;
+        NSString *imgFileUrlStr1;
+        if (imgArr1.count == 1) {
+            imgModel1 = imgArr1[0];
+            imgFileIdStr1 = [NSString stringWithFormat:@"%@,%@",imgModel1.idString,self.imgFileIdString2];
+            imgFileUrlStr1 = [NSString stringWithFormat:@"'%@','%@'",imgModel1.file,self.imgFileUrlString2];
+        }else{
+            imgFileIdStr1 = [NSString stringWithFormat:@"%@",self.imgFileIdString2];
+            imgFileUrlStr1 = [NSString stringWithFormat:@"'%@'",self.imgFileUrlString2];
+        }
         [self.perDataDictionary setObject:imgFileIdStr1 forKey:@"cardimgimg"];
-        NSString *imgFileUrlStr1 = [NSString stringWithFormat:@"'%@','%@'",imgModel1.file,self.imgFileUrlString2];
         [self.perDataDictionary setObject:imgFileUrlStr1 forKey:@"cardimg"];
     }
     
@@ -338,12 +360,9 @@
     if (!self.perDataDictionary[@"mobile"]) {
         self.perDataDictionary[@"mobile"] = self.respnseModel.certification.mobile?self.respnseModel.certification.mobile:[self getValidateMobile];
     }
-    
     self.perDataDictionary[@"name"] = self.perDataDictionary[@"name"]?self.perDataDictionary[@"name"]:self.respnseModel.certification.name;
     self.perDataDictionary[@"cardno"] = self.perDataDictionary[@"cardno"]?self.perDataDictionary[@"cardno"]:self.respnseModel.certification.cardno;
     self.perDataDictionary[@"email"] = self.perDataDictionary[@"email"]?self.perDataDictionary[@"email"]:self.respnseModel.certification.email;
-    self.perDataDictionary[@"casedesc"] = self.perDataDictionary[@"casedesc"]?self.perDataDictionary[@"casedesc"]:self.respnseModel.certification.casedesc;
-    
     self.perDataDictionary[@"completionRate"] = self.respnseModel.completionRate?self.respnseModel.completionRate:@"";
     [self.perDataDictionary setValue:@"1" forKey:@"category"];//认证类型
     [self.perDataDictionary setValue:[self getValidateToken] forKey:@"token"];
@@ -353,9 +372,6 @@
     }else{
         [self.perDataDictionary setValue:@"add" forKey:@"type"];  //add为 首次添加
     }
-    
-    NSString *completionRate = self.respnseModel.completionRate?self.respnseModel.completionRate:@"0";
-    [self.perDataDictionary setValue:completionRate forKey:@"completionRate"];
     
     NSDictionary *params = self.perDataDictionary;
     
@@ -367,15 +383,10 @@
         
         if ([model.code isEqualToString:@"0000"]) {
             if (weakself.respnseModel) {//update
-                UINavigationController *nav = weakself.navigationController;
-                [nav popViewControllerAnimated:NO];
-                [nav popViewControllerAnimated:NO];
-                [nav popViewControllerAnimated:NO];
-                
                 AuthentyWaitingViewController *waitingVC = [[AuthentyWaitingViewController alloc] init];
                 waitingVC.categoryString = weakself.categoryString;
                 waitingVC.hidesBottomBarWhenPushed = YES;
-                [nav pushViewController:waitingVC animated:NO];
+                [weakself.navigationController pushViewController:waitingVC animated:NO];
             }else{//add
                 [weakself.navigationController popViewControllerAnimated:YES];
             }

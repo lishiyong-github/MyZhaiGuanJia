@@ -443,9 +443,7 @@
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:myOrderString params:params successBlock:^(id responseObject) {
-        
-        NSDictionary *apapa = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-                
+                        
         if ([page intValue] == 1) {
             [weakself.myOrderDataList removeAllObjects];
             [weakself.myOrderCreditorDic removeAllObjects];

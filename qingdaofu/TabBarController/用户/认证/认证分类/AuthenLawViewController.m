@@ -157,6 +157,7 @@
                         if ([imgModel.code isEqualToString:@"0000"]) {
                             [btn setImage:[UIImage imageWithContentsOfFile:images[0]] forState:0];
                             weakself.imgFileIdString1 = imgModel.fileid;
+                            weakself.imgFileUrlString1 = imgModel.url;
                         }
                     }];
                 }
@@ -175,6 +176,7 @@
                         if ([imgModel.code isEqualToString:@"0000"]) {
                             [btn setImage:[UIImage imageWithContentsOfFile:images[0]] forState:0];
                             weakself.imgFileIdString2 = imgModel.fileid;
+                            weakself.imgFileUrlString2 = imgModel.url;
                         }
                     }];
                 }
@@ -341,21 +343,43 @@
         NSString *imgFileUrlStr = [NSString stringWithFormat:@"'%@','%@'",self.imgFileUrlString1,self.imgFileUrlString2];
         [self.lawDataDictionary setObject:imgFileUrlStr forKey:@"cardimg"];
     }else if(!self.imgFileIdString1 && !self.imgFileIdString2){//两张都未修改
-        [self.lawDataDictionary setObject:self.responseModel.certification.cardimgimg forKey:@"cardimgimg"];
-        [self.lawDataDictionary setObject:self.responseModel.certification.cardimg forKey:@"cardimg"];
+        if (self.responseModel.certification.cardimgimg) {
+            [self.lawDataDictionary setObject:self.responseModel.certification.cardimgimg forKey:@"cardimgimg"];
+        }
+        if (self.responseModel.certification.cardimg) {
+            [self.lawDataDictionary setObject:self.responseModel.certification.cardimg forKey:@"cardimg"];
+        }
     }else if (self.imgFileIdString1 && !self.imgFileIdString2){//修改第一张
         NSArray *imgArr2 = [ImageModel objectArrayWithKeyValuesArray:self.responseModel.certification.img];
-        ImageModel *imgModel2 = imgArr2[1];
-        NSString *imgFileIdStr2 = [NSString stringWithFormat:@"%@,%@",self.imgFileIdString1,imgModel2.idString];
+        ImageModel *imgModel2;
+        NSString *imgFileIdStr2;
+        NSString *imgFileUrlStr2;
+        if (imgArr2.count == 2) {
+            imgModel2 = imgArr2[1];
+            imgFileIdStr2 = [NSString stringWithFormat:@"%@,%@",self.imgFileIdString1,imgModel2.idString];
+            imgFileUrlStr2 = [NSString stringWithFormat:@"'%@','%@'",self.imgFileUrlString1,imgModel2.file];
+        }else{
+            imgFileIdStr2 = [NSString stringWithFormat:@"%@",self.imgFileIdString1];
+            imgFileUrlStr2 = [NSString stringWithFormat:@"'%@'",self.imgFileUrlString1];
+        }
+        
         [self.lawDataDictionary setObject:imgFileIdStr2 forKey:@"cardimgimg"];
-        NSString *imgFileUrlStr2 = [NSString stringWithFormat:@"'%@','%@'",self.imgFileUrlString1,imgModel2.file];
         [self.lawDataDictionary setObject:imgFileUrlStr2 forKey:@"cardimg"];
+        
     }else if (!self.imgFileIdString1 && self.imgFileIdString2){//修改第二张
         NSArray *imgArr1 = [ImageModel objectArrayWithKeyValuesArray:self.responseModel.certification.img];
-        ImageModel *imgModel1 = imgArr1[0];
-        NSString *imgFileIdStr1 = [NSString stringWithFormat:@"%@,%@",imgModel1.idString,self.imgFileIdString2];
+        ImageModel *imgModel1;
+        NSString *imgFileIdStr1;
+        NSString *imgFileUrlStr1;
+        if (imgArr1.count == 1) {
+            imgModel1 = imgArr1[0];
+            imgFileIdStr1 = [NSString stringWithFormat:@"%@,%@",imgModel1.idString,self.imgFileIdString2];
+            imgFileUrlStr1 = [NSString stringWithFormat:@"'%@','%@'",imgModel1.file,self.imgFileUrlString2];
+        }else{
+            imgFileIdStr1 = [NSString stringWithFormat:@"%@",self.imgFileIdString2];
+            imgFileUrlStr1 = [NSString stringWithFormat:@"'%@'",self.imgFileUrlString2];
+        }
         [self.lawDataDictionary setObject:imgFileIdStr1 forKey:@"cardimgimg"];
-        NSString *imgFileUrlStr1 = [NSString stringWithFormat:@"'%@','%@'",imgModel1.file,self.imgFileUrlString2];
         [self.lawDataDictionary setObject:imgFileUrlStr1 forKey:@"cardimg"];
     }
 

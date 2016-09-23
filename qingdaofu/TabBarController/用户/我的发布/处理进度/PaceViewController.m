@@ -257,9 +257,7 @@
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:paceString params:params successBlock:^(id responseObject) {
-        
-        NSDictionary *ioioioi = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        
+            
         if ([page integerValue] == 1) {
             [weakself.paceDataArray removeAllObjects];
         }

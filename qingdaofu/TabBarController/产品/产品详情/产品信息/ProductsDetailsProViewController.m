@@ -180,7 +180,6 @@
             NSString *term = [NSString getValidStringFromString:rightModel.term];   //借款期限
             NSString *repaymethod = @"暂无";//还款方式
             NSString *obligor = @"暂无";  //债务人主体
-            NSString *commitment = @"暂无";  //委托事项
             NSString *commissionperiod = [NSString getValidStringFromString:rightModel.commissionperiod];   //委托代理期限
             NSString *paidmoney = [NSString getValidStringFromString:rightModel.paidmoney];  //已付本金
             NSString *interestpaid = [NSString getValidStringFromString:rightModel.interestpaid];  //已付利息

@@ -300,9 +300,7 @@
 
     QDFWeakSelf;
     [self requestDataPostWithString:loginString params:params successBlock:^( id responseObject){
-        
-        NSDictionary *qpqpq = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-                
+                        
         BaseModel *loginModel = [BaseModel objectWithKeyValues:responseObject];
         [weakself showHint:loginModel.msg];
         

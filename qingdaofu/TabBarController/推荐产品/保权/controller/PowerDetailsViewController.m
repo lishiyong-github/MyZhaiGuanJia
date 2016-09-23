@@ -360,8 +360,6 @@
     
     QDFWeakSelf;
     [self requestDataPostWithString:detailPowerString params:params successBlock:^(id responseObject) {
-        
-        NSDictionary *apapa = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         PowerDetailModel *pdModel = [PowerDetailModel objectWithKeyValues:responseObject];
         if ([pdModel.code isEqualToString:@"0000"]) {
             [weakself.powerDetalArray removeAllObjects];

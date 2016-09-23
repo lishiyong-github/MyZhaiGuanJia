@@ -541,8 +541,6 @@
 		A1A34C371CE32C8000AD454A /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A34C361CE32C8000AD454A /* RegisterViewController.m */; };
 		A1A34C3A1CE32C9300AD454A /* ForgetPassViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A34C391CE32C9300AD454A /* ForgetPassViewController.m */; };
 		A1A34C3D1CE32CF700AD454A /* LoginCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A34C3C1CE32CF700AD454A /* LoginCell.m */; };
-		A1A3BE1B1D7FDD2D00CA5F56 /* UIViewController+AlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A3BE1A1D7FDD2D00CA5F56 /* UIViewController+AlertView.m */; };
-		A1A3BE1E1D7FEEA700CA5F56 /* MiAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A3BE1D1D7FEEA700CA5F56 /* MiAlertView.m */; };
 		A1A5C73E1D374E6E00173533 /* conserve_investment_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A5C73C1D374E6E00173533 /* conserve_investment_icon@2x.png */; };
 		A1A5C73F1D374E6E00173533 /* conserve_investment_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A5C73D1D374E6E00173533 /* conserve_investment_icon@3x.png */; };
 		A1A5C7421D374ED200173533 /* conserve_loan_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A5C7401D374ED200173533 /* conserve_loan_icon@2x.png */; };
@@ -604,6 +602,7 @@
 		A1A69DE41D62F9D90053FFED /* certification_success_banner@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A69DE21D62F9D90053FFED /* certification_success_banner@2x.png */; };
 		A1A69DE51D62F9D90053FFED /* certification_success_banner@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A69DE31D62F9D90053FFED /* certification_success_banner@3x.png */; };
 		A1A6C84F1D669D9A00EC060E /* ImageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A6C84E1D669D9A00EC060E /* ImageModel.m */; };
+		A1A72CDC1D95306800EDC491 /* WXApiRequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A72CDB1D95306800EDC491 /* WXApiRequestHandler.m */; };
 		A1A7D08A1D6583FF00E84329 /* PowerResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A7D0891D6583FF00E84329 /* PowerResponse.m */; };
 		A1A7D08D1D65840F00E84329 /* PowerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A7D08C1D65840F00E84329 /* PowerModel.m */; };
 		A1A828171D8647B000796006 /* DelayHandleResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A828161D8647B000796006 /* DelayHandleResponse.m */; };
@@ -1497,10 +1496,6 @@
 		A1A34C391CE32C9300AD454A /* ForgetPassViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForgetPassViewController.m; sourceTree = "<group>"; };
 		A1A34C3B1CE32CF700AD454A /* LoginCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginCell.h; sourceTree = "<group>"; };
 		A1A34C3C1CE32CF700AD454A /* LoginCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginCell.m; sourceTree = "<group>"; };
-		A1A3BE191D7FDD2D00CA5F56 /* UIViewController+AlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+AlertView.h"; sourceTree = "<group>"; };
-		A1A3BE1A1D7FDD2D00CA5F56 /* UIViewController+AlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+AlertView.m"; sourceTree = "<group>"; };
-		A1A3BE1C1D7FEEA700CA5F56 /* MiAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiAlertView.h; sourceTree = "<group>"; };
-		A1A3BE1D1D7FEEA700CA5F56 /* MiAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MiAlertView.m; sourceTree = "<group>"; };
 		A1A5C73C1D374E6E00173533 /* conserve_investment_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conserve_investment_icon@2x.png"; sourceTree = "<group>"; };
 		A1A5C73D1D374E6E00173533 /* conserve_investment_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conserve_investment_icon@3x.png"; sourceTree = "<group>"; };
 		A1A5C7401D374ED200173533 /* conserve_loan_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conserve_loan_icon@2x.png"; sourceTree = "<group>"; };
@@ -1571,6 +1566,8 @@
 		A1A69DE31D62F9D90053FFED /* certification_success_banner@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "certification_success_banner@3x.png"; sourceTree = "<group>"; };
 		A1A6C84D1D669D9A00EC060E /* ImageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageModel.h; sourceTree = "<group>"; };
 		A1A6C84E1D669D9A00EC060E /* ImageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageModel.m; sourceTree = "<group>"; };
+		A1A72CDA1D95306800EDC491 /* WXApiRequestHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiRequestHandler.h; sourceTree = "<group>"; };
+		A1A72CDB1D95306800EDC491 /* WXApiRequestHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXApiRequestHandler.m; sourceTree = "<group>"; };
 		A1A7D0881D6583FF00E84329 /* PowerResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PowerResponse.h; sourceTree = "<group>"; };
 		A1A7D0891D6583FF00E84329 /* PowerResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PowerResponse.m; sourceTree = "<group>"; };
 		A1A7D08B1D65840F00E84329 /* PowerModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PowerModel.h; sourceTree = "<group>"; };
@@ -2333,6 +2330,8 @@
 				A19F88451D517ADE00D4EC92 /* HouseCopyViewController.m */,
 				A19424A51D76E83F00AC699B /* HousePropertyResultViewController.h */,
 				A19424A61D76E83F00AC699B /* HousePropertyResultViewController.m */,
+				A1A72CDA1D95306800EDC491 /* WXApiRequestHandler.h */,
+				A1A72CDB1D95306800EDC491 /* WXApiRequestHandler.m */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -3368,10 +3367,6 @@
 				A1BC16651D40CA190008E2DE /* UITabBar+Badge.m */,
 				A1AD9B941D499729001F3076 /* UIView+LBExtension.h */,
 				A1AD9B951D499729001F3076 /* UIView+LBExtension.m */,
-				A1A3BE191D7FDD2D00CA5F56 /* UIViewController+AlertView.h */,
-				A1A3BE1A1D7FDD2D00CA5F56 /* UIViewController+AlertView.m */,
-				A1A3BE1C1D7FEEA700CA5F56 /* MiAlertView.h */,
-				A1A3BE1D1D7FEEA700CA5F56 /* MiAlertView.m */,
 			);
 			path = "工具类";
 			sourceTree = "<group>";
@@ -4540,7 +4535,6 @@
 				A16175561D12A1CF001BB200 /* LoginTableView.m in Sources */,
 				A1B028EE1D1794DC00F32A09 /* UIButton+WebCache.m in Sources */,
 				A19CC0951D59E049000ED568 /* ApplicationGuaranteeSecondView.m in Sources */,
-				A1A3BE1E1D7FEEA700CA5F56 /* MiAlertView.m in Sources */,
 				A19F88461D517ADE00D4EC92 /* HouseCopyViewController.m in Sources */,
 				A19D94401D64062C00DE89FC /* AssessResonse.m in Sources */,
 				A1A66F2C1D6C33D600B0E101 /* ReportFiSucViewController.m in Sources */,
@@ -4583,7 +4577,6 @@
 				A19D943D1D63FDF200DE89FC /* AssessModel.m in Sources */,
 				A17634201D067AB200CD4623 /* PublishingModel.m in Sources */,
 				A1FB265F1CF2CD8900B66608 /* SearchViewController.m in Sources */,
-				A1A3BE1B1D7FDD2D00CA5F56 /* UIViewController+AlertView.m in Sources */,
 				A16BA1461CEC2ECB00A7010C /* EditDebtAddressCell.m in Sources */,
 				A1B0292F1D17CE6F00F32A09 /* AFURLSessionManager.m in Sources */,
 				A145B2AC1CEEF579003A93B7 /* EvaluateSendCell.m in Sources */,
@@ -4603,6 +4596,7 @@
 				A18B26481CEAA699005526C5 /* MainViewController.m in Sources */,
 				A19B8E4A1CCF530900F8EBF2 /* MineViewController.m in Sources */,
 				A16391781D20194B0051F1D0 /* FSPlaceholderImages.m in Sources */,
+				A1A72CDC1D95306800EDC491 /* WXApiRequestHandler.m in Sources */,
 				A1A8281A1D8647D300796006 /* DelayHandleModel.m in Sources */,
 				9CEA216B1CE2140C002C5BA7 /* UIButton+Addition.m in Sources */,
 				A16856801CE99358006A0887 /* ProductsDetailsProViewController.m in Sources */,

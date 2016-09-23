@@ -333,9 +333,7 @@
     
     QDFWeakSelf;
     [self requestDataPostWithString:allEvaContainString params:params successBlock:^(id responseObject) {
-        
-        NSDictionary *apapa = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        
+                
         [weakself.evaluateArray removeAllObjects];
         [weakself.launchEvaluateArray removeAllObjects];
         

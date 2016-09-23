@@ -340,9 +340,7 @@
     
     QDFWeakSelf;
     [self requestDataPostWithString:completeString params:params successBlock:^(id responseObject){
-        
-        NSDictionary *qpqpq = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        
+                
         CompleteResponse *response = [CompleteResponse objectWithKeyValues:responseObject];
         
         [weakself.completeDataArray addObject:response];

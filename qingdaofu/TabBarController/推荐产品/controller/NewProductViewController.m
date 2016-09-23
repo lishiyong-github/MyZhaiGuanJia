@@ -422,9 +422,7 @@
     
     QDFWeakSelf;
     [self requestDataPostWithString:recommendString params:params successBlock:^(id responseObject) {
-        
-        NSDictionary *aoaooa = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        
+                
         [weakself.productsDataListArray removeAllObjects];
         
         NewProductModel *model = [NewProductModel objectWithKeyValues:responseObject];
