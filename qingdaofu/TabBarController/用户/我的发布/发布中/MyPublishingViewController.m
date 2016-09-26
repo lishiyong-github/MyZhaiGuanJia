@@ -25,6 +25,7 @@
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *publishingTableView;
 @property (nonatomic,strong) EvaTopSwitchView *publishSwitchView;
+@property (nonatomic,strong) UIButton *newRecordButton;
 @property (nonatomic,strong) BaseRemindButton *applyRecordRemindButton;  //新的申请记录提示信息
 
 //json
@@ -49,10 +50,11 @@
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
     if ([self.app_idString isEqualToString:@"0"]) {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"application_record_spot"] style:UIBarButtonItemStylePlain target:self action:@selector(showRecordList)];//application_record_spot@3x
+        [self.newRecordButton setImage:[UIImage imageNamed:@"application_record_spot"] forState:0];
     }else{
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"application_record"] style:UIBarButtonItemStylePlain target:self action:@selector(showRecordList)];//application_record_spot@3x
+        [self.newRecordButton setImage:[UIImage imageNamed:@"application_record"] forState:0];
     }
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.newRecordButton];
     
     [self.view addSubview: self.publishingTableView];
     [self.view addSubview:self.publishSwitchView];
@@ -125,6 +127,23 @@
         [_publishSwitchView.sendButton addTarget:self action:@selector(editAllMessages) forControlEvents:UIControlEventTouchUpInside];
     }
     return _publishSwitchView;
+}
+
+- (UIButton *)newRecordButton
+{
+    if (!_newRecordButton) {
+        _newRecordButton = [UIButton buttonWithType:0];
+        _newRecordButton.frame = CGRectMake(0, 0, 22, 25);
+        
+        QDFWeakSelf;
+        [_newRecordButton addAction:^(UIButton *btn) {
+            ApplyRecordViewController *applyRecordsVC = [[ApplyRecordViewController alloc] init];
+            applyRecordsVC.idStr = weakself.idString;
+            applyRecordsVC.categaryStr = weakself.categaryString;
+            [weakself.navigationController pushViewController:applyRecordsVC animated:YES];
+        }];
+    }
+    return _newRecordButton;
 }
 
 - (BaseRemindButton *)applyRecordRemindButton
@@ -346,13 +365,13 @@
     }];
 }
 
-- (void)showRecordList
-{
-    ApplyRecordViewController *applyRecordsVC = [[ApplyRecordViewController alloc] init];
-    applyRecordsVC.idStr = self.idString;
-    applyRecordsVC.categaryStr = self.categaryString;
-    [self.navigationController pushViewController:applyRecordsVC animated:YES];
-}
+//- (void)showRecordList
+//{
+//    ApplyRecordViewController *applyRecordsVC = [[ApplyRecordViewController alloc] init];
+//    applyRecordsVC.idStr = self.idString;
+//    applyRecordsVC.categaryStr = self.categaryString;
+//    [self.navigationController pushViewController:applyRecordsVC animated:YES];
+//}
 
 //编辑信息
 - (void)editAllMessages

@@ -65,15 +65,26 @@
 -(UIBarButtonItem *)leftItem
 {
     if (!_leftItem) {
-        _leftItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"bar_nav_back"] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
+//        _leftItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"bar_nav_back"] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
+        UIButton *sshhsh = [UIButton buttonWithType:0];
+        sshhsh.frame = CGRectMake(0, 0, 22, 25);
+        [sshhsh setImage:[UIImage imageNamed:@"bar_nav_back"] forState:0];
+        [sshhsh addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+        _leftItem = [[UIBarButtonItem alloc] initWithCustomView:sshhsh];
+        
     }
     return _leftItem;
 }
 
+
 -(UIBarButtonItem *)leftItemAnother
 {
     if (!_leftItemAnother) {
-        _leftItemAnother = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"close"] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
+//        _leftItemAnother = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"close"] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
+        UIButton *wwww = [UIButton buttonWithType:0];
+        wwww.frame = CGRectMake(0, 0, 22, 25);
+        [wwww setImage:[UIImage imageNamed:@"close"] forState:0];
+        [wwww addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     }
     return _leftItemAnother;
 }

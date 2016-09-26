@@ -7,7 +7,6 @@
 //
 
 #import "ProductsDetailsViewController.h"
-#import "ProductsDetailsProViewController.h"   //产品信息
 #import "CheckDetailPublishViewController.h" //发布人信息
 #import "AllEvaluationViewController.h"  //全部评价
 #import "CaseViewController.h"  //经典案例
