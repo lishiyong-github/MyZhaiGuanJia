@@ -23,7 +23,7 @@
 #import "ZYTabBar.h"
 #import "UIViewController+BlurView.h"
 
-@interface MainViewController ()<UINavigationControllerDelegate, UIImagePickerControllerDelegate,UIGestureRecognizerDelegate,UIActionSheetDelegate,ZYTabBarDelegate>
+@interface MainViewController ()<UINavigationControllerDelegate, UIImagePickerControllerDelegate,UIGestureRecognizerDelegate,UIActionSheetDelegate>
 
 @property (nonatomic,strong) NSString *trackViewUrl;
 
@@ -34,39 +34,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    //设置基本信息
-//    [self setUpMessage];
-    
     [self showTabBarItem];
     
 //    [self setUpAllChildVc];
 //    [self configureZYPathButton];
 }
 
-- (void)setUpMessage
-{
-    self.view.backgroundColor = kBackColor;
-    
-    //修改导航栏的边界黑线
-    //    self.edgesForExtendedLayout = UIRectEdgeNone ;
-    //    self.extendedLayoutIncludesOpaqueBars = NO ;
-    //    self.automaticallyAdjustsScrollViewInsets = NO ;
-    
-    //设置导航条的字体颜色
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:kBlackColor,NSFontAttributeName:kNavFont}];
-    
-    //去除系统效果
-    self.navigationController.navigationBar.translucent = NO;
-    
-    //设置导航栏颜色
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:kNavColor] forBarMetrics:UIBarMetricsDefault];
-    
-    self.automaticallyAdjustsScrollViewInsets = NO;
-    
-    //右滑返回
-    self.navigationController.interactivePopGestureRecognizer.delegate = self;
-}
-
+/*
 - (void)configureZYPathButton {
     ZYTabBar *tabBar = [ZYTabBar new];
     tabBar.delegate = self;//select_   ／／tab_bar
@@ -122,6 +96,7 @@
  *  @param selectedImage 每一个按钮对应的选中状态下的图片
  *  @param title         每一个按钮对应的标题
  */
+/*
 - (void)setUpOneChildVcWithVc:(UIViewController *)Vc Image:(NSString *)image selectedImage:(NSString *)selectedImage title:(NSString *)title
 {
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:Vc];
@@ -163,7 +138,7 @@
 }
 
 
-
+*/
 
 
 - (void)showTabBarItem

@@ -77,6 +77,7 @@
     return _countLabel;
 }
 
+#pragma mark - textView delegate
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
     if (self.touchBeginPoint) {
@@ -98,11 +99,6 @@
         [textView resignFirstResponder];
         return NO;
     }
-    
-    if (self.didEndEditing) {
-        self.didEndEditing(textView.text);
-    }
-    
     return YES;
 }
 

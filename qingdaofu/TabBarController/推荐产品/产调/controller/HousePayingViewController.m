@@ -264,6 +264,7 @@
         UINavigationController *nagg = weakself.navigationController;
         [nagg popViewControllerAnimated:NO];
         [nagg popViewControllerAnimated:NO];
+        nagg.hidesBottomBarWhenPushed = YES;
         [nagg pushViewController:housePropertyListVC animated:NO];
     }];
     [alertFV addAction:actr];

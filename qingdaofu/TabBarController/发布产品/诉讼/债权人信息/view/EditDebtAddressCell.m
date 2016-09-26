@@ -64,6 +64,7 @@
     return _ediTextView;
 }
 
+#pragma mark - textfield delegate
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
     if (self.touchBeginPoint) {
@@ -75,34 +76,18 @@
 {
     if ([text isEqualToString:@"\n"]) {
         [textView resignFirstResponder];
-        NSString *title = [textView.text stringByReplacingCharactersInRange:range withString:text];
-        if (self.didEndEditing) {
-            self.didEndEditing(title);
-        }
         return NO;
-    }
-    
-    NSString *title = [textView.text stringByReplacingCharactersInRange:range withString:text];
-    if (self.didEndEditing) {
-        self.didEndEditing(title);
     }
     
     return YES;
 }
 
-
-
-//-(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
-//{
-//    if ([text isEqualToString:@"\n"]){
-//        [textView resignFirstResponder];
-//        return NO;
-//    }else if(range.location >= 500){//如果输入超过规定的字数20，就不再让输入
-//        return NO;
-//    }
-//    NSString *content = text;
-//    return YES;
-//}
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+    if (self.didEndEditing) {
+        self.didEndEditing(textView.text);
+    }
+}
 
 - (void)awakeFromNib {
     // Initialization code

@@ -233,7 +233,7 @@
     
     QDFWeakSelf;
     [self requestDataPostWithString:generateString params:params successBlock:^(id responseObject) {
-        
+
         PropertyGenerateModel *generateModel = [PropertyGenerateModel objectWithKeyValues:responseObject];
         if ([generateModel.code isEqualToString:@"0000"]) {
             HousePayingViewController *housePayingVC = [[HousePayingViewController alloc] init];
