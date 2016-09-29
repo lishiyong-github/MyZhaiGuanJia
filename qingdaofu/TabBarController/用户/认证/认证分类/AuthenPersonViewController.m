@@ -15,6 +15,7 @@
 #import "PersonCell.h"
 #import "BaseCommitView.h"
 #import "UIViewController+MutipleImageChoice.h"
+#import "UIButton+WebCache.h"
 
 @interface AuthenPersonViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
@@ -138,8 +139,30 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        [cell.pictureButton1 setImage:[UIImage imageNamed:@"upload_positive_image"] forState:0];
-        [cell.pictureButton2 setImage:[UIImage imageNamed:@"upload_opposite_image"] forState:0];
+        if (self.respnseModel.certification.img.count == 0) {
+            [cell.pictureButton1 setImage:[UIImage imageNamed:@"upload_positive_image"] forState:0];
+            [cell.pictureButton2 setImage:[UIImage imageNamed:@"upload_opposite_image"] forState:0];
+        }else if (self.respnseModel.certification.img.count == 1){            NSArray *imgArray = [ImageModel objectArrayWithKeyValuesArray:self.respnseModel.certification.img];
+            ImageModel *imageModel1 = imgArray[0];
+            NSString *qooqo = [NSString stringWithFormat:@"%@",imageModel1.file];
+            NSString *newimageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,qooqo];
+            NSURL *newimageUrl1 = [NSURL URLWithString:newimageStr1];
+            [cell.pictureButton1 sd_setImageWithURL:newimageUrl1 forState:0 placeholderImage:[UIImage imageNamed:@"upload_opposite_image"]];
+            [cell.pictureButton2 setImage:[UIImage imageNamed:@"upload_opposite_image"] forState:0];
+        }else if(self.respnseModel.certification.img.count >= 2){
+            NSArray *imgArray1 = [ImageModel objectArrayWithKeyValuesArray:self.respnseModel.certification.img];
+            ImageModel *imageModel1 = imgArray1[0];
+            NSString *newimageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imageModel1.file];
+            NSURL *newimageUrl1 = [NSURL URLWithString:newimageStr1];
+            [cell.pictureButton1 sd_setImageWithURL:newimageUrl1 forState:0 placeholderImage:[UIImage imageNamed:@"upload_opposite_image"]];
+            [cell.pictureButton2 setImage:[UIImage imageNamed:@"upload_opposite_image"] forState:0];
+            
+            NSArray *imgArray2 = [ImageModel objectArrayWithKeyValuesArray:self.respnseModel.certification.img];
+            ImageModel *imageModel2 = imgArray2[1];
+            NSString *newimageStr2 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imageModel2.file];
+            NSURL *newimageUrl2 = [NSURL URLWithString:newimageStr2];
+            [cell.pictureButton2 sd_setImageWithURL:newimageUrl2 forState:0 placeholderImage:[UIImage imageNamed:@"upload_opposite_image"]];
+        }
         
         [cell.pictureButton1 addAction:^(UIButton *btn) {//正面照
             [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
@@ -310,7 +333,7 @@
 - (void)goToAuthenMessages
 {
     [self.view endEditing:YES];
-    
+
     if (self.imgFileIdString1 && self.imgFileIdString2) {//两张都修改了
         NSString *imgFileIdStr = [NSString stringWithFormat:@"%@,%@",self.imgFileIdString1,self.imgFileIdString2];
         [self.perDataDictionary setObject:imgFileIdStr forKey:@"cardimgimg"];

@@ -340,6 +340,8 @@
     
     QDFWeakSelf;
     [self requestDataPostWithString:completeString params:params successBlock:^(id responseObject){
+        
+        NSDictionary *dodod = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
                 
         CompleteResponse *response = [CompleteResponse objectWithKeyValues:responseObject];
         
