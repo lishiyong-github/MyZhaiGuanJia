@@ -61,7 +61,7 @@
             [self.paceTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.paceCommitView];
             
             [self.paceCommitView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-            [self.paceCommitView autoSetDimension:ALDimensionHeight toSize:kCellHeight1];
+            [self.paceCommitView autoSetDimension:ALDimensionHeight toSize:kCellHeight4];
         }else{
             [self.paceTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
         }

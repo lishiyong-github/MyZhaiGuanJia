@@ -13,8 +13,9 @@
 @property (nonatomic,copy) NSString *category;
 @property (nonatomic,copy) NSString *uidString;
 @property (nonatomic,copy) NSString *pid;
-@property (nonatomic,copy) NSString *mobile;
+@property (nonatomic,copy) NSString *mobile;//注册手机
 @property (nonatomic,copy) NSString *state;
 @property (nonatomic,copy) NSString *idString;
+@property (nonatomic,copy) NSString *name; //注册用户名
 
 @end

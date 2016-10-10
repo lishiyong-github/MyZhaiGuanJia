@@ -120,7 +120,7 @@
 
     if (!tagView) {
         tagView = [UIView newAutoLayoutView];
-        tagView.backgroundColor = UIColorFromRGB1(0xffffff, 0.9);
+        tagView.backgroundColor = UIColorFromRGB1(0xffffff, 1);
         tagView.tag = 99999;
         if (!view) {
             view = self.view;

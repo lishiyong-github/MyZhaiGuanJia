@@ -46,7 +46,7 @@
         [self.tableViewa autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.nextButton];
         
         [self.nextButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [self.nextButton autoSetDimension:ALDimensionHeight toSize:kCellHeight1];
+        [self.nextButton autoSetDimension:ALDimensionHeight toSize:kCellHeight4];
         
         [self.callPhonebutton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.callPhonebutton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:100];

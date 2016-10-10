@@ -12,7 +12,9 @@
 
 @property (nonatomic,strong) UIButton *button1;
 @property (nonatomic,strong) UIButton *button2;
-@property (nonatomic,strong) UILabel *lined;
+@property (nonatomic,strong) UIButton *button3;
+@property (nonatomic,strong) UILabel *lined1;
+@property (nonatomic,strong) UILabel *lined2;
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 

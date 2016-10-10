@@ -11,6 +11,9 @@
 		9CEA216B1CE2140C002C5BA7 /* UIButton+Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CEA216A1CE2140C002C5BA7 /* UIButton+Addition.m */; };
 		9CEA216C1CE2140C002C5BA7 /* UIButton+Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CEA216A1CE2140C002C5BA7 /* UIButton+Addition.m */; };
 		9CF131751D1827FE00ADBA27 /* BrandsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF131741D1827FE00ADBA27 /* BrandsViewController.m */; };
+		A1044E021DAB6B8C007F857D /* HelpCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1044E011DAB6B8C007F857D /* HelpCenterViewController.m */; };
+		A1044E061DAB89A0007F857D /* PersonCerterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1044E051DAB89A0007F857D /* PersonCerterViewController.m */; };
+		A1044E0A1DAB9340007F857D /* ChangeMobileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1044E091DAB9340007F857D /* ChangeMobileViewController.m */; };
 		A10D7B751CEAF5EA00422D7D /* MyAgentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A10D7B741CEAF5EA00422D7D /* MyAgentViewController.m */; };
 		A10D7B781CEAF73C00422D7D /* MyAgentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A10D7B771CEAF73C00422D7D /* MyAgentCell.m */; };
 		A10D7B7B1CEAFAFE00422D7D /* AddMyAgentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A10D7B7A1CEAFAFE00422D7D /* AddMyAgentViewController.m */; };
@@ -709,6 +712,12 @@
 		9CEA216A1CE2140C002C5BA7 /* UIButton+Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+Addition.m"; sourceTree = "<group>"; };
 		9CF131731D1827FE00ADBA27 /* BrandsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrandsViewController.h; sourceTree = "<group>"; };
 		9CF131741D1827FE00ADBA27 /* BrandsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrandsViewController.m; sourceTree = "<group>"; };
+		A1044E001DAB6B8C007F857D /* HelpCenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpCenterViewController.h; sourceTree = "<group>"; };
+		A1044E011DAB6B8C007F857D /* HelpCenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpCenterViewController.m; sourceTree = "<group>"; };
+		A1044E041DAB89A0007F857D /* PersonCerterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonCerterViewController.h; sourceTree = "<group>"; };
+		A1044E051DAB89A0007F857D /* PersonCerterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonCerterViewController.m; sourceTree = "<group>"; };
+		A1044E081DAB9340007F857D /* ChangeMobileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangeMobileViewController.h; sourceTree = "<group>"; };
+		A1044E091DAB9340007F857D /* ChangeMobileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangeMobileViewController.m; sourceTree = "<group>"; };
 		A10D7B731CEAF5EA00422D7D /* MyAgentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAgentViewController.h; sourceTree = "<group>"; };
 		A10D7B741CEAF5EA00422D7D /* MyAgentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAgentViewController.m; sourceTree = "<group>"; };
 		A10D7B761CEAF73C00422D7D /* MyAgentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAgentCell.h; sourceTree = "<group>"; };
@@ -1747,6 +1756,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A1044DFF1DAB6B67007F857D /* 帮助中心 */ = {
+			isa = PBXGroup;
+			children = (
+				A1044E001DAB6B8C007F857D /* HelpCenterViewController.h */,
+				A1044E011DAB6B8C007F857D /* HelpCenterViewController.m */,
+			);
+			path = "帮助中心";
+			sourceTree = "<group>";
+		};
+		A1044E031DAB88A7007F857D /* 个人中心 */ = {
+			isa = PBXGroup;
+			children = (
+				A1044E041DAB89A0007F857D /* PersonCerterViewController.h */,
+				A1044E051DAB89A0007F857D /* PersonCerterViewController.m */,
+			);
+			path = "个人中心";
+			sourceTree = "<group>";
+		};
+		A1044E071DAB9320007F857D /* 更改手机号 */ = {
+			isa = PBXGroup;
+			children = (
+				A1044E081DAB9340007F857D /* ChangeMobileViewController.h */,
+				A1044E091DAB9340007F857D /* ChangeMobileViewController.m */,
+			);
+			path = "更改手机号";
+			sourceTree = "<group>";
+		};
 		A10D7B701CEAF40300422D7D /* 我的代理 */ = {
 			isa = PBXGroup;
 			children = (
@@ -2971,6 +3007,8 @@
 		A19B8E431CCF52C800F8EBF2 /* 用户 */ = {
 			isa = PBXGroup;
 			children = (
+				A1044E031DAB88A7007F857D /* 个人中心 */,
+				A1044DFF1DAB6B67007F857D /* 帮助中心 */,
 				A1A34C2F1CE32A2F00AD454A /* 登录注册 */,
 				A19D29671CD2087F00DAAEA7 /* 设置 */,
 				A10D7B701CEAF40300422D7D /* 我的代理 */,
@@ -3140,6 +3178,7 @@
 		A19D29671CD2087F00DAAEA7 /* 设置 */ = {
 			isa = PBXGroup;
 			children = (
+				A1044E071DAB9320007F857D /* 更改手机号 */,
 				A192384E1D74069100C824D6 /* 收获地址 */,
 				A199851A1CE035D30055A572 /* 消息提醒 */,
 				A19985121CE02B530055A572 /* 修改密码 */,
@@ -4415,6 +4454,7 @@
 				A19657181D77F8BB00F846D4 /* PropertyResultResponse.m in Sources */,
 				A187B9001D50336500A91A16 /* BaseCommitView.m in Sources */,
 				A1A6C84F1D669D9A00EC060E /* ImageModel.m in Sources */,
+				A1044E0A1DAB9340007F857D /* ChangeMobileViewController.m in Sources */,
 				A19CC0921D59C181000ED568 /* ApplicationGuaranteeView.m in Sources */,
 				A159F9451D0BEE5E00A6A024 /* StandardPaths.m in Sources */,
 				A19506371D6FE80F00CE87B5 /* ReportDatePickerView.m in Sources */,
@@ -4425,6 +4465,7 @@
 				A19238511D7406C000C824D6 /* ReceiptAddressViewController.m in Sources */,
 				A19238581D740FDC00C824D6 /* ReiceptCell.m in Sources */,
 				A19B8E531CCF533B00F8EBF2 /* ProductsViewController.m in Sources */,
+				A1044E021DAB6B8C007F857D /* HelpCenterViewController.m in Sources */,
 				A1A0C8D31D4B442D00BC63C6 /* ApplicationGuaranteeViewController.m in Sources */,
 				A19657151D77BD7000F846D4 /* PowerAddressCell.m in Sources */,
 				A15F61841D18DF1F0060AF7B /* GuarantyViewController.m in Sources */,
@@ -4609,6 +4650,7 @@
 				A10D7B7E1CEAFB7A00422D7D /* AgentCell.m in Sources */,
 				A18C675F1CD087C500C7B070 /* UIView+Fram.m in Sources */,
 				A16FF5A81D05A3E400C50A0B /* ReleaseResponse.m in Sources */,
+				A1044E061DAB89A0007F857D /* PersonCerterViewController.m in Sources */,
 				A1A7D08A1D6583FF00E84329 /* PowerResponse.m in Sources */,
 				A145B2A61CEEEDA6003A93B7 /* EvaluatePhotoCell.m in Sources */,
 				A1A017511C5B696A00027134 /* MJProperty.m in Sources */,

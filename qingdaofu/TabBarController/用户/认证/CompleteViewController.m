@@ -74,7 +74,7 @@
         [self.completeTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.completeCommitButton];
         
         [self.completeCommitButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [self.completeCommitButton autoSetDimension:ALDimensionHeight toSize:kCellHeight1];
+        [self.completeCommitButton autoSetDimension:ALDimensionHeight toSize:kCellHeight4];
         
         self.didSetupConstraints = YES;
     }
@@ -340,9 +340,7 @@
     
     QDFWeakSelf;
     [self requestDataPostWithString:completeString params:params successBlock:^(id responseObject){
-        
-        NSDictionary *dodod = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-                
+                        
         CompleteResponse *response = [CompleteResponse objectWithKeyValues:responseObject];
         
         [weakself.completeDataArray addObject:response];

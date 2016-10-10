@@ -24,7 +24,6 @@
 #import "MineUserCell.h"
 #import "ProDetailCell.h"
 #import "ProDetailNumberCell.h"  //浏览次数
-#import "UserPublishCell.h"  //产品信息／发布方信息
 #import "EvaluatePhotoCell.h"
 
 //model

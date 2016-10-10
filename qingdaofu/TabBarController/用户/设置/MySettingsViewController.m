@@ -8,14 +8,12 @@
 
 #import "MySettingsViewController.h"
 
-#import "SuggestionViewController.h"  //意见反馈
-#import "ContactUsViewController.h"  //联系我们
-#import "AboutViewController.h"  //关于清道夫
+#import "PersonCerterViewController.h" //个人中心
+#import "AuthentyViewController.h"
+#import "CompleteViewController.h"
 #import "ModifyPassWordViewController.h"  //修改密码
-#import "MessageRemindViewController.h"   //消息提醒
+#import "ChangeMobileViewController.h"
 #import "ReceiptAddressViewController.h" //收货地址
-
-#import "RegisterAgreementViewController.h" //常见问答
 
 #import "MineUserCell.h"
 #import "BidOneCell.h"
@@ -71,21 +69,25 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == 3) {
-        return 4;
+    if (section == 2) {
+        return 2;
     }
     return 1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return kCellHeight;
+    if (indexPath.section == 0) {
+        return kCellHeight5;
+    }
+    return kCellHeight2;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier;
-    if (indexPath.section < 4) {
+    
+    if (indexPath.section == 0) {
         identifier = @"setting0";
         
         MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -96,16 +98,106 @@
         
         cell.selectedBackgroundView = [[UIView alloc] init];
         cell.selectedBackgroundView.backgroundColor = kCellSelectedColor;
+        cell.userNameButton.userInteractionEnabled = NO;
+        cell.userActionButton.userInteractionEnabled = NO;
         
-        NSArray *textArray = @[@[@"修改密码"],@[@"消息提醒"],@[@"设置地址"],@[@"意见反馈",@"常见问答",@"联系我们",@"关于清道夫"]];
-        
-        [cell.userNameButton setTitle:textArray[indexPath.section][indexPath.row] forState:0];
+        [cell.userNameButton setImage:[UIImage imageNamed:@""] forState:0];
+        [cell.userNameButton setTitle:@"13212222222" forState:0];
+        [cell.userActionButton setTitle:@"个人中心    " forState:0];
         [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
         
         return cell;
+    }else if (indexPath.section == 1){
+        identifier = @"setting1";
         
+        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        
+        if (!cell) {
+            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        
+        cell.selectedBackgroundView = [[UIView alloc] init];
+        cell.selectedBackgroundView.backgroundColor = kCellSelectedColor;
+        cell.userNameButton.userInteractionEnabled = NO;
+        cell.userActionButton.userInteractionEnabled = NO;
+        
+        [cell.userNameButton setTitle:@"身份认证" forState:0];
+        [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        
+        if ([self.toModel.code isEqualToString:@"0000"]) {
+            [cell.userActionButton setTitle:@"已认证    " forState:0];
+        }else{
+            [cell.userActionButton setTitle:@"待认证    " forState:0];
+        }
+        
+        return cell;
+    }else if (indexPath.section == 2){
+        if (indexPath.row == 0) {
+            identifier = @"setting20";
+            
+            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            
+            if (!cell) {
+                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            
+            cell.selectedBackgroundView = [[UIView alloc] init];
+            cell.selectedBackgroundView.backgroundColor = kCellSelectedColor;
+            cell.userNameButton.userInteractionEnabled = NO;
+            cell.userActionButton.userInteractionEnabled = NO;
+            
+            [cell.userNameButton setTitle:@"设置/修改登录密码" forState:0];
+            [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            
+            return cell;
+        }
+        
+        identifier = @"setting21";
+        
+        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        
+        if (!cell) {
+            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        
+        cell.selectedBackgroundView = [[UIView alloc] init];
+        cell.selectedBackgroundView.backgroundColor = kCellSelectedColor;
+        cell.userNameButton.userInteractionEnabled = NO;
+        cell.userActionButton.userInteractionEnabled = NO;
+        
+        [cell.userNameButton setTitle:@"绑定手机" forState:0];
+        [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        
+        NSString *mobile = [NSString stringWithFormat:@"%@    ",self.toModel.mobile];
+        if (mobile.length == 15) {
+            [cell.userActionButton setTitle:mobile forState:0];
+        }else{
+            [cell.userActionButton setTitle:@"未绑定    " forState:0];
+        }
+        
+        return cell;
+    }else if (indexPath.section == 3){
+        identifier = @"setting3";
+        
+        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        
+        if (!cell) {
+            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        
+        cell.selectedBackgroundView = [[UIView alloc] init];
+        cell.selectedBackgroundView.backgroundColor = kCellSelectedColor;
+        cell.userNameButton.userInteractionEnabled = NO;
+        cell.userActionButton.userInteractionEnabled = NO;
+        
+        [cell.userNameButton setTitle:@"收货地址" forState:0];
+        [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        [cell.userActionButton setTitle:@"点击设置    " forState:0];
+        
+        return cell;
     }
-    identifier = @"setting1";
+
+    identifier = @"setting4";
     BidOneCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     
     if (!cell) {
@@ -116,7 +208,7 @@
     cell.selectedBackgroundView.backgroundColor = kCellSelectedColor;
     
     [cell.oneButton setTitle:@"退出登录" forState:0];
-    [cell.oneButton setTitleColor:kRedColor forState:0];
+    [cell.oneButton setTitleColor:kBlackColor forState:0];
     cell.oneButton.userInteractionEnabled = NO;
     
     return cell;
@@ -136,45 +228,21 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    if (indexPath.section == 0) {//修改密码
+    if (indexPath.section == 0) {//个人中心
+        PersonCerterViewController *personCerterVC = [[PersonCerterViewController alloc] init];
+        [self.navigationController pushViewController:personCerterVC animated:YES];
+    }else if(indexPath.section == 1){//身份认证
+    }else if (indexPath.section == 2 && indexPath.row == 0){//设置登录密码
         ModifyPassWordViewController *modifyPassWordVC = [[ModifyPassWordViewController alloc] init];
         [self.navigationController pushViewController:modifyPassWordVC animated:YES];
-        
-    }else if(indexPath.section == 1){//消息提醒
-        MessageRemindViewController *messageRemindVC = [[MessageRemindViewController alloc] init];
-        [self.navigationController pushViewController:messageRemindVC animated:YES];
-        
-    }else if (indexPath.section == 2){//地址
+    }else if (indexPath.section == 2 && indexPath.row == 1){//绑定手机
+        ChangeMobileViewController *changeMobileVC = [[ChangeMobileViewController alloc] init];
+        [self.navigationController pushViewController:changeMobileVC animated:YES];
+    }else if (indexPath.section == 3){//收货地址
         ReceiptAddressViewController *receiptAddressListViewController = [[ReceiptAddressViewController alloc] init];
         receiptAddressListViewController.cateString = @"1";
         [self.navigationController pushViewController:receiptAddressListViewController animated:YES];
-    }else if (indexPath.section == 3){
-        switch (indexPath.row) {
-            case 0:{//意见反馈
-                SuggestionViewController *suggestionVC = [[SuggestionViewController alloc] init];
-                [self.navigationController pushViewController:suggestionVC animated:YES];
-            }
-                break;
-            case 1:{//常见问答
-                RegisterAgreementViewController *registerAgreementVC = [[RegisterAgreementViewController alloc] init];
-                registerAgreementVC.agreeString = kSettingProblems;
-                [self.navigationController pushViewController:registerAgreementVC animated:YES];
-            }
-                break;
-            case 2:{//联系我们
-                ContactUsViewController *contactUsVC = [[ContactUsViewController alloc] init];
-                [self.navigationController pushViewController:contactUsVC animated:YES];
-            }
-                break;
-            case 3:{//关于清道夫
-                AboutViewController *aboutVC = [[AboutViewController alloc] init];
-                [self.navigationController pushViewController:aboutVC animated:YES];
-            }
-                break;
-            default:
-                break;
-        }
-    }else{
+    }else if (indexPath.section == 4){//退出登录
         NSString *exitString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kExitString];
         
         NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:@"token"];
@@ -192,15 +260,11 @@
                 
                 [weakself.navigationController popViewControllerAnimated:YES];
             }
-            
         } andFailBlock:^(NSError *error){
             
         }];
     }
 }
-
-
-#pragma mark - method
 
 
 - (void)didReceiveMemoryWarning {

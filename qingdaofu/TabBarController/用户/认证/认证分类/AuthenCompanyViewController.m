@@ -66,7 +66,7 @@
         [self.companyAuTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.companyAuCommitButton];
         
         [self.companyAuCommitButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [self.companyAuCommitButton autoSetDimension:ALDimensionHeight toSize:kCellHeight1];
+        [self.companyAuCommitButton autoSetDimension:ALDimensionHeight toSize:kCellHeight4];
         
         self.didSetupConstraints = YES;
     }

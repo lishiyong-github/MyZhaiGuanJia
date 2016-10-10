@@ -60,7 +60,7 @@
         [self.personAuTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.personAuCommitButton];
         
         [self.personAuCommitButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [self.personAuCommitButton autoSetDimension:ALDimensionHeight toSize:kCellHeight1];
+        [self.personAuCommitButton autoSetDimension:ALDimensionHeight toSize:kCellHeight4];
         
         self.didSetupConstraints = YES;
     }

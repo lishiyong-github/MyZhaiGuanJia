@@ -17,7 +17,8 @@
              @"pid" : @"result.pid",
              @"mobile" : @"result.mobile",
              @"state" : @"result.state",
-             @"idString" : @"result.idString"
+             @"idString" : @"result.idString",
+             @"name" : @"result.name"
              };
 }
 

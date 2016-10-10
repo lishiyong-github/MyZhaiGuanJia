@@ -32,7 +32,8 @@
     
     [manager POST:validString parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
         
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {        
+        
         TokenModel *model = [TokenModel objectWithKeyValues:responseObject];
         if (self.didTokenValid) {
             [self hideHud];

@@ -59,7 +59,7 @@
         [self.evaluateListTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.evaluateCommitView];
         
         [self.evaluateCommitView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [self.evaluateCommitView autoSetDimension:ALDimensionHeight toSize:kCellHeight1];
+        [self.evaluateCommitView autoSetDimension:ALDimensionHeight toSize:kCellHeight4];
         
         self.didSetupConstraints = YES;
     }

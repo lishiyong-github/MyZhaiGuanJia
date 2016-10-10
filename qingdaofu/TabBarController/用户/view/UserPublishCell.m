@@ -17,7 +17,9 @@
     if (self) {
         [self.contentView addSubview:self.button1];
         [self.contentView addSubview:self.button2];
-        [self.contentView addSubview:self.lined];
+        [self.contentView addSubview:self.button3];
+        [self.contentView addSubview:self.lined1];
+        [self.contentView addSubview:self.lined2];
 
         [self setNeedsUpdateConstraints];
     }
@@ -29,15 +31,25 @@
     if (!self.didSetupConstraints) {
         
         [self.button1 autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeRight];
-        [self.button1 autoSetDimension:ALDimensionWidth toSize:kScreenWidth/2];
+        [self.button1 autoSetDimension:ALDimensionWidth toSize:kScreenWidth/3];
         
-        [self.button2 autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeLeft];
+        [self.button2 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.button1];
+        [self.button2 autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.button1];
         [self.button2 autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.button1];
+        [self.button2 autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.button1];
+
+        [self.button3 autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeLeft];
+        [self.button3 autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.button2];
         
-        [self.lined autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.button1];
-        [self.lined autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.button1];
-        [self.lined autoAlignAxisToSuperviewAxis:ALAxisVertical];
-        [self.lined autoSetDimension:ALDimensionWidth toSize:kLineWidth];
+        [self.lined1 autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.button1 withOffset:kBigPadding];
+        [self.lined1 autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.button1 withOffset:-kBigPadding];
+        [self.lined1 autoSetDimension:ALDimensionWidth toSize:kLineWidth];
+        [self.lined1 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.button1];
+        
+        [self.lined2 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.button2];
+        [self.lined2 autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.lined1];
+        [self.lined2 autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.lined1];
+        [self.lined2 autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.lined1];
         
         self.didSetupConstraints = YES;
     }
@@ -64,13 +76,32 @@
     return _button2;
 }
 
-- (UILabel *)lined
+- (UIButton *)button3
 {
-    if (!_lined) {
-        _lined = [UILabel newAutoLayoutView];
-        _lined.backgroundColor = kBorderColor;
+    if (!_button3) {
+        _button3 = [UIButton newAutoLayoutView];
+        [_button3 setTitleColor:kBlackColor forState:0];
+        _button3.titleLabel.font = kBigFont;
     }
-    return _lined;
+    return _button3;
+}
+
+- (UILabel *)lined1
+{
+    if (!_lined1) {
+        _lined1 = [UILabel newAutoLayoutView];
+        _lined1.backgroundColor = kBorderColor;
+    }
+    return _lined1;
+}
+
+- (UILabel *)lined2
+{
+    if (!_lined2) {
+        _lined2 = [UILabel newAutoLayoutView];
+        _lined2.backgroundColor = kBorderColor;
+    }
+    return _lined2;
 }
 
 - (void)awakeFromNib {

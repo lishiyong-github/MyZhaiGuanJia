@@ -64,7 +64,7 @@
         [self.lawAuTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.lawAuCommitButton];
         
         [self.lawAuCommitButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [self.lawAuCommitButton autoSetDimension:ALDimensionHeight toSize:kCellHeight1];
+        [self.lawAuCommitButton autoSetDimension:ALDimensionHeight toSize:kCellHeight4];
         
         self.didSetupConstraints = YES;
     }

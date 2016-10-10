@@ -59,7 +59,8 @@
 
 
 //文字颜色  Helvetica-Bold加粗 0da3f9  1bacff
-#define kBlueColor UIColorFromRGB(0x0da3f9)  //主色调 //0065b3--0da3f9
+#define kBlueColor UIColorFromRGB(0x0065b3)  //主色调 //0065b3--0da3f9
+#define kButtonColor UIColorFromRGB(0x10a1ec)  //按钮颜色
 #define kBlackColor UIColorFromRGB(0x333333)  //黑色
 #define kGrayColor UIColorFromRGB(0x666666)  //灰色
 #define kLightGrayColor UIColorFromRGB(0x999999)//浅灰色
@@ -68,10 +69,12 @@
 #define kDarkGrayColor UIColorFromRGB(0x37485b) //深灰色
 #define kBorderColor UIColorFromRGB(0xcccccc)  //描边颜色
 #define kLightWhiteColor  UIColorFromRGB(0xdcecff)  //浅白色
-#define kRemindTipColor UIColorFromRGB(0xf4ae5c)//提示框的颜色
+#define kRemindTipColor UIColorFromRGB(0xff981f)//提示框的颜色//f4ae5c
+#define kWhiteColor UIColorFromRGB(0xffffff) //白色
+//背景色UIColorFromRGB1(rgbValue,alphaValue)
+//#define kNavColor UIColorFromRGB(0xffffff)  //导航栏颜色1(白色)
+#define kNavColor UIColorFromRGB1(0x242930,0.95)  //导航栏颜色1(白色)
 
-//背景色
-#define kNavColor UIColorFromRGB(0xffffff)  //导航栏颜色1(白色)
 #define kNavColor1 UIColorFromRGB(0x1bacff) //导航栏颜色2（产品详情界面）42566d－1bacff
 #define kCellSelectedColor UIColorFromRGB(0xeef3f6)  //单元格选中颜色
 #define kSelectedColor UIColorFromRGB(0xbecdd2)  //按钮不可点击颜色c6d3dc－－becdd2
@@ -102,12 +105,15 @@
 #define kLineWidth 0.5
 
 //边距
-#define kBigPadding 12    //较大间距15-12
-#define kSmallPadding 10  //较小间距
 #define kCellHeight 44    //一般单元格高度
-#define kCellHeight1 60    //单元格高度
+#define kCellHeight2 50    //单元格高度
+#define kCellHeight3 56    //单元格高度
+#define kCellHeight4 60    //单元格高度
+#define kCellHeight5 68  //个人信息高度
 #define kRemindHeight 32 //提示信息高度
 
+#define kBigPadding 12    //较大间距15-12
+#define kSmallPadding 10  //较小间距
 #define kSpacePadding 6 //间距
 
 //使用block代替button点击事件

@@ -12,8 +12,9 @@
 
 #import "LoginViewController.h"     //登录
 #import "AuthentyViewController.h"  //未认证
-#import "CompleteViewController.h"  //已认证
-#import "AuthentyWaitingViewController.h"  //正在等待认证
+//#import "CompleteViewController.h"  //已认证
+//#import "AuthentyWaitingViewController.h"  //正在等待认证
+#import "PersonCerterViewController.h" //个人中心
 
 #import "MyReleaseViewController.h" //我的发布
 #import "MyOrderViewController.h"  //我的接单
@@ -29,6 +30,7 @@
 #import "MyAgentListViewController.h"  //我的代理
 
 #import "MySettingsViewController.h"  //设置
+#import "HelpCenterViewController.h" //帮助中心
 
 #import "LoginTableView.h"
 
@@ -39,12 +41,8 @@
 
 @property (nonatomic,assign) BOOL didSetupConstraits;
 @property (nonatomic,strong) LoginTableView *loginView;
-
-@property (nonatomic,strong) NSString *authenString;
-@property (nonatomic,strong) NSMutableArray *authenArray;
-
-@property (nonatomic,strong) NSMutableArray *tokenArray;
-
+@property (nonatomic,strong) UIButton *setButton;
+@property (nonatomic,strong) TokenModel *toModel;
 
 @end
 
@@ -55,6 +53,7 @@
     [self tokenIsValid];
     QDFWeakSelf;
     [self setDidTokenValid:^(TokenModel *tModel) {
+        weakself.toModel = tModel;
         weakself.loginView.model = tModel;
         [weakself.loginView reloadData];
     }];
@@ -62,7 +61,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = @"用户中心";
+    self.navigationItem.title = @"用户";
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.setButton];
     
     [self.view addSubview:self.loginView];
     [self.view setNeedsUpdateConstraints];
@@ -80,6 +80,24 @@
     [super updateViewConstraints];
 }
 
+- (UIButton *)setButton
+{
+    if (!_setButton) {
+        _setButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 30)];
+        [_setButton setImage:[UIImage imageNamed:@"list_icon_setting"] forState:0];
+        
+        QDFWeakSelf;
+        [_setButton addAction:^(UIButton *btn) {
+            [weakself showHint:@"设置"];
+            MySettingsViewController *mySettingVC = [[MySettingsViewController alloc] init];
+            mySettingVC.hidesBottomBarWhenPushed = YES;
+            mySettingVC.toModel = weakself.toModel;
+            [weakself.navigationController pushViewController:mySettingVC animated:YES];
+        }];
+    }
+    return _setButton;
+}
+
 - (LoginTableView *)loginView
 {
     if (!_loginView) {
@@ -90,37 +108,34 @@
         [_loginView setDidSelectedButton:^(NSInteger buttonTag) {
             
             [weakself tokenIsValid];
-            if (buttonTag == 0|| buttonTag == 101 || buttonTag == 4 || buttonTag == 8 || buttonTag == 9 || buttonTag == 10 || buttonTag == 11 || buttonTag == 16) {//我的认证，发布，保存，保全，保函，产调，评估，设置，
+            if (buttonTag == 0|| buttonTag == 101 || buttonTag == 4 || buttonTag == 5 || buttonTag == 6 || buttonTag == 7 || buttonTag == 8 || buttonTag == 12|| buttonTag == 16) {//我的认证，发布，保全，保函，产调，评估，草稿，设置，
                 [weakself setDidTokenValid:^(TokenModel *tokenModel) {
                     if ([tokenModel.code integerValue] == 0000 || [tokenModel.code integerValue] == 3006) {
                         switch (buttonTag) {
                             case 0:{//认证
-                                if ([tokenModel.code integerValue] == 0000) {//已认证
-                                    NSString *categoryStr;
-                                    if ([tokenModel.state intValue] == 1 && [tokenModel.category intValue] == 1) {//个人
-                                        categoryStr = @"1";
-                                    }else if ([tokenModel.state intValue] == 1 && [tokenModel.category intValue] == 2){//律所
-                                        categoryStr = @"2";
-                                    }else if ([tokenModel.state intValue] == 1 && [tokenModel.category intValue] == 3){//公司
-                                        categoryStr = @"3";
-                                    }
-                                    CompleteViewController *completeVC = [[CompleteViewController alloc] init];
-                                    completeVC.hidesBottomBarWhenPushed = YES;
-                                    completeVC.categoryString = tokenModel.category;
-                                    [weakself.navigationController pushViewController:completeVC animated:YES];
-                                }else{//未认证
-                                    [weakself showHint:tokenModel.msg];
-                                    AuthentyViewController *authentyVC = [[AuthentyViewController alloc] init];
-                                    authentyVC.hidesBottomBarWhenPushed = YES;
-                                    authentyVC.typeAuthty = @"0";
-                                    [weakself.navigationController pushViewController:authentyVC animated:YES];
-                                    
-                                    
-//                                    AuthentyWaitingViewController *authentyWaitingVC = [[AuthentyWaitingViewController alloc] init];
-//                                    authentyWaitingVC.hidesBottomBarWhenPushed = YES;
-//                                    authentyWaitingVC.categoryString = @"1";
-//                                    [weakself.navigationController pushViewController:authentyWaitingVC animated:YES];
-                                }
+                                PersonCerterViewController *personCerterVC = [[PersonCerterViewController alloc] init];
+                                personCerterVC.hidesBottomBarWhenPushed = YES;
+                                [weakself.navigationController pushViewController:personCerterVC animated:YES];
+//                                if ([tokenModel.code integerValue] == 0000) {//已认证
+//                                    NSString *categoryStr;
+//                                    if ([tokenModel.state intValue] == 1 && [tokenModel.category intValue] == 1) {//个人
+//                                        categoryStr = @"1";
+//                                    }else if ([tokenModel.state intValue] == 1 && [tokenModel.category intValue] == 2){//律所
+//                                        categoryStr = @"2";
+//                                    }else if ([tokenModel.state intValue] == 1 && [tokenModel.category intValue] == 3){//公司
+//                                        categoryStr = @"3";
+//                                    }
+//                                    CompleteViewController *completeVC = [[CompleteViewController alloc] init];
+//                                    completeVC.hidesBottomBarWhenPushed = YES;
+//                                    completeVC.categoryString = tokenModel.category;
+//                                    [weakself.navigationController pushViewController:completeVC animated:YES];
+//                                }else{//未认证
+//                                    [weakself showHint:tokenModel.msg];
+//                                    AuthentyViewController *authentyVC = [[AuthentyViewController alloc] init];
+//                                    authentyVC.hidesBottomBarWhenPushed = YES;
+//                                    authentyVC.typeAuthty = @"0";
+//                                    [weakself.navigationController pushViewController:authentyVC animated:YES];
+//                                }
                             }
                                 break;
                             case 101:{//我的发布
@@ -130,40 +145,47 @@
                                 [weakself.navigationController pushViewController:myReleaseVC animated:YES];
                             }
                                 break;
-                            case 4:{//我的保存
-                                MySaveViewController *mySaveVC = [[MySaveViewController alloc] init];
-                                mySaveVC.hidesBottomBarWhenPushed = YES;
-                                [weakself.navigationController pushViewController:mySaveVC animated:YES];
-                            }
-                                break;
-                            case 8:{//我的保全
+                            case 4:{//我的保全
                                 PowerProtectListViewController *powerProtectListVC = [[PowerProtectListViewController alloc] init];
                                 powerProtectListVC.hidesBottomBarWhenPushed = YES;
                                 [weakself.navigationController pushViewController:powerProtectListVC animated:YES];
                             }
                                 break;
-                            case 9:{//我的保函
+                            case 5:{//我的保函
                                 ApplicationListViewController *applicationListVC = [[ApplicationListViewController alloc] init];
                                 applicationListVC.hidesBottomBarWhenPushed = YES;
                                 [weakself.navigationController pushViewController:applicationListVC animated:YES];
                             }
                                 break;
-                            case 10:{//我的产调
+                            case 6:{//我的产调
                                 HousePropertyListViewController *housePropertyListVC = [[HousePropertyListViewController alloc] init];
                                 housePropertyListVC.hidesBottomBarWhenPushed = YES;
                                 [weakself.navigationController pushViewController:housePropertyListVC animated:YES];
                             }
                                 break;
-                            case 11:{//我的房产评估结果
+                            case 7:{//我的房产评估结果
                                 HouseAssessListViewController *houseAssessListVC = [[HouseAssessListViewController alloc] init];
                                 houseAssessListVC.hidesBottomBarWhenPushed = YES;
                                 [weakself.navigationController pushViewController:houseAssessListVC animated:YES];
                             }
                                 break;
-                            case 16:{//我的设置
-                                MySettingsViewController *mySettingVC = [[MySettingsViewController alloc] init];
-                                mySettingVC.hidesBottomBarWhenPushed = YES;
-                                [weakself.navigationController pushViewController:mySettingVC animated:YES];
+                            case 8:{//我的草稿
+                                MySaveViewController *mySaveVC = [[MySaveViewController alloc] init];
+                                mySaveVC.hidesBottomBarWhenPushed = YES;
+                                [weakself.navigationController pushViewController:mySaveVC animated:YES];
+                            }
+                                break;
+                            case 12:{//我的通讯录
+                                [weakself showHint:@"添加联系人"];
+//                                MySaveViewController *mySaveVC = [[MySaveViewController alloc] init];
+//                                mySaveVC.hidesBottomBarWhenPushed = YES;
+//                                [weakself.navigationController pushViewController:mySaveVC animated:YES];
+                            }
+                                break;
+                            case 16:{//帮助中心
+                                HelpCenterViewController *helpCenterVC = [[HelpCenterViewController alloc] init];
+                                helpCenterVC.hidesBottomBarWhenPushed = YES;
+                                [weakself.navigationController pushViewController:helpCenterVC animated:YES];
                             }
                                 break;
                             default:
@@ -189,25 +211,34 @@
                                 [weakself.navigationController pushViewController:myOrderVC animated:YES];
                             }
                                 break;
-                            case 5:{//我的收藏
+                            case 103:{//经办事项
+                                [weakself showHint:@"经办事项"];
+//                                MyOrderViewController *myOrderVC = [[MyOrderViewController alloc] init];
+//                                myOrderVC.hidesBottomBarWhenPushed = YES;
+//                                myOrderVC.status = @"-1";
+//                                myOrderVC.progresStatus = @"0";
+//                                [weakself.navigationController pushViewController:myOrderVC animated:YES];
+                            }
+                                break;
+                            case 9:{//我的收藏
                                 MyStoreViewController *myStoreVC = [[MyStoreViewController alloc] init];
                                 myStoreVC.hidesBottomBarWhenPushed = YES;
                                 [weakself.navigationController pushViewController:myStoreVC animated:YES];
                             }
                                 break;
-                            case 12:{//我的代理
-                                MyAgentListViewController *myAgentListVC = [[MyAgentListViewController alloc] init];
-                                myAgentListVC.hidesBottomBarWhenPushed = YES;
-                                
-                                if (tokenModel.pid == nil) {
-                                    myAgentListVC.typePid = @"本人";
-                                }else{
-                                    myAgentListVC.typePid = @"非本人";
-                                }
-                                
-                                [weakself.navigationController pushViewController:myAgentListVC animated:YES];
-                            }
-                                break;
+//                            case 12:{//我的代理
+//                                MyAgentListViewController *myAgentListVC = [[MyAgentListViewController alloc] init];
+//                                myAgentListVC.hidesBottomBarWhenPushed = YES;
+//                                
+//                                if (tokenModel.pid == nil) {
+//                                    myAgentListVC.typePid = @"本人";
+//                                }else{
+//                                    myAgentListVC.typePid = @"非本人";
+//                                }
+//                                
+//                                [weakself.navigationController pushViewController:myAgentListVC animated:YES];
+//                            }
+//                                break;
                             default:
                                 break;
                         }
@@ -229,22 +260,6 @@
         }];
     }
     return _loginView;
-}
-
-- (NSMutableArray *)authenArray
-{
-    if (!_authenArray) {
-        _authenArray = [NSMutableArray array];
-    }
-    return _authenArray;
-}
-
-- (NSMutableArray *)tokenArray
-{
-    if (!_tokenArray) {
-        _tokenArray = [NSMutableArray array];
-    }
-    return _tokenArray;
 }
 
 - (void)didReceiveMemoryWarning {

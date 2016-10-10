@@ -36,7 +36,7 @@
     //    self.automaticallyAdjustsScrollViewInsets = NO ;
     
     //设置导航条的字体颜色
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:kBlackColor,NSFontAttributeName:kNavFont}];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:UIColorFromRGB(0xffffff),NSFontAttributeName:kNavFont}];
     
     //去除系统效果
     self.navigationController.navigationBar.translucent = NO;
@@ -85,6 +85,7 @@
         wwww.frame = CGRectMake(0, 0, 22, 25);
         [wwww setImage:[UIImage imageNamed:@"close"] forState:0];
         [wwww addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+        _leftItemAnother = [[UIBarButtonItem alloc] initWithCustomView:wwww];
     }
     return _leftItemAnother;
 }

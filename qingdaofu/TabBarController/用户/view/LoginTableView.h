@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "TokenModel.h"
 
-
 @interface LoginTableView : UITableView<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,strong) void (^didSelectedButton)(NSInteger);

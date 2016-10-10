@@ -98,7 +98,7 @@
         [self.powerPictureTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.powerPictureButton];
         
         [self.powerPictureButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [self.powerPictureButton autoSetDimension:ALDimensionHeight toSize:kCellHeight1];
+        [self.powerPictureButton autoSetDimension:ALDimensionHeight toSize:kCellHeight4];
         
         
         self.didSetupConstraints = YES;
