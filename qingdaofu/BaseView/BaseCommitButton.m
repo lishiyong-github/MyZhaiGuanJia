@@ -15,9 +15,9 @@
     self = [super initWithFrame:frame];
     
     if (self) {
-        self.backgroundColor = kBlueColor;
+        self.backgroundColor = kButtonColor;
         self.titleLabel.font = kFirstFont;
-        [self setTitleColor:kNavColor forState:0];
+        [self setTitleColor:kWhiteColor forState:0];
         self.layer.cornerRadius = corner1;
     }
     return self;

@@ -105,8 +105,8 @@
     }else if (indexPath.row == 1){
         cell.loginTextField.keyboardType = UIKeyboardTypeNumberPad;
         [cell.loginSwitch setHidden:YES];
-        [cell.getCodebutton setBackgroundColor:kBlueColor];
-        [cell.getCodebutton setTitleColor:kNavColor forState:0];
+        [cell.getCodebutton setBackgroundColor:kButtonColor];
+        [cell.getCodebutton setTitleColor:kWhiteColor forState:0];
         [cell.getCodebutton setTitle:@"获取验证码" forState:0];
         [cell.getCodebutton addTarget:self action:@selector(getForgetCode:) forControlEvents:UIControlEventTouchUpInside];
         [cell setFinishEditing:^(NSString *text) {
@@ -155,7 +155,7 @@
     [self.view endEditing:YES];
     NSString *codeString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kLoginGetCodeString];
     self.forgetDictionay[@"mobile"] = self.forgetDictionay[@"mobile"]?self.forgetDictionay[@"mobile"]:@"";
-    NSDictionary *params = @{@"mobile" : self.forgetDictionay[@"mobile"]};
+    NSDictionary *params = self.forgetDictionay;
     
     QDFWeakSelf;
     [self requestDataPostWithString:codeString params:params successBlock:^(id responseObject){//成功
@@ -168,12 +168,13 @@
             [sender didChange:^NSString *(JKCountDownButton *countDownButton, int second) {
                 [sender setBackgroundColor:kLightGrayColor];
                 sender.enabled = NO;
-                NSString *title = [NSString stringWithFormat:@"剩余(%d秒)",second];
+                NSString *title = [NSString stringWithFormat:@"剩余(%d)秒",second];
                 return title;
             }];
             
             [sender didFinished:^NSString *(JKCountDownButton *countDownButton, int second) {
-                sender.backgroundColor = kBlueColor;
+                sender.backgroundColor = kButtonColor;
+                [sender setTitleColor:kWhiteColor forState:0];
                 sender.enabled = YES;
                 return @"获取验证码";
             }];

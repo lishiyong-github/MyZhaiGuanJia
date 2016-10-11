@@ -212,7 +212,7 @@
             [sender didChange:^NSString *(JKCountDownButton *countDownButton, int second) {
                 [sender setBackgroundColor:kLightGrayColor];
                 sender.enabled = NO;
-                NSString *title = [NSString stringWithFormat:@"剩余(%d秒)",second];
+                NSString *title = [NSString stringWithFormat:@"剩余(%d)秒",second];
                 return title;
             }];
             

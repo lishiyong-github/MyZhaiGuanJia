@@ -15,7 +15,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        self.backgroundColor = kNavColor;
+        self.backgroundColor = kWhiteColor;
         self.layer.borderWidth = kLineWidth;
         self.layer.borderColor = kBorderColor.CGColor;
         

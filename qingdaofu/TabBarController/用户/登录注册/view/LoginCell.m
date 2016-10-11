@@ -71,7 +71,7 @@
 {
     if (!_loginSwitch) {//79*27
         _loginSwitch = [UISwitch newAutoLayoutView];
-        _loginSwitch.onTintColor = kBlueColor;
+        _loginSwitch.onTintColor = kButtonColor;
         _loginSwitch.tintColor = kSeparateColor;
         [_loginSwitch addTarget:self action:@selector(tagSwitch:) forControlEvents:UIControlEventValueChanged];
     }

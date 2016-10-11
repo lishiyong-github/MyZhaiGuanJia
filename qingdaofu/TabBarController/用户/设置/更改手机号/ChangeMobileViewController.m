@@ -58,6 +58,7 @@
         [self.changeGetButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.changeGetButton autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.changeCodeTextField];
         [self.changeGetButton autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.changeCodeTextField];
+        [self.changeGetButton autoSetDimension:ALDimensionWidth toSize:80];
         
         [self.changeCommitButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
         [self.changeCommitButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
@@ -119,7 +120,7 @@
         _changeGetButton = [JKCountDownButton newAutoLayoutView];
         _changeGetButton.backgroundColor = kButtonColor;
         _changeGetButton.layer.cornerRadius = corner;
-        [_changeGetButton setTitle:@"      点击获取      " forState:0];
+        [_changeGetButton setTitle:@"点击获取" forState:0];
         [_changeGetButton setTitleColor:kWhiteColor forState:0];
         _changeGetButton.titleLabel.font = kFourFont;
         
@@ -144,10 +145,21 @@
 #pragma mark - method
 - (void)getChangeCodeWithButton:(JKCountDownButton *)sender
 {
-    [sender startWithSecond:5];
-//    [sender didFinished:^NSString *(JKCountDownButton *countDownButton, int second) {
-//        [sender setTitle:@"点击获取" forState:0];
-//    }];
+    [sender startWithSecond:60];
+    
+    [sender didChange:^NSString *(JKCountDownButton *countDownButton, int second) {
+        [sender setBackgroundColor:kLightGrayColor];
+        sender.enabled = NO;
+        NSString *title = [NSString stringWithFormat:@"剩余(%d)秒",second];
+        return title;
+    }];
+    
+    [sender didFinished:^NSString *(JKCountDownButton *countDownButton, int second) {
+        [sender setBackgroundColor:kButtonColor];
+        sender.enabled = YES;
+        NSString *title = @"点击获取";
+        return title;
+    }];
     
 }
 

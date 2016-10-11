@@ -59,10 +59,10 @@
         [_segment insertSegmentWithTitle:@"快递" atIndex:0 animated:YES];
         [_segment insertSegmentWithTitle:@"自取" atIndex:1 animated:YES];
         
-        _segment.tintColor = kBlueColor;
+        _segment.tintColor = kButtonColor;
         _segment.selectedSegmentIndex = 0;
         [_segment setTitleTextAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kLightGrayColor} forState:0];
-        [_segment setTitleTextAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kNavColor} forState:UIControlStateSelected];
+        [_segment setTitleTextAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kWhiteColor} forState:UIControlStateSelected];
         
         [_segment addTarget:self action:@selector(changeSegment:) forControlEvents:UIControlEventValueChanged];
         

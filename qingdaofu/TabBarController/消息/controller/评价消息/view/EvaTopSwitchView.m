@@ -74,7 +74,7 @@
     if (!_getbutton) {
         _getbutton = [UIButton newAutoLayoutView];
         [_getbutton setTitle:@"收到的评价" forState:0];
-        [_getbutton setTitleColor:kBlueColor forState:0];
+        [_getbutton setTitleColor:kTextColor forState:0];
         _getbutton.titleLabel.font = kBigFont;
         
         QDFWeakSelf;
@@ -125,7 +125,7 @@
 {
     if (!_blueLabel) {
         _blueLabel = [UILabel newAutoLayoutView];
-        _blueLabel.backgroundColor = kBlueColor;
+        _blueLabel.backgroundColor = kButtonColor;
     }
     
     return _blueLabel;

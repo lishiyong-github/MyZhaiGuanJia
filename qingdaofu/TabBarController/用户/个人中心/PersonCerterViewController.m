@@ -7,7 +7,9 @@
 //
 
 #import "PersonCerterViewController.h"
-//#import "change"
+//#import "ChangeMobileViewController.h"
+#import "NewMobileViewController.h"
+
 #import "MineUserCell.h"
 
 
@@ -185,7 +187,10 @@
             
         }
             break;
-        case 2://电话
+        case 2:{//电话
+            NewMobileViewController *newMobileVC = [[NewMobileViewController alloc] init];
+            [self.navigationController pushViewController:newMobileVC animated:YES];
+        }
             break;
         case 4://认证
             break;

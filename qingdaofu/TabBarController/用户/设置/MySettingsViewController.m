@@ -12,7 +12,7 @@
 #import "AuthentyViewController.h"
 #import "CompleteViewController.h"
 #import "ModifyPassWordViewController.h"  //修改密码
-#import "ChangeMobileViewController.h"
+#import "NewMobileViewController.h"
 #import "ReceiptAddressViewController.h" //收货地址
 
 #import "MineUserCell.h"
@@ -236,8 +236,8 @@
         ModifyPassWordViewController *modifyPassWordVC = [[ModifyPassWordViewController alloc] init];
         [self.navigationController pushViewController:modifyPassWordVC animated:YES];
     }else if (indexPath.section == 2 && indexPath.row == 1){//绑定手机
-        ChangeMobileViewController *changeMobileVC = [[ChangeMobileViewController alloc] init];
-        [self.navigationController pushViewController:changeMobileVC animated:YES];
+        NewMobileViewController *newMobileVC = [[NewMobileViewController alloc] init];
+        [self.navigationController pushViewController:newMobileVC animated:YES];
     }else if (indexPath.section == 3){//收货地址
         ReceiptAddressViewController *receiptAddressListViewController = [[ReceiptAddressViewController alloc] init];
         receiptAddressListViewController.cateString = @"1";

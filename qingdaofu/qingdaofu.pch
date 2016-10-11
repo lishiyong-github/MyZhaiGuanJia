@@ -61,6 +61,8 @@
 //文字颜色  Helvetica-Bold加粗 0da3f9  1bacff
 #define kBlueColor UIColorFromRGB(0x0065b3)  //主色调 //0065b3--0da3f9
 #define kButtonColor UIColorFromRGB(0x10a1ec)  //按钮颜色
+#define kTextColor  UIColorFromRGB(0x4279d6)  //文字颜色
+#define kDeselectedColor UIColorFromRGB(0xf2f2f2) //未选中颜色
 #define kBlackColor UIColorFromRGB(0x333333)  //黑色
 #define kGrayColor UIColorFromRGB(0x666666)  //灰色
 #define kLightGrayColor UIColorFromRGB(0x999999)//浅灰色
@@ -165,6 +167,9 @@
 #define kBrandString  @"common/brand"  //机动车品牌
 #define kBrandAudiString  @"common/brandchild"  //车系
 #define kGuarantyString @"common/getsearch"   //小区
+///////////////
+#define kPublishProduct  @"product/release" //发布
+////////
 
 //我的接单 我的发布
 #define kMyOrdersString   @"apply/index"    //我的接单
