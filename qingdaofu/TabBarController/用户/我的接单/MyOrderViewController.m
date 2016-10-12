@@ -229,10 +229,14 @@
         cell = [[ExtendHomeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.nameButton.userInteractionEnabled = NO;
-    cell.deadLineButton.userInteractionEnabled = NO;
+//    cell.nameButton.userInteractionEnabled = NO;
+//    cell.deadLineButton.userInteractionEnabled = NO;
     RowsModel *rowModel = self.myOrderDataList[indexPath.section];
     
+    
+    return cell;
+    
+    /*
     //image and name
     if ([rowModel.category intValue] == 2){//清收
         [cell.nameButton setImage:[UIImage imageNamed:@"list_collection"] forState:0];
@@ -377,6 +381,7 @@
         }];
     }
     return cell;
+     */
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section

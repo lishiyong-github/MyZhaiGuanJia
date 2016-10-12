@@ -83,11 +83,11 @@
 {
     [super viewWillAppear:animated];
     
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:kNavColor,NSFontAttributeName:kNavFont}];
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:kBlueColor] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:kWhiteColor,NSFontAttributeName:kNavFont}];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:UIColorFromRGB(0x0da3f8)] forBarMetrics:UIBarMetricsDefault];
     
     self.shadowImage = self.navigationController.navigationBar.shadowImage;
-    [self.navigationController.navigationBar setShadowImage:[UIImage imageWithColor:kBlueColor]];
+    [self.navigationController.navigationBar setShadowImage:[UIImage imageWithColor:UIColorFromRGB(0x0da3f8)]];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -283,7 +283,8 @@
         }else{//section==1
             if ([self.switchType isEqualToString:@"33"]) {
                 //产品信息
-                return 1+self.messageArray1.count+1+1+self.messageArray2.count;
+//                return 1+self.messageArray1.count+1+1+self.messageArray2.count;
+                return 7;
             }else{
                 //发布人信息
                 if (self.certificationArray1.count > 0) {
@@ -301,16 +302,16 @@
         if (indexPath.row == 0) {
             return 190;
         }
-        return 60;
+        return kCellHeight3;
     }
     
     //section==1
-    if ([self.switchType isEqualToString:@"33"]) {
-        if (indexPath.row == self.messageArray1.count+1) {
-            return kBigPadding;
-        }
+    if ([self.switchType isEqualToString:@"33"]) {//产品信息
+//        if (indexPath.row == self.messageArray1.count+1) {
+//            return kBigPadding;
+//        }
         return kCellHeight;
-    }else if ([self.switchType isEqualToString:@"34"]) {
+    }else if ([self.switchType isEqualToString:@"34"]) {//发布方信息
         if (indexPath.row == self.certificationArray1.count) {//分割线
             return kBigPadding;
         }else if (indexPath.row == self.certificationArray1.count+2){//评价信息
@@ -340,8 +341,47 @@
                 cell = [[ProDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.backgroundColor = kBlueColor;
+            cell.backgroundColor = UIColorFromRGB(0x0da3f8);
             
+            cell.deRateLabel.text = @"----    委托费用    ----";
+            NSString *agencyStr1 = proModel.agencycommission;
+            NSString *agencyStr2;
+//            = @"%";
+            if ([proModel.agencycommissiontype isEqualToString:@"1"]){
+                agencyStr2 = @"%";
+            }else if ([proModel.agencycommissiontype isEqualToString:@"2"]){
+                agencyStr2 = @"万";
+            }
+            NSString *agencyStr = [NSString stringWithFormat:@"%@%@",agencyStr1,agencyStr2];
+            NSMutableAttributedString *attAgencyStr = [[NSMutableAttributedString alloc] initWithString:agencyStr];
+            [attAgencyStr addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:50],NSForegroundColorAttributeName:kWhiteColor} range:NSMakeRange(0, agencyStr1.length)];
+            [attAgencyStr addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:24],NSForegroundColorAttributeName:kWhiteColor} range:NSMakeRange(agencyStr1.length, agencyStr2.length)];
+            [cell.deRateLabel1 setAttributedText:attAgencyStr];
+            
+            //左边－－－－委托金额
+            cell.deMoneyView.fLabel1.text = @"委托金额";
+            NSString *moneyStr1 = proModel.money;
+            NSString *moneyStr2 = @"万";
+            NSString *moneyStr = [NSString stringWithFormat:@"%@%@",moneyStr1,moneyStr2];
+            NSMutableAttributedString *attMoneyStr = [[NSMutableAttributedString alloc] initWithString:moneyStr];
+            [attMoneyStr addAttributes:@{NSFontAttributeName:kNavFont,NSForegroundColorAttributeName:kWhiteColor} range:NSMakeRange(0, moneyStr1.length)];
+            [attMoneyStr addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kWhiteColor} range:NSMakeRange(moneyStr1.length, moneyStr2.length)];
+            [cell.deMoneyView.fLabel2 setAttributedText:attMoneyStr];
+            
+            //右边 --违约期限
+            cell.deTypeView.fLabel1.text = @"违约期限";
+            NSString *dateStr1 = @"6";
+//            proModel.money;
+            NSString *dateStr2 = @"个月";
+            NSString *dateStr = [NSString stringWithFormat:@"%@%@",dateStr1,dateStr2];
+            NSMutableAttributedString *attDateStr = [[NSMutableAttributedString alloc] initWithString:dateStr];
+            [attDateStr addAttributes:@{NSFontAttributeName:kNavFont,NSForegroundColorAttributeName:kWhiteColor} range:NSMakeRange(0, dateStr1.length)];
+            [attDateStr addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kWhiteColor} range:NSMakeRange(dateStr1.length, dateStr2.length)];
+            [cell.deTypeView.fLabel2 setAttributedText:attDateStr];
+        
+            return cell;
+        
+            /*
             if ([proModel.category intValue] == 2){//清收
                 //上边
                 if ([proModel.agencycommissiontype isEqualToString:@"1"]) {
@@ -422,6 +462,7 @@
             [cell.deMoneyView.fLabel2 setAttributedText:attMoneyStr];
             
             return cell;
+             */
         }
         
         //row == 1  ProDetailNumberCell
@@ -431,7 +472,7 @@
             cell = [[ProDetailNumberCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.backgroundColor = kNavColor;
+        cell.backgroundColor = kWhiteColor;
         
         NumberModel *numberModel = self.numberDataArray[0];
         
@@ -760,12 +801,15 @@
             PublishingModel *dataModel = respModel.data;
             
             ////////////////*********产品详情*********/////////////////////////
-            NSArray *categoryArr = @[@"清收",@"诉讼"];
-            NSArray *cateStr = categoryArr[[weakself.categoryString integerValue] -2];
-            weakself.navigationItem.title = [NSString stringWithFormat:@"%@%@",cateStr,dataModel.codeString];
+            weakself.navigationItem.title = [NSString stringWithFormat:@"债权%@",dataModel.codeString];
             [weakself.recommendDataArray addObject:dataModel];
             
             //************产品信息*********///
+            weakself.messageArray1 = @[@"债权类型",@"委托事项",@"委托金额",@"委托费用",@"违约期限",@"合同履行地"];
+            weakself.messageArray11 = @[@"房产抵押，机动车抵押，合同纠纷，其他",@"清收，诉讼，债权转让，其他",@"1000万",@"5.6%",@"3个月",@"上海上海市浦东新区"];
+            [weakself.productsDetailsTableView reloadData];
+            
+            /*
             //金额
             NSString *moneyStr1 = [NSString stringWithFormat:@"%@万",dataModel.money];
             
@@ -823,7 +867,10 @@
                 weakself.messageArray1 = @[@"借款本金",@"费用类型",@"代理费用",@"债权类型"];
                 weakself.messageArray11 = @[moneyStr1,agencycommissiontypeStr,agencycommissionStr1,loan_typeStr];
             }
+            */
+            
             ///****** 补充信息 *******//////
+            /*
             NSString *rate = [NSString getValidStringFromString:dataModel.rate]; //借款利率
             if (![rate isEqualToString:@"暂无"]) {
                 rate = [NSString stringWithFormat:@"%@%@/月",rate,@"%"];
@@ -899,6 +946,7 @@
             
             [weakself.productsDetailsTableView reloadData];
             
+             */
             
             //////////////////////*********发布人详情*********/////////////////////////
             CertificationModel *certificationModel;
@@ -959,7 +1007,7 @@
             rModel = self.recommendDataArray[0];
         }
         if ((stateModel.app_id == nil || [stateModel.app_id intValue] == 2) && [rModel.progress_status integerValue] == 1) {
-            [weakself.proDetailsCommitButton setTitleColor:kNavColor forState:0];
+            [weakself.proDetailsCommitButton setTitleColor:kWhiteColor forState:0];
             [weakself.proDetailsCommitButton setTitle:@"立即申请" forState:0];
             [weakself.proDetailsCommitButton addTarget: weakself action:@selector(applicationCommit) forControlEvents:UIControlEventTouchUpInside];
             

@@ -127,10 +127,7 @@
         cell.newsNameButton.titleLabel.font = [UIFont systemFontOfSize:18];
         
         [cell.newsActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-        [cell.newsActionButton setTitleColor:kBlueColor forState:0];
-        cell.newsActionButton.titleLabel.backgroundColor = kBlueColor;
-        [cell.newsActionButton setTitleColor:kNavColor forState:0];
-                
+        
         if ([childDic[@"number"] integerValue] == 0) {
             [cell.newsCountButton setHidden:YES];
         }else{

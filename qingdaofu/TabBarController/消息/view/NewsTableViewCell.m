@@ -66,8 +66,8 @@
 {
     if (!_newsCountButton) {
         _newsCountButton = [UIButton newAutoLayoutView];
-        _newsCountButton.backgroundColor = kBlueColor;
-        [_newsCountButton setTitleColor:kNavColor forState:0];
+        _newsCountButton.backgroundColor = kButtonColor;
+        [_newsCountButton setTitleColor:kWhiteColor forState:0];
         _newsCountButton.titleLabel.font = kTabBarFont;
         _newsCountButton.layer.cornerRadius = 10;
         _newsCountButton.userInteractionEnabled = NO;

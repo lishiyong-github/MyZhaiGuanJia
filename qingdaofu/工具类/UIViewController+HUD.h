@@ -20,6 +20,8 @@
 
 - (void)showHint:(NSString *)hint;
 
+- (void)showSuitHint:(NSString *)hint;
+
 // 从默认(showHint:)显示的位置再往上(下)yOffset
 - (void)showHint:(NSString *)hint yOffset:(float)yOffset;
 

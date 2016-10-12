@@ -50,6 +50,23 @@ static const void *HttpRequestHUDKey = &HttpRequestHUDKey;
     [hud hide:YES afterDelay:2];
 }
 
+- (void)showSuitHint:(NSString *)hint
+{
+    //显示提示信息
+    UIView *view = [[UIApplication sharedApplication].delegate window];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
+    
+    hud.userInteractionEnabled = NO;
+    // Configure for text only and offset down
+    hud.mode = MBProgressHUDModeAnnularDeterminate;
+    hud.labelText = hint;
+    hud.margin = 10.f;
+    //    hud.yOffset = IS_IPHONE_5?200.f:150.f;
+    hud.yOffset = /* DISABLES CODE */ (YES)?200.f:150.f;
+    hud.removeFromSuperViewOnHide = YES;
+    [hud hide:YES afterDelay:2];
+}
+
 - (void)showHint:(NSString *)hint yOffset:(float)yOffset {
     //显示提示信息
     UIView *view = [[UIApplication sharedApplication].delegate window];

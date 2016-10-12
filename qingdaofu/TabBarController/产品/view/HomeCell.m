@@ -27,7 +27,7 @@
         [self.contentView addSubview:self.pointView];
         [self.contentView addSubview:self.rateView];
         
-        [self.contentView setNeedsUpdateConstraints];
+        [self setNeedsUpdateConstraints];
     }
     return self;
 }

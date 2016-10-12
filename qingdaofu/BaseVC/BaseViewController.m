@@ -36,7 +36,7 @@
     //    self.automaticallyAdjustsScrollViewInsets = NO ;
     
     //设置导航条的字体颜色
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:UIColorFromRGB(0xffffff),NSFontAttributeName:kNavFont}];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:kWhiteColor,NSFontAttributeName:kNavFont}];
     
     //去除系统效果
     self.navigationController.navigationBar.translucent = NO;

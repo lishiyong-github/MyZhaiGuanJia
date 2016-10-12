@@ -58,7 +58,7 @@
 {
     if (!_finishButton) {
         _finishButton = [UIButton newAutoLayoutView];
-        _finishButton.backgroundColor = kNavColor;
+        _finishButton.backgroundColor = kWhiteColor;
         [_finishButton setTitle:@"完成" forState:0];
         [_finishButton setTitleColor:kBlackColor forState:0];
         _finishButton.titleLabel.font = kFirstFont;
@@ -91,7 +91,7 @@
 {
     if (!_pickerViews) {
         _pickerViews = [UIPickerView newAutoLayoutView];
-        _pickerViews.backgroundColor = kNavColor;
+        _pickerViews.backgroundColor = kWhiteColor;
         _pickerViews.delegate = self;
         _pickerViews.dataSource = self;
     }

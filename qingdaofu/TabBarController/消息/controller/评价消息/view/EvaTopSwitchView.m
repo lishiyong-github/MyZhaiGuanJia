@@ -27,8 +27,8 @@
         [self addSubview:self.longLineLabel];
         
         self.heightConstraint = [self.getbutton autoSetDimension:ALDimensionHeight toSize:40];
-        self.leftBlueConstraints = [self.blueLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.getbutton withOffset:(kScreenWidth/2-80)/2];
-        self.widthBlueConstraints = [self.blueLabel autoSetDimension:ALDimensionWidth toSize:80];
+        self.leftBlueConstraints = [self.blueLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.getbutton];// withOffset:(kScreenWidth/2-80)/2
+//        self.widthBlueConstraints = [self.blueLabel autoSetDimension:ALDimensionWidth toSize:80];
         
         [self setNeedsUpdateConstraints];
     }
@@ -43,6 +43,7 @@
         
         [self.getbutton autoPinEdgeToSuperviewEdge:ALEdgeTop];
         [self.getbutton autoPinEdgeToSuperviewEdge:ALEdgeLeft];
+        [self.getbutton autoPinEdgeToSuperviewEdge:ALEdgeBottom];
         [self.getbutton autoSetDimension:ALDimensionWidth toSize:kScreenWidth/2];
 
         [self.sendButton autoPinEdgeToSuperviewEdge:ALEdgeTop];
@@ -52,6 +53,7 @@
         
         [self.blueLabel autoSetDimension:ALDimensionHeight toSize:2];
         [self.blueLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:1];
+        [self.blueLabel autoSetDimension:ALDimensionWidth toSize:kScreenWidth/2];
         
         [self.shortLineLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.getbutton];
         [self.shortLineLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kSmallPadding];
@@ -73,6 +75,7 @@
 {
     if (!_getbutton) {
         _getbutton = [UIButton newAutoLayoutView];
+        [_getbutton setBackgroundColor:kWhiteColor];
         [_getbutton setTitle:@"收到的评价" forState:0];
         [_getbutton setTitleColor:kTextColor forState:0];
         _getbutton.titleLabel.font = kBigFont;
@@ -80,8 +83,11 @@
         QDFWeakSelf;
         [_getbutton addAction:^(UIButton *btn) {
             [UIView animateWithDuration:0.3 animations:^{
-                weakself.leftBlueConstraints.constant = (kScreenWidth/2-80)/2;
+                weakself.leftBlueConstraints.constant = 0;
+//                (kScreenWidth/2-80)/2;
             }];
+            [btn setTitleColor:kTextColor forState:0];
+            [weakself.sendButton setTitleColor:kBlackColor forState:0];
             
             if (weakself.didSelectedButton) {
                 weakself.didSelectedButton(33);
@@ -95,6 +101,7 @@
 {
     if (!_sendButton) {
         _sendButton = [UIButton newAutoLayoutView];
+        [_sendButton setBackgroundColor:kWhiteColor];
         [_sendButton setTitle:@"发出的评价" forState:0];
         [_sendButton setTitleColor:kBlackColor forState:0];
         _sendButton.titleLabel.font = kBigFont;
@@ -102,8 +109,13 @@
         QDFWeakSelf;
         [_sendButton addAction:^(UIButton *btn) {
             [UIView animateWithDuration:0.3 animations:^{
-                weakself.leftBlueConstraints.constant = kScreenWidth*3/4-40;
+                weakself.leftBlueConstraints.constant = kScreenWidth/2;
+//                kScreenWidth*3/4-40;
             }];
+            
+            [btn setTitleColor:kTextColor forState:0];
+            [weakself.getbutton setTitleColor:kBlackColor forState:0];
+            
             if (weakself.didSelectedButton) {
                 weakself.didSelectedButton(34);
             }

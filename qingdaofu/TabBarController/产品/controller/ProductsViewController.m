@@ -13,6 +13,7 @@
 #import "AuthentyViewController.h"
 
 #import "HomeCell.h"
+#import "HomesCell.h"
 #import "BidOneCell.h"
 #import "UIImage+Color.h"
 
@@ -57,7 +58,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:kBlackColor,NSFontAttributeName:kNavFont}];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:kWhiteColor,NSFontAttributeName:kNavFont}];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:kNavColor] forBarMetrics:UIBarMetricsDefault];
         
     [self headerRefreshWithAllProducts];
@@ -65,7 +66,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.titleView = self.proTitleView;
+//    self.navigationItem.titleView = self.proTitleView;
+    self.navigationItem.title = @"债权产品";
     
     _selectedRow1 = 1000;
     _selectedRow2 = 1000;
@@ -98,6 +100,7 @@
     [super updateViewConstraints];
 }
 
+/*
 - (ProductsView *)proTitleView
 {
     if (!_proTitleView) {
@@ -117,15 +120,16 @@
     }
     return _proTitleView;
 }
-
+*/
+ 
 - (AllProductsChooseView *)chooseView
 {
     if (!_chooseView) {
         _chooseView = [AllProductsChooseView newAutoLayoutView];
-        _chooseView.backgroundColor = kNavColor;
+        _chooseView.backgroundColor = kWhiteColor;
         [_chooseView.squrebutton setTitle:@"区域" forState:0];
         [_chooseView.stateButton setTitle:@"状态" forState:0];
-        [_chooseView.moneyButton setTitle:@"金额" forState:0];
+        [_chooseView.moneyButton setTitle:@"委托金额" forState:0];
 
         QDFWeakSelf;
         [_chooseView setDidSelectedButton:^(UIButton *selectedButton) {
@@ -321,7 +325,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (tableView == self.productsTableView) {
-        return 130;//156
+        return 122;//156
     }
     return 40;
 }
@@ -330,6 +334,16 @@
 {
     if (tableView == self.productsTableView) {
         static NSString *identifier = @"pros";
+        
+        HomesCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell) {
+            cell = [[HomesCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        return cell;
+        
+        /*
         HomeCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         if (!cell) {
             cell = [[HomeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
@@ -429,6 +443,7 @@
         cell.rateView.label2.text = @"债权类型";
                 
         return cell;
+         */
         
     }else if (tableView == self.tableView11){//省
         static NSString *identifier = @"aa";

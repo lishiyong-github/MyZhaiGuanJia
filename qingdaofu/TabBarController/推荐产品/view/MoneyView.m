@@ -42,7 +42,7 @@
         [self.label1 autoAlignAxisToSuperviewAxis:ALAxisVertical];
         [self.label1 autoSetDimension:ALDimensionHeight toSize:20];
         
-        [self.label2 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.label1 withOffset:kSmallPadding];
+        [self.label2 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.label1 withOffset:8];
         
         self.didSetupConstraints = YES;
     }
@@ -54,7 +54,7 @@
 {
     if (!_label1) {
         _label1 = [UILabel newAutoLayoutView];
-        _label1.font = [UIFont systemFontOfSize:20];  //24
+        _label1.font = [UIFont systemFontOfSize:24];  //24
         _label1.textAlignment = NSTextAlignmentCenter;
         [_label1 adjustsFontSizeToFitWidth];
         [_label1 sizeToFit];

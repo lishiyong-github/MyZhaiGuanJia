@@ -105,8 +105,8 @@
     }else if (indexPath.row == 1) {
         cell.loginTextField.keyboardType = UIKeyboardTypeNumberPad;
         [cell.loginSwitch setHidden:YES];
-        [cell.getCodebutton setBackgroundColor:kBlueColor];
-        [cell.getCodebutton setTitleColor:kNavColor forState:0];
+        [cell.getCodebutton setBackgroundColor:kButtonColor];
+        [cell.getCodebutton setTitleColor:kWhiteColor forState:0];
         [cell.getCodebutton setTitle:@"获取验证码" forState:0];
         [cell.getCodebutton addTarget:self action:@selector(getCode:) forControlEvents:UIControlEventTouchUpInside];
         
@@ -200,7 +200,8 @@
     [self.view endEditing:YES];
     NSString *codeString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kLoginGetCodeString];
     self.registerDictionary[@"mobile"] = self.registerDictionary[@"mobile"]?self.registerDictionary[@"mobile"]:@"";
-    NSDictionary *params = @{@"mobile" : self.registerDictionary[@"mobile"]};
+//    NSDictionary *params = @{@"mobile" : self.registerDictionary[@"mobile"]};
+    NSDictionary *params = self.registerDictionary;
     
     QDFWeakSelf;
     [self requestDataPostWithString:codeString params:params successBlock:^(id responseObject){//成功
@@ -217,7 +218,7 @@
             }];
             
             [sender didFinished:^NSString *(JKCountDownButton *countDownButton, int second) {
-                sender.backgroundColor = kBlueColor;
+                sender.backgroundColor = kButtonColor;
                 sender.enabled = YES;
                 return @"获取验证码";
             }];

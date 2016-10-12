@@ -29,7 +29,6 @@
         
         NSArray *views = @[self.numberButton1,self.numberButton2,self.numberButton3];
         [views autoSetViewsDimension:ALDimensionWidth toSize:kScreenWidth/3];
-        [views autoMatchViewsDimension:ALDimensionWidth];
         
         [self.numberButton1 autoPinEdgeToSuperviewEdge:ALEdgeTop];
         [self.numberButton1 autoPinEdgeToSuperviewEdge:ALEdgeLeft];
@@ -57,7 +56,7 @@
         _numberButton1.fLabel2.textColor = kBlueColor;
         _numberButton1.fLabel2.font = kFirstFont;
         _numberButton1.spaceConstant.constant = 6;
-        _numberButton1.topConstant.constant = 12;
+        _numberButton1.topConstant.constant = kSmallPadding;
     }
     return _numberButton1;
 }
@@ -71,7 +70,7 @@
         _numberButton2.fLabel2.textColor = kBlueColor;
         _numberButton2.fLabel2.font = kFirstFont;
         _numberButton2.spaceConstant.constant = 6;
-        _numberButton2.topConstant.constant = 12;
+        _numberButton2.topConstant.constant = kSmallPadding;
     }
     return _numberButton2;
 }
@@ -85,7 +84,7 @@
         _numberButton3.fLabel2.textColor = kBlueColor;
         _numberButton3.fLabel2.font = kFirstFont;
         _numberButton3.spaceConstant.constant = 6;
-        _numberButton3.topConstant.constant = 12;
+        _numberButton3.topConstant.constant = kSmallPadding;
     }
     return _numberButton3;
 }

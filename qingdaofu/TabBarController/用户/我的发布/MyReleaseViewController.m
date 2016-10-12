@@ -22,6 +22,7 @@
 //#import "AnotherHomeCell.h"
 #import "ExtendHomeCell.h"
 #import "AllProSegView.h"
+#import "EvaTopSwitchView.h"
 
 #import "ReleaseResponse.h"
 #import "RowsModel.h"
@@ -29,7 +30,9 @@
 @interface MyReleaseViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
-@property (nonatomic,strong) AllProSegView *releaseProView;
+//@property (nonatomic,strong) AllProSegView *releaseProView;
+
+@property (nonatomic,strong) EvaTopSwitchView *releaseProView;
 @property (nonatomic,strong) UITableView *myReleaseTableView;
 
 //json解析
@@ -37,7 +40,6 @@
 @property (nonatomic,strong) NSMutableDictionary *releaseDic;
 
 @property (nonatomic,assign) NSInteger pageRelease;//页数
-
 
 @end
 
@@ -78,6 +80,19 @@
     [super updateViewConstraints];
 }
 
+- (EvaTopSwitchView *)releaseProView
+{
+    if (!_releaseProView) {
+        _releaseProView = [EvaTopSwitchView newAutoLayoutView];
+        [_releaseProView.shortLineLabel setHidden:YES];
+        
+        [_releaseProView.getbutton setTitle:@"进行中" forState:0];
+        [_releaseProView.sendButton setTitle:@"已完成" forState:0];
+    }
+    return _releaseProView;
+}
+
+/*
 - (AllProSegView *)releaseProView
 {
     if (!_releaseProView) {
@@ -139,7 +154,8 @@
     }
     return _releaseProView;
 }
-
+*/
+ 
 - (UITableView *)myReleaseTableView
 {
     if (!_myReleaseTableView) {
@@ -195,7 +211,7 @@
 //            return 160;
 //        }
 //    }
-    return 200;
+    return 245;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -207,10 +223,64 @@
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     [cell.detailTextLabel setHidden:YES];
-    cell.nameButton.userInteractionEnabled = NO;
-    cell.deadLineButton.userInteractionEnabled = NO;
     RowsModel *rowModel = self.releaseDataArray[indexPath.section];
     
+    //code
+    NSString *codeS = [NSString stringWithFormat:@"%@",rowModel.codeString];
+    [cell.nameButton setTitle:codeS forState:0];
+    
+    //status and action
+    NSArray *statusArray = @[@"发布成功",@"面谈中",@"处理中",@"已完成"];
+    NSInteger statusInt = [rowModel.progress_status integerValue];
+    cell.statusLabel.text = statusArray[statusInt - 1];
+    NSArray *actArray = @[@"完善资料",@"联系申请方",@"查看进度",@"评价"];
+    [cell.actButton2 setTitle:actArray[statusInt - 1] forState:0];
+    QDFWeakSelf;
+    [cell.actButton2 addAction:^(UIButton *btn) {
+        [weakself goToCheckApplyRecordsOrAdditionMessage:actArray[statusInt - 1] withSection:indexPath.section withEvaString:@""];
+//        if (statusInt == 1) {//完善资料
+//        }else if (statusInt == 2) {//联系申请方
+//            
+//        }if (statusInt == 3) {//查看进度
+//            
+//        }if (statusInt == 4) {//评价
+//            
+//        }
+    }];
+    
+    //details
+    //委托本金
+    NSString *orString0 = [NSString stringWithFormat:@"委托本金：%@万",@"1000"];
+    //债权类型
+    NSString *orString1 = [NSString stringWithFormat:@"债权类型：%@",@"房产抵押，机动车抵押，合同纠纷"];
+    //委托事项
+    NSString *orString2 = [NSString stringWithFormat:@"委托事项：%@",@"清收，诉讼，债权转让"];
+    //委托费用
+    NSString *orSt;
+    if ([rowModel.agencycommissiontype integerValue] == 1) {
+        orSt = @"万";
+    }else if ([rowModel.agencycommissiontype integerValue] == 2){
+         orSt = @"％";
+    }
+    NSString *orString3 = [NSString stringWithFormat:@"委托费用：%@%@",rowModel.agencycommission,orSt];
+    
+    //违约期限
+    NSString *orString4 = [NSString stringWithFormat:@"违约期限：%@个月",@"1"];
+    //合同履行地
+    NSString *orString5 = [NSString stringWithFormat:@"合同履行地：%@",@"上海上海市浦东新区"];
+    
+    NSString *orString = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@\n%@",orString0,orString1,orString2,orString3,orString4,orString5];
+    NSMutableAttributedString *orAttributeStr = [[NSMutableAttributedString alloc] initWithString:orString];
+    [orAttributeStr setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, orString.length)];
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    [style setLineSpacing:6];
+    [orAttributeStr addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, orString.length)];
+//    [cell.contentLabel setAttributedText:orAttributeStr];
+    [cell.contentButton setAttributedTitle:orAttributeStr forState:0];
+    
+    return cell;
+    
+    /*
     //image
     if ([rowModel.category intValue] == 2){//清收
         [cell.nameButton setImage:[UIImage imageNamed:@"list_collection"] forState:0];
@@ -219,7 +289,7 @@
     }
     
     //code
-    NSString *codeS = [NSString stringWithFormat:@"  %@",rowModel.codeString];
+    NSString *codeS = [NSString stringWithFormat:@"%@",rowModel.codeString];
     [cell.nameButton setTitle:codeS forState:0];
     
     //status
@@ -355,6 +425,8 @@
     }
     
     return cell;
+     
+     */
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -474,6 +546,40 @@
 {
     RowsModel *ymodel = self.releaseDataArray[section];
     
+    if ([string isEqualToString:@"完善资料"]) {
+        
+    }else if ([string isEqualToString:@"联系申请方"]) {
+        CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+        checkDetailPublishVC.typeString = @"接单方";
+        checkDetailPublishVC.idString = ymodel.idString;
+        checkDetailPublishVC.categoryString = ymodel.category;
+        checkDetailPublishVC.pidString = ymodel.pid;
+    //        checkDetailPublishVC.typeDegreeString = @"处理中";
+        [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
+        
+        if ([ymodel.applymobile isEqualToString:@""] || !ymodel.applymobile || ymodel.applymobile == nil) {
+            [self showHint:@"接单方未认证，不能打电话"];
+        }else{
+            NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",ymodel.applymobile];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
+        }
+    }if ([string isEqualToString:@"查看进度"]) {
+        PaceViewController *paceVC = [[PaceViewController alloc] init];
+        paceVC.idString = ymodel.idString;
+        paceVC.categoryString = ymodel.category;
+        [self.navigationController pushViewController:paceVC animated:YES];
+    }if ([string isEqualToString:@"评价"]) {
+        AdditionalEvaluateViewController *additionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
+        additionalEvaluateVC.idString = ymodel.idString;
+        additionalEvaluateVC.categoryString = ymodel.category;
+        additionalEvaluateVC.typeString = @"发布方";
+        additionalEvaluateVC.evaString = evaString;
+        
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:additionalEvaluateVC];
+        [self presentViewController:nav animated:YES completion:nil];
+    }
+    
+    /*
    if ([string isEqualToString:@"查看申请人"]){
       ApplyRecordViewController *applyRecordsVC = [[ApplyRecordViewController alloc] init];
        applyRecordsVC.idStr = ymodel.idString;
@@ -485,14 +591,14 @@
        paceVC.categoryString = ymodel.category;
         [self.navigationController pushViewController:paceVC animated:YES];
     }else if ([string isEqualToString:@"联系接单方"]){
-//        CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
-//        checkDetailPublishVC.typeString = @"接单方";
-//        checkDetailPublishVC.idString = ymodel.idString;
-//        checkDetailPublishVC.categoryString = ymodel.category;
-//        checkDetailPublishVC.pidString = ymodel.pid;
-////        checkDetailPublishVC.typeDegreeString = @"处理中";
-//        [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
-        
+        CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+        checkDetailPublishVC.typeString = @"接单方";
+        checkDetailPublishVC.idString = ymodel.idString;
+        checkDetailPublishVC.categoryString = ymodel.category;
+        checkDetailPublishVC.pidString = ymodel.pid;
+        checkDetailPublishVC.typeDegreeString = @"处理中";
+        [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
+     
         if ([ymodel.applymobile isEqualToString:@""] || !ymodel.applymobile || ymodel.applymobile == nil) {
             [self showHint:@"接单方未认证，不能打电话"];
         }else{
@@ -517,6 +623,7 @@
         evaluateListVC.typeString = @"发布方";
         [self.navigationController pushViewController:evaluateListVC animated:YES];
     }
+     */
 }
 
 - (void)deleteTheProductsWithModel:(RowsModel *)yModel

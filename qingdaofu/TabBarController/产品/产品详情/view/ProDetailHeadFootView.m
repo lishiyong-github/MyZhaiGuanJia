@@ -55,7 +55,7 @@
 {
     if (!_fLabel2) {
         _fLabel2 = [UILabel newAutoLayoutView];
-        _fLabel2.textColor = kNavColor;
+        _fLabel2.textColor = kWhiteColor;
         _fLabel2.font = kFirstFont;
     }
     return _fLabel2;

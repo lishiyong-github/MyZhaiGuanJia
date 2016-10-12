@@ -25,7 +25,7 @@
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *publishingTableView;
 @property (nonatomic,strong) EvaTopSwitchView *publishSwitchView;
-@property (nonatomic,strong) UIButton *newRecordButton;
+@property (nonatomic,strong) UIButton *neRecordButton;
 @property (nonatomic,strong) BaseRemindButton *applyRecordRemindButton;  //新的申请记录提示信息
 
 //json
@@ -44,6 +44,224 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getDetailMessages) name:@"refresh" object:nil];
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.navigationItem.title = @"产品详情";
+    self.navigationItem.leftBarButtonItem = self.leftItem;
+    
+    [self.view addSubview: self.publishingTableView];
+    [self.view setNeedsUpdateConstraints];
+
+    
+//    [self getDetailMessages];
+}
+
+- (void)updateViewConstraints
+{
+    if (!self.didSetupConstraints) {
+        [self.publishingTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+//        [self.publishingTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.applyRecordRemindButton];
+        self.didSetupConstraints = YES;
+    }
+    [super updateViewConstraints];
+}
+
+- (UITableView *)publishingTableView
+{
+    if (!_publishingTableView) {
+        _publishingTableView.translatesAutoresizingMaskIntoConstraints = NO;
+        _publishingTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+        _publishingTableView.backgroundColor = kBackColor;
+        _publishingTableView.separatorColor = kSeparateColor;
+        _publishingTableView.delegate = self;
+        _publishingTableView.dataSource = self;
+    }
+    return _publishingTableView;
+}
+
+#pragma mark - datasource
+#pragma mark - tableView delegate and datasource
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    if (self.publishingDataArray.count > 0) {
+        return 2;
+    }
+    return 0;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (self.publishingDataArray.count > 0) {
+        if (section == 0) {
+            return 3;
+        }
+        return 1;
+    }
+    return 0;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 0) {
+//        return 40;
+        if (indexPath.row == 0) {
+            
+        }else if (indexPath.row == 1){
+            
+        }else if (indexPath.row == 2){
+            
+        }
+    }
+    return kCellHeight3;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *identifier;
+    
+    if (self.publishingDataArray.count > 0) {
+        PublishingResponse *resModel = self.publishingDataArray[0];
+        PublishingModel *publishModel = resModel.product;
+        
+        if (indexPath.section == 0) {
+            identifier = @"detailSave0";
+            
+            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            
+            if (!cell) {
+                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.backgroundColor = UIColorFromRGB(0x42566d);
+            
+            NSString *nameStrss;
+            if ([publishModel.category integerValue] == 2) {
+                nameStrss = @"清收";
+            }else if ([publishModel.category integerValue] == 3){
+                nameStrss = @"诉讼";
+            }
+            NSString *codea = [NSString stringWithFormat:@"%@产品编号:%@",nameStrss,publishModel.codeString];
+            [cell.userNameButton setTitle:codea forState:0];
+            [cell.userNameButton setTitleColor:UIColorFromRGB(0xcfd4e8) forState:0];
+            cell.userNameButton.titleLabel.font = kFourFont;
+            
+            [cell.userActionButton setTitle:@"发布中" forState:0];
+            [cell.userActionButton setTitleColor:kNavColor forState:0];
+            cell.userActionButton.titleLabel.font = kFirstFont;
+            
+            return cell;
+            
+        }
+        //section == 2
+        if (indexPath.row == 0) {
+            identifier = @"applying20";
+            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            
+            if (!cell) {
+                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.userNameButton.userInteractionEnabled = NO;
+            cell.userActionButton.userInteractionEnabled = NO;
+            
+            [cell.userNameButton setTitle:@"产品信息" forState:0];
+            [cell.userActionButton setTitle:@"查看全部  " forState:0];
+            [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            
+            return cell;
+        }
+        
+        //详情
+        identifier = @"applying11";
+        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        
+        if (!cell) {
+            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
+        cell.userNameButton.titleLabel.font = kFirstFont;
+        [cell.userActionButton setTitleColor:kGrayColor forState:0];
+        cell.userActionButton.titleLabel.font = kFirstFont;
+        
+        NSString *rowString1 = @"借款本金";
+        NSString *rowString11 = [NSString stringWithFormat:@"%@万",publishModel.money];//具体借款本金
+        NSString *rowString2 = @"费用类型";
+        NSString *rowString3;//具体费用类型
+        NSString *rowString33;//费用
+        if ([publishModel.category integerValue] == 2) {
+            if ([publishModel.agencycommissiontype integerValue] == 1) {
+                rowString3 = @"服务佣金";
+                rowString33 = [NSString stringWithFormat:@"%@%@",publishModel.agencycommission,@"%"];
+            }else{
+                rowString3 = @"固定费用";
+                rowString33 = [NSString stringWithFormat:@"%@万",publishModel.agencycommission];
+            }
+        }else if ([publishModel.category integerValue] == 3){
+            if ([publishModel.agencycommissiontype integerValue] == 1) {
+                rowString3 = @"固定费用";
+                rowString33 = [NSString stringWithFormat:@"%@万",publishModel.agencycommission];
+            }else{
+                rowString3 = @"代理费率";
+                rowString33 = [NSString stringWithFormat:@"%@%@",publishModel.agencycommission,@"%"];
+            }
+        }
+        
+        NSString *rowString4 = @"债权类型";
+        NSString *rowString44; //具体债权类型
+        NSString *rowString5;
+        NSString *rowString55;
+        if ([publishModel.loan_type integerValue] == 1) {
+            rowString44 = @"房产抵押";
+            rowString5 = @"抵押物地址";
+            rowString55 = publishModel.seatmortgage;
+        }else if ([publishModel.loan_type integerValue] == 2) {
+            rowString44 = @"应收帐款";
+            rowString5 = @"应收帐款";
+            rowString55 = [NSString stringWithFormat:@"%@万",publishModel.accountr];
+        }else if ([publishModel.loan_type integerValue] == 3) {
+            rowString44 = @"机动车抵押";
+            rowString5 = @"机动车抵押";
+            rowString55 = resModel.car;
+        }else if ([publishModel.loan_type integerValue] == 4) {
+            rowString44 = @"无抵押";
+            rowString5 = @"1";
+            rowString55 = @"1";
+        }
+        
+        NSArray *rowLeftArray = @[rowString1,rowString2,rowString3,rowString4,rowString44];
+        NSArray *rowRightArray = @[rowString11,rowString3,rowString33,rowString44,rowString55];
+        
+        [cell.userNameButton setTitle:rowLeftArray[indexPath.row-1] forState:0];
+        [cell.userActionButton setTitle:rowRightArray[indexPath.row-1] forState:0];
+        
+        return cell;
+    }
+    return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 0.1f;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return kBigPadding;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 1 && indexPath.row == 0) {
+        AdditionMessagesViewController *additionMessageVC = [[AdditionMessagesViewController alloc] init];
+        additionMessageVC.idString = self.idString;
+        additionMessageVC.categoryString = self.categaryString;
+        [self.navigationController pushViewController:additionMessageVC animated:YES];
+    }
+}
+
+/*
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @"产品详情";
@@ -410,6 +628,7 @@
         
     }];
 }
+ */
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
