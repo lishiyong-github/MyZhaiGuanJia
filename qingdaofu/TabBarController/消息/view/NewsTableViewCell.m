@@ -57,7 +57,6 @@
         _newsNameButton.titleLabel.font = kBigFont;
         [_newsNameButton setTitleColor:kBlackColor forState:0];
         _newsNameButton.userInteractionEnabled = NO;
-        _newsNameButton.userInteractionEnabled = NO;
     }
     return _newsNameButton;
 }
@@ -68,7 +67,7 @@
         _newsCountButton = [UIButton newAutoLayoutView];
         _newsCountButton.backgroundColor = kButtonColor;
         [_newsCountButton setTitleColor:kWhiteColor forState:0];
-        _newsCountButton.titleLabel.font = kTabBarFont;
+        _newsCountButton.titleLabel.font = kSmallFont;
         _newsCountButton.layer.cornerRadius = 10;
         _newsCountButton.userInteractionEnabled = NO;
     }

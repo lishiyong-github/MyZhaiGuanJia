@@ -9,6 +9,7 @@
 #import "MyReleaseViewController.h"
 
 #import "MyPublishingViewController.h"   //发布中
+#import "PublishInterviewViewController.h"  //面谈中
 #import "MyDealingViewController.h"   //处理中
 #import "ReleaseEndViewController.h"   //终止
 #import "ReleaseCloseViewController.h"  //结案
@@ -442,12 +443,29 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     RowsModel *sModel = self.releaseDataArray[indexPath.section];
+    
+    MyDealingViewController *myDealingVC = [[MyDealingViewController alloc] init];
+    myDealingVC.idString = sModel.idString;
+    myDealingVC.categaryString = sModel.category;
+    myDealingVC.pidString = sModel.pid;
+    [self.navigationController pushViewController:myDealingVC animated:YES];
+    
+    
+    /*
     if ([sModel.progress_status isEqualToString:@"1"]) {//发布中
-        MyPublishingViewController *myPublishingVC = [[MyPublishingViewController alloc] init];
-        myPublishingVC.idString = sModel.idString;
-        myPublishingVC.categaryString = sModel.category;
-        myPublishingVC.app_idString = sModel.app_id;
-        [self.navigationController pushViewController:myPublishingVC animated:YES];
+//        MyPublishingViewController *myPublishingVC = [[MyPublishingViewController alloc] init];
+//        myPublishingVC.idString = sModel.idString;
+//        myPublishingVC.categaryString = sModel.category;
+//        myPublishingVC.app_idString = sModel.app_id;
+//        [self.navigationController pushViewController:myPublishingVC animated:YES];
+        
+        //面谈中
+        PublishInterviewViewController *publishInterviewVC = [[PublishInterviewViewController alloc] init];
+        publishInterviewVC.idString = sModel.idString;
+        publishInterviewVC.categaryString = sModel.category;
+        publishInterviewVC.pidString = sModel.pid;
+        [self.navigationController pushViewController:publishInterviewVC animated:YES];
+
     }else if ([sModel.progress_status isEqualToString:@"2"]){//处理中
         MyDealingViewController *myDealingVC = [[MyDealingViewController alloc] init];
         myDealingVC.idString = sModel.idString;
@@ -474,6 +492,7 @@
         releaseCloseVC.pidString = sModel.pid;
         [self.navigationController pushViewController:releaseCloseVC animated:YES];
     }
+     */
 }
 
 #pragma mark - method

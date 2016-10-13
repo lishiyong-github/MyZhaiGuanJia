@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface BaseRemindButton : UIButton
+@interface BaseRemindButton : UIButton //more_white
 
 @end

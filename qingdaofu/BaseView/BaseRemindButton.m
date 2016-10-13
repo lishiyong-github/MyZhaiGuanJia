@@ -16,7 +16,7 @@
     if (self) {
         self.backgroundColor = kRemindTipColor;
         self.titleLabel.font = kFourFont;
-        [self setTitleColor:kNavColor forState:0];
+        [self setTitleColor:kWhiteColor forState:0];
         [self swapImage];
     }
     return self;

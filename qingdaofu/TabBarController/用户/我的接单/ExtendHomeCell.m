@@ -77,6 +77,7 @@
         [_nameButton setTitleColor:kBlackColor forState:0];
         _nameButton.titleLabel.font = kBigFont;
         _nameButton.userInteractionEnabled = NO;
+        _nameButton.userInteractionEnabled = NO;
     }
     return _nameButton;
 }
@@ -109,7 +110,7 @@
         [_contentButton setTitleColor:kGrayColor forState:0];
         _contentButton.titleLabel.font = kFirstFont;
         [_contentButton setContentEdgeInsets:UIEdgeInsetsMake(kBigPadding, kSpacePadding, kBigPadding, kSpacePadding)];
-        
+        _contentButton.userInteractionEnabled = NO;
     }
     return _contentButton;
 }

@@ -63,6 +63,7 @@
         _userActionButton.titleLabel.font = kSecondFont;
         _userActionButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         _userActionButton.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+        _userActionButton.userInteractionEnabled = NO;
     }
     return _userActionButton;
 }

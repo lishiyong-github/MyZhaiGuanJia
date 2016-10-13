@@ -48,7 +48,7 @@
 {
     if (!_checkButton) {
         _checkButton = [UIButton newAutoLayoutView];
-        _checkButton.backgroundColor = kNavColor;
+        _checkButton.backgroundColor = kWhiteColor;
         [_checkButton setContentEdgeInsets:UIEdgeInsetsMake(0, kBigPadding, 0, 0)];
         _checkButton.contentHorizontalAlignment = 1;
         [_checkButton setTitle:@"发布方" forState:0];
@@ -79,7 +79,7 @@
 {
     if (!_contactButton) {
         _contactButton = [UIButton newAutoLayoutView];
-        _contactButton.titleLabel.font = kBigFont;
+        _contactButton.titleLabel.font = kFirstFont;
         [_contactButton setTitleColor:kBlackColor forState:0];
     }
     return _contactButton;
