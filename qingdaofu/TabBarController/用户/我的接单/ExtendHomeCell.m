@@ -109,7 +109,8 @@
         _contentButton.titleLabel.numberOfLines = 0;
         [_contentButton setTitleColor:kGrayColor forState:0];
         _contentButton.titleLabel.font = kFirstFont;
-        [_contentButton setContentEdgeInsets:UIEdgeInsetsMake(kBigPadding, kSpacePadding, kBigPadding, kSpacePadding)];
+        [_contentButton setContentEdgeInsets:UIEdgeInsetsMake(kBigPadding, kBigPadding, kBigPadding, kBigPadding)];
+        [_contentButton setContentHorizontalAlignment:1];
         _contentButton.userInteractionEnabled = NO;
     }
     return _contentButton;

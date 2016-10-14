@@ -31,9 +31,9 @@
 @interface MyReleaseViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
-//@property (nonatomic,strong) AllProSegView *releaseProView;
 
 @property (nonatomic,strong) EvaTopSwitchView *releaseProView;
+@property (nonatomic,strong) UIButton *endListButton;
 @property (nonatomic,strong) UITableView *myReleaseTableView;
 
 //json解析
@@ -56,6 +56,7 @@
     self.navigationItem.leftBarButtonItem = self.leftItem;
 
     [self.view addSubview:self.releaseProView];
+    [self.view addSubview:self.endListButton];
     [self.view addSubview:self.myReleaseTableView];
     [self.view addSubview:self.baseRemindImageView];
     [self.baseRemindImageView setHidden:YES];
@@ -68,9 +69,14 @@
     if (!self.didSetupConstraints) {
         
         [self.releaseProView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
-        [self.releaseProView autoSetDimension:ALDimensionHeight toSize:40];
+        [self.releaseProView autoSetDimension:ALDimensionHeight toSize:kCellHeight1];
         
-        [self.myReleaseTableView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.releaseProView];
+        [self.endListButton autoPinEdgeToSuperviewEdge:ALEdgeLeft];
+        [self.endListButton autoPinEdgeToSuperviewEdge:ALEdgeRight];
+        [self.endListButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.releaseProView];
+        [self.endListButton autoSetDimension:ALDimensionHeight toSize:kCellHeight1];
+        
+        [self.myReleaseTableView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.endListButton];
         [self.myReleaseTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
         
         [self.baseRemindImageView autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
@@ -91,6 +97,23 @@
         [_releaseProView.sendButton setTitle:@"已完成" forState:0];
     }
     return _releaseProView;
+}
+
+- (UIButton *)endListButton
+{
+    if (!_endListButton) {
+        _endListButton = [UIButton newAutoLayoutView];
+        _endListButton.backgroundColor = kWhiteColor;
+        [_endListButton swapImage];
+        [_endListButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        [_endListButton setTitle:@"已终止" forState:0];
+        [_endListButton setTitleColor:kBlackColor forState:0];
+        _endListButton.titleLabel.font = kBigFont;
+        [_endListButton setContentHorizontalAlignment:1];
+        [_endListButton setTitleEdgeInsets:UIEdgeInsetsMake(0, kScreenWidth-76, 0, 0)];
+        [_endListButton  setImageEdgeInsets:UIEdgeInsetsMake(0, kBigPadding, 0, 0)];
+    }
+    return _endListButton;
 }
 
 /*
@@ -276,7 +299,6 @@
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     [style setLineSpacing:6];
     [orAttributeStr addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, orString.length)];
-//    [cell.contentLabel setAttributedText:orAttributeStr];
     [cell.contentButton setAttributedTitle:orAttributeStr forState:0];
     
     return cell;
