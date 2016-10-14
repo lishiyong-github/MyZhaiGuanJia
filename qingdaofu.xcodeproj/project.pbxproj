@@ -549,6 +549,7 @@
 		A1A39BBE1DB0820B00B84B1A /* RequestEndCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A39BBD1DB0820B00B84B1A /* RequestEndCell.m */; };
 		A1A39BC51DB0A5DB00B84B1A /* chapter@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A39BC31DB0A5DB00B84B1A /* chapter@2x.png */; };
 		A1A39BC61DB0A5DB00B84B1A /* chapter@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A39BC41DB0A5DB00B84B1A /* chapter@3x.png */; };
+		A1A39BC91DB0E31300B84B1A /* ReleaseEndListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A39BC81DB0E31300B84B1A /* ReleaseEndListViewController.m */; };
 		A1A44CB41DACF05800140BB9 /* buttons_s@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A44CB01DACF05800140BB9 /* buttons_s@2x.png */; };
 		A1A44CB51DACF05800140BB9 /* buttons_s@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A44CB11DACF05800140BB9 /* buttons_s@3x.png */; };
 		A1A44CB61DACF05800140BB9 /* buttons@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A44CB21DACF05800140BB9 /* buttons@2x.png */; };
@@ -1540,6 +1541,8 @@
 		A1A39BBD1DB0820B00B84B1A /* RequestEndCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestEndCell.m; sourceTree = "<group>"; };
 		A1A39BC31DB0A5DB00B84B1A /* chapter@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chapter@2x.png"; sourceTree = "<group>"; };
 		A1A39BC41DB0A5DB00B84B1A /* chapter@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chapter@3x.png"; sourceTree = "<group>"; };
+		A1A39BC71DB0E31300B84B1A /* ReleaseEndListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReleaseEndListViewController.h; sourceTree = "<group>"; };
+		A1A39BC81DB0E31300B84B1A /* ReleaseEndListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReleaseEndListViewController.m; sourceTree = "<group>"; };
 		A1A44CB01DACF05800140BB9 /* buttons_s@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "buttons_s@2x.png"; sourceTree = "<group>"; };
 		A1A44CB11DACF05800140BB9 /* buttons_s@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "buttons_s@3x.png"; sourceTree = "<group>"; };
 		A1A44CB21DACF05800140BB9 /* buttons@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "buttons@2x.png"; sourceTree = "<group>"; };
@@ -2212,6 +2215,8 @@
 			children = (
 				A1718DDB1CFD3FA00007DA6F /* ReleaseEndViewController.h */,
 				A1718DDC1CFD3FA00007DA6F /* ReleaseEndViewController.m */,
+				A1A39BC71DB0E31300B84B1A /* ReleaseEndListViewController.h */,
+				A1A39BC81DB0E31300B84B1A /* ReleaseEndListViewController.m */,
 			);
 			path = "终止";
 			sourceTree = "<group>";
@@ -4799,6 +4804,7 @@
 				A16391731D20194B0051F1D0 /* FSImageLoader.m in Sources */,
 				A187B90F1D50885400A91A16 /* HousePayingEditViewController.m in Sources */,
 				A17D942E1D6AB84C00BF5B5F /* ExtendHomeCell.m in Sources */,
+				A1A39BC91DB0E31300B84B1A /* ReleaseEndListViewController.m in Sources */,
 				A1B0292A1D17CE6F00F32A09 /* AFHTTPSessionManager.m in Sources */,
 				A1A97E511CDC66E900EDE320 /* ReceiveMessagesViewController.m in Sources */,
 				A19D296A1CD208E900DAAEA7 /* AuthentyViewController.m in Sources */,

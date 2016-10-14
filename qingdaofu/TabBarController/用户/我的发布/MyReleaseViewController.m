@@ -8,6 +8,7 @@
 
 #import "MyReleaseViewController.h"
 
+#import "ReleaseEndListViewController.h"  //终止列表
 #import "MyPublishingViewController.h"   //发布中
 #import "PublishInterviewViewController.h"  //面谈中
 #import "MyDealingViewController.h"   //处理中
@@ -20,9 +21,7 @@
 #import "AdditionalEvaluateViewController.h"  //去评价
 #import "EvaluateListsViewController.h"  //查看评价
 
-//#import "AnotherHomeCell.h"
 #import "ExtendHomeCell.h"
-#import "AllProSegView.h"
 #import "EvaTopSwitchView.h"
 
 #import "ReleaseResponse.h"
@@ -112,6 +111,11 @@
         [_endListButton setContentHorizontalAlignment:1];
         [_endListButton setTitleEdgeInsets:UIEdgeInsetsMake(0, kScreenWidth-76, 0, 0)];
         [_endListButton  setImageEdgeInsets:UIEdgeInsetsMake(0, kBigPadding, 0, 0)];
+        QDFWeakSelf;
+        [_endListButton addAction:^(UIButton *btn) {
+            ReleaseEndListViewController *releaseEndListVC = [[ReleaseEndListViewController alloc] init];
+            [weakself.navigationController pushViewController:releaseEndListVC animated:YES];
+        }];
     }
     return _endListButton;
 }
