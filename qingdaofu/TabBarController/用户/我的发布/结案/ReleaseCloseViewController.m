@@ -8,60 +8,337 @@
 
 #import "ReleaseCloseViewController.h"
 
-#import "UIImageView+WebCache.h"
-
 #import "CheckDetailPublishViewController.h"  //查看发布方
-#import "AdditionalEvaluateViewController.h"  //追加评价
-#import "AdditionMessagesViewController.h"     //补充信息
-#import "AgreementViewController.h"            //服务协议
-#import "PaceViewController.h"
-#import "EvaluateListsViewController.h" //查看评价
 
-#import "MineUserCell.h"
-#import "OrderPublishCell.h"
-#import "EvaTopSwitchView.h"
+#import "MineUserCell.h"//信息
+#import "NewPublishDetailsCell.h"//进度
+#import "OrderPublishCell.h"//联系TA
+#import "NewPublishStateCell.h"//状态
+#import "BaseCommitView.h"  //评价按钮
 
-
-#import "UIButton+WebCache.h"
-
-//详细信息
-#import "PublishingResponse.h"
 #import "PublishingModel.h"
-#import "UserNameModel.h"
+#import "PublishingResponse.h"
+#import "UserNameModel.h"  //申请方信息
 
-//查看进度
-#import "ScheduleResponse.h"
-#import "ScheduleModel.h"
+//#import "UIImageView+WebCache.h"
+//
+//#import "CheckDetailPublishViewController.h"  //查看发布方
+//#import "AdditionalEvaluateViewController.h"  //追加评价
+//#import "AdditionMessagesViewController.h"     //补充信息
+//#import "AgreementViewController.h"            //服务协议
+//#import "PaceViewController.h"
+//#import "EvaluateListsViewController.h" //查看评价
+//
+//#import "MineUserCell.h"
+//#import "OrderPublishCell.h"
+//#import "EvaTopSwitchView.h"
+//
+//
+//#import "UIButton+WebCache.h"
+//
+////详细信息
+//#import "PublishingResponse.h"
+//#import "PublishingModel.h"
+//#import "UserNameModel.h"
+//
+////查看进度
+//#import "ScheduleResponse.h"
+//#import "ScheduleModel.h"
+//
+////评价
+//#import "EvaluateResponse.h"
+//#import "LaunchEvaluateModel.h"
 
-//评价
-#import "EvaluateResponse.h"
-#import "LaunchEvaluateModel.h"
-
-@interface ReleaseCloseViewController ()
-
-<UITableViewDataSource,UITableViewDelegate>
+@interface ReleaseCloseViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
-@property (nonatomic,strong) UITableView *ReleaseCloseTableView;
-@property (nonatomic,strong) EvaTopSwitchView *releaseCloseSwitchButton;
+@property (nonatomic,strong) UITableView *releaseCloseTableView;
+@property (nonatomic,strong) BaseCommitView *releaseCloseEvaButton;
+
+//json
+@property (nonatomic,strong) NSMutableArray *releaseCloseDataArray;
 
 
-@property (nonatomic,strong) NSMutableArray *releaseArray;
-@property (nonatomic,strong) NSMutableArray *scheduleReleaseCloArray;
-@property (nonatomic,strong) NSMutableArray *evaluateResponseArray;
-@property (nonatomic,strong) NSMutableArray *evaluateArray;
-
-@property (nonatomic,strong) NSString *loanTypeString1;  //债权类型
-@property (nonatomic,strong) NSString *loanTypeString2;  //债权类型内容
-@property (nonatomic,strong) NSString *loanTypeImage;//债权类型图片
+//<UITableViewDataSource,UITableViewDelegate>
+//
+//@property (nonatomic,assign) BOOL didSetupConstraints;
+//@property (nonatomic,strong) UITableView *ReleaseCloseTableView;
+//@property (nonatomic,strong) EvaTopSwitchView *releaseCloseSwitchButton;
+//
+//
+//@property (nonatomic,strong) NSMutableArray *releaseArray;
+//@property (nonatomic,strong) NSMutableArray *scheduleReleaseCloArray;
+//@property (nonatomic,strong) NSMutableArray *evaluateResponseArray;
+//@property (nonatomic,strong) NSMutableArray *evaluateArray;
+//
+//@property (nonatomic,strong) NSString *loanTypeString1;  //债权类型
+//@property (nonatomic,strong) NSString *loanTypeString2;  //债权类型内容
+//@property (nonatomic,strong) NSString *loanTypeImage;//债权类型图片
 
 @end
 
 @implementation ReleaseCloseViewController
 - (void)viewWillAppear:(BOOL)animated
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getEvaluateDetails) name:@"evaluate" object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getEvaluateDetails) name:@"evaluate" object:nil];
 }
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.navigationItem.title = @"产品详情";
+    self.navigationItem.leftBarButtonItem = self.leftItem;
+    
+    [self.view addSubview: self.releaseCloseTableView];
+    [self.view addSubview:self.releaseCloseEvaButton];
+    
+    [self.view setNeedsUpdateConstraints];
+    
+    [self getDetailMessages];
+}
+
+- (void)updateViewConstraints
+{
+    if (!self.didSetupConstraints) {
+        [self.releaseCloseTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
+        [self.releaseCloseTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.releaseCloseEvaButton];
+        
+        [self.releaseCloseEvaButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+        [self.releaseCloseEvaButton autoSetDimension:ALDimensionHeight toSize:kCellHeight4];
+        
+        self.didSetupConstraints = YES;
+    }
+    [super updateViewConstraints];
+}
+
+- (UITableView *)releaseCloseTableView
+{
+    if (!_releaseCloseTableView) {
+        _releaseCloseTableView.translatesAutoresizingMaskIntoConstraints = NO;
+        _releaseCloseTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+        _releaseCloseTableView.backgroundColor = kBackColor;
+        _releaseCloseTableView.separatorColor = kSeparateColor;
+        _releaseCloseTableView.delegate = self;
+        _releaseCloseTableView.dataSource = self;
+    }
+    return _releaseCloseTableView;
+}
+
+- (BaseCommitView *)releaseCloseEvaButton
+{
+    if (!_releaseCloseEvaButton) {
+        _releaseCloseEvaButton = [BaseCommitView newAutoLayoutView];
+        [_releaseCloseEvaButton setTitle:@"发布评价" forState:0];
+        
+        QDFWeakSelf;
+        [_releaseCloseEvaButton addAction:^(UIButton *btn) {
+            [weakself showHint:@"评价"];
+        }];
+    }
+    return _releaseCloseEvaButton;
+}
+
+- (NSMutableArray *)releaseCloseDataArray
+{
+    if (!_releaseCloseDataArray) {
+        _releaseCloseDataArray = [NSMutableArray array];
+    }
+    return _releaseCloseDataArray;
+}
+
+#pragma mark - tableView delegate and datasource
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    if (self.releaseCloseDataArray.count > 0) {
+        return 4;
+    }
+    return 0;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (self.releaseCloseDataArray.count > 0) {
+        if (section == 0) {
+            return 2;
+        }
+        return 1;
+    }
+    return 0;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 0) {
+        if (indexPath.row == 0){
+            return 72;
+        }else if (indexPath.row == 1){
+            return kCellHeight3;
+        }
+    }
+    return kCellHeight;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *identifier;
+    
+    if (indexPath.section == 0) {
+        
+        PublishingResponse *resModel = self.releaseCloseDataArray[0];
+        PublishingModel *publishModel = resModel.product;
+        
+        if (indexPath.row == 0){
+            identifier = @"myDealing00";
+            NewPublishDetailsCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[NewPublishDetailsCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.backgroundColor = kBackColor;
+            
+            [cell.point2 setImage:[UIImage imageNamed:@"succee"] forState:0];
+            cell.progress2.textColor = kTextColor;
+            [cell.line2 setBackgroundColor:kButtonColor];
+            [cell.point3 setImage:[UIImage imageNamed:@"succee"] forState:0];
+            cell.progress3.textColor = kTextColor;
+            [cell.line3 setBackgroundColor:kLightGrayColor];
+            [cell.point4 setImage:[UIImage imageNamed:@"succee"] forState:0];
+            cell.progress4.textColor = kTextColor;
+            
+            return cell;
+            
+        }else if (indexPath.row == 1){
+            identifier = @"myDealing01";
+            OrderPublishCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            
+            if (!cell) {
+                cell = [[OrderPublishCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            UserNameModel *userNameModel = resModel.username;
+            
+            NSString *nameStr = [NSString getValidStringFromString:userNameModel.jusername toString:@"未认证"];
+            NSString *checkStr = [NSString stringWithFormat:@"接单方：%@",nameStr];
+            [cell.checkButton setTitle:checkStr forState:0];
+            [cell.contactButton setTitle:@" 联系TA" forState:0];
+            [cell.contactButton setImage:[UIImage imageNamed:@"phone_blue"] forState:0];
+            
+            //接单方详情
+            QDFWeakSelf;
+            [cell.checkButton addAction:^(UIButton *btn) {
+                if ([userNameModel.jusername isEqualToString:@""] || userNameModel.jusername == nil || !userNameModel.jusername) {
+                    [weakself showHint:@"申请方未认证，不能查看相关信息"];
+                }else{
+                    CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+                    checkDetailPublishVC.idString = weakself.idString;
+                    checkDetailPublishVC.categoryString = weakself.categaryString;
+                    checkDetailPublishVC.pidString = weakself.pidString;
+                    checkDetailPublishVC.typeString = @"接单方";
+                    //                checkDetailPublishVC.typeDegreeString = @"处理中";
+                    [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];
+                }
+            }];
+            
+            //电话
+            [cell.contactButton addAction:^(UIButton *btn) {
+                if ([userNameModel.jusername isEqualToString:@""] || userNameModel.jusername == nil || !userNameModel.jusername) {
+                    [self showHint:@"申请方未认证，不能打电话"];
+                }else{
+                    NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",userNameModel.jmobile];
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
+                }
+            }];
+            return cell;
+        }
+        
+    }else if (indexPath.section == 1){
+        identifier = @"myDealing1";
+        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell) {
+            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        [cell.userNameButton setTitle:@"签约协议详情" forState:0];
+        [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        [cell.userActionButton setTitle:@"查看详情" forState:0];
+        
+        return cell;
+    }else if (indexPath.section == 2){
+        identifier = @"myDealing2";
+        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell) {
+            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        [cell.userNameButton setTitle:@"居间协议" forState:0];
+        [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        [cell.userActionButton setTitle:@"查看" forState:0];
+        
+        return cell;
+    }else if (indexPath.section == 3){
+        identifier = @"myDealing3";
+        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell) {
+            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        [cell.userNameButton setTitle:@"尽职调查" forState:0];
+        return cell;
+    }
+    
+    return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 0.1f;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return kBigPadding;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 1) {
+        [self showHint:@"签约协议详情"];
+    }else if (indexPath.section == 2){
+        [self showHint:@"居间协议"];
+    }
+}
+
+#pragma mark - method
+- (void)getDetailMessages
+{
+    NSString *detailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseDetailString];
+    NSDictionary *params = @{@"token" : [self getValidateToken],
+                             @"id" : self.idString,
+                             @"category" : self.categaryString
+                             };
+    QDFWeakSelf;
+    [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
+        
+        PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
+        if ([response.code isEqualToString:@"0000"]) {
+            [weakself.releaseCloseDataArray removeAllObjects];
+            [weakself.releaseCloseDataArray addObject:response];
+            [weakself.releaseCloseTableView reloadData];
+        }
+        
+    } andFailBlock:^(NSError *error){
+        
+    }];
+}
+
+
+
+
+
+/*
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @"产品详情";
@@ -519,6 +796,8 @@
         
     }];
 }
+ 
+ */
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

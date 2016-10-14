@@ -8,56 +8,310 @@
 
 #import "ReleaseEndViewController.h"
 
+#import "RequestEndViewController.h"  //申请终止
 #import "CheckDetailPublishViewController.h"  //查看发布方
-#import "AdditionMessagesViewController.h" //查看更多
-#import "AgreementViewController.h"   //服务协议
-#import "PaceViewController.h"
 
-#import "MineUserCell.h"
-#import "OrderPublishCell.h"
+#import "MineUserCell.h"//信息
+#import "NewPublishDetailsCell.h"//进度
+#import "OrderPublishCell.h"//联系TA
+#import "NewPublishStateCell.h"//状态
 
-#import "BaseCommitButton.h"
-
-#import "PublishingResponse.h"
 #import "PublishingModel.h"
-#import "UserNameModel.h"
+#import "PublishingResponse.h"
+#import "UserNameModel.h"  //申请方信息
 
-//查看进度
-#import "ScheduleResponse.h"
-#import "ScheduleModel.h"
+//#import "CheckDetailPublishViewController.h"  //查看发布方
+//#import "AdditionMessagesViewController.h" //查看更多
+//#import "AgreementViewController.h"   //服务协议
+//#import "PaceViewController.h"
+//
+//#import "MineUserCell.h"
+//#import "OrderPublishCell.h"
+//
+//#import "BaseCommitButton.h"
+//
+//#import "PublishingResponse.h"
+//#import "PublishingModel.h"
+//#import "UserNameModel.h"
+//
+////查看进度
+//#import "ScheduleResponse.h"
+//#import "ScheduleModel.h"
 
 
-@interface ReleaseEndViewController ()
-<UITableViewDataSource,UITableViewDelegate>
+@interface ReleaseEndViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *releaseEndTableView;
-@property (nonatomic,strong) BaseCommitButton *releaseEndCommitButton;
-
-@property (nonatomic,strong) NSMutableArray *endArray;
-@property (nonatomic,strong) NSMutableArray *scheduleReleaseEndArray;
+//json
+@property (nonatomic,strong) NSMutableArray *releaseEndDataArray;
 
 
-@property (nonatomic,strong) NSString *loanTypeString1;  //债权类型
-@property (nonatomic,strong) NSString *loanTypeString2;  //债权类型内容
-@property (nonatomic,strong) NSString *loanTypeImage;//债权类型图片
+//<UITableViewDataSource,UITableViewDelegate>
+//
+//@property (nonatomic,assign) BOOL didSetupConstraints;
+//@property (nonatomic,strong) UITableView *releaseEndTableView;
+//@property (nonatomic,strong) BaseCommitButton *releaseEndCommitButton;
+//
+//@property (nonatomic,strong) NSMutableArray *endArray;
+//@property (nonatomic,strong) NSMutableArray *scheduleReleaseEndArray;
+//
+//
+//@property (nonatomic,strong) NSString *loanTypeString1;  //债权类型
+//@property (nonatomic,strong) NSString *loanTypeString2;  //债权类型内容
+//@property (nonatomic,strong) NSString *loanTypeImage;//债权类型图片
 
 @end
 
 @implementation ReleaseEndViewController
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.navigationItem.title = @"产品详情";
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
-    [self.view addSubview:self.releaseEndTableView];
-    [self.view addSubview:self.releaseEndCommitButton];
+    [self.view addSubview: self.releaseEndTableView];
     
     [self.view setNeedsUpdateConstraints];
     
-    [self getEndMessages];
+    [self getDetailMessages];
 }
 
+- (void)updateViewConstraints
+{
+    if (!self.didSetupConstraints) {
+        [self.releaseEndTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+        
+        self.didSetupConstraints = YES;
+    }
+    [super updateViewConstraints];
+}
+
+- (UITableView *)releaseEndTableView
+{
+    if (!_releaseEndTableView) {
+        _releaseEndTableView.translatesAutoresizingMaskIntoConstraints = NO;
+        _releaseEndTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+        _releaseEndTableView.backgroundColor = kBackColor;
+        _releaseEndTableView.separatorColor = kSeparateColor;
+        _releaseEndTableView.delegate = self;
+        _releaseEndTableView.dataSource = self;
+    }
+    return _releaseEndTableView;
+}
+
+- (NSMutableArray *)releaseEndDataArray
+{
+    if (!_releaseEndDataArray) {
+        _releaseEndDataArray = [NSMutableArray array];
+    }
+    return _releaseEndDataArray;
+}
+
+#pragma mark - tableView delegate and datasource
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    if (self.releaseEndDataArray.count > 0) {
+        return 4;
+    }
+    return 0;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (self.releaseEndDataArray.count > 0) {
+        if (section == 0) {
+            return 3;
+        }
+        return 1;
+    }
+    return 0;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 0) {
+        if (indexPath.row == 0) {
+            return kCellHeight1;
+        }else if (indexPath.row == 1){
+            return 72;
+        }else if (indexPath.row == 2){
+            return kCellHeight3;
+        }
+    }
+    return kCellHeight;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *identifier;
+    
+    if (indexPath.section == 0) {
+        
+        PublishingResponse *resModel = self.releaseEndDataArray[0];
+        PublishingModel *publishModel = resModel.product;
+        
+        if (indexPath.row == 0) {
+            identifier = @"myDealing00";
+            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            [cell.userNameButton setTitle:publishModel.codeString forState:0];
+            [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            [cell.userActionButton setTitle:@"查看详情" forState:0];
+            
+            return cell;
+        }else if (indexPath.row == 1){
+            identifier = @"myDealing01";
+            NewPublishDetailsCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[NewPublishDetailsCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.backgroundColor = kBackColor;
+            
+            [cell.point2 setImage:[UIImage imageNamed:@"succee"] forState:0];
+            cell.progress2.textColor = kTextColor;
+            [cell.line2 setBackgroundColor:kButtonColor];
+            [cell.point3 setImage:[UIImage imageNamed:@"fail"] forState:0];
+            cell.progress3.textColor = kRedColor;
+            [cell.line3 setBackgroundColor:kLightGrayColor];
+            
+            return cell;
+            
+        }else if (indexPath.row == 2){
+            identifier = @"myDealing02";
+            OrderPublishCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            
+            if (!cell) {
+                cell = [[OrderPublishCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            UserNameModel *userNameModel = resModel.username;
+            
+            NSString *nameStr = [NSString getValidStringFromString:userNameModel.jusername toString:@"未认证"];
+            NSString *checkStr = [NSString stringWithFormat:@"接单方：%@",nameStr];
+            [cell.checkButton setTitle:checkStr forState:0];
+            [cell.contactButton setTitle:@" 联系TA" forState:0];
+            [cell.contactButton setImage:[UIImage imageNamed:@"phone_blue"] forState:0];
+            
+            //接单方详情
+            QDFWeakSelf;
+            [cell.checkButton addAction:^(UIButton *btn) {
+                if ([userNameModel.jusername isEqualToString:@""] || userNameModel.jusername == nil || !userNameModel.jusername) {
+                    [weakself showHint:@"申请方未认证，不能查看相关信息"];
+                }else{
+                    CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+                    checkDetailPublishVC.idString = weakself.idString;
+                    checkDetailPublishVC.categoryString = weakself.categaryString;
+                    checkDetailPublishVC.pidString = weakself.pidString;
+                    checkDetailPublishVC.typeString = @"接单方";
+                    //                checkDetailPublishVC.typeDegreeString = @"处理中";
+                    [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];
+                }
+            }];
+            
+            //电话
+            [cell.contactButton addAction:^(UIButton *btn) {
+                if ([userNameModel.jusername isEqualToString:@""] || userNameModel.jusername == nil || !userNameModel.jusername) {
+                    [self showHint:@"申请方未认证，不能打电话"];
+                }else{
+                    NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",userNameModel.jmobile];
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
+                }
+            }];
+            return cell;
+        }
+        
+    }else if (indexPath.section == 1){
+        identifier = @"myDealing1";
+        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell) {
+            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        [cell.userNameButton setTitle:@"签约协议详情" forState:0];
+        [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        [cell.userActionButton setTitle:@"查看详情" forState:0];
+        
+        return cell;
+    }else if (indexPath.section == 2){
+        identifier = @"myDealing2";
+        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell) {
+            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        [cell.userNameButton setTitle:@"居间协议" forState:0];
+        [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        [cell.userActionButton setTitle:@"查看" forState:0];
+        
+        return cell;
+    }else if (indexPath.section == 3){
+        identifier = @"myDealing3";
+        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell) {
+            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        [cell.userNameButton setTitle:@"尽职调查" forState:0];
+        return cell;
+    }
+    
+    return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 0.1f;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return kBigPadding;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 0 && indexPath.row == 0) {
+        [self showHint:@"查看详情"];
+    }else if (indexPath.section == 1) {
+        [self showHint:@"签约协议详情"];
+    }else if (indexPath.section == 2){
+        [self showHint:@"居间协议"];
+    }
+}
+
+#pragma mark - method
+- (void)getDetailMessages
+{
+    NSString *detailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseDetailString];
+    NSDictionary *params = @{@"token" : [self getValidateToken],
+                             @"id" : self.idString,
+                             @"category" : self.categaryString
+                             };
+    QDFWeakSelf;
+    [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
+        
+        PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
+        if ([response.code isEqualToString:@"0000"]) {
+            [weakself.releaseEndDataArray removeAllObjects];
+            [weakself.releaseEndDataArray addObject:response];
+            [weakself.releaseEndTableView reloadData];
+        }
+        
+    } andFailBlock:^(NSError *error){
+        
+    }];
+}
+
+/*
 - (void)updateViewConstraints
 {
     if (!self.didSetupConstraints) {
@@ -72,6 +326,7 @@
     }
     [super updateViewConstraints];
 }
+
 
 - (UITableView *)releaseEndTableView
 {
@@ -420,6 +675,7 @@
         
     }];
 }
+ */
 
 
 - (void)didReceiveMemoryWarning {

@@ -116,6 +116,7 @@
 #define kCellHeight5 68  //个人信息高度
 #define kRemindHeight 32 //提示信息高度
 
+#define kNewPadding 16
 #define kBigPadding 12    //较大间距15-12
 #define kSmallPadding 10  //较小间距
 #define kSpacePadding 6 //间距

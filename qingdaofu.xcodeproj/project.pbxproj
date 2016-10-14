@@ -544,6 +544,11 @@
 		A1A34C371CE32C8000AD454A /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A34C361CE32C8000AD454A /* RegisterViewController.m */; };
 		A1A34C3A1CE32C9300AD454A /* ForgetPassViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A34C391CE32C9300AD454A /* ForgetPassViewController.m */; };
 		A1A34C3D1CE32CF700AD454A /* LoginCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A34C3C1CE32CF700AD454A /* LoginCell.m */; };
+		A1A39BB71DB06F2700B84B1A /* RequestEndViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A39BB61DB06F2700B84B1A /* RequestEndViewController.m */; };
+		A1A39BBA1DB071C100B84B1A /* DealingCloseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A39BB91DB071C100B84B1A /* DealingCloseViewController.m */; };
+		A1A39BBE1DB0820B00B84B1A /* RequestEndCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A39BBD1DB0820B00B84B1A /* RequestEndCell.m */; };
+		A1A39BC51DB0A5DB00B84B1A /* chapter@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A39BC31DB0A5DB00B84B1A /* chapter@2x.png */; };
+		A1A39BC61DB0A5DB00B84B1A /* chapter@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A39BC41DB0A5DB00B84B1A /* chapter@3x.png */; };
 		A1A44CB41DACF05800140BB9 /* buttons_s@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A44CB01DACF05800140BB9 /* buttons_s@2x.png */; };
 		A1A44CB51DACF05800140BB9 /* buttons_s@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A44CB11DACF05800140BB9 /* buttons_s@3x.png */; };
 		A1A44CB61DACF05800140BB9 /* buttons@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A44CB21DACF05800140BB9 /* buttons@2x.png */; };
@@ -1527,6 +1532,14 @@
 		A1A34C391CE32C9300AD454A /* ForgetPassViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForgetPassViewController.m; sourceTree = "<group>"; };
 		A1A34C3B1CE32CF700AD454A /* LoginCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginCell.h; sourceTree = "<group>"; };
 		A1A34C3C1CE32CF700AD454A /* LoginCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginCell.m; sourceTree = "<group>"; };
+		A1A39BB51DB06F2700B84B1A /* RequestEndViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestEndViewController.h; sourceTree = "<group>"; };
+		A1A39BB61DB06F2700B84B1A /* RequestEndViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestEndViewController.m; sourceTree = "<group>"; };
+		A1A39BB81DB071C100B84B1A /* DealingCloseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DealingCloseViewController.h; sourceTree = "<group>"; };
+		A1A39BB91DB071C100B84B1A /* DealingCloseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DealingCloseViewController.m; sourceTree = "<group>"; };
+		A1A39BBC1DB0820B00B84B1A /* RequestEndCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestEndCell.h; sourceTree = "<group>"; };
+		A1A39BBD1DB0820B00B84B1A /* RequestEndCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestEndCell.m; sourceTree = "<group>"; };
+		A1A39BC31DB0A5DB00B84B1A /* chapter@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chapter@2x.png"; sourceTree = "<group>"; };
+		A1A39BC41DB0A5DB00B84B1A /* chapter@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chapter@3x.png"; sourceTree = "<group>"; };
 		A1A44CB01DACF05800140BB9 /* buttons_s@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "buttons_s@2x.png"; sourceTree = "<group>"; };
 		A1A44CB11DACF05800140BB9 /* buttons_s@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "buttons_s@3x.png"; sourceTree = "<group>"; };
 		A1A44CB21DACF05800140BB9 /* buttons@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "buttons@2x.png"; sourceTree = "<group>"; };
@@ -1900,6 +1913,7 @@
 		A14C175A1D07B980003826F8 /* 处理中 */ = {
 			isa = PBXGroup;
 			children = (
+				A1A39BB41DB06F0400B84B1A /* 申请终止结案 */,
 				A1C2F11B1DAF944300016D25 /* 处理终止申请 */,
 				A194416A1D790BC1003CA99F /* 延期处理 */,
 				A1A97E631CDC984300EDE320 /* 处理中 */,
@@ -2555,6 +2569,8 @@
 		A192B4BC1CDB45EB0053FC4C /* images */ = {
 			isa = PBXGroup;
 			children = (
+				A1A39BC31DB0A5DB00B84B1A /* chapter@2x.png */,
+				A1A39BC41DB0A5DB00B84B1A /* chapter@3x.png */,
 				A1C2F1051DAF37BC00016D25 /* normal2@2x.png */,
 				A1C2F1061DAF37BC00016D25 /* normal2@3x.png */,
 				A1C2F1071DAF37BC00016D25 /* normal3@2x.png */,
@@ -3713,6 +3729,25 @@
 			path = view;
 			sourceTree = "<group>";
 		};
+		A1A39BB41DB06F0400B84B1A /* 申请终止结案 */ = {
+			isa = PBXGroup;
+			children = (
+				A1A39BBB1DB081EB00B84B1A /* view */,
+				A1A39BB51DB06F2700B84B1A /* RequestEndViewController.h */,
+				A1A39BB61DB06F2700B84B1A /* RequestEndViewController.m */,
+			);
+			path = "申请终止结案";
+			sourceTree = "<group>";
+		};
+		A1A39BBB1DB081EB00B84B1A /* view */ = {
+			isa = PBXGroup;
+			children = (
+				A1A39BBC1DB0820B00B84B1A /* RequestEndCell.h */,
+				A1A39BBD1DB0820B00B84B1A /* RequestEndCell.m */,
+			);
+			path = view;
+			sourceTree = "<group>";
+		};
 		A1A66F281D6C33A900B0E101 /* 发布成功 */ = {
 			isa = PBXGroup;
 			children = (
@@ -3969,6 +4004,8 @@
 			children = (
 				A1C2F11C1DAF945F00016D25 /* DealingEndViewController.h */,
 				A1C2F11D1DAF945F00016D25 /* DealingEndViewController.m */,
+				A1A39BB81DB071C100B84B1A /* DealingCloseViewController.h */,
+				A1A39BB91DB071C100B84B1A /* DealingCloseViewController.m */,
 			);
 			path = "处理终止申请";
 			sourceTree = "<group>";
@@ -4143,6 +4180,7 @@
 				A1A34C251CE319C000AD454A /* bond_icon_contract@2x.png in Resources */,
 				A1A66F101D6BF37500B0E101 /* phone_blue@3x.png in Resources */,
 				A18D50571D6EEE7F00B6BF0D /* stop@3x.png in Resources */,
+				A1A39BC61DB0A5DB00B84B1A /* chapter@3x.png in Resources */,
 				A192B4C81CDB492B0053FC4C /* list_icon_preservation@3x.png in Resources */,
 				A19EFBDE1D5D713400C813D8 /* center@3x.png in Resources */,
 				A11A32261D816BE400B855A7 /* payimage@2x.png in Resources */,
@@ -4240,6 +4278,7 @@
 				A196CDEF1CFBDF4000AC6C87 /* btn_collection@2x.png in Resources */,
 				A1718DEB1CFD6C3E0007DA6F /* list_icon_apply@2x.png in Resources */,
 				A154B8F11CE1B71D00884CA4 /* back@2x.png in Resources */,
+				A1A39BC51DB0A5DB00B84B1A /* chapter@2x.png in Resources */,
 				A1770E3F1CFEE98C003579E1 /* banner@3x.png in Resources */,
 				A1A5C75E1D37519900173533 /* conserve_fixed_icons@2x.png in Resources */,
 				A159F9471D0BEE5E00A6A024 /* ZYQAssetPicker.Bundle in Resources */,
@@ -4515,6 +4554,7 @@
 				A1718DE11CFD56AE0007DA6F /* ReleaseCloseViewController.m in Sources */,
 				A1A97E6A1CDC989200EDE320 /* MyPublishingViewController.m in Sources */,
 				A1B028E81D1794DC00F32A09 /* SDWebImageCompat.m in Sources */,
+				A1A39BB71DB06F2700B84B1A /* RequestEndViewController.m in Sources */,
 				A159F9811D0D727A00A6A024 /* UIView+MJExtension.m in Sources */,
 				A161754F1D1257A9001BB200 /* ApplicationStateModel.m in Sources */,
 				A1A34C161CE3148A00AD454A /* UploadFilesViewController.m in Sources */,
@@ -4633,6 +4673,7 @@
 				A17EE3821CD8518600ECC631 /* BaseCommitButton.m in Sources */,
 				A19985151CE02B7A0055A572 /* ModifyPassWordViewController.m in Sources */,
 				A17EE3791CD82F4800ECC631 /* MyDetailSaveViewController.m in Sources */,
+				A1A39BBA1DB071C100B84B1A /* DealingCloseViewController.m in Sources */,
 				9CF131751D1827FE00ADBA27 /* BrandsViewController.m in Sources */,
 				A1A0174F1C5B696A00027134 /* MJExtensionConst.m in Sources */,
 				A19441711D791ADA003CA99F /* ApplyRecordViewController.m in Sources */,
@@ -4644,6 +4685,7 @@
 				A1A34C3A1CE32C9300AD454A /* ForgetPassViewController.m in Sources */,
 				A16391741D20194B0051F1D0 /* FSImageScrollView.m in Sources */,
 				A19D29471CD1B44D00DAAEA7 /* MoneyView.m in Sources */,
+				A1A39BBE1DB0820B00B84B1A /* RequestEndCell.m in Sources */,
 				A159F95E1D0D66BC00A6A024 /* DelayRequestsViewController.m in Sources */,
 				A1B6FD561D4F1B7C0059690B /* PowerProtectViewController.m in Sources */,
 				A19B8E571CCF640300F8EBF2 /* MessageCell.m in Sources */,

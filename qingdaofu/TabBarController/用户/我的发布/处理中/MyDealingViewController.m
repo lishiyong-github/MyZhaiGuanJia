@@ -8,8 +8,11 @@
 
 #import "MyDealingViewController.h"
 
-#import "ApplyRecordViewController.h"  //申请记录
+#import "RequestEndViewController.h"  //申请终止
 #import "CheckDetailPublishViewController.h"  //查看发布方
+#import "DealingEndViewController.h"  //处理终止申请
+#import "DealingCloseViewController.h" //处理结案申请
+
 
 #import "MineUserCell.h"//完善信息
 #import "NewPublishDetailsCell.h"//进度
@@ -118,6 +121,13 @@
         [_dealRightNavButton setTitleColor:kWhiteColor forState:0];
         [_dealRightNavButton setTitle:@"申请终止" forState:0];
         _dealRightNavButton.titleLabel.font = kFirstFont;
+        
+        QDFWeakSelf;
+        [_dealRightNavButton addAction:^(UIButton *btn) {//
+            RequestEndViewController *requestEndVC = [[RequestEndViewController alloc] init];
+            [weakself.navigationController pushViewController:requestEndVC animated:YES];
+            
+        }];
     }
     return _dealRightNavButton;
 }
@@ -141,6 +151,15 @@
         _dealRemindButton = [BaseRemindButton newAutoLayoutView];
         [_dealRemindButton setTitle:@"对方申请终止此单，点击处理  " forState:0];
         [_dealRemindButton setImage:[UIImage imageNamed:@"more_white"] forState:0];
+        
+        QDFWeakSelf;
+        [_dealRemindButton addAction:^(UIButton *btn) {
+            DealingEndViewController *dealingEndVC = [[DealingEndViewController alloc] init];
+            [weakself.navigationController pushViewController:dealingEndVC animated:YES];
+            
+//            DealingCloseViewController *dealingCloseVC = [[DealingCloseViewController alloc] init];
+//            [weakself.navigationController pushViewController:dealingCloseVC animated:YES];
+        }];
     }
     return _dealRemindButton;
 }
@@ -166,7 +185,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (self.myDealingDataArray.count > 0) {
-        return 3;
+        return 4;
     }
     return 0;
 }
@@ -193,7 +212,7 @@
             return kCellHeight3;
         }
     }
-    return kCellHeight3;
+    return kCellHeight;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -248,7 +267,7 @@
             UserNameModel *userNameModel = resModel.username;
             
             NSString *nameStr = [NSString getValidStringFromString:userNameModel.jusername toString:@"未认证"];
-            NSString *checkStr = [NSString stringWithFormat:@"申请方：%@",nameStr];
+            NSString *checkStr = [NSString stringWithFormat:@"接单方：%@",nameStr];
             [cell.checkButton setTitle:checkStr forState:0];
             [cell.contactButton setTitle:@" 联系TA" forState:0];
             [cell.contactButton setImage:[UIImage imageNamed:@"phone_blue"] forState:0];
@@ -291,11 +310,24 @@
         
         [cell.userNameButton setTitle:@"签约协议详情" forState:0];
         [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-        [cell.userActionButton setTitle:@"查看" forState:0];
+        [cell.userActionButton setTitle:@"查看详情" forState:0];
         
         return cell;
     }else if (indexPath.section == 2){
         identifier = @"myDealing2";
+        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell) {
+            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        [cell.userNameButton setTitle:@"居间协议" forState:0];
+        [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        [cell.userActionButton setTitle:@"查看" forState:0];
+        
+        return cell;
+    }else if (indexPath.section == 3){
+        identifier = @"myDealing3";
         MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         if (!cell) {
             cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
@@ -324,6 +356,8 @@
         [self showHint:@"查看详情"];
     }else if (indexPath.section == 1) {
         [self showHint:@"签约协议详情"];
+    }else if (indexPath.section == 2){
+        [self showHint:@"居间协议"];
     }
 }
 
@@ -349,53 +383,6 @@
         
     }];
 }
-
-- (void)showRecordList
-{
-    ApplyRecordViewController *applyRecordsVC = [[ApplyRecordViewController alloc] init];
-    applyRecordsVC.idStr = self.idString;
-    applyRecordsVC.categaryStr = self.categaryString;
-    [self.navigationController pushViewController:applyRecordsVC animated:YES];
-}
-
-////编辑信息
-//- (void)editAllMessages
-//{
-//    if (self.myDealingDataArray.count > 0) {
-//        PublishingResponse *response = self.myDealingDataArray[0];
-//        PublishingModel *rModel = response.product;
-//
-//        ReportSuitViewController *reportSuiVC = [[ReportSuitViewController alloc] init];
-//        reportSuiVC.categoryString = rModel.category;
-//        reportSuiVC.suResponse = response;
-//        reportSuiVC.tagString = @"3";
-//        UINavigationController *nsop = [[UINavigationController alloc] initWithRootViewController:reportSuiVC];
-//        [self presentViewController:nsop animated:YES completion:nil];
-//    }
-//}
-
-- (void)deleteThePublishing
-{
-    NSString *deletePubString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kDeleteProductOfMyReleaseString];
-    NSDictionary *params = @{@"id" : self.idString,
-                             @"category" : self.categaryString,
-                             @"token" : [self getValidateToken],
-                             @"type" : @"2"
-                             };
-    QDFWeakSelf;
-    [self requestDataPostWithString:deletePubString params:params successBlock:^(id responseObject) {
-        
-        BaseModel *baModel = [BaseModel objectWithKeyValues:responseObject];
-        [weakself showHint:baModel.msg];
-        if ([baModel.code isEqualToString:@"0000"]) {
-            [weakself.navigationController popViewControllerAnimated:YES];
-        }
-        
-    } andFailBlock:^(NSError *error) {
-        
-    }];
-}
-
 
 /*
 - (void)viewDidLoad {

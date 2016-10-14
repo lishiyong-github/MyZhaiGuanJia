@@ -444,11 +444,16 @@
 {
     RowsModel *sModel = self.releaseDataArray[indexPath.section];
     
-    MyDealingViewController *myDealingVC = [[MyDealingViewController alloc] init];
-    myDealingVC.idString = sModel.idString;
-    myDealingVC.categaryString = sModel.category;
-    myDealingVC.pidString = sModel.pid;
-    [self.navigationController pushViewController:myDealingVC animated:YES];
+    NSString *id_category = [NSString stringWithFormat:@"%@_%@",sModel.idString,sModel.category];
+    NSString *value1 = self.releaseDic[id_category];
+    
+    ReleaseCloseViewController *releaseCloseVC = [[ReleaseCloseViewController alloc] init];
+    releaseCloseVC.evaString = value1;
+    releaseCloseVC.idString = sModel.idString;
+    releaseCloseVC.categaryString = sModel.category;
+    releaseCloseVC.pidString = sModel.pid;
+    [self.navigationController pushViewController:releaseCloseVC animated:YES];
+
     
     
     /*

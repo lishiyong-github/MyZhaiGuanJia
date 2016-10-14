@@ -10,6 +10,8 @@
 
 @interface MineUserCell : UITableViewCell
 
+@property (nonatomic,strong) NSLayoutConstraint *bottomConstraints; //按钮距离底部距离
+
 @property (nonatomic,strong) UIButton *userNameButton;
 @property (nonatomic,strong) UIButton *userActionButton;
 @property (nonatomic,assign) BOOL didSetupConstraints;
