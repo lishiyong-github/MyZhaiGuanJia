@@ -76,6 +76,17 @@
     return _leftItem;
 }
 
+- (UIButton *)rightButton
+{
+    if (!_rightButton) {
+        _rightButton = [UIButton buttonWithType:0];
+        _rightButton.frame = CGRectMake(0, 0, 60, 30);
+        [_rightButton setTitleColor:kWhiteColor forState:0];
+        _rightButton.titleLabel.font = kFirstFont;
+        [_rightButton addTarget:self action:@selector(rightItemAction) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _rightButton;
+}
 
 -(UIBarButtonItem *)leftItemAnother
 {

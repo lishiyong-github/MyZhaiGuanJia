@@ -10,6 +10,7 @@
 
 @interface AgreementViewController : NetworkViewController
 
+@property (nonatomic,strong) NSString *navTitleString;  //标题
 @property (nonatomic,strong) NSString *idString;
 @property (nonatomic,strong) NSString *categoryString;
 @property (nonatomic,strong) NSString *pidString;

@@ -8,8 +8,8 @@
 
 #import "MyDealingViewController.h"
 
-#import "RequestEndViewController.h"  //申请终止
 #import "CheckDetailPublishViewController.h"  //查看发布方
+#import "RequestEndViewController.h"  //申请终止
 #import "DealingEndViewController.h"  //处理终止申请
 #import "DealingCloseViewController.h" //处理结案申请
 
@@ -49,7 +49,6 @@
 
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
-@property (nonatomic,strong) UIButton *dealRightNavButton;
 @property (nonatomic,strong) UITableView *myDealingTableView;
 @property (nonatomic,strong) BaseRemindButton *dealRemindButton;
 @property (nonatomic,strong) UIView *chatView;
@@ -84,7 +83,8 @@
     [super viewDidLoad];
     self.navigationItem.title = @"产品详情";
     self.navigationItem.leftBarButtonItem = self.leftItem;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.dealRightNavButton];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightButton];
+    [self.rightButton setTitle:@"申请终止" forState:0];
     
     [self.view addSubview: self.myDealingTableView];
     [self.view addSubview:self.chatView];
@@ -112,24 +112,6 @@
         self.didSetupConstraints = YES;
     }
     [super updateViewConstraints];
-}
-
-- (UIButton *)dealRightNavButton
-{
-    if (!_dealRightNavButton) {
-        _dealRightNavButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 30)];
-        [_dealRightNavButton setTitleColor:kWhiteColor forState:0];
-        [_dealRightNavButton setTitle:@"申请终止" forState:0];
-        _dealRightNavButton.titleLabel.font = kFirstFont;
-        
-        QDFWeakSelf;
-        [_dealRightNavButton addAction:^(UIButton *btn) {//
-            RequestEndViewController *requestEndVC = [[RequestEndViewController alloc] init];
-            [weakself.navigationController pushViewController:requestEndVC animated:YES];
-            
-        }];
-    }
-    return _dealRightNavButton;
 }
 
 - (UITableView *)myDealingTableView
@@ -383,6 +365,13 @@
         
     }];
 }
+
+- (void)rightItemAction
+{
+    RequestEndViewController *requestEndVC = [[RequestEndViewController alloc] init];
+    [self.navigationController pushViewController:requestEndVC animated:YES];
+}
+
 
 /*
 - (void)viewDidLoad {

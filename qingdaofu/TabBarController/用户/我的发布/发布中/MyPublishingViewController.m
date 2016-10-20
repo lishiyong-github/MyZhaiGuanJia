@@ -15,9 +15,7 @@
 //#import "AgreementViewController.h"//协议
 //#import "ReportSuitViewController.h"  //发布催收，发布诉讼
 
-//#import "EvaTopSwitchView.h"
 #import "BaseRemindButton.h"
-//#import "BidOneCell.h"
 
 #import "MineUserCell.h"//完善信息
 #import "NewPublishDetailsCell.h"//进度

@@ -1014,10 +1014,10 @@
             weakself.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:weakself.rightItemButton];
             
             if (stateModel.app_id == nil) {//未收藏
-                [_rightItemButton setImage:[UIImage imageNamed:@"nav_collection"] forState:0];
+                [weakself.rightItemButton setImage:[UIImage imageNamed:@"nav_collection"] forState:0];
                 
                 QDFWeakSelf;
-                [_rightItemButton addAction:^(UIButton *btn) {
+                [weakself.rightItemButton addAction:^(UIButton *btn) {
                     
                     if (weakself.typetString) {
                         [weakself saveOrQuitSaveWithType:weakself.typetString WithButton:btn];
@@ -1027,9 +1027,9 @@
                 }];
                 
             }else{//已收藏
-                [_rightItemButton setImage:[UIImage imageNamed:@"nav_collection_s"] forState:0];
+                [weakself.rightItemButton setImage:[UIImage imageNamed:@"nav_collection_s"] forState:0];
                 QDFWeakSelf;
-                [_rightItemButton addAction:^(UIButton *btn) {
+                [weakself.rightItemButton addAction:^(UIButton *btn) {
                     if (weakself.typetString) {
                         [weakself saveOrQuitSaveWithType:weakself.typetString WithButton:btn];
                     }else{
@@ -1059,9 +1059,9 @@
                 }];
                 [weakself.proDetailsCommitButton addSubview:phoneButton];
                 
-                [phoneButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:_proDetailsCommitButton];
-                [phoneButton autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:_proDetailsCommitButton];
-                [phoneButton autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:_proDetailsCommitButton];
+                [phoneButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:weakself.proDetailsCommitButton];
+                [phoneButton autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:weakself.proDetailsCommitButton];
+                [phoneButton autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:weakself.proDetailsCommitButton];
                 [phoneButton autoSetDimension:ALDimensionWidth toSize:kTabBarHeight];
             }else{//别人申请成功，自己显示被接单
                 [weakself.proDetailsCommitButton setTitleColor:kBlackColor forState:0];

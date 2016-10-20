@@ -8,27 +8,28 @@
 
 #import "MyApplyingViewController.h"
 #import "CheckDetailPublishViewController.h"  //查看发布方
-#import "AdditionMessagesViewController.h"  //查看更多
-#import "AgreementViewController.h"
 
-#import "BaseCommitButton.h"
-#import "MineUserCell.h"
+#import "BaseRemindButton.h"
 
-#import "PublishingResponse.h"
+#import "NewPublishDetailsCell.h"//进度
+#import "NewPublishStateCell.h"//状态
+#import "MineUserCell.h"//完善信息
+#import "OrderPublishCell.h"
+
 #import "PublishingModel.h"
+#import "PublishingResponse.h"
 #import "UserNameModel.h"
 
 @interface MyApplyingViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
+@property (nonatomic,strong) UIButton *applyingRightButton;
 @property (nonatomic,strong) UITableView *myApplyingTableView;
-@property (nonatomic,strong) BaseCommitButton *myApplyingButton;
 @property (nonatomic,strong) NSMutableArray *myApplyArray;
 
-
-@property (nonatomic,strong) NSString *loanTypeString1;  //债权类型
-@property (nonatomic,strong) NSString *loanTypeString2;  //债权类型内容
-@property (nonatomic,strong) NSString *loanTypeImage;//债权类型图片
+//@property (nonatomic,strong) NSString *loanTypeString1;  //债权类型
+//@property (nonatomic,strong) NSString *loanTypeString2;  //债权类型内容
+//@property (nonatomic,strong) NSString *loanTypeImage;//债权类型图片
 
 @end
 
@@ -38,15 +39,9 @@
     [super viewDidLoad];
     self.navigationItem.title = @"产品详情";
     self.navigationItem.leftBarButtonItem = self.leftItem;
-    
-//    if (self.pidString) {
-//        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"查看发布方" style:UIBarButtonItemStylePlain target:self action:@selector(checkDetails)];
-//    }
-//    
-//    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kBlueColor} forState:0];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.applyingRightButton];
     
     [self.view addSubview:self.myApplyingTableView];
-    [self.view addSubview:self.myApplyingButton];
     
     [self.view setNeedsUpdateConstraints];
     
@@ -57,11 +52,7 @@
 {
     if (!self.didSetupConstraints) {
         
-        [self.myApplyingTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
-        [self.myApplyingTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.myApplyingButton];
-        
-        [self.myApplyingButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [self.myApplyingButton autoSetDimension:ALDimensionHeight toSize:40];
+        [self.myApplyingTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
         
         self.didSetupConstraints = YES;
     }
@@ -69,6 +60,19 @@
 }
 
 #pragma mark - setter and getter
+- (UIButton *)applyingRightButton
+{
+    if (!_applyingRightButton) {
+        _applyingRightButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 30)];
+        [_applyingRightButton setTitleColor:kWhiteColor forState:0];
+        [_applyingRightButton setTitle:@"取消申请" forState:0];
+        _applyingRightButton.titleLabel.font = kFirstFont;
+        
+        [_applyingRightButton addTarget:self action:@selector(cancelTheProductApply) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _applyingRightButton;
+}
+
 - (UITableView *)myApplyingTableView
 {
     if (!_myApplyingTableView) {
@@ -80,20 +84,6 @@
         _myApplyingTableView.backgroundColor = kBackColor;
     }
     return _myApplyingTableView;
-}
-
-- (BaseCommitButton *)myApplyingButton
-{
-    if (!_myApplyingButton) {
-        _myApplyingButton = [BaseCommitButton newAutoLayoutView];
-        [_myApplyingButton setImage:[UIImage imageNamed:@"cancel_apply"] forState:0];
-        [_myApplyingButton setTitle:@" 取消申请" forState:0];
-        [_myApplyingButton setTitleColor:kBlackColor forState:0];
-        _myApplyingButton.titleLabel.font = kFirstFont;
-        _myApplyingButton.backgroundColor = kNavColor;
-        [_myApplyingButton addTarget:self action:@selector(cancelTheProductApply) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _myApplyingButton;
 }
 
 - (NSMutableArray *)myApplyArray
@@ -116,12 +106,10 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (self.myApplyArray.count > 0) {
-        if (section == 2) {
-            PublishingResponse *response = self.myApplyArray[0];
-            if ([response.product.loan_type isEqualToString:@"4"]) {
-                return 5;
-            }
-            return 6;
+        if (section == 0) {
+            return 2;
+        }else if (section == 2){
+            return 7;
         }
         return 1;
     }
@@ -131,9 +119,18 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        return 40;
-    }else if (indexPath.section == 1){//112
-        return 56;
+        if (indexPath.row == 0) {
+            return 72;
+        }else if (indexPath.row == 1){
+            kCellHeight3;
+        }
+    }else if (indexPath.section == 1){
+        PublishingResponse *resongde = self.myApplyArray[0];
+        if ([resongde.product.progress_status integerValue] == 2) {
+            return 196;
+        }else if ([resongde.product.progress_status integerValue] == 1){
+            return 210;
+        }
     }
     return kCellHeight;
 }
@@ -141,396 +138,171 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier;
-    
-    PublishingResponse *responseModel = self.myApplyArray[0];
-    PublishingModel *applyModel = responseModel.product;
-    
+    PublishingResponse *resongde = self.myApplyArray[0];
+    PublishingModel *applyingModel = resongde.product;
+
     if (indexPath.section == 0) {
-        identifier = @"applying0";
-        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        
-        if (!cell) {
-            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.backgroundColor = UIColorFromRGB(0x42566d);
-        
-        NSString *nameStrss;
-        if ([applyModel.category integerValue] == 2) {
-            nameStrss = @"清收";
-        }else if ([applyModel.category integerValue] == 3){
-            nameStrss = @"诉讼";
-        }
-        NSString *nameStr = [NSString stringWithFormat:@"%@%@",nameStrss,applyModel.codeString];
-
-        [cell.userNameButton setTitle:nameStr forState:0];
-        [cell.userNameButton setTitleColor:UIColorFromRGB(0xcfd4e8) forState:0];
-        cell.userNameButton.titleLabel.font = kFourFont;
-
-        [cell.userActionButton setTitle:@"申请中" forState:0];
-        [cell.userActionButton setTitleColor:kNavColor forState:0];
-        cell.userActionButton.titleLabel.font = kFirstFont;
-        
-        return cell;
-        
-    }else if (indexPath.section == 1){//联系发布方
-        identifier = @"applying1";
-        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        
-        if (!cell) {
-            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.userNameButton.userInteractionEnabled = NO;
-        cell.userActionButton.userInteractionEnabled = NO;
-        
-        UserNameModel *userNameModel = responseModel.username;
-        
-        NSString *nameStr = [NSString getValidStringFromString:userNameModel.username toString:@"未认证"];
-        NSString *checkStr = [NSString stringWithFormat:@"发布方：%@",nameStr];
-        [cell.userNameButton setTitle:checkStr forState:0];
-        [cell.userActionButton setTitle:@"查看详情  " forState:0];
-        [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-        
-        return cell;
-    }else{//详情
         if (indexPath.row == 0) {
-            identifier = @"applying20";
-            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-            
+            identifier = @"applying00";
+            NewPublishDetailsCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
             if (!cell) {
-                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+                cell = [[NewPublishDetailsCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.userNameButton.userInteractionEnabled = NO;
-            cell.userActionButton.userInteractionEnabled = NO;
+            cell.backgroundColor = kBackColor;
+            [cell.progress1 setText:@"申请中"];
             
-            [cell.userNameButton setTitle:@"产品信息" forState:0];
-            [cell.userActionButton setTitle:@"查看全部  " forState:0];
-            [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            if ([applyingModel.progress_status integerValue] == 2) {
+                [cell.line2 setBackgroundColor:kLightGrayColor];
+                [cell.progress2 setTextColor:kLightGrayColor];
+                [cell.point2 setImage:[UIImage imageNamed:@"normal2"] forState:0];
+            }else if ([applyingModel.progress_status integerValue] == 1){
+                [cell.line2 setBackgroundColor:kButtonColor];
+                [cell.progress2 setTextColor:kTextColor];
+                [cell.point2 setImage:[UIImage imageNamed:@"succee"] forState:0];
+            }
             
             return cell;
+        }else if (indexPath.row == 1){
+            identifier = @"applying01";
+            if ([applyingModel.progress_status integerValue] == 2) {
+                MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+                if (!cell) {
+                    cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+                }
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                PublishingResponse *resModel = self.myApplyArray[0];
+                
+                UserNameModel *userNameModel = resModel.username;
+                NSString *nameStr = [NSString getValidStringFromString:userNameModel.username toString:@"未认证"];
+                NSString *checkStr = [NSString stringWithFormat:@"发布方：%@",nameStr];
+                [cell.userNameButton setTitle:checkStr forState:0];
+                [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+                [cell.userActionButton setTitle:@"发布方详情  " forState:0];
+                return cell;
+            }else if ([applyingModel.progress_status integerValue] == 1){
+                OrderPublishCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+                
+                if (!cell) {
+                    cell = [[OrderPublishCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+                }
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                
+                UserNameModel *userNameModel = resongde.username;
+                
+                NSString *nameStr = [NSString getValidStringFromString:userNameModel.username toString:@"未认证"];
+                NSString *checkStr = [NSString stringWithFormat:@"发布方：%@",nameStr];
+                [cell.checkButton setTitle:checkStr forState:0];
+                [cell.contactButton setTitle:@" 联系TA" forState:0];
+                [cell.contactButton setImage:[UIImage imageNamed:@"phone_blue"] forState:0];
+                
+                //接单方详情
+                QDFWeakSelf;
+                [cell.checkButton addAction:^(UIButton *btn) {
+                    if ([userNameModel.username isEqualToString:@""] || userNameModel.username == nil || !userNameModel.username) {
+                        [weakself showHint:@"发布方未认证，不能查看相关信息"];
+                    }else{
+                        CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+                        checkDetailPublishVC.idString = weakself.idString;
+                        checkDetailPublishVC.categoryString = weakself.categaryString;
+                        checkDetailPublishVC.pidString = @"1";
+//                        weakself.pidString;
+                        checkDetailPublishVC.typeString = @"发布方";
+                        //                checkDetailPublishVC.typeDegreeString = @"处理中";
+                        [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];
+                    }
+                }];
+                
+                //电话
+                [cell.contactButton addAction:^(UIButton *btn) {
+                    if ([userNameModel.username isEqualToString:@""] || userNameModel.username == nil || !userNameModel.username) {
+                        [self showHint:@"发布方未认证，不能打电话"];
+                    }else{
+                        NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",userNameModel.mobile];
+                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
+                    }
+                }];
+                return cell;
+            }
         }
-        //详情
-        identifier = @"applying21";
-        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    }else if (indexPath.section == 1){
+        identifier = @"applying1";
+
+        NewPublishStateCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell) {
+            cell = [[NewPublishStateCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.backgroundColor = kWhiteColor;
         
+        if ([applyingModel.progress_status integerValue] == 2) {
+            cell.stateLabel1.text = @"申请中";
+            cell.stateLabel2.text = @"申请中，等待发布方同意";
+            
+        }else if ([applyingModel.progress_status integerValue] == 1){
+            cell.stateLabel1.text = @"等待面谈";
+
+            cell.stateLabel2.numberOfLines = 0;
+            NSString *staetc = @"双方联系并约见面谈，面谈后由发布方确定\n是否由您来接单";
+            NSMutableAttributedString *attributeSt = [[NSMutableAttributedString alloc]initWithString:staetc];
+            NSMutableParagraphStyle *syudy = [[NSMutableParagraphStyle alloc] init];
+            [syudy setLineSpacing:2];
+            syudy.alignment = NSTextAlignmentCenter;
+            [attributeSt addAttribute:NSParagraphStyleAttributeName value:syudy range:NSMakeRange(0, staetc.length)];
+            [cell.stateLabel2 setAttributedText:attributeSt];
+        }
+        
+        return cell;
+    }else if (indexPath.section == 2){
+        identifier = @"applying2";
+        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         if (!cell) {
             cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
-        cell.userNameButton.titleLabel.font = kFirstFont;
         [cell.userActionButton setTitleColor:kGrayColor forState:0];
-        cell.userActionButton.titleLabel.font = kFirstFont;
+        cell.userActionButton.titleLabel.font = kBigFont;
         
-        NSString *rowString1 = @"借款本金";
-        NSString *rowString11 = [NSString stringWithFormat:@"%@万",applyModel.money];//具体借款本金
-        NSString *rowString2 = @"费用类型";
-        NSString *rowString3;//具体费用类型
-        NSString *rowString33;//费用
-        if ([applyModel.category integerValue] == 2) {
-            if ([applyModel.agencycommissiontype integerValue] == 1) {
-                rowString3 = @"服务佣金";
-                rowString33 = [NSString stringWithFormat:@"%@%@",applyModel.agencycommission,@"%"];
-            }else{
-                rowString3 = @"固定费用";
-                rowString33 = [NSString stringWithFormat:@"%@万",applyModel.agencycommission];
-            }
-        }else if ([applyModel.category integerValue] == 3){
-            if ([applyModel.agencycommissiontype integerValue] == 1) {
-                rowString3 = @"固定费用";
-                rowString33 = [NSString stringWithFormat:@"%@万",applyModel.agencycommission];
-            }else{
-                rowString3 = @"代理费率";
-                rowString33 = [NSString stringWithFormat:@"%@%@",applyModel.agencycommission,@"%"];
-            }
+        NSArray *textArr = @[@"产品详情",@"债权类型",@"委托事项",@"委托金额",@"委托费用",@"违约期限",@"合同履行地"];
+        [cell.userNameButton setTitle:textArr[indexPath.row] forState:0];
+        
+//        PublishingResponse *resModel = self.myApplyArray[0];
+//        PublishingModel *publishModel = resModel.product;
+        
+        if (indexPath.row == 0) {
+            [cell.userNameButton setTitleColor:kBlackColor forState:0];
+            cell.userNameButton.titleLabel.font = kBigFont;
+            [cell.userActionButton setTitle:@"" forState:0];
+        }else if (indexPath.row == 1){
+            [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
+            cell.userNameButton.titleLabel.font = kFirstFont;
+            [cell.userActionButton setTitle:@"债权类型" forState:0];
+        }else if (indexPath.row == 2){
+            [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
+            cell.userNameButton.titleLabel.font = kFirstFont;
+            [cell.userActionButton setTitle:@"委托事项" forState:0];
+        }else if (indexPath.row == 3){
+            [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
+            cell.userNameButton.titleLabel.font = kFirstFont;
+            [cell.userActionButton setTitle:@"委托金额" forState:0];
+        }else if (indexPath.row == 4){
+            [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
+            cell.userNameButton.titleLabel.font = kFirstFont;
+            [cell.userActionButton setTitle:@"委托费用" forState:0];
+        }else if (indexPath.row == 5){
+            [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
+            cell.userNameButton.titleLabel.font = kFirstFont;
+            [cell.userActionButton setTitle:@"违约期限" forState:0];
+        }else if (indexPath.row == 6){
+            [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
+            cell.userNameButton.titleLabel.font = kFirstFont;
+            [cell.userActionButton setTitle:@"合同履行地" forState:0];
         }
         
-        NSString *rowString4 = @"债权类型";
-        NSString *rowString44; //具体债权类型
-        NSString *rowString5;
-        NSString *rowString55;
-        if ([applyModel.loan_type integerValue] == 1) {
-            rowString44 = @"房产抵押";
-            rowString5 = @"抵押物地址";
-            rowString55 = applyModel.seatmortgage;
-        }else if ([applyModel.loan_type integerValue] == 2) {
-            rowString44 = @"应收帐款";
-            rowString5 = @"应收帐款";
-            rowString55 = [NSString stringWithFormat:@"%@万",applyModel.accountr];
-        }else if ([applyModel.loan_type integerValue] == 3) {
-            rowString44 = @"机动车抵押";
-            rowString5 = @"机动车抵押";
-            rowString55 = responseModel.car;
-        }else if ([applyModel.loan_type integerValue] == 4) {
-            rowString44 = @"无抵押";
-            rowString5 = @"1";
-            rowString55 = @"1";
-        }
-        
-        NSArray *rowLeftArray = @[rowString1,rowString2,rowString3,rowString4,rowString5];
-        NSArray *rowRightArray = @[rowString11,rowString3,rowString33,rowString44,rowString55];
-
-        [cell.userNameButton setTitle:rowLeftArray[indexPath.row-1] forState:0];
-        [cell.userActionButton setTitle:rowRightArray[indexPath.row-1] forState:0];
-
         return cell;
     }
     
     return nil;
-    
-//        //详情
-//        identifier = @"applying11";
-//        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-//        
-//        if (!cell) {
-//            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-//        }
-//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//        NSString *string22;
-//        NSString *string3;
-//        NSString *imageString3;
-//        NSString *string33;
-//        NSString *string4;
-//        NSString *imageString4;
-//        NSString *string44;
-//        if ([applyModel.category intValue] == 2){//清收
-//            string22 = @"清收";
-//            if ([applyModel.agencycommissiontype intValue] == 1) {
-//                string3 = @"  服务佣金(%)";
-//                imageString3 =  @"conserve_rights_icon";
-//            }else if ([applyModel.agencycommissiontype intValue] == 2){
-//                string3 = @"  固定费用(万元)";
-//                imageString3 =  @"conserve_fixed_icons";
-//            }
-//            string33 = [NSString getValidStringFromString:applyModel.agencycommission toString:@"0"];
-//            string4 = @"  债权类型";
-//            imageString4 = @"conserve_loantype_icon";
-//            if ([applyModel.loan_type intValue] == 1) {
-//                string44 = @"房产抵押";
-//                _loanTypeString1 = [NSString stringWithFormat:@"  %@",string44];
-//                _loanTypeString2 = [NSString getValidStringFromString:applyModel.seatmortgage toString:@"无抵押物地址"];
-//                _loanTypeImage = @"conserve_seat_icon";
-//                
-//            }else if ([applyModel.loan_type intValue] == 2){
-//                string44 = @"应收账款";
-//                _loanTypeString1 = [NSString stringWithFormat:@"  %@(万元)",string44];
-//                _loanTypeString2 = [NSString getValidStringFromString:applyModel.accountr toString:@"0"];
-//                _loanTypeImage = @"conserve_account_icon";
-//            }else if ([applyModel.loan_type intValue] == 3){
-//                string44 = @"机动车抵押";
-//                _loanTypeString1 = [NSString stringWithFormat:@"  %@",string44];
-//                NSString *carS2 = [NSString getValidStringFromString:responseModel.car];
-//                NSString *licenseS2 = [NSString getValidStringFromString:responseModel.license];
-//                _loanTypeString2 = [NSString stringWithFormat:@"%@/%@",carS2,licenseS2];
-//                _loanTypeImage = @"conserve_car_icon";
-//            }else{
-//                string44 = @"无抵押";
-//            }
-//        }else if ([applyModel.category intValue] == 3){//诉讼
-//            string22 = @"诉讼";
-//            if ([applyModel.agencycommissiontype intValue] == 1) {
-//                string3 = @"  固定费用(万元)";
-//                imageString3 =  @"conserve_fixed_icons";
-//            }else if ([applyModel.agencycommissiontype intValue] == 2){
-//                string3 = @"  风险费率(%)";
-//                imageString3 =  @"conserve_fixed_icon";
-//            }
-//            string33 = [NSString getValidStringFromString:applyModel.agencycommission toString:@"0"];
-//            string4 = @"  债权类型";
-//            imageString4 = @"conserve_loantype_icon";
-//            if ([applyModel.loan_type intValue] == 1) {
-//                string44 = @"房产抵押";
-//                _loanTypeString1 = [NSString stringWithFormat:@"  %@",string44];
-//                _loanTypeString2 = [NSString getValidStringFromString:applyModel.seatmortgage toString:@"无抵押物地址"];
-//                _loanTypeImage = @"conserve_seat_icon";
-//                
-//            }else if ([applyModel.loan_type intValue] == 2){
-//                string44 = @"应收账款";
-//                _loanTypeString1 = [NSString stringWithFormat:@"  %@(万元)",string44];
-//                _loanTypeString2 = [NSString getValidStringFromString:applyModel.accountr toString:@"0"];
-//                _loanTypeImage = @"conserve_account_icon";
-//            }else if ([applyModel.loan_type intValue] == 3){
-//                string44 = @"机动车抵押";
-//                _loanTypeString1 = [NSString stringWithFormat:@"  %@",string44];
-//                NSString *carS3 = [NSString getValidStringFromString:responseModel.car];
-//                NSString *licenseS3 = [NSString getValidStringFromString:responseModel.license];
-//                _loanTypeString2 = [NSString stringWithFormat:@"%@/%@",carS3,licenseS3];
-//                _loanTypeImage = @"conserve_car_icon";
-//            }else{
-//                string44 = @"无抵押";
-//            }
-//        }
-//        
-//        NSString *moneyS1 = [NSString getValidStringFromString:applyModel.money toString:@"0"];
-//        NSArray *dataArray = @[@"|  基本信息",@"  产品类型",@"  借款本金(万元)",string3,string4];
-//        NSArray *imageArray = @[@"",@"conserve_investment_icon",@"conserve_loan_icon",imageString3,imageString4];
-//        NSArray *detailArray = @[@"",string22,moneyS1,string33,string44];
-//        
-//        [cell.userNameButton setTitle:dataArray[indexPath.row] forState:0];
-//        [cell.userNameButton setImage:[UIImage imageNamed:imageArray[indexPath.row]] forState:0];
-//        [cell.userActionButton setTitle:detailArray[indexPath.row] forState:0];
-//
-//        return cell;
-//        
-//    }else if (indexPath.section == 2){
-//        
-//    }
-    
-        
-//        if (indexPath.row < 5) {
-//            identifier = @"applying11";
-//            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-//            
-//            if (!cell) {
-//                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-//            }
-//            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//            
-//            NSString *string22;
-//            NSString *string3;
-//            NSString *imageString3;
-//            NSString *string33;
-//            NSString *string4;
-//            NSString *imageString4;
-//            NSString *string44;
-//            if ([applyModel.category intValue] == 2){//清收
-//                string22 = @"清收";
-//                if ([applyModel.agencycommissiontype intValue] == 1) {
-//                    string3 = @"  服务佣金(%)";
-//                    imageString3 =  @"conserve_rights_icon";
-//                }else if ([applyModel.agencycommissiontype intValue] == 2){
-//                    string3 = @"  固定费用(万元)";
-//                    imageString3 =  @"conserve_fixed_icons";
-//                }
-//                string33 = [NSString getValidStringFromString:applyModel.agencycommission toString:@"0"];
-//                string4 = @"  债权类型";
-//                imageString4 = @"conserve_loantype_icon";
-//                if ([applyModel.loan_type intValue] == 1) {
-//                    string44 = @"房产抵押";
-//                    _loanTypeString1 = [NSString stringWithFormat:@"  %@",string44];
-//                    _loanTypeString2 = [NSString getValidStringFromString:applyModel.seatmortgage toString:@"无抵押物地址"];
-//                    _loanTypeImage = @"conserve_seat_icon";
-//
-//                }else if ([applyModel.loan_type intValue] == 2){
-//                    string44 = @"应收账款";
-//                    _loanTypeString1 = [NSString stringWithFormat:@"  %@(万元)",string44];
-//                    _loanTypeString2 = [NSString getValidStringFromString:applyModel.accountr toString:@"0"];
-//                    _loanTypeImage = @"conserve_account_icon";
-//                }else if ([applyModel.loan_type intValue] == 3){
-//                    string44 = @"机动车抵押";
-//                    _loanTypeString1 = [NSString stringWithFormat:@"  %@",string44];
-//                    NSString *carS2 = [NSString getValidStringFromString:responseModel.car];
-//                    NSString *licenseS2 = [NSString getValidStringFromString:responseModel.license];
-//                    _loanTypeString2 = [NSString stringWithFormat:@"%@/%@",carS2,licenseS2];
-//                    _loanTypeImage = @"conserve_car_icon";
-//                }else{
-//                    string44 = @"无抵押";
-//                }
-//            }else if ([applyModel.category intValue] == 3){//诉讼
-//                string22 = @"诉讼";
-//                if ([applyModel.agencycommissiontype intValue] == 1) {
-//                    string3 = @"  固定费用(万元)";
-//                    imageString3 =  @"conserve_fixed_icons";
-//                }else if ([applyModel.agencycommissiontype intValue] == 2){
-//                    string3 = @"  风险费率(%)";
-//                    imageString3 =  @"conserve_fixed_icon";
-//                }
-//                string33 = [NSString getValidStringFromString:applyModel.agencycommission toString:@"0"];
-//                string4 = @"  债权类型";
-//                imageString4 = @"conserve_loantype_icon";
-//                if ([applyModel.loan_type intValue] == 1) {
-//                    string44 = @"房产抵押";
-//                    _loanTypeString1 = [NSString stringWithFormat:@"  %@",string44];
-//                    _loanTypeString2 = [NSString getValidStringFromString:applyModel.seatmortgage toString:@"无抵押物地址"];
-//                    _loanTypeImage = @"conserve_seat_icon";
-//
-//                }else if ([applyModel.loan_type intValue] == 2){
-//                    string44 = @"应收账款";
-//                    _loanTypeString1 = [NSString stringWithFormat:@"  %@(万元)",string44];
-//                    _loanTypeString2 = [NSString getValidStringFromString:applyModel.accountr toString:@"0"];
-//                    _loanTypeImage = @"conserve_account_icon";
-//                }else if ([applyModel.loan_type intValue] == 3){
-//                    string44 = @"机动车抵押";
-//                    _loanTypeString1 = [NSString stringWithFormat:@"  %@",string44];
-//                    NSString *carS3 = [NSString getValidStringFromString:responseModel.car];
-//                    NSString *licenseS3 = [NSString getValidStringFromString:responseModel.license];
-//                    _loanTypeString2 = [NSString stringWithFormat:@"%@/%@",carS3,licenseS3];
-//                    _loanTypeImage = @"conserve_car_icon";
-//                }else{
-//                    string44 = @"无抵押";
-//                }
-//            }
-//            
-//            NSString *moneyS1 = [NSString getValidStringFromString:applyModel.money toString:@"0"];
-//            NSArray *dataArray = @[@"|  基本信息",@"  产品类型",@"  借款本金(万元)",string3,string4];
-//            NSArray *imageArray = @[@"",@"conserve_investment_icon",@"conserve_loan_icon",imageString3,imageString4];
-//            NSArray *detailArray = @[@"",string22,moneyS1,string33,string44];
-//            
-//            [cell.userNameButton setTitle:dataArray[indexPath.row] forState:0];
-//            [cell.userNameButton setImage:[UIImage imageNamed:imageArray[indexPath.row]] forState:0];
-//            [cell.userActionButton setTitle:detailArray[indexPath.row] forState:0];
-//            
-//            if (indexPath.row == 0) {
-//                [cell.userNameButton setTitleColor:kBlueColor forState:0];
-//            }
-//            
-//            return cell;
-//        }
-//        
-//        if ([applyModel.loan_type isEqualToString:@"4"]) {//无抵押
-//            //补充信息
-//            identifier = @"detailSave4";
-//            BidOneCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-//            
-//            if (!cell) {
-//                cell = [[BidOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-//            }
-//            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//            
-//            [cell.oneButton setTitle:@"查看补充信息" forState:0];
-//            [cell.oneButton setImage:[UIImage imageNamed:@"more"] forState:0];
-//            cell.oneButton.userInteractionEnabled = NO;
-//            
-//            return cell;
-//        }else{
-//            if (indexPath.row == 5) {
-//                identifier = @"detailSave2";
-//                MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-//                
-//                if (!cell) {
-//                    cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-//                }
-//                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//                cell.userActionButton.titleLabel.font = kSecondFont;
-//                [cell.userActionButton autoSetDimension:ALDimensionWidth toSize:kScreenWidth-150];
-//
-//                [cell.userNameButton setTitle:_loanTypeString1 forState:0];
-//                [cell.userNameButton setImage:[UIImage imageNamed:_loanTypeImage] forState:0];
-//                [cell.userActionButton setTitle:_loanTypeString2 forState:0];
-//                
-//                return cell;
-//            }else{
-//                //补充信息
-//                identifier = @"detailSave3";
-//                BidOneCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-//                
-//                if (!cell) {
-//                    cell = [[BidOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-//                }
-//                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//                
-//                [cell.oneButton setTitle:@"查看补充信息" forState:0];
-//                [cell.oneButton setImage:[UIImage imageNamed:@"more"] forState:0];
-//                cell.oneButton.userInteractionEnabled = NO;
-//                
-//                return cell;
-//            }
-//            
-//         
-//        }
-//    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -545,26 +317,25 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 1) {//查看发布方
+    if (indexPath.section == 0 && indexPath.row == 1) {//查看发布方
         PublishingResponse *respongr = self.myApplyArray[0];
-        UserNameModel *usModel = respongr.username;
-        if ([usModel.username isEqualToString:@""] || usModel.username == nil || !usModel.username) {
-            [self showHint:@"发布方未认证，不能查看相关信息"];
-        }else{
-            CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
-            checkDetailPublishVC.typeString = @"发布方";
-            checkDetailPublishVC.typeDegreeString = @"1";
-            checkDetailPublishVC.idString = self.idString;
-            checkDetailPublishVC.categoryString = self.categaryString;
-            checkDetailPublishVC.pidString = self.pidString;
-            [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
-        }
         
-    }else if (indexPath.section == 2 && indexPath.row == 0) {//查看更多
-        AdditionMessagesViewController *additionMessageVC = [[AdditionMessagesViewController alloc] init];
-        additionMessageVC.idString = self.idString;
-        additionMessageVC.categoryString = self.categaryString;
-        [self.navigationController pushViewController:additionMessageVC animated:YES];
+        if ([respongr.product.progress_status integerValue] == 1) {
+            UserNameModel *usModel = respongr.username;
+            
+            if ([usModel.username isEqualToString:@""] || usModel.username == nil || !usModel.username) {
+                [self showHint:@"发布方未认证，不能查看相关信息"];
+            }else{
+                CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+                checkDetailPublishVC.typeString = @"发布方";
+                checkDetailPublishVC.typeDegreeString = @"1";
+                checkDetailPublishVC.idString = self.idString;
+                checkDetailPublishVC.categoryString = self.categaryString;
+                checkDetailPublishVC.pidString = @"1";
+                //            self.pidString;
+                [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
+            }
+        }
     }
 }
 
@@ -590,6 +361,8 @@
 
 - (void)cancelTheProductApply
 {
+    [self showHint:@"取消申请"];
+    
     PublishingResponse *respofn;
     if (self.myApplyArray.count > 0) {
         respofn = self.myApplyArray[0];

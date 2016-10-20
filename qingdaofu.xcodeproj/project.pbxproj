@@ -335,6 +335,7 @@
 		A19657271D78273C00F846D4 /* BaseRemindButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A19657261D78273C00F846D4 /* BaseRemindButton.m */; };
 		A196572A1D7828F400F846D4 /* more_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A19657281D7828F400F846D4 /* more_white@2x.png */; };
 		A196572B1D7828F400F846D4 /* more_white@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A19657291D7828F400F846D4 /* more_white@3x.png */; };
+		A19657781DB49740005D3780 /* SignProtocolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A19657771DB49740005D3780 /* SignProtocolViewController.m */; };
 		A196CDE81CFBC4D300AC6C87 /* UIViewController+DismissKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = A196CDE71CFBC4D300AC6C87 /* UIViewController+DismissKeyboard.m */; };
 		A196CDEF1CFBDF4000AC6C87 /* btn_collection@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A196CDE91CFBDF4000AC6C87 /* btn_collection@2x.png */; };
 		A196CDF01CFBDF4000AC6C87 /* btn_collection@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A196CDEA1CFBDF4000AC6C87 /* btn_collection@3x.png */; };
@@ -576,6 +577,7 @@
 		A1A5C7671D375C0800173533 /* conserve_account_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A5C7651D375C0800173533 /* conserve_account_icon@3x.png */; };
 		A1A5C76A1D3765EB00173533 /* conserve_loantype_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A5C7681D3765EB00173533 /* conserve_loantype_icon@2x.png */; };
 		A1A5C76B1D3765EB00173533 /* conserve_loantype_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A5C7691D3765EB00173533 /* conserve_loantype_icon@3x.png */; };
+		A1A5F55E1DB8B3F8007D8023 /* RequestCloseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A5F55D1DB8B3F8007D8023 /* RequestCloseViewController.m */; };
 		A1A66F081D6BDEAC00B0E101 /* OrderPublishCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A66F071D6BDEAC00B0E101 /* OrderPublishCell.m */; };
 		A1A66F0B1D6BE28600B0E101 /* cancel_apply@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A66F091D6BE28600B0E101 /* cancel_apply@3x.png */; };
 		A1A66F0C1D6BE28600B0E101 /* cancel_apply@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A66F0A1D6BE28600B0E101 /* cancel_apply@2x.png */; };
@@ -1234,6 +1236,8 @@
 		A19657261D78273C00F846D4 /* BaseRemindButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseRemindButton.m; sourceTree = "<group>"; };
 		A19657281D7828F400F846D4 /* more_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "more_white@2x.png"; sourceTree = "<group>"; };
 		A19657291D7828F400F846D4 /* more_white@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "more_white@3x.png"; sourceTree = "<group>"; };
+		A19657761DB49740005D3780 /* SignProtocolViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignProtocolViewController.h; sourceTree = "<group>"; };
+		A19657771DB49740005D3780 /* SignProtocolViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignProtocolViewController.m; sourceTree = "<group>"; };
 		A196CDE61CFBC4D300AC6C87 /* UIViewController+DismissKeyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+DismissKeyboard.h"; sourceTree = "<group>"; };
 		A196CDE71CFBC4D300AC6C87 /* UIViewController+DismissKeyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+DismissKeyboard.m"; sourceTree = "<group>"; };
 		A196CDE91CFBDF4000AC6C87 /* btn_collection@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_collection@2x.png"; sourceTree = "<group>"; };
@@ -1569,6 +1573,8 @@
 		A1A5C7651D375C0800173533 /* conserve_account_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conserve_account_icon@3x.png"; sourceTree = "<group>"; };
 		A1A5C7681D3765EB00173533 /* conserve_loantype_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conserve_loantype_icon@2x.png"; sourceTree = "<group>"; };
 		A1A5C7691D3765EB00173533 /* conserve_loantype_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conserve_loantype_icon@3x.png"; sourceTree = "<group>"; };
+		A1A5F55C1DB8B3F8007D8023 /* RequestCloseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestCloseViewController.h; sourceTree = "<group>"; };
+		A1A5F55D1DB8B3F8007D8023 /* RequestCloseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestCloseViewController.m; sourceTree = "<group>"; };
 		A1A66F061D6BDEAC00B0E101 /* OrderPublishCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderPublishCell.h; sourceTree = "<group>"; };
 		A1A66F071D6BDEAC00B0E101 /* OrderPublishCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderPublishCell.m; sourceTree = "<group>"; };
 		A1A66F091D6BE28600B0E101 /* cancel_apply@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cancel_apply@3x.png"; sourceTree = "<group>"; };
@@ -2962,6 +2968,8 @@
 			children = (
 				A196CE001CFC1BD400AC6C87 /* AgreementViewController.h */,
 				A196CE011CFC1BD400AC6C87 /* AgreementViewController.m */,
+				A19657761DB49740005D3780 /* SignProtocolViewController.h */,
+				A19657771DB49740005D3780 /* SignProtocolViewController.m */,
 			);
 			path = "服务协议";
 			sourceTree = "<group>";
@@ -3740,6 +3748,8 @@
 				A1A39BBB1DB081EB00B84B1A /* view */,
 				A1A39BB51DB06F2700B84B1A /* RequestEndViewController.h */,
 				A1A39BB61DB06F2700B84B1A /* RequestEndViewController.m */,
+				A1A5F55C1DB8B3F8007D8023 /* RequestCloseViewController.h */,
+				A1A5F55D1DB8B3F8007D8023 /* RequestCloseViewController.m */,
 			);
 			path = "申请终止结案";
 			sourceTree = "<group>";
@@ -4746,6 +4756,7 @@
 				A16391711D20194B0051F1D0 /* FSBasicImage.m in Sources */,
 				A1A0C8C41D4B046B00BC63C6 /* HouseAssessViewController.m in Sources */,
 				A16175561D12A1CF001BB200 /* LoginTableView.m in Sources */,
+				A1A5F55E1DB8B3F8007D8023 /* RequestCloseViewController.m in Sources */,
 				A1B028EE1D1794DC00F32A09 /* UIButton+WebCache.m in Sources */,
 				A19CC0951D59E049000ED568 /* ApplicationGuaranteeSecondView.m in Sources */,
 				A19F88461D517ADE00D4EC92 /* HouseCopyViewController.m in Sources */,
@@ -4760,6 +4771,7 @@
 				A18D504C1D6E7E9000B6BF0D /* PropertyListResponse.m in Sources */,
 				A1A66F2F1D6C340700B0E101 /* UpwardTableView.m in Sources */,
 				A1A66F321D6C356300B0E101 /* ReportSuccessCell.m in Sources */,
+				A19657781DB49740005D3780 /* SignProtocolViewController.m in Sources */,
 				A17964F41CD35AD500B6AD47 /* MySaveViewController.m in Sources */,
 				A1A7D08D1D65840F00E84329 /* PowerModel.m in Sources */,
 				A192B4B01CDAFAC60053FC4C /* MyScheduleViewController.m in Sources */,

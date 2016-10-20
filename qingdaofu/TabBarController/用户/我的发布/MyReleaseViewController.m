@@ -470,6 +470,12 @@
 {
     RowsModel *sModel = self.releaseDataArray[indexPath.section];
     
+//    MyPublishingViewController *myPublishingVC = [[MyPublishingViewController alloc] init];
+//    myPublishingVC.idString = sModel.idString;
+//    myPublishingVC.categaryString = sModel.category;
+//    myPublishingVC.app_idString = sModel.app_id;
+//    [self.navigationController pushViewController:myPublishingVC animated:YES];
+    
     NSString *id_category = [NSString stringWithFormat:@"%@_%@",sModel.idString,sModel.category];
     NSString *value1 = self.releaseDic[id_category];
     

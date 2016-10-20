@@ -12,6 +12,7 @@
 
 @interface BaseViewController : UIViewController
 
+@property (nonatomic,strong) UIButton *rightButton;
 @property (nonatomic,strong) UIBarButtonItem *leftItem;
 @property (nonatomic,strong) UIBarButtonItem *leftItemAnother;
 @property (nonatomic,strong) UIImageView *baseRemindImageView;
@@ -19,5 +20,5 @@
 - (NSString *)getValidateToken;
 - (NSString *)getValidateMobile;
 - (void)back;
-
+- (void)rightItemAction;
 @end

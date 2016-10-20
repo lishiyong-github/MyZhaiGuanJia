@@ -10,14 +10,20 @@
 #import "DelayRequestsViewController.h"  //申请延期
 #import "CheckDetailPublishViewController.h"//查看发布方
 #import "AdditionMessagesViewController.h"  //查看更多
-#import "AgreementViewController.h"   //服务协议
 #import "PaceViewController.h" //进度
 
-#import "BaseCommitButton.h"
+#import "RequestEndViewController.h"  //申请终止
+#import "RequestCloseViewController.h" //申请结案
+#import "AgreementViewController.h"   //居间协议
+#import "AgreementViewController.h"  //居间协议
+#import "SignProtocolViewController.h"  //签约协议
+
+#import "BaseCommitView.h"
 #import "BaseRemindButton.h"
 
 #import "MineUserCell.h"
 #import "OrderPublishCell.h"
+#import "NewPublishDetailsCell.h"
 
 //详细信息
 #import "PublishingResponse.h"
@@ -31,18 +37,21 @@
 @interface MyProcessingViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
+@property (nonatomic,strong) UIButton *proRightButton;
 @property (nonatomic,strong) UITableView *myProcessingTableView;
-@property (nonatomic,strong) BaseCommitButton *processinCommitButton;
+@property (nonatomic,strong) BaseCommitView *processinCommitButton;
 @property (nonatomic,strong) BaseRemindButton *processRemindButton;
 
+//json
 @property (nonatomic,strong) NSMutableArray *processArray;
-@property (nonatomic,strong) NSMutableArray *scheduleOrderProArray;
-@property (nonatomic,strong) NSMutableArray *delayArray;
+@property (nonatomic,strong) NSArray *sectionArray;
+//@property (nonatomic,strong) NSMutableArray *scheduleOrderProArray;
+//@property (nonatomic,strong) NSMutableArray *delayArray;
 
 
-@property (nonatomic,strong) NSString *loanTypeString1;  //债权类型
-@property (nonatomic,strong) NSString *loanTypeString2;  //债权类型内容
-@property (nonatomic,strong) NSString *loanTypeImage;//债权类型图片
+//@property (nonatomic,strong) NSString *loanTypeString1;  //债权类型
+//@property (nonatomic,strong) NSString *loanTypeString2;  //债权类型内容
+//@property (nonatomic,strong) NSString *loanTypeImage;//债权类型图片
 
 @end
 
@@ -57,6 +66,9 @@
     [super viewDidLoad];
     self.navigationItem.title = @"产品详情";
     self.navigationItem.leftBarButtonItem = self.leftItem;
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.proRightButton];
+    
+    self.sectionArray = @[@"",@"",@""];
     
     [self.view addSubview:self.myProcessingTableView];
     [self.view addSubview:self.processinCommitButton];
@@ -79,11 +91,28 @@
         [self.processRemindButton autoSetDimension:ALDimensionHeight toSize:kRemindHeight];
         
         [self.processinCommitButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [self.processinCommitButton autoSetDimension:ALDimensionHeight toSize:kTabBarHeight];
+        [self.processinCommitButton autoSetDimension:ALDimensionHeight toSize:kCellHeight4];
         
         self.didSetupConstraints = YES;
     }
     [super updateViewConstraints];
+}
+
+#pragma mark - getter
+- (UIButton *)proRightButton
+{
+    if (!_proRightButton) {
+        _proRightButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 30)];
+        [_proRightButton setTitle:@"申请终止" forState:0];
+        [_proRightButton setTitleColor:kWhiteColor forState:0];
+        _proRightButton.titleLabel.font = kFirstFont;
+        
+        QDFWeakSelf;
+        [_proRightButton addAction:^(UIButton *btn) {
+            [weakself showHint:@"申请终止"];
+        }];
+    }
+    return _proRightButton;
 }
 
 - (UITableView *)myProcessingTableView
@@ -98,12 +127,37 @@
     }
     return _myProcessingTableView;
 }
-- (BaseCommitButton *)processinCommitButton
+- (BaseCommitView *)processinCommitButton
 {
     if (!_processinCommitButton) {
-        _processinCommitButton = [BaseCommitButton newAutoLayoutView];
-        _processinCommitButton.layer.borderColor = kBorderColor.CGColor;
-        _processinCommitButton.layer.borderWidth = kLineWidth;
+        _processinCommitButton = [BaseCommitView newAutoLayoutView];
+        [_processinCommitButton.button setTitle:@"上传居间协议" forState:0];
+        
+        //上传居间协议，，上传签约协议，申请结案
+        
+        QDFWeakSelf;
+        [_processinCommitButton addAction:^(UIButton *btn) {
+            
+            if (weakself.sectionArray.count == 3) {
+                AgreementViewController *agreementVC = [[AgreementViewController alloc] init];
+                agreementVC.navTitleString = @"居间协议";
+                agreementVC.idString = weakself.idString;
+                agreementVC.categoryString = weakself.categaryString;
+                agreementVC.pidString = weakself.pidString;
+                agreementVC.flagString = @"1";
+                [weakself.navigationController pushViewController:agreementVC animated:YES];
+                
+            }else if (weakself.sectionArray.count == 4){//签约协议
+                SignProtocolViewController *signProtocolVC = [[SignProtocolViewController alloc] init];
+                [weakself.navigationController pushViewController:signProtocolVC animated:YES];
+                
+            }else if (weakself.sectionArray.count == 6){//申请结案
+                RequestCloseViewController *requestCloseVC = [[RequestCloseViewController alloc] init];
+                [weakself.navigationController pushViewController:requestCloseVC animated:YES];
+            }
+            
+            
+        }];
     }
     return _processinCommitButton;
 }
@@ -123,40 +177,30 @@
     }
     return _processArray;
 }
-
-- (NSMutableArray *)scheduleOrderProArray
-{
-    if (!_scheduleOrderProArray) {
-        _scheduleOrderProArray = [NSMutableArray array];
-    }
-    return _scheduleOrderProArray;
-}
-
-- (NSMutableArray *)delayArray
-{
-    if (!_delayArray) {
-        _delayArray = [NSMutableArray array];
-    }
-    return _delayArray;
-}
+//
+//- (NSMutableArray *)scheduleOrderProArray
+//{
+//    if (!_scheduleOrderProArray) {
+//        _scheduleOrderProArray = [NSMutableArray array];
+//    }
+//    return _scheduleOrderProArray;
+//}
 
 #pragma mark - 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (self.processArray.count > 0) {
-        return 5;
+        return self.sectionArray.count;
     }
     return 0;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (self.processArray.count > 0) {
-        if (section == 2) {
-            PublishingResponse *response = self.processArray[0];
-            if ([response.product.loan_type isEqualToString:@"4"]) {
-                return 5;
-            }
-            return 6;
+        if (section == 0) {
+            return 2;
+        }else if (section == 1){
+            return 4;
         }
         return 1;
     }
@@ -165,9 +209,13 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        return 40;
+        if (indexPath.row == 0) {
+            return 72;
+        }else{
+            return kCellHeight3;
+        }
     }else if (indexPath.section == 1){//112
-        return 56;
+        return kCellHeight;
     }
     return kCellHeight;
 }
@@ -184,80 +232,116 @@
     static NSString *identifier;
     
     if (indexPath.section == 0) {
-        identifier = @"processing0";
+        if (indexPath.row == 0) {//状态
+            identifier = @"processing00";
+            NewPublishDetailsCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[NewPublishDetailsCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.backgroundColor = kBackColor;
+            [cell.progress1 setText:@"申请中"];
+            [cell.point2 setImage:[UIImage imageNamed:@"succee"] forState:0];
+            [cell.progress2 setTextColor:kTextColor];
+            [cell.line2 setBackgroundColor:kButtonColor];
+            [cell.point3 setImage:[UIImage imageNamed:@"succee"] forState:0];
+            [cell.progress3 setTextColor:kTextColor];
+            [cell.line3 setBackgroundColor:kButtonColor];
+            
+            return cell;
+        }else{//查看发布发
+            identifier = @"processing01";
+            
+            OrderPublishCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            
+            if (!cell) {
+                cell = [[OrderPublishCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            UserNameModel *userNameModel = response.username;
+            
+            NSString *nameStr = [NSString getValidStringFromString:userNameModel.username toString:@"未认证"];
+            NSString *checkStr = [NSString stringWithFormat:@"发布方：%@",nameStr];
+            [cell.checkButton setTitle:checkStr forState:0];
+            [cell.contactButton setTitle:@" 联系他" forState:0];
+            [cell.contactButton setImage:[UIImage imageNamed:@"phone_blue"] forState:0];
+            
+            //接单方详情
+            QDFWeakSelf;
+            [cell.checkButton addAction:^(UIButton *btn) {
+                if ([userNameModel.username isEqualToString:@""] || userNameModel.username == nil || !userNameModel.username) {
+                    [self showHint:@"发布方未认证，不能查看相关信息"];
+                }else{
+                    CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+                    checkDetailPublishVC.typeString = @"发布方";
+                    checkDetailPublishVC.idString = weakself.idString;
+                    checkDetailPublishVC.categoryString = weakself.categaryString;
+                    checkDetailPublishVC.pidString = weakself.pidString;
+                    [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];
+                }
+            }];
+            
+            //电话
+            [cell.contactButton addAction:^(UIButton *btn) {
+                if ([userNameModel.username isEqualToString:@""] || userNameModel.username == nil || !userNameModel.username) {
+                    [self showHint:@"发布方未认证，不能打电话"];
+                }else{
+                    NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",userNameModel.mobile];
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
+                }
+            }];
+            
+            return cell;
+        }
+    }else if (indexPath.section == 1){//产品信息
+        identifier = @"processing1";
         MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        
         if (!cell) {
             cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.backgroundColor = UIColorFromRGB(0x42566d);
         
-        NSString *nameStrss;
-        if ([processModel.category integerValue] == 2) {
-            nameStrss = @"清收";
-        }else if ([processModel.category integerValue] == 3){
-            nameStrss = @"诉讼";
+        NSArray *textArr = @[@"产品详情",@"债权类型",@"委托费用",@"委托金额"];
+        [cell.userNameButton setTitle:textArr[indexPath.row] forState:0];
+        
+        if (indexPath.row == 0) {
+            [cell.userNameButton setTitleColor:kBlackColor forState:0];
+            cell.userNameButton.titleLabel.font = kBigFont;
+            
+            [cell.userActionButton setTitleColor:kLightGrayColor forState:0];
+            cell.userActionButton.titleLabel.font = kSecondFont;
+            [cell.userActionButton setTitle:@"更多信息" forState:0];
+            [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        }else if (indexPath.row == 1){
+            [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
+            cell.userNameButton.titleLabel.font = kFirstFont;
+            
+            [cell.userActionButton setTitleColor:kGrayColor forState:0];
+            cell.userActionButton.titleLabel.font = kBigFont;
+            [cell.userActionButton setTitle:@"债权类型" forState:0];
+            [cell.userActionButton setImage:[UIImage imageNamed:@""] forState:0];
+        }else if (indexPath.row == 2){
+            [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
+            cell.userNameButton.titleLabel.font = kFirstFont;
+            
+            [cell.userActionButton setTitleColor:kGrayColor forState:0];
+            cell.userActionButton.titleLabel.font = kBigFont;
+            [cell.userActionButton setTitle:@"委托费用" forState:0];
+            [cell.userActionButton setImage:[UIImage imageNamed:@""] forState:0];
+        }else if (indexPath.row == 3){
+            [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
+            cell.userNameButton.titleLabel.font = kFirstFont;
+            
+            [cell.userActionButton setTitleColor:kGrayColor forState:0];
+            cell.userActionButton.titleLabel.font = kBigFont;
+            [cell.userActionButton setTitle:@"委托金额" forState:0];
+            [cell.userActionButton setImage:[UIImage imageNamed:@""] forState:0];
         }
-        NSString *nameStr = [NSString stringWithFormat:@"%@%@",nameStrss,processModel.codeString];
-        NSString *timeStr = [NSString stringWithFormat:@" (截止%@)",response.username.delay];
-        NSString *allStr = [NSString stringWithFormat:@"%@%@",nameStr,timeStr];
-        NSMutableAttributedString *allAttribute = [[NSMutableAttributedString alloc] initWithString:allStr];
-        [allAttribute setAttributes:@{NSFontAttributeName:kFourFont,NSForegroundColorAttributeName:kLightWhiteColor} range:NSMakeRange(0, nameStr.length)];
-        [allAttribute setAttributes:@{NSFontAttributeName:kTabBarFont,NSForegroundColorAttributeName:kLightWhiteColor} range:NSMakeRange(nameStr.length, timeStr.length)];
-        [cell.userNameButton setAttributedTitle:allAttribute forState:0];
-        
-        [cell.userActionButton setTitle:@"处理中" forState:0];
-        [cell.userActionButton setTitleColor:kNavColor forState:0];
-        cell.userActionButton.titleLabel.font = kBigFont;
         
         return cell;
         
-    }else if (indexPath.section == 1){//联系发布方
-        identifier = @"processing1";
-        OrderPublishCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        
-        if (!cell) {
-            cell = [[OrderPublishCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        UserNameModel *userNameModel = response.username;
-        
-        NSString *nameStr = [NSString getValidStringFromString:userNameModel.username toString:@"未认证"];
-        NSString *checkStr = [NSString stringWithFormat:@"发布方：%@",nameStr];
-        [cell.checkButton setTitle:checkStr forState:0];
-        [cell.contactButton setTitle:@" 联系他" forState:0];
-        [cell.contactButton setImage:[UIImage imageNamed:@"phone_blue"] forState:0];
-        
-        //接单方详情
-        QDFWeakSelf;
-        [cell.checkButton addAction:^(UIButton *btn) {
-            if ([userNameModel.username isEqualToString:@""] || userNameModel.username == nil || !userNameModel.username) {
-                [self showHint:@"发布方未认证，不能查看相关信息"];
-            }else{
-                CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
-                checkDetailPublishVC.typeString = @"发布方";
-                checkDetailPublishVC.idString = weakself.idString;
-                checkDetailPublishVC.categoryString = weakself.categaryString;
-                checkDetailPublishVC.pidString = weakself.pidString;
-                [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];
-            }
-        }];
-        
-        //电话
-        [cell.contactButton addAction:^(UIButton *btn) {
-            if ([userNameModel.username isEqualToString:@""] || userNameModel.username == nil || !userNameModel.username) {
-                [self showHint:@"发布方未认证，不能打电话"];
-            }else{
-                NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",userNameModel.mobile];
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
-            }
-        }];
-        
-        return cell;
-        
-    }else if(indexPath.section == 2){//详情
+    }else if(indexPath.section == self.sectionArray.count -1){//详情
         if (indexPath.row == 0) {
             identifier = @"processing20";
             MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -266,109 +350,70 @@
                 cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.userNameButton.userInteractionEnabled = NO;
-            cell.userActionButton.userInteractionEnabled = NO;
             
-            [cell.userNameButton setTitle:@"产品信息" forState:0];
-            [cell.userActionButton setTitle:@"查看全部  " forState:0];
-            [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            [cell.userNameButton setTitle:@"尽职调查" forState:0];
+            
+            if (self.sectionArray.count == 6) {
+                [cell.userActionButton setHidden:NO];
+                cell.userActionButton.userInteractionEnabled = YES;
+                [cell.userActionButton setTitle:@"  添加进度  " forState:0];
+                [cell.userActionButton setTitleColor:kTextColor forState:0];
+                cell.userActionButton.layer.borderWidth = kLineWidth;
+                cell.userActionButton.layer.borderColor = kButtonColor.CGColor;
+                [cell.userActionButton setContentHorizontalAlignment:0];
+                QDFWeakSelf;
+                [cell.userActionButton addAction:^(UIButton *btn) {
+                    [weakself showHint:@"添加进度"];
+                    PaceViewController *paceVC = [[PaceViewController alloc] init];
+                    paceVC.idString = weakself.idString;
+                    paceVC.categoryString = self.categaryString;
+                    paceVC.existence = @"2";
+                    [weakself.navigationController pushViewController:paceVC animated:YES];
+                }];
+                
+            }else{
+                [cell.userActionButton setHidden:YES];
+            }
             
             return cell;
         }
-        //详情
-        identifier = @"processing21";
+    }else if (indexPath.section == 2){//居间协议
+        identifier = @"processing222";
         MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        
         if (!cell) {
             cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
-        cell.userNameButton.titleLabel.font = kFirstFont;
-        [cell.userActionButton setTitleColor:kGrayColor forState:0];
-        cell.userActionButton.titleLabel.font = kFirstFont;
         
-        NSString *rowString1 = @"借款本金";
-        NSString *rowString11 = [NSString stringWithFormat:@"%@万",processModel.money];//具体借款本金
-        NSString *rowString2 = @"费用类型";
-        NSString *rowString3;//具体费用类型
-        NSString *rowString33;//费用
-        if ([processModel.category integerValue] == 2) {
-            if ([processModel.agencycommissiontype integerValue] == 1) {
-                rowString3 = @"服务佣金";
-                rowString33 = [NSString stringWithFormat:@"%@%@",processModel.agencycommission,@"%"];
-            }else{
-                rowString3 = @"固定费用";
-                rowString33 = [NSString stringWithFormat:@"%@万",processModel.agencycommission];
-            }
-        }else if ([processModel.category integerValue] == 3){
-            if ([processModel.agencycommissiontype integerValue] == 1) {
-                rowString3 = @"固定费用";
-                rowString33 = [NSString stringWithFormat:@"%@万",processModel.agencycommission];
-            }else{
-                rowString3 = @"代理费率";
-                rowString33 = [NSString stringWithFormat:@"%@%@",processModel.agencycommission,@"%"];
-            }
-        }
-        
-        NSString *rowString4 = @"债权类型";
-        NSString *rowString44; //具体债权类型
-        NSString *rowString5;
-        NSString *rowString55;
-        if ([processModel.loan_type integerValue] == 1) {
-            rowString44 = @"房产抵押";
-            rowString5 = @"抵押物地址";
-            rowString55 = processModel.seatmortgage;
-        }else if ([processModel.loan_type integerValue] == 2) {
-            rowString44 = @"应收帐款";
-            rowString5 = @"应收帐款";
-            rowString55 = [NSString stringWithFormat:@"%@万",processModel.accountr];
-        }else if ([processModel.loan_type integerValue] == 3) {
-            rowString44 = @"机动车抵押";
-            rowString5 = @"机动车抵押";
-            rowString55 = response.car;
-        }else if ([processModel.loan_type integerValue] == 4) {
-            rowString44 = @"无抵押";
-            rowString5 = @"1";
-            rowString55 = @"1";
-        }
-        
-        NSArray *rowLeftArray = @[rowString1,rowString2,rowString3,rowString4,rowString5];
-        NSArray *rowRightArray = @[rowString11,rowString3,rowString33,rowString44,rowString55];
-        
-        [cell.userNameButton setTitle:rowLeftArray[indexPath.row-1] forState:0];
-        [cell.userActionButton setTitle:rowRightArray[indexPath.row-1] forState:0];
+        [cell.userNameButton setTitle:@"居间协议" forState:0];
+        [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        [cell.userActionButton setTitle:@"查看" forState:0];
         
         return cell;
-    }else if (indexPath.section == 3){//服务协议
-        identifier = @"processing3";
+    }else if (indexPath.section == 3){//签约协议
+        identifier = @"processing333";
         MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         if (!cell) {
             cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.userNameButton.userInteractionEnabled = NO;
-        cell.userActionButton.userInteractionEnabled = NO;
         
-        [cell.userNameButton setTitle:@"服务协议" forState:0];
-        [cell.userActionButton setTitle:@"点击查看  " forState:0];
+        [cell.userNameButton setTitle:@"签约协议" forState:0];
         [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        [cell.userActionButton setTitle:@"查看" forState:0];
         
         return cell;
-        
-    }else{//处理进度
-        identifier = @"processing4";
+    }else if (indexPath.section == 4){//经办人
+        identifier = @"processing444";
         MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         if (!cell) {
             cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.userNameButton.userInteractionEnabled = NO;
-        cell.userActionButton.userInteractionEnabled = NO;
         
-        [cell.userNameButton setTitle:@"处理进度" forState:0];
-        [cell.userActionButton setTitle:@"填写进度  " forState:0];
+        [cell.userNameButton setTitle:@"经办人" forState:0];
         [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        [cell.userActionButton setTitle:@"添加" forState:0];
         
         return cell;
     }
@@ -388,6 +433,41 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.section == 1 && indexPath.row == 0) {
+        [self showHint:@"查看更多"];
+    }else{
+        if (self.sectionArray.count == 4) {
+            if (indexPath.section == 2) {
+                //居间协议
+                [self showHint:@"居间协议"];
+                AgreementViewController *agreementVc = [[AgreementViewController alloc] init];
+                agreementVc.idString = self.idString;
+                agreementVc.categoryString = self.categaryString;
+                agreementVc.pidString = self.pidString;
+                agreementVc.navTitleString = @"居间协议";
+                agreementVc.flagString = @"0";
+                [self.navigationController pushViewController:agreementVc animated:YES];
+            }
+        }else if (self.sectionArray.count == 6){
+            if (indexPath.section == 2) {//居间协议
+                [self showHint:@"居间协议"];
+                AgreementViewController *agreementVc = [[AgreementViewController alloc] init];
+                agreementVc.idString = self.idString;
+                agreementVc.categoryString = self.categaryString;
+                agreementVc.pidString = self.pidString;
+                agreementVc.navTitleString = @"居间协议";
+                agreementVc.flagString = @"0";
+                [self.navigationController pushViewController:agreementVc animated:YES];
+            }else if (indexPath.section == 3){//签约协议
+                [self showHint:@"签约协议"];
+                SignProtocolViewController *signProtocolVC = [[SignProtocolViewController alloc] init];
+                [self.navigationController pushViewController:signProtocolVC animated:YES];
+            }else if (indexPath.section == 4){//经办人
+                [self showHint:@"经办人协议"];
+            }
+        }
+    }
+    /*
     if (indexPath.section == 2 && indexPath.row == 0) {
         AdditionMessagesViewController *additionMessageVC = [[AdditionMessagesViewController alloc] init];
         additionMessageVC.idString = self.idString;
@@ -405,6 +485,7 @@
         paceVC.existence = @"2";
         [self.navigationController pushViewController:paceVC animated:YES];
     }
+     */
 }
 
 #pragma mark - method
@@ -421,6 +502,16 @@
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
         [weakself.processArray addObject:response];
         [weakself.myProcessingTableView reloadData];
+        
+        //根据上传协议的状态，调整section数目
+        weakself.sectionArray = @[@"",@"",@"",@"",@"",@""];
+        if (weakself.sectionArray.count == 3) {
+            [weakself.processinCommitButton.button setTitle:@"签订居间协议" forState:0];
+        }else if (weakself.sectionArray.count == 4){
+            [weakself.processinCommitButton.button setTitle:@"上传签约协议" forState:0];
+        }else if (weakself.sectionArray.count == 6){
+            [weakself.processinCommitButton.button setTitle:@"申请结案" forState:0];
+        }
         
         if ([response.product.progress_status integerValue] == 2 && ![response.uidString isEqualToString:response.product.uidInner]) {
             if ([response.product.applyclose integerValue] == 0) {

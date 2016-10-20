@@ -23,7 +23,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = @"服务协议";
+    self.navigationItem.title = self.navTitleString;
+//    @"服务协议";
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
     [self.view addSubview:self.agreementWebView];
@@ -83,20 +84,23 @@
                              @"uid" : self.pidString,
                              @"token" : [self getValidateToken]
                              };
+    
+    QDFWeakSelf;
     [self requestDataPostWithString:dfdfString params:params successBlock:^(id responseObject) {
         BaseModel *dfdfModel = [BaseModel objectWithKeyValues:responseObject];
-        [self showHint:dfdfModel.msg];
+        [weakself showHint:dfdfModel.msg];
         
         if ([dfdfModel.code isEqualToString:@"0000"]) {
-            UINavigationController *nav = self.navigationController;
-            [nav popViewControllerAnimated:NO];
-            [nav popViewControllerAnimated:NO];
-            [nav popViewControllerAnimated:NO];
-            [nav popViewControllerAnimated:NO];
-            MyReleaseViewController *myReleaseVC = [[MyReleaseViewController alloc] init];
-            myReleaseVC.hidesBottomBarWhenPushed = YES;
-            myReleaseVC.progreStatus = @"2";
-            [nav pushViewController:myReleaseVC animated:NO];
+//            UINavigationController *nav = self.navigationController;
+//            [nav popViewControllerAnimated:NO];
+//            [nav popViewControllerAnimated:NO];
+//            [nav popViewControllerAnimated:NO];
+//            [nav popViewControllerAnimated:NO];
+//            MyReleaseViewController *myReleaseVC = [[MyReleaseViewController alloc] init];
+//            myReleaseVC.hidesBottomBarWhenPushed = YES;
+//            myReleaseVC.progreStatus = @"2";
+//            [nav pushViewController:myReleaseVC animated:NO];
+            [weakself back];
         }
         
     } andFailBlock:^(NSError *error) {

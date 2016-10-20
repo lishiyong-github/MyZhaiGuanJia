@@ -70,6 +70,7 @@
         _stateLabel2.font = kFourFont;
         _stateLabel2.textColor = kBlackColor;
         _stateLabel2.text = @"选择一个申请方作为意向接单方进行约见面谈";
+        _stateLabel2.textAlignment = NSTextAlignmentCenter;
     }
     return _stateLabel2;
 }

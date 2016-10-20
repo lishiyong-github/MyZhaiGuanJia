@@ -199,7 +199,7 @@
 {
     if (!_progress3) {
         _progress3 = [UILabel newAutoLayoutView];
-        _progress3.text = @"订单处理";
+        _progress3.text = @"处理订单";
         _progress3.textColor = kLightGrayColor;
         _progress3.font = kSecondFont;
         _progress3.textAlignment = NSTextAlignmentCenter;
