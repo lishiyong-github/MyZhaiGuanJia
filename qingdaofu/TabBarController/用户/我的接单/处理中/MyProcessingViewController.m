@@ -10,11 +10,14 @@
 #import "DelayRequestsViewController.h"  //申请延期
 #import "CheckDetailPublishViewController.h"//查看发布方
 #import "AdditionMessagesViewController.h"  //查看更多
-#import "PaceViewController.h" //进度
+//#import "PaceViewController.h" //进度
 
+#import "OperatorListViewController.h"  //添加经办人
+#import "AddProgressViewController.h" //添加进度
 #import "RequestEndViewController.h"  //申请终止
 #import "RequestCloseViewController.h" //申请结案
-#import "AgreementViewController.h"   //居间协议
+#import "DealingCloseViewController.h" //处理结案
+
 #import "AgreementViewController.h"  //居间协议
 #import "SignProtocolViewController.h"  //签约协议
 
@@ -364,11 +367,11 @@
                 QDFWeakSelf;
                 [cell.userActionButton addAction:^(UIButton *btn) {
                     [weakself showHint:@"添加进度"];
-                    PaceViewController *paceVC = [[PaceViewController alloc] init];
-                    paceVC.idString = weakself.idString;
-                    paceVC.categoryString = self.categaryString;
-                    paceVC.existence = @"2";
-                    [weakself.navigationController pushViewController:paceVC animated:YES];
+                    AddProgressViewController *addProgressVC = [[AddProgressViewController alloc] init];
+//                    paceVC.idString = weakself.idString;
+//                    paceVC.categoryString = self.categaryString;
+//                    paceVC.existence = @"2";
+                    [weakself.navigationController pushViewController:addProgressVC animated:YES];
                 }];
                 
             }else{
@@ -464,6 +467,8 @@
                 [self.navigationController pushViewController:signProtocolVC animated:YES];
             }else if (indexPath.section == 4){//经办人
                 [self showHint:@"经办人协议"];
+                OperatorListViewController *operatorListVC = [[OperatorListViewController alloc] init];
+                [self.navigationController pushViewController:operatorListVC animated:YES];
             }
         }
     }

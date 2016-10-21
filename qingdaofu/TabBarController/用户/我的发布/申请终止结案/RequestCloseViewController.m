@@ -9,6 +9,7 @@
 #import "RequestCloseViewController.h"
 #import "DealingCloseViewController.h"  //证明示例
 
+#import "BaseCommitView.h"
 #import "AgentCell.h"
 
 @interface RequestCloseViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -16,6 +17,7 @@
 @property (nonatomic,assign) BOOL didSetupConstraints;
 
 @property (nonatomic,strong) UITableView *requestCloseTableView;
+@property (nonatomic,strong) BaseCommitView *requestCloseCommitView;
 
 @end
 
@@ -29,6 +31,7 @@
     [self.rightButton setTitle:@"证明示例" forState:0];
     
     [self.view addSubview:self.requestCloseTableView];
+    [self.view addSubview:self.requestCloseCommitView];
     
     [self.view setNeedsUpdateConstraints];
 }
@@ -37,7 +40,11 @@
 {
     if (!self.didSetupConstraints) {
         
-        [self.requestCloseTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+        [self.requestCloseTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
+        [self.requestCloseTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.requestCloseCommitView];
+        
+        [self.requestCloseCommitView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+        [self.requestCloseCommitView autoSetDimension:ALDimensionHeight toSize:kCellHeight4];
         
         self.didSetupConstraints = YES;
     }
@@ -56,6 +63,20 @@
         _requestCloseTableView.tableFooterView = [[UIView alloc] init];
     }
     return _requestCloseTableView;
+}
+
+- (BaseCommitView *)requestCloseCommitView
+{
+    if (!_requestCloseCommitView) {
+        _requestCloseCommitView = [BaseCommitView newAutoLayoutView];
+        [_requestCloseCommitView.button setTitle:@"立即申请" forState:0];
+        
+        QDFWeakSelf;
+        [_requestCloseCommitView addAction:^(UIButton *btn) {
+            [weakself showHint:@"立即申请结案"];
+        }];
+    }
+    return _requestCloseCommitView;
 }
 
 #pragma mark - tableview delegate and datasource
@@ -124,6 +145,7 @@
 - (void)rightItemAction
 {
     DealingCloseViewController *dealCloseVC = [[DealingCloseViewController alloc] init];
+    dealCloseVC.perTypeString = @"2";
     [self.navigationController pushViewController:dealCloseVC animated:YES];
 }
 

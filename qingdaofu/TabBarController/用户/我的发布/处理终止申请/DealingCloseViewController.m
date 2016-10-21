@@ -12,7 +12,7 @@
 @interface DealingCloseViewController ()
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
-@property (nonatomic,strong) UIButton *dealCloseRightButton;
+//@property (nonatomic,strong) UIButton *dealCloseRightButton;
 @property (nonatomic,strong) UIView *backWhiteView;
 @property (nonatomic,strong) PublishCombineView *dealCloseFootView;
 
@@ -22,12 +22,20 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"处理结案申请";
     self.navigationItem.leftBarButtonItem = self.leftItem;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.dealCloseRightButton];
     
     [self.view addSubview:self.backWhiteView];
-    [self.view addSubview:self.dealCloseFootView];
+    
+    if ([self.perTypeString integerValue] == 1) {
+        self.title = @"处理结案申请";
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightButton];
+        [self.rightButton setTitle:@"平台介入" forState:0];
+        
+        [self.view addSubview:self.dealCloseFootView];
+        
+    }else if ([self.perTypeString integerValue] == 2){
+        self.title = @"示例证明";
+    }
     
     [self.view setNeedsUpdateConstraints];
 }
@@ -36,32 +44,36 @@
 {
     if (!self.didSetupConstraints) {
         
-        [self.backWhiteView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(kBigPadding, 0, 0, 0) excludingEdge:ALEdgeBottom];
-        [self.backWhiteView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.dealCloseFootView];
-        
-        [self.dealCloseFootView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [self.dealCloseFootView autoSetDimension:ALDimensionHeight toSize:116];
+        if ([self.perTypeString integerValue] == 1) {
+            [self.backWhiteView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(kBigPadding, 0, 0, 0) excludingEdge:ALEdgeBottom];
+            [self.backWhiteView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.dealCloseFootView];
+            
+            [self.dealCloseFootView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+            [self.dealCloseFootView autoSetDimension:ALDimensionHeight toSize:116];
+        }else if ([self.perTypeString integerValue] == 2){
+            [self.backWhiteView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(kBigPadding, 0, 0, 0)];
+        }
         
         self.didSetupConstraints = YES;
     }
     [super updateViewConstraints];
 }
 
-- (UIButton *)dealCloseRightButton
-{
-    if (!_dealCloseRightButton) {
-        _dealCloseRightButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 30)];
-        [_dealCloseRightButton setTitleColor:kWhiteColor forState:0];
-        [_dealCloseRightButton setTitle:@"平台介入" forState:0];
-        _dealCloseRightButton.titleLabel.font = kFirstFont;
-        
-        [_dealCloseRightButton addAction:^(UIButton *btn) {
-            NSMutableString *tel = [NSMutableString stringWithFormat:@"telprompt://%@",@"400-855-7022"];
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:tel]];
-        }];
-    }
-    return _dealCloseRightButton;
-}
+//- (UIButton *)dealCloseRightButton
+//{
+//    if (!_dealCloseRightButton) {
+//        _dealCloseRightButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 30)];
+//        [_dealCloseRightButton setTitleColor:kWhiteColor forState:0];
+//        [_dealCloseRightButton setTitle:@"平台介入" forState:0];
+//        _dealCloseRightButton.titleLabel.font = kFirstFont;
+//        
+//        [_dealCloseRightButton addAction:^(UIButton *btn) {
+//            NSMutableString *tel = [NSMutableString stringWithFormat:@"telprompt://%@",@"400-855-7022"];
+//            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:tel]];
+//        }];
+//    }
+//    return _dealCloseRightButton;
+//}
 
 - (UIView *)backWhiteView
 {
@@ -182,6 +194,14 @@
         }];
     }
     return _dealCloseFootView;
+}
+
+#pragma mark - menthod
+- (void)rightItemAction
+{
+    [self showHint:@"平台介入"];
+    NSMutableString *tel = [NSMutableString stringWithFormat:@"telprompt://%@",@"400-855-7022"];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:tel]];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -165,10 +165,10 @@
     
     if ([receiptModel.isdefault integerValue] == 1){//选择默认
         [cell.reActButton1 setTitleColor:kBlueColor forState:0];
-        [cell.reActButton1 setImage:[UIImage imageNamed:@"seleteds"] forState:0];
+        [cell.reActButton1 setImage:[UIImage imageNamed:@"selected"] forState:0];
     }else{
          [cell.reActButton1 setTitleColor:kGrayColor forState:0];
-        [cell.reActButton1 setImage:[UIImage imageNamed:@"selete"] forState:0];
+        [cell.reActButton1 setImage:[UIImage imageNamed:@"selected_dis"] forState:0];
     }
     
     [cell.reActButton2 setImage:[UIImage imageNamed:@"deletes"] forState:0];

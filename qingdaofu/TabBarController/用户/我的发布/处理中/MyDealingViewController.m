@@ -140,6 +140,7 @@
             [weakself.navigationController pushViewController:dealingEndVC animated:YES];
             
 //            DealingCloseViewController *dealingCloseVC = [[DealingCloseViewController alloc] init];
+//            dealingCloseVC.perTypeString = @"1";
 //            [weakself.navigationController pushViewController:dealingCloseVC animated:YES];
         }];
     }

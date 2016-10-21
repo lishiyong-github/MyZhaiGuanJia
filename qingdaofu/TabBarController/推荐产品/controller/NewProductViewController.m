@@ -64,10 +64,12 @@
     [self.view addSubview:self.mainTableView];
     [self.view setNeedsUpdateConstraints];
     
-    QDFWeakSelf;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [weakself chechAppNewVersion];
-    });
+//    QDFWeakSelf;
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        [weakself chechAppNewVersion];
+//    });
+//    
+//    [self performSelector:@selector(chechAppNewVersion) withObject:nil afterDelay:10];
 }
 
 - (UIButton *)titleView

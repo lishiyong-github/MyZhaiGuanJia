@@ -83,6 +83,7 @@
         _rightButton.frame = CGRectMake(0, 0, 60, 30);
         [_rightButton setTitleColor:kWhiteColor forState:0];
         _rightButton.titleLabel.font = kFirstFont;
+        _rightButton.contentHorizontalAlignment = 2;
         [_rightButton addTarget:self action:@selector(rightItemAction) forControlEvents:UIControlEventTouchUpInside];
     }
     return _rightButton;
@@ -129,7 +130,8 @@
 
 - (NSString *)getValidateToken
 {
-    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:@"token"];
+//    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:@"token"];
+    NSString *token = @"XXX";
     return token;
 }
 
