@@ -351,6 +351,8 @@
 		A19985271CE071D40055A572 /* conserve_risk_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A19985251CE071D40055A572 /* conserve_risk_icon@3x.png */; };
 		A199852C1CE07A010055A572 /* publish_star_s@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A19985281CE07A010055A572 /* publish_star_s@2x.png */; };
 		A199852D1CE07A010055A572 /* publish_star_s@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A19985291CE07A010055A572 /* publish_star_s@3x.png */; };
+		A199BFE21DBDAD20000E5E9A /* ProductCloseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A199BFE11DBDAD20000E5E9A /* ProductCloseCell.m */; };
+		A199BFE51DBE1021000E5E9A /* MessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A199BFE41DBE1021000E5E9A /* MessageTableViewCell.m */; };
 		A19B8E221CCF42E300F8EBF2 /* ALView+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = A19B8E1A1CCF42E300F8EBF2 /* ALView+PureLayout.m */; };
 		A19B8E231CCF42E300F8EBF2 /* NSArray+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = A19B8E1C1CCF42E300F8EBF2 /* NSArray+PureLayout.m */; };
 		A19B8E241CCF42E300F8EBF2 /* NSLayoutConstraint+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = A19B8E1E1CCF42E300F8EBF2 /* NSLayoutConstraint+PureLayout.m */; };
@@ -1264,6 +1266,10 @@
 		A19985251CE071D40055A572 /* conserve_risk_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conserve_risk_icon@3x.png"; sourceTree = "<group>"; };
 		A19985281CE07A010055A572 /* publish_star_s@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "publish_star_s@2x.png"; sourceTree = "<group>"; };
 		A19985291CE07A010055A572 /* publish_star_s@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "publish_star_s@3x.png"; sourceTree = "<group>"; };
+		A199BFE01DBDAD20000E5E9A /* ProductCloseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductCloseCell.h; sourceTree = "<group>"; };
+		A199BFE11DBDAD20000E5E9A /* ProductCloseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductCloseCell.m; sourceTree = "<group>"; };
+		A199BFE31DBE1021000E5E9A /* MessageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageTableViewCell.h; sourceTree = "<group>"; };
+		A199BFE41DBE1021000E5E9A /* MessageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageTableViewCell.m; sourceTree = "<group>"; };
 		A19B8E191CCF42E300F8EBF2 /* ALView+PureLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ALView+PureLayout.h"; sourceTree = "<group>"; };
 		A19B8E1A1CCF42E300F8EBF2 /* ALView+PureLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ALView+PureLayout.m"; sourceTree = "<group>"; };
 		A19B8E1B1CCF42E300F8EBF2 /* NSArray+PureLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+PureLayout.h"; sourceTree = "<group>"; };
@@ -2244,6 +2250,7 @@
 				A19441781D791C0D003CA99F /* 查看评价 */,
 				A1718DDF1CFD56AE0007DA6F /* ReleaseCloseViewController.h */,
 				A1718DE01CFD56AE0007DA6F /* ReleaseCloseViewController.m */,
+				A199BFDF1DBDAD03000E5E9A /* view */,
 			);
 			path = "结案";
 			sourceTree = "<group>";
@@ -3037,6 +3044,15 @@
 			path = "诉讼";
 			sourceTree = "<group>";
 		};
+		A199BFDF1DBDAD03000E5E9A /* view */ = {
+			isa = PBXGroup;
+			children = (
+				A199BFE01DBDAD20000E5E9A /* ProductCloseCell.h */,
+				A199BFE11DBDAD20000E5E9A /* ProductCloseCell.m */,
+			);
+			path = view;
+			sourceTree = "<group>";
+		};
 		A19B8E181CCF42E300F8EBF2 /* PureLayout */ = {
 			isa = PBXGroup;
 			children = (
@@ -3184,6 +3200,8 @@
 				A19B8E561CCF640300F8EBF2 /* MessageCell.m */,
 				A1AEC97A1D3F7D870082813F /* NewsTableViewCell.h */,
 				A1AEC97B1D3F7D870082813F /* NewsTableViewCell.m */,
+				A199BFE31DBE1021000E5E9A /* MessageTableViewCell.h */,
+				A199BFE41DBE1021000E5E9A /* MessageTableViewCell.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -4875,6 +4893,7 @@
 				A1CBAAC51DBA158700049E56 /* OperatorResponse.m in Sources */,
 				A19D296A1CD208E900DAAEA7 /* AuthentyViewController.m in Sources */,
 				A18B26481CEAA699005526C5 /* MainViewController.m in Sources */,
+				A199BFE51DBE1021000E5E9A /* MessageTableViewCell.m in Sources */,
 				A19B8E4A1CCF530900F8EBF2 /* MineViewController.m in Sources */,
 				A16391781D20194B0051F1D0 /* FSPlaceholderImages.m in Sources */,
 				A1A72CDC1D95306800EDC491 /* WXApiRequestHandler.m in Sources */,
@@ -4901,6 +4920,7 @@
 				A19CC08F1D59B9F2000ED568 /* ApplicationGuaranteeFirstView.m in Sources */,
 				A1B6FD5C1D4F35240059690B /* PowerProtectListViewController.m in Sources */,
 				A1A0B1161D7541F8009B1DB4 /* ApplicationDetailResponse.m in Sources */,
+				A199BFE21DBDAD20000E5E9A /* ProductCloseCell.m in Sources */,
 				A1B028F01D1794DC00F32A09 /* UIImage+MultiFormat.m in Sources */,
 				A19D296D1CD208FB00DAAEA7 /* CompleteViewController.m in Sources */,
 				A17EE3891CD86B3E00ECC631 /* AboutViewController.m in Sources */,

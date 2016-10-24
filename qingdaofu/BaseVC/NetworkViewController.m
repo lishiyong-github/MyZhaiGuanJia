@@ -34,6 +34,8 @@
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {        
         
+        NSDictionary *aoaoao = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
         TokenModel *model = [TokenModel objectWithKeyValues:responseObject];
         if (self.didTokenValid) {
             [self hideHud];

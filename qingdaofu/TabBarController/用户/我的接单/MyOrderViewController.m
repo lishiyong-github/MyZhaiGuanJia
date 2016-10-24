@@ -294,14 +294,17 @@
 #pragma mark - method
 - (void)getMyReleaseListWithPage:(NSString *)page
 {
-    NSString *myReleaseString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseString];
+    NSString *myOrderString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrderListString];
+//    [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrderListString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
-                             @"progress_status" : @"1",
+                             @"type" : @"0",
                              @"limit" : @"10",
                              @"page" : page
                              };
     QDFWeakSelf;
-    [self requestDataPostWithString:myReleaseString params:params successBlock:^(id responseObject) {
+    [self requestDataPostWithString:myOrderString params:params successBlock:^(id responseObject) {
+        
+        NSDictionary *sossosos = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
         if ([page intValue] == 1) {
             [weakself.orderDataArray removeAllObjects];

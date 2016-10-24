@@ -21,6 +21,7 @@
 
 #import "MySaveViewController.h"  //我的保存
 #import "MyStoreViewController.h"  //我的收藏
+#import "MyMailListsViewController.h"  //我的通讯录
 
 #import "PowerProtectListViewController.h" //保全
 #import "ApplicationListViewController.h"  //保函
@@ -108,6 +109,7 @@
         [_loginView setDidSelectedButton:^(NSInteger buttonTag) {
             
             [weakself tokenIsValid];
+            
             if (buttonTag == 0|| buttonTag == 101 || buttonTag == 4 || buttonTag == 5 || buttonTag == 6 || buttonTag == 7 || buttonTag == 8 || buttonTag == 12|| buttonTag == 16) {//我的认证，发布，保全，保函，产调，评估，草稿，设置，
                 [weakself setDidTokenValid:^(TokenModel *tokenModel) {
                     if ([tokenModel.code integerValue] == 0000 || [tokenModel.code integerValue] == 3006) {
@@ -176,7 +178,13 @@
                             }
                                 break;
                             case 12:{//我的通讯录
-                                [weakself showHint:@"添加联系人"];
+                                [weakself showHint:@"通讯录"];
+                                
+                                MyMailListsViewController *myMailListsVC = [[MyMailListsViewController alloc] init];
+                                myMailListsVC.mailType = @"1";
+                                myMailListsVC.hidesBottomBarWhenPushed = YES;
+                                [weakself.navigationController pushViewController:myMailListsVC animated:YES];
+                                
 //                                MySaveViewController *mySaveVC = [[MySaveViewController alloc] init];
 //                                mySaveVC.hidesBottomBarWhenPushed = YES;
 //                                [weakself.navigationController pushViewController:mySaveVC animated:YES];

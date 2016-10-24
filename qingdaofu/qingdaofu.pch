@@ -171,7 +171,7 @@
 #define kBrandAudiString  @"common/brandchild"  //车系
 #define kGuarantyString @"common/getsearch"   //小区
 ///////////////
-#define kPublishProduct  @"product/release" //发布
+#define kPublishProduct  @"product/release" //发布＊＊＊＊＊
 ////////
 
 //我的接单 我的发布
@@ -277,6 +277,10 @@
 #define kReceiptCopyAddressString @"address/update"  //修改地址
 #define kReceiptDefaultAddressString @"address/default"  //默认地址
 #define kReceiptDefaultCancelString @"address/recy" //删除，取消默认地址
+
+
+//////// 新修改的
+#define kMyOrderListString @"productorders/list-processing"  //我的接单－进行中
 
 
 #endif

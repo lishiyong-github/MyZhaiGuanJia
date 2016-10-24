@@ -130,8 +130,9 @@
 
 - (NSString *)getValidateToken
 {
-//    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:@"token"];
-    NSString *token = @"XXX";
+    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:@"token"];
+//    NSString *token = @"2e56461f7b7ee67f782188272bd98869";
+//    = @"XXX";
     return token;
 }
 

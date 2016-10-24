@@ -11,46 +11,41 @@
 #import "ReportFiSucViewController.h"  //发布成功
 #import "MySaveViewController.h"  //我的保存
 
-#import "UploadFilesViewController.h"  //债权文件
-#import "DebtCreditMessageViewController.h"  //债权人信息
-#import "BrandsViewController.h"  //车牌
-#import "GuarantyViewController.h"  //抵押物地址
+//#import "UploadFilesViewController.h"  //债权文件
+//#import "DebtCreditMessageViewController.h"  //债权人信息
+//#import "BrandsViewController.h"  //车牌
+//#import "GuarantyViewController.h"  //抵押物地址
 //
-#import "ReportFootView.h"
-#import "UIViewController+BlurView.h"
-#import "PowerCourtView.h"
-#import "ReportDatePickerView.h"
+//#import "ReportFootView.h"
+//#import "UIViewController+BlurView.h"
+//#import "ReportDatePickerView.h"
+//#import "EditDebtAddressCell.h"
 //
+#import "SuitBaseCell.h" //费用类型
+#import "SuitNewCell.h" //债权类型，委托事项
 #import "AgentCell.h"
-#import "EditDebtAddressCell.h"
-#import "SuitBaseCell.h"
-
-
-
-//////////////   new   ///////////////
-#import "SuitNewCell.h"
-
+#import "PowerCourtView.h"//合同履行地
 
 @interface ReportSuitViewController ()<UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *suitTableView;
-@property (nonatomic,strong) ReportFootView *repSuitFootButton;
-@property (nonatomic,strong) UIButton *suitRightButton;
+//@property (nonatomic,strong) ReportFootView *repSuitFootButton;
+//@property (nonatomic,strong) UIButton *suitRightButton;
 @property (nonatomic,strong) PowerCourtView *reportPickerView; //省市区
-@property (nonatomic,strong) ReportDatePickerView *datePickerView;//逾期
+//@property (nonatomic,strong) ReportDatePickerView *datePickerView;//逾期
 
 @property (nonatomic,strong) NSMutableArray *suitDataList;  //收起展开
 @property (nonatomic,strong) NSMutableArray *sTextArray;
 @property (nonatomic,strong) NSMutableArray *sHolderArray;
 
-//参数
+//json
 @property (nonatomic,strong) NSMutableDictionary *suitDataDictionary;
 @property (nonatomic,strong) NSString *rowString;    //债权类型
 @property (nonatomic,strong) NSString *number;//1.抵押物地址，2.应收帐款，3.机动车抵押，4.无抵押
-@property (nonatomic,strong) NSMutableArray *creditorInfo;
-@property (nonatomic,strong) NSMutableArray *borrowinginfos;
-@property (nonatomic,strong) NSMutableDictionary *creditorfile;
+//@property (nonatomic,strong) NSMutableArray *creditorInfo;
+//@property (nonatomic,strong) NSMutableArray *borrowinginfos;
+//@property (nonatomic,strong) NSMutableDictionary *creditorfile;
 //省市区
 @property (nonatomic,strong) NSDictionary *provinceDictionary;
 @property (nonatomic,strong) NSDictionary *cityDcitionary;
@@ -83,7 +78,8 @@
     }
     
     self.navigationItem.leftBarButtonItem = self.leftItemAnother;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.suitRightButton];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightButton];
+    [self.rightButton setTitle:@"发布" forState:0];
     
     PublishingModel *suModel = self.suResponse.product;
     if (suModel) {
@@ -178,21 +174,21 @@
     [super updateViewConstraints];
 }
 
-- (UIButton *)suitRightButton
-{
-    if (!_suitRightButton) {
-        _suitRightButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 44)];
-        [_suitRightButton setTitle:@"发布" forState:0];
-        _suitRightButton.titleLabel.font = kFirstFont;
-        [_suitRightButton setTitleColor:kWhiteColor forState:0];
-        
-        QDFWeakSelf;
-        [_suitRightButton addAction:^(UIButton *btn) {
-            [weakself reportSuitActionWithTypeString:@"1"];
-        }];
-    }
-    return _suitRightButton;
-}
+//- (UIButton *)suitRightButton
+//{
+//    if (!_suitRightButton) {
+//        _suitRightButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 44)];
+//        [_suitRightButton setTitle:@"发布" forState:0];
+//        _suitRightButton.titleLabel.font = kFirstFont;
+//        [_suitRightButton setTitleColor:kWhiteColor forState:0];
+//        
+//        QDFWeakSelf;
+//        [_suitRightButton addAction:^(UIButton *btn) {
+//            [weakself reportSuitActionWithTypeString:@"1"];
+//        }];
+//    }
+//    return _suitRightButton;
+//}
 
 - (UITableView *)suitTableView
 {
@@ -220,7 +216,6 @@
         [_reportPickerView setDidSelectedComponent:^(NSInteger component, NSInteger row, NSString *idString, NSString *nameString) {
             
             if (component == 0) {
-                
                 [weakself.addressTestDict setObject:nameString forKey:@"proName"];
                 [weakself.addressTestDict setObject:idString forKey:@"proID"];
                 
@@ -243,6 +238,11 @@
                     
                     AgentCell *cell = [weakself.suitTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:4]];
                     cell.agentTextField.text = [NSString stringWithFormat:@"%@%@%@",weakself.addressTestDict[@"proName"],weakself.addressTestDict[@"cityName"],weakself.addressTestDict[@"districtName"]];
+                    
+                    [weakself.suitDataDictionary setValue:weakself.addressTestDict[@"proID"] forKey:@"province_id"];
+                    [weakself.suitDataDictionary setValue:weakself.addressTestDict[@"cityID"] forKey:@"city_id"];
+                    [weakself.suitDataDictionary setValue:weakself.addressTestDict[@"districtID"] forKey:@"district_id"];
+
                     
                     /*
                     if ([weakself.cateString integerValue] == 1) {//1-抵押物地址
@@ -377,6 +377,11 @@
             cell.agentTextField.placeholder = @"请输入";
             [cell.agentButton setTitle:@"万" forState:0];
             
+            QDFWeakSelf;
+            [cell setDidEndEditing:^(NSString *text) {
+                [weakself.suitDataDictionary setValue:text forKey:@"account"];
+            }];
+            
             return cell;
         }else if (indexPath.row == 1){//费用类型
             identifier = @"newSuit21";
@@ -389,17 +394,24 @@
             cell.label.text = @"费用类型";
             [cell.segment setTitle:@"固定费用" forSegmentAtIndex:0];
             [cell.segment setTitle:@"风险费率" forSegmentAtIndex:1];
+            [self.suitDataDictionary setValue:@"1" forKey:@"type"];
             
+            
+            QDFWeakSelf;
             [cell setDidSelectedSeg:^(NSInteger segTag) {
                 if (segTag == 0) {//固定费用
                     AgentCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:2]];
                     cell.agentLabel.text = @"固定费用";
                     [cell.agentButton setTitle:@"万" forState:0];
+                    
                 }else{//风险费率
                     AgentCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:2]];
                     cell.agentLabel.text = @"风险费率";
                     [cell.agentButton setTitle:@"％" forState:0];
                 }
+                
+                NSString *ssss = [NSString stringWithFormat:@"%ld",segTag+1];
+                [weakself.suitDataDictionary setValue:ssss forKey:@"type"];
             }];
             
             return cell;
@@ -416,6 +428,11 @@
             cell.agentTextField.placeholder = @"请输入";
             [cell.agentButton setTitle:@"万" forState:0];
             
+            QDFWeakSelf;
+            [cell setDidEndEditing:^(NSString *text) {
+                [weakself.suitDataDictionary setValue:text forKey:@"typenum"];
+            }];
+            
             return cell;
         }
     }else if (indexPath.section == 3){//违约期限
@@ -430,6 +447,11 @@
         cell.agentLabel.text = @"违约期限";
         cell.agentTextField.placeholder = @"请输入";
         [cell.agentButton setTitle:@"月" forState:0];
+        
+        QDFWeakSelf;
+        [cell setDidEndEditing:^(NSString *text) {
+            [weakself.suitDataDictionary setValue:text forKey:@"overdue"];
+        }];
         
         return cell;
     }else{//合同履行地
@@ -607,54 +629,54 @@
     return _sHolderArray;
 }
 
-- (NSMutableArray *)creditorInfo
-{
-    if (!_creditorInfo) {
-        _creditorInfo = [NSMutableArray array];
-        for (DebtModel *model in self.suResponse.creditorinfo) {
-            [_creditorInfo addObject:model];
-        }
-    }
-    return _creditorInfo;
-}
-
-- (NSMutableArray *)borrowinginfos
-{
-    if (!_borrowinginfos) {
-        _borrowinginfos = [NSMutableArray array];
-        for (DebtModel *model in self.suResponse.borrowinginfo) {
-            [_borrowinginfos addObject:model];
-        }
-    }
-    return _borrowinginfos;
-}
-
-- (NSMutableDictionary *)creditorfile
-{
-    if (!_creditorfile) {
-        _creditorfile = [NSMutableDictionary dictionary];
-        
-        if (self.suResponse.creditorfile.imgnotarization) {
-            [_creditorfile setObject:self.suResponse.creditorfile.imgnotarization forKey:@"imgnotarization"];
-        }
-        if (self.suResponse.creditorfile.imgcontract) {
-            [_creditorfile setObject:self.suResponse.creditorfile.imgcontract forKey:@"imgcontract"];
-        }
-        if (self.suResponse.creditorfile.imgcreditor) {
-            [_creditorfile setObject:self.suResponse.creditorfile.imgcreditor forKey:@"imgcreditor"];
-        }
-        if (self.suResponse.creditorfile.imgpick) {
-            [_creditorfile setObject:self.suResponse.creditorfile.imgpick forKey:@"imgpick"];
-        }
-        if (self.suResponse.creditorfile.imgshouju) {
-            [_creditorfile setObject:self.suResponse.creditorfile.imgbenjin forKey:@"imgshouju"];
-        }
-        if (self.suResponse.creditorfile.imgbenjin) {
-            [_creditorfile setObject:self.suResponse.creditorfile.imgshouju forKey:@"imgbenjin"];
-        }
-    }
-    return _creditorfile;
-}
+//- (NSMutableArray *)creditorInfo
+//{
+//    if (!_creditorInfo) {
+//        _creditorInfo = [NSMutableArray array];
+//        for (DebtModel *model in self.suResponse.creditorinfo) {
+//            [_creditorInfo addObject:model];
+//        }
+//    }
+//    return _creditorInfo;
+//}
+//
+//- (NSMutableArray *)borrowinginfos
+//{
+//    if (!_borrowinginfos) {
+//        _borrowinginfos = [NSMutableArray array];
+//        for (DebtModel *model in self.suResponse.borrowinginfo) {
+//            [_borrowinginfos addObject:model];
+//        }
+//    }
+//    return _borrowinginfos;
+//}
+//
+//- (NSMutableDictionary *)creditorfile
+//{
+//    if (!_creditorfile) {
+//        _creditorfile = [NSMutableDictionary dictionary];
+//        
+//        if (self.suResponse.creditorfile.imgnotarization) {
+//            [_creditorfile setObject:self.suResponse.creditorfile.imgnotarization forKey:@"imgnotarization"];
+//        }
+//        if (self.suResponse.creditorfile.imgcontract) {
+//            [_creditorfile setObject:self.suResponse.creditorfile.imgcontract forKey:@"imgcontract"];
+//        }
+//        if (self.suResponse.creditorfile.imgcreditor) {
+//            [_creditorfile setObject:self.suResponse.creditorfile.imgcreditor forKey:@"imgcreditor"];
+//        }
+//        if (self.suResponse.creditorfile.imgpick) {
+//            [_creditorfile setObject:self.suResponse.creditorfile.imgpick forKey:@"imgpick"];
+//        }
+//        if (self.suResponse.creditorfile.imgshouju) {
+//            [_creditorfile setObject:self.suResponse.creditorfile.imgbenjin forKey:@"imgshouju"];
+//        }
+//        if (self.suResponse.creditorfile.imgbenjin) {
+//            [_creditorfile setObject:self.suResponse.creditorfile.imgshouju forKey:@"imgbenjin"];
+//        }
+//    }
+//    return _creditorfile;
+//}
 
 - (NSMutableDictionary *)addressTestDict
 {
@@ -1582,9 +1604,14 @@
 {
     [self showHint:@"发布成功"];
     
+    [self.view endEditing:YES];
     
-//    [self.view endEditing:YES];
-//    NSString *reFinanceString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPublishProduct];
+    SuitNewCell *cell0 = [self.suitTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    
+    
+    
+    
+    NSString *reFinanceString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPublishProduct];
     
     /* 参数
     self.suitDataDictionary[@"money"] = [NSString getValidStringFromString:self.suitDataDictionary[@"money"] toString:self.suResponse.product.money];//金额
@@ -1674,6 +1701,33 @@
         
     }];
     */
+}
+
+- (void)rightItemAction
+{
+    [self.view endEditing:YES];
+    
+    [self.suitDataDictionary setValue:[self getValidateToken] forKey:@"token"];
+    [self.suitDataDictionary setValue:@"2,1" forKey:@"category"];//债权类型
+    [self.suitDataDictionary setValue:@"1,3" forKey:@"entrust"];  //委托权限
+    
+    NSString *reFinanceString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPublishProduct];
+    NSDictionary *params = self.suitDataDictionary;
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:reFinanceString params:params successBlock:^(id responseObject) {
+        
+        BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:baseModel.msg];
+        
+        if ([baseModel.code isEqualToString:@"0000"]) {
+            [weakself dismissViewControllerAnimated:YES completion:nil];
+        }
+    
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+
 }
 
 - (void)back

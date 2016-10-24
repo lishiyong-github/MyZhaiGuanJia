@@ -40,7 +40,6 @@
 @interface MyProcessingViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
-@property (nonatomic,strong) UIButton *proRightButton;
 @property (nonatomic,strong) UITableView *myProcessingTableView;
 @property (nonatomic,strong) BaseCommitView *processinCommitButton;
 @property (nonatomic,strong) BaseRemindButton *processRemindButton;
@@ -69,7 +68,8 @@
     [super viewDidLoad];
     self.navigationItem.title = @"产品详情";
     self.navigationItem.leftBarButtonItem = self.leftItem;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.proRightButton];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightButton];
+    [self.rightButton setTitle:@"申请终止" forState:0];
     
     self.sectionArray = @[@"",@"",@""];
     
@@ -102,22 +102,6 @@
 }
 
 #pragma mark - getter
-- (UIButton *)proRightButton
-{
-    if (!_proRightButton) {
-        _proRightButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 30)];
-        [_proRightButton setTitle:@"申请终止" forState:0];
-        [_proRightButton setTitleColor:kWhiteColor forState:0];
-        _proRightButton.titleLabel.font = kFirstFont;
-        
-        QDFWeakSelf;
-        [_proRightButton addAction:^(UIButton *btn) {
-            [weakself showHint:@"申请终止"];
-        }];
-    }
-    return _proRightButton;
-}
-
 - (UITableView *)myProcessingTableView
 {
     if (!_myProcessingTableView) {
@@ -544,6 +528,12 @@
     } andFailBlock:^(NSError *error){
         
     }];
+}
+
+-(void)rightItemAction
+{
+    RequestEndViewController *requestEndVC = [[RequestEndViewController alloc] init];
+    [self.navigationController pushViewController:requestEndVC animated:YES];
 }
 
 //申请延期状态

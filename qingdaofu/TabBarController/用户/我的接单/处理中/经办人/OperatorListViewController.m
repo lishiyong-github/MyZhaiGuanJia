@@ -28,7 +28,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [self getOperatoeLists];
+//    [self getOperatoeLists];
 }
 
 - (void)viewDidLoad {

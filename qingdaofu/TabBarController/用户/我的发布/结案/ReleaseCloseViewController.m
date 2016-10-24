@@ -10,10 +10,12 @@
 
 #import "CheckDetailPublishViewController.h"  //查看发布方
 
-#import "MineUserCell.h"//信息
+//#import "MineUserCell.h"//信息
 #import "NewPublishDetailsCell.h"//进度
 #import "OrderPublishCell.h"//联系TA
-#import "NewPublishStateCell.h"//状态
+#import "ProductCloseCell.h"  //详情
+
+//#import "NewPublishStateCell.h"//状态
 #import "BaseCommitView.h"  //评价按钮
 
 #import "PublishingModel.h"
@@ -150,7 +152,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (self.releaseCloseDataArray.count > 0) {
-        return 4;
+        return 2;
     }
     return 0;
 }
@@ -175,7 +177,7 @@
             return kCellHeight3;
         }
     }
-    return kCellHeight;
+    return 395;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -185,7 +187,7 @@
     if (indexPath.section == 0) {
         
         PublishingResponse *resModel = self.releaseCloseDataArray[0];
-        PublishingModel *publishModel = resModel.product;
+//        PublishingModel *publishModel = resModel.product;
         
         if (indexPath.row == 0){
             identifier = @"myDealing00";
@@ -254,39 +256,29 @@
         
     }else if (indexPath.section == 1){
         identifier = @"myDealing1";
-        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        ProductCloseCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         if (!cell) {
-            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            cell = [[ProductCloseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.backgroundColor = kBackColor;
         
-        [cell.userNameButton setTitle:@"签约协议详情" forState:0];
-        [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-        [cell.userActionButton setTitle:@"查看详情" forState:0];
         
-        return cell;
-    }else if (indexPath.section == 2){
-        identifier = @"myDealing2";
-        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if (!cell) {
-            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        [cell.userNameButton setTitle:@"居间协议" forState:0];
-        [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-        [cell.userActionButton setTitle:@"查看" forState:0];
         
         return cell;
-    }else if (indexPath.section == 3){
-        identifier = @"myDealing3";
-        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if (!cell) {
-            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        [cell.userNameButton setTitle:@"尽职调查" forState:0];
-        return cell;
+        
+        
+//        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+//        if (!cell) {
+//            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+//        }
+//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//        
+//        [cell.userNameButton setTitle:@"签约协议详情" forState:0];
+//        [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+//        [cell.userActionButton setTitle:@"查看详情" forState:0];
+//        
+//        return cell;
     }
     
     return nil;
@@ -304,11 +296,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 1) {
-        [self showHint:@"签约协议详情"];
-    }else if (indexPath.section == 2){
-        [self showHint:@"居间协议"];
-    }
 }
 
 #pragma mark - method

@@ -7,9 +7,9 @@
 //
 
 #import "MessageViewController.h"
-#import "PublishMessagesViewController.h" //发布消息
-#import "ReceiveMessagesViewController.h"  //接单消息
-#import "EvaluateMessagesViewController.h"  //评价消息
+//#import "PublishMessagesViewController.h" //发布消息
+//#import "ReceiveMessagesViewController.h"  //接单消息
+//#import "EvaluateMessagesViewController.h"  //评价消息
 #import "SystemMessagesViewController.h"   //系统消息
 #import "LoginViewController.h"  //登录
 
@@ -26,6 +26,7 @@
 
 //json
 @property (nonatomic,strong) NSMutableDictionary *resultDic;
+@property (nonatomic,strong) NSMutableArray *messageArray;
 
 @end
 
@@ -41,6 +42,7 @@
     self.navigationItem.title = @"消息";
     
     [self.view addSubview:self.messageTableView];
+    
     [self.view setNeedsUpdateConstraints];
 }
 
@@ -59,17 +61,77 @@
 - (UITableView *)messageTableView
 {
     if (!_messageTableView) {
-        _messageTableView.translatesAutoresizingMaskIntoConstraints = NO;
-        _messageTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
+        _messageTableView = [UITableView newAutoLayoutView];
+        _messageTableView.backgroundColor = kBackColor;
+        _messageTableView.separatorColor = kSeparateColor;
         _messageTableView.delegate = self;
         _messageTableView.dataSource = self;
         _messageTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
-        _messageTableView.backgroundColor = kBackColor;
-        _messageTableView.separatorColor = kSeparateColor;
     }
     return _messageTableView;
 }
 
+- (NSMutableArray *)messageArray
+{
+    if (!_messageArray) {
+        _messageArray = [NSMutableArray array];
+    }
+    return _messageArray;
+}
+
+#pragma mark - tabelView delegate and datasource
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.messageArray.count;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return kCellHeight5;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *identifier = @"message";
+    
+    
+    
+    
+    return nil;
+}
+
+#pragma mark - method
+- (void)getMessageTypeAndNumber
+{
+    NSString *messageTypeString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMessageTypeAndNumbersString];
+    NSString *token = [self getValidateToken]?[self getValidateToken]:@"";
+    NSDictionary *params = @{@"token" : token};
+    QDFWeakSelf;
+    [self requestDataPostWithString:messageTypeString params:params successBlock:^(id responseObject) {
+        NSDictionary *opopo = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        weakself.resultDic = [NSMutableDictionary dictionaryWithDictionary:opopo[@"result"]];
+        [weakself.messageTableView reloadData];
+        
+        NSInteger n1 = [weakself.resultDic[@"1"][@"number"] integerValue];
+        NSInteger n2 = [weakself.resultDic[@"2"][@"number"] integerValue];
+        NSInteger n4 = [weakself.resultDic[@"4"][@"number"] integerValue];
+        
+        NSString *all = [NSString stringWithFormat:@"%ld",n1+n2+n4];
+        
+        if ([all integerValue] == 0) {
+            //隐藏
+            [self.tabBarController.tabBar hideBadgeOnItemIndex:3];
+        }else{
+            //显示
+            [self.tabBarController.tabBar showBadgeOnItemIndex:3];
+        }
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
+/*
 - (NSMutableDictionary *)resultDic
 {
     if (!_resultDic) {
@@ -259,6 +321,7 @@
     }];
 }
 
+ */
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
