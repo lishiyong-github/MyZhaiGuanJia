@@ -17,4 +17,9 @@
 @property (nonatomic,copy) NSString *page;
 @property (nonatomic,strong) NSMutableArray *rows;
 
+/////////
+@property (nonatomic,strong) NSMutableArray *data;
+@property (nonatomic,copy) NSString *userid;
+
+
 @end

@@ -23,8 +23,9 @@
 #import "NewsTableViewCell.h"//选择申请方
 #import "PublishCombineView.h"  //底部视图
 
-#import "PublishingModel.h"
 #import "PublishingResponse.h"
+#import "RowsModel.h"
+//#import "PublishingModel.h"
 
 @interface MyPublishingViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -49,7 +50,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getDetailMessages) name:@"refresh" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getDetailMessagesssss) name:@"refresh" object:nil];
 }
 
 - (void)viewDidLoad
@@ -63,7 +64,7 @@
     [self.view addSubview:self.publishCheckView];
     [self.view setNeedsUpdateConstraints];
     
-    [self getDetailMessages];
+    [self getDetailMessagesssss];
 }
 
 - (void)updateViewConstraints
@@ -170,6 +171,9 @@
 {
     static NSString *identifier;
    
+    PublishingResponse *resModel = self.publishingDataArray[0];
+    RowsModel *rowModel = resModel.data;
+    
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
             identifier = @"publishing00";
@@ -179,10 +183,7 @@
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             
-            PublishingResponse *resModel = self.publishingDataArray[0];
-            PublishingModel *publishModel = resModel.product;
-            
-            [cell.userNameButton setTitle:publishModel.codeString forState:0];
+            [cell.userNameButton setTitle:rowModel.number forState:0];
             [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
             [cell.userActionButton setTitle:@"完善信息" forState:0];
             
@@ -219,9 +220,16 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         [cell.newsNameButton setTitle:@"选择申请方" forState:0];
-        [cell.newsCountButton setTitle:@"1" forState:0];
-        cell.newsCountButton.backgroundColor = kYellowColor;
         [cell.newsActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        
+        if ([rowModel.applyCount integerValue] == 0) {
+            [cell.newsCountButton setTitle:@"请选择申请方" forState:0];
+            cell.newsCountButton.backgroundColor = kWhiteColor;
+            [cell.newsCountButton setTitleColor:kBlackColor forState:0];
+        }else{
+            [cell.newsCountButton setTitle:rowModel.applyCount forState:0];
+            cell.newsCountButton.backgroundColor = kYellowColor;
+        }
         
         return cell;
     }
@@ -251,17 +259,28 @@
 }
 
 #pragma mark - method
-- (void)getDetailMessages
+- (void)getDetailMessagesssss
 {
-    NSString *detailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseDetailString];
-    NSDictionary *params = @{@"token" : [self getValidateToken],
-                             @"id" : self.idString,
-                             @"category" : self.categaryString
-                             };
+    NSString *detailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseDetailsString];
+    NSDictionary *params;
+    
+    if (!self.messageid) {
+        params = @{@"token" : [self getValidateToken],
+                   @"productid" : self.productid
+                   };
+    }else{
+        params = @{@"token" : [self getValidateToken],
+                   @"productid" : self.productid,
+                   @"messageid" : self.messageid
+                   };
+
+    }
+    
     QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
         
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
+        
         if ([response.code isEqualToString:@"0000"]) {
             [weakself.publishingDataArray removeAllObjects];
             [weakself.publishingDataArray addObject:response];
@@ -340,7 +359,7 @@
     }
     [self.view setNeedsUpdateConstraints];
     
-    [self getDetailMessages];
+    [self getDetailMessagesssss];
 }
 
 - (void)updateViewConstraints
@@ -619,7 +638,7 @@
 }
 
 #pragma mark - method
-- (void)getDetailMessages
+- (void)getDetailMessagesssss
 {
     NSString *detailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseDetailString];
     NSDictionary *params = @{@"token" : [self getValidateToken],

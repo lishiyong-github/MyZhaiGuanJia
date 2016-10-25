@@ -145,22 +145,65 @@
 #pragma mark - method
 - (void)getChangeCodeWithButton:(JKCountDownButton *)sender
 {
-    [sender startWithSecond:60];
+  
+    NSString *oldMobileString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMySettingOfModifyOldMobile];
+    NSDictionary *params = @{@"token" : [self getValidateToken],
+                             @"mobile" : @"13162521916",
+                             //                             @"mobile" : self.mobile,
+                             @"type" : @"4"
+                             };
     
-    [sender didChange:^NSString *(JKCountDownButton *countDownButton, int second) {
-        [sender setBackgroundColor:kLightGrayColor];
-        sender.enabled = NO;
-        NSString *title = [NSString stringWithFormat:@"剩余(%d)秒",second];
-        return title;
+    QDFWeakSelf;
+    [self requestDataPostWithString:oldMobileString params:params successBlock:^(id responseObject) {
+        BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:baseModel.msg];
+        
+        if ([baseModel.code isEqualToString:@"0000"]) {
+            [sender startWithSecond:60];
+            
+            [sender didChange:^NSString *(JKCountDownButton *countDownButton, int second) {
+                [sender setBackgroundColor:kLightGrayColor];
+                sender.enabled = NO;
+                NSString *title = [NSString stringWithFormat:@"剩余(%d)秒",second];
+                return title;
+            }];
+            
+            [sender didFinished:^NSString *(JKCountDownButton *countDownButton, int second) {
+                [sender setBackgroundColor:kButtonColor];
+                sender.enabled = YES;
+                NSString *title = @"点击获取";
+                return title;
+            }];
+        }
+        
+    } andFailBlock:^(NSError *error) {
+        
     }];
+}
+
+- (void)confirmTheChangeOfMobile
+{
+    NSString *confirmTheChangeString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMySettingOfConfirmNewPhone];
+    NSDictionary *params  = @{@"token" : self.getValidateToken,
+                              @"oldmobile" : self.oldMobile,
+                              @"oldcode" : self.oldCode,
+                              @"newmobile" : self.changeMobileTextField.text,
+                              @"newcode" : self.changeCodeTextField.text
+                              };
     
-    [sender didFinished:^NSString *(JKCountDownButton *countDownButton, int second) {
-        [sender setBackgroundColor:kButtonColor];
-        sender.enabled = YES;
-        NSString *title = @"点击获取";
-        return title;
+    QDFWeakSelf;
+    [self requestDataPostWithString:confirmTheChangeString params:params successBlock:^(id responseObject) {
+        BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:baseModel.msg];
+        
+        if ([baseModel.code isEqualToString:@"0000"]) {
+            UINavigationController *navv = weakself.navigationController;
+            [navv popViewControllerAnimated:NO];
+            [navv popViewControllerAnimated:NO];
+        }
+    } andFailBlock:^(NSError *error) {
+        
     }];
-    
 }
 
 - (void)didReceiveMemoryWarning {

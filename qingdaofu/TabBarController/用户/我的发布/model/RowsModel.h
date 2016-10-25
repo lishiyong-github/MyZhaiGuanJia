@@ -7,11 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+@class CourtProvinceModel;
+@class MailModel;
 
 @interface RowsModel : NSObject
 
 @property (nonatomic,copy) NSString *codeString;  //产品编号
-@property (nonatomic,copy) NSString *category;   //类型：1为融资。2为清收。3为诉讼。
+//@property (nonatomic,copy) NSString *category;   //类型：1为融资。2为清收。3为诉讼。
 @property (nonatomic,copy) NSString *idString;    //对应产品表的ID
 @property (nonatomic,copy) NSString *product_id;  //申请状态表对应产品表的ID
 @property (nonatomic,copy) NSString *progress_status;   //进展状态：0为待发布（保存未发布的）。 1为发布中（已发布的）。2为处理中（有人已接单发布方也已同意）。3为终止（只用发布方可以终止）。4为结案（双方都可以申请，一方申请一方同意）
@@ -27,9 +29,9 @@
 
 @property (nonatomic,copy) NSString *create_time;  //
 @property (nonatomic,copy) NSString *modify_time;  //收藏时间
-@property (nonatomic,copy) NSString *province_id;  //省份ID
-@property (nonatomic,copy) NSString *city_id;   //城市ID
-@property (nonatomic,copy) NSString *district_id;  //区域ID
+//@property (nonatomic,copy) NSString *province_id;  //省份ID
+//@property (nonatomic,copy) NSString *city_id;   //城市ID
+//@property (nonatomic,copy) NSString *district_id;  //区域ID
 
 @property (nonatomic,copy) NSString *money;     //产品金额
 @property (nonatomic,copy) NSString *agencycommission;   //代理费用
@@ -48,11 +50,56 @@
 @property (nonatomic,copy) NSString *rate_cat;  //利率类型：1为天。2为月
 @property (nonatomic,copy) NSString *rebate;   //返点
 @property (nonatomic,copy) NSString *term;  //借款期限
-@property (nonatomic,copy) NSString *status;  //房子状态   1=>'自住',2=>'出租',
+//@property (nonatomic,copy) NSString *status;  //房子状态   1=>'自住',2=>'出租',
 @property (nonatomic,copy) NSString *rentmoney;  //租金
 @property (nonatomic,copy) NSString *mortgagearea;  //抵押物面积
 @property (nonatomic,copy) NSString *loanyear;  //借款人年龄
 @property (nonatomic,copy) NSString *obligeeyear; //权利人年龄
 
+
+
+
+
+
+
+
+
+
+
+/////////
+@property (nonatomic,copy) NSString *applyCount;  //申请次数（产品详情用）
+@property (nonatomic,copy) NSString *productid;  //产品号
+@property (nonatomic,copy) NSString *number;  //BX201609280001
+@property (nonatomic,copy) NSString *category;
+@property (nonatomic,copy) NSString *category_other;
+@property (nonatomic,copy) NSString *entrust;
+@property (nonatomic,copy) NSString *entrust_other;
+@property (nonatomic,copy) NSString *account;
+@property (nonatomic,copy) NSString *type;
+@property (nonatomic,copy) NSString *typenum;
+@property (nonatomic,copy) NSString *overdue;  //违约期限
+@property (nonatomic,copy) NSString *province_id;
+@property (nonatomic,copy) NSString *city_id;
+@property (nonatomic,copy) NSString *district_id;
+@property (nonatomic,copy) NSString *status;
+@property (nonatomic,copy) NSString *browsenumber;
+@property (nonatomic,copy) NSString *validflag;
+@property (nonatomic,copy) NSString *create_at;
+@property (nonatomic,copy) NSString *create_by;
+@property (nonatomic,copy) NSString *modify_at;
+@property (nonatomic,copy) NSString *modify_by;
+@property (nonatomic,copy) NSString *cityname;
+@property (nonatomic,copy) NSString *provincename;
+@property (nonatomic,copy) NSString *areaname;
+@property (nonatomic,copy) MailModel *fabuuser;
+
+@property (nonatomic,copy) NSString *statusLabel; //发布中
+@property (nonatomic,copy) NSString *accountLabel;//0万
+@property (nonatomic,copy) NSString *typenumLabel; 
+@property (nonatomic,copy) NSString *categoryLabel;//合同纠纷.机动车抵押(债权类型)
+@property (nonatomic,copy) NSString *entrustLabel; //诉讼,债权转让
+@property (nonatomic,copy) NSString *typeLabel; //万
+@property (nonatomic,copy) NSString *addressLabel; //上海市杨浦区
+@property (nonatomic,copy) NSString *applyStatus;
 
 @end

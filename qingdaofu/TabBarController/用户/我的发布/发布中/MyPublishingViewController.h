@@ -15,4 +15,7 @@
 @property (nonatomic,strong) NSString *categaryString;
 @property (nonatomic,strong) NSString *app_idString;
 
+@property (nonatomic,strong) NSString *productid;  //产品详情
+@property (nonatomic,strong) NSString *messageid;  //从消息列表查看详情
+
 @end

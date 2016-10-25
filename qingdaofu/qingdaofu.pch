@@ -281,7 +281,29 @@
 
 //////// 新修改的
 #define kMyOrderListString @"productorders/list-processing"  //我的接单－进行中
+#define kMessageOfGroupString @"message/group-list"  //分组消息
+#define kMessageOfSystemString @"message/system-list"  //系统消息
 
+#define kMyMailListString @"contacts/index"  //我的通讯录
+#define kMyMailOfSearchUserString @"contacts/search"  //搜索联系人
+#define kMyMailOfAddUserString @"contacts/apply"  //添加联系人
+
+#define kMySettingOfModifyOldMobile @"user/smscode"  //设置－修改手机号－发送验证码到旧手机
+#define kMySettingOfVerifyOldPhone  @"checksmscode"  //设置－修改手机号－验证旧手机
+#define kMySettingOfConfirmNewPhone @"userinfo/changemobile"  ////设置－修改手机号－确认修改新手机号码
+#define kPersonCerterOfChangeNickString @"userinfo/nkname"  //个人中心－修改昵称
+////////////
+#define kPersonCenterMessageString @"userinfo/detail"  //用户中心基本信息（头像，昵称，手机号）
+
+
+#define kMyOrdersOfIngString @"productorders/list-processing"  //我的接单－进行中
+#define kMyOrdersOfFinishedString @"productorders/list-completed"//我的接单－已完成
+#define kMyOrdersOfEndString @"productorders/list-aborted"  //我的接单－已终止
+
+#define kMyReleaseOfIngString @"product/list-processing"  //我的发布－进行中
+#define kMyReleaseOfFinishedString @"product/list-completed"//我的发布－已完成
+#define kMyReleaseOfEndString @"product/list-aborted"  //我的发布－已终止
+#define kMyReleaseDetailsString @"product/product-deta"  //发布产品详情
 
 #endif
 

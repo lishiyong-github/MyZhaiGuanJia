@@ -29,6 +29,7 @@
              @"place_province_id" : @"result.place_province_id",
              @"place_city_id" : @"result.place_city_id",
              @"place_district_id" : @"result.place_district_id",
+             @"data" : @"result.data"
            };
 }
 

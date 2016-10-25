@@ -16,14 +16,16 @@
              @"mobile" : @"result.mobile",
              @"delays" : @"result.delays",
              @"page" : @"result.page",
-             @"rows" : @"result.rows"
+             @"rows" : @"result.rows",
+             @"data" : @"result.data"
              };
 }
 
 + (NSDictionary *)objectClassInArray
 {
     return @{
-             @"rows" : @"RowsModel"
+             @"rows" : @"RowsModel",
+             @"data" : @"RowsModel"
              };
 }
 

@@ -10,4 +10,6 @@
 
 @interface NewMobileViewController : NetworkViewController
 
+@property (nonatomic,strong) NSString *mobile;  //当前手机号码
+
 @end

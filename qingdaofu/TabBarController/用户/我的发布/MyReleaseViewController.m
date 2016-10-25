@@ -40,6 +40,7 @@
 @property (nonatomic,strong) NSMutableDictionary *releaseDic;
 
 @property (nonatomic,assign) NSInteger pageRelease;//页数
+@property (nonatomic,strong) NSString *progresType;  //1－进行中，2-已完成
 
 @end
 
@@ -53,6 +54,8 @@
     [super viewDidLoad];
     self.navigationItem.title = @"我的发布";
     self.navigationItem.leftBarButtonItem = self.leftItem;
+    
+    self.progresType = @"1";
 
     [self.view addSubview:self.releaseProView];
     [self.view addSubview:self.endListButton];
@@ -94,6 +97,16 @@
         
         [_releaseProView.getbutton setTitle:@"进行中" forState:0];
         [_releaseProView.sendButton setTitle:@"已完成" forState:0];
+        
+        QDFWeakSelf;
+        [_releaseProView setDidSelectedButton:^(NSInteger tag) {
+            if (tag == 33) {
+                weakself.progresType = @"1";
+            }else if (tag == 34){
+                weakself.progresType = @"2";
+            }
+            [weakself refreshHeaderOfMyRelease];
+        }];
     }
     return _releaseProView;
 }
@@ -251,51 +264,49 @@
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     [cell.detailTextLabel setHidden:YES];
+    
     RowsModel *rowModel = self.releaseDataArray[indexPath.section];
     
     //code
-    NSString *codeS = [NSString stringWithFormat:@"%@",rowModel.codeString];
-    [cell.nameButton setTitle:codeS forState:0];
+    [cell.nameButton setTitle:rowModel.number forState:0];
     
     //status and action
-    NSArray *statusArray = @[@"发布成功",@"面谈中",@"处理中",@"已完成"];
-    NSInteger statusInt = [rowModel.progress_status integerValue];
-    cell.statusLabel.text = statusArray[statusInt - 1];
-    NSArray *actArray = @[@"完善资料",@"联系申请方",@"查看进度",@"评价"];
-    [cell.actButton2 setTitle:actArray[statusInt - 1] forState:0];
+    cell.statusLabel.text = rowModel.statusLabel;
+    
+//    NSString *applyStatus = [NSString getValidStringFromString:rowModel.applyStatus toString:@"10"];
+//    NSInteger statusInt = [applyStatus integerValue]/10;
+//    NSArray *actArray = @[@"完善资料",@"联系申请方",@"查看进度",@"评价"];
+//    [cell.actButton2 setTitle:actArray[statusInt - 1] forState:0];
+    
+    if ([rowModel.statusLabel isEqualToString:@"发布中"]) {
+        [cell.actButton2 setTitle:@"完善资料" forState:0];
+    }else if ([rowModel.statusLabel isEqualToString:@"面谈中"]){
+        [cell.actButton2 setTitle:@"联系申请方" forState:0];
+    }else if ([rowModel.statusLabel isEqualToString:@"处理中"]){
+        [cell.actButton2 setTitle:@"查看进度" forState:0];
+    }else if ([rowModel.statusLabel isEqualToString:@"已结案"]){
+        [cell.actButton2 setTitle:@"评价" forState:0];
+    }
+    
     QDFWeakSelf;
     [cell.actButton2 addAction:^(UIButton *btn) {
-        [weakself goToCheckApplyRecordsOrAdditionMessage:actArray[statusInt - 1] withSection:indexPath.section withEvaString:@""];
-//        if (statusInt == 1) {//完善资料
-//        }else if (statusInt == 2) {//联系申请方
-//            
-//        }if (statusInt == 3) {//查看进度
-//            
-//        }if (statusInt == 4) {//评价
-//            
-//        }
+        [weakself goToCheckApplyRecordsOrAdditionMessage:btn.titleLabel.text withSection:indexPath.section withEvaString:@""];
     }];
     
     //details
     //委托本金
-    NSString *orString0 = [NSString stringWithFormat:@"委托本金：%@万",@"1000"];
+    NSString *orString0 = [NSString stringWithFormat:@"委托本金：%@",rowModel.accountLabel];
     //债权类型
-    NSString *orString1 = [NSString stringWithFormat:@"债权类型：%@",@"房产抵押，机动车抵押，合同纠纷"];
+    NSString *orString1 = [NSString stringWithFormat:@"债权类型：%@",rowModel.categoryLabel];
     //委托事项
-    NSString *orString2 = [NSString stringWithFormat:@"委托事项：%@",@"清收，诉讼，债权转让"];
+    NSString *orString2 = [NSString stringWithFormat:@"委托事项：%@",rowModel.entrustLabel];
     //委托费用
-    NSString *orSt;
-    if ([rowModel.agencycommissiontype integerValue] == 1) {
-        orSt = @"万";
-    }else if ([rowModel.agencycommissiontype integerValue] == 2){
-         orSt = @"％";
-    }
-    NSString *orString3 = [NSString stringWithFormat:@"委托费用：%@%@",rowModel.agencycommission,orSt];
+    NSString *orString3 = [NSString stringWithFormat:@"委托费用：%@%@",rowModel.typenumLabel,rowModel.typeLabel];
     
     //违约期限
-    NSString *orString4 = [NSString stringWithFormat:@"违约期限：%@个月",@"1"];
+    NSString *orString4 = [NSString stringWithFormat:@"违约期限：%@个月",rowModel.overdue];
     //合同履行地
-    NSString *orString5 = [NSString stringWithFormat:@"合同履行地：%@",@"上海上海市浦东新区"];
+    NSString *orString5 = [NSString stringWithFormat:@"合同履行地：%@",rowModel.addressLabel];
     
     NSString *orString = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@\n%@",orString0,orString1,orString2,orString3,orString4,orString5];
     NSMutableAttributedString *orAttributeStr = [[NSMutableAttributedString alloc] initWithString:orString];
@@ -306,154 +317,6 @@
     [cell.contentButton setAttributedTitle:orAttributeStr forState:0];
     
     return cell;
-    
-    /*
-    //image
-    if ([rowModel.category intValue] == 2){//清收
-        [cell.nameButton setImage:[UIImage imageNamed:@"list_collection"] forState:0];
-    }else if ([rowModel.category intValue] == 3){//诉讼
-        [cell.nameButton setImage:[UIImage imageNamed:@"list_litigation"] forState:0];
-    }
-    
-    //code
-    NSString *codeS = [NSString stringWithFormat:@"%@",rowModel.codeString];
-    [cell.nameButton setTitle:codeS forState:0];
-    
-    //status
-    NSArray *statusArray = @[@"发布中",@"处理中",@"已终止",@"已结案"];
-    NSInteger statusInt = [rowModel.progress_status integerValue];
-    cell.statusLabel.text = statusArray[statusInt - 1];
-    
-    //content
-    NSString *orString0 = [NSString stringWithFormat:@"   借款本金：%@万",rowModel.money];
-    NSString *orString1;
-    if ([rowModel.category integerValue] == 2) {//清收
-        if ([rowModel.agencycommissiontype integerValue] == 1) {
-            orString1 = [NSString stringWithFormat:@"   服务佣金：%@%@",rowModel.agencycommission,@"%"];
-        }else{
-            orString1 = [NSString stringWithFormat:@"   固定费用：%@万",rowModel.agencycommission];
-        }
-    }else if ([rowModel.category integerValue] == 3){//诉讼
-        if ([rowModel.agencycommissiontype integerValue] == 1) {
-            orString1 = [NSString stringWithFormat:@"   固定费用：%@万",rowModel.agencycommission];
-        }else{
-            orString1 = [NSString stringWithFormat:@"   代理费率：%@%@",rowModel.agencycommission,@"%"];
-        }
-    }
-    NSString *orString2;
-    NSString *orString3;
-    if ([rowModel.loan_type integerValue] == 1) {
-        orString2 = [NSString stringWithFormat: @"   债权类型：房产抵押"];
-        orString3 = [NSString stringWithFormat:@"   抵押物地址：%@",rowModel.seatmortgage];
-    }else if ([rowModel.loan_type integerValue] == 2){
-        orString2 = [NSString stringWithFormat: @"   债权类型：应收帐款"];
-        orString3 = [NSString stringWithFormat:@"   应收帐款：%@万",rowModel.accountr];
-    }else if ([rowModel.loan_type integerValue] == 3){
-        orString2 = [NSString stringWithFormat: @"   债权类型：机动车抵押"];
-        NSArray *plateArray = @[@"沪牌",@"非沪牌"];
-        NSInteger plateInt = [rowModel.licenseplate integerValue] - 1;
-        NSString *carSdd = [NSString stringWithFormat:@"%@%@%@",rowModel.carbrand,rowModel.audi,plateArray[plateInt]];
-        orString3 = [NSString stringWithFormat:@"   机动车抵押：%@",carSdd];
-    }else if ([rowModel.loan_type integerValue] == 4){
-        orString2 = [NSString stringWithFormat: @"   债权类型：无抵押"];
-        orString3 = [NSString stringWithFormat:@"   无抵押"];
-    }
-    
-    NSString *orString = [NSString stringWithFormat:@"%@\n%@\n%@\n%@",orString0,orString1,orString2,orString3];
-    NSMutableAttributedString *orAttributeStr = [[NSMutableAttributedString alloc] initWithString:orString];
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    [style setLineSpacing:6];
-    [orAttributeStr addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, orString.length)];
-    [cell.contentLabel setAttributedText:orAttributeStr];
-    
-    //remind
-    if ([rowModel.app_id isEqualToString:@"0"]) {
-        [cell.deadLineButton setHidden:NO];
-        [cell.deadLineButton setTitle:@"您有新的申请记录" forState:0];
-    }else{
-        [cell.deadLineButton setHidden:YES];
-    }
-    
-    //action
-    QDFWeakSelf;
-    if ([rowModel.progress_status integerValue] == 1) {//发布中
-        [cell.actButton1 setHidden:YES];
-        [cell.actButton2 setHidden:NO];
-        
-        [cell.actButton2 setTitle:@"查看申请人" forState:0];
-        [cell.actButton2 setTitleColor:kBlueColor forState:0];
-        cell.actButton2.layer.borderColor = kBlueColor.CGColor;
-        
-        [cell.actButton2 addAction:^(UIButton *btn) {
-            [weakself goToCheckApplyRecordsOrAdditionMessage:@"查看申请人" withSection:indexPath.section withEvaString:@""];
-        }];
-    }else if ([rowModel.progress_status integerValue] == 2) {//处理
-        [cell.actButton1 setHidden:NO];
-        [cell.actButton2 setHidden:NO];
-        
-        cell.actButton1.layer.borderColor = kBorderColor.CGColor;
-        [cell.actButton1 setTitleColor:kBlackColor forState:0];
-        [cell.actButton1 setTitle:@"联系接单方" forState:0];
-        
-        cell.actButton2.layer.borderColor = kBlueColor.CGColor;
-        [cell.actButton2 setTitleColor:kBlueColor forState:0];
-        [cell.actButton2 setTitle:@"查看进度" forState:0];
-        
-        [cell.actButton1 addAction:^(UIButton *btn) {
-            [weakself goToCheckApplyRecordsOrAdditionMessage:@"联系接单方" withSection:indexPath.section withEvaString:@""];
-        }];
-        
-        [cell.actButton2 addAction:^(UIButton *btn) {
-            [weakself goToCheckApplyRecordsOrAdditionMessage:@"查看进度" withSection:indexPath.section withEvaString:@""];
-        }];
-        
-    }else if ([rowModel.progress_status integerValue] == 3) {//终止
-        [cell.actButton1 setHidden:YES];
-        [cell.actButton2 setHidden:NO];
-        
-        [cell.actButton2 setTitle:@"删除订单" forState:0];
-        [cell.actButton2 setTitleColor:kBlackColor forState:0];
-        cell.actButton2.layer.borderColor = kBorderColor.CGColor;
-        
-        [cell.actButton2 addAction:^(UIButton *btn) {
-            [weakself goToCheckApplyRecordsOrAdditionMessage:@"删除订单" withSection:indexPath.section withEvaString:@""];
-        }];
-        
-    }else if ([rowModel.progress_status integerValue] == 4) {//结案
-        [cell.actButton1 setHidden:NO];
-        [cell.actButton2 setHidden:NO];
-        
-        cell.actButton1.layer.borderColor = kBorderColor.CGColor;
-        [cell.actButton1 setTitleColor:kBlackColor forState:0];
-        [cell.actButton1 setTitle:@"删除订单" forState:0];
-        
-        cell.actButton2.layer.borderColor = kBlueColor.CGColor;
-        [cell.actButton2 setTitleColor:kBlueColor forState:0];
-        
-        NSString *id_category = [NSString stringWithFormat:@"%@_%@",rowModel.idString,rowModel.category];
-        NSString *creditor = self.releaseDic[id_category];
-        if ([creditor integerValue] == 0) {
-            [cell.actButton2 setTitle:@"评价接单方" forState:0];
-            [cell.actButton2 addAction:^(UIButton *btn) {
-                [weakself goToCheckApplyRecordsOrAdditionMessage:@"评价接单方" withSection:indexPath.section withEvaString:@""];
-            }];
-        }else{
-            [cell.actButton2 setTitle:@"查看评价" forState:0];
-            [cell.actButton2 addAction:^(UIButton *btn) {
-                [weakself goToCheckApplyRecordsOrAdditionMessage:@"查看评价" withSection:indexPath.section withEvaString:@""];
-            }];
-        }
-        
-        [cell.actButton1 addAction:^(UIButton *btn) {
-            [weakself goToCheckApplyRecordsOrAdditionMessage:@"删除订单" withSection:indexPath.section withEvaString:@""];
-        }];
-        
-
-    }
-    
-    return cell;
-     
-     */
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -469,6 +332,39 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     RowsModel *sModel = self.releaseDataArray[indexPath.section];
+
+    if ([sModel.statusLabel isEqualToString:@"发布中"]) {
+        MyPublishingViewController *myPublishingVC = [[MyPublishingViewController alloc] init];
+//        myPublishingVC.idString = sModel.idString;
+//        myPublishingVC.categaryString = sModel.category;
+//        myPublishingVC.app_idString = sModel.app_id;
+        myPublishingVC.productid = sModel.productid;
+        [self.navigationController pushViewController:myPublishingVC animated:YES];
+    }else if ([sModel.statusLabel isEqualToString:@"面谈中"]) {
+        PublishInterviewViewController *publishInterviewVC = [[PublishInterviewViewController alloc] init];
+        publishInterviewVC.idString = sModel.idString;
+        publishInterviewVC.categaryString = sModel.category;
+        publishInterviewVC.pidString = sModel.pid;
+        [self.navigationController pushViewController:publishInterviewVC animated:YES];
+    }else if ([sModel.statusLabel isEqualToString:@"处理中"]) {
+        MyDealingViewController *myDealingVC = [[MyDealingViewController alloc] init];
+        myDealingVC.idString = sModel.idString;
+        myDealingVC.categaryString = sModel.category;
+        myDealingVC.pidString = sModel.pid;
+        [self.navigationController pushViewController:myDealingVC animated:YES];
+    }else if ([sModel.statusLabel isEqualToString:@"已结案"]) {
+        NSString *id_category = [NSString stringWithFormat:@"%@_%@",sModel.idString,sModel.category];
+        NSString *value1 = self.releaseDic[id_category];
+        
+        ReleaseCloseViewController *releaseCloseVC = [[ReleaseCloseViewController alloc] init];
+        releaseCloseVC.evaString = value1;
+        releaseCloseVC.idString = sModel.idString;
+        releaseCloseVC.categaryString = sModel.category;
+        releaseCloseVC.pidString = sModel.pid;
+        [self.navigationController pushViewController:releaseCloseVC animated:YES];
+    }
+    
+    
     
 //    MyPublishingViewController *myPublishingVC = [[MyPublishingViewController alloc] init];
 //    myPublishingVC.idString = sModel.idString;
@@ -476,15 +372,15 @@
 //    myPublishingVC.app_idString = sModel.app_id;
 //    [self.navigationController pushViewController:myPublishingVC animated:YES];
     
-    NSString *id_category = [NSString stringWithFormat:@"%@_%@",sModel.idString,sModel.category];
-    NSString *value1 = self.releaseDic[id_category];
-    
-    ReleaseCloseViewController *releaseCloseVC = [[ReleaseCloseViewController alloc] init];
-    releaseCloseVC.evaString = value1;
-    releaseCloseVC.idString = sModel.idString;
-    releaseCloseVC.categaryString = sModel.category;
-    releaseCloseVC.pidString = sModel.pid;
-    [self.navigationController pushViewController:releaseCloseVC animated:YES];
+//    NSString *id_category = [NSString stringWithFormat:@"%@_%@",sModel.idString,sModel.category];
+//    NSString *value1 = self.releaseDic[id_category];
+//    
+//    ReleaseCloseViewController *releaseCloseVC = [[ReleaseCloseViewController alloc] init];
+//    releaseCloseVC.evaString = value1;
+//    releaseCloseVC.idString = sModel.idString;
+//    releaseCloseVC.categaryString = sModel.category;
+//    releaseCloseVC.pidString = sModel.pid;
+//    [self.navigationController pushViewController:releaseCloseVC animated:YES];
 
     
     
@@ -535,9 +431,14 @@
 #pragma mark - method
 - (void)getMyReleaseListWithPage:(NSString *)page
 {
-    NSString *myReleaseString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseString];
+    NSString *myReleaseString;
+    if ([self.progresType integerValue] == 1) {
+        myReleaseString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseOfIngString];
+    }else if ([self.progresType integerValue] == 2){
+        myReleaseString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseOfFinishedString];
+    }
+    
     NSDictionary *params = @{@"token" : [self getValidateToken],
-                             @"progress_status" : self.progreStatus,
                              @"limit" : @"10",
                              @"page" : page
                              };
@@ -546,19 +447,16 @@
         
         if ([page intValue] == 1) {
             [weakself.releaseDataArray removeAllObjects];
-            [weakself.releaseDic removeAllObjects];
         }
         
         ReleaseResponse *responseModel = [ReleaseResponse objectWithKeyValues:responseObject];
 
-        if (responseModel.rows.count == 0) {
+        if (responseModel.data.count == 0) {
             [weakself showHint:@"没有更多了"];
             _pageRelease --;
         }
         
-        [weakself.releaseDic setValuesForKeysWithDictionary:responseModel.creditor];
-        
-        for (RowsModel *rowsModel in responseModel.rows) {
+        for (RowsModel *rowsModel in responseModel.data) {
             [weakself.releaseDataArray addObject:rowsModel];
         }
         

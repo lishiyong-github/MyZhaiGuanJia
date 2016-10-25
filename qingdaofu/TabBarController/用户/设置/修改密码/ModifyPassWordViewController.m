@@ -131,26 +131,30 @@
     return cell;
 }
 
+#pragma mark - method
 - (void)modifyPassword
 {
     [self.view endEditing:YES];
     NSString *modifyString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kModifyPasswordString];
     
-    NSString *old_password = @"";
-    NSString *new_password = @"";
+//    NSString *old_password = @"";
+//    NSString *new_password = @"";
+//    
+//    if (self.modifyDictionary[@"old_password"]) {
+//        old_password = self.modifyDictionary[@"old_password"];
+//    }
+//    
+//    if (self.modifyDictionary[@"new_password"]) {
+//       new_password = self.modifyDictionary[@"new_password"];
+//    }
     
-    if (self.modifyDictionary[@"old_password"]) {
-        old_password = self.modifyDictionary[@"old_password"];
-    }
+    [self.modifyDictionary setValue:[self getValidateToken] forKey:@"token"];
     
-    if (self.modifyDictionary[@"new_password"]) {
-       new_password = self.modifyDictionary[@"new_password"];
-    }
-    
-    NSDictionary *params = @{@"token" : [self getValidateToken],
-                             @"old_password" : old_password,
-                             @"new_password" : new_password
-                             };
+    NSDictionary *params = self.modifyDictionary;
+//    @{@"token" : [self getValidateToken],
+//                             @"old_password" : old_password,
+//                             @"new_password" : new_password
+//                             };
     QDFWeakSelf;
     [self requestDataPostWithString:modifyString params:params successBlock:^(id responseObject){
         

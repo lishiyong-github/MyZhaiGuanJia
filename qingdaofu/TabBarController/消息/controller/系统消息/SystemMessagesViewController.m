@@ -11,11 +11,11 @@
 #import "MyPublishingViewController.h"  //发布中
 #import "MyAgentListViewController.h" //我的代理
 
-#import "NewsCell.h"
+#import "SystemMessageCell.h"
+
 
 #import "MessageResponse.h"
-#import "MessageModel.h"
-#import "CategoryModel.h"
+#import "MessagesModel.h"
 
 @interface SystemMessagesViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -64,7 +64,7 @@
 {
     if (!_sysMessageTableView) {
         _sysMessageTableView.translatesAutoresizingMaskIntoConstraints = NO;
-        _sysMessageTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
+        _sysMessageTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _sysMessageTableView.delegate = self;
         _sysMessageTableView.dataSource = self;
         _sysMessageTableView.backgroundColor = kBackColor;
@@ -96,45 +96,28 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.messageSysArray.count > 0) {
-        MessageModel *model = self.messageSysArray[indexPath.section];
-        
-        CGSize titleSize = CGSizeMake(kScreenWidth - 55, MAXFLOAT);
-        CGSize actualsize = [model.contents boundingRectWithSize:titleSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName :kFirstFont} context:nil].size;
-        
-        return 40 + MAX(actualsize.height, 16);
-    }
-    return 0;
+    return 80;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier = @"newsList";
-    NewsCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    SystemMessageCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
-        cell = [[NewsCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        cell = [[SystemMessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
     
-    cell.selectedBackgroundView = [[UIView alloc] init];
-    cell.selectedBackgroundView.backgroundColor = UIColorFromRGB(0xdee8ed);
+    MessagesModel *messagesModel = self.messageSysArray[indexPath.section];
     
-    MessageModel *model;
-    if (self.messageSysArray.count > 0) {
-        model = self.messageSysArray[indexPath.section];
-    }
+    cell.titleLabel.text = messagesModel.title;
+    cell.timeLabel.text = [NSDate getMDhmFormatterTime:messagesModel.create_time];
     
-    if ([model.isRead integerValue] == 0) {//未读
-        [cell.typeButton setImage:[UIImage imageNamed:@"tips"] forState:0];
-        [cell.typeButton setTitle:model.title forState:0];
-        [cell.typeButton setTitleEdgeInsets:UIEdgeInsetsMake(0, kSmallPadding, 0, 0)];
-    }else{//已读
-        [cell.typeButton setImage:[UIImage imageNamed:@"q"] forState:0];
-        [cell.typeButton setTitle:model.title forState:0];
-        [cell.typeButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    }
-    
-    cell.timeLabel.text = [NSDate getYMDhmFormatterTime:model.create_time];
-    cell.contextLabel.text = model.contents;
+    NSMutableAttributedString *attributeTT = [[NSMutableAttributedString alloc] initWithString:messagesModel.content];
+    [attributeTT setAttributes:@{NSFontAttributeName:kSecondFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(0, messagesModel.content.length)];
+    NSMutableParagraphStyle *styped = [[NSMutableParagraphStyle alloc] init];
+    [styped setLineSpacing:kSpacePadding];
+    [attributeTT addAttribute:NSParagraphStyleAttributeName value:styped range:NSMakeRange(0, messagesModel.content.length)];
+    [cell.contenLabel setAttributedText:attributeTT];
     
     return cell;
 }
@@ -152,16 +135,13 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (self.messageSysArray.count > 0) {
-        MessageModel *meModel = self.messageSysArray[indexPath.section];
-            [self messageIsReadWithIdStr:meModel.idStr andType:meModel.type andModel:meModel.category_id];
-    }
+    
 }
 
 #pragma mark - method
 - (void)getSystemMessageListWithPage:(NSString *)page
 {
-    NSString *mesString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMessageOfPublishString];
+    NSString *mesString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMessageOfSystemString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"limit" : @"10",
                              @"page" : page,
@@ -170,17 +150,17 @@
     
     QDFWeakSelf;
     [self requestDataPostWithString:mesString params:params successBlock:^(id responseObject) {
-                        
+        
         if ([page integerValue] == 1) {
             [weakself.messageSysArray removeAllObjects];
         }
         
-        MessageResponse *response = [MessageResponse objectWithKeyValues:responseObject];
+        MessageResponse *responfg = [MessageResponse objectWithKeyValues:responseObject];
         
-        for (MessageModel *mesModel in response.message) {
-            [weakself.messageSysArray addObject:mesModel];
+        for (MessagesModel *messageModel in responfg.data) {
+            [weakself.messageSysArray addObject:messageModel];
         }
-        
+
         if (weakself.messageSysArray.count > 0) {
             [weakself.baseRemindImageView setHidden:YES];
         }else{
@@ -214,56 +194,6 @@
         [self.sysMessageTableView footerEndRefreshing];
     });
 }
-
-#pragma mark - method
-- (void)messageIsReadWithIdStr:(NSString *)idStr andType:(NSString *)typeStr andModel:(CategoryModel *)categoryModel
-{
-    NSString *category_idStr = [NSString getValidStringFromString:categoryModel.idString toString:@""];
-    NSString *isReadString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMessageIsReadString];
-    NSDictionary *params = @{@"id" : idStr,
-                             @"pid" : category_idStr,
-                             @"token" : [self getValidateToken]
-                             };
-    QDFWeakSelf;
-    [self requestDataPostWithString:isReadString params:params successBlock:^(id responseObject) {
-        
-        BaseModel *aModel = [BaseModel objectWithKeyValues:responseObject];
-        if ([aModel.code isEqualToString:@"0000"]) {
-            if ([typeStr integerValue] == 10) {//认证
-                [weakself tokenIsValid];
-                [weakself setDidTokenValid:^(TokenModel *tModel) {
-                    NSString *categoryStr;
-                    if ([tModel.state intValue] == 1 && [tModel.category intValue] == 1) {//个人
-                        categoryStr = @"1";
-                    }else if ([tModel.state intValue] == 1 && [tModel.category intValue] == 2){//律所
-                        categoryStr = @"2";
-                    }else if ([tModel.state intValue] == 1 && [tModel.category intValue] == 3){//公司
-                        categoryStr = @"3";
-                    }
-                    CompleteViewController *completeVC = [[CompleteViewController alloc] init];
-                    completeVC.hidesBottomBarWhenPushed = YES;
-                    completeVC.categoryString = categoryStr;
-                    [weakself.navigationController pushViewController:completeVC animated:YES];
-                }];
-            }else if([typeStr integerValue] == 21){//完善（融资清收诉讼）发布中
-                MyPublishingViewController *myPublishVC = [[MyPublishingViewController alloc] init];
-                myPublishVC.idString = categoryModel.idString;
-                myPublishVC.categaryString = categoryModel.category;
-                myPublishVC.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:myPublishVC animated:YES];
-            }else{//代理人
-                MyAgentListViewController *myAgentListVC = [[MyAgentListViewController alloc] init];
-                myAgentListVC.hidesBottomBarWhenPushed = YES;
-                myAgentListVC.typePid = @"本人";
-                [weakself.navigationController pushViewController:myAgentListVC animated:YES];
-            }
-        }
-        
-    } andFailBlock:^(NSError *error) {
-        
-    }];
-}
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

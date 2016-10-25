@@ -291,10 +291,9 @@
 #pragma mark - method
 - (void)getDetailMessages
 {
-    NSString *detailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseDetailString];
+    NSString *detailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductDetailString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
-                             @"id" : self.idString,
-                             @"category" : self.categaryString
+                             @"productid" : self.productid
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){

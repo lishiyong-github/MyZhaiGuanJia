@@ -10,4 +10,7 @@
 
 @interface ChangeMobileViewController : NetworkViewController
 
+@property (nonatomic,strong) NSString *oldMobile;  //旧手机号码
+@property (nonatomic,strong) NSString *oldCode;  //旧手机验证码
+
 @end

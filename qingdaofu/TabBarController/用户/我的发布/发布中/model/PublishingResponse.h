@@ -12,6 +12,7 @@
 @class UserModel;
 @class DebtModel;
 @class UserNameModel;
+@class RowsModel;
 
 @interface PublishingResponse : BaseModel
 
@@ -42,5 +43,9 @@
 
 /* 代理人详情 */
 @property (nonatomic,strong) NSMutableArray *user;
+
+
+/////
+@property (nonatomic,strong) RowsModel *data;
 
 @end

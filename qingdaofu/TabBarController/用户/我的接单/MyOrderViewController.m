@@ -55,6 +55,7 @@
 @property (nonatomic,strong) NSMutableDictionary *orderDic;
 
 @property (nonatomic,assign) NSInteger pageOrder;//页数
+@property (nonatomic,strong) NSString *progressType;  //1-进行中／2-已完成
 
 //@property (nonatomic,strong) AllProSegView *orderHeadView;
 //@property (nonatomic,strong) UITableView *myOrderTableView;
@@ -294,8 +295,13 @@
 #pragma mark - method
 - (void)getMyReleaseListWithPage:(NSString *)page
 {
-    NSString *myOrderString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrderListString];
-//    [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrderListString];
+    NSString *myOrderString;
+    if ([self.progressType integerValue] == 1) {
+        myOrderString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrdersOfIngString];
+    }else if ([self.progressType integerValue] == 2){
+        myOrderString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrdersOfFinishedString];
+    }
+    
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"type" : @"0",
                              @"limit" : @"10",

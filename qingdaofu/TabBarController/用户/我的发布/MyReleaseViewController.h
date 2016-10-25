@@ -20,5 +20,7 @@
 
 @property (nonatomic,strong) NSString *progreStatus;
 
+@property (nonatomic,strong) NSString *productid;
+
 
 @end

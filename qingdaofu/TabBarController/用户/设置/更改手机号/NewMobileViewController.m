@@ -74,7 +74,7 @@
         _neMobileLabel.numberOfLines = 0;
         _neMobileLabel.textAlignment = 2;
         NSString *sss1 = @"发送验证码到当前手机号码";
-        NSString *sss2 = @"11212122236";
+        NSString *sss2 = @"13162521916";
         NSString *sss = [NSString stringWithFormat:@"%@\n%@",sss1,sss2];
         NSMutableAttributedString *attributeSS = [[NSMutableAttributedString alloc] initWithString:sss];
         [attributeSS addAttributes:@{NSFontAttributeName:kFourFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(0, sss1.length)];
@@ -141,8 +141,7 @@
         
         QDFWeakSelf;
         [_neCommitButton addAction:^(UIButton *btn) {
-            ChangeMobileViewController *changeMobileVC = [[ChangeMobileViewController alloc] init];
-            [weakself.navigationController pushViewController:changeMobileVC animated:YES];
+            [weakself VerifyThePldMobile];
         }];
     }
     return _neCommitButton;
@@ -159,6 +158,11 @@
         [attributeCC addAttributes:@{NSFontAttributeName : kFourFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(0, ccc1.length)];
         [attributeCC addAttributes:@{NSFontAttributeName:kFourFont,NSForegroundColorAttributeName:kTextColor} range:NSMakeRange(ccc1.length, ccc2.length)];
         [_neCodeButton setAttributedTitle:attributeCC forState:0];
+        
+        QDFWeakSelf;
+        [_neCodeButton addAction:^(UIButton *btn) {
+            [weakself sendMobileCode];
+        }];
     }
     return _neCodeButton;
 }
@@ -172,6 +176,50 @@
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     return YES;
+}
+
+#pragma mark - method
+- (void)sendMobileCode//发送手机验证码
+{
+    NSString *oldMobileString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMySettingOfModifyOldMobile];
+    NSDictionary *params = @{@"token" : [self getValidateToken],
+                             @"mobile" : @"13162521916",
+//                             @"mobile" : self.mobile,
+                             @"type" : @"4"
+                             };
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:oldMobileString params:params successBlock:^(id responseObject) {
+        BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:baseModel.msg];
+
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
+- (void)VerifyThePldMobile
+{
+    NSString *verifyString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMySettingOfVerifyOldPhone];
+    NSDictionary *params = @{@"token" : [self getValidateToken],
+//                             @"mobile" : self.mobile,
+                             @"mobile" : @"13162521916",
+                             @"code" : @"",
+                             @"type" : @"4"
+                             };
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:verifyString params:params successBlock:^(id responseObject) {
+        BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:baseModel.msg];
+        
+        if ([baseModel.code isEqualToString:@"0000"]) {
+            ChangeMobileViewController *changeMobileVC = [[ChangeMobileViewController alloc] init];
+            [weakself.navigationController pushViewController:changeMobileVC animated:YES];
+        }
+    } andFailBlock:^(NSError *error) {
+        
+    }];
 }
 
 - (void)didReceiveMemoryWarning {

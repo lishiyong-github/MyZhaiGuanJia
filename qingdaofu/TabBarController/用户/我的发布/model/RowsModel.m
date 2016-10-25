@@ -14,7 +14,8 @@
 {
     return @{@"codeString" : @"code",
              @"idString" : @"id",
-             @"uidString" : @"uid"};
+             @"uidString" : @"uid"
+             };
 }
 
 @end

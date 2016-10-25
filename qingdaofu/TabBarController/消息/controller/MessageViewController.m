@@ -13,7 +13,13 @@
 #import "SystemMessagesViewController.h"   //系统消息
 #import "LoginViewController.h"  //登录
 
-#import "NewsTableViewCell.h"
+//#import "NewsTableViewCell.h"
+#import "MessageTableViewCell.h"
+#import "MessageSystemView.h"
+
+#import "MessageResponse.h"
+#import "MessagesModel.h"
+
 
 #import "TabBarItem.h"
 #import "UITabBar+Badge.h"
@@ -26,15 +32,17 @@
 
 //json
 @property (nonatomic,strong) NSMutableDictionary *resultDic;
+@property (nonatomic,strong) NSMutableArray *messageCountArray;
 @property (nonatomic,strong) NSMutableArray *messageArray;
-
+@property (nonatomic,assign) NSInteger pageMessage;
 @end
 
 @implementation MessageViewController
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [self getMessageTypeAndNumber];
+//    [self getMessageTypeAndNumber:<#(NSString *)#>];
+    [self headerRefreshOfMessageGroup];
 }
 
 - (void)viewDidLoad {
@@ -67,8 +75,18 @@
         _messageTableView.delegate = self;
         _messageTableView.dataSource = self;
         _messageTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
+        [_messageTableView addHeaderWithTarget:self action:@selector(headerRefreshOfMessageGroup)];
+        [_messageTableView addFooterWithTarget:self action:@selector(footerRefreshOfMessageGroup)];
     }
     return _messageTableView;
+}
+
+- (NSMutableArray *)messageCountArray
+{
+    if (!_messageCountArray) {
+        _messageCountArray = [NSMutableArray array];
+    }
+    return _messageCountArray;
 }
 
 - (NSMutableArray *)messageArray
@@ -87,48 +105,101 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return kCellHeight5;
+    return 82;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier = @"message";
+    MessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    if (!cell) {
+        cell = [[MessageTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+    }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 82;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    MessageSystemView *headrVew = [[MessageSystemView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 82)];
     
+    if (self.messageCountArray.count > 0) {
+        MessageResponse *respondf = self.messageCountArray[0];
+        headrVew.countLabel.text = respondf.systemCount;
+    }
     
+    QDFWeakSelf;
+    [headrVew addAction:^(UIButton *btn) {
+        SystemMessagesViewController *systemMessagesVC = [[SystemMessagesViewController alloc] init];
+        systemMessagesVC.hidesBottomBarWhenPushed = YES;
+        [weakself.navigationController pushViewController:systemMessagesVC animated:YES];
+    }];
     
-    return nil;
+    return headrVew;
 }
 
 #pragma mark - method
-- (void)getMessageTypeAndNumber
+- (void)getMessageTypeAndNumber:(NSString *)page
 {
-    NSString *messageTypeString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMessageTypeAndNumbersString];
+    NSString *messageTypeString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMessageOfGroupString];
+    
     NSString *token = [self getValidateToken]?[self getValidateToken]:@"";
-    NSDictionary *params = @{@"token" : token};
+    
+    NSDictionary *params = @{@"token" : token,
+                             @"page" : page,
+                             @"limit" : @"10"
+                             };
+    
     QDFWeakSelf;
     [self requestDataPostWithString:messageTypeString params:params successBlock:^(id responseObject) {
-        NSDictionary *opopo = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        weakself.resultDic = [NSMutableDictionary dictionaryWithDictionary:opopo[@"result"]];
-        [weakself.messageTableView reloadData];
         
-        NSInteger n1 = [weakself.resultDic[@"1"][@"number"] integerValue];
-        NSInteger n2 = [weakself.resultDic[@"2"][@"number"] integerValue];
-        NSInteger n4 = [weakself.resultDic[@"4"][@"number"] integerValue];
-        
-        NSString *all = [NSString stringWithFormat:@"%ld",n1+n2+n4];
-        
-        if ([all integerValue] == 0) {
-            //隐藏
-            [self.tabBarController.tabBar hideBadgeOnItemIndex:3];
-        }else{
-            //显示
-            [self.tabBarController.tabBar showBadgeOnItemIndex:3];
+        if ([page integerValue] == 1) {
+            [weakself.messageArray removeAllObjects];
         }
+        
+        MessageResponse *responde = [MessageResponse objectWithKeyValues:responseObject];
+        
+        [weakself.messageCountArray addObject:responde];
+        
+        for (MessagesModel *messagesModel in responde.data) {
+            [weakself.messageArray addObject:messagesModel];
+        }
+        
+        [weakself.messageTableView reloadData];
         
     } andFailBlock:^(NSError *error) {
         
     }];
+}
+
+
+- (void)headerRefreshOfMessageGroup
+{
+    _pageMessage = 1;
+    [self getMessageTypeAndNumber:@"1"];
+    
+    QDFWeakSelf;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [weakself.messageTableView headerEndRefreshing];
+    });
+}
+
+- (void)footerRefreshOfMessageGroup
+{
+    _pageMessage++;
+    NSString *page = [NSString stringWithFormat:@"%ld",(long)_pageMessage];
+    [self getMessageTypeAndNumber:page];
+    
+    QDFWeakSelf;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [weakself.messageTableView footerEndRefreshing];
+    });
 }
 
 /*

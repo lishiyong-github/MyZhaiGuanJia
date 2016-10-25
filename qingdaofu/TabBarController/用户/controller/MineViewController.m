@@ -270,6 +270,22 @@
     return _loginView;
 }
 
+#pragma mark - method
+- (void)getMessageOfUser
+{
+    NSString *userString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPersonCenterMessageString];
+    NSString *token = [self getValidateToken]?[self getValidateToken]:@"";
+    NSDictionary *params = @{@"token" : token,
+                             @"userid" : @"1",
+                             @"productid" : @"2"};
+    
+    [self requestDataPostWithString:userString params:params successBlock:^(id responseObject) {
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

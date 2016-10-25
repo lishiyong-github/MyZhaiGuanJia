@@ -15,7 +15,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         [self.contentView addSubview:self.imageButton];
-        [self.contentView addSubview:self.countLabel];
+//        [self.contentView addSubview:self.countLabel];
         [self.contentView addSubview:self.contentLabel];
         [self.contentView addSubview:self.timeButton];
         
@@ -30,9 +30,16 @@
         
         [self.imageButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
         [self.imageButton autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
+        [self.imageButton autoSetDimensionsToSize:CGSizeMake(50, 50)];
         
-        [self.countLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.imageButton withOffset:-20];
-        [self.countLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.imageButton];
+//        [self.countLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.imageButton withOffset:-20];
+//        [self.countLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.imageButton];
+        
+        [self.contentLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.imageButton withOffset:kBigPadding];
+        [self.contentLabel autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.imageButton];
+        
+        [self.timeButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
+        [self.timeButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.contentLabel];
         
         self.didSetupConstraints = YES;
     }

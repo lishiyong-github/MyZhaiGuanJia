@@ -21,7 +21,10 @@
 @end
 
 @implementation PersonCerterViewController
-
+- (void)viewWillAppear:(BOOL)animated
+{
+    
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -184,7 +187,7 @@
         case 0://头像
             break;
         case 1:{//昵称
-            
+            [self showNickAlert];
         }
             break;
         case 2:{//电话
@@ -198,6 +201,50 @@
             break;
     }
     
+}
+
+#pragma mark - method
+- (void)changeNickName//修改昵称
+{
+    NSString *changeNick = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPersonCerterOfChangeNickString];
+    NSDictionary *params = @{@"token" : [self getValidateToken],
+                             @"nickname" : @"卡兹了"
+                             };
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:changeNick params:params successBlock:^(id responseObject) {
+        
+        BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:baseModel.msg];
+        
+        if (![baseModel.code isEqualToString:@"0000"]) {
+            [weakself showNickAlert];
+        }
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
+- (void)showNickAlert
+{
+    UIAlertController *nickAlert = [UIAlertController alertControllerWithTitle:@"修改昵称" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+    
+    [nickAlert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.placeholder = @"请输入新的昵称";
+    }];
+    
+    UIAlertAction *nickAct0 = [UIAlertAction actionWithTitle:@"取消" style:0 handler:nil];
+    
+    QDFWeakSelf;
+    UIAlertAction *nickAct1 = [UIAlertAction actionWithTitle:@"确认" style:0 handler:^(UIAlertAction * _Nonnull action) {
+        [weakself changeNickName];
+    }];
+    
+    [nickAlert addAction:nickAct0];
+    [nickAlert addAction:nickAct1];
+    
+    [self presentViewController:nickAlert animated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning {

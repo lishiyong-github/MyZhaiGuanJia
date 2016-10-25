@@ -40,7 +40,7 @@
         
         [self.newsCountButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.newsNameButton];
         [self.newsCountButton autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.newsActionButton withOffset:-2];
-        [self.newsCountButton autoSetDimensionsToSize:CGSizeMake(20, 20)];
+//        [self.newsCountButton autoSetDimensionsToSize:CGSizeMake(20, 20)];
         
         [self.newsActionButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.newsActionButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.newsNameButton];
