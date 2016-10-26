@@ -20,10 +20,15 @@
 #import "PublishingResponse.h"
 #import "UserNameModel.h"
 
+#import "MyOrderDetailResponse.h"
+#import "OrderModel.h"
+#import "RowsModel.h"
+#import "PublishingModel.h"
+
 @interface MyApplyingViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
-@property (nonatomic,strong) UIButton *applyingRightButton;
+//@property (nonatomic,strong) UIButton *applyingRightButton;
 @property (nonatomic,strong) UITableView *myApplyingTableView;
 @property (nonatomic,strong) NSMutableArray *myApplyArray;
 
@@ -39,7 +44,10 @@
     [super viewDidLoad];
     self.navigationItem.title = @"产品详情";
     self.navigationItem.leftBarButtonItem = self.leftItem;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.applyingRightButton];
+    if ([self.status integerValue] == 10) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightButton];
+        [self.rightButton setTitle:@"取消申请" forState:0];
+    }
     
     [self.view addSubview:self.myApplyingTableView];
     
@@ -60,19 +68,6 @@
 }
 
 #pragma mark - setter and getter
-- (UIButton *)applyingRightButton
-{
-    if (!_applyingRightButton) {
-        _applyingRightButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 30)];
-        [_applyingRightButton setTitleColor:kWhiteColor forState:0];
-        [_applyingRightButton setTitle:@"取消申请" forState:0];
-        _applyingRightButton.titleLabel.font = kFirstFont;
-        
-        [_applyingRightButton addTarget:self action:@selector(cancelTheProductApply) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _applyingRightButton;
-}
-
 - (UITableView *)myApplyingTableView
 {
     if (!_myApplyingTableView) {
@@ -105,15 +100,12 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (self.myApplyArray.count > 0) {
-        if (section == 0) {
-            return 2;
-        }else if (section == 2){
-            return 7;
-        }
-        return 1;
+    if (section == 0) {
+        return 2;
+    }else if (section == 2){
+        return 7;
     }
-    return 0;
+    return 1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -125,11 +117,10 @@
             kCellHeight3;
         }
     }else if (indexPath.section == 1){
-        PublishingResponse *resongde = self.myApplyArray[0];
-        if ([resongde.product.progress_status integerValue] == 2) {
-            return 196;
-        }else if ([resongde.product.progress_status integerValue] == 1){
-            return 210;
+        if ([self.status integerValue] == 20) {
+            return 220;
+        }else{
+            return 200;
         }
     }
     return kCellHeight;
@@ -138,8 +129,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier;
-    PublishingResponse *resongde = self.myApplyArray[0];
-    PublishingModel *applyingModel = resongde.product;
+    OrderModel *orderModel = self.myApplyArray[0];
 
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
@@ -150,37 +140,55 @@
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.backgroundColor = kBackColor;
-            [cell.progress1 setText:@"申请中"];
             
-            if ([applyingModel.progress_status integerValue] == 2) {
-                [cell.line2 setBackgroundColor:kLightGrayColor];
-                [cell.progress2 setTextColor:kLightGrayColor];
-                [cell.point2 setImage:[UIImage imageNamed:@"normal2"] forState:0];
-            }else if ([applyingModel.progress_status integerValue] == 1){
-                [cell.line2 setBackgroundColor:kButtonColor];
-                [cell.progress2 setTextColor:kTextColor];
+            if ([self.status integerValue] == 10) {//申请中
+                [cell.progress1 setText:@"申请中"];
+                
+            }else if ([self.status integerValue] == 20) {//面谈中
+                [cell.progress1 setText:@"申请中"];
+                
                 [cell.point2 setImage:[UIImage imageNamed:@"succee"] forState:0];
+                [cell.progress2 setTextColor:kTextColor];
+                [cell.line2 setBackgroundColor:kButtonColor];
+                
+            }else if ([self.status integerValue] == 30) {//面谈失败
+                [cell.progress1 setText:@"申请中"];
+
+                [cell.point2 setImage:[UIImage imageNamed:@"fail"] forState:0];
+                [cell.progress2 setText:@"面谈失败"];
+                [cell.progress2 setTextColor:kRedColor];
+                [cell.line2 setBackgroundColor:kRedColor];
+            }else if ([self.status integerValue] == 50) {//取消申请
+                [cell.point1 setImage:[UIImage imageNamed:@"fail"] forState:0];
+                [cell.progress1 setText:@"取消申请"];
+                [cell.progress1 setTextColor:kRedColor];
+                [cell.line1 setBackgroundColor:kRedColor];
+            }else if ([self.status integerValue] == 60) {//申请失败
+                [cell.point1 setImage:[UIImage imageNamed:@"fail"] forState:0];
+                [cell.progress1 setText:@"申请失败"];
+                [cell.progress1 setTextColor:kRedColor];
+                [cell.line1 setBackgroundColor:kRedColor];
             }
             
             return cell;
+            
         }else if (indexPath.row == 1){
             identifier = @"applying01";
-            if ([applyingModel.progress_status integerValue] == 2) {
+            if ([self.status integerValue] == 10 || [self.status integerValue] == 50 || [self.status integerValue] == 60) {
                 MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
                 if (!cell) {
                     cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                 }
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                PublishingResponse *resModel = self.myApplyArray[0];
                 
-                UserNameModel *userNameModel = resModel.username;
-                NSString *nameStr = [NSString getValidStringFromString:userNameModel.username toString:@"未认证"];
+                NSString *nameStr = [NSString getValidStringFromString:orderModel.product.fabuuser.mobile toString:@"未认证"];
                 NSString *checkStr = [NSString stringWithFormat:@"发布方：%@",nameStr];
                 [cell.userNameButton setTitle:checkStr forState:0];
                 [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
                 [cell.userActionButton setTitle:@"发布方详情  " forState:0];
                 return cell;
-            }else if ([applyingModel.progress_status integerValue] == 1){
+                
+            }else if ([self.status integerValue] == 20 || [self.status integerValue] == 30){
                 OrderPublishCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
                 
                 if (!cell) {
@@ -188,9 +196,7 @@
                 }
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 
-                UserNameModel *userNameModel = resongde.username;
-                
-                NSString *nameStr = [NSString getValidStringFromString:userNameModel.username toString:@"未认证"];
+                NSString *nameStr = [NSString getValidStringFromString:orderModel.product.fabuuser.mobile toString:@"未认证"];
                 NSString *checkStr = [NSString stringWithFormat:@"发布方：%@",nameStr];
                 [cell.checkButton setTitle:checkStr forState:0];
                 [cell.contactButton setTitle:@" 联系TA" forState:0];
@@ -199,28 +205,28 @@
                 //接单方详情
                 QDFWeakSelf;
                 [cell.checkButton addAction:^(UIButton *btn) {
-                    if ([userNameModel.username isEqualToString:@""] || userNameModel.username == nil || !userNameModel.username) {
-                        [weakself showHint:@"发布方未认证，不能查看相关信息"];
-                    }else{
-                        CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
-                        checkDetailPublishVC.idString = weakself.idString;
-                        checkDetailPublishVC.categoryString = weakself.categaryString;
-                        checkDetailPublishVC.pidString = @"1";
-//                        weakself.pidString;
-                        checkDetailPublishVC.typeString = @"发布方";
-                        //                checkDetailPublishVC.typeDegreeString = @"处理中";
-                        [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];
-                    }
+//                    if ([userNameModel.username isEqualToString:@""] || userNameModel.username == nil || !userNameModel.username) {
+//                        [weakself showHint:@"发布方未认证，不能查看相关信息"];
+//                    }else{
+//                        CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+//                        checkDetailPublishVC.idString = weakself.idString;
+//                        checkDetailPublishVC.categoryString = weakself.categaryString;
+//                        checkDetailPublishVC.pidString = @"1";
+////                        weakself.pidString;
+//                        checkDetailPublishVC.typeString = @"发布方";
+//                        //                checkDetailPublishVC.typeDegreeString = @"处理中";
+//                        [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];
+//                    }
                 }];
                 
                 //电话
                 [cell.contactButton addAction:^(UIButton *btn) {
-                    if ([userNameModel.username isEqualToString:@""] || userNameModel.username == nil || !userNameModel.username) {
-                        [self showHint:@"发布方未认证，不能打电话"];
-                    }else{
-                        NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",userNameModel.mobile];
-                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
-                    }
+//                    if ([userNameModel.username isEqualToString:@""] || userNameModel.username == nil || !userNameModel.username) {
+//                        [self showHint:@"发布方未认证，不能打电话"];
+//                    }else{
+//                        NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",userNameModel.mobile];
+//                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
+//                    }
                 }];
                 return cell;
             }
@@ -235,11 +241,11 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.backgroundColor = kWhiteColor;
         
-        if ([applyingModel.progress_status integerValue] == 2) {
+        if ([self.status integerValue] == 10) {
             cell.stateLabel1.text = @"申请中";
             cell.stateLabel2.text = @"申请中，等待发布方同意";
             
-        }else if ([applyingModel.progress_status integerValue] == 1){
+        }else if ([self.status integerValue] == 20){
             cell.stateLabel1.text = @"等待面谈";
 
             cell.stateLabel2.numberOfLines = 0;
@@ -250,9 +256,19 @@
             syudy.alignment = NSTextAlignmentCenter;
             [attributeSt addAttribute:NSParagraphStyleAttributeName value:syudy range:NSMakeRange(0, staetc.length)];
             [cell.stateLabel2 setAttributedText:attributeSt];
+        }else if ([self.status integerValue] == 30){
+            cell.stateLabel1.text = @"面谈失败";
+            cell.stateLabel2.text = @"面谈失败";
+        }else if ([self.status integerValue] == 50){
+            cell.stateLabel1.text = @"取消申请";
+            cell.stateLabel2.text = @"取消申请，您可以在产品列表中再次申请";
+        }else if ([self.status integerValue] == 60){
+            cell.stateLabel1.text = @"申请失败";
+            cell.stateLabel2.text = @"申请失败";
         }
         
         return cell;
+        
     }else if (indexPath.section == 2){
         identifier = @"applying2";
         MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -276,27 +292,31 @@
         }else if (indexPath.row == 1){
             [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
             cell.userNameButton.titleLabel.font = kFirstFont;
-            [cell.userActionButton setTitle:@"债权类型" forState:0];
+            [cell.userActionButton setTitle:orderModel.product.categoryLabel forState:0];
         }else if (indexPath.row == 2){
             [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
             cell.userNameButton.titleLabel.font = kFirstFont;
-            [cell.userActionButton setTitle:@"委托事项" forState:0];
+            [cell.userActionButton setTitle:orderModel.product.entrustLabel forState:0];
         }else if (indexPath.row == 3){
             [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
             cell.userNameButton.titleLabel.font = kFirstFont;
-            [cell.userActionButton setTitle:@"委托金额" forState:0];
+            [cell.userActionButton setTitle:orderModel.product.accountLabel forState:0];
         }else if (indexPath.row == 4){
             [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
             cell.userNameButton.titleLabel.font = kFirstFont;
-            [cell.userActionButton setTitle:@"委托费用" forState:0];
+            
+            NSString *typenumStr = [NSString stringWithFormat:@"%@%@",orderModel.product.typenumLabel,orderModel.product.typeLabel];
+            [cell.userActionButton setTitle:typenumStr forState:0];
         }else if (indexPath.row == 5){
             [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
             cell.userNameButton.titleLabel.font = kFirstFont;
-            [cell.userActionButton setTitle:@"违约期限" forState:0];
+            
+            NSString *overdueStr = [NSString stringWithFormat:@"%@个月",orderModel.product.overdue];
+            [cell.userActionButton setTitle:overdueStr forState:0];
         }else if (indexPath.row == 6){
             [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
             cell.userNameButton.titleLabel.font = kFirstFont;
-            [cell.userActionButton setTitle:@"合同履行地" forState:0];
+            [cell.userActionButton setTitle:orderModel.product.addressLabel forState:0];
         }
         
         return cell;
@@ -342,16 +362,17 @@
 #pragma mark - method
 - (void)getDetailMessageOfApplying
 {
-    NSString *detailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseDetailString];
+    NSString *detailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrderDetailsString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
-                             @"id" : self.idString,
-                             @"category" : self.categaryString
+                             @"applyid" : self.applyid
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
+        
+        NSDictionary *sisisis = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
                 
-        PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
-        [weakself.myApplyArray addObject:response];
+        MyOrderDetailResponse *response = [MyOrderDetailResponse objectWithKeyValues:responseObject];
+        [weakself.myApplyArray addObject:response.data];
         [weakself.myApplyingTableView reloadData];
         
     } andFailBlock:^(NSError *error){
@@ -359,17 +380,12 @@
     }];
 }
 
-- (void)cancelTheProductApply
+- (void)rightItemAction
 {
     [self showHint:@"取消申请"];
     
-    PublishingResponse *respofn;
-    if (self.myApplyArray.count > 0) {
-        respofn = self.myApplyArray[0];
-    }
-    
-    NSString *cancelString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kCancelProductOfMyOrderString];
-    NSDictionary *params = @{@"id" : respofn.username.deleteId,
+    NSString *cancelString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrderDetailOfCancelApplyString];
+    NSDictionary *params = @{@"applyid" : self.applyid,
                              @"token" : [self getValidateToken]
                              };
     QDFWeakSelf;

@@ -77,5 +77,11 @@
 
 
 
+///////////
+//@property (nonatomic,copy) NSString *idString;
+@property (nonatomic,copy) NSString *mobile;
+@property (nonatomic,copy) NSString *pid;
+@property (nonatomic,copy) NSString *realname;
+@property (nonatomic,copy) NSString *username;
 
 @end

@@ -9,6 +9,10 @@
 #import "PublishInterviewViewController.h"
 #import "ApplyRecordViewController.h"  //申请记录
 #import "CheckDetailPublishViewController.h"  //查看发布方
+#import "MyPublishingViewController.h"  //发布中
+#import "MyDealingViewController.h"  //处理中
+
+
 
 #import "MineUserCell.h"//完善信息
 #import "NewPublishDetailsCell.h"//进度
@@ -16,9 +20,11 @@
 #import "NewPublishStateCell.h"//状态
 #import "PublishCombineView.h"  //底部视图
 
-#import "PublishingModel.h"
+//#import "PublishingModel.h"
 #import "PublishingResponse.h"
-#import "UserNameModel.h"  //申请方信息
+#import "RowsModel.h"
+#import "ApplyRecordModel.h"
+//#import "UserNameModel.h"  //申请方信息
 
 @interface PublishInterviewViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -83,6 +89,15 @@
         [_publishInterviewView.comButton2 setTitleColor:kLightGrayColor forState:0];
         _publishInterviewView.comButton2.layer.borderColor = kBorderColor.CGColor;
         _publishInterviewView.comButton2.layer.borderWidth = kLineWidth;
+        
+        QDFWeakSelf;
+        [_publishInterviewView setDidSelectedBtn:^(NSInteger tag) {
+            if (tag == 111) {
+                [weakself actionOfInterviewResultOfActStirng:@"agree"];
+            }else{
+                [weakself actionOfInterviewResultOfActStirng:@"cancel"];
+            }
+        }];
     }
     return _publishInterviewView;
 }
@@ -106,13 +121,10 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (self.publishInterviewArray.count > 0) {
-        if (section == 0) {
-            return 3;
-        }
-        return 1;
+    if (section == 0) {
+        return 3;
     }
-    return 0;
+    return 1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -135,8 +147,7 @@
     
     if (indexPath.section == 0) {
         
-        PublishingResponse *resModel = self.publishInterviewArray[0];
-        PublishingModel *publishModel = resModel.product;
+        RowsModel *rowModel = self.publishInterviewArray[0];
         
         if (indexPath.row == 0) {
             identifier = @"publishing00";
@@ -146,9 +157,9 @@
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             
-            [cell.userNameButton setTitle:publishModel.codeString forState:0];
+            [cell.userNameButton setTitle:rowModel.number forState:0];
             [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-            [cell.userActionButton setTitle:@"编辑信息" forState:0];
+            [cell.userActionButton setTitle:@"完善信息" forState:0];
             
             return cell;
         }else if (indexPath.row == 1){
@@ -175,9 +186,9 @@
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             
-            UserNameModel *userNameModel = resModel.username;
+//            UserNameModel *userNameModel = resModel.username;
             
-            NSString *nameStr = [NSString getValidStringFromString:userNameModel.jusername toString:@"未认证"];
+            NSString *nameStr = [NSString getValidStringFromString:rowModel.productApply.mobile toString:@"未认证"];
             NSString *checkStr = [NSString stringWithFormat:@"申请方：%@",nameStr];
             [cell.checkButton setTitle:checkStr forState:0];
             [cell.contactButton setTitle:@" 联系TA" forState:0];
@@ -186,27 +197,27 @@
             //接单方详情
             QDFWeakSelf;
             [cell.checkButton addAction:^(UIButton *btn) {
-                if ([userNameModel.jusername isEqualToString:@""] || userNameModel.jusername == nil || !userNameModel.jusername) {
-                    [weakself showHint:@"申请方未认证，不能查看相关信息"];
-                }else{
-                    CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
-                    checkDetailPublishVC.idString = weakself.idString;
-                    checkDetailPublishVC.categoryString = weakself.categaryString;
-                    checkDetailPublishVC.pidString = weakself.pidString;
-                    checkDetailPublishVC.typeString = @"接单方";
-                    //                checkDetailPublishVC.typeDegreeString = @"处理中";
-                    [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];
-                }
+//                if ([userNameModel.jusername isEqualToString:@""] || userNameModel.jusername == nil || !userNameModel.jusername) {
+//                    [weakself showHint:@"申请方未认证，不能查看相关信息"];
+//                }else{
+//                    CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+//                    checkDetailPublishVC.idString = weakself.idString;
+//                    checkDetailPublishVC.categoryString = weakself.categaryString;
+//                    checkDetailPublishVC.pidString = weakself.pidString;
+//                    checkDetailPublishVC.typeString = @"接单方";
+//                    //                checkDetailPublishVC.typeDegreeString = @"处理中";
+//                    [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];
+//                }
             }];
             
             //电话
             [cell.contactButton addAction:^(UIButton *btn) {
-                if ([userNameModel.jusername isEqualToString:@""] || userNameModel.jusername == nil || !userNameModel.jusername) {
-                    [self showHint:@"申请方未认证，不能打电话"];
-                }else{
-                    NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",userNameModel.jmobile];
-                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
-                }
+//                if ([userNameModel.jusername isEqualToString:@""] || userNameModel.jusername == nil || !userNameModel.jusername) {
+//                    [self showHint:@"申请方未认证，不能打电话"];
+//                }else{
+//                    NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",userNameModel.jmobile];
+//                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
+//                }
             }];
             return cell;
         }
@@ -267,18 +278,31 @@
 #pragma mark - method
 - (void)getDetailMessages
 {
-    NSString *detailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseDetailString];
-    NSDictionary *params = @{@"token" : [self getValidateToken],
-                             @"id" : self.idString,
-                             @"category" : self.categaryString
-                             };
+    NSString *detailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseDetailsString];
+    NSDictionary *params;
+    
+    if (!self.messageid) {
+        params = @{@"token" : [self getValidateToken],
+                   @"productid" : self.productid
+                   };
+    }else{
+        params = @{@"token" : [self getValidateToken],
+                   @"productid" : self.productid,
+                   @"messageid" : self.messageid
+                   };
+        
+    }
+    
     QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
         
+        NSDictionary *sososo = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
+        
         if ([response.code isEqualToString:@"0000"]) {
             [weakself.publishInterviewArray removeAllObjects];
-            [weakself.publishInterviewArray addObject:response];
+            [weakself.publishInterviewArray addObject:response.data];
             [weakself.publishInterviewTableView reloadData];
         }
         
@@ -286,6 +310,57 @@
         
     }];
 }
+
+- (void)actionOfInterviewResultOfActStirng:(NSString *)resultString//是否选择该申请方为接单方
+{
+    NSString *interViewResultString;
+    if ([resultString isEqualToString:@"agree"]) {
+        interViewResultString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseDetailOfInterviewResultAgree];
+    }else if ([resultString isEqualToString:@"cancel"]){
+        interViewResultString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseDetailOfInterviewResultCancel];
+    }
+    
+    RowsModel *rowModel;
+    if (self.publishInterviewArray.count > 0) {
+        rowModel = self.publishInterviewArray[0];
+    }
+    
+    NSDictionary *params = @{@"token" : [self getValidateToken],
+                             @"applyid" : rowModel.productApply.applyid
+                             };
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:interViewResultString params:params successBlock:^(id responseObject) {
+        
+        BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:baseModel.msg];
+        
+        if ([baseModel.code isEqualToString:@"0000"]) {
+            
+            if ([resultString isEqualToString:@"agree"]) {//同意－处理中
+                MyDealingViewController *myDealingVC = [[MyDealingViewController alloc] init];
+                myDealingVC.productid = rowModel.productid;
+                UINavigationController *navv = weakself.navigationController;
+                [navv popViewControllerAnimated:NO];
+                [navv pushViewController:myDealingVC animated:NO];
+            }else if ([resultString isEqualToString:@"cancel"]){//拒绝－发布中
+                MyPublishingViewController *myPublishingVC = [[MyPublishingViewController alloc] init];
+                myPublishingVC.productid = rowModel.productid;
+                UINavigationController *navv = weakself.navigationController;
+                [navv popViewControllerAnimated:NO];
+                [navv pushViewController:myPublishingVC animated:NO];
+            }
+        }
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+    
+    
+}
+
+
+
 
 //申请人列表
 - (void)showRecordList

@@ -10,6 +10,7 @@
 
 @interface PublishCombineView : UIView
 
+@property (nonatomic,strong) void (^didSelectedBtn)(NSInteger);
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UIButton *comButton1;
 @property (nonatomic,strong) UIButton *comButton2;

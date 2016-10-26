@@ -206,9 +206,9 @@
                     [weakself showHint:@"申请方未认证，不能查看相关信息"];
                 }else{
                     CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
-                    checkDetailPublishVC.idString = weakself.idString;
-                    checkDetailPublishVC.categoryString = weakself.categaryString;
-                    checkDetailPublishVC.pidString = weakself.pidString;
+//                    checkDetailPublishVC.idString = weakself.idString;
+//                    checkDetailPublishVC.categoryString = weakself.categaryString;
+//                    checkDetailPublishVC.pidString = weakself.pidString;
                     checkDetailPublishVC.typeString = @"接单方";
                     //                checkDetailPublishVC.typeDegreeString = @"处理中";
                     [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];

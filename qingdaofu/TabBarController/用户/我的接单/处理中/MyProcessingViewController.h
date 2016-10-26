@@ -17,5 +17,6 @@
 @property (nonatomic,strong) NSString *pidString;
 @property (nonatomic,strong) NSString *deadLine;
 
+@property (nonatomic,strong) NSString *applyid;
 
 @end

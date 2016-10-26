@@ -52,6 +52,14 @@
         _comButton1.titleLabel.font = kFirstFont;
         [_comButton1 setTitle:@"需准备的材料" forState:0];
         [_comButton1 setTitleColor:kWhiteColor forState:0];
+        _comButton1.tag = 111;
+        
+        QDFWeakSelf;
+        [_comButton1 addAction:^(UIButton *btn) {
+            if (weakself.didSelectedBtn) {
+                weakself.didSelectedBtn(btn.tag);
+            }
+        }];
     }
     return _comButton1;
 }
@@ -63,6 +71,14 @@
         _comButton2.titleLabel.font = kFirstFont;
         [_comButton2 setTitle:@"发起面谈" forState:0];
         [_comButton2 setTitleColor:kWhiteColor forState:0];
+        _comButton2.tag = 112;
+        
+        QDFWeakSelf;
+        [_comButton2 addAction:^(UIButton *btn) {
+            if (weakself.didSelectedBtn) {
+                weakself.didSelectedBtn(btn.tag);
+            }
+        }];
     }
     return _comButton2;
 }

@@ -19,7 +19,5 @@
 
 /////////
 @property (nonatomic,strong) NSMutableArray *data;
-@property (nonatomic,copy) NSString *userid;
-
 
 @end

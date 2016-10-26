@@ -21,8 +21,12 @@
 #import "PublishCombineView.h"  //底部视图
 #import "BaseRemindButton.h"  //提示框
 
-#import "PublishingModel.h"
 #import "PublishingResponse.h"
+#import "RowsModel.h"
+#import "ApplyRecordModel.h"
+#import "OrdersModel.h"
+
+#import "PublishingModel.h"
 #import "UserNameModel.h"  //申请方信息
 
 //#import "CheckDetailPublishViewController.h"  //查看发布方
@@ -92,7 +96,7 @@
 //    [self.dealRemindButton setHidden:YES];
     [self.view setNeedsUpdateConstraints];
     
-    [self getDetailMessages];
+    [self getDetailMessageso];
 }
 
 - (void)updateViewConstraints
@@ -175,13 +179,10 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (self.myDealingDataArray.count > 0) {
-        if (section == 0) {
-            return 3;
-        }
-        return 1;
+    if (section == 0) {
+        return 3;
     }
-    return 0;
+    return 1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -202,10 +203,9 @@
 {
     static NSString *identifier;
     
+    RowsModel *rowModel = self.myDealingDataArray[0];
+    
     if (indexPath.section == 0) {
-        
-        PublishingResponse *resModel = self.myDealingDataArray[0];
-        PublishingModel *publishModel = resModel.product;
         
         if (indexPath.row == 0) {
             identifier = @"myDealing00";
@@ -215,11 +215,12 @@
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             
-            [cell.userNameButton setTitle:publishModel.codeString forState:0];
+            [cell.userNameButton setTitle:rowModel.number forState:0];
             [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
             [cell.userActionButton setTitle:@"查看详情" forState:0];
             
             return cell;
+            
         }else if (indexPath.row == 1){
             identifier = @"myDealing01";
             NewPublishDetailsCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -247,9 +248,7 @@
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             
-            UserNameModel *userNameModel = resModel.username;
-            
-            NSString *nameStr = [NSString getValidStringFromString:userNameModel.jusername toString:@"未认证"];
+            NSString *nameStr = [NSString getValidStringFromString:rowModel.productApply.mobile toString:@"未认证"];
             NSString *checkStr = [NSString stringWithFormat:@"接单方：%@",nameStr];
             [cell.checkButton setTitle:checkStr forState:0];
             [cell.contactButton setTitle:@" 联系TA" forState:0];
@@ -258,27 +257,27 @@
             //接单方详情
             QDFWeakSelf;
             [cell.checkButton addAction:^(UIButton *btn) {
-                if ([userNameModel.jusername isEqualToString:@""] || userNameModel.jusername == nil || !userNameModel.jusername) {
-                    [weakself showHint:@"申请方未认证，不能查看相关信息"];
-                }else{
-                    CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
-                    checkDetailPublishVC.idString = weakself.idString;
-                    checkDetailPublishVC.categoryString = weakself.categaryString;
-                    checkDetailPublishVC.pidString = weakself.pidString;
-                    checkDetailPublishVC.typeString = @"接单方";
-                    //                checkDetailPublishVC.typeDegreeString = @"处理中";
-                    [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];
-                }
+//                if ([userNameModel.jusername isEqualToString:@""] || userNameModel.jusername == nil || !userNameModel.jusername) {
+//                    [weakself showHint:@"申请方未认证，不能查看相关信息"];
+//                }else{
+//                    CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+//                    checkDetailPublishVC.idString = weakself.idString;
+//                    checkDetailPublishVC.categoryString = weakself.categaryString;
+//                    checkDetailPublishVC.pidString = weakself.pidString;
+//                    checkDetailPublishVC.typeString = @"接单方";
+//                    //                checkDetailPublishVC.typeDegreeString = @"处理中";
+//                    [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];
+//                }
             }];
             
             //电话
             [cell.contactButton addAction:^(UIButton *btn) {
-                if ([userNameModel.jusername isEqualToString:@""] || userNameModel.jusername == nil || !userNameModel.jusername) {
-                    [self showHint:@"申请方未认证，不能打电话"];
-                }else{
-                    NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",userNameModel.jmobile];
-                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
-                }
+//                if ([userNameModel.jusername isEqualToString:@""] || userNameModel.jusername == nil || !userNameModel.jusername) {
+//                    [self showHint:@"申请方未认证，不能打电话"];
+//                }else{
+//                    NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",userNameModel.jmobile];
+//                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
+//                }
             }];
             return cell;
         }
@@ -293,7 +292,12 @@
         
         [cell.userNameButton setTitle:@"签约协议详情" forState:0];
         [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-        [cell.userActionButton setTitle:@"查看详情" forState:0];
+        
+        if ([rowModel.productApply.orders.status integerValue] <= 10) {
+            [cell.userActionButton setTitle:@"等待接单方上传" forState:0];
+        }else{
+            [cell.userActionButton setTitle:@"查看" forState:0];
+        }
         
         return cell;
     }else if (indexPath.section == 2){
@@ -306,8 +310,12 @@
         
         [cell.userNameButton setTitle:@"居间协议" forState:0];
         [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-        [cell.userActionButton setTitle:@"查看" forState:0];
         
+        if ([rowModel.productApply.orders.status integerValue] == 0) {
+            [cell.userActionButton setTitle:@"等待接单方上传" forState:0];
+        }else{
+            [cell.userActionButton setTitle:@"查看" forState:0];
+        }
         return cell;
     }else if (indexPath.section == 3){
         identifier = @"myDealing3";
@@ -335,30 +343,53 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    RowsModel *rowModel = self.myDealingDataArray[0];
+    
     if (indexPath.section == 0 && indexPath.row == 0) {
         [self showHint:@"查看详情"];
     }else if (indexPath.section == 1) {
-        [self showHint:@"签约协议详情"];
+        if ([rowModel.productApply.orders.status integerValue] <= 10) {
+            [self showHint:@"签约协议详情"];
+        }else{
+            [self showHint:@"查看签约协议详情"];
+        }
     }else if (indexPath.section == 2){
-        [self showHint:@"居间协议"];
+        if ([rowModel.productApply.orders.status integerValue] == 0) {
+            [self showHint:@"居间协议"];
+        }else{
+            [self showHint:@"查看居间协议"];
+        }
     }
 }
 
 #pragma mark - method
-- (void)getDetailMessages
+- (void)getDetailMessageso
 {
-    NSString *detailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseDetailString];
-    NSDictionary *params = @{@"token" : [self getValidateToken],
-                             @"id" : self.idString,
-                             @"category" : self.categaryString
-                             };
+    NSString *detailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseDetailsString];
+    NSDictionary *params;
+    
+    if (!self.messageid) {
+        params = @{@"token" : [self getValidateToken],
+                   @"productid" : self.productid
+                   };
+    }else{
+        params = @{@"token" : [self getValidateToken],
+                   @"productid" : self.productid,
+                   @"messageid" : self.messageid
+                   };
+        
+    }
+    
     QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
         
+        NSDictionary *wpwp = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
+        
         if ([response.code isEqualToString:@"0000"]) {
             [weakself.myDealingDataArray removeAllObjects];
-            [weakself.myDealingDataArray addObject:response];
+            [weakself.myDealingDataArray addObject:response.data];
             [weakself.myDealingTableView reloadData];
         }
         
@@ -369,6 +400,10 @@
 
 - (void)rightItemAction
 {
+    NSString *endString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseOfEndString];
+    NSDictionary *params = @{};
+    
+    
     RequestEndViewController *requestEndVC = [[RequestEndViewController alloc] init];
     [self.navigationController pushViewController:requestEndVC animated:YES];
 }

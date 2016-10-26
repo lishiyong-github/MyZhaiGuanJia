@@ -8,6 +8,7 @@
 
 #import "MyPublishingViewController.h"
 #import "ApplyRecordViewController.h"   //申请记录
+#import "PublishInterviewViewController.h"  //面谈中
 
 
 
@@ -26,6 +27,7 @@
 #import "PublishingResponse.h"
 #import "RowsModel.h"
 //#import "PublishingModel.h"
+#import "ApplyRecordModel.h"  //申请人
 
 @interface MyPublishingViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -39,6 +41,7 @@
 
 //json
 @property (nonatomic,strong) NSMutableArray *publishingDataArray;
+@property (nonatomic,strong) NSString *applyidString;
 
 //@property (nonatomic,strong) NSString *loanTypeString1;  //债权类型
 //@property (nonatomic,strong) NSString *loanTypeString2;  //债权类型内容
@@ -113,6 +116,7 @@
         _publishCheckView = [PublishCombineView newAutoLayoutView];
         _publishCheckView.topBtnConstraints.constant = 0;
         [_publishCheckView.comButton2 setBackgroundColor:kSeparateColor];
+        _publishCheckView.comButton2.userInteractionEnabled = NO;
         
         NSString *ppp1 = @"需准备的";
         NSString *ppp2 = @"《材料清单》";
@@ -121,6 +125,17 @@
         [attributePP addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kBlackColor} range:NSMakeRange(0, ppp1.length)];
         [attributePP addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kTextColor} range:NSMakeRange(ppp1.length, ppp2.length)];
         [_publishCheckView.comButton1 setAttributedTitle:attributePP forState:0];
+        
+        QDFWeakSelf;
+        [_publishCheckView setDidSelectedBtn:^(NSInteger tag)  {
+            if (tag == 111) {
+                [weakself showHint:@"材料清单"];
+            }else if (tag == 112){
+                [weakself showHint:@"发起面谈"];
+                [weakself choosePersonOfInterView];
+            }
+        }];
+        
     }
     return _publishCheckView;
 }
@@ -171,8 +186,7 @@
 {
     static NSString *identifier;
    
-    PublishingResponse *resModel = self.publishingDataArray[0];
-    RowsModel *rowModel = resModel.data;
+    RowsModel *rowModel = self.publishingDataArray[0];
     
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
@@ -249,12 +263,34 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 1 && indexPath.row == 0) {
+    if (indexPath.section == 1) {
 //        AdditionMessagesViewController *additionMessageVC = [[AdditionMessagesViewController alloc] init];
 //        additionMessageVC.idString = self.idString;
 //        additionMessageVC.categoryString = self.categaryString;
 //        [self.navigationController pushViewController:additionMessageVC animated:YES];
-        [self showRecordList];
+        //        applyRecordsVC.idStr = self.idString;
+        //        applyRecordsVC.categaryStr = self.categaryString;
+        
+        
+        ApplyRecordViewController *applyRecordsVC = [[ApplyRecordViewController alloc] init];
+        applyRecordsVC.productid = self.productid;
+        [self.navigationController pushViewController:applyRecordsVC animated:YES];
+        
+        QDFWeakSelf;
+        [applyRecordsVC setDidChooseApplyUser:^(ApplyRecordModel *recordModel) {
+            NewsTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+//            [cell.userNameButton setTitle:@"申请方" forState:0];
+//            [cell.userActionButton setTitle:recordModel.mobile forState:0];
+            
+            [cell.newsNameButton setTitle:@"申请方" forState:0];
+            [cell.newsCountButton setTitle:recordModel.mobile forState:0];
+            [cell.newsCountButton setBackgroundColor:kWhiteColor];
+            [cell.newsCountButton setTitleColor:kLightGrayColor forState:0];
+            
+            [weakself.publishCheckView.comButton2 setBackgroundColor:kButtonColor];
+            weakself.publishCheckView.comButton2.userInteractionEnabled = YES;
+            weakself.applyidString = recordModel.applyid;
+        }];
     }
 }
 
@@ -283,7 +319,7 @@
         
         if ([response.code isEqualToString:@"0000"]) {
             [weakself.publishingDataArray removeAllObjects];
-            [weakself.publishingDataArray addObject:response];
+            [weakself.publishingDataArray addObject:response.data];
             [weakself.publishingTableView reloadData];
         }
         
@@ -292,13 +328,34 @@
     }];
 }
 
-- (void)showRecordList
+- (void)choosePersonOfInterView//选择面谈
 {
-    ApplyRecordViewController *applyRecordsVC = [[ApplyRecordViewController alloc] init];
-    applyRecordsVC.idStr = self.idString;
-    applyRecordsVC.categaryStr = self.categaryString;
-    [self.navigationController pushViewController:applyRecordsVC animated:YES];
+    NSString *interViewString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyreleaseDetailsOfStartInterview];
+    NSDictionary *params = @{@"applyid" : self.applyidString,
+                             @"token" : [self getValidateToken]
+                             };
+    
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:interViewString params:params successBlock:^(id responseObject) {
+
+        BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:baseModel.msg];
+        
+        if ([baseModel.code isEqualToString:@"0000"]) {
+            PublishInterviewViewController *publishInterViewVC = [[PublishInterviewViewController alloc] init];
+            publishInterViewVC.productid = weakself.productid;
+            
+            UINavigationController *navcc = weakself.navigationController;
+            [navcc popViewControllerAnimated:NO];
+            [navcc pushViewController:publishInterViewVC animated:NO];
+        }
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
 }
+
 
 ////编辑信息
 //- (void)editAllMessages

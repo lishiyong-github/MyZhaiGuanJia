@@ -11,9 +11,10 @@
 #import "ReleaseEndViewController.h"  //详情
 
 #import "ExtendHomeCell.h"
-#import "EvaTopSwitchView.h"
 
-#import "ReleaseResponse.h"
+#import "OrderResponse.h"
+#import "OrderModel.h"
+#import "OrdersModel.h"
 #import "RowsModel.h"
 
 @interface ReleaseEndListViewController ()<UITableViewDataSource,UITableViewDelegate>
@@ -41,6 +42,8 @@
     [self.baseRemindImageView setHidden:YES];
     
     [self.view setNeedsUpdateConstraints];
+    
+    [self refreshHeaderOfMyReleaseEndList];
 }
 
 - (void)updateViewConstraints
@@ -107,34 +110,37 @@
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     [cell.detailTextLabel setHidden:YES];
-    RowsModel *rowModel = self.releaseEndListArray[indexPath.section];
+    OrderModel *orderModel = self.releaseEndListArray[indexPath.section];
+    RowsModel *rowModel = orderModel.product;
     
     //code
-    NSString *codeS = [NSString stringWithFormat:@"%@",rowModel.codeString];
-    [cell.nameButton setTitle:codeS forState:0];
+    [cell.nameButton setTitle:rowModel.number forState:0];
     
     //status and action
+    cell.statusLabel.text = orderModel.statusLabel;
+    NSLog(@"rowModel.statusLabel is %@",rowModel.statusLabel);
+    [cell.statusLabel setHidden:YES];
+    [cell.actButton2 setTitle:@"协商详情" forState:0];
+    
+    QDFWeakSelf;
+    [cell.actButton2 addAction:^(UIButton *btn) {
+//        [weakself goToCheckApplyRecordsOrAdditionMessage:btn.titleLabel.text withSection:indexPath.section withEvaString:@""];
+    }];
     
     //details
     //委托本金
-    NSString *orString0 = [NSString stringWithFormat:@"委托本金：%@万",@"1000"];
+    NSString *orString0 = [NSString stringWithFormat:@"委托本金：%@",rowModel.accountLabel];
     //债权类型
-    NSString *orString1 = [NSString stringWithFormat:@"债权类型：%@",@"房产抵押，机动车抵押，合同纠纷"];
+    NSString *orString1 = [NSString stringWithFormat:@"债权类型：%@",rowModel.categoryLabel];
     //委托事项
-    NSString *orString2 = [NSString stringWithFormat:@"委托事项：%@",@"清收，诉讼，债权转让"];
+    NSString *orString2 = [NSString stringWithFormat:@"委托事项：%@",rowModel.entrustLabel];
     //委托费用
-    NSString *orSt;
-    if ([rowModel.agencycommissiontype integerValue] == 1) {
-        orSt = @"万";
-    }else if ([rowModel.agencycommissiontype integerValue] == 2){
-        orSt = @"％";
-    }
-    NSString *orString3 = [NSString stringWithFormat:@"委托费用：%@%@",rowModel.agencycommission,orSt];
+    NSString *orString3 = [NSString stringWithFormat:@"委托费用：%@%@",rowModel.typenumLabel,rowModel.typeLabel];
     
     //违约期限
-    NSString *orString4 = [NSString stringWithFormat:@"违约期限：%@个月",@"1"];
+    NSString *orString4 = [NSString stringWithFormat:@"违约期限：%@个月",rowModel.overdue];
     //合同履行地
-    NSString *orString5 = [NSString stringWithFormat:@"合同履行地：%@",@"上海上海市浦东新区"];
+    NSString *orString5 = [NSString stringWithFormat:@"合同履行地：%@",rowModel.addressLabel];
     
     NSString *orString = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@\n%@",orString0,orString1,orString2,orString3,orString4,orString5];
     NSMutableAttributedString *orAttributeStr = [[NSMutableAttributedString alloc] initWithString:orString];
@@ -144,159 +150,7 @@
     [orAttributeStr addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, orString.length)];
     [cell.contentButton setAttributedTitle:orAttributeStr forState:0];
     
-    [cell.actButton2  setTitle:@"协商详情" forState:0];
-    cell.actButton2.layer.borderColor = kBorderColor.CGColor;
-    [cell.actButton2 setTitleColor:kLightGrayColor forState:0];
-    
     return cell;
-    
-    /*
-     //image
-     if ([rowModel.category intValue] == 2){//清收
-     [cell.nameButton setImage:[UIImage imageNamed:@"list_collection"] forState:0];
-     }else if ([rowModel.category intValue] == 3){//诉讼
-     [cell.nameButton setImage:[UIImage imageNamed:@"list_litigation"] forState:0];
-     }
-     
-     //code
-     NSString *codeS = [NSString stringWithFormat:@"%@",rowModel.codeString];
-     [cell.nameButton setTitle:codeS forState:0];
-     
-     //status
-     NSArray *statusArray = @[@"发布中",@"处理中",@"已终止",@"已结案"];
-     NSInteger statusInt = [rowModel.progress_status integerValue];
-     cell.statusLabel.text = statusArray[statusInt - 1];
-     
-     //content
-     NSString *orString0 = [NSString stringWithFormat:@"   借款本金：%@万",rowModel.money];
-     NSString *orString1;
-     if ([rowModel.category integerValue] == 2) {//清收
-     if ([rowModel.agencycommissiontype integerValue] == 1) {
-     orString1 = [NSString stringWithFormat:@"   服务佣金：%@%@",rowModel.agencycommission,@"%"];
-     }else{
-     orString1 = [NSString stringWithFormat:@"   固定费用：%@万",rowModel.agencycommission];
-     }
-     }else if ([rowModel.category integerValue] == 3){//诉讼
-     if ([rowModel.agencycommissiontype integerValue] == 1) {
-     orString1 = [NSString stringWithFormat:@"   固定费用：%@万",rowModel.agencycommission];
-     }else{
-     orString1 = [NSString stringWithFormat:@"   代理费率：%@%@",rowModel.agencycommission,@"%"];
-     }
-     }
-     NSString *orString2;
-     NSString *orString3;
-     if ([rowModel.loan_type integerValue] == 1) {
-     orString2 = [NSString stringWithFormat: @"   债权类型：房产抵押"];
-     orString3 = [NSString stringWithFormat:@"   抵押物地址：%@",rowModel.seatmortgage];
-     }else if ([rowModel.loan_type integerValue] == 2){
-     orString2 = [NSString stringWithFormat: @"   债权类型：应收帐款"];
-     orString3 = [NSString stringWithFormat:@"   应收帐款：%@万",rowModel.accountr];
-     }else if ([rowModel.loan_type integerValue] == 3){
-     orString2 = [NSString stringWithFormat: @"   债权类型：机动车抵押"];
-     NSArray *plateArray = @[@"沪牌",@"非沪牌"];
-     NSInteger plateInt = [rowModel.licenseplate integerValue] - 1;
-     NSString *carSdd = [NSString stringWithFormat:@"%@%@%@",rowModel.carbrand,rowModel.audi,plateArray[plateInt]];
-     orString3 = [NSString stringWithFormat:@"   机动车抵押：%@",carSdd];
-     }else if ([rowModel.loan_type integerValue] == 4){
-     orString2 = [NSString stringWithFormat: @"   债权类型：无抵押"];
-     orString3 = [NSString stringWithFormat:@"   无抵押"];
-     }
-     
-     NSString *orString = [NSString stringWithFormat:@"%@\n%@\n%@\n%@",orString0,orString1,orString2,orString3];
-     NSMutableAttributedString *orAttributeStr = [[NSMutableAttributedString alloc] initWithString:orString];
-     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-     [style setLineSpacing:6];
-     [orAttributeStr addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, orString.length)];
-     [cell.contentLabel setAttributedText:orAttributeStr];
-     
-     //remind
-     if ([rowModel.app_id isEqualToString:@"0"]) {
-     [cell.deadLineButton setHidden:NO];
-     [cell.deadLineButton setTitle:@"您有新的申请记录" forState:0];
-     }else{
-     [cell.deadLineButton setHidden:YES];
-     }
-     
-     //action
-     QDFWeakSelf;
-     if ([rowModel.progress_status integerValue] == 1) {//发布中
-     [cell.actButton1 setHidden:YES];
-     [cell.actButton2 setHidden:NO];
-     
-     [cell.actButton2 setTitle:@"查看申请人" forState:0];
-     [cell.actButton2 setTitleColor:kBlueColor forState:0];
-     cell.actButton2.layer.borderColor = kBlueColor.CGColor;
-     
-     [cell.actButton2 addAction:^(UIButton *btn) {
-     [weakself goToCheckApplyRecordsOrAdditionMessage:@"查看申请人" withSection:indexPath.section withEvaString:@""];
-     }];
-     }else if ([rowModel.progress_status integerValue] == 2) {//处理
-     [cell.actButton1 setHidden:NO];
-     [cell.actButton2 setHidden:NO];
-     
-     cell.actButton1.layer.borderColor = kBorderColor.CGColor;
-     [cell.actButton1 setTitleColor:kBlackColor forState:0];
-     [cell.actButton1 setTitle:@"联系接单方" forState:0];
-     
-     cell.actButton2.layer.borderColor = kBlueColor.CGColor;
-     [cell.actButton2 setTitleColor:kBlueColor forState:0];
-     [cell.actButton2 setTitle:@"查看进度" forState:0];
-     
-     [cell.actButton1 addAction:^(UIButton *btn) {
-     [weakself goToCheckApplyRecordsOrAdditionMessage:@"联系接单方" withSection:indexPath.section withEvaString:@""];
-     }];
-     
-     [cell.actButton2 addAction:^(UIButton *btn) {
-     [weakself goToCheckApplyRecordsOrAdditionMessage:@"查看进度" withSection:indexPath.section withEvaString:@""];
-     }];
-     
-     }else if ([rowModel.progress_status integerValue] == 3) {//终止
-     [cell.actButton1 setHidden:YES];
-     [cell.actButton2 setHidden:NO];
-     
-     [cell.actButton2 setTitle:@"删除订单" forState:0];
-     [cell.actButton2 setTitleColor:kBlackColor forState:0];
-     cell.actButton2.layer.borderColor = kBorderColor.CGColor;
-     
-     [cell.actButton2 addAction:^(UIButton *btn) {
-     [weakself goToCheckApplyRecordsOrAdditionMessage:@"删除订单" withSection:indexPath.section withEvaString:@""];
-     }];
-     
-     }else if ([rowModel.progress_status integerValue] == 4) {//结案
-     [cell.actButton1 setHidden:NO];
-     [cell.actButton2 setHidden:NO];
-     
-     cell.actButton1.layer.borderColor = kBorderColor.CGColor;
-     [cell.actButton1 setTitleColor:kBlackColor forState:0];
-     [cell.actButton1 setTitle:@"删除订单" forState:0];
-     
-     cell.actButton2.layer.borderColor = kBlueColor.CGColor;
-     [cell.actButton2 setTitleColor:kBlueColor forState:0];
-     
-     NSString *id_category = [NSString stringWithFormat:@"%@_%@",rowModel.idString,rowModel.category];
-     NSString *creditor = self.releaseDic[id_category];
-     if ([creditor integerValue] == 0) {
-     [cell.actButton2 setTitle:@"评价接单方" forState:0];
-     [cell.actButton2 addAction:^(UIButton *btn) {
-     [weakself goToCheckApplyRecordsOrAdditionMessage:@"评价接单方" withSection:indexPath.section withEvaString:@""];
-     }];
-     }else{
-     [cell.actButton2 setTitle:@"查看评价" forState:0];
-     [cell.actButton2 addAction:^(UIButton *btn) {
-     [weakself goToCheckApplyRecordsOrAdditionMessage:@"查看评价" withSection:indexPath.section withEvaString:@""];
-     }];
-     }
-     
-     [cell.actButton1 addAction:^(UIButton *btn) {
-     [weakself goToCheckApplyRecordsOrAdditionMessage:@"删除订单" withSection:indexPath.section withEvaString:@""];
-     }];
-     
-     
-     }
-     
-     return cell;
-     
-     */
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -312,10 +166,14 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     RowsModel *sModel = self.releaseEndListArray[indexPath.section];
+    
+    if ([self.personType integerValue] == 1) {
+        
+    }else{
+        
+    }
     ReleaseEndViewController *releaseEndVC = [[ReleaseEndViewController alloc] init];
-    releaseEndVC.idString = sModel.idString;
-    releaseEndVC.categaryString = sModel.category;
-    releaseEndVC.pidString = sModel.pid;
+    releaseEndVC.productid = sModel.productid;
     [self.navigationController pushViewController:releaseEndVC animated:YES];
     
     /*
@@ -365,9 +223,9 @@
 #pragma mark - method
 - (void)getMyReleaseListWithPage:(NSString *)page
 {
-    NSString *myReleaseString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseString];
+    NSString *myReleaseString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrdersOfEndString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
-                             @"progress_status" : @"2",
+                             @"type" : @"0",
                              @"limit" : @"10",
                              @"page" : page
                              };
@@ -376,20 +234,21 @@
         
         if ([page intValue] == 1) {
             [weakself.releaseEndListArray removeAllObjects];
-//            [weakself.releaseDic removeAllObjects];
         }
         
-        ReleaseResponse *responseModel = [ReleaseResponse objectWithKeyValues:responseObject];
+        if ([page intValue] == 1) {
+            [weakself.releaseEndListArray removeAllObjects];
+        }
         
-        if (responseModel.rows.count == 0) {
+        OrderResponse *respondf = [OrderResponse objectWithKeyValues:responseObject];
+        
+        if (respondf.data.count == 0) {
             [weakself showHint:@"没有更多了"];
             _pageReleaseList --;
         }
         
-//        [weakself.releaseDic setValuesForKeysWithDictionary:responseModel.creditor];
-        
-        for (RowsModel *rowsModel in responseModel.rows) {
-            [weakself.releaseEndListArray addObject:rowsModel];
+        for (OrderModel *orderModel in respondf.data) {
+            [weakself.releaseEndListArray addObject:orderModel];
         }
         
         if (weakself.releaseEndListArray.count > 0) {
@@ -399,7 +258,7 @@
         }
         
         [weakself.releaseEndListTableView reloadData];
-        
+
     } andFailBlock:^(NSError *error) {
         [weakself.releaseEndListTableView reloadData];
     }];
@@ -410,8 +269,9 @@
     _pageReleaseList = 1;
     [self getMyReleaseListWithPage:@"1"];
     
+    QDFWeakSelf;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.releaseEndListTableView headerEndRefreshing];
+        [weakself.releaseEndListTableView headerEndRefreshing];
     });
 }
 
@@ -421,8 +281,9 @@
     NSString *page = [NSString stringWithFormat:@"%ld",(long)_pageReleaseList];
     [self getMyReleaseListWithPage:page];
     
+    QDFWeakSelf;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.releaseEndListTableView footerEndRefreshing];
+        [weakself.releaseEndListTableView footerEndRefreshing];
     });
 }
 

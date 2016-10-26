@@ -618,6 +618,11 @@
 		A1A69DE51D62F9D90053FFED /* certification_success_banner@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A69DE31D62F9D90053FFED /* certification_success_banner@3x.png */; };
 		A1A6C84F1D669D9A00EC060E /* ImageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A6C84E1D669D9A00EC060E /* ImageModel.m */; };
 		A1A72CDC1D95306800EDC491 /* WXApiRequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A72CDB1D95306800EDC491 /* WXApiRequestHandler.m */; };
+		A1A77A7F1DC04677006C1111 /* ApplyRecordModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A77A7E1DC04677006C1111 /* ApplyRecordModel.m */; };
+		A1A77A831DC0819C006C1111 /* OrderResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A77A821DC0819C006C1111 /* OrderResponse.m */; };
+		A1A77A861DC0825C006C1111 /* OrderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A77A851DC0825C006C1111 /* OrderModel.m */; };
+		A1A77A8C1DC0A234006C1111 /* OrdersModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A77A8B1DC0A234006C1111 /* OrdersModel.m */; };
+		A1A77A8F1DC0A84A006C1111 /* MyOrderDetailResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A77A8E1DC0A84A006C1111 /* MyOrderDetailResponse.m */; };
 		A1A7D08A1D6583FF00E84329 /* PowerResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A7D0891D6583FF00E84329 /* PowerResponse.m */; };
 		A1A7D08D1D65840F00E84329 /* PowerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A7D08C1D65840F00E84329 /* PowerModel.m */; };
 		A1A828171D8647B000796006 /* DelayHandleResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A828161D8647B000796006 /* DelayHandleResponse.m */; };
@@ -1637,6 +1642,16 @@
 		A1A6C84E1D669D9A00EC060E /* ImageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageModel.m; sourceTree = "<group>"; };
 		A1A72CDA1D95306800EDC491 /* WXApiRequestHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiRequestHandler.h; sourceTree = "<group>"; };
 		A1A72CDB1D95306800EDC491 /* WXApiRequestHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXApiRequestHandler.m; sourceTree = "<group>"; };
+		A1A77A7D1DC04677006C1111 /* ApplyRecordModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplyRecordModel.h; sourceTree = "<group>"; };
+		A1A77A7E1DC04677006C1111 /* ApplyRecordModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplyRecordModel.m; sourceTree = "<group>"; };
+		A1A77A811DC0819C006C1111 /* OrderResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderResponse.h; sourceTree = "<group>"; };
+		A1A77A821DC0819C006C1111 /* OrderResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderResponse.m; sourceTree = "<group>"; };
+		A1A77A841DC0825C006C1111 /* OrderModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderModel.h; sourceTree = "<group>"; };
+		A1A77A851DC0825C006C1111 /* OrderModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderModel.m; sourceTree = "<group>"; };
+		A1A77A8A1DC0A234006C1111 /* OrdersModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrdersModel.h; sourceTree = "<group>"; };
+		A1A77A8B1DC0A234006C1111 /* OrdersModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrdersModel.m; sourceTree = "<group>"; };
+		A1A77A8D1DC0A84A006C1111 /* MyOrderDetailResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyOrderDetailResponse.h; sourceTree = "<group>"; };
+		A1A77A8E1DC0A84A006C1111 /* MyOrderDetailResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyOrderDetailResponse.m; sourceTree = "<group>"; };
 		A1A7D0881D6583FF00E84329 /* PowerResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PowerResponse.h; sourceTree = "<group>"; };
 		A1A7D0891D6583FF00E84329 /* PowerResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PowerResponse.m; sourceTree = "<group>"; };
 		A1A7D08B1D65840F00E84329 /* PowerModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PowerModel.h; sourceTree = "<group>"; };
@@ -2418,6 +2433,8 @@
 				A176912B1CD99DDE004289DD /* 查看发布方 */,
 				A17691151CD97E30004289DD /* MyApplyingViewController.h */,
 				A17691161CD97E30004289DD /* MyApplyingViewController.m */,
+				A1A77A8D1DC0A84A006C1111 /* MyOrderDetailResponse.h */,
+				A1A77A8E1DC0A84A006C1111 /* MyOrderDetailResponse.m */,
 			);
 			path = "申请中";
 			sourceTree = "<group>";
@@ -2949,6 +2966,8 @@
 				A19441731D791B28003CA99F /* ApplyRecordCell.m */,
 				A19441751D791B5E003CA99F /* ApplyRecordResponse.h */,
 				A19441761D791B5E003CA99F /* ApplyRecordResponse.m */,
+				A1A77A7D1DC04677006C1111 /* ApplyRecordModel.h */,
+				A1A77A7E1DC04677006C1111 /* ApplyRecordModel.m */,
 			);
 			path = "查看申请人";
 			sourceTree = "<group>";
@@ -3301,6 +3320,7 @@
 				A17EE3931CD8983900ECC631 /* MyOrderViewController.m */,
 				A17D942C1D6AB84C00BF5B5F /* ExtendHomeCell.h */,
 				A17D942D1D6AB84C00BF5B5F /* ExtendHomeCell.m */,
+				A1A77A801DC0817D006C1111 /* model */,
 			);
 			path = "我的接单";
 			sourceTree = "<group>";
@@ -3835,6 +3855,19 @@
 				A19506361D6FE80F00CE87B5 /* ReportDatePickerView.m */,
 			);
 			path = "弹出表";
+			sourceTree = "<group>";
+		};
+		A1A77A801DC0817D006C1111 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				A1A77A811DC0819C006C1111 /* OrderResponse.h */,
+				A1A77A821DC0819C006C1111 /* OrderResponse.m */,
+				A1A77A841DC0825C006C1111 /* OrderModel.h */,
+				A1A77A851DC0825C006C1111 /* OrderModel.m */,
+				A1A77A8A1DC0A234006C1111 /* OrdersModel.h */,
+				A1A77A8B1DC0A234006C1111 /* OrdersModel.m */,
+			);
+			path = model;
 			sourceTree = "<group>";
 		};
 		A1A7D0871D6583ED00E84329 /* model */ = {
@@ -4599,6 +4632,7 @@
 				A1A017561C5B696A00027134 /* NSObject+MJKeyValue.m in Sources */,
 				A159F9461D0BEE5E00A6A024 /* UIViewController+MutipleImageChoice.m in Sources */,
 				A1522BFF1D10069F00135C72 /* LaunchEvaluateModel.m in Sources */,
+				A1A77A831DC0819C006C1111 /* OrderResponse.m in Sources */,
 				A1B028EC1D1794DC00F32A09 /* SDWebImageManager.m in Sources */,
 				A10D7B8B1CEB246700422D7D /* DebtCreditMessageViewController.m in Sources */,
 				A1A0B1131D753B34009B1DB4 /* ApplicationModel.m in Sources */,
@@ -4628,6 +4662,7 @@
 				A18F14191CF6D6A100B14318 /* AllEvaluationViewController.m in Sources */,
 				A1B0292C1D17CE6F00F32A09 /* AFSecurityPolicy.m in Sources */,
 				A17EE38D1CD86FB700ECC631 /* ContactUsViewController.m in Sources */,
+				A1A77A8F1DC0A84A006C1111 /* MyOrderDetailResponse.m in Sources */,
 				A17F7BF51CE5C52700E882A3 /* NewPublishCell.m in Sources */,
 				A17964FD1CD3682A00B6AD47 /* MyDetailStoreViewController.m in Sources */,
 				A196571B1D77F90D00F846D4 /* PropertyResultOnesModel.m in Sources */,
@@ -4682,6 +4717,7 @@
 				A19238511D7406C000C824D6 /* ReceiptAddressViewController.m in Sources */,
 				A19238581D740FDC00C824D6 /* ReiceptCell.m in Sources */,
 				A19B8E531CCF533B00F8EBF2 /* ProductsViewController.m in Sources */,
+				A1A77A861DC0825C006C1111 /* OrderModel.m in Sources */,
 				A1044E021DAB6B8C007F857D /* HelpCenterViewController.m in Sources */,
 				A19C3C011DBF23FC000E39EA /* MailResponseModel.m in Sources */,
 				A1A0C8D31D4B442D00BC63C6 /* ApplicationGuaranteeViewController.m in Sources */,
@@ -4824,8 +4860,10 @@
 				A19B8E2B1CCF474B00F8EBF2 /* TabBar.m in Sources */,
 				A16FF5A01D0581DF00C50A0B /* NewProductListModel.m in Sources */,
 				A196CDE81CFBC4D300AC6C87 /* UIViewController+DismissKeyboard.m in Sources */,
+				A1A77A8C1DC0A234006C1111 /* OrdersModel.m in Sources */,
 				A192B4B81CDB34030053FC4C /* PaceViewController.m in Sources */,
 				A1C2F1131DAF39A300016D25 /* NewPublishStateCell.m in Sources */,
+				A1A77A7F1DC04677006C1111 /* ApplyRecordModel.m in Sources */,
 				A19424A41D76CFBE00AC699B /* SaveCell.m in Sources */,
 				A159F97C1D0D727A00A6A024 /* MJRefreshConst.m in Sources */,
 				A1B0292E1D17CE6F00F32A09 /* AFURLResponseSerialization.m in Sources */,

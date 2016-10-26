@@ -15,7 +15,6 @@
 #import "BidOneCell.h"
 
 #import "ApplyRecordResponse.h"
-#import "UserModel.h"
 
 
 @interface ApplyRecordViewController ()<UITableViewDataSource,UITableViewDelegate>
@@ -35,7 +34,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [self headerRefreshOfRecords];
+    [self getApplyRecordsList];
 }
 
 - (void)viewDidLoad {
@@ -100,52 +99,22 @@
 #pragma mark - tableView deleagte and datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (self.recordsDataArray.count > 0) {
-        return 2;
-    }
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == 0) {
-        return 1;
-    }else{
-        return self.recordsDataArray.count;
-    }
-    
-    return 0;
+    return self.recordsDataArray.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0) {
-        return kRemindHeight;
-    }
-    return 60;
+    return kCellHeight4;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *identifier;
-    
-    if (indexPath.section == 0) {
-        identifier = @"aRecords0";//BidOneCell.h
-        BidOneCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if (!cell) {
-            cell = [[BidOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        [cell.cancelButton setHidden:YES];
-        cell.backgroundColor = kBlueColor;
-        [cell.oneButton setTitle:@"只能选择一个作为接单方，选择后不能修改" forState:0];
-        [cell.oneButton setTitleColor:kNavColor forState:0];
-        cell.oneButton.titleLabel.font = kFourFont;
-        
-        return cell;
-    }
-    
-    identifier = @"aRecords1";
+    static NSString *identifier = @"aRecords1";
     MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
         cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
@@ -157,13 +126,10 @@
     cell.userActionButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
     [cell.userActionButton autoSetDimension:ALDimensionWidth toSize:75];
     
-    UserModel *userModel;
-    if (self.recordsDataArray.count > 0) {
-        userModel = self.recordsDataArray[indexPath.row];
-    }
+    ApplyRecordModel *recordModel = self.recordsDataArray[indexPath.row];
     
-    NSString *apply1 = [NSString stringWithFormat:@"申请人：%@",userModel.username];
-    NSString *apply2 = [NSDate getYMDhmFormatterTime:userModel.create_time];
+    NSString *apply1 = [NSString stringWithFormat:@"申请人：%@",recordModel.mobile];
+    NSString *apply2 = [NSDate getYMDhmFormatterTime:recordModel.create_at];
     NSString *applySrt = [NSString stringWithFormat:@"%@\n%@",apply1,apply2];
     NSMutableAttributedString *applyAttribute = [[NSMutableAttributedString alloc] initWithString:applySrt];
     [applyAttribute addAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kBlackColor} range:NSMakeRange(0, apply1.length)];
@@ -175,19 +141,37 @@
     
     [cell.userNameButton setAttributedTitle:applyAttribute forState:0];
     
-    [cell.userActionButton setTitle:@"同意" forState:0];
-    [cell.userActionButton setTitleColor:kNavColor forState:0];
+//    [cell.userActionButton setTitle:@"同意" forState:0];
     cell.userActionButton.titleLabel.font = kFourFont;
-    cell.userActionButton.backgroundColor = kBlueColor;
+    [cell.userActionButton setTitleColor:kWhiteColor forState:0];
+    
+    if ([recordModel.status integerValue] == 10) {
+        cell.userActionButton.backgroundColor = kButtonColor;
+        [cell.userActionButton setTitle:@"选择TA" forState:0];
+        cell.userActionButton.userInteractionEnabled = YES;
+    }else if ([recordModel.status integerValue] == 20){
+        cell.userActionButton.backgroundColor = kLightGrayColor;
+        [cell.userActionButton setTitle:@"已选择" forState:0];
+        cell.userActionButton.userInteractionEnabled = NO;
+    }else if ([recordModel.status integerValue] == 30){
+        cell.userActionButton.backgroundColor = kLightGrayColor;
+        [cell.userActionButton setTitle:@"面谈失败" forState:0];
+        cell.userActionButton.userInteractionEnabled = NO;
+    }
     
     QDFWeakSelf;
     [cell.userActionButton addAction:^(UIButton *btn) {
-        AgreementViewController *agreementVC = [[AgreementViewController alloc] init];
-        agreementVC.flagString = @"1";
-        agreementVC.idString = self.idStr;
-        agreementVC.categoryString = self.categaryStr;
-        agreementVC.pidString = userModel.uidInner;
-        [weakself.navigationController pushViewController:agreementVC animated:YES];
+//        AgreementViewController *agreementVC = [[AgreementViewController alloc] init];
+//        agreementVC.flagString = @"1";
+//        agreementVC.idString = self.idStr;
+//        agreementVC.categoryString = self.categaryStr;
+//        agreementVC.pidString = recordModel.uidInner;
+//        [weakself.navigationController pushViewController:agreementVC animated:YES];
+        
+        if (weakself.didChooseApplyUser) {
+            weakself.didChooseApplyUser(recordModel);
+        }
+        [weakself back];
     }];
     
     return cell;
@@ -195,56 +179,58 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section == 1) {
-        return kBigPadding;
-    }
-    
-    return 0.1;
+    return kBigPadding;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return 0.1f;
+    return 40;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    UIButton *footerButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 40)];
+    footerButton.titleLabel.numberOfLines = 0;
+    [footerButton setContentEdgeInsets:UIEdgeInsetsMake(kBigPadding, kBigPadding, 0, kBigPadding)];
+    NSString *ffff = @"选择申请记录中其中一个作为意向接单方，如果选择后面谈结果不符合可以选择其他申请方作为意向接单方。";
+    NSMutableAttributedString *attributeFF = [[NSMutableAttributedString alloc] initWithString:ffff];
+    [attributeFF setAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(0, ffff.length)];
+    NSMutableParagraphStyle *atype = [[NSMutableParagraphStyle alloc] init];
+    [atype setLineSpacing:kSpacePadding];
+    [attributeFF addAttribute:NSParagraphStyleAttributeName value:atype range:NSMakeRange(0, ffff.length)];
+    [footerButton setAttributedTitle:attributeFF forState:0];
+    
+    return footerButton;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 1) {
-        UserModel *uModel = self.recordsDataArray[indexPath.row];
-        CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
-        checkDetailPublishVC.typeString = @"申请人";
-        checkDetailPublishVC.idString = self.idStr;
-        checkDetailPublishVC.categoryString = self.categaryStr;
-        checkDetailPublishVC.pidString = uModel.uidInner;
-        //                checkDetailPublishVC.evaTypeString = @"launchevaluation";
-        [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
+//        recordModel *uModel = self.recordsDataArray[indexPath.row];
+//        CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+//        checkDetailPublishVC.typeString = @"申请人";
+//        checkDetailPublishVC.idString = self.idStr;
+//        checkDetailPublishVC.categoryString = self.categaryStr;
+//        checkDetailPublishVC.pidString = uModel.uidInner;
+//        //                checkDetailPublishVC.evaTypeString = @"launchevaluation";
+//        [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
     }
 }
 
 #pragma mark - method
-- (void)getApplyRecordsListWithPage:(NSString *)page
+- (void)getApplyRecordsList
 {
-    NSString *listString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyRecordsString];
+    NSString *listString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseOfApplyRecordsString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
-                             @"id" : self.idStr,
-                             @"category" : self.categaryStr,
-                             @"page" : page
+                             @"productid" : self.productid
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:listString params:params successBlock:^(id responseObject){
         
-        if ([page integerValue] == 1) {
-            [weakself.recordsDataArray removeAllObjects];
-        }
-        
         ApplyRecordResponse *response = [ApplyRecordResponse objectWithKeyValues:responseObject];
         
-        if (response.user.count == 0) {
-            _pageRecords--;
-        }
-        
-        for (UserModel *model in response.user) {
-            [weakself.recordsDataArray addObject:model];
+        for (ApplyRecordModel *recordModel in response.data) {
+            [weakself.recordsDataArray addObject:recordModel];
         }
         
         if (weakself.recordsDataArray.count > 0) {
@@ -258,25 +244,6 @@
     } andFailBlock:^(id responseObject){
         
     }];
-}
-
-- (void)headerRefreshOfRecords
-{
-    _pageRecords = 1;
-    [self getApplyRecordsListWithPage:@"1"];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.applyRecordsTableView headerEndRefreshing];
-    });
-}
-
-- (void)footerRefreshOfRecords
-{
-    _pageRecords++;
-    NSString *page = [NSString stringWithFormat:@"%ld",(long)_pageRecords];
-    [self getApplyRecordsListWithPage:page];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.applyRecordsTableView footerEndRefreshing];
-    });
 }
 
 - (void)didReceiveMemoryWarning {

@@ -12,7 +12,12 @@
 
 + (NSDictionary *)objectClassInArray
 {
-    return @{@"user" : @"UserModel"};
+    return @{@"data" : @"ApplyRecordModel"};
+}
+
++ (NSDictionary *)replacedKeyFromPropertyName
+{
+    return @{@"data" : @"result.data"};
 }
 
 @end

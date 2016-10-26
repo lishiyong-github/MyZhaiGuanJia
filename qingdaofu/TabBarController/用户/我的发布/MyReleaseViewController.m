@@ -273,11 +273,6 @@
     //status and action
     cell.statusLabel.text = rowModel.statusLabel;
     
-//    NSString *applyStatus = [NSString getValidStringFromString:rowModel.applyStatus toString:@"10"];
-//    NSInteger statusInt = [applyStatus integerValue]/10;
-//    NSArray *actArray = @[@"完善资料",@"联系申请方",@"查看进度",@"评价"];
-//    [cell.actButton2 setTitle:actArray[statusInt - 1] forState:0];
-    
     if ([rowModel.statusLabel isEqualToString:@"发布中"]) {
         [cell.actButton2 setTitle:@"完善资料" forState:0];
     }else if ([rowModel.statusLabel isEqualToString:@"面谈中"]){
@@ -335,22 +330,15 @@
 
     if ([sModel.statusLabel isEqualToString:@"发布中"]) {
         MyPublishingViewController *myPublishingVC = [[MyPublishingViewController alloc] init];
-//        myPublishingVC.idString = sModel.idString;
-//        myPublishingVC.categaryString = sModel.category;
-//        myPublishingVC.app_idString = sModel.app_id;
         myPublishingVC.productid = sModel.productid;
         [self.navigationController pushViewController:myPublishingVC animated:YES];
     }else if ([sModel.statusLabel isEqualToString:@"面谈中"]) {
         PublishInterviewViewController *publishInterviewVC = [[PublishInterviewViewController alloc] init];
-        publishInterviewVC.idString = sModel.idString;
-        publishInterviewVC.categaryString = sModel.category;
-        publishInterviewVC.pidString = sModel.pid;
+        publishInterviewVC.productid = sModel.productid;
         [self.navigationController pushViewController:publishInterviewVC animated:YES];
     }else if ([sModel.statusLabel isEqualToString:@"处理中"]) {
         MyDealingViewController *myDealingVC = [[MyDealingViewController alloc] init];
-        myDealingVC.idString = sModel.idString;
-        myDealingVC.categaryString = sModel.category;
-        myDealingVC.pidString = sModel.pid;
+        myDealingVC.productid = sModel.productid;
         [self.navigationController pushViewController:myDealingVC animated:YES];
     }else if ([sModel.statusLabel isEqualToString:@"已结案"]) {
         NSString *id_category = [NSString stringWithFormat:@"%@_%@",sModel.idString,sModel.category];
@@ -361,6 +349,7 @@
         releaseCloseVC.idString = sModel.idString;
         releaseCloseVC.categaryString = sModel.category;
         releaseCloseVC.pidString = sModel.pid;
+        releaseCloseVC.productid = sModel.productid;
         [self.navigationController pushViewController:releaseCloseVC animated:YES];
     }
     
@@ -444,6 +433,8 @@
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:myReleaseString params:params successBlock:^(id responseObject) {
+        
+        NSDictionary *sososo = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
         if ([page intValue] == 1) {
             [weakself.releaseDataArray removeAllObjects];

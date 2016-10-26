@@ -13,5 +13,6 @@
 @property (nonatomic,copy) NSString *msg;
 @property (nonatomic,copy) NSString *code; 
 @property (nonatomic,copy) NSString *token;
+@property (nonatomic,copy) NSString *userid;
 
 @end

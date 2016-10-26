@@ -15,4 +15,7 @@
 @property (nonatomic,strong) NSString *pidString;
 @property (nonatomic,strong) NSString *cancelIdString; //取消申请ID
 
+@property (nonatomic,strong) NSString *applyid;  //接单ID
+@property (nonatomic,strong) NSString *status; //状态ID
+
 @end
