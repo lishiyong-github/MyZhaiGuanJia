@@ -10,4 +10,9 @@
 
 @implementation OrdersModel
 
++ (NSDictionary *)objectClassInArray
+{
+    return @{@"productOrdersLogs" : @"OrdersLogsModel"};
+}
+
 @end

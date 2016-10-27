@@ -103,8 +103,10 @@
 
     }else if ([self.collectionDataList[indexPath.item] isKindOfClass:[NSString class]]){
         NSString *file = self.collectionDataList[indexPath.item];
-        if ([file containsString:@"http://"]) {
-            [cell.cellImageView sd_setImageWithURL:self.collectionDataList[indexPath.item] placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+        if ([file containsString:@"uploads"]) {//[file containsString:@"http://"]
+            NSString *sss = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,file];
+            NSURL *ssURL = [NSURL URLWithString:sss];
+            [cell.cellImageView sd_setImageWithURL:ssURL placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
         }else if ([file containsString:@"/"]) {
             cell.cellImageView.image = [UIImage imageWithContentsOfFile:file];
         }else{

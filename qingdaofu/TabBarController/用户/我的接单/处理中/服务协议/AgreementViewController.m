@@ -24,7 +24,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = self.navTitleString;
-//    @"服务协议";
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
     [self.view addSubview:self.agreementWebView];
@@ -57,7 +56,7 @@
 {
     if (!_agreementWebView) {
         _agreementWebView = [UIWebView newAutoLayoutView];
-        NSString *urlString  = [NSString stringWithFormat:@"%@%@?id=%@&category=%@",kQDFTestImageString,kAgreementString,self.idString,self.categoryString];
+        NSString *urlString  = [NSString stringWithFormat:@"%@%@?productid=%@",kQDFTestUrlString,kMyOrderDetailOfCheckAgreement,self.productid];
         NSURL *url = [NSURL URLWithString:urlString];
         NSURLRequest *request = [NSURLRequest requestWithURL:url];
         [_agreementWebView loadRequest:request];
@@ -78,35 +77,21 @@
 #pragma mark - method
 - (void)agreeForAgreement
 {
-    NSString *dfdfString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyRecordsMessageAgreeString];
-    NSDictionary *params = @{@"id" : self.idString,
-                             @"category" : self.categoryString,
-                             @"uid" : self.pidString,
-                             @"token" : [self getValidateToken]
+    NSString *agreementString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrderDetailOfConfirmAgreement];
+    NSDictionary *params = @{@"token" : [self getValidateToken],
+                             @"ordersid" : self.ordersid
                              };
-    
     QDFWeakSelf;
-    [self requestDataPostWithString:dfdfString params:params successBlock:^(id responseObject) {
-        BaseModel *dfdfModel = [BaseModel objectWithKeyValues:responseObject];
-        [weakself showHint:dfdfModel.msg];
+    [self requestDataPostWithString:agreementString params:params successBlock:^(id responseObject) {
+        BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:baseModel.msg];
         
-        if ([dfdfModel.code isEqualToString:@"0000"]) {
-//            UINavigationController *nav = self.navigationController;
-//            [nav popViewControllerAnimated:NO];
-//            [nav popViewControllerAnimated:NO];
-//            [nav popViewControllerAnimated:NO];
-//            [nav popViewControllerAnimated:NO];
-//            MyReleaseViewController *myReleaseVC = [[MyReleaseViewController alloc] init];
-//            myReleaseVC.hidesBottomBarWhenPushed = YES;
-//            myReleaseVC.progreStatus = @"2";
-//            [nav pushViewController:myReleaseVC animated:NO];
+        if ([baseModel.code isEqualToString:@"0000"]) {
             [weakself back];
         }
-        
     } andFailBlock:^(NSError *error) {
         
     }];
-
 }
 
 - (void)didReceiveMemoryWarning {

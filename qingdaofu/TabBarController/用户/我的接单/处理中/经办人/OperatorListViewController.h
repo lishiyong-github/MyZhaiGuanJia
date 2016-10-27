@@ -10,4 +10,6 @@
 
 @interface OperatorListViewController : NetworkViewController
 
+@property (nonatomic,strong) NSString *ordersid;
+
 @end

@@ -10,6 +10,8 @@
 
 @interface MyMailListsViewController : NetworkViewController
 
-@property (nonatomic,strong) NSString *mailType;  //1-从用户进入  2-从经办人进入 
+@property (nonatomic,strong) NSString *mailType;  //1-从用户进入  2-从经办人进入
+
+@property (nonatomic,strong) NSString *ordersid;
 
 @end

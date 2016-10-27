@@ -37,6 +37,20 @@
 #import "DelayResponse.h"
 #import "DelayModel.h"
 
+
+
+
+#import "PublishingModel.h"
+#import "PublishingResponse.h"
+#import "UserNameModel.h"
+
+#import "MyOrderDetailResponse.h"
+#import "OrderModel.h"
+#import "OrdersModel.h"
+#import "RowsModel.h"
+#import "PublishingModel.h"
+#import "ApplyRecordModel.h"
+
 @interface MyProcessingViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
@@ -122,29 +136,29 @@
         
         //上传居间协议，，上传签约协议，申请结案
         
-        QDFWeakSelf;
-        [_processinCommitButton addAction:^(UIButton *btn) {
-            
-            if (weakself.sectionArray.count == 3) {
-                AgreementViewController *agreementVC = [[AgreementViewController alloc] init];
-                agreementVC.navTitleString = @"居间协议";
-                agreementVC.idString = weakself.idString;
-                agreementVC.categoryString = weakself.categaryString;
-                agreementVC.pidString = weakself.pidString;
-                agreementVC.flagString = @"1";
-                [weakself.navigationController pushViewController:agreementVC animated:YES];
-                
-            }else if (weakself.sectionArray.count == 4){//签约协议
-                SignProtocolViewController *signProtocolVC = [[SignProtocolViewController alloc] init];
-                [weakself.navigationController pushViewController:signProtocolVC animated:YES];
-                
-            }else if (weakself.sectionArray.count == 6){//申请结案
-                RequestCloseViewController *requestCloseVC = [[RequestCloseViewController alloc] init];
-                [weakself.navigationController pushViewController:requestCloseVC animated:YES];
-            }
-            
-            
-        }];
+//        QDFWeakSelf;
+//        [_processinCommitButton addAction:^(UIButton *btn) {
+//            
+//            if (weakself.sectionArray.count == 3) {
+//                AgreementViewController *agreementVC = [[AgreementViewController alloc] init];
+//                agreementVC.navTitleString = @"居间协议";
+//                agreementVC.idString = weakself.idString;
+//                agreementVC.categoryString = weakself.categaryString;
+//                agreementVC.pidString = weakself.pidString;
+//                agreementVC.flagString = @"1";
+//                [weakself.navigationController pushViewController:agreementVC animated:YES];
+//                
+//            }else if (weakself.sectionArray.count == 4){//签约协议
+//                SignProtocolViewController *signProtocolVC = [[SignProtocolViewController alloc] init];
+//                [weakself.navigationController pushViewController:signProtocolVC animated:YES];
+//                
+//            }else if (weakself.sectionArray.count == 6){//申请结案
+//                RequestCloseViewController *requestCloseVC = [[RequestCloseViewController alloc] init];
+//                [weakself.navigationController pushViewController:requestCloseVC animated:YES];
+//            }
+//            
+//            
+//        }];
     }
     return _processinCommitButton;
 }
@@ -183,15 +197,12 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (self.processArray.count > 0) {
-        if (section == 0) {
-            return 2;
-        }else if (section == 1){
-            return 4;
-        }
-        return 1;
+    if (section == 0) {
+        return 2;
+    }else if (section == 1){
+        return 4;
     }
-    return 0;
+    return 1;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -209,12 +220,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    PublishingResponse *response;
-    PublishingModel *processModel;
-    if (self.processArray.count > 0) {
-        response = self.processArray[0];
-        processModel = response.product;
-    }
+    OrderModel *orderModel = self.processArray[0];
     
     static NSString *identifier;
     
@@ -246,9 +252,7 @@
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             
-            UserNameModel *userNameModel = response.username;
-            
-            NSString *nameStr = [NSString getValidStringFromString:userNameModel.username toString:@"未认证"];
+            NSString *nameStr = [NSString getValidStringFromString:orderModel.product.productApply.mobile toString:@"未认证"];
             NSString *checkStr = [NSString stringWithFormat:@"发布方：%@",nameStr];
             [cell.checkButton setTitle:checkStr forState:0];
             [cell.contactButton setTitle:@" 联系他" forState:0];
@@ -257,26 +261,26 @@
             //接单方详情
             QDFWeakSelf;
             [cell.checkButton addAction:^(UIButton *btn) {
-                if ([userNameModel.username isEqualToString:@""] || userNameModel.username == nil || !userNameModel.username) {
-                    [self showHint:@"发布方未认证，不能查看相关信息"];
-                }else{
-                    CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
-                    checkDetailPublishVC.typeString = @"发布方";
-                    checkDetailPublishVC.idString = weakself.idString;
-                    checkDetailPublishVC.categoryString = weakself.categaryString;
-                    checkDetailPublishVC.pidString = weakself.pidString;
-                    [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];
-                }
+//                if ([userNameModel.username isEqualToString:@""] || userNameModel.username == nil || !userNameModel.username) {
+//                    [self showHint:@"发布方未认证，不能查看相关信息"];
+//                }else{
+//                    CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+//                    checkDetailPublishVC.typeString = @"发布方";
+//                    checkDetailPublishVC.idString = weakself.idString;
+//                    checkDetailPublishVC.categoryString = weakself.categaryString;
+//                    checkDetailPublishVC.pidString = weakself.pidString;
+//                    [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];
+//                }
             }];
             
             //电话
             [cell.contactButton addAction:^(UIButton *btn) {
-                if ([userNameModel.username isEqualToString:@""] || userNameModel.username == nil || !userNameModel.username) {
-                    [self showHint:@"发布方未认证，不能打电话"];
-                }else{
-                    NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",userNameModel.mobile];
-                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
-                }
+//                if ([userNameModel.username isEqualToString:@""] || userNameModel.username == nil || !userNameModel.username) {
+//                    [self showHint:@"发布方未认证，不能打电话"];
+//                }else{
+//                    NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",userNameModel.mobile];
+//                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
+//                }
             }];
             
             return cell;
@@ -420,6 +424,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    OrderModel *orderModel = self.processArray[0];
+    
+    
     if (indexPath.section == 1 && indexPath.row == 0) {
         [self showHint:@"查看更多"];
     }else{
@@ -428,30 +435,29 @@
                 //居间协议
                 [self showHint:@"居间协议"];
                 AgreementViewController *agreementVc = [[AgreementViewController alloc] init];
-                agreementVc.idString = self.idString;
-                agreementVc.categoryString = self.categaryString;
-                agreementVc.pidString = self.pidString;
+                
                 agreementVc.navTitleString = @"居间协议";
                 agreementVc.flagString = @"0";
+                agreementVc.productid = orderModel.productid;
+                agreementVc.ordersid = orderModel.orders.ordersid;
                 [self.navigationController pushViewController:agreementVc animated:YES];
             }
         }else if (self.sectionArray.count == 6){
             if (indexPath.section == 2) {//居间协议
-                [self showHint:@"居间协议"];
                 AgreementViewController *agreementVc = [[AgreementViewController alloc] init];
-                agreementVc.idString = self.idString;
-                agreementVc.categoryString = self.categaryString;
-                agreementVc.pidString = self.pidString;
                 agreementVc.navTitleString = @"居间协议";
                 agreementVc.flagString = @"0";
+                agreementVc.productid = orderModel.productid;
+                agreementVc.ordersid = orderModel.orders.ordersid;
                 [self.navigationController pushViewController:agreementVc animated:YES];
             }else if (indexPath.section == 3){//签约协议
-                [self showHint:@"签约协议"];
                 SignProtocolViewController *signProtocolVC = [[SignProtocolViewController alloc] init];
+                signProtocolVC.ordersid = orderModel.orders.ordersid;
+                signProtocolVC.isShowString = @"0";
                 [self.navigationController pushViewController:signProtocolVC animated:YES];
             }else if (indexPath.section == 4){//经办人
-                [self showHint:@"经办人协议"];
                 OperatorListViewController *operatorListVC = [[OperatorListViewController alloc] init];
+                operatorListVC.ordersid = orderModel.orders.ordersid;
                 [self.navigationController pushViewController:operatorListVC animated:YES];
             }
         }
@@ -480,47 +486,36 @@
 #pragma mark - method
 - (void)getDetailMessageOfProcessing
 {
-    NSString *detailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseDetailString];
+    NSString *detailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrderDetailsString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
-                             @"id" : self.idString,
-                             @"category" : self.categaryString
+                             @"applyid" : self.applyid
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
-                
-        PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
-        [weakself.processArray addObject:response];
-        [weakself.myProcessingTableView reloadData];
+        
+        MyOrderDetailResponse *response = [MyOrderDetailResponse objectWithKeyValues:responseObject];
+        [weakself.processArray addObject:response.data];
         
         //根据上传协议的状态，调整section数目
-        weakself.sectionArray = @[@"",@"",@"",@"",@"",@""];
+        if ([response.data.orders.status integerValue] == 0) {
+            weakself.sectionArray = @[@"",@"",@""];
+        }else if ([response.data.orders.status integerValue] == 10){
+            weakself.sectionArray = @[@"",@"",@"",@""];
+        }else{
+            weakself.sectionArray = @[@"",@"",@"",@"",@"",@""];
+        }
         if (weakself.sectionArray.count == 3) {
             [weakself.processinCommitButton.button setTitle:@"签订居间协议" forState:0];
+            [weakself.processinCommitButton addAction:^(UIButton *btn) {
+                [weakself actionOfBottomWithType:@"1" andOrderModel:response.data];
+            }];
         }else if (weakself.sectionArray.count == 4){
             [weakself.processinCommitButton.button setTitle:@"上传签约协议" forState:0];
+            [weakself.processinCommitButton addAction:^(UIButton *btn) {
+                [weakself actionOfBottomWithType:@"2" andOrderModel:response.data];
+            }];
         }else if (weakself.sectionArray.count == 6){
             [weakself.processinCommitButton.button setTitle:@"申请结案" forState:0];
-        }
-        
-        if ([response.product.progress_status integerValue] == 2 && ![response.uidString isEqualToString:response.product.uidInner]) {
-            if ([response.product.applyclose integerValue] == 0) {
-                [weakself.processinCommitButton setBackgroundColor:kNavColor];
-                [weakself.processinCommitButton setTitleColor:kBlackColor forState:0];
-                [weakself.processinCommitButton setImage:[UIImage imageNamed:@"end"] forState:0];
-                [weakself.processinCommitButton setTitle:@" 申请结案" forState:0];
-                [weakself.processinCommitButton addTarget:self action:@selector(endProduct) forControlEvents:UIControlEventTouchUpInside];
-                
-                //延期申请状态
-                [weakself delayRequest];
-                
-            }else if ([response.product.applyclose integerValue] == 4 && [response.product.applyclosefrom isEqualToString:response.product.uidInner]){
-                [weakself.processinCommitButton setBackgroundColor:kBlueColor];
-                [weakself.processinCommitButton setTitle:@"同意结案" forState:0];
-                [weakself.processinCommitButton addTarget:self action:@selector(endProduct) forControlEvents:UIControlEventTouchUpInside];
-            }else{
-                [weakself.processinCommitButton setTitle:@"已申请结案，等待对方确认中" forState:0];
-                [weakself.processinCommitButton setBackgroundColor:kBorderColor];
-            }
         }
         
         [weakself.myProcessingTableView reloadData];
@@ -535,6 +530,39 @@
     RequestEndViewController *requestEndVC = [[RequestEndViewController alloc] init];
     [self.navigationController pushViewController:requestEndVC animated:YES];
 }
+
+- (void)actionOfBottomWithType:(NSString *)actType andOrderModel:(OrderModel *)orderModel//1-确认居间协议，2-上传签约协议，3-申请结案
+{
+    if ([actType integerValue] == 1) {
+        AgreementViewController *agreementVC = [[AgreementViewController alloc] init];
+        agreementVC.navTitleString = @"居间协议";
+        agreementVC.productid = orderModel.productid;
+        agreementVC.ordersid = orderModel.orders.ordersid;
+        agreementVC.flagString = @"1";
+        [self.navigationController pushViewController:agreementVC animated:YES];
+        
+                
+    }else if ([actType integerValue] == 2){
+        [self showHint:@"上传签约协议"];
+        SignProtocolViewController *signProtocolVC = [[SignProtocolViewController alloc] init];
+        signProtocolVC.ordersid = orderModel.orders.ordersid;
+        signProtocolVC.isShowString = @"1";
+        [self.navigationController pushViewController:signProtocolVC animated:YES];
+    }else if([actType integerValue] == 3){
+        [self showHint:@"申请结案"];
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
 
 //申请延期状态
 - (void)delayRequest

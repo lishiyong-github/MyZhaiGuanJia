@@ -14,7 +14,11 @@
 {
     return @{@"mobile" : @"userinfo.mobile",
              @"realname" : @"userinfo.realname",
-             @"username" : @"userinfo.username"
+             @"username" : @"userinfo.username",
+             @"level" : @"ordersOperator.level",
+             @"ordersid" : @"ordersOperator.ordersid",
+             @"productid" : @"ordersOperator.productid",
+             @"operatorid" : @"ordersOperator.operatorid"
              };
 }
 

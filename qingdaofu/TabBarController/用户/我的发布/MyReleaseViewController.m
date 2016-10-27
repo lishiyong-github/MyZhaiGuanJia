@@ -336,85 +336,20 @@
         PublishInterviewViewController *publishInterviewVC = [[PublishInterviewViewController alloc] init];
         publishInterviewVC.productid = sModel.productid;
         [self.navigationController pushViewController:publishInterviewVC animated:YES];
-    }else if ([sModel.statusLabel isEqualToString:@"处理中"]) {
+    }else if ([sModel.statusLabel isEqualToString:@"已结案"]){
+//        ReleaseCloseViewController *releaseCloseVC = [[ReleaseCloseViewController alloc] init];
+//        releaseCloseVC.evaString = value1;
+//        releaseCloseVC.idString = sModel.idString;
+//        releaseCloseVC.categaryString = sModel.category;
+//        releaseCloseVC.pidString = sModel.pid;
+//        releaseCloseVC.productid = sModel.productid;
+//        [self.navigationController pushViewController:releaseCloseVC animated:YES];
+    }else{//处理中
         MyDealingViewController *myDealingVC = [[MyDealingViewController alloc] init];
         myDealingVC.productid = sModel.productid;
+        myDealingVC.status = sModel.statusLabel;
         [self.navigationController pushViewController:myDealingVC animated:YES];
-    }else if ([sModel.statusLabel isEqualToString:@"已结案"]) {
-        NSString *id_category = [NSString stringWithFormat:@"%@_%@",sModel.idString,sModel.category];
-        NSString *value1 = self.releaseDic[id_category];
-        
-        ReleaseCloseViewController *releaseCloseVC = [[ReleaseCloseViewController alloc] init];
-        releaseCloseVC.evaString = value1;
-        releaseCloseVC.idString = sModel.idString;
-        releaseCloseVC.categaryString = sModel.category;
-        releaseCloseVC.pidString = sModel.pid;
-        releaseCloseVC.productid = sModel.productid;
-        [self.navigationController pushViewController:releaseCloseVC animated:YES];
     }
-    
-    
-    
-//    MyPublishingViewController *myPublishingVC = [[MyPublishingViewController alloc] init];
-//    myPublishingVC.idString = sModel.idString;
-//    myPublishingVC.categaryString = sModel.category;
-//    myPublishingVC.app_idString = sModel.app_id;
-//    [self.navigationController pushViewController:myPublishingVC animated:YES];
-    
-//    NSString *id_category = [NSString stringWithFormat:@"%@_%@",sModel.idString,sModel.category];
-//    NSString *value1 = self.releaseDic[id_category];
-//    
-//    ReleaseCloseViewController *releaseCloseVC = [[ReleaseCloseViewController alloc] init];
-//    releaseCloseVC.evaString = value1;
-//    releaseCloseVC.idString = sModel.idString;
-//    releaseCloseVC.categaryString = sModel.category;
-//    releaseCloseVC.pidString = sModel.pid;
-//    [self.navigationController pushViewController:releaseCloseVC animated:YES];
-
-    
-    
-    /*
-    if ([sModel.progress_status isEqualToString:@"1"]) {//发布中
-//        MyPublishingViewController *myPublishingVC = [[MyPublishingViewController alloc] init];
-//        myPublishingVC.idString = sModel.idString;
-//        myPublishingVC.categaryString = sModel.category;
-//        myPublishingVC.app_idString = sModel.app_id;
-//        [self.navigationController pushViewController:myPublishingVC animated:YES];
-        
-        //面谈中
-        PublishInterviewViewController *publishInterviewVC = [[PublishInterviewViewController alloc] init];
-        publishInterviewVC.idString = sModel.idString;
-        publishInterviewVC.categaryString = sModel.category;
-        publishInterviewVC.pidString = sModel.pid;
-        [self.navigationController pushViewController:publishInterviewVC animated:YES];
-
-    }else if ([sModel.progress_status isEqualToString:@"2"]){//处理中
-        MyDealingViewController *myDealingVC = [[MyDealingViewController alloc] init];
-        myDealingVC.idString = sModel.idString;
-        myDealingVC.categaryString = sModel.category;
-        myDealingVC.pidString = sModel.pid;
-        [self.navigationController pushViewController:myDealingVC animated:YES];
-
-    }else if ([sModel.progress_status isEqualToString:@"3"]){//终止
-        ReleaseEndViewController *releaseEndVC = [[ReleaseEndViewController alloc] init];
-        releaseEndVC.idString = sModel.idString;
-        releaseEndVC.categaryString = sModel.category;
-        releaseEndVC.pidString = sModel.pid;
-        [self.navigationController pushViewController:releaseEndVC animated:YES];
-    }else if ([sModel.progress_status isEqualToString:@"4"]){//结案
-        
-//        RowsModel *eModel = self.releaseDataArray[indexPath.section];
-        NSString *id_category = [NSString stringWithFormat:@"%@_%@",sModel.idString,sModel.category];
-        NSString *value1 = self.releaseDic[id_category];
-        
-        ReleaseCloseViewController *releaseCloseVC = [[ReleaseCloseViewController alloc] init];
-        releaseCloseVC.evaString = value1;
-        releaseCloseVC.idString = sModel.idString;
-        releaseCloseVC.categaryString = sModel.category;
-        releaseCloseVC.pidString = sModel.pid;
-        [self.navigationController pushViewController:releaseCloseVC animated:YES];
-    }
-     */
 }
 
 #pragma mark - method

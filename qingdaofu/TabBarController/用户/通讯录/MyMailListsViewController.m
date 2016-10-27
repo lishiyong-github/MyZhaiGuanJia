@@ -8,6 +8,7 @@
 
 #import "MyMailListsViewController.h"
 
+#import "ChooseOperatorView.h"
 #import "MineUserCell.h"
 
 #import "MailResponse.h"
@@ -18,7 +19,7 @@
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *myMailListsTableView;
-@property (nonatomic,strong) UIView *chooseOperatorView;
+@property (nonatomic,strong) ChooseOperatorView *chooseOperatorView;
 
 @property (nonatomic,strong) UIAlertController *alertContro;
 
@@ -26,6 +27,7 @@
 @property (nonatomic,strong) NSMutableArray *myMailDataArray;
 @property (nonatomic,strong) NSString *textFieldTextString;
 @property (nonatomic,assign) NSInteger pageMail;
+@property (nonatomic,strong) NSMutableArray *operatorArray;  //选择的经办人
 
 @end
 
@@ -84,8 +86,17 @@
 - (UIView *)chooseOperatorView
 {
     if (!_chooseOperatorView) {
-        _chooseOperatorView = [UIView newAutoLayoutView];
-        _chooseOperatorView.backgroundColor = kRedColor;
+        _chooseOperatorView = [ChooseOperatorView newAutoLayoutView];
+        [_chooseOperatorView.aButton setTitle:@"已选择0个联系人" forState:0];
+        
+        QDFWeakSelf;
+        [_chooseOperatorView.bButton addAction:^(UIButton *btn) {
+            [weakself addOperators];
+//            if (weakself.operatorArray.count > 0) {
+//            }else{
+//                [weakself showHint:@"请选择联系人"];
+//            }
+        }];
     }
     return _chooseOperatorView;
 }
@@ -96,6 +107,14 @@
         _myMailDataArray = [NSMutableArray array];
     }
     return _myMailDataArray;
+}
+
+- (NSMutableArray *)operatorArray
+{
+    if (!_operatorArray) {
+        _operatorArray = [NSMutableArray array];
+    }
+    return _operatorArray;
 }
 
 #pragma mark - delegate and datasource
@@ -123,46 +142,40 @@
     [cell.userActionButton setTitle:mailResponseModel.mobile forState:0];
     
     if ([self.mailType integerValue] == 2) {
-        cell.userNameButton.userInteractionEnabled = YES;
-        [cell.userNameButton setImage:[UIImage imageNamed:@"select"] forState:0];
-        [cell.userNameButton setImage:[UIImage imageNamed:@"selected"] forState:UIControlStateSelected];
-//        [cell.userNameButton setTitle:@"    张三" forState:0];
-        NSString *name = [NSString stringWithFormat:@"    %@",mailResponseModel.username];
+        
+        if (!mailResponseModel.level) {
+            cell.userNameButton.userInteractionEnabled = YES;
+            [cell.userNameButton setImage:[UIImage imageNamed:@"select"] forState:0];
+            [cell.userNameButton setImage:[UIImage imageNamed:@"selected"] forState:UIControlStateSelected];
+        }else{
+            cell.userNameButton.userInteractionEnabled = NO;
+            [cell.userNameButton setImage:[UIImage imageNamed:@"selected_dis"] forState:0];
+        }
+        
+        NSString *name = [NSString stringWithFormat:@"  %@",mailResponseModel.username];
         [cell.userNameButton setTitle:name forState:0];
         
+        QDFWeakSelf;
         [cell.userNameButton addAction:^(UIButton *btn) {
+            
             btn.selected = !btn.selected;
+            
+            if (btn.selected) {
+                [weakself.operatorArray addObject:mailResponseModel.userid];
+            }else{
+                [weakself.operatorArray removeObject:mailResponseModel.userid];
+            }
+            
+            NSString *allString = [NSString stringWithFormat:@"已选择%lu个联系人",(unsigned long)weakself.operatorArray.count];
+            [weakself.chooseOperatorView.aButton setTitle:allString forState:0];
+            
         }];
+        
     }else{
         [cell.userNameButton setTitle:mailResponseModel.username forState:0];
     }
     
     return cell;
-}
-
-#pragma mark - method
-- (void)rightItemAction
-{
-    self.alertContro = [UIAlertController alertControllerWithTitle:@"添加联系人" message:@"" preferredStyle:UIAlertControllerStyleAlert];
-
-    
-    QDFWeakSelf;
-    [self.alertContro addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-       textField.placeholder = @"请输入手机号码";
-        textField.delegate = weakself;
-//        textField.background = [UIImage imageNamed:@"list_more"];
-    }];
-    
-    UIAlertAction *alertAct0 = [UIAlertAction actionWithTitle:@"取消" style:0 handler:nil];
-    
-    UIAlertAction *alertAct1 = [UIAlertAction actionWithTitle:@"确认  " style:0 handler:^(UIAlertAction * _Nonnull action) {
-        [weakself searchUserWithPhone:@""];
-    }];
-    
-    [self.alertContro addAction:alertAct0];
-    [self.alertContro addAction:alertAct1];
-    
-    [self presentViewController:self.alertContro animated:YES completion:nil];
 }
 
 #pragma mark - search users//contacts/search
@@ -171,13 +184,13 @@
     NSString *listsString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyMailListString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"page" : page,
-                             @"limit" : @"10"
+                             @"limit" : @"10",
+                             @"ordersid" : self.ordersid
                              };
     
     QDFWeakSelf;
     [self requestDataPostWithString:listsString params:params successBlock:^(id responseObject) {
         NSDictionary *sosos = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-//        NSString *koko;
         
         if ([page integerValue] == 1) {
             [weakself.myMailDataArray removeAllObjects];
@@ -269,7 +282,7 @@
         [weakself showHint:baseModel.msg];
         
         if ([baseModel.code isEqualToString:@"0000"]) {
-
+            [weakself headerRefreshOfMyMail];
         }
         
     } andFailBlock:^(NSError *error) {
@@ -288,6 +301,67 @@
     [textField resignFirstResponder];
     return YES;
 }
+
+#pragma mark - method
+- (void)addOperators//分配经办人
+{
+    NSString *addOperatorString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrderDetaulOfAddOperator];
+    
+    NSString *ppp = @"";
+    NSDictionary *params;
+    
+    if (self.operatorArray.count > 0) {
+        for (int i=0; i<self.operatorArray.count; i++) {
+            ppp = [NSString stringWithFormat:@"%@,%@",self.operatorArray[i],ppp];
+        }
+        ppp = [ppp substringWithRange:NSMakeRange(0, ppp.length-1)];
+        params = @{@"token" : [self getValidateToken],
+                   @"ordersid" : self.ordersid,
+                   @"operatorIds" : ppp
+                   };
+    }else{
+        params = @{@"token" : [self getValidateToken],
+                   @"ordersid" : self.ordersid
+                   };
+    }
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:addOperatorString params:params successBlock:^(id responseObject) {
+        BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:baseModel.msg];
+        
+        if ([baseModel.code isEqualToString:@"0000"]) {
+            [weakself back];
+        }
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
+- (void)rightItemAction
+{
+    self.alertContro = [UIAlertController alertControllerWithTitle:@"添加联系人" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+    
+    
+    QDFWeakSelf;
+    [self.alertContro addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.placeholder = @"请输入手机号码";
+        textField.delegate = weakself;
+        //        textField.background = [UIImage imageNamed:@"list_more"];
+    }];
+    
+    UIAlertAction *alertAct0 = [UIAlertAction actionWithTitle:@"取消" style:0 handler:nil];
+    
+    UIAlertAction *alertAct1 = [UIAlertAction actionWithTitle:@"确认  " style:0 handler:^(UIAlertAction * _Nonnull action) {
+        [weakself searchUserWithPhone:@""];
+    }];
+    
+    [self.alertContro addAction:alertAct0];
+    [self.alertContro addAction:alertAct1];
+    
+    [self presentViewController:self.alertContro animated:YES completion:nil];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

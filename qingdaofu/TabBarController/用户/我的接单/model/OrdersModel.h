@@ -19,7 +19,7 @@
 @property (nonatomic,copy) NSString *create_by;
 
 //日志
-//@property (nonatomic,strong) <#UITableView#> *productOrdersLogs;
+@property (nonatomic,strong) NSMutableArray *productOrdersLogs;
 
 
 @end

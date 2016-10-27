@@ -10,4 +10,14 @@
 
 @implementation OperatorModel
 
++ (NSDictionary *)replacedKeyFromPropertyName
+{
+    return @{@"headimg" : @"userinfo.headimg",
+             @"mobile" : @"userinfo.mobile",
+             @"realname" : @"userinfo.realname",
+             @"username" : @"userinfo.username",
+             @"idString" : @"id"
+             };
+}
+
 @end

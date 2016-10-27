@@ -12,7 +12,14 @@
 
 + (NSDictionary *)replacedKeyFromPropertyName
 {
-    return @{@"operators" : @"result.data.operators"};
+    return @{@"operators" : @"result.data.operators",
+             @"orders" : @"result.data.orders"
+             };
+}
+
++ (NSDictionary *)objectClassInArray
+{
+    return @{@"operators" : @"OperatorModel"};
 }
 
 @end

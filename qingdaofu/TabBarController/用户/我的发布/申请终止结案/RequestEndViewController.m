@@ -28,6 +28,7 @@
 
 //json
 @property (nonatomic,strong) NSMutableArray *reEndImageArray;
+@property (nonatomic,strong) NSMutableDictionary *reEndDic; //上传
 
 @end
 
@@ -106,6 +107,7 @@
         QDFWeakSelf;
         [_requestEndFootView.comButton1 addAction:^(UIButton *btn) {
             [weakself showHint:@"申请终止"];
+            [weakself endProduct];
         }];
         
         [_requestEndFootView.comButton2 addAction:^(UIButton *btn) {
@@ -121,6 +123,14 @@
         _reEndImageArray = [NSMutableArray array];
     }
     return _reEndImageArray;
+}
+
+- (NSMutableDictionary *)reEndDic
+{
+    if (!_reEndDic) {
+        _reEndDic = [NSMutableDictionary dictionary];
+    }
+    return _reEndDic;
 }
 
 #pragma mark - tableview delegate and datasource
@@ -198,6 +208,11 @@
             cell.ediTextView.font = kFirstFont;
             cell.ediTextView.placeholder = @"请详细描述申请终止的缘由，让接单方做的更好。";
             
+            QDFWeakSelf;
+            [cell setDidEndEditing:^(NSString *text) {
+                [weakself.reEndDic setValue:text forKey:@"applymemo"];
+            }];
+            
             return cell;
             
         }else{//TakePictureCell.h
@@ -226,8 +241,8 @@
                                 [weakself setDidGetValidImage:^(ImageModel *imageModel) {
                                     if ([imageModel.code isEqualToString:@"0000"]) {
                                         
-//                                        [weakself.evaImageArray addObject:imageModel.fileid];
-                                        [weakself.reEndImageArray addObject:imageModel.url];
+                                        [weakself.reEndImageArray addObject:imageModel.fileid];
+//                                        [weakself.reEndImageArray addObject:imageModel.url];
                                         [weakcell.collectionDataList insertObject:images[0] atIndex:0];
                                         [weakcell reloadData];
                                     }else{
@@ -271,6 +286,41 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     return kBigPadding;
+}
+
+#pragma mark - method
+- (void)endProduct
+{
+    [self.view endEditing:YES];
+    
+    NSString *aaaa = @"";
+    if (self.reEndImageArray.count > 0) {
+        for (int i=0; i<self.reEndImageArray.count; i++) {
+            aaaa = [NSString stringWithFormat:@"%@,%@",self.reEndImageArray[i],aaaa];
+        }
+        
+        aaaa = [aaaa substringWithRange:NSMakeRange(0, aaaa.length-1)];
+    }
+    
+    [self.reEndDic setValue:aaaa forKey:@"file"];
+    [self.reEndDic setValue:[self getValidateToken] forKey:@"token"];
+    [self.reEndDic setValue:self.ordersid forKey:@"ordersid"];
+    
+    NSString *endString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseDetailOfEndString];
+    NSDictionary *params = self.reEndDic;
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:endString params:params successBlock:^(id responseObject) {
+        BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:baseModel.msg];
+        
+        if ([baseModel.code isEqualToString:@"0000"]) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"endProduct" object:nil];
+            [weakself back];
+        }
+    } andFailBlock:^(NSError *error) {
+        
+    }];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

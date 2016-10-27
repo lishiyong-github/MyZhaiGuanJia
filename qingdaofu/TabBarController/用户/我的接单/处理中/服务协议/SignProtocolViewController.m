@@ -9,13 +9,23 @@
 #import "SignProtocolViewController.h"
 #import "PublishCombineView.h"
 
+#import "UIViewController+MutipleImageChoice.h"
+
 #import "MineUserCell.h"
+#import "TakePictureCell.h"
+
+#import "SignPactsResonse.h"
+#import "ImageModel.h"
 
 @interface SignProtocolViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstarints;
 @property (nonatomic,strong) UITableView *sighProtocolTableView;
 @property (nonatomic,strong) PublishCombineView *signCommitButton;
+
+//json
+@property (nonatomic,strong) NSMutableArray *signImageArray; //添加图片
+@property (nonatomic,strong) NSMutableArray *signDataArray;  //解析
 
 @end
 
@@ -27,7 +37,12 @@
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
     [self.view addSubview:self.sighProtocolTableView];
-    [self.view addSubview:self.signCommitButton];
+    
+    if ([self.isShowString integerValue] == 1) {
+        [self.view addSubview:self.signCommitButton];
+    }else{
+        [self getDetailsOfSign];
+    }
     
     [self.view setNeedsUpdateConstraints];
 }
@@ -36,11 +51,16 @@
 {
     if (!self.didSetupConstarints) {
         
-        [self.sighProtocolTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
-        [self.sighProtocolTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.signCommitButton];
-        
-        [self.signCommitButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [self.signCommitButton autoSetDimension:ALDimensionHeight toSize:116];
+        if ([self.isShowString integerValue] == 1) {
+            [self.sighProtocolTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
+            [self.sighProtocolTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.signCommitButton];
+            
+            [self.signCommitButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+            [self.signCommitButton autoSetDimension:ALDimensionHeight toSize:116];
+            
+        }else{
+            [self.sighProtocolTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+        }
         
         self.didSetupConstarints = YES;
     }
@@ -74,15 +94,13 @@
         
         QDFWeakSelf;
         [_signCommitButton.comButton1 addAction:^(UIButton *btn) {
-            [weakself showHint:@"保存"];
-            [weakself back];
+            [weakself saveSignImages];
         }];
         
         [_signCommitButton.comButton2 addAction:^(UIButton *btn) {
-            [weakself showHint:@"确认上传并开始尽职调查"];
             UIAlertController *signAlert = [UIAlertController alertControllerWithTitle:@"确认协议无误并上传吗？" message:@"确认后协议不能修改，并开始尽职调查" preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *signAct0 = [UIAlertAction actionWithTitle:@"确定" style:0 handler:^(UIAlertAction * _Nonnull action) {
-                [weakself back];
+                [weakself commitSignImages];
             }];
             
             UIAlertAction *signAct1 = [UIAlertAction actionWithTitle:@"取消" style:0 handler:nil];
@@ -94,10 +112,26 @@
     return _signCommitButton;
 }
 
+- (NSMutableArray *)signImageArray
+{
+    if (!_signImageArray) {
+        _signImageArray = [NSMutableArray array];
+    }
+    return _signImageArray;
+}
+
+- (NSMutableArray *)signDataArray
+{
+    if (!_signDataArray) {
+        _signDataArray = [NSMutableArray array];
+    }
+    return _signDataArray;
+}
+
 #pragma mark - tableView delagate and datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    return 2;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -111,7 +145,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier;
-//    = @"sign";
     if (indexPath.row == 0) {
         identifier = @"sign0";
         MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -127,14 +160,159 @@
     }
     
     identifier = @"sign1";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    TakePictureCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        cell = [[TakePictureCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.backgroundColor = kWhiteColor;
+    
+    if (self.signDataArray.count > 0) {
+        cell.collectionDataList = [NSMutableArray arrayWithArray:self.signDataArray];
+        [cell reloadData];
+    }else{
+        cell.collectionDataList = [NSMutableArray arrayWithObjects:@"upload_pictures", nil];
+    }
+    
+    QDFWeakSelf;
+    QDFWeak(cell);
+    [cell setDidSelectedItem:^(NSInteger itemTag) {
+        if (itemTag == weakcell.collectionDataList.count-1) {//只允许点击最后一个collection
+            if (weakcell.collectionDataList.count < 3) {
+                [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
+                    
+                    if (images.count > 0) {
+                        NSData *imData = [NSData dataWithContentsOfFile:images[0]];
+                        NSString *imString = [NSString stringWithFormat:@"%@",imData];
+                        [weakself uploadImages:imString andType:@"jgp" andFilePath:images[0]];
+                        
+                        [weakself setDidGetValidImage:^(ImageModel *imageModel) {
+                            if ([imageModel.code isEqualToString:@"0000"]) {
+                                [weakself.signImageArray addObject:imageModel.fileid];
+                                
+                                [weakcell.collectionDataList insertObject:images[0] atIndex:0];
+                                [weakcell reloadData];
+                            }else{
+                                [weakself showHint:imageModel.msg];
+                            }
+                        }];
+                    }
+                }];
+            }else{
+                [weakself showHint:@"最多添加2张图片"];
+            }
+        }else{
+            UIAlertController *alertContr = [UIAlertController alertControllerWithTitle:@"" message:@"确认删除该图片" preferredStyle:0];
+            UIAlertAction *acty1 = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                //                    [weakself.signImageArray removeObjectAtIndex:itemTag];
+                //                    [weakself.additionalTableView reloadData];
+                
+                [weakself.signImageArray removeObjectAtIndex:itemTag];
+                [weakcell.collectionDataList removeObjectAtIndex:itemTag];
+                [weakcell reloadData];
+                
+            }];
+            UIAlertAction *acty0 = [UIAlertAction actionWithTitle:@"否" style:0 handler:nil];
+            [alertContr addAction:acty0];
+            [alertContr addAction:acty1];
+            
+            [weakself presentViewController:alertContr animated:YES completion:nil];
+        }
+    }];
     
     return cell;
+}
+
+#pragma mark - method
+- (void)saveSignImages
+{
+    NSString *signString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrderDetailOfSaveSign];
+    
+    NSString *dddd = @"";
+    if (self.signImageArray.count > 0) {
+        for (NSInteger i=0; i<self.signImageArray.count; i++) {
+            dddd = [NSString stringWithFormat:@"%@,%@",self.signImageArray[i],dddd];
+        }
+        dddd = [dddd substringWithRange:NSMakeRange(0, dddd.length-1)];
+    }
+    
+     NSDictionary *params = @{@"token" : [self getValidateToken],
+               @"files" : dddd,
+               @"ordersid" : self.ordersid
+               };
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:signString params:params successBlock:^(id responseObject) {
+        BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:baseModel.msg];
+        
+        if ([baseModel.code isEqualToString:@"0000"]) {
+            [weakself back];
+        }
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
+- (void)commitSignImages
+{
+    NSString *signString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrderDetailOfCommitSign];
+    
+    NSDictionary *params;
+    if (self.signDataArray.count > 0) {
+        params = @{@"token" : [self getValidateToken],
+                   @"ordersid" : self.ordersid
+                   };
+    }else{
+        NSString *dddd = @"";
+        if (self.signImageArray.count > 0) {
+            for (NSInteger i=0; i<self.signImageArray.count; i++) {
+                dddd = [NSString stringWithFormat:@"%@,%@",self.signImageArray[i],dddd];
+            }
+            dddd = [dddd substringWithRange:NSMakeRange(0, dddd.length-1)];
+        }
+        params = @{@"token" : [self getValidateToken],
+                   @"files" : dddd,
+                   @"ordersid" : self.ordersid
+                   };
+    }
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:signString params:params successBlock:^(id responseObject) {
+        BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:baseModel.msg];
+        
+        if ([baseModel.code isEqualToString:@"0000"]) {
+            [weakself back];
+        }
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
+- (void)getDetailsOfSign
+{
+    NSString *saveSignString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrderDetailOfCheckSign];
+    NSDictionary *params = @{@"token" : [self getValidateToken],
+                             @"ordersid" : self.ordersid
+                             };
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:saveSignString params:params successBlock:^(id responseObject) {
+        
+        NSDictionary *qop = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
+        
+        SignPactsResonse *responsed = [SignPactsResonse objectWithKeyValues:responseObject];
+        
+        for (ImageModel *imageModel in responsed.pacts) {
+            [weakself.signDataArray addObject:imageModel.file];
+        }
+        
+        [weakself.sighProtocolTableView reloadData];
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
 }
 
 - (void)didReceiveMemoryWarning {

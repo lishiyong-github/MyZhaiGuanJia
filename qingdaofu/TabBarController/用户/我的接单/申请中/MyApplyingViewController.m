@@ -16,7 +16,7 @@
 #import "MineUserCell.h"//完善信息
 #import "OrderPublishCell.h"
 
-#import "PublishingModel.h"
+
 #import "PublishingResponse.h"
 #import "UserNameModel.h"
 

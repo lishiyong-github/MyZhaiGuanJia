@@ -301,6 +301,14 @@
 #define kMyOrdersOfEndString @"productorders/list-aborted"  //我的接单－已终止
 #define kMyOrderDetailsString @"productorders/detail"  //接单详情
 #define kMyOrderDetailOfCancelApplyString @"product/apply-cancel" //接单详情－取消申请
+#define kMyOrderDetailOfCheckAgreement @"protocol/index"  //接单详情－居间协议查看
+#define kMyOrderDetailOfConfirmAgreement @"productorders/orders-confirm"  //接单详情－居间协议确认
+#define kMyOrderDetailOfSaveSign @"productorders/orders-pact-add" //接单详情－保存接单协议
+#define kMyOrderDetailOfCommitSign @"productorders/orders-pact-confirm"  //接单详情－确认接单协议
+#define kMyOrderDetailOfCheckSign @"productorders/orders-pact-detail"  //接单详情－查看接单协议
+#define kMyOrderDetaulOfOperatorLists @"productorders/orders-operator-list"  //接单详情－经办人列表
+#define kMyOrderDetaulOfAddOperator @"productorders/orders-operator-set" //接单详情－添加经办人-从通讯录选择经办人
+#define kMyOrderDetaulOfDeleteOperator @"productorders/orders-operator-unset" //接单详情－取消经办人
 
 
 #define kMyReleaseOfIngString @"product/list-processing"  //我的发布－进行中
@@ -311,7 +319,7 @@
 #define kMyreleaseDetailsOfStartInterview @"product/apply-chat"  //发布产品详情－选择面谈
 #define kMyReleaseDetailOfInterviewResultAgree @"product/apply-agree"  //同意该申请方为接单方
 #define kMyReleaseDetailOfInterviewResultCancel @"product/apply-veto"  //取消该申请方为接单方
-#define kMyReleaseDetailOfEndString @"productorders/orders-termination-apply"  //终止
+#define kMyReleaseDetailOfEndString @"productorders/orders-termination-apply"  //终止产品
 
 
 #endif

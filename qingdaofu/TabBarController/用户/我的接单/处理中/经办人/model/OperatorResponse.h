@@ -7,9 +7,11 @@
 //
 
 #import "BaseModel.h"
+@class OrdersModel;
 
 @interface OperatorResponse : BaseModel
 
-@property (nonatomic,strong) NSMutableArray *operators;
+@property (nonatomic,strong) NSMutableArray *operators;  //经办人
+@property (nonatomic,strong) OrdersModel *orders;  //
 
 @end

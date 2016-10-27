@@ -10,4 +10,6 @@
 
 @interface RequestEndViewController : NetworkViewController
 
+@property (nonatomic,strong) NSString *ordersid;  
+
 @end

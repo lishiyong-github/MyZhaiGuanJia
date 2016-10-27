@@ -10,4 +10,7 @@
 
 @interface SignProtocolViewController : NetworkViewController
 
+@property (nonatomic,strong) NSString *ordersid;
+@property (nonatomic,strong) NSString *isShowString;  //是否显示操作，1-是，0-否
+
 @end
