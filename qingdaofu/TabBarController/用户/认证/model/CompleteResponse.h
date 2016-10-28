@@ -16,4 +16,15 @@
 @property (nonatomic,copy) NSString *uid;
 @property (nonatomic,copy) NSString *user;
 
+
+///////
+@property (nonatomic,copy) NSString *idString;
+@property (nonatomic,copy) NSString *mobile;
+@property (nonatomic,copy) NSString *pictureimg;
+@property (nonatomic,copy) NSString *pictureurl;
+@property (nonatomic,copy) NSString *realname;
+@property (nonatomic,copy) NSString *username;
+
+
+
 @end

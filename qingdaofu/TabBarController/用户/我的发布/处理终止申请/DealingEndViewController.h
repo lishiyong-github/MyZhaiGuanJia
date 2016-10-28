@@ -10,4 +10,6 @@
 
 @interface DealingEndViewController : NetworkViewController
 
+@property (nonatomic,strong) NSString *terminationid;  
+
 @end

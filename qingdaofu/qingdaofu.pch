@@ -309,6 +309,16 @@
 #define kMyOrderDetaulOfOperatorLists @"productorders/orders-operator-list"  //接单详情－经办人列表
 #define kMyOrderDetaulOfAddOperator @"productorders/orders-operator-set" //接单详情－添加经办人-从通讯录选择经办人
 #define kMyOrderDetaulOfDeleteOperator @"productorders/orders-operator-unset" //接单详情－取消经办人
+#define kMyOrderDetailOfDealEndDetails @"productorders/orders-termination-detail"  //接单详情-处理终止详情
+#define kMyOrderDetailOfDealEndDetailsAgree @"productorders/orders-termination-agree" //接单详情-处理终止详情-同意终止
+#define kMyOrderDetailOfDealEndDetailsVote @"productorders/orders-termination-veto" //接单详情-处理终止详情-否决终止
+#define kMyOrderDetailOfDealClosedApply @"productorders/orders-closed-apply"  //接单详情-申请结案
+#define kMyOrderDetailOfDealClosedDetails @"productorders/orders-closed-detail"  //接单详情-处理结案详情
+#define kMyOrderDetailOfDealCloseDetailsAgree @"productorders/orders-closed-agree" //接单详情-处理终止详情-同意结案
+#define kMyOrderDetailOfDealCloseDetailsVote @"productorders/orders-closed-veto" //接单详情-处理终止详情-否决结案
+#define kMyOrderDetailOfAddPace @"productorders/orders-process-add" //接单详情－添加进度
+
+
 
 
 #define kMyReleaseOfIngString @"product/list-processing"  //我的发布－进行中
@@ -320,6 +330,12 @@
 #define kMyReleaseDetailOfInterviewResultAgree @"product/apply-agree"  //同意该申请方为接单方
 #define kMyReleaseDetailOfInterviewResultCancel @"product/apply-veto"  //取消该申请方为接单方
 #define kMyReleaseDetailOfEndString @"productorders/orders-termination-apply"  //终止产品
+
+
+
+
+#define kProductListsString @"product/index"  //产品列表
+#define kProductDetailsString  @"product/detail"  //产品详情
 
 
 #endif

@@ -10,4 +10,6 @@
 
 @interface AddProgressViewController : NetworkViewController
 
+@property (nonatomic,strong) NSString *ordersid;
+
 @end

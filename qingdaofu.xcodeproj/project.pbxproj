@@ -555,6 +555,8 @@
 		A1A44CB51DACF05800140BB9 /* buttons_s@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A44CB11DACF05800140BB9 /* buttons_s@3x.png */; };
 		A1A44CB61DACF05800140BB9 /* buttons@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A44CB21DACF05800140BB9 /* buttons@2x.png */; };
 		A1A44CB71DACF05800140BB9 /* buttons@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A44CB31DACF05800140BB9 /* buttons@3x.png */; };
+		A1A530CA1DC2E9D5002DC050 /* ProductOrdersClosedOrEndApplyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A530C91DC2E9D5002DC050 /* ProductOrdersClosedOrEndApplyModel.m */; };
+		A1A530CE1DC2F8EB002DC050 /* DealEndDeatiResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A530CD1DC2F8EB002DC050 /* DealEndDeatiResponse.m */; };
 		A1A5C73E1D374E6E00173533 /* conserve_investment_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A5C73C1D374E6E00173533 /* conserve_investment_icon@2x.png */; };
 		A1A5C73F1D374E6E00173533 /* conserve_investment_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A5C73D1D374E6E00173533 /* conserve_investment_icon@3x.png */; };
 		A1A5C7421D374ED200173533 /* conserve_loan_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A5C7401D374ED200173533 /* conserve_loan_icon@2x.png */; };
@@ -1586,6 +1588,10 @@
 		A1A44CB11DACF05800140BB9 /* buttons_s@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "buttons_s@3x.png"; sourceTree = "<group>"; };
 		A1A44CB21DACF05800140BB9 /* buttons@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "buttons@2x.png"; sourceTree = "<group>"; };
 		A1A44CB31DACF05800140BB9 /* buttons@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "buttons@3x.png"; sourceTree = "<group>"; };
+		A1A530C81DC2E9D5002DC050 /* ProductOrdersClosedOrEndApplyModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductOrdersClosedOrEndApplyModel.h; sourceTree = "<group>"; };
+		A1A530C91DC2E9D5002DC050 /* ProductOrdersClosedOrEndApplyModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductOrdersClosedOrEndApplyModel.m; sourceTree = "<group>"; };
+		A1A530CC1DC2F8EB002DC050 /* DealEndDeatiResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DealEndDeatiResponse.h; sourceTree = "<group>"; };
+		A1A530CD1DC2F8EB002DC050 /* DealEndDeatiResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DealEndDeatiResponse.m; sourceTree = "<group>"; };
 		A1A5C73C1D374E6E00173533 /* conserve_investment_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conserve_investment_icon@2x.png"; sourceTree = "<group>"; };
 		A1A5C73D1D374E6E00173533 /* conserve_investment_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conserve_investment_icon@3x.png"; sourceTree = "<group>"; };
 		A1A5C7401D374ED200173533 /* conserve_loan_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "conserve_loan_icon@2x.png"; sourceTree = "<group>"; };
@@ -3888,6 +3894,15 @@
 			path = view;
 			sourceTree = "<group>";
 		};
+		A1A530CB1DC2F8C9002DC050 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				A1A530CC1DC2F8EB002DC050 /* DealEndDeatiResponse.h */,
+				A1A530CD1DC2F8EB002DC050 /* DealEndDeatiResponse.m */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
 		A1A66F281D6C33A900B0E101 /* 发布成功 */ = {
 			isa = PBXGroup;
 			children = (
@@ -3950,6 +3965,8 @@
 				A1A77A8B1DC0A234006C1111 /* OrdersModel.m */,
 				A1A702081DC1A80200DA4CFB /* OrdersLogsModel.h */,
 				A1A702091DC1A80200DA4CFB /* OrdersLogsModel.m */,
+				A1A530C81DC2E9D5002DC050 /* ProductOrdersClosedOrEndApplyModel.h */,
+				A1A530C91DC2E9D5002DC050 /* ProductOrdersClosedOrEndApplyModel.m */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -4132,6 +4149,7 @@
 		A1C2F11B1DAF944300016D25 /* 处理终止申请 */ = {
 			isa = PBXGroup;
 			children = (
+				A1A530CB1DC2F8C9002DC050 /* model */,
 				A1C2F11C1DAF945F00016D25 /* DealingEndViewController.h */,
 				A1C2F11D1DAF945F00016D25 /* DealingEndViewController.m */,
 				A1A39BB81DB071C100B84B1A /* DealingCloseViewController.h */,
@@ -4966,6 +4984,7 @@
 				A1A77A8C1DC0A234006C1111 /* OrdersModel.m in Sources */,
 				A192B4B81CDB34030053FC4C /* PaceViewController.m in Sources */,
 				A1C2F1131DAF39A300016D25 /* NewPublishStateCell.m in Sources */,
+				A1A530CA1DC2E9D5002DC050 /* ProductOrdersClosedOrEndApplyModel.m in Sources */,
 				A1A77A7F1DC04677006C1111 /* ApplyRecordModel.m in Sources */,
 				A19424A41D76CFBE00AC699B /* SaveCell.m in Sources */,
 				A159F97C1D0D727A00A6A024 /* MJRefreshConst.m in Sources */,
@@ -4999,6 +5018,7 @@
 				A16FF58E1D05050F00C50A0B /* BaseModel.m in Sources */,
 				A17D94311D6AC52D00BF5B5F /* AssessListResponse.m in Sources */,
 				A1882F5D1D2E015C0064BD38 /* ProductsCheckFileDetailsViewController.m in Sources */,
+				A1A530CE1DC2F8EB002DC050 /* DealEndDeatiResponse.m in Sources */,
 				A16391731D20194B0051F1D0 /* FSImageLoader.m in Sources */,
 				A187B90F1D50885400A91A16 /* HousePayingEditViewController.m in Sources */,
 				A17D942E1D6AB84C00BF5B5F /* ExtendHomeCell.m in Sources */,

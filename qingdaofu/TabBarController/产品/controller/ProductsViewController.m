@@ -23,6 +23,14 @@
 
 #import "NewProductModel.h"
 #import "NewProductListModel.h"
+
+
+
+
+//////////
+#import "ReleaseResponse.h"
+#import "RowsModel.h"
+
 @interface ProductsViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
@@ -66,7 +74,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    self.navigationItem.titleView = self.proTitleView;
     self.navigationItem.title = @"债权产品";
     
     _selectedRow1 = 1000;
@@ -100,28 +107,6 @@
     [super updateViewConstraints];
 }
 
-/*
-- (ProductsView *)proTitleView
-{
-    if (!_proTitleView) {
-        _proTitleView = [[ProductsView alloc] initWithFrame:CGRectMake(0, 0, 120, 44)];
-//        _proTitleView.backgroundColor = kRedColor;
-        
-        QDFWeakSelf;
-        [_proTitleView setDidSelectedBtn:^(NSInteger tag) {
-            if (tag == 101) {//清收
-                [weakself.paramsDictionary setObject:@"2" forKey:@"category"];
-                [weakself headerRefreshWithAllProducts];
-            }else{//诉讼
-                [weakself.paramsDictionary setObject:@"3" forKey:@"category"];
-                [weakself headerRefreshWithAllProducts];
-            }
-        }];
-    }
-    return _proTitleView;
-}
-*/
- 
 - (AllProductsChooseView *)chooseView
 {
     if (!_chooseView) {
@@ -202,7 +187,7 @@
                             
                             NSString *value = [NSString stringWithFormat:@"%ld",(long)row];
                             [selectedButton setTitle:text forState:0];
-                            [weakself.paramsDictionary setValue:value forKey:@"money"];
+                            [weakself.paramsDictionary setValue:value forKey:@"account"];
                             [weakself headerRefreshWithAllProducts];
                         }];
                     }
@@ -341,110 +326,71 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        return cell;
+        RowsModel *rowModel = self.allDataList[indexPath.section];
         
-        /*
-        HomeCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if (!cell) {
-            cell = [[HomeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        
-        [cell.recommendimageView setHidden:YES];
-        
-        NewProductListModel *proModel = self.allDataList[indexPath.section];
-        
-        //image
-        if ([proModel.category isEqualToString:@"2"]){//清收
-            [cell.typeImageView setImage:[UIImage imageNamed:@"list_collection"]];
-        }else if ([proModel.category isEqualToString:@"3"]){
-            [cell.typeImageView setImage:[UIImage imageNamed:@"list_litigation"]];
-        }
-        
-        //code
-        cell.nameLabel.text = proModel.codeString;
-        
-        //借款本金
-        NSString *moneySa1 = [NSString getValidStringFromString:proModel.money toString:@"0"];
-        NSString *moneyQ = [NSString stringWithFormat:@"%@万",moneySa1];
-        NSMutableAttributedString *attrMoney = [[NSMutableAttributedString alloc] initWithString:moneyQ];
-        [attrMoney addAttributes:@{NSFontAttributeName:kBoldFont(24),NSForegroundColorAttributeName:kYellowColor} range:NSMakeRange(0, moneySa1.length)];
-        [attrMoney addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kYellowColor} range:NSMakeRange(moneySa1.length,1)];
-        [cell.moneyView.label1 setAttributedText:attrMoney];
-        cell.moneyView.label2.text = @"借款本金";
-        
-        //代理费用类型
-        if ([proModel.category isEqualToString:@"2"]){//清收
-            
-            if ([proModel.agencycommissiontype isEqualToString:@"1"]) {
-                
-                cell.pointView.label2.text = @"服务佣金";
-                
-                NSString *agencyType1 = [NSString getValidStringFromString:proModel.agencycommission toString:@"0"];
-                NSString *agencyQ = [NSString stringWithFormat:@"%@%@",agencyType1,@"%"];
-                NSMutableAttributedString *attrAgency = [[NSMutableAttributedString alloc] initWithString:agencyQ];
-                [attrAgency addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:24],NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, agencyType1.length)];
-                [attrAgency addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(agencyType1.length,1)];
-                [cell.pointView.label1 setAttributedText:attrAgency];
-                
-            }else{
-                cell.pointView.label2.text = @"固定费用";
-                
-                NSString *agencyType1 = [NSString getValidStringFromString:proModel.agencycommission toString:@"0"];
-                NSString *agencyQ = [NSString stringWithFormat:@"%@万",agencyType1];
-                NSMutableAttributedString *attrAgency = [[NSMutableAttributedString alloc] initWithString:agencyQ];
-                [attrAgency addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:24],NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, agencyType1.length)];
-                [attrAgency addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(agencyType1.length,1)];
-                [cell.pointView.label1 setAttributedText:attrAgency];
-            }
-        }else if ([proModel.category isEqualToString:@"3"]){//诉讼
-            
-            if ([proModel.agencycommissiontype isEqualToString:@"1"]) {
-                
-                cell.pointView.label2.text = @"固定费用";
-                
-                NSString *agencyType1 = [NSString getValidStringFromString:proModel.agencycommission toString:@"0"];
-                NSString *agencyQ = [NSString stringWithFormat:@"%@万",agencyType1];
-                NSMutableAttributedString *attrAgency = [[NSMutableAttributedString alloc] initWithString:agencyQ];
-                [attrAgency addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:24],NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, agencyType1.length)];
-                [attrAgency addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(agencyType1.length,1)];
-                [cell.pointView.label1 setAttributedText:attrAgency];
-                
-            }else{
-                
-                cell.pointView.label2.text = @"风险费率";
-                
-                NSString *agencyType1 = [NSString getValidStringFromString:proModel.agencycommission toString:@"0"];
-                NSString *agencyQ = [NSString stringWithFormat:@"%@%@",agencyType1,@"%"];
-                NSMutableAttributedString *attrAgency = [[NSMutableAttributedString alloc] initWithString:agencyQ];
-                [attrAgency addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:24],NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, agencyType1.length)];
-                [attrAgency addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(agencyType1.length,1)];
-                [cell.pointView.label1 setAttributedText:attrAgency];
-            }
-        }
+        cell.nameLabel.text = rowModel.number;
+        cell.addressLabel.text = rowModel.addressLabel;
         
         //债权类型
-        //债权类型
-        if ([proModel.loan_type isEqualToString:@"1"]) {
-            cell.rateView.label1.text = @"房产抵押";
-            NSString *location = [NSString getValidStringFromString:proModel.location toString:@"无抵押物地址"];
-            cell.addressLabel.text = [NSString stringWithFormat:@"抵押物地址：%@",location];
-        }else if ([proModel.loan_type isEqualToString:@"2"]){
-            cell.rateView.label1.text = @"应收账款";
-            cell.addressLabel.text = [NSString stringWithFormat:@"应收账款：%@万",proModel.accountr];
-        }else if ([proModel.loan_type isEqualToString:@"3"]){
-            cell.rateView.label1.text = @"机动车抵押";
-            NSArray *licenseplate = @[@"沪牌",@"非沪牌"];
-            NSString *license = licenseplate[[proModel.licenseplate integerValue] -1];
-            cell.addressLabel.text = [NSString stringWithFormat:@"机动车抵押：%@%@%@",proModel.carbrand,proModel.audi,license];
+        NSArray *ssssArray = [rowModel.categoryLabel componentsSeparatedByString:@","];
+        if (ssssArray.count <= 1) {
+            [cell.typeLabel2 setHidden:YES];
+            [cell.typeLabel3 setHidden:YES];
+            [cell.typeLabel4 setHidden:YES];
+            cell.typeLabel1.text = ssssArray[0];
+        }else if(ssssArray.count == 2){
+            [cell.typeLabel2 setHidden:NO];
+            [cell.typeLabel3 setHidden:YES];
+            [cell.typeLabel4 setHidden:YES];
+            
+            cell.typeLabel1.text = ssssArray[0];
+            cell.typeLabel2.text = ssssArray[1];
+        }else if (ssssArray.count == 3){
+            [cell.typeLabel2 setHidden:NO];
+            [cell.typeLabel3 setHidden:NO];
+            [cell.typeLabel4 setHidden:YES];
+            
+            cell.typeLabel1.text = ssssArray[0];
+            cell.typeLabel2.text = ssssArray[1];
+            cell.typeLabel3.text = ssssArray[2];
         }else{
-            cell.rateView.label1.text = @"无抵押";
-            cell.addressLabel.text = @"无抵押";
+            [cell.typeLabel2 setHidden:NO];
+            [cell.typeLabel3 setHidden:NO];
+            [cell.typeLabel4 setHidden:NO];
+            
+            cell.typeLabel1.text = ssssArray[0];
+            cell.typeLabel2.text = ssssArray[1];
+            cell.typeLabel3.text = ssssArray[2];
+            cell.typeLabel4.text = ssssArray[3];
         }
-        cell.rateView.label2.text = @"债权类型";
-                
-        return cell;
-         */
         
+        if ([rowModel.typeLabel isEqualToString:@"%"]) {
+            cell.moneyView.label2.text = @"风险费率";
+        }else if ([rowModel.typeLabel isEqualToString:@"万"]){
+            cell.moneyView.label2.text = @"固定费用";
+        }
+        NSString *tttt = [NSString stringWithFormat:@"%@%@",rowModel.typenumLabel,rowModel.typeLabel];
+        NSMutableAttributedString *attriTT = [[NSMutableAttributedString alloc] initWithString:tttt];
+        [attriTT setAttributes:@{NSFontAttributeName:kBoldFont1,NSForegroundColorAttributeName:kYellowColor} range:NSMakeRange(0,rowModel.typenumLabel.length)];
+        [attriTT setAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kYellowColor} range:NSMakeRange(rowModel.typenumLabel.length,rowModel.typeLabel.length)];
+        [cell.moneyView.label1 setAttributedText:attriTT];
+        
+        cell.pointView.label2.text = @"委托金额";
+        NSString *mmmm = [NSString stringWithFormat:@"%@%@",rowModel.accountLabel,@"万"];
+        NSMutableAttributedString *attriMM = [[NSMutableAttributedString alloc] initWithString:mmmm];
+        [attriMM setAttributes:@{NSFontAttributeName:kBoldFont1,NSForegroundColorAttributeName:kTextColor} range:NSMakeRange(0,rowModel.accountLabel.length)];
+        [attriMM setAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kTextColor} range:NSMakeRange(rowModel.accountLabel.length,1)];
+        [cell.pointView.label1 setAttributedText:attriMM];
+        
+        cell.rateView.label2.text = @"违约期限";
+        NSString *rrrr = [NSString stringWithFormat:@"%@%@",rowModel.overdue,@"个月"];
+        NSMutableAttributedString *attriRR = [[NSMutableAttributedString alloc] initWithString:rrrr];
+        [attriRR setAttributes:@{NSFontAttributeName:kBoldFont1,NSForegroundColorAttributeName:kTextColor} range:NSMakeRange(0,rowModel.overdue.length)];
+        [attriRR setAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kTextColor} range:NSMakeRange(rowModel.overdue.length,2)];
+        [cell.rateView.label1 setAttributedText:attriRR];
+
+        
+        return cell;
     }else if (tableView == self.tableView11){//省
         static NSString *identifier = @"aa";
         BidOneCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -508,18 +454,21 @@
         QDFWeakSelf;
         [self setDidTokenValid:^(TokenModel *model) {
             if ([model.code isEqualToString:@"0000"]) {//正常
+                RowsModel *sModel = weakself.allDataList[indexPath.section];
+                
                 ProductsDetailsViewController *productsDetailVC = [[ProductsDetailsViewController alloc] init];
                 productsDetailVC.hidesBottomBarWhenPushed = YES;
-                NewProductListModel *sModel = weakself.allDataList[indexPath.section];
+                productsDetailVC.productid = sModel.productid;
+                [weakself.navigationController pushViewController:productsDetailVC animated:YES];
                 
-                if ([sModel.progress_status integerValue] == 1) {
-                    productsDetailVC.idString = sModel.idString;
-                    productsDetailVC.categoryString = sModel.category;
-                    productsDetailVC.pidString = sModel.uidString;
-                    [weakself.navigationController pushViewController:productsDetailVC animated:YES];
-                }else{
-                    [weakself showHint:@"已撮合，不可查看"];
-                }
+//                if ([sModel.progress_status integerValue] == 1) {
+//                    productsDetailVC.idString = sModel.idString;
+//                    productsDetailVC.categoryString = sModel.category;
+//                    productsDetailVC.pidString = sModel.uidString;
+//                    [weakself.navigationController pushViewController:productsDetailVC animated:YES];
+//                }else{
+//                    [weakself showHint:@"已撮合，不可查看"];
+//                }
             }else if([model.code isEqualToString:@"3001"] || [self getValidateToken] == nil){//未登录
                 [weakself showHint:model.msg];
                 LoginViewController *loginVC = [[LoginViewController alloc] init];
@@ -545,7 +494,7 @@
             
             [self.paramsDictionary setValue:@"0" forKey:@"province"];
             [self.paramsDictionary setValue:@"0" forKey:@"city"];
-            [self.paramsDictionary setValue:@"0" forKey:@"area"];
+            [self.paramsDictionary setValue:@"0" forKey:@"district"];
             
             [self headerRefreshWithAllProducts];
             
@@ -609,7 +558,7 @@
         
         [self.paramsDictionary setValue:_proString forKey:@"province"];
         [self.paramsDictionary setValue:_cityString forKey:@"city"];
-        [self.paramsDictionary setValue:self.districtDictionary.allKeys[indexPath.row] forKey:@"area"];
+        [self.paramsDictionary setValue:self.districtDictionary.allKeys[indexPath.row] forKey:@"district"];
         
         [self headerRefreshWithAllProducts];
     }
@@ -694,35 +643,30 @@
 #pragma mark - refresh
 - (void)getProductsListWithPage:(NSString *)page
 {
-    NSString *allProString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductsListString];
-    
-    self.paramsDictionary[@"province"] = self.paramsDictionary[@"province"]?self.paramsDictionary[@"province"]:@"0";
-    self.paramsDictionary[@"city"] = self.paramsDictionary[@"city"]?self.paramsDictionary[@"city"]:@"0";
-    self.paramsDictionary[@"area"] = self.paramsDictionary[@"area"]?self.paramsDictionary[@"area"]:@"0";
-    self.paramsDictionary[@"category"] = self.paramsDictionary[@"category"]?self.paramsDictionary[@"category"]:@"2";
-    self.paramsDictionary[@"money"] = self.paramsDictionary[@"money"]?self.paramsDictionary[@"money"]:@"0";
-    self.paramsDictionary[@"status"] = self.paramsDictionary[@"status"]?self.paramsDictionary[@"status"]:@"0";
+    NSString *allProString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductListsString];
     
     [self.paramsDictionary setValue:page forKey:@"page"];
+    [self.paramsDictionary setValue:page forKey:@"limit"];
+    [self.paramsDictionary setValue:[self getValidateToken] forKey:@"token"];
     
     NSDictionary *params = self.paramsDictionary;
     
     QDFWeakSelf;
     [self requestDataPostWithString:allProString params:params successBlock:^(id responseObject) {
-                        
+        
         if ([page intValue] == 1) {
             [weakself.allDataList removeAllObjects];
         }
         
-        NewProductModel *response = [NewProductModel objectWithKeyValues:responseObject];
+        ReleaseResponse *response = [ReleaseResponse objectWithKeyValues:responseObject];
         
-        if (response.result.count == 0) {
+        if (response.data.count == 0) {
             [weakself showHint:@"没有更多了"];
             _page--;
         }
         
-        for (NewProductListModel *model in response.result) {
-            [weakself.allDataList addObject:model];
+        for (RowsModel *rowModel in response.data) {
+            [weakself.allDataList addObject:rowModel];
         }
         
         if (weakself.allDataList.count == 0) {

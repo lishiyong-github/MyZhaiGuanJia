@@ -10,6 +10,7 @@
 @class CourtProvinceModel;
 @class PublishingModel;  //发布方信息
 @class ApplyRecordModel;//接单方信息
+@class CompleteResponse; //发布方认证信息
 
 @interface RowsModel : NSObject
 
@@ -65,8 +66,6 @@
 
 
 
-
-
 /////////
 @property (nonatomic,copy) NSString *applyCount;  //申请次数（产品详情用）
 @property (nonatomic,copy) NSString *productid;  //产品号
@@ -83,7 +82,7 @@
 @property (nonatomic,copy) NSString *city_id;
 @property (nonatomic,copy) NSString *district_id;
 @property (nonatomic,copy) NSString *status;
-@property (nonatomic,copy) NSString *browsenumber;
+//@property (nonatomic,copy) NSString *browsenumber;
 @property (nonatomic,copy) NSString *validflag;
 @property (nonatomic,copy) NSString *create_at;
 @property (nonatomic,copy) NSString *create_by;
@@ -93,14 +92,24 @@
 @property (nonatomic,copy) NSString *provincename;
 @property (nonatomic,copy) NSString *areaname;
 
+//产品详情
+@property (nonatomic,copy) NSString *collectionPeople;//收藏次数
+@property (nonatomic,copy) NSString *collectionTotal;//收藏次数
+@property (nonatomic,copy) NSString *browsenumber;//浏览次数
+@property (nonatomic,copy) NSString *applyPeople;  //申请人数
+@property (nonatomic,copy) NSString *applyTotal;//申请人数
+
+
+
 @property (nonatomic,strong) PublishingModel *fabuuser;  //发布方信息
 @property (nonatomic,strong) ApplyRecordModel *productApply;  //申请人信息
+@property (nonatomic,strong) CompleteResponse *User;  //发布方认证信息
 
 //显示信息
 @property (nonatomic,copy) NSString *statusLabel; //发布中
 @property (nonatomic,copy) NSString *accountLabel;//0万(委托金额)
-@property (nonatomic,copy) NSString *typenumLabel; //委托费用
-@property (nonatomic,copy) NSString *typeLabel; //万
+@property (nonatomic,copy) NSString *typenumLabel; //委托费用值
+@property (nonatomic,copy) NSString *typeLabel; //委托费用单位
 @property (nonatomic,copy) NSString *categoryLabel;//合同纠纷.机动车抵押(债权类型)
 @property (nonatomic,copy) NSString *entrustLabel; //诉讼,债权转让(委托事项)
 @property (nonatomic,copy) NSString *addressLabel; //上海市杨浦区(合同履行地)

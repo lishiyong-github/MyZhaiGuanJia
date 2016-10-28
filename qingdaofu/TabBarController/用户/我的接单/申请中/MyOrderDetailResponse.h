@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 @class OrderModel;
 
-@interface MyOrderDetailResponse : NSObject
+@interface MyOrderDetailResponse : BaseModel
 
 @property (nonatomic,strong) OrderModel *data;
 

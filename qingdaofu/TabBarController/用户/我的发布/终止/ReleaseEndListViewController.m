@@ -9,6 +9,8 @@
 #import "ReleaseEndListViewController.h"
 
 #import "ReleaseEndViewController.h"  //详情
+#import "MyDealingViewController.h"   //我的发布
+#import "MyProcessingViewController.h"  //我的接单
 
 #import "ExtendHomeCell.h"
 
@@ -165,59 +167,15 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    RowsModel *sModel = self.releaseEndListArray[indexPath.section];
+    OrderModel *orderModel = self.releaseEndListArray[indexPath.section];
     
-    if ([self.personType integerValue] == 1) {
+    if ([self.personType integerValue] == 1) {//发布
         
     }else{
-        
+        MyProcessingViewController *myProcessingVC = [[MyProcessingViewController alloc] init];
+        myProcessingVC.applyid = orderModel.applyid;
+        [self.navigationController pushViewController:myProcessingVC animated:YES];
     }
-    ReleaseEndViewController *releaseEndVC = [[ReleaseEndViewController alloc] init];
-    releaseEndVC.productid = sModel.productid;
-    [self.navigationController pushViewController:releaseEndVC animated:YES];
-    
-    /*
-     if ([sModel.progress_status isEqualToString:@"1"]) {//发布中
-     //        MyPublishingViewController *myPublishingVC = [[MyPublishingViewController alloc] init];
-     //        myPublishingVC.idString = sModel.idString;
-     //        myPublishingVC.categaryString = sModel.category;
-     //        myPublishingVC.app_idString = sModel.app_id;
-     //        [self.navigationController pushViewController:myPublishingVC animated:YES];
-     
-     //面谈中
-     PublishInterviewViewController *publishInterviewVC = [[PublishInterviewViewController alloc] init];
-     publishInterviewVC.idString = sModel.idString;
-     publishInterviewVC.categaryString = sModel.category;
-     publishInterviewVC.pidString = sModel.pid;
-     [self.navigationController pushViewController:publishInterviewVC animated:YES];
-     
-     }else if ([sModel.progress_status isEqualToString:@"2"]){//处理中
-     MyDealingViewController *myDealingVC = [[MyDealingViewController alloc] init];
-     myDealingVC.idString = sModel.idString;
-     myDealingVC.categaryString = sModel.category;
-     myDealingVC.pidString = sModel.pid;
-     [self.navigationController pushViewController:myDealingVC animated:YES];
-     
-     }else if ([sModel.progress_status isEqualToString:@"3"]){//终止
-     ReleaseEndViewController *releaseEndVC = [[ReleaseEndViewController alloc] init];
-     releaseEndVC.idString = sModel.idString;
-     releaseEndVC.categaryString = sModel.category;
-     releaseEndVC.pidString = sModel.pid;
-     [self.navigationController pushViewController:releaseEndVC animated:YES];
-     }else if ([sModel.progress_status isEqualToString:@"4"]){//结案
-     
-     //        RowsModel *eModel = self.releaseEndListArray[indexPath.section];
-     NSString *id_category = [NSString stringWithFormat:@"%@_%@",sModel.idString,sModel.category];
-     NSString *value1 = self.releaseDic[id_category];
-     
-     ReleaseCloseViewController *releaseCloseVC = [[ReleaseCloseViewController alloc] init];
-     releaseCloseVC.evaString = value1;
-     releaseCloseVC.idString = sModel.idString;
-     releaseCloseVC.categaryString = sModel.category;
-     releaseCloseVC.pidString = sModel.pid;
-     [self.navigationController pushViewController:releaseCloseVC animated:YES];
-     }
-     */
 }
 
 #pragma mark - method
@@ -231,10 +189,6 @@
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:myReleaseString params:params successBlock:^(id responseObject) {
-        
-        if ([page intValue] == 1) {
-            [weakself.releaseEndListArray removeAllObjects];
-        }
         
         if ([page intValue] == 1) {
             [weakself.releaseEndListArray removeAllObjects];

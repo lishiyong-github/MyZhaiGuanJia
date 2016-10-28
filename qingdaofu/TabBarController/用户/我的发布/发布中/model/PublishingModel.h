@@ -13,7 +13,7 @@
 @property (nonatomic,copy) NSString *uidInner;  //发布人uid
 @property (nonatomic,copy) NSString *codeString;  //产品编号
 @property (nonatomic,copy) NSString *category;   //类别（清收，诉讼）
-@property (nonatomic,copy) NSString *idString;
+//@property (nonatomic,copy) NSString *idString;
 @property (nonatomic,copy) NSString *progress_status;
 @property (nonatomic,copy) NSString *is_del;  //判断是否删除
 @property (nonatomic,copy) NSString *create_time;
@@ -78,7 +78,7 @@
 
 
 ///////////
-//@property (nonatomic,copy) NSString *idString;
+@property (nonatomic,copy) NSString *idString;
 @property (nonatomic,copy) NSString *mobile;
 @property (nonatomic,copy) NSString *pid;
 @property (nonatomic,copy) NSString *realname;

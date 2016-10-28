@@ -14,7 +14,9 @@
 
 #import "OperatorListViewController.h"  //添加经办人
 #import "AddProgressViewController.h" //添加进度
+
 #import "RequestEndViewController.h"  //申请终止
+#import "DealingEndViewController.h"  //处理终止
 #import "RequestCloseViewController.h" //申请结案
 #import "DealingCloseViewController.h" //处理结案
 
@@ -50,6 +52,7 @@
 #import "RowsModel.h"
 #import "PublishingModel.h"
 #import "ApplyRecordModel.h"
+#import "ProductOrdersClosedOrEndApplyModel.h"  //处理结案申请消息
 
 @interface MyProcessingViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -82,8 +85,6 @@
     [super viewDidLoad];
     self.navigationItem.title = @"产品详情";
     self.navigationItem.leftBarButtonItem = self.leftItem;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightButton];
-    [self.rightButton setTitle:@"申请终止" forState:0];
     
     self.sectionArray = @[@"",@"",@""];
     
@@ -237,9 +238,16 @@
             [cell.point2 setImage:[UIImage imageNamed:@"succee"] forState:0];
             [cell.progress2 setTextColor:kTextColor];
             [cell.line2 setBackgroundColor:kButtonColor];
-            [cell.point3 setImage:[UIImage imageNamed:@"succee"] forState:0];
-            [cell.progress3 setTextColor:kTextColor];
-            [cell.line3 setBackgroundColor:kButtonColor];
+            
+            if ([orderModel.product.status integerValue] <= 20) {
+                [cell.point3 setImage:[UIImage imageNamed:@"succee"] forState:0];
+                [cell.progress3 setTextColor:kTextColor];
+                [cell.line3 setBackgroundColor:kButtonColor];
+            }else{
+                [cell.point3 setImage:[UIImage imageNamed:@"fail"] forState:0];
+                [cell.progress3 setTextColor:kRedColor];
+                [cell.line3 setBackgroundColor:kRedColor];
+            }
             
             return cell;
         }else{//查看发布发
@@ -347,11 +355,19 @@
             if (self.sectionArray.count == 6) {
                 [cell.userActionButton setHidden:NO];
                 cell.userActionButton.userInteractionEnabled = YES;
-                [cell.userActionButton setTitle:@"  添加进度  " forState:0];
-                [cell.userActionButton setTitleColor:kTextColor forState:0];
                 cell.userActionButton.layer.borderWidth = kLineWidth;
-                cell.userActionButton.layer.borderColor = kButtonColor.CGColor;
                 [cell.userActionButton setContentHorizontalAlignment:0];
+                [cell.userActionButton setTitle:@"  添加进度  " forState:0];
+                
+                if ([orderModel.product.status integerValue] <= 20) {
+                    cell.userActionButton.layer.borderColor = kButtonColor.CGColor;
+                    [cell.userActionButton setTitleColor:kTextColor forState:0];
+                    cell.userActionButton.userInteractionEnabled = YES;
+                }else{
+                    cell.userActionButton.layer.borderColor = kBorderColor.CGColor;
+                    [cell.userActionButton setTitleColor:kLightGrayColor forState:0];
+                    cell.userActionButton.userInteractionEnabled = NO;
+                }
                 QDFWeakSelf;
                 [cell.userActionButton addAction:^(UIButton *btn) {
                     [weakself showHint:@"添加进度"];
@@ -426,7 +442,6 @@
 {
     OrderModel *orderModel = self.processArray[0];
     
-    
     if (indexPath.section == 1 && indexPath.row == 0) {
         [self showHint:@"查看更多"];
     }else{
@@ -492,9 +507,19 @@
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
-        
+            
         MyOrderDetailResponse *response = [MyOrderDetailResponse objectWithKeyValues:responseObject];
         [weakself.processArray addObject:response.data];
+        
+        //申请终止按钮显示
+        if ([response.data.product.status integerValue] <= 20) {
+            weakself.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightButton];
+            [weakself.rightButton setTitle:@"申请终止" forState:0];
+            [weakself.processinCommitButton setHidden:NO];
+        }else{
+            [weakself.processinCommitButton setHidden:YES];
+            [weakself.myProcessingTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+        }
         
         //根据上传协议的状态，调整section数目
         if ([response.data.orders.status integerValue] == 0) {
@@ -516,8 +541,43 @@
             }];
         }else if (weakself.sectionArray.count == 6){
             [weakself.processinCommitButton.button setTitle:@"申请结案" forState:0];
+            
+            [weakself.processinCommitButton addAction:^(UIButton *btn) {
+                [weakself actionOfBottomWithType:@"3" andOrderModel:response.data];
+            }];
         }
         
+        //终止或结案消息
+        if (response.data.accessTerminationAPPLY && ![response.userid isEqualToString:response.data.productOrdersTerminationsApply.create_by]) {//终止权限
+            if (response.data.productOrdersTerminationsApply) {//终止权限
+                if ([response.data.productOrdersTerminationsApply.status integerValue] == 0) {//发布方申请终止原因
+                    [weakself.processRemindButton setHidden:NO];
+                    [weakself.processRemindButton setTitle:@"对方申请终止次单，点击处理" forState:0];
+                    [weakself.processRemindButton setImage:[UIImage imageNamed:@"more_white"] forState:0];
+                    [weakself.processRemindButton addAction:^(UIButton *btn) {
+                        DealingEndViewController *dealingEndVC = [[DealingEndViewController alloc] init];
+                        dealingEndVC.terminationid = response.data.productOrdersTerminationsApply.terminationid;
+                        [weakself.navigationController pushViewController:dealingEndVC animated:YES];
+                    }];
+                }else{//发布方审核终止原因
+                    if (!response.data.productOrdersTerminationsApply.resultmemo) {
+                        [weakself.processRemindButton setHidden:YES];
+                    }else{
+                        [weakself.processRemindButton setHidden:NO];
+                        [weakself.processRemindButton setTitle:response.data.productOrdersTerminationsApply.resultmemo forState:0];
+                    }
+                }
+            }else if(response.data.productOrdersClosedsApply){ //结案权限
+                if ([response.data.productOrdersClosedsApply.status integerValue] >= 10) {//发布方申请终止原因
+                    if (!response.data.productOrdersClosedsApply.resultmemo) {
+                        [weakself.processRemindButton setHidden:YES];
+                    }else{
+                        [weakself.processRemindButton setHidden:NO];
+                        [weakself.processRemindButton setTitle:response.data.productOrdersClosedsApply.resultmemo forState:0];
+                    }
+                }
+            }
+        }
         [weakself.myProcessingTableView reloadData];
         
     } andFailBlock:^(NSError *error){
@@ -550,6 +610,10 @@
         [self.navigationController pushViewController:signProtocolVC animated:YES];
     }else if([actType integerValue] == 3){
         [self showHint:@"申请结案"];
+        RequestCloseViewController *requestCloseVC = [[RequestCloseViewController alloc] init];
+        requestCloseVC.ordersid = orderModel.orders.ordersid;
+        [self.navigationController pushViewController:requestCloseVC animated:YES];
+        
     }
 }
 

@@ -12,12 +12,14 @@
 #import "BaseCommitView.h"
 #import "AgentCell.h"
 
-@interface RequestCloseViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface RequestCloseViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 
 @property (nonatomic,strong) UITableView *requestCloseTableView;
 @property (nonatomic,strong) BaseCommitView *requestCloseCommitView;
+
+@property (nonatomic,strong) NSMutableDictionary *closeApplyDic;
 
 @end
 
@@ -34,6 +36,8 @@
     [self.view addSubview:self.requestCloseCommitView];
     
     [self.view setNeedsUpdateConstraints];
+    
+//    [self getDetailsOfClosed];
 }
 
 - (void)updateViewConstraints
@@ -73,10 +77,18 @@
         
         QDFWeakSelf;
         [_requestCloseCommitView addAction:^(UIButton *btn) {
-            [weakself showHint:@"立即申请结案"];
+            [weakself showAlertOfCloseApply];
         }];
     }
     return _requestCloseCommitView;
+}
+
+- (NSMutableDictionary *)closeApplyDic
+{
+    if (!_closeApplyDic) {
+        _closeApplyDic = [NSMutableDictionary dictionary];
+    }
+    return _closeApplyDic;
 }
 
 #pragma mark - tableview delegate and datasource
@@ -106,6 +118,15 @@
     cell.agentLabel.text = cll[0][indexPath.row];
     cell.agentTextField.placeholder = cll[1][indexPath.row];
     [cell.agentButton setTitle:@"万" forState:0];
+    
+    QDFWeakSelf;
+    [cell setDidEndEditing:^(NSString *text) {
+        if (indexPath.row == 0) {
+            [weakself.closeApplyDic setValue:text forKey:@"price"];
+        }else{
+            [weakself.closeApplyDic setValue:text forKey:@"price2"];
+        }
+    }];
     
     return cell;
 }
@@ -142,11 +163,90 @@
 }
 
 #pragma mark - method
+//- (void)getDetailsOfClosed
+//{
+//    NSString *closeDetailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrderDetailOfDealClosedDetails];
+//    NSDictionary *params = @{@"token" : [self getValidateToken],
+//                             @"closedid" : self.closedid
+//                             };
+//    
+//    QDFWeakSelf;
+//    [self requestDataPostWithString:closeDetailString params:params successBlock:^(id responseObject) {
+//        
+//        NSDictionary *qpqppq = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+//        NSString *oooo ;
+//        
+//    } andFailBlock:^(NSError *error) {
+//        
+//    }];
+//}
+
+- (void)showAlertOfCloseApply
+{
+    UIAlertController *closeAlert = [UIAlertController alertControllerWithTitle:@"是否立即申请结案" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    
+    QDFWeakSelf;
+    [closeAlert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.placeholder = @"请说明申请结案原因";
+        textField.delegate = weakself;
+    }];
+    
+    UIAlertAction *closeAct1 = [UIAlertAction actionWithTitle:@"否" style:0 handler:nil];
+    UIAlertAction *closeAct2 = [UIAlertAction actionWithTitle:@"是" style:0 handler:^(UIAlertAction * _Nonnull action) {
+        [weakself gotoApplyClose];
+    }];
+    
+    [closeAlert addAction:closeAct1];
+    [closeAlert addAction:closeAct2];
+    
+    [self presentViewController:closeAlert animated:YES completion:nil];
+}
+
+- (void)gotoApplyClose
+{
+    [self.view endEditing:YES];
+    
+    NSString *applyCloseString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrderDetailOfDealClosedApply];
+    
+    self.closeApplyDic[@"price"] =  self.closeApplyDic[@"price"]?self.closeApplyDic[@"price"]:@"";
+    self.closeApplyDic[@"price2"] =  self.closeApplyDic[@"price2"]?self.closeApplyDic[@"price2"]:@"";//applymemo
+
+    [self.closeApplyDic setValue:self.ordersid forKey:@"ordersid"];
+    [self.closeApplyDic setValue:[self getValidateToken] forKey:@"token"];
+    
+    NSDictionary *params = self.closeApplyDic;
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:applyCloseString params:params successBlock:^(id responseObject) {
+        BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:baseModel.msg];
+        
+        if ([baseModel.code isEqualToString:@"0000"]) {
+            [weakself back];
+        }
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
 - (void)rightItemAction
 {
     DealingCloseViewController *dealCloseVC = [[DealingCloseViewController alloc] init];
     dealCloseVC.perTypeString = @"2";
     [self.navigationController pushViewController:dealCloseVC animated:YES];
+}
+
+#pragma mark - textField delegate
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    [self.closeApplyDic setValue:textField.text forKey:@"applymemo"];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
 }
 
 - (void)didReceiveMemoryWarning {

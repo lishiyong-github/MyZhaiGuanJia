@@ -17,6 +17,9 @@
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *addProgressTableView;
 
+//json
+@property (nonatomic,strong) NSMutableDictionary *addPaceDic;
+
 @end
 
 @implementation AddProgressViewController
@@ -54,6 +57,14 @@
         _addProgressTableView.dataSource = self;
     }
     return _addProgressTableView;
+}
+
+- (NSMutableDictionary *)addPaceDic
+{
+    if (!_addPaceDic) {
+        _addPaceDic = [NSMutableDictionary dictionary];
+    }
+    return _addPaceDic;
 }
 
 #pragma mark - delegate and datasource
@@ -97,6 +108,12 @@
             cell.leftTextViewConstraints.constant = kBigPadding;
             
             cell.ediTextView.placeholder = @"请输入进度详情";
+            
+            QDFWeakSelf;
+            [cell setDidEndEditing:^(NSString *text) {
+                [weakself.addPaceDic setValue:text forKey:@"memo"];
+            }];
+            
             return cell;
 
         }
@@ -144,13 +161,50 @@
 {
     if (indexPath.section == 1) {
         [self showHint:@"选择类型"];
+        [self.addPaceDic setValue:@"" forKey:@"type"];
     }
 }
 
 #pragma mark - method
-- (void)rightItemAction
+- (void)rightItemAction//添加进度
 {
-    [self showHint:@"保存"];
+    NSString *addPaceString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrderDetailOfAddPace];
+    
+    self.addPaceDic[@"memo"] =  self.addPaceDic[@"memo"]?self.addPaceDic[@"memo"]:@"";
+    self.addPaceDic[@"type"] =  self.addPaceDic[@"type"]?self.addPaceDic[@"type"]:@"";
+    self.addPaceDic[@"files"] =  self.addPaceDic[@"files"]?self.addPaceDic[@"files"]:@"";
+    [self.addPaceDic setValue:[self getValidateToken] forKey:@"token"];
+    [self.addPaceDic setValue:self.ordersid forKey:@"ordersid"];
+    
+    NSDictionary *params = self.addPaceDic;
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:addPaceString params:params successBlock:^(id responseObject) {
+        BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:baseModel.msg];
+        
+        if ([baseModel.code isEqualToString:@"0000"]) {
+            [weakself back];
+        }
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
+- (void)back{
+    UIAlertController *alertCon = [UIAlertController alertControllerWithTitle:@"放弃保存？" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *act00 = [UIAlertAction actionWithTitle:@"否" style:0 handler:nil];
+    
+    QDFWeakSelf;
+    UIAlertAction *act11 = [UIAlertAction actionWithTitle:@"是" style:0 handler:^(UIAlertAction * _Nonnull action) {
+        [weakself.navigationController popViewControllerAnimated:YES];
+    }];
+    
+    [alertCon addAction:act00];
+    [alertCon addAction:act11];
+    
+    [self presentViewController:alertCon animated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning {

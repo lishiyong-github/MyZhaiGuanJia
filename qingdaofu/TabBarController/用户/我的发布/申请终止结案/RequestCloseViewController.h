@@ -10,4 +10,7 @@
 
 @interface RequestCloseViewController : NetworkViewController
 
+@property (nonatomic,strong) NSString *closedid;
+@property (nonatomic,strong) NSString *ordersid;
+
 @end
