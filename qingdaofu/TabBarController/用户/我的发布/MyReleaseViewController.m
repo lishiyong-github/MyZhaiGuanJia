@@ -14,6 +14,7 @@
 #import "MyDealingViewController.h"   //处理中
 #import "ReleaseEndViewController.h"   //终止
 #import "ReleaseCloseViewController.h"  //结案
+#import "MyReleaseDetailsViewController.h"  //详情
 
 #import "ApplyRecordViewController.h"     //查看申请
 #import "PaceViewController.h"          //查看进度
@@ -328,6 +329,11 @@
 {
     RowsModel *sModel = self.releaseDataArray[indexPath.section];
 
+    MyReleaseDetailsViewController *myReleaseDetailsVC = [[MyReleaseDetailsViewController alloc] init];
+    myReleaseDetailsVC.productid = sModel.productid;
+    [self.navigationController pushViewController:myReleaseDetailsVC animated:YES];
+    
+    return;
     if ([sModel.statusLabel isEqualToString:@"发布中"]) {
         MyPublishingViewController *myPublishingVC = [[MyPublishingViewController alloc] init];
         myPublishingVC.productid = sModel.productid;

@@ -61,11 +61,6 @@
     [super viewDidLoad];
     
     if (!self.suResponse) {
-//        if ([self.categoryString integerValue] == 2) {
-//            self.navigationItem.title = @"发布清收";
-//        }else{
-//            self.navigationItem.title = @"发布诉讼";
-//        }
         self.title = @"发布债权";
     }else{
         self.title = [NSString stringWithFormat:@"清收%@",self.suResponse.product.codeString];
@@ -1600,6 +1595,7 @@
 
 #pragma mark - method
 
+/*
 - (void)reportSuitActionWithTypeString:(NSString *)typeString
 {
     [self showHint:@"发布成功"];
@@ -1701,15 +1697,18 @@
         
     }];
     */
-}
+//}
 
+//publish
 - (void)rightItemAction
 {
     [self.view endEditing:YES];
     
     [self.suitDataDictionary setValue:[self getValidateToken] forKey:@"token"];
-    [self.suitDataDictionary setValue:@"2,1" forKey:@"category"];//债权类型
+    [self.suitDataDictionary setValue:@"1,2" forKey:@"category"];//债权类型
+    [self.suitDataDictionary setValue:@"" forKey:@"category_other"];
     [self.suitDataDictionary setValue:@"1,3" forKey:@"entrust"];  //委托权限
+    [self.suitDataDictionary setValue:@"" forKey:@"entrust_other"];
     
     NSString *reFinanceString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPublishProduct];
     NSDictionary *params = self.suitDataDictionary;
@@ -1727,7 +1726,34 @@
     } andFailBlock:^(NSError *error) {
         
     }];
+}
 
+- (void)saveDraftAction
+{
+    [self.view endEditing:YES];
+    
+    [self.suitDataDictionary setValue:[self getValidateToken] forKey:@"token"];
+    [self.suitDataDictionary setValue:@"1,2" forKey:@"category"];//债权类型
+//    [self.suitDataDictionary setValue:@"" forKey:@"category_other"];
+    [self.suitDataDictionary setValue:@"1,3" forKey:@"entrust"];  //委托权限
+//    [self.suitDataDictionary setValue:@"" forKey:@"entrust_other"];
+
+    NSString *saveDraft = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kSaveDraftOfProduct];
+    NSDictionary *params = self.suitDataDictionary;
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:saveDraft params:params successBlock:^(id responseObject) {
+        
+        BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:baseModel.msg];
+        
+        if ([baseModel.code isEqualToString:@"0000"]) {
+            [weakself dismissViewControllerAnimated:YES completion:nil];
+        }
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
 }
 
 - (void)back
@@ -1746,7 +1772,7 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 0) {//保存
-        [self reportSuitActionWithTypeString:@"0"];
+        [self saveDraftAction];
     }else if (buttonIndex == 1){//不保存
         [self dismissViewControllerAnimated:YES completion:nil];
     }

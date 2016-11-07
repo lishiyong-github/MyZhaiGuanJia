@@ -36,16 +36,16 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:kBlackColor,NSFontAttributeName:kNavFont}];
-    
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:kNavColor] forBarMetrics:UIBarMetricsDefault];
+//    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:kWhiteColor,NSFontAttributeName:kNavFont}];
+//    
+//    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:kNavColor] forBarMetrics:UIBarMetricsDefault];
     
     [self refreshHeaderOfMySave];
 }
 - (void)viewDidLoad {
     
     [super viewDidLoad];
-    self.navigationItem.title = @"我的收藏";
+    self.title = @"我的收藏";
     self.navigationItem.leftBarButtonItem = self.leftItem;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightNavButton];
     
@@ -281,13 +281,15 @@
 #pragma mark - refresh method
 - (void)getMyStoreListWithPage:(NSString *)page
 {
-    NSString *storeString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyStoreString];
+    NSString *storeString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMySaveListsString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"page" : page,
                              @"limit" : @"10"
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:storeString params:params successBlock:^(id responseObject){
+                
+        NSDictionary *wowoow = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
         if ([page integerValue] == 1) {
             [weakself.storeDataList removeAllObjects];
@@ -321,8 +323,10 @@
 {
     _pageStore = 1;
     [self getMyStoreListWithPage:@"1"];
+    
+    QDFWeakSelf;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.myStoreTableView headerEndRefreshing];
+        [weakself.myStoreTableView headerEndRefreshing];
     });
 }
 
@@ -331,8 +335,10 @@
     _pageStore ++;
     NSString *page = [NSString stringWithFormat:@"%ld",(long)_pageStore];
     [self getMyStoreListWithPage:page];
+    
+    QDFWeakSelf;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.myStoreTableView footerEndRefreshing];
+        [weakself.myStoreTableView footerEndRefreshing];
     });
 }
 

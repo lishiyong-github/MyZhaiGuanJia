@@ -10,7 +10,6 @@
 
 @interface MessageSystemView : UIButton
 
-
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UIButton *imageButton;
 @property (nonatomic,strong) UILabel *countLabel;

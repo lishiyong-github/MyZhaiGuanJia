@@ -40,7 +40,6 @@
 @property (nonatomic,copy) NSString *place_city_id;
 @property (nonatomic,copy) NSString *place_district_id;
 
-
 /* 代理人详情 */
 @property (nonatomic,strong) NSMutableArray *user;
 

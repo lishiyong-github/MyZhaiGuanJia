@@ -171,7 +171,6 @@
 #define kBrandAudiString  @"common/brandchild"  //车系
 #define kGuarantyString @"common/getsearch"   //小区
 ///////////////
-#define kPublishProduct  @"product/release" //发布＊＊＊＊＊
 ////////
 
 //我的接单 我的发布
@@ -280,9 +279,14 @@
 
 
 //////// 新修改的
-#define kMyOrderListString @"productorders/list-processing"  //我的接单－进行中
+
+#define kPublishProduct  @"product/release" //发布＊＊＊＊＊
+#define kSaveDraftOfProduct  @"product/draft" //保存草稿＊＊＊＊＊
+
+
 #define kMessageOfGroupString @"message/group-list"  //分组消息
 #define kMessageOfSystemString @"message/system-list"  //系统消息
+
 
 #define kMyMailListString @"contacts/index"  //我的通讯录
 #define kMyMailOfSearchUserString @"contacts/search"  //搜索联系人
@@ -330,12 +334,19 @@
 #define kMyReleaseDetailOfInterviewResultAgree @"product/apply-agree"  //同意该申请方为接单方
 #define kMyReleaseDetailOfInterviewResultCancel @"product/apply-veto"  //取消该申请方为接单方
 #define kMyReleaseDetailOfEndString @"productorders/orders-termination-apply"  //终止产品
+#define kMyReleaseOfDeleteString @"product/product-delete"  //删除发布中的产品
 
 
 
 
 #define kProductListsString @"product/index"  //产品列表
 #define kProductDetailsString  @"product/detail"  //产品详情
+#define kProductDetailOfSave  @"product/collect"  //产品详情-收藏产品
+#define kProductDetailOfCancelSave  @"product/collect-cancel"  //产品详情-取消收藏产品
+
+
+#define kMySaveListsString @"product/collect-list" //我的收藏
+#define kMyDraftListsString @"product/collect-list"  //我的草稿
 
 
 #endif

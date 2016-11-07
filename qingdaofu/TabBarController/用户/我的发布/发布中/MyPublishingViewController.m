@@ -375,18 +375,16 @@
 
 - (void)deleteThePublishing
 {
-    NSString *deletePubString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kDeleteProductOfMyReleaseString];
-    NSDictionary *params = @{@"id" : self.idString,
-                             @"category" : self.categaryString,
-                             @"token" : [self getValidateToken],
-                             @"type" : @"2"
+    NSString *deletePubString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseOfDeleteString];
+    NSDictionary *params = @{@"productid" : self.productid,
+                             @"token" : [self getValidateToken]
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:deletePubString params:params successBlock:^(id responseObject) {
         
-        BaseModel *baModel = [BaseModel objectWithKeyValues:responseObject];
-        [weakself showHint:baModel.msg];
-        if ([baModel.code isEqualToString:@"0000"]) {
+        BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:baseModel.msg];
+        if ([baseModel.code isEqualToString:@"0000"]) {
             [weakself.navigationController popViewControllerAnimated:YES];
         }
         

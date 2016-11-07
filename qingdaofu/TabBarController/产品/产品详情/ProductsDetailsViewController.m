@@ -13,7 +13,6 @@
 #import "ProductsCheckDetailViewController.h"  //债权人信息
 #import "ProductsCheckFilesViewController.h"  //债权文件
 
-
 #import "UIImage+Color.h"
 #import "BaseCommitButton.h"
 #import "EvaTopSwitchView.h"  //切换
@@ -44,10 +43,6 @@
 #import "EvaluateResponse.h"
 #import "EvaluateModel.h"
 
-
-
-
-
 ////////////
 #import "PublishingResponse.h"
 #import "RowsModel.h"
@@ -66,7 +61,7 @@
 @property (nonatomic,strong) ProdLeftView *leftTableView;
 
 //json
-@property (nonatomic,strong) NSString *typetString;//收藏状态
+@property (nonatomic,strong) NSString *typetString;//收藏状态(1-已收藏，2-未收藏)
 @property (nonatomic,strong) NSArray *messageArray1;
 @property (nonatomic,strong) NSArray *messageArray11;
 @property (nonatomic,strong) NSArray *messageArray2;
@@ -110,6 +105,7 @@
 {
     [super viewDidLoad];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.leftItemButton];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightButton];
     
     self.switchType = @"33";
     
@@ -182,24 +178,24 @@
         [productSwitchView.shortLineLabel setHidden:YES];
         [self.headerView addSubview:productSwitchView];
         
-        if ([self.switchType isEqualToString:@"33"]) {
-            [productSwitchView.getbutton setTitleColor:kBlueColor forState:0];
-            [productSwitchView.sendButton setTitleColor:kBlackColor forState:0];
-            productSwitchView.leftBlueConstraints.constant = 0;
-            
-        }else if ([self.switchType isEqualToString:@"34"]){
-            [productSwitchView.sendButton setTitleColor:kBlueColor forState:0];
-            [productSwitchView.getbutton setTitleColor:kBlackColor forState:0];
-            productSwitchView.leftBlueConstraints.constant = kScreenWidth/2;
-        }
+//        if ([self.switchType isEqualToString:@"33"]) {
+//            [productSwitchView.getbutton setTitleColor:kBlueColor forState:0];
+//            [productSwitchView.sendButton setTitleColor:kBlackColor forState:0];
+//            productSwitchView.leftBlueConstraints.constant = 0;
+//            
+//        }else if ([self.switchType isEqualToString:@"34"]){
+//            [productSwitchView.sendButton setTitleColor:kBlueColor forState:0];
+//            [productSwitchView.getbutton setTitleColor:kBlackColor forState:0];
+//            productSwitchView.leftBlueConstraints.constant = kScreenWidth/2;
+//        }
         
         QDFWeak(productSwitchView);
         QDFWeakSelf;
         [productSwitchView setDidSelectedButton:^(NSInteger tag) {
             if (tag == 33) {//产品信息
-                [weakproductSwitchView.getbutton setTitleColor:kBlueColor forState:0];
-                [weakproductSwitchView.sendButton setTitleColor:kBlackColor forState:0];
-                weakproductSwitchView.leftBlueConstraints.constant = 0;
+//                [weakproductSwitchView.getbutton setTitleColor:kBlueColor forState:0];
+//                [weakproductSwitchView.sendButton setTitleColor:kBlackColor forState:0];
+//                weakproductSwitchView.leftBlueConstraints.constant = 0;
                 weakself.switchType = @"33";
                 
                 if (weakself.messageArray1.count == 0) {
@@ -209,28 +205,39 @@
                 }
                 
             }else{//发布人信息
-                CertificationModel *certifiteModel;
-                if (self.certificationArray1.count > 0) {
-                    certifiteModel = self.certifiDataArray[0];
-                }
-                if ([certifiteModel.state isEqualToString:@"1"]){
-                    [weakproductSwitchView.sendButton setTitleColor:kBlueColor forState:0];
-                    [weakproductSwitchView.getbutton setTitleColor:kBlackColor forState:0];
-                    weakproductSwitchView.leftBlueConstraints.constant = kScreenWidth/2;
-                    weakself.switchType = @"34";
+                if (self.certifiDataArray.count > 0) {
                     
-                    if (weakself.certifiDataArray.count == 0) {
-//                        [weakself getMessageOfPublishPerson];
-                        [weakself getDetailMessageOfProduct];
-                    }else{
-                        [weakself.productsDetailsTableView reloadData];
-                    }
+                    weakself.switchType = @"34";
+                    [weakself.productsDetailsTableView reloadData];
+                    
                 }else{
                     [weakself showHint:@"发布方未认证，不能查看相关信息"];
                     [weakproductSwitchView.getbutton setTitleColor:kBlueColor forState:0];
                     [weakproductSwitchView.sendButton setTitleColor:kBlackColor forState:0];
                     weakproductSwitchView.leftBlueConstraints.constant = 0;
                 }
+//                CertificationModel *certifiteModel;
+//                if (self.certificationArray1.count > 0) {
+//                    certifiteModel = self.certifiDataArray[0];
+//                }
+//                if ([certifiteModel.state isEqualToString:@"1"]){
+//                    [weakproductSwitchView.sendButton setTitleColor:kBlueColor forState:0];
+//                    [weakproductSwitchView.getbutton setTitleColor:kBlackColor forState:0];
+//                    weakproductSwitchView.leftBlueConstraints.constant = kScreenWidth/2;
+//                    weakself.switchType = @"34";
+//                    
+//                    if (weakself.certifiDataArray.count == 0) {
+////                        [weakself getMessageOfPublishPerson];
+//                        [weakself getDetailMessageOfProduct];
+//                    }else{
+//                        [weakself.productsDetailsTableView reloadData];
+//                    }
+//                }else{
+//                    [weakself showHint:@"发布方未认证，不能查看相关信息"];
+//                    [weakproductSwitchView.getbutton setTitleColor:kBlueColor forState:0];
+//                    [weakproductSwitchView.sendButton setTitleColor:kBlackColor forState:0];
+//                    weakproductSwitchView.leftBlueConstraints.constant = 0;
+//                }
             }
         }];
     }
@@ -389,8 +396,6 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.backgroundColor = kWhiteColor;
         
-//        NumberModel *numberModel = self.numberDataArray[0];
-        
         cell.numberButton1.fLabel1.text = @"浏览次数";
         cell.numberButton1.fLabel2.text = [NSString getValidStringFromString:rowModel.browsenumber toString:@"0"];
         cell.numberButton2.fLabel1.text = @"申请次数";
@@ -400,77 +405,127 @@
 
         return cell;
     }
+    
     //section == 1
     if ([self.switchType isEqualToString:@"33"]) {//产品详情
-        if (indexPath.row == 0) {
-            identifier = @"proDetais10";
-            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-            if (!cell) {
-                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-            }
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            [cell.userNameButton setTitle:@"基本信息" forState:0];
-            [cell.userActionButton setHidden:YES];
-            
-            return cell;
-            
-        }else if(indexPath.row > 0 && indexPath.row < self.messageArray1.count+1){//基本信息详情
-            identifier = @"proDetais11";
-            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-            if (!cell) {
-                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-            }
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
-            cell.userNameButton.titleLabel.font = kFirstFont;
-            [cell.userActionButton setTitleColor:kGrayColor forState:0];
-            cell.userActionButton.titleLabel.font = kFirstFont;
-            
-            [cell.userNameButton setTitle:self.messageArray1[indexPath.row-1] forState:0];
-            [cell.userActionButton setTitle:self.messageArray11[indexPath.row-1] forState:0];
-            return cell;
-        }else if (indexPath.row == self.messageArray1.count+1){
-            identifier = @"proDetais12";
-            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-            if (!cell) {
-                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-            }
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            [cell.userNameButton setHidden:YES];
-            [cell.userActionButton setHidden:YES];
-            cell.backgroundColor = kBackColor;
-            
-            return cell;
-        }else if (indexPath.row == self.messageArray1.count+2){//补充信息
-            identifier = @"proDetais13";
-            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-            if (!cell) {
-                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-            }
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            [cell.userActionButton setHidden:YES];
-            [cell.userNameButton setTitle:@"补充信息" forState:0];
-            
-            return cell;
-            
-        }else if (indexPath.row > self.messageArray1.count+2){//补充信息详情
-            identifier = @"proDetais14";
-            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-            if (!cell) {
-                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-            }
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
-            cell.userNameButton.titleLabel.font = kFirstFont;
-            [cell.userActionButton setTitleColor:kGrayColor forState:0];
-            cell.userActionButton.titleLabel.font = kFirstFont;
-            
-            [cell.userNameButton setTitle:self.messageArray2[indexPath.row-self.messageArray1.count-3] forState:0];
-            [cell.userActionButton setTitle:self.messageArray22[indexPath.row-self.messageArray11.count-3] forState:0];
-            
-            return cell;
+        identifier = @"proDetais10";
+        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell) {
+            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        NSArray *arr1;
+        if ([rowModel.typeLabel isEqualToString:@"万"]) {
+            arr1 = @[@"基本信息",@"债权类型",@"委托事项",@"委托金额",@"固定费用",@"违约期限",@"合同履行地"];
+        }else if ([rowModel.typeLabel isEqualToString:@"%"]){
+            arr1 = @[@"基本信息",@"债权类型",@"委托事项",@"委托金额",@"风险费率",@"违约期限",@"合同履行地"];
+        }
+        [cell.userNameButton setTitle:arr1[indexPath.row] forState:0];
+        
+        if (indexPath.row == 0) {
+            [cell.userActionButton setTitle:@"" forState:0];
+        }else if (indexPath.row == 1){
+            [cell.userActionButton setTitle:rowModel.categoryLabel forState:0];
+        }else if (indexPath.row == 2){
+            [cell.userActionButton setTitle:rowModel.entrustLabel forState:0];
+        }else if (indexPath.row == 3){
+            NSString *account = [NSString stringWithFormat:@"%@万",rowModel.accountLabel];
+            [cell.userActionButton setTitle:account forState:0];
+        }else if (indexPath.row == 4){
+            NSString *typenum = [NSString stringWithFormat:@"%@%@",rowModel.typenumLabel,rowModel.typeLabel];
+            [cell.userActionButton setTitle:typenum forState:0];
+        }else if (indexPath.row == 5){
+            NSString *overdue = [NSString stringWithFormat:@"%@个月",rowModel.overdue];
+            [cell.userActionButton setTitle:overdue forState:0];
+        }else if (indexPath.row == 6){
+            [cell.userActionButton setTitle:rowModel.addressLabel forState:0];
+        }
+        
+        
+        return cell;
+        
+        
+//        if (indexPath.row == 0) {
+//            identifier = @"proDetais10";
+//            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+//            if (!cell) {
+//                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+//            }
+//            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//            [cell.userNameButton setTitle:@"基本信息" forState:0];
+//            [cell.userActionButton setHidden:YES];
+//            
+//            return cell;
+//        }else{
+//            identifier = @"proDetais11";
+//            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+//            if (!cell) {
+//                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+//            }
+//            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//            
+//            NSArray *array1 = @[@"",@"",@""];
+//            
+//            return cell;
+//        }
+//        else if(indexPath.row > 0 && indexPath.row < self.messageArray1.count+1){//基本信息详情
+//            identifier = @"proDetais11";
+//            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+//            if (!cell) {
+//                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+//            }
+//            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//            
+//            [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
+//            cell.userNameButton.titleLabel.font = kFirstFont;
+//            [cell.userActionButton setTitleColor:kGrayColor forState:0];
+//            cell.userActionButton.titleLabel.font = kFirstFont;
+//            
+//            [cell.userNameButton setTitle:self.messageArray1[indexPath.row-1] forState:0];
+//            [cell.userActionButton setTitle:self.messageArray11[indexPath.row-1] forState:0];
+//            return cell;
+//        }else if (indexPath.row == self.messageArray1.count+1){
+//            identifier = @"proDetais12";
+//            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+//            if (!cell) {
+//                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+//            }
+//            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//            [cell.userNameButton setHidden:YES];
+//            [cell.userActionButton setHidden:YES];
+//            cell.backgroundColor = kBackColor;
+//            
+//            return cell;
+//        }else if (indexPath.row == self.messageArray1.count+2){//补充信息
+//            identifier = @"proDetais13";
+//            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+//            if (!cell) {
+//                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+//            }
+//            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//            [cell.userActionButton setHidden:YES];
+//            [cell.userNameButton setTitle:@"补充信息" forState:0];
+//            
+//            return cell;
+//            
+//        }else if (indexPath.row > self.messageArray1.count+2){//补充信息详情
+//            identifier = @"proDetais14";
+//            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+//            if (!cell) {
+//                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+//            }
+//            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//            [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
+//            cell.userNameButton.titleLabel.font = kFirstFont;
+//            [cell.userActionButton setTitleColor:kGrayColor forState:0];
+//            cell.userActionButton.titleLabel.font = kFirstFont;
+//            
+//            [cell.userNameButton setTitle:self.messageArray2[indexPath.row-self.messageArray1.count-3] forState:0];
+//            [cell.userActionButton setTitle:self.messageArray22[indexPath.row-self.messageArray11.count-3] forState:0];
+//            
+//            return cell;
+//        }
     }else{//发布方信息
         if (indexPath.row < self.certificationArray1.count) {
             identifier = @"proDetais20";
@@ -711,452 +766,233 @@
         
         if ([respongh.code isEqualToString:@"0000"]) {
             
-            weakself.title = respongh.data.number;
+            RowsModel *rowModel = respongh.data;
+            //title
+            weakself.title = [NSString stringWithFormat:@"债权%@",rowModel.number];
             
-            [weakself.recommendDataArray addObject:respongh.data];
+            //state
+            if ([rowModel.status integerValue] == 20 || [rowModel.status integerValue] == 30 || [rowModel.status integerValue] == 40) {//已撮合
+                [weakself.proDetailsCommitButton setTitle:@"已撮合" forState:0];
+            }else if ([rowModel.applyPeople integerValue] > 0){//已申请
+                if (rowModel.apply && [rowModel.applystatussss integerValue] == 10) {
+                    [weakself.proDetailsCommitButton setTitle:@"取消申请" forState:0];
+                }else{
+                    [weakself.proDetailsCommitButton setTitle:@"面谈中" forState:0];
+                }
+            }else if ([rowModel.applyPeople integerValue] == 0 && ![rowModel.create_by isEqualToString:respongh.userid]){//立即申请
+                [weakself.proDetailsCommitButton setTitle:@"立即申请" forState:0];
+            }else{
+//                [weakself.proDetailsCommitButton setTitle:@"自己发布的，需要隐藏" forState:0];
+                [weakself.productsDetailsTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+                [weakself.proDetailsCommitButton setHidden:YES];
+            }
             
-            //////////////////////*********发布人详情*********/////////////////////////
-            CertificationModel *certificationModel;
-            if (respongh.data.User.certification) {
-                certificationModel = respongh.data.User.certification;
+            //收藏状态
+            if ([rowModel.collectionPeople integerValue] > 0) {
+                [weakself.rightButton setImage:[UIImage imageNamed:@"nav_collection_s"] forState:0];
+                weakself.typetString = @"1";
+            }else{
+                [weakself.rightButton setImage:[UIImage imageNamed:@"nav_collection"] forState:0];
+                weakself.typetString = @"2";
+            }
+            
+            //债权信息
+            [weakself.recommendDataArray addObject:rowModel];
+            
+            //*********发布人认证信息////////
+            if (rowModel.User.certification) {
+                CertificationModel *certificationModel = rowModel.User.certification;
                 [weakself.certifiDataArray addObject:certificationModel];
-            }
-
-            NSString *definedStr = @"已认证";
-
-            NSString *emailQ = [NSString getValidStringFromString:certificationModel.email];
-            NSString *addressQ = [NSString getValidStringFromString:certificationModel.address];
-            NSString *enterprisewebsiteQ = [NSString getValidStringFromString:certificationModel.enterprisewebsite];
-            NSString *casedescQ = [NSString getValidStringFromString:certificationModel.casedesc];
-            if (![casedescQ isEqualToString:@"暂无"]) {
-                casedescQ = @"查看";
-            }
-
-            if ([certificationModel.category integerValue] == 1) {//个人
-                weakself.certificationArray1 = @[@"基本信息",@"姓名",@"身份证号码",@"身份图片",@"联系电话",@"邮箱"];
-                weakself.certificationArray11 = @[@"已认证个人",certificationModel.name,certificationModel.cardno,definedStr,certificationModel.mobile,emailQ];
-            }else if ([certificationModel.category integerValue] == 2){//律所
-                weakself.certificationArray1 = @[@"基本信息",@"律所名称",@"执业证号",@"图片",@"联系人",@"联系方式",@"邮箱",@"经典案例"];
-                weakself.certificationArray11 = @[@"已认证律所",certificationModel.name,certificationModel.cardno,definedStr,certificationModel.contact,certificationModel.mobile,emailQ,casedescQ];
-                weakself.casedesc = certificationModel.casedesc;
-            }else if ([certificationModel.category integerValue] == 3){//公司
-                weakself.certificationArray1 = @[@"基本信息",@"公司名称",@"营业执照号",@"图片",@"联系人",@"联系方式",@"企业邮箱",@"公司经营地址",@"公司网站",@"经典案例"];
-                weakself.certificationArray11 = @[@"已认证公司",certificationModel.name,certificationModel.cardno,definedStr,certificationModel.contact,certificationModel.mobile,emailQ,addressQ,enterprisewebsiteQ,casedescQ];
-                weakself.casedesc = certificationModel.casedesc;
+                NSString *definedStr = @"已认证";
+                
+                NSString *emailQ = [NSString getValidStringFromString:certificationModel.email];
+                NSString *addressQ = [NSString getValidStringFromString:certificationModel.address];
+                NSString *enterprisewebsiteQ = [NSString getValidStringFromString:certificationModel.enterprisewebsite];
+                NSString *casedescQ = [NSString getValidStringFromString:certificationModel.casedesc];
+                if (![casedescQ isEqualToString:@"暂无"]) {
+                    casedescQ = @"查看";
+                }
+                
+                if ([certificationModel.category integerValue] == 1) {//个人
+                    weakself.certificationArray1 = @[@"基本信息",@"姓名",@"身份证号码",@"身份图片",@"联系电话",@"邮箱"];
+                    weakself.certificationArray11 = @[@"已认证个人",certificationModel.name,certificationModel.cardno,definedStr,certificationModel.mobile,emailQ];
+                }else if ([certificationModel.category integerValue] == 2){//律所
+                    weakself.certificationArray1 = @[@"基本信息",@"律所名称",@"执业证号",@"图片",@"联系人",@"联系方式",@"邮箱",@"经典案例"];
+                    weakself.certificationArray11 = @[@"已认证律所",certificationModel.name,certificationModel.cardno,definedStr,certificationModel.contact,certificationModel.mobile,emailQ,casedescQ];
+                    weakself.casedesc = certificationModel.casedesc;
+                }else if ([certificationModel.category integerValue] == 3){//公司
+                    weakself.certificationArray1 = @[@"基本信息",@"公司名称",@"营业执照号",@"图片",@"联系人",@"联系方式",@"企业邮箱",@"公司经营地址",@"公司网站",@"经典案例"];
+                    weakself.certificationArray11 = @[@"已认证公司",certificationModel.name,certificationModel.cardno,definedStr,certificationModel.contact,certificationModel.mobile,emailQ,addressQ,enterprisewebsiteQ,casedescQ];
+                    weakself.casedesc = certificationModel.casedesc;
+                }
             }
             
             [weakself.productsDetailsTableView reloadData];
-
-            
-//            [weakself.numberDataArray addObject:respongh.number]; //申请次数
-//            [weakself.fileDataArray addObject:respongh.add];  //债权文件
-//            
-//            PublishingModel *dataModel = respongh.data;
-//            
-//            ////////////////*********产品详情*********/////////////////////////
-//            weakself.navigationItem.title = [NSString stringWithFormat:@"债权%@",dataModel.codeString];
-//            [weakself.recommendDataArray addObject:dataModel];
-//            
-//            //************产品信息*********///
-//            weakself.messageArray1 = @[@"债权类型",@"委托事项",@"委托金额",@"委托费用",@"违约期限",@"合同履行地"];
-//            weakself.messageArray11 = @[@"房产抵押，机动车抵押，合同纠纷，其他",@"清收，诉讼，债权转让，其他",@"1000万",@"5.6%",@"3个月",@"上海上海市浦东新区"];
-//            [weakself.productsDetailsTableView reloadData];
-            
-            /*
-            //金额
-            NSString *moneyStr1 = [NSString stringWithFormat:@"%@万",dataModel.money];
-            
-            NSString *loan_typeStr = @"暂无";//债权类型
-            if ([dataModel.loan_type intValue] == 1) {
-                loan_typeStr = @"房产抵押";
-            }else if ([dataModel.loan_type intValue] == 2){
-                loan_typeStr = @"应收账款";
-            }else if ([dataModel.loan_type intValue] == 3){
-                loan_typeStr = @"机动车抵押";
-            }else{
-                loan_typeStr = @"无抵押";
-            }
-            
-            //代理费用类型
-            NSString *agencycommissiontypeStr = @"暂无";
-            //代理费用
-            NSString *agencycommissionStr1 = @"暂无";
-            if ([dataModel.agencycommissiontype intValue] == 1) {//
-                if ([dataModel.category integerValue] == 2) {
-                    agencycommissiontypeStr = @"服务佣金";
-                    agencycommissionStr1 = [NSString stringWithFormat:@"%@%@",[NSString getValidStringFromString:dataModel.agencycommission toString:@"0"],@"%"];
-                }else{
-                    agencycommissiontypeStr = @"固定费用";
-                    agencycommissionStr1 = [NSString stringWithFormat:@"%@万",[NSString getValidStringFromString:dataModel.agencycommission toString:@"0"]];
-                }
-            }else if ([dataModel.agencycommissiontype intValue] ==2){
-                if ([dataModel.category integerValue] == 2) {
-                    agencycommissiontypeStr = @"固定费用";
-                    agencycommissionStr1 = [NSString stringWithFormat:@"%@万",[NSString getValidStringFromString:dataModel.agencycommission toString:@"0"]];
-                }else{
-                    agencycommissiontypeStr = @"风险费率";
-                    agencycommissionStr1 = [NSString stringWithFormat:@"%@%@",[NSString getValidStringFromString:dataModel.agencycommission toString:@"0"],@"%"];
-                }
-            }
-            
-            if ([dataModel.loan_type intValue] == 1) {//房产抵押
-                NSString *mortorage_communityStr1 = [NSString getValidStringFromString:respongh.add.address];
-                weakself.messageArray1 = @[@"借款本金",@"费用类型",@"代理费用",@"债权类型",@"抵押物地址"];
-                weakself.messageArray11 = @[moneyStr1,agencycommissiontypeStr,agencycommissionStr1,loan_typeStr,mortorage_communityStr1];
-            }else if ([dataModel.loan_type intValue] == 3){//机动车抵押
-                NSArray *licenceArr = @[@"沪牌",@"非沪牌"];
-                NSString *licenseStr1 = licenceArr[[dataModel.licenseplate integerValue] -1];
-                NSString *carsStr = [NSString stringWithFormat:@"%@%@/%@",dataModel.carbrand,dataModel.audi,licenseStr1];
-                weakself.messageArray1 = @[@"借款本金",@"费用类型",@"代理费用",@"债权类型",@"机动车抵押"];
-                weakself.messageArray11 = @[moneyStr1,agencycommissiontypeStr,agencycommissionStr1,loan_typeStr,carsStr];
-            }else if ([dataModel.loan_type intValue] == 2){//应收帐款
-                NSString *accountrStr1 = [NSString getValidStringFromString:dataModel.accountr toString:@"0"];
-                NSString *account11 = [NSString stringWithFormat:@"%@万",accountrStr1];
-                
-                weakself.messageArray1 = @[@"借款本金",@"费用类型",@"代理费用",@"债权类型",@"应收帐款"];
-                weakself.messageArray11 = @[moneyStr1,agencycommissiontypeStr,agencycommissionStr1,loan_typeStr,account11];
-            }else{
-                
-                weakself.messageArray1 = @[@"借款本金",@"费用类型",@"代理费用",@"债权类型"];
-                weakself.messageArray11 = @[moneyStr1,agencycommissiontypeStr,agencycommissionStr1,loan_typeStr];
-            }
-            */
-            
-            ///****** 补充信息 *******//////
-            /*
-            NSString *rate = [NSString getValidStringFromString:dataModel.rate]; //借款利率
-            if (![rate isEqualToString:@"暂无"]) {
-                rate = [NSString stringWithFormat:@"%@%@/月",rate,@"%"];
-            }
-
-            NSString *term = [NSString getValidStringFromString:dataModel.term];   //借款期限
-            if (![term isEqualToString:@"暂无"]) {
-                term = [NSString stringWithFormat:@"%@个月",term];
-            }
-            
-            NSString *repaymethod = @"暂无";//还款方式
-            if (dataModel.repaymethod) {//还款方式
-                if ([dataModel.repaymethod intValue] == 1) {
-                    repaymethod = @"一次性到期还本付息";
-                }else if([dataModel.repaymethod intValue] == 2){
-                    repaymethod = @"按月付息，到期还本";
-                }else{
-                    repaymethod = @"其他";
-                }
-            }
-            
-            NSString *obligor = @"暂无";  //债务人主体
-            if (dataModel.obligor) {//债务人主体
-                if ([dataModel.obligor intValue] == 1) {
-                    obligor = @"自然人";
-                }else if([dataModel.obligor intValue] == 2){
-                    obligor = @"法人";
-                }else{
-                    obligor = @"其他";
-                }
-            }
-            
-            NSString *start = @"暂无";  //逾期日期
-            if (dataModel.start) {
-                start = [NSDate getYMDFormatterTime:dataModel.start];
-                if ([start isEqualToString:@"1970-01-01"]) {
-                    start = @"暂无";
-                }
-            }
-            
-            NSString *commissionperiod = [NSString getValidStringFromString:dataModel.commissionperiod]; //委托代理期限
-            if (![commissionperiod isEqualToString:@"暂无"]) {
-                commissionperiod = [NSString stringWithFormat:@"%@个月",commissionperiod];
-            }
-            
-            NSString *paidmoney = [NSString getValidStringFromString:dataModel.paidmoney];//已付本金
-            if (![paidmoney isEqualToString:@"暂无"]) {
-                paidmoney = [NSString stringWithFormat:@"%@元",paidmoney];
-            }
-            
-            NSString *interestpaid = [NSString getValidStringFromString:dataModel.interestpaid]; //已付利息
-            if (![interestpaid isEqualToString:@"暂无"]) {
-                interestpaid = [NSString stringWithFormat:@"%@元",interestpaid];
-            }
-            
-            NSString *performancecontract = [NSString getValidStringFromString:dataModel.performancecontract];  //合同履行地
-            
-            NSString *creditorfile = @"查看";  //债权文件
-            
-            CreditorFileModel *fileModel = respongh.add;
-            NSString *creditorinfo = @"暂无";  //债权人信息
-            if (fileModel.creditorinfo.count > 0) {
-                creditorinfo = @"查看";
-            }
-            
-            NSString *borrowinginfo = @"暂无";  //债务人信息
-            if (fileModel.borrowinginfo.count > 0) {
-                creditorinfo = @"查看";
-            }
-            
-            weakself.messageArray2 = @[@"借款利率",@"借款期限",@"还款方式",@"债务人主体",@"逾期日期",@"委托代理期限",@"已付本金",@"已付利息",@"合同履行地",@"债权文件",@"债权人信息",@"债务人信息"];
-            weakself.messageArray22 = @[rate,term,repaymethod,obligor,start,commissionperiod,paidmoney,interestpaid,performancecontract,creditorfile,creditorinfo,borrowinginfo];
-            
-            [weakself.productsDetailsTableView reloadData];
-            
-             */
-            
-            //////////////////////*********发布人详情*********/////////////////////////
-//            CertificationModel *certificationModel;
-//            if (respongh.data.User.certification) {
-//                certificationModel = respongh.data.User.certification;
-//                [weakself.certifiDataArray addObject:certificationModel];
-//            }
-//            
-//            NSString *definedStr = @"已认证";
-//            
-//            NSString *emailQ = [NSString getValidStringFromString:certificationModel.email];
-//            NSString *addressQ = [NSString getValidStringFromString:certificationModel.address];
-//            NSString *enterprisewebsiteQ = [NSString getValidStringFromString:certificationModel.enterprisewebsite];
-//            NSString *casedescQ = [NSString getValidStringFromString:certificationModel.casedesc];
-//            if (![casedescQ isEqualToString:@"暂无"]) {
-//                casedescQ = @"查看";
-//            }
-//            
-//            if ([certificationModel.category integerValue] == 1) {//个人
-//                weakself.certificationArray1 = @[@"基本信息",@"姓名",@"身份证号码",@"身份图片",@"联系电话",@"邮箱"];
-//                weakself.certificationArray11 = @[@"已认证个人",certificationModel.name,certificationModel.cardno,definedStr,certificationModel.mobile,emailQ];
-//            }else if ([certificationModel.category integerValue] == 2){//律所
-//                weakself.certificationArray1 = @[@"基本信息",@"律所名称",@"执业证号",@"图片",@"联系人",@"联系方式",@"邮箱",@"经典案例"];
-//                weakself.certificationArray11 = @[@"已认证律所",certificationModel.name,certificationModel.cardno,definedStr,certificationModel.contact,certificationModel.mobile,emailQ,casedescQ];
-//                weakself.casedesc = certificationModel.casedesc;
-//            }else if ([certificationModel.category integerValue] == 3){//公司
-//                weakself.certificationArray1 = @[@"基本信息",@"公司名称",@"营业执照号",@"图片",@"联系人",@"联系方式",@"企业邮箱",@"公司经营地址",@"公司网站",@"经典案例"];
-//                weakself.certificationArray11 = @[@"已认证公司",certificationModel.name,certificationModel.cardno,definedStr,certificationModel.contact,certificationModel.mobile,emailQ,addressQ,enterprisewebsiteQ,casedescQ];
-//                weakself.casedesc = certificationModel.casedesc;
-//            }
-            
-//            [weakself applicationForOrdersStates];
-            
         }else{
             [weakself showHint:respongh.msg];
         }
         
     } andFailBlock:^(NSError *error){
-        [weakself applicationForOrdersStates];
     }];
 }
 
-//申请状态及收藏状态
-- (void)applicationForOrdersStates
-{
-    NSString *houseString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductHouseStateString];
-    NSDictionary *params = @{@"id" : self.idString,
-                             @"category" : self.categoryString,
-                             @"token" : [self getValidateToken]
-                             };
-    QDFWeakSelf;
-    [self requestDataPostWithString:houseString params:params successBlock:^(id responseObject) {
-        ApplicationStateModel *stateModel = [ApplicationStateModel objectWithKeyValues:responseObject];
-        
-        
-        PublishingModel *rModel;
-        if (self.recommendDataArray.count > 0) {
-            rModel = self.recommendDataArray[0];
-        }
-        if ((stateModel.app_id == nil || [stateModel.app_id intValue] == 2) && [rModel.progress_status integerValue] == 1) {
-            [weakself.proDetailsCommitButton setTitleColor:kWhiteColor forState:0];
-            [weakself.proDetailsCommitButton setTitle:@"立即申请" forState:0];
-            [weakself.proDetailsCommitButton addTarget: weakself action:@selector(applicationCommit) forControlEvents:UIControlEventTouchUpInside];
-            
-            weakself.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:weakself.rightItemButton];
-            
-            if (stateModel.app_id == nil) {//未收藏
-                [weakself.rightItemButton setImage:[UIImage imageNamed:@"nav_collection"] forState:0];
-                
-                QDFWeakSelf;
-                [weakself.rightItemButton addAction:^(UIButton *btn) {
-                    
-                    if (weakself.typetString) {
-                        [weakself saveOrQuitSaveWithType:weakself.typetString WithButton:btn];
-                    }else{
-                        [weakself saveOrQuitSaveWithType:@"1" WithButton:btn];
-                    }
-                }];
-                
-            }else{//已收藏
-                [weakself.rightItemButton setImage:[UIImage imageNamed:@"nav_collection_s"] forState:0];
-                QDFWeakSelf;
-                [weakself.rightItemButton addAction:^(UIButton *btn) {
-                    if (weakself.typetString) {
-                        [weakself saveOrQuitSaveWithType:weakself.typetString WithButton:btn];
-                    }else{
-                        [weakself saveOrQuitSaveWithType:@"2" WithButton:btn];
-                    }
-                }];
-            }
-            
-        }else if (([stateModel.app_id intValue] == 0) && ([rModel.progress_status intValue] == 1)) {//已申请
-            [weakself.proDetailsCommitButton setTitleColor:kBlackColor forState:0];
-            [weakself.proDetailsCommitButton setTitle:@"已申请" forState:0];
-            [weakself.proDetailsCommitButton setBackgroundColor:kSelectedColor];
-            weakself.proDetailsCommitButton.userInteractionEnabled = NO;
-        }else if ([rModel.progress_status intValue] == 2){//申请成功
-            if ([stateModel.app_id integerValue] == 1) {//自己申请成功
-                [weakself.proDetailsCommitButton setTitleColor:kBlackColor forState:0];
-                [weakself.proDetailsCommitButton setTitle:@"申请成功" forState:0];
-                [weakself.proDetailsCommitButton setBackgroundColor:kSelectedColor];
-                
-                //添加电话按钮
-                UIButton *phoneButton = [UIButton newAutoLayoutView];
-                [phoneButton setImage:[UIImage imageNamed:@"phone"] forState:0];
-                phoneButton.backgroundColor = kBlueColor;
-                [phoneButton addAction:^(UIButton *btn) {
-                    NSString *phoneStr = [NSString stringWithFormat:@"telprompt://%@",stateModel.mobile];
-                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
-                }];
-                [weakself.proDetailsCommitButton addSubview:phoneButton];
-                
-                [phoneButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:weakself.proDetailsCommitButton];
-                [phoneButton autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:weakself.proDetailsCommitButton];
-                [phoneButton autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:weakself.proDetailsCommitButton];
-                [phoneButton autoSetDimension:ALDimensionWidth toSize:kTabBarHeight];
-            }else{//别人申请成功，自己显示被接单
-                [weakself.proDetailsCommitButton setTitleColor:kBlackColor forState:0];
-                [weakself.proDetailsCommitButton setTitle:@"已被接单" forState:0];
-                [weakself.proDetailsCommitButton setBackgroundColor:kSelectedColor];
-            }
-        }else{
-            [weakself.proDetailsCommitButton setTitleColor:kBlackColor forState:0];
-            [weakself.proDetailsCommitButton setTitle:@"已终止" forState:0];
-            [weakself.proDetailsCommitButton setBackgroundColor:kSelectedColor];
-        }
-    } andFailBlock:^(NSError *error) {
-        
-    }];
-}
+////申请状态及收藏状态
+//- (void)applicationForOrdersStates
+//{
+//    NSString *houseString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductHouseStateString];
+//    NSDictionary *params = @{@"id" : self.idString,
+//                             @"category" : self.categoryString,
+//                             @"token" : [self getValidateToken]
+//                             };
+//    QDFWeakSelf;
+//    [self requestDataPostWithString:houseString params:params successBlock:^(id responseObject) {
+//        ApplicationStateModel *stateModel = [ApplicationStateModel objectWithKeyValues:responseObject];
+//        
+//        
+//        PublishingModel *rModel;
+//        if (self.recommendDataArray.count > 0) {
+//            rModel = self.recommendDataArray[0];
+//        }
+//        if ((stateModel.app_id == nil || [stateModel.app_id intValue] == 2) && [rModel.progress_status integerValue] == 1) {
+//            [weakself.proDetailsCommitButton setTitleColor:kWhiteColor forState:0];
+//            [weakself.proDetailsCommitButton setTitle:@"立即申请" forState:0];
+//            [weakself.proDetailsCommitButton addTarget: weakself action:@selector(applicationCommit) forControlEvents:UIControlEventTouchUpInside];
+//            
+//            weakself.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:weakself.rightItemButton];
+//            
+//            if (stateModel.app_id == nil) {//未收藏
+//                [weakself.rightItemButton setImage:[UIImage imageNamed:@"nav_collection"] forState:0];
+//                
+//                QDFWeakSelf;
+//                [weakself.rightItemButton addAction:^(UIButton *btn) {
+//                    
+//                    if (weakself.typetString) {
+//                        [weakself saveOrQuitSaveWithType:weakself.typetString WithButton:btn];
+//                    }else{
+//                        [weakself saveOrQuitSaveWithType:@"1" WithButton:btn];
+//                    }
+//                }];
+//                
+//            }else{//已收藏
+//                [weakself.rightItemButton setImage:[UIImage imageNamed:@"nav_collection_s"] forState:0];
+//                QDFWeakSelf;
+//                [weakself.rightItemButton addAction:^(UIButton *btn) {
+//                    if (weakself.typetString) {
+//                        [weakself saveOrQuitSaveWithType:weakself.typetString WithButton:btn];
+//                    }else{
+//                        [weakself saveOrQuitSaveWithType:@"2" WithButton:btn];
+//                    }
+//                }];
+//            }
+//            
+//        }else if (([stateModel.app_id intValue] == 0) && ([rModel.progress_status intValue] == 1)) {//已申请
+//            [weakself.proDetailsCommitButton setTitleColor:kBlackColor forState:0];
+//            [weakself.proDetailsCommitButton setTitle:@"已申请" forState:0];
+//            [weakself.proDetailsCommitButton setBackgroundColor:kSelectedColor];
+//            weakself.proDetailsCommitButton.userInteractionEnabled = NO;
+//        }else if ([rModel.progress_status intValue] == 2){//申请成功
+//            if ([stateModel.app_id integerValue] == 1) {//自己申请成功
+//                [weakself.proDetailsCommitButton setTitleColor:kBlackColor forState:0];
+//                [weakself.proDetailsCommitButton setTitle:@"申请成功" forState:0];
+//                [weakself.proDetailsCommitButton setBackgroundColor:kSelectedColor];
+//                
+//                //添加电话按钮
+//                UIButton *phoneButton = [UIButton newAutoLayoutView];
+//                [phoneButton setImage:[UIImage imageNamed:@"phone"] forState:0];
+//                phoneButton.backgroundColor = kBlueColor;
+//                [phoneButton addAction:^(UIButton *btn) {
+//                    NSString *phoneStr = [NSString stringWithFormat:@"telprompt://%@",stateModel.mobile];
+//                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
+//                }];
+//                [weakself.proDetailsCommitButton addSubview:phoneButton];
+//                
+//                [phoneButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:weakself.proDetailsCommitButton];
+//                [phoneButton autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:weakself.proDetailsCommitButton];
+//                [phoneButton autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:weakself.proDetailsCommitButton];
+//                [phoneButton autoSetDimension:ALDimensionWidth toSize:kTabBarHeight];
+//            }else{//别人申请成功，自己显示被接单
+//                [weakself.proDetailsCommitButton setTitleColor:kBlackColor forState:0];
+//                [weakself.proDetailsCommitButton setTitle:@"已被接单" forState:0];
+//                [weakself.proDetailsCommitButton setBackgroundColor:kSelectedColor];
+//            }
+//        }else{
+//            [weakself.proDetailsCommitButton setTitleColor:kBlackColor forState:0];
+//            [weakself.proDetailsCommitButton setTitle:@"已终止" forState:0];
+//            [weakself.proDetailsCommitButton setBackgroundColor:kSelectedColor];
+//        }
+//    } andFailBlock:^(NSError *error) {
+//        
+//    }];
+//}
 
-//申请收藏或取消收藏
-- (void)saveOrQuitSaveWithType:(NSString *)type WithButton:(UIButton *)sender
-{
-    sender.selected = !sender.selected;
-    
-    PublishingModel *rightModel = self.recommendDataArray[0];
-    
-    NSString *rightString;
-    NSDictionary *params;
-    
-    if ([type isEqualToString:@"1"]) {//未收藏 －－ 收藏
-       rightString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kRequestStoreString];
-        params = @{@"id" : rightModel.idString,
-                   @"category" : rightModel.category,
-                   @"token" : [self getValidateToken]
-                   };
-    }else{//收藏 －－ 取消收藏
-         rightString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kDeleteStoreString];
+////申请收藏或取消收藏
+//- (void)saveOrQuitSaveWithType:(NSString *)type WithButton:(UIButton *)sender
+//{
+//    sender.selected = !sender.selected;
+//    
+//    PublishingModel *rightModel = self.recommendDataArray[0];
+//    
+//    NSString *rightString;
+//    NSDictionary *params;
+//    
+//    if ([type isEqualToString:@"1"]) {//未收藏 －－ 收藏
+//       rightString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kRequestStoreString];
+//        params = @{@"id" : rightModel.idString,
+//                   @"category" : rightModel.category,
+//                   @"token" : [self getValidateToken]
+//                   };
+//    }else{//收藏 －－ 取消收藏
+//         rightString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kDeleteStoreString];
+//
+//        params = @{@"product_id" : rightModel.idString,
+//                   @"category" : rightModel.category,
+//                   @"token" : [self getValidateToken]
+//                   };
+//    }
+//    
+//    QDFWeakSelf;
+//    [self requestDataPostWithString:rightString params:params successBlock:^(id responseObject){
+//        BaseModel *rightModel = [BaseModel objectWithKeyValues:responseObject];
+//        [weakself showHint:rightModel.msg];
+//        
+//        if ([rightModel.code isEqualToString:@"0000"]) {
+//            if ([type isEqualToString:@"1"]) {//未收藏 －－ 收藏
+//                [weakself.rightItemButton setImage:[UIImage imageNamed:@"nav_collection_s"] forState:0];
+//                weakself.typetString = @"2";
+//            }else{//收藏 －－ 取消收藏
+//                [weakself.rightItemButton setImage:[UIImage imageNamed:@"nav_collection"] forState:0];
+//                weakself.typetString = @"1";
+//            }
+//        }
+//        
+//    }andFailBlock:^(NSError *error) {
+//        
+//    }];
+//}
 
-        params = @{@"product_id" : rightModel.idString,
-                   @"category" : rightModel.category,
-                   @"token" : [self getValidateToken]
-                   };
-    }
-    
-    QDFWeakSelf;
-    [self requestDataPostWithString:rightString params:params successBlock:^(id responseObject){
-        BaseModel *rightModel = [BaseModel objectWithKeyValues:responseObject];
-        [weakself showHint:rightModel.msg];
-        
-        if ([rightModel.code isEqualToString:@"0000"]) {
-            if ([type isEqualToString:@"1"]) {//未收藏 －－ 收藏
-                [weakself.rightItemButton setImage:[UIImage imageNamed:@"nav_collection_s"] forState:0];
-                weakself.typetString = @"2";
-            }else{//收藏 －－ 取消收藏
-                [weakself.rightItemButton setImage:[UIImage imageNamed:@"nav_collection"] forState:0];
-                weakself.typetString = @"1";
-            }
-        }
-        
-    }andFailBlock:^(NSError *error) {
-        
-    }];
-}
-
-/*
-//发布人信息
-- (void)getMessageOfPublishPerson
-{
-    NSString *yyyString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kCheckReleasePeople];
-    
-    PublishingResponse *rModel = self.recommendDataArray[0];
-
-    NSDictionary *params = @{@"category" : self.categoryString,
-                             @"id" : self.idString,
-                             @"pid" : rModel.product.uidInner,
-                             @"token" : [self getValidateToken]
-                             };
-    QDFWeakSelf;
-    [self requestDataPostWithString:yyyString params:params successBlock:^(id responseObject) {
-        
-        CompleteResponse *response = [CompleteResponse objectWithKeyValues:responseObject];
-        
-        if ([response.code isEqualToString:@"0000"]) {
-            
-            NSString *definedStr;
-            if ([certificationModel.cardimg isEqualToString:@"undefined"]) {
-                definedStr = @"未上传";
-            }else{
-                definedStr = @"已上传";
-            }
-            NSString *emailQ = [NSString getValidStringFromString:certificationModel.email];
-            NSString *addressQ = [NSString getValidStringFromString:certificationModel.address];
-            NSString *enterprisewebsiteQ = [NSString getValidStringFromString:certificationModel.enterprisewebsite];
-            NSString *casedescQ = [NSString getValidStringFromString:certificationModel.casedesc];
-            if (![casedescQ isEqualToString:@"暂无"]) {
-                casedescQ = @"查看";
-            }
-            
-            if ([certificationModel.category integerValue] == 1) {//个人
-                weakself.certificationArray1 = @[@"基本信息",@"姓名",@"身份证号码",@"身份图片",@"联系电话",@"邮箱"];
-                weakself.certificationArray11 = @[@"已认证个人",certificationModel.name,certificationModel.cardno,definedStr,certificationModel.mobile,emailQ];
-            }else if ([certificationModel.category integerValue] == 2){//律所
-                weakself.certificationArray1 = @[@"基本信息",@"律所名称",@"执业证号",@"图片",@"联系人",@"联系方式",@"邮箱",@"经典案例"];
-                weakself.certificationArray11 = @[@"已认证律所",certificationModel.name,certificationModel.cardno,definedStr,certificationModel.contact,certificationModel.mobile,emailQ,casedescQ];
-                weakself.casedesc = certificationModel.casedesc;
-            }else if ([certificationModel.category integerValue] == 3){//公司
-                weakself.certificationArray1 = @[@"基本信息",@"公司名称",@"营业执照号",@"图片",@"联系人",@"联系方式",@"企业邮箱",@"公司经营地址",@"公司网站",@"经典案例"];
-                weakself.certificationArray11 = @[@"已认证公司",certificationModel.name,certificationModel.cardno,definedStr,certificationModel.contact,certificationModel.mobile,emailQ,addressQ,enterprisewebsiteQ,casedescQ];
-                weakself.casedesc = certificationModel.casedesc;
-            }
-            [weakself getAllEvaluationListWithPage:@"1"];
-            
-        }else{
-            [weakself showHint:response.msg];
-        }
-    } andFailBlock:^(NSError *error) {
-        
-    }];
-}
- */
-
-
-- (void)getAllEvaluationListWithPage:(NSString *)page
-{
-    NSString *evaluateString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kCheckOrderToEvaluationString];
-    NSDictionary *params = @{@"token" : [self getValidateToken],
-                             @"page" : page,
-                             @"pid" : self.pidString
-                             };
-    QDFWeakSelf;
-    [self requestDataPostWithString:evaluateString params:params successBlock:^(id responseObject) {
-        
-        EvaluateResponse *response = [EvaluateResponse objectWithKeyValues:responseObject];
-        
-        [weakself.allEvaResponse addObject:response];
-        
-        for (EvaluateModel *model in response.evaluate) {
-            [weakself.allEvaDataArray addObject:model];
-        }
-        [weakself.productsDetailsTableView reloadData];
-        
-    } andFailBlock:^(NSError *error) {
-        
-    }];
-}
+//- (void)getAllEvaluationListWithPage:(NSString *)page
+//{
+//    NSString *evaluateString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kCheckOrderToEvaluationString];
+//    NSDictionary *params = @{@"token" : [self getValidateToken],
+//                             @"page" : page,
+//                             @"pid" : self.pidString
+//                             };
+//    QDFWeakSelf;
+//    [self requestDataPostWithString:evaluateString params:params successBlock:^(id responseObject) {
+//        
+//        EvaluateResponse *response = [EvaluateResponse objectWithKeyValues:responseObject];
+//        
+//        [weakself.allEvaResponse addObject:response];
+//        
+//        for (EvaluateModel *model in response.evaluate) {
+//            [weakself.allEvaDataArray addObject:model];
+//        }
+//        [weakself.productsDetailsTableView reloadData];
+//        
+//    } andFailBlock:^(NSError *error) {
+//        
+//    }];
+//}
 
 
 //立即申请
@@ -1181,6 +1017,46 @@
     } andFailBlock:^(NSError *error) {
         
     }];
+}
+
+- (void)rightItemAction
+{
+    NSString *saveString;
+    NSDictionary *params;
+    
+    RowsModel *rowModel = self.recommendDataArray[0];
+    if ([self.typetString integerValue] == 1) {//已收藏－>未收藏(取消收藏)
+        saveString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductDetailOfCancelSave];
+        params = @{@"token" : [self getValidateToken],
+                   @"productid" : rowModel.productid
+                   };
+    }else if ([self.typetString integerValue] == 2) {//未收藏－>已收藏(收藏)
+        saveString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductDetailOfSave];
+        params = @{@"token" : [self getValidateToken],
+                   @"productid" : rowModel.productid,
+                   @"create_by" : rowModel.create_by
+                   };
+    }
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:saveString params:params successBlock:^(id responseObject) {
+        BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:baseModel.msg];
+        if ([baseModel.code isEqualToString:@"0000"]) {
+            if ([weakself.typetString integerValue] == 1){
+                [weakself.rightButton setImage:[UIImage imageNamed:@"nav_collection"] forState:0];
+                weakself.typetString = @"2";
+            }else{
+                [weakself.rightButton setImage:[UIImage imageNamed:@"nav_collection_s"] forState:0];
+                weakself.typetString = @"1";
+            }
+        }
+    
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+    
+    
 }
 
 

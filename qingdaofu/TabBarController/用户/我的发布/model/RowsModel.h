@@ -67,6 +67,10 @@
 
 
 /////////
+@property (nonatomic,copy) NSString *apply;
+@property (nonatomic,copy) NSString *applystatussss;//产品列表判断申请状态
+
+
 @property (nonatomic,copy) NSString *applyCount;  //申请次数（产品详情用）
 @property (nonatomic,copy) NSString *productid;  //产品号
 @property (nonatomic,copy) NSString *number;  //BX201609280001
@@ -77,7 +81,6 @@
 @property (nonatomic,copy) NSString *account;
 @property (nonatomic,copy) NSString *type;
 @property (nonatomic,copy) NSString *typenum;
-@property (nonatomic,copy) NSString *overdue;  //违约期限
 @property (nonatomic,copy) NSString *province_id;
 @property (nonatomic,copy) NSString *city_id;
 @property (nonatomic,copy) NSString *district_id;
@@ -113,6 +116,7 @@
 @property (nonatomic,copy) NSString *categoryLabel;//合同纠纷.机动车抵押(债权类型)
 @property (nonatomic,copy) NSString *entrustLabel; //诉讼,债权转让(委托事项)
 @property (nonatomic,copy) NSString *addressLabel; //上海市杨浦区(合同履行地)
+@property (nonatomic,copy) NSString *overdue;  //违约期限
 @property (nonatomic,copy) NSString *applyStatus;
 
 @end

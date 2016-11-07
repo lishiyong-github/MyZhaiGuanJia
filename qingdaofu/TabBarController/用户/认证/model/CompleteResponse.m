@@ -10,13 +10,4 @@
 
 @implementation CompleteResponse
 
-+ (NSDictionary *)replacedKeyFromPropertyName
-{
-    return @{@"certification" : @"result.certification",
-             @"completionRate" : @"result.completionRate",
-             @"uid" : @"result.uid",
-             @"user" : @"result.user"
-             };
-}
-
 @end

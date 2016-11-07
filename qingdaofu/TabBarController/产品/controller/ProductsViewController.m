@@ -69,7 +69,7 @@
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:kWhiteColor,NSFontAttributeName:kNavFont}];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:kNavColor] forBarMetrics:UIBarMetricsDefault];
         
-    [self headerRefreshWithAllProducts];
+//    [self headerRefreshWithAllProducts];
 }
 
 - (void)viewDidLoad {
@@ -85,6 +85,8 @@
     [self.baseRemindImageView setHidden:YES];
     
     [self.view setNeedsUpdateConstraints];
+    
+    [self headerRefreshWithAllProducts];
 }
 
 - (void)updateViewConstraints
@@ -153,17 +155,27 @@
                         weakself.chooseView.squrebutton.selected = NO;
                         weakself.chooseView.moneyButton.selected = NO;
                         
-                        NSArray *stateArray = @[@"不限",@"发布中",@"处理中",@"已结案"];
+//                        NSArray *stateArray = @[@"不限",@"发布中",@"处理中",@"已结案"];
+                        NSArray *stateArray = @[@"不限",@"发布中",@"已撮合"];
                         [weakself showBlurInView:weakself.view withArray:stateArray withTop:weakself.chooseView.height finishBlock:^(NSString *text, NSInteger row) {
                             [selectedButton setTitle:text forState:0];
                             
-                            if (row <= 2) {
-                                NSString *value = [NSString stringWithFormat:@"%ld",(long)row];
-                                [selectedButton setTitle:text forState:0];
-                                [weakself.paramsDictionary setValue:value forKey:@"status"];
+                            if (row == 0) {
+                                [weakself.paramsDictionary setValue:@"0" forKey:@"status"];
                             }else{
-                                [weakself.paramsDictionary setValue:@"4" forKey:@"status"];
+                                NSString *value = [NSString stringWithFormat:@"%ld",(long)row+1];
+                                [weakself.paramsDictionary setValue:value forKey:@"status"];
                             }
+                            
+                            
+                            
+//                            if (row <= 2) {
+//                                NSString *value = [NSString stringWithFormat:@"%ld",(long)row];
+//                                [selectedButton setTitle:text forState:0];
+//                                [weakself.paramsDictionary setValue:value forKey:@"status"];
+//                            }else{
+//                                [weakself.paramsDictionary setValue:@"4" forKey:@"status"];
+//                            }
                             [weakself headerRefreshWithAllProducts];
                         }];
                         
@@ -185,9 +197,17 @@
                         [weakself showBlurInView:weakself.view withArray:moneyArray withTop:selectedButton.height finishBlock:^(NSString *text, NSInteger row) {
                             [selectedButton setTitle:text forState:0];
                             
-                            NSString *value = [NSString stringWithFormat:@"%ld",(long)row];
-                            [selectedButton setTitle:text forState:0];
-                            [weakself.paramsDictionary setValue:value forKey:@"account"];
+                            if (row == 0) {
+                                [weakself.paramsDictionary setValue:@"0" forKey:@"account"];
+                            }else{
+                                NSString *value = [NSString stringWithFormat:@"%ld",(long)row+1];
+                                [weakself.paramsDictionary setValue:value forKey:@"account"];
+                            }
+                            
+                            
+//                            NSString *value = [NSString stringWithFormat:@"%ld",(long)row];
+//                            [selectedButton setTitle:text forState:0];
+//                            [weakself.paramsDictionary setValue:value forKey:@"account"];
                             [weakself headerRefreshWithAllProducts];
                         }];
                     }
@@ -575,19 +595,6 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     return 0.1f;
-}
-
-#pragma mark - method
-- (void)searchProducts
-{
-    SearchViewController *searchVC = [[SearchViewController alloc] init];
-    searchVC.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:searchVC animated:YES];
-}
-
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-{
-    [self.backBlurView removeFromSuperview];
 }
 
 #pragma mark - get province city and dictrict

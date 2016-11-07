@@ -17,6 +17,8 @@
     if (self) {
         
         self.backgroundColor = kWhiteColor;
+        self.layer.borderColor = kSeparateColor.CGColor;
+        self.layer.borderWidth = kLineWidth;
         
         [self addSubview:self.imageButton];
         [self addSubview:self.countLabel];
@@ -37,6 +39,7 @@
         [self.imageButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
         [self.imageButton autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
         [self.imageButton autoSetDimensionsToSize:CGSizeMake(50, 50)];
+
         
         [self.countLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:self.imageButton];
         [self.countLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.imageButton];
@@ -58,6 +61,7 @@
         _imageButton = [UIButton newAutoLayoutView];
         _imageButton.userInteractionEnabled = NO;
         [_imageButton setImage:[UIImage imageNamed:@"news_system"] forState:0];
+        
     }
     return _imageButton;
 }

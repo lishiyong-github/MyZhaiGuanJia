@@ -12,17 +12,20 @@
 //#import "EvaluateMessagesViewController.h"  //评价消息
 #import "SystemMessagesViewController.h"   //系统消息
 #import "LoginViewController.h"  //登录
+#import "MyPublishingViewController.h" //我的发布－发布中
+#import "MyApplyingViewController.h"  //我的接单－接单中
 
-//#import "NewsTableViewCell.h"
 #import "MessageTableViewCell.h"
 #import "MessageSystemView.h"
 
 #import "MessageResponse.h"
 #import "MessagesModel.h"
-
+#import "ImageModel.h"
 
 #import "TabBarItem.h"
 #import "UITabBar+Badge.h"
+
+#import "UIButton+WebCache.h"
 
 
 @interface MessageViewController ()<UITableViewDataSource,UITableViewDelegate>
@@ -117,6 +120,46 @@
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
+    MessagesModel *messageModel = self.messageArray[indexPath.row];
+    
+    //image
+    cell.imageButton.layer.cornerRadius = 25;
+    cell.imageButton.layer.masksToBounds = YES;
+    NSString *imgString = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,messageModel.headimg.file];
+    [cell.imageButton sd_setImageWithURL:[NSURL URLWithString:imgString] forState:0 placeholderImage:[UIImage imageNamed:@""]];
+    
+    //count
+    if ([messageModel.isRead intValue] > 0) {//有未读消息
+        [cell.countLabel setHidden:NO];
+        cell.countLabel.text = messageModel.isRead;
+    }else{//无未读消息
+        [cell.countLabel setHidden:YES];
+    }
+    
+    //content
+    cell.contentLabel.numberOfLines = 0;
+    NSString *contentStr = [NSString stringWithFormat:@"%@\n%@",messageModel.relatitle,messageModel.content];
+    NSMutableAttributedString *attributeContent = [[NSMutableAttributedString alloc] initWithString:contentStr];
+    [attributeContent setAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kBlackColor} range:NSMakeRange(0, messageModel.relatitle.length)];
+    [attributeContent setAttributes:@{NSFontAttributeName:kSecondFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(messageModel.relatitle.length+1, messageModel.content.length)];
+    NSMutableParagraphStyle *stylee = [[NSMutableParagraphStyle alloc] init];
+    [stylee setParagraphSpacing:kSpacePadding];
+//    stylee.alignment = 1;
+    [attributeContent addAttribute:NSParagraphStyleAttributeName value:stylee range:NSMakeRange(0, contentStr.length)];
+    [cell.contentLabel setAttributedText:attributeContent];
+    
+    //time
+    cell.timeButton.titleLabel.numberOfLines = 0;
+    NSString *timeStr = [NSString stringWithFormat:@"%@\n%@",messageModel.title,messageModel.timeLabel];
+    NSMutableAttributedString *attributeTime = [[NSMutableAttributedString alloc] initWithString:timeStr];
+    [attributeTime setAttributes:@{NSFontAttributeName:kFourFont,NSForegroundColorAttributeName:kYellowColor} range:NSMakeRange(0, messageModel.title.length)];
+    [attributeTime setAttributes:@{NSFontAttributeName:kSecondFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(messageModel.title.length+1, messageModel.timeLabel.length)];
+    NSMutableParagraphStyle *styleeq = [[NSMutableParagraphStyle alloc] init];
+    [styleeq setParagraphSpacing:kSpacePadding];
+    styleeq.alignment = 2;
+    [attributeTime addAttribute:NSParagraphStyleAttributeName value:styleeq range:NSMakeRange(0, timeStr.length)];
+    [cell.timeButton setAttributedTitle:attributeTime forState:0];
+    
     return cell;
 }
 
@@ -129,9 +172,16 @@
 {
     MessageSystemView *headrVew = [[MessageSystemView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 82)];
     
+    
+    MessageResponse *respondf;
     if (self.messageCountArray.count > 0) {
-        MessageResponse *respondf = self.messageCountArray[0];
-        headrVew.countLabel.text = respondf.systemCount;
+        respondf = self.messageCountArray[0];
+        if ([respondf.systemCount integerValue] > 0) {
+            [headrVew.countLabel setHidden:NO];
+            headrVew.countLabel.text = respondf.systemCount;
+        }else{
+            [headrVew.countLabel setHidden:YES];
+        }
     }
     
     QDFWeakSelf;
@@ -142,6 +192,35 @@
     }];
     
     return headrVew;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    //1系统消息  10保全消息  20保函消息  30产调消息  40 发布消息  50接单消息'
+    MessagesModel *messageModel = self.messageArray[indexPath.row];
+    if ([messageModel.relatype integerValue] == 10) {
+        [self showHint:@"10保全消息"];
+    }else if ([messageModel.relatype integerValue] == 20) {
+        [self showHint:@"20保函消息 "];
+    }else if ([messageModel.relatype integerValue] == 30) {
+        [self showHint:@"30产调消息"];
+    }else if ([messageModel.relatype integerValue] == 40) {
+        [self showHint:@"40发布消息"];
+        MyPublishingViewController *myPublishingVC = [[MyPublishingViewController alloc] init];
+        myPublishingVC.hidesBottomBarWhenPushed = YES;
+        myPublishingVC.productid = messageModel.relaid;
+        [self.navigationController pushViewController:myPublishingVC animated:YES];
+        
+    }else if ([messageModel.relatype integerValue] == 50) {
+        [self showHint:@"50接单消息"];
+        MyApplyingViewController *myapplyingVC = [[MyApplyingViewController alloc] init];
+        myapplyingVC.hidesBottomBarWhenPushed = YES;
+        myapplyingVC.applyid = messageModel.relaid;
+        [self.navigationController pushViewController:myapplyingVC animated:YES];
+        
+    }
 }
 
 #pragma mark - method
@@ -158,6 +237,8 @@
     
     QDFWeakSelf;
     [self requestDataPostWithString:messageTypeString params:params successBlock:^(id responseObject) {
+        
+        NSDictionary *qpqpq = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
         if ([page integerValue] == 1) {
             [weakself.messageArray removeAllObjects];

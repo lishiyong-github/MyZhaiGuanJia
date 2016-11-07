@@ -53,7 +53,7 @@
         _numberButton1 = [ProDetailHeadFootView newAutoLayoutView];
         _numberButton1.backgroundColor = [UIColor clearColor];
         _numberButton1.fLabel1.textColor = kGrayColor;
-        _numberButton1.fLabel2.textColor = kBlueColor;
+        _numberButton1.fLabel2.textColor = kTextColor;
         _numberButton1.fLabel2.font = kFirstFont;
         _numberButton1.spaceConstant.constant = 6;
         _numberButton1.topConstant.constant = kSmallPadding;
@@ -67,7 +67,7 @@
         _numberButton2 = [ProDetailHeadFootView newAutoLayoutView];
         _numberButton2.backgroundColor = [UIColor clearColor];
         _numberButton2.fLabel1.textColor = kGrayColor;
-        _numberButton2.fLabel2.textColor = kBlueColor;
+        _numberButton2.fLabel2.textColor = kTextColor;
         _numberButton2.fLabel2.font = kFirstFont;
         _numberButton2.spaceConstant.constant = 6;
         _numberButton2.topConstant.constant = kSmallPadding;
@@ -81,7 +81,7 @@
         _numberButton3 = [ProDetailHeadFootView newAutoLayoutView];
         _numberButton3.backgroundColor = [UIColor clearColor];
         _numberButton3.fLabel1.textColor = kLightGrayColor;
-        _numberButton3.fLabel2.textColor = kBlueColor;
+        _numberButton3.fLabel2.textColor = kTextColor;
         _numberButton3.fLabel2.font = kFirstFont;
         _numberButton3.spaceConstant.constant = 6;
         _numberButton3.topConstant.constant = kSmallPadding;

@@ -15,9 +15,9 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         [self.contentView addSubview:self.imageButton];
-//        [self.contentView addSubview:self.countLabel];
-        [self.contentView addSubview:self.contentLabel];
+        [self.contentView addSubview:self.countLabel];
         [self.contentView addSubview:self.timeButton];
+        [self.contentView addSubview:self.contentLabel];
         
         [self setNeedsUpdateConstraints];
     }
@@ -32,11 +32,12 @@
         [self.imageButton autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
         [self.imageButton autoSetDimensionsToSize:CGSizeMake(50, 50)];
         
-//        [self.countLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.imageButton withOffset:-20];
-//        [self.countLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.imageButton];
+        [self.countLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:self.imageButton];
+        [self.countLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.imageButton];
         
         [self.contentLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.imageButton withOffset:kBigPadding];
         [self.contentLabel autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.imageButton];
+        [self.contentLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.timeButton];
         
         [self.timeButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.timeButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.contentLabel];

@@ -119,13 +119,10 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (self.releaseEndDataArray.count > 0) {
-        if (section == 0) {
-            return 3;
-        }
-        return 1;
+    if (section == 0) {
+        return 3;
     }
-    return 0;
+    return 1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
