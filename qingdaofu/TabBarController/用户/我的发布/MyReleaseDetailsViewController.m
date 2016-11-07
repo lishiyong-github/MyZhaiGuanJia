@@ -640,9 +640,9 @@
                     QDFWeakSelf;
                     [weakself.publishCheckView setDidSelectedBtn:^(NSInteger tag) {
                         if (tag == 111) {
-//                            [weakself actionOfInterviewResultOfActStirng:@"agree"];
+                            [weakself actionOfInterviewResultOfActStirng:@"agree"];
                         }else{
-//                            [weakself actionOfInterviewResultOfActStirng:@"cancel"];
+                            [weakself actionOfInterviewResultOfActStirng:@"cancel"];
                         }
                     }];
                 }else{
@@ -754,6 +754,54 @@
         
     }];
 }
+
+//面谈中操作
+- (void)actionOfInterviewResultOfActStirng:(NSString *)resultString//是否选择该申请方为接单方
+{
+    NSString *interViewResultString;
+    if ([resultString isEqualToString:@"agree"]) {
+        interViewResultString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseDetailOfInterviewResultAgree];
+    }else if ([resultString isEqualToString:@"cancel"]){
+        interViewResultString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseDetailOfInterviewResultCancel];
+    }
+    
+    RowsModel *rowModel;
+    if (self.releaseDetailArray.count > 0) {
+        rowModel = self.releaseDetailArray[0];
+    }
+    
+    NSDictionary *params = @{@"token" : [self getValidateToken],
+                             @"applyid" : rowModel.productApply.applyid
+                             };
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:interViewResultString params:params successBlock:^(id responseObject) {
+        
+        BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:baseModel.msg];
+        
+        if ([baseModel.code isEqualToString:@"0000"]) {
+            
+            if ([resultString isEqualToString:@"agree"]) {//同意－处理中
+//                MyDealingViewController *myDealingVC = [[MyDealingViewController alloc] init];
+//                myDealingVC.productid = rowModel.productid;
+//                UINavigationController *navv = weakself.navigationController;
+//                [navv popViewControllerAnimated:NO];
+//                [navv pushViewController:myDealingVC animated:NO];
+            }else if ([resultString isEqualToString:@"cancel"]){//拒绝－发布中
+//                MyPublishingViewController *myPublishingVC = [[MyPublishingViewController alloc] init];
+//                myPublishingVC.productid = rowModel.productid;
+//                UINavigationController *navv = weakself.navigationController;
+//                [navv popViewControllerAnimated:NO];
+//                [navv pushViewController:myPublishingVC animated:NO];
+            }
+        }
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
