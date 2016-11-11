@@ -9,12 +9,15 @@
 #import "DealingCloseViewController.h"
 #import "PublishCombineView.h"  //同意结案／拒绝结案
 
-@interface DealingCloseViewController ()
+@interface DealingCloseViewController ()<UITextFieldDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 //@property (nonatomic,strong) UIButton *dealCloseRightButton;
 @property (nonatomic,strong) UIView *backWhiteView;
 @property (nonatomic,strong) PublishCombineView *dealCloseFootView;
+
+//json
+@property (nonatomic,strong) NSString *dealReason;
 
 @end
 
@@ -23,6 +26,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.leftBarButtonItem = self.leftItem;
+    
+    self.dealReason = @"";
     
     [self.view addSubview:self.backWhiteView];
     
@@ -93,18 +98,20 @@
         contentLabel.numberOfLines = 0;
         [_backWhiteView addSubview:contentLabel];
         
+        self.productDealModel;
+        
         NSString *aaaa1 = @"合同编号：";
-        NSString *aaaa2 = @"20160908005\n";
+        NSString *aaaa2 = [NSString stringWithFormat:@"%@\n",self.productDealModel.closedid];
         NSString *aaaa3 = @"兹委托人【委托金额】：";
         NSString *aaaa4 = @"2000";
         NSString *aaaa5 = @"万元整【委托费用】";
         NSString *aaaa6 = @"1000";
         NSString *aaaa7 = @"万元整委托事项经友好协商已结清。\n";
         NSString *aaaa8 = @"实际【结案金额】";
-        NSString *aaaa9 = @"1500";
-        NSString *aaaa10 = @"万元整，【实收佣金】";
-        NSString *aaaa11 = @"10";
-        NSString *aaaa12 = @"万元整已支付。\n";
+        NSString *aaaa9 = self.productDealModel.price;
+        NSString *aaaa10 = @"元整，【实收佣金】";
+        NSString *aaaa11 = self.productDealModel.price2;
+        NSString *aaaa12 = @"元整已支付。\n";
         NSString *aaaa13 = @"因本协议履行而产生的任何纠纷，甲乙双方应友好协商解决如协商不成，任何一方均有权向乙方注册地人民法院提起诉讼。";
         NSString *aaa = [NSString stringWithFormat:@"%@%@%@%@%@%@%@%@%@%@%@%@%@",aaaa1,aaaa2,aaaa3,aaaa4,aaaa5,aaaa6,aaaa7,aaaa8,aaaa9,aaaa10,aaaa11,aaaa12,aaaa13];
         NSMutableAttributedString *attributeAA = [[NSMutableAttributedString alloc] initWithString:aaa];
@@ -187,14 +194,15 @@
         
         QDFWeakSelf;
         [_dealCloseFootView.comButton1 addAction:^(UIButton *btn) {
-            [weakself showHint:@"同意结案"];
+            [weakself showAlertOfProductDealWithType:@"1"];
         }];
         [_dealCloseFootView.comButton2 addAction:^(UIButton *btn) {
-            [weakself back];
+            [weakself showAlertOfProductDealWithType:@"2"];
         }];
     }
     return _dealCloseFootView;
 }
+
 
 #pragma mark - menthod
 - (void)rightItemAction
@@ -202,6 +210,72 @@
     [self showHint:@"平台介入"];
     NSMutableString *tel = [NSMutableString stringWithFormat:@"telprompt://%@",@"400-855-7022"];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:tel]];
+}
+
+- (void)showAlertOfProductDealWithType:(NSString *)type
+{
+    NSString *message;
+    if ([type integerValue] == 1) {
+        message = @"同意结案？";
+    }else{
+        message = @"拒绝结案？";
+    }
+    
+    UIAlertController *dealAlert = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+    
+    [dealAlert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.placeholder = @"请输入原因";
+    }];
+    
+    UIAlertAction *dealAct0 = [UIAlertAction actionWithTitle:@"放弃" style:0 handler:nil];
+    
+    QDFWeakSelf;
+    UIAlertAction *dealAct1 = [UIAlertAction actionWithTitle:@"确定" style:0 handler:^(UIAlertAction * _Nonnull action) {
+        [weakself actionOfProductDealWithType:type];
+    }];
+    [dealAlert addAction:dealAct0];
+    [dealAlert addAction:dealAct1];
+    
+    [self presentViewController:dealAlert animated:YES completion:nil];
+}
+
+- (void)actionOfProductDealWithType:(NSString *)type
+{
+    [self.view endEditing:YES];
+    
+    NSString *dealString;
+    if ([type integerValue] == 1) {
+        dealString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseDetailOfDealCloseDetailsAgree];
+    }else{
+        dealString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseDetailOfDealCloseDetailsVote];
+    }
+    NSDictionary *params = @{@"token" : [self getValidateToken],
+                             @"resultmemo" : self.dealReason,
+                             @"closedid" : self.productDealModel.closedid
+                             };
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:dealString params:params successBlock:^(id responseObject) {
+        BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:baseModel.msg];
+        
+        if ([baseModel.code isEqualToString:@"0000"]) {
+            [weakself back];
+        }
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
+#pragma mark - textField delegate
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    self.dealReason = textField.text;
+}
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
 }
 
 - (void)didReceiveMemoryWarning {

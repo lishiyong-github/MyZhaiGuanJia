@@ -7,8 +7,11 @@
 //
 
 #import "MyReleaseDetailsViewController.h"
+
+//面谈中
 #import "ApplyRecordViewController.h"   //申请记录
-#import "PublishInterviewViewController.h"  //面谈中
+#import "DealingEndViewController.h"  //处理终止
+#import "DealingCloseViewController.h" //处理结案
 
 //#import "AdditionMessagesViewController.h"  //补充信息
 //#import "AgreementViewController.h"//协议
@@ -116,6 +119,14 @@
         _publishCheckView = [PublishCombineView newAutoLayoutView];
     }
     return _publishCheckView;
+}
+
+- (BaseRemindButton *)EndOrloseRemindButton
+{
+    if (!_EndOrloseRemindButton) {
+        _EndOrloseRemindButton = [BaseRemindButton newAutoLayoutView];
+    }
+    return _EndOrloseRemindButton;
 }
 
 - (NSMutableArray *)releaseDetailArray
@@ -805,9 +816,32 @@
             }else if ([dataModel.statusLabel isEqualToString:@"处理中"]){
                 [weakself.publishCheckView setHidden:YES];
                 [weakself.releaseDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+                
                 [weakself.rightButton setHidden:NO];
                 [weakself.rightButton setTitle:@"申请终止" forState:0];
                 
+                [weakself.view addSubview:weakself.EndOrloseRemindButton];
+                [weakself.EndOrloseRemindButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+                [weakself.EndOrloseRemindButton autoSetDimension:ALDimensionHeight toSize:kRemindHeight];
+                if (dataModel.productOrdersTerminationsApply || dataModel.productOrdersClosedsApply) {
+                    [weakself.EndOrloseRemindButton setHidden:NO];
+                    if (dataModel.productOrdersTerminationsApply) {
+                        [weakself.EndOrloseRemindButton setTitle:@"对方申请终止次单，点击处理  " forState:0];
+                        [weakself.EndOrloseRemindButton setImage:[UIImage imageNamed:@"more_white"] forState:0];
+                    }else{
+                        [weakself.EndOrloseRemindButton setTitle:@"对方申请结案，点击处理  " forState:0];
+                        [weakself.EndOrloseRemindButton setImage:[UIImage imageNamed:@"more_white"] forState:0];
+                        
+                        [weakself.EndOrloseRemindButton addAction:^(UIButton *btn) {
+                            DealingCloseViewController *dealCloseVC = [[DealingCloseViewController alloc] init];
+                            dealCloseVC.perTypeString = @"1";
+                            dealCloseVC.productDealModel = dataModel.productOrdersClosedsApply;
+                            [weakself.navigationController pushViewController:dealCloseVC animated:YES];
+                        }];
+                    }
+                }else{
+                    [weakself.EndOrloseRemindButton setHidden:YES];
+                }
             }else if ([dataModel.statusLabel isEqualToString:@"已终止"]){
                 [weakself.publishCheckView setHidden:YES];
                 [weakself.releaseDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
@@ -851,23 +885,6 @@
         
     }];
 }
-
-
-////编辑信息
-//- (void)editAllMessages
-//{
-//    if (self.releaseDetailArray.count > 0) {
-//        PublishingResponse *response = self.releaseDetailArray[0];
-//        PublishingModel *rModel = response.product;
-//
-//        ReportSuitViewController *reportSuiVC = [[ReportSuitViewController alloc] init];
-//        reportSuiVC.categoryString = rModel.category;
-//        reportSuiVC.suResponse = response;
-//        reportSuiVC.tagString = @"3";
-//        UINavigationController *nsop = [[UINavigationController alloc] initWithRootViewController:reportSuiVC];
-//        [self presentViewController:nsop animated:YES completion:nil];
-//    }
-//}
 
 - (void)deleteThePublishing
 {

@@ -335,7 +335,8 @@
 #define kMyReleaseDetailOfInterviewResultCancel @"product/apply-veto"  //取消该申请方为接单方
 #define kMyReleaseDetailOfEndString @"productorders/orders-termination-apply"  //终止产品
 #define kMyReleaseOfDeleteString @"product/product-delete"  //删除发布中的产品
-
+#define kMyReleaseDetailOfDealCloseDetailsAgree @"productorders/orders-closed-agree" //发布详情-处理结案-同意结案
+#define kMyReleaseDetailOfDealCloseDetailsVote @"productorders/orders-closed-veto" //发布详情-处理结案-否决结案
 
 
 
