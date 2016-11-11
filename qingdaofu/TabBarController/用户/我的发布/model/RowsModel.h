@@ -11,6 +11,7 @@
 @class PublishingModel;  //发布方信息
 @class ApplyRecordModel;//接单方信息
 @class CompleteResponse; //发布方认证信息
+@class ProductOrdersClosedOrEndApplyModel;  //处理结案或终止
 
 @interface RowsModel : NSObject
 
@@ -102,11 +103,12 @@
 @property (nonatomic,copy) NSString *applyPeople;  //申请人数
 @property (nonatomic,copy) NSString *applyTotal;//申请人数
 
-
-
 @property (nonatomic,strong) PublishingModel *fabuuser;  //发布方信息
 @property (nonatomic,strong) ApplyRecordModel *productApply;  //申请人信息
 @property (nonatomic,strong) CompleteResponse *User;  //发布方认证信息
+@property (nonatomic,strong) ProductOrdersClosedOrEndApplyModel *productOrdersClosedsApply;  //当前申请中的结案
+@property (nonatomic,strong) ProductOrdersClosedOrEndApplyModel *productOrdersTerminationsApply;  //当前申请中的终止
+
 
 //显示信息
 @property (nonatomic,copy) NSString *statusLabel; //发布中

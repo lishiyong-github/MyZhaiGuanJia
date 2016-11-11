@@ -74,8 +74,8 @@
         _applyRecordsTableView.backgroundColor = kBackColor;
         _applyRecordsTableView.separatorColor = kSeparateColor;
         _applyRecordsTableView.separatorInset = UIEdgeInsetsZero;
-        [_applyRecordsTableView addHeaderWithTarget:self action:@selector(headerRefreshOfRecords)];
-        [_applyRecordsTableView addFooterWithTarget:self action:@selector(footerRefreshOfRecords)];
+//        [_applyRecordsTableView addHeaderWithTarget:self action:@selector(headerRefreshOfRecords)];
+//        [_applyRecordsTableView addFooterWithTarget:self action:@selector(footerRefreshOfRecords)];
         
         //        if ([_applyRecordsTableView respondsToSelector:@selector(setSeparatorInset:)]) {
         //            [_applyRecordsTableView setSeparatorInset:UIEdgeInsetsZero];
@@ -227,9 +227,11 @@
     QDFWeakSelf;
     [self requestDataPostWithString:listString params:params successBlock:^(id responseObject){
         
+        NSDictionary *aoao = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
         ApplyRecordResponse *response = [ApplyRecordResponse objectWithKeyValues:responseObject];
         
-        for (ApplyRecordModel *recordModel in response.data) {
+        for (ApplyRecordModel *recordModel in response.apply) {
             [weakself.recordsDataArray addObject:recordModel];
         }
         

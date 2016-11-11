@@ -11,6 +11,8 @@
 #import "ReleaseEndViewController.h"  //详情
 #import "MyDealingViewController.h"   //我的发布
 #import "MyProcessingViewController.h"  //我的接单
+#import "MyReleaseDetailsViewController.h"  //发布详情
+
 
 #import "ExtendHomeCell.h"
 
@@ -113,36 +115,36 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     [cell.detailTextLabel setHidden:YES];
     OrderModel *orderModel = self.releaseEndListArray[indexPath.section];
-    RowsModel *rowModel = orderModel.product;
+//    RowsModel *orderModel = self.releaseDataArray[indexPath.section];
     
     //code
-    [cell.nameButton setTitle:rowModel.number forState:0];
+    [cell.nameButton setTitle:orderModel.number forState:0];
     
     //status and action
     cell.statusLabel.text = orderModel.statusLabel;
-    NSLog(@"rowModel.statusLabel is %@",rowModel.statusLabel);
-    [cell.statusLabel setHidden:YES];
+    
     [cell.actButton2 setTitle:@"协商详情" forState:0];
+    cell.actButton2.layer.borderColor = kBorderColor.CGColor;
+    [cell.actButton2 setTitleColor:kLightGrayColor forState:0];
     
     QDFWeakSelf;
     [cell.actButton2 addAction:^(UIButton *btn) {
-//        [weakself goToCheckApplyRecordsOrAdditionMessage:btn.titleLabel.text withSection:indexPath.section withEvaString:@""];
     }];
     
     //details
     //委托本金
-    NSString *orString0 = [NSString stringWithFormat:@"委托本金：%@",rowModel.accountLabel];
+    NSString *orString0 = [NSString stringWithFormat:@"委托本金：%@",orderModel.accountLabel];
     //债权类型
-    NSString *orString1 = [NSString stringWithFormat:@"债权类型：%@",rowModel.categoryLabel];
+    NSString *orString1 = [NSString stringWithFormat:@"债权类型：%@",orderModel.categoryLabel];
     //委托事项
-    NSString *orString2 = [NSString stringWithFormat:@"委托事项：%@",rowModel.entrustLabel];
+    NSString *orString2 = [NSString stringWithFormat:@"委托事项：%@",orderModel.entrustLabel];
     //委托费用
-    NSString *orString3 = [NSString stringWithFormat:@"委托费用：%@%@",rowModel.typenumLabel,rowModel.typeLabel];
+    NSString *orString3 = [NSString stringWithFormat:@"委托费用：%@%@",orderModel.typenumLabel,orderModel.typeLabel];
     
     //违约期限
-    NSString *orString4 = [NSString stringWithFormat:@"违约期限：%@个月",rowModel.overdue];
+    NSString *orString4 = [NSString stringWithFormat:@"违约期限：%@个月",orderModel.overdue];
     //合同履行地
-    NSString *orString5 = [NSString stringWithFormat:@"合同履行地：%@",rowModel.addressLabel];
+    NSString *orString5 = [NSString stringWithFormat:@"合同履行地：%@",orderModel.addressLabel];
     
     NSString *orString = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@\n%@",orString0,orString1,orString2,orString3,orString4,orString5];
     NSMutableAttributedString *orAttributeStr = [[NSMutableAttributedString alloc] initWithString:orString];
@@ -170,7 +172,9 @@
     OrderModel *orderModel = self.releaseEndListArray[indexPath.section];
     
     if ([self.personType integerValue] == 1) {//发布
-        
+        MyReleaseDetailsViewController *myReleaseDetailsVC = [[MyReleaseDetailsViewController alloc] init];
+        myReleaseDetailsVC.productid = orderModel.productid;
+        [self.navigationController pushViewController:myReleaseDetailsVC animated:YES];
     }else{
         MyProcessingViewController *myProcessingVC = [[MyProcessingViewController alloc] init];
         myProcessingVC.applyid = orderModel.applyid;
@@ -181,7 +185,7 @@
 #pragma mark - method
 - (void)getMyReleaseListWithPage:(NSString *)page
 {
-    NSString *myReleaseString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrdersOfEndString];
+    NSString *myReleaseString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseOfEndString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"type" : @"0",
                              @"limit" : @"10",

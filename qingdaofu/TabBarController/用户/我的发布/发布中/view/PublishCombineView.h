@@ -16,5 +16,6 @@
 @property (nonatomic,strong) UIButton *comButton2;
 
 @property (nonatomic,strong) NSLayoutConstraint *topBtnConstraints;
+@property (nonatomic,strong) NSLayoutConstraint *heightBtnConstraints;
 
 @end

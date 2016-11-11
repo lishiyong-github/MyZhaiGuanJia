@@ -12,6 +12,6 @@
 
 @property (nonatomic,strong) NSMutableArray *user;
 
-@property (nonatomic,strong) NSMutableArray *data;
+@property (nonatomic,strong) NSMutableArray *apply;
 
 @end

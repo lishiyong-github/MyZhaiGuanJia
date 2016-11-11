@@ -10,8 +10,6 @@
 #import "ApplyRecordViewController.h"   //申请记录
 #import "PublishInterviewViewController.h"  //面谈中
 
-
-
 //#import "AdditionMessagesViewController.h"  //补充信息
 //#import "AgreementViewController.h"//协议
 //#import "ReportSuitViewController.h"  //发布催收，发布诉讼
@@ -32,20 +30,21 @@
 #import "PublishingResponse.h"
 #import "RowsModel.h"
 #import "ApplyRecordModel.h"  //申请人
+#import "ProductOrdersClosedOrEndApplyModel.h"  //处理终止或结案申请
 
 #import "OrdersModel.h"
 
 @interface MyReleaseDetailsViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
-@property (nonatomic,strong) UIButton *rightNavButton;
+
 @property (nonatomic,strong) UITableView *releaseDetailTableView;
-@property (nonatomic,strong) BaseRemindButton *applyRecordRemindButton;  //新的申请记录提示信息
-@property (nonatomic,strong) PublishCombineView *publishCheckView;  //
+@property (nonatomic,strong) PublishCombineView *publishCheckView;
+@property (nonatomic,strong) BaseRemindButton *EndOrloseRemindButton;  //新的申请记录提示信息
 
 //json
 @property (nonatomic,strong) NSMutableArray *releaseDetailArray;
-@property (nonatomic,strong) NSString *applyidString;
+@property (nonatomic,strong) NSString *applyidString;//标记是否选择申请人
 
 @end
 
@@ -54,7 +53,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getDetailMessagesssss) name:@"refresh" object:nil];
-    [self getDetailMessagesssss];
 }
 
 - (void)viewDidLoad
@@ -62,11 +60,14 @@
     [super viewDidLoad];
     self.navigationItem.title = @"产品详情";
     self.navigationItem.leftBarButtonItem = self.leftItem;
-//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightNavButton];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightButton];
+    [self.rightButton setHidden:YES];
     
     [self.view addSubview: self.releaseDetailTableView];
     [self.view addSubview:self.publishCheckView];
     [self.view setNeedsUpdateConstraints];
+    
+    [self getDetailMessagesssss];
 }
 
 - (void)updateViewConstraints
@@ -83,18 +84,18 @@
     [super updateViewConstraints];
 }
 
-- (UIButton *)rightNavButton
-{
-    if (!_rightNavButton) {
-        _rightNavButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 80, 30)];
-        [_rightNavButton setContentHorizontalAlignment:2];
-        [_rightNavButton setTitle:@"删除订单" forState:0];
-        [_rightNavButton setTitleColor:kWhiteColor forState:0];
-        _rightNavButton.titleLabel.font = kFirstFont;
-        [_rightNavButton addTarget:self action:@selector(deleteThePublishing) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _rightNavButton;
-}
+//- (UIButton *)rightNavButton
+//{
+//    if (!_rightNavButton) {
+//        _rightNavButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 80, 30)];
+//        [_rightNavButton setContentHorizontalAlignment:2];
+//        [_rightNavButton setTitle:@"删除订单" forState:0];
+//        [_rightNavButton setTitleColor:kWhiteColor forState:0];
+//        _rightNavButton.titleLabel.font = kFirstFont;
+//        [_rightNavButton addTarget:self action:@selector(deleteThePublishing) forControlEvents:UIControlEventTouchUpInside];
+//    }
+//    return _rightNavButton;
+//}
 
 - (UITableView *)releaseDetailTableView
 {
@@ -113,27 +114,6 @@
 {
     if (!_publishCheckView) {
         _publishCheckView = [PublishCombineView newAutoLayoutView];
-//        [_publishCheckView.comButton2 setBackgroundColor:kSeparateColor];
-//        _publishCheckView.comButton2.userInteractionEnabled = NO;
-//        
-//        NSString *ppp1 = @"需准备的";
-//        NSString *ppp2 = @"《材料清单》";
-//        NSString *ppp = [NSString stringWithFormat:@"%@%@",ppp1,ppp2];
-//        NSMutableAttributedString *attributePP = [[NSMutableAttributedString alloc] initWithString:ppp];
-//        [attributePP addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kBlackColor} range:NSMakeRange(0, ppp1.length)];
-//        [attributePP addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kTextColor} range:NSMakeRange(ppp1.length, ppp2.length)];
-//        [_publishCheckView.comButton1 setAttributedTitle:attributePP forState:0];
-//        
-//        QDFWeakSelf;
-//        [_publishCheckView setDidSelectedBtn:^(NSInteger tag)  {
-//            if (tag == 111) {
-//                [weakself showHint:@"材料清单"];
-//            }else if (tag == 112){
-//                [weakself showHint:@"发起面谈"];
-//                [weakself choosePersonOfInterView];
-//            }
-//        }];
-        
     }
     return _publishCheckView;
 }
@@ -191,7 +171,7 @@
         RowsModel *dataModel = self.releaseDetailArray[0];
         
         if ([dataModel.statusLabel isEqualToString:@"发布中"]) {
-            if ([dataModel.productApply.status integerValue] == 20) {
+            if ([dataModel.productApply.status integerValue] == 20) {//面谈中
                 if (indexPath.section == 0) {
                     if (indexPath.row == 0) {
                         return kCellHeight1;
@@ -257,7 +237,7 @@
     RowsModel *dataModel = self.releaseDetailArray[0];
     
     if ([dataModel.statusLabel isEqualToString:@"发布中"]) {
-        if ([dataModel.productApply.status integerValue] == 20) {
+        if ([dataModel.productApply.status integerValue] == 20) {//面谈中
             if (indexPath.section == 0) {
                 if (indexPath.row == 0) {
                     identifier = @"publishing00";
@@ -329,9 +309,8 @@
                     }];
                     return cell;
                 }
-                
             }else if (indexPath.section == 1){
-                identifier = @"publishing1";
+                identifier = @"publishing10";
                 NewPublishStateCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
                 if (!cell) {
                     cell = [[NewPublishStateCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
@@ -360,10 +339,10 @@
                 
                 return cell;
             }
-        }else{
+        }else{//发布中
             if (indexPath.section == 0) {
                 if (indexPath.row == 0) {
-                    identifier = @"publishing00";
+                    identifier = @"publishing000";
                     MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
                     if (!cell) {
                         cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
@@ -376,7 +355,7 @@
                     
                     return cell;
                 }else if (indexPath.row == 1){
-                    identifier = @"publishing01";
+                    identifier = @"publishing001";
                     NewPublishDetailsCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
                     if (!cell) {
                         cell = [[NewPublishDetailsCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
@@ -387,7 +366,7 @@
                     return cell;
                     
                 }else if (indexPath.row == 2){
-                    identifier = @"publishing02";
+                    identifier = @"publishing002";
                     NewPublishStateCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
                     if (!cell) {
                         cell = [[NewPublishStateCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
@@ -399,23 +378,24 @@
                 }
                 
             }else if (indexPath.section == 1){
-                identifier = @"publishing1";
+                identifier = @"publishing010";
                 NewsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
                 if (!cell) {
                     cell = [[NewsTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                 }
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 
-                [cell.newsNameButton setTitle:@"选择申请方" forState:0];
-                [cell.newsActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-                
-                if ([dataModel.applyCount integerValue] == 0) {
-                    [cell.newsCountButton setTitle:@"请选择申请方" forState:0];
-                    cell.newsCountButton.backgroundColor = kWhiteColor;
-                    [cell.newsCountButton setTitleColor:kBlackColor forState:0];
-                }else{
-                    [cell.newsCountButton setTitle:dataModel.applyCount forState:0];
-                    cell.newsCountButton.backgroundColor = kYellowColor;
+                if (!self.applyidString) {
+                    [cell.newsNameButton setTitle:@"选择申请方" forState:0];
+                    [cell.newsActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+                    if ([dataModel.applyCount integerValue] == 0) {
+                        [cell.newsCountButton setTitle:@"请选择申请方" forState:0];
+                        cell.newsCountButton.backgroundColor = kWhiteColor;
+                        [cell.newsCountButton setTitleColor:kBlackColor forState:0];
+                    }else{
+                        [cell.newsCountButton setTitle:dataModel.applyCount forState:0];
+                        cell.newsCountButton.backgroundColor = kYellowColor;
+                    }
                 }
                 
                 return cell;
@@ -551,9 +531,138 @@
             [cell.userNameButton setTitle:@"尽职调查" forState:0];
             return cell;
         }
-
     }else if ([dataModel.statusLabel isEqualToString:@"已终止"]) {
-        
+        if (indexPath.section == 0) {
+            if (indexPath.row == 0) {
+                identifier = @"myEnding00";
+                MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+                if (!cell) {
+                    cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+                }
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                
+                [cell.userNameButton setTitle:dataModel.number forState:0];
+                [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+                [cell.userActionButton setTitle:@"查看详情" forState:0];
+                
+                return cell;
+                
+            }else if (indexPath.row == 1){
+                identifier = @"myEnding01";
+                NewPublishDetailsCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+                if (!cell) {
+                    cell = [[NewPublishDetailsCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+                }
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                cell.backgroundColor = kBackColor;
+                
+                [cell.point2 setImage:[UIImage imageNamed:@"succee"] forState:0];
+                cell.progress2.textColor = kTextColor;
+                [cell.line2 setBackgroundColor:kButtonColor];
+                
+                
+                [cell.point3 setImage:[UIImage imageNamed:@"fail"] forState:0];
+                cell.progress3.textColor = kRedColor;
+                [cell.line3 setBackgroundColor:kRedColor];
+                cell.progress3.text = @"已终止";
+//                [cell.progress3 setTitle:@"已终止" forState:0];
+//                if ([dataModel.productApply.orders.status integerValue] == 30) {//终止
+//                }else{//处理中
+//                    [cell.point3 setImage:[UIImage imageNamed:@"succee"] forState:0];
+//                    cell.progress3.textColor = kTextColor;
+//                    [cell.line3 setBackgroundColor:kButtonColor];
+//                }
+                
+                return cell;
+                
+            }else if (indexPath.row == 2){
+                identifier = @"myEnding02";
+                OrderPublishCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+                
+                if (!cell) {
+                    cell = [[OrderPublishCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+                }
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                
+                NSString *nameStr = [NSString getValidStringFromString:dataModel.productApply.mobile toString:@"未认证"];
+                NSString *checkStr = [NSString stringWithFormat:@"接单方：%@",nameStr];
+                [cell.checkButton setTitle:checkStr forState:0];
+                [cell.contactButton setTitle:@" 联系TA" forState:0];
+                [cell.contactButton setImage:[UIImage imageNamed:@"phone_blue"] forState:0];
+                
+                //接单方详情
+                QDFWeakSelf;
+                [cell.checkButton addAction:^(UIButton *btn) {
+                    //                if ([userNameModel.jusername isEqualToString:@""] || userNameModel.jusername == nil || !userNameModel.jusername) {
+                    //                    [weakself showHint:@"申请方未认证，不能查看相关信息"];
+                    //                }else{
+                    //                    CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+                    //                    checkDetailPublishVC.idString = weakself.idString;
+                    //                    checkDetailPublishVC.categoryString = weakself.categaryString;
+                    //                    checkDetailPublishVC.pidString = weakself.pidString;
+                    //                    checkDetailPublishVC.typeString = @"接单方";
+                    //                    //                checkDetailPublishVC.typeDegreeString = @"处理中";
+                    //                    [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];
+                    //                }
+                }];
+                
+                //电话
+                [cell.contactButton addAction:^(UIButton *btn) {
+                    //                if ([userNameModel.jusername isEqualToString:@""] || userNameModel.jusername == nil || !userNameModel.jusername) {
+                    //                    [self showHint:@"申请方未认证，不能打电话"];
+                    //                }else{
+                    //                    NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",userNameModel.jmobile];
+                    //                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
+                    //                }
+                }];
+                return cell;
+            }
+            
+        }else if (indexPath.section == 1){
+            identifier = @"myEnding1";
+            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            [cell.userNameButton setTitle:@"签约协议详情" forState:0];
+            [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            
+            if ([dataModel.productApply.orders.status integerValue] <= 10) {
+                [cell.userActionButton setTitle:@"等待接单方上传" forState:0];
+            }else{
+                [cell.userActionButton setTitle:@"查看" forState:0];
+            }
+            
+            return cell;
+        }else if (indexPath.section == 2){
+            identifier = @"myEnding2";
+            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            [cell.userNameButton setTitle:@"居间协议" forState:0];
+            [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            
+            if ([dataModel.productApply.orders.status integerValue] == 0) {
+                [cell.userActionButton setTitle:@"等待接单方上传" forState:0];
+            }else{
+                [cell.userActionButton setTitle:@"查看" forState:0];
+            }
+            return cell;
+        }else if (indexPath.section == 3){
+            identifier = @"myEnding3";
+            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            [cell.userNameButton setTitle:@"尽职调查" forState:0];
+            return cell;
+        }
     }else if ([dataModel.statusLabel isEqualToString:@"已结案"]) {
         
     }
@@ -573,34 +682,47 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 1) {
-        //        AdditionMessagesViewController *additionMessageVC = [[AdditionMessagesViewController alloc] init];
-        //        additionMessageVC.idString = self.idString;
-        //        additionMessageVC.categoryString = self.categaryString;
-        //        [self.navigationController pushViewController:additionMessageVC animated:YES];
-        //        applyRecordsVC.idStr = self.idString;
-        //        applyRecordsVC.categaryStr = self.categaryString;
-        
-        
-        ApplyRecordViewController *applyRecordsVC = [[ApplyRecordViewController alloc] init];
-        applyRecordsVC.productid = self.productid;
-        [self.navigationController pushViewController:applyRecordsVC animated:YES];
-        
-        QDFWeakSelf;
-        [applyRecordsVC setDidChooseApplyUser:^(ApplyRecordModel *recordModel) {
-            NewsTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-            //            [cell.userNameButton setTitle:@"申请方" forState:0];
-            //            [cell.userActionButton setTitle:recordModel.mobile forState:0];
+    RowsModel *dataModel = self.releaseDetailArray[0];
+    
+    if ([dataModel.statusLabel isEqualToString:@"发布中"]) {
+        if ([dataModel.productApply.status integerValue] == 20) {//面谈中
             
-            [cell.newsNameButton setTitle:@"申请方" forState:0];
-            [cell.newsCountButton setTitle:recordModel.mobile forState:0];
-            [cell.newsCountButton setBackgroundColor:kWhiteColor];
-            [cell.newsCountButton setTitleColor:kLightGrayColor forState:0];
-            
-            [weakself.publishCheckView.comButton2 setBackgroundColor:kButtonColor];
-            weakself.publishCheckView.comButton2.userInteractionEnabled = YES;
-            weakself.applyidString = recordModel.applyid;
-        }];
+        }else{
+            if (indexPath.section == 1) {
+                ApplyRecordViewController *applyRecordsVC = [[ApplyRecordViewController alloc] init];
+                applyRecordsVC.productid = self.productid;
+                [self.navigationController pushViewController:applyRecordsVC animated:YES];
+                
+                QDFWeakSelf;
+                [applyRecordsVC setDidChooseApplyUser:^(ApplyRecordModel *recordModel) {
+                    NewsTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+                    [cell.newsNameButton setTitle:@"申请方" forState:0];
+                    [cell.newsCountButton setTitle:recordModel.mobile forState:0];
+                    [cell.newsCountButton setBackgroundColor:kWhiteColor];
+                    [cell.newsCountButton setTitleColor:kLightGrayColor forState:0];
+                    
+                    [weakself.publishCheckView.comButton2 setBackgroundColor:kButtonColor];
+                    weakself.publishCheckView.comButton2.userInteractionEnabled = YES;
+                    weakself.applyidString = recordModel.applyid;
+                    
+                    [weakself.publishCheckView setDidSelectedBtn:^(NSInteger tag)  {
+                        if (tag == 111) {
+                            [weakself showHint:@"材料清单"];
+                        }else if (tag == 112){
+                            [weakself showHint:@"发起面谈"];
+                            [weakself choosePersonOfInterView];
+                        }
+                    }];
+                    
+                }];
+            }
+        }
+    }else if ([dataModel.statusLabel isEqualToString:@"处理中"]){
+        
+    }else if ([dataModel.statusLabel isEqualToString:@"已终止"]){
+        
+    }else if ([dataModel.statusLabel isEqualToString:@"已结案"]){
+        
     }
 }
 
@@ -615,6 +737,8 @@
     QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
         
+        [weakself.releaseDetailArray removeAllObjects];
+        
         NSDictionary *sososo = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
@@ -624,12 +748,21 @@
             RowsModel *dataModel = response.data;
             if ([dataModel.statusLabel isEqualToString:@"发布中"]) {
                 [weakself.publishCheckView setHidden:NO];
+                [weakself.rightButton setHidden:NO];
+                [weakself.rightButton setTitle:@"删除订单" forState:0];
+                [weakself.rightButton addTarget:self action:@selector(deleteThePublishing) forControlEvents:UIControlEventTouchUpInside];
                 
-                if ([dataModel.productApply.status integerValue] == 20) {
+                if ([dataModel.productApply.status integerValue] == 20) {//面谈中
                     
                     [weakself.publishCheckView autoSetDimension:ALDimensionHeight toSize:116];
+                    weakself.publishCheckView.topBtnConstraints.constant = kBigPadding;
                     [weakself.publishCheckView.comButton1 setBackgroundColor:kButtonColor];
-                    [weakself.publishCheckView.comButton1 setTitle:@"同意TA作为接单方" forState:0];
+                    weakself.publishCheckView.comButton2.userInteractionEnabled = YES;
+                    
+                    NSString *aaa = @"同意TA作为接单方";
+                    NSMutableAttributedString *attrie = [[NSMutableAttributedString alloc] initWithString:aaa];
+                    [attrie addAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kWhiteColor} range:NSMakeRange(0, aaa.length)];
+                    [weakself.publishCheckView.comButton1 setAttributedTitle:attrie forState:0];
                     
                     [weakself.publishCheckView.comButton2 setBackgroundColor:kWhiteColor];
                     [weakself.publishCheckView.comButton2 setTitle:@"不合适，重新选择接单方" forState:0];
@@ -645,7 +778,7 @@
                             [weakself actionOfInterviewResultOfActStirng:@"cancel"];
                         }
                     }];
-                }else{
+                }else{//发布中
                     [weakself.publishCheckView autoSetDimension:ALDimensionHeight toSize:92];
                     weakself.publishCheckView.topBtnConstraints.constant = 0;
                     [weakself.publishCheckView.comButton2 setBackgroundColor:kSeparateColor];
@@ -672,15 +805,22 @@
             }else if ([dataModel.statusLabel isEqualToString:@"处理中"]){
                 [weakself.publishCheckView setHidden:YES];
                 [weakself.releaseDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+                [weakself.rightButton setHidden:NO];
+                [weakself.rightButton setTitle:@"申请终止" forState:0];
+                
             }else if ([dataModel.statusLabel isEqualToString:@"已终止"]){
                 [weakself.publishCheckView setHidden:YES];
                 [weakself.releaseDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+                
+                [weakself.rightButton setHidden:YES];
+                
             }else if ([dataModel.statusLabel isEqualToString:@"已结案"]){
                 [weakself.publishCheckView setHidden:YES];
                 [weakself.releaseDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+                
+                [weakself.rightButton setHidden:YES];
             }
             
-            [weakself.releaseDetailArray removeAllObjects];
             [weakself.releaseDetailArray addObject:response.data];
             [weakself.releaseDetailTableView reloadData];
         }
@@ -697,7 +837,6 @@
                              @"token" : [self getValidateToken]
                              };
     
-    
     QDFWeakSelf;
     [self requestDataPostWithString:interViewString params:params successBlock:^(id responseObject) {
         
@@ -705,12 +844,7 @@
         [weakself showHint:baseModel.msg];
         
         if ([baseModel.code isEqualToString:@"0000"]) {
-            PublishInterviewViewController *publishInterViewVC = [[PublishInterviewViewController alloc] init];
-            publishInterViewVC.productid = weakself.productid;
-            
-            UINavigationController *navcc = weakself.navigationController;
-            [navcc popViewControllerAnimated:NO];
-            [navcc pushViewController:publishInterViewVC animated:NO];
+            [weakself getDetailMessagesssss];
         }
         
     } andFailBlock:^(NSError *error) {

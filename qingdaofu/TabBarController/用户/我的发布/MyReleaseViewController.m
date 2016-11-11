@@ -128,6 +128,7 @@
         QDFWeakSelf;
         [_endListButton addAction:^(UIButton *btn) {
             ReleaseEndListViewController *releaseEndListVC = [[ReleaseEndListViewController alloc] init];
+            releaseEndListVC.personType = @"1";
             [weakself.navigationController pushViewController:releaseEndListVC animated:YES];
         }];
     }

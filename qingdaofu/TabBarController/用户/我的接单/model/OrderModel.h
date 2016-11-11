@@ -21,8 +21,16 @@
 @property (nonatomic,copy) NSString *modify_by;
 @property (nonatomic,copy) NSString *productid;
 @property (nonatomic,copy) NSString *status;
-@property (nonatomic,copy) NSString *statusLabel;
 @property (nonatomic,copy) NSString *validflag;
+@property (nonatomic,copy) NSString *number;  //code
+@property (nonatomic,copy) NSString *statusLabel; //发布中
+@property (nonatomic,copy) NSString *accountLabel;//0万(委托金额)
+@property (nonatomic,copy) NSString *typenumLabel; //委托费用值
+@property (nonatomic,copy) NSString *typeLabel; //委托费用单位
+@property (nonatomic,copy) NSString *categoryLabel;//合同纠纷.机动车抵押(债权类型)
+@property (nonatomic,copy) NSString *entrustLabel; //诉讼,债权转让(委托事项)
+@property (nonatomic,copy) NSString *addressLabel; //上海市杨浦区(合同履行地)
+@property (nonatomic,copy) NSString *overdue;  //违约期限
 
 //发布人信息creater
 @property (nonatomic,copy) NSString *mobile;

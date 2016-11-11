@@ -18,8 +18,8 @@
 @property (nonatomic,copy) NSString *create_at;
 @property (nonatomic,copy) NSString *create_by;
 
-//日志
-@property (nonatomic,strong) NSMutableArray *productOrdersLogs;
+
+@property (nonatomic,strong) NSMutableArray *productOrdersLogs;//日志
 
 
 @end
