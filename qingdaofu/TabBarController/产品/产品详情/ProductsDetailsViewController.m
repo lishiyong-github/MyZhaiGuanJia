@@ -601,7 +601,7 @@
             if (self.allEvaDataArray.count > 0 ) {
 //                [cell.remindImageButton setHidden:YES];
                 [cell.evaProductButton setHidden:YES];
-                [cell.evaNameLabel setHidden:NO];
+                [cell.evaNameButton setHidden:NO];
                 [cell.evaTimeLabel setHidden:NO];
                 [cell.evaTextLabel setHidden:NO];
                 [cell.evaStarImage setHidden:NO];
@@ -609,6 +609,7 @@
                 evaModel = self.allEvaDataArray[indexPath.row-1];
                 //0为正常评价。1为匿名评价
                 NSString *isHideStr;
+                /*
                 if ([evaModel.isHide integerValue] == 0) {
                     isHideStr = [NSString getValidStringFromString:evaModel.mobiles toString:@"匿名"];
                 }else{
@@ -621,6 +622,7 @@
                 cell.evaProImageView2.backgroundColor = kLightGrayColor;
                 cell.evaTextLabel.text = [NSString getValidStringFromString:evaModel.content toString:@"未填写评价内容"];
                 
+                 */
                 // 图片
                 if (evaModel.pictures.count == 1) {
                     if ([evaModel.pictures[0] isEqualToString:@""]) {//没有图片
@@ -651,7 +653,7 @@
             }else{
 //                [cell.remindImageButton setHidden:NO];
                 [cell.evaProductButton setHidden:YES];
-                [cell.evaNameLabel setHidden:YES];
+                [cell.evaNameButton setHidden:YES];
                 [cell.evaTimeLabel setHidden:YES];
                 [cell.evaTextLabel setHidden:YES];
                 [cell.evaStarImage setHidden:YES];

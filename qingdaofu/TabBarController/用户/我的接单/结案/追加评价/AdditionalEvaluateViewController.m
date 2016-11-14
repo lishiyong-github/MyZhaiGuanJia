@@ -34,9 +34,11 @@
     [super viewDidLoad];
     self.navigationItem.title = @"填写评价";
     self.navigationItem.leftBarButtonItem = self.leftItemAnother;
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightButton];
+    [self.rightButton setTitle:@"提交" forState:0];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"提交" style:UIBarButtonItemStylePlain target:self action:@selector(evaluateCommitMessages)];
-    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kBlueColor} forState:0];
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"提交" style:UIBarButtonItemStylePlain target:self action:@selector(evaluateCommitMessages)];
+//    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kBlueColor} forState:0];
     
     [self setupForDismissKeyboard];
     [self addKeyboardObserver];
@@ -115,7 +117,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        return 150;
+        return 124;
     }else if (indexPath.section == 1 &&indexPath.row == 1){
         return 80;
     }else if (indexPath.section == 2 &&indexPath.row == 1){
@@ -149,16 +151,16 @@
         
         [cell.starView1 setMarkComplete:^(CGFloat score) {
             NSString *scoreStr1 = [NSString stringWithFormat:@"%0.f",score/2];
-            [self.evaDataDictionary setValue:scoreStr1 forKey:@"serviceattitude"];
+            [self.evaDataDictionary setValue:scoreStr1 forKey:@"truth_score"];
         }];
         
         [cell.starView2 setMarkComplete:^(CGFloat score) {
             NSString *scoreStr2 = [NSString stringWithFormat:@"%0.f",score/2];
-            [self.evaDataDictionary setValue:scoreStr2 forKey:@"professionalknowledge"];
+            [self.evaDataDictionary setValue:scoreStr2 forKey:@"assort_score"];
         }];
         [cell.starView3 setMarkComplete:^(CGFloat score) {
             NSString *scoreStr3 = [NSString stringWithFormat:@"%0.f",score/2];
-            [self.evaDataDictionary setValue:scoreStr3 forKey:@"workefficiency"];
+            [self.evaDataDictionary setValue:scoreStr3 forKey:@"response_score"];
         }];
         
         return cell;
@@ -199,7 +201,7 @@
         }];
         
         [cell setDidEndEditing:^(NSString *text) {
-            [weakself.evaDataDictionary setValue:text forKey:@"content"];
+            [weakself.evaDataDictionary setValue:text forKey:@"memo"];
         }];
         
         return cell;
@@ -296,29 +298,29 @@
 }
 
 #pragma mark - method
-- (void)evaluateCommitMessages
+- (void)rightItemAction
 {
     [self.view endEditing:YES];
+    
     NSString *evaluateString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kEvaluateString];
     
     //发布方：态度。接单方：真实性
-    self.evaDataDictionary[@"serviceattitude"] = [NSString getValidStringFromString:self.evaDataDictionary[@"serviceattitude"] toString:@""];
+    self.evaDataDictionary[@"truth_score"] = [NSString getValidStringFromString:self.evaDataDictionary[@"truth_score"] toString:@""];
     //发布方：专业知识。接单方：配合度
-    self.evaDataDictionary[@"professionalknowledge"] = [NSString getValidStringFromString:self.evaDataDictionary[@"professionalknowledge"] toString:@""];
+    self.evaDataDictionary[@"assort_score"] = [NSString getValidStringFromString:self.evaDataDictionary[@"assort_score"] toString:@""];
     //发布方：办事效率。接单方：响应度
-    self.evaDataDictionary[@"workefficiency"] = [NSString getValidStringFromString:self.evaDataDictionary[@"workefficiency"] toString:@""];
-    self.evaDataDictionary[@"content"] = [NSString getValidStringFromString:self.evaDataDictionary[@"content"] toString:@"优质，专业，高效，快捷"];
-    //优质，专业，高效，快捷
+    self.evaDataDictionary[@"response_score"] = [NSString getValidStringFromString:self.evaDataDictionary[@"response_score"] toString:@""];
+    
+    self.evaDataDictionary[@"memo"] = [NSString getValidStringFromString:self.evaDataDictionary[@"memo"] toString:@"优质，专业，高效，快捷"];
 
-    self.evaDataDictionary[@"category"] = self.categoryString;
-    self.evaDataDictionary[@"product_id"] = self.idString;
-    self.evaDataDictionary[@"token"] = [self getValidateToken];
+    [self.evaDataDictionary setValue:self.ordersid forKey:@"ordersid"];
+    [self.evaDataDictionary setValue:[self getValidateToken] forKey:@"token"];
     
     NSString *imageStr = @"";
     for (NSInteger i=0; i<self.evaImageArray.count; i++) {
         imageStr = [NSString stringWithFormat:@"%@,%@",self.evaImageArray[i],imageStr];
     }
-    [self.evaDataDictionary setObject:imageStr forKey:@"picture"];
+    [self.evaDataDictionary setObject:imageStr forKey:@"files"];
     
     NSDictionary *params = self.evaDataDictionary;
     

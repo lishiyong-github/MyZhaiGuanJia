@@ -17,14 +17,16 @@
              @"evalua" : @"result.evalua",
              @"evaluate" : @"result.evaluate",
              @"launchevaluation" : @"result.launchevaluation",
-             @"uid" : @"result.uid"
+             @"uid" : @"result.uid",
+             @"Comments1" : @"result.data.Comments1"
              };
 }
 
 + (NSDictionary *)objectClassInArray
 {
     return @{@"evaluate" : @"EvaluateModel",
-             @"launchevaluation" : @"LaunchEvaluateModel"
+             @"launchevaluation" : @"LaunchEvaluateModel",
+             @"Comments1" : @"EvaluateModel"
              };
 }
 

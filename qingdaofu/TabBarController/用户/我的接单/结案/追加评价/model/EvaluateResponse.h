@@ -17,4 +17,9 @@
 @property (nonatomic,strong) NSMutableArray *launchevaluation; //给出的评价(接单方)
 @property (nonatomic,copy) NSString *uid;  //登陆人的UID
 
+
+@property (nonatomic,strong) NSMutableArray *Comments1;  //评价集
+@property (nonatomic,copy) NSString *commentsScore;  //综合评分
+
+
 @end

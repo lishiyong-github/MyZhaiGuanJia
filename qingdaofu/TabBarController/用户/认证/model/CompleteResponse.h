@@ -12,12 +12,13 @@
 @interface CompleteResponse : BaseModel
 
 @property (nonatomic,strong) CertificationModel *certification;
+
 @property (nonatomic,copy) NSString *completionRate;  //完成度
 @property (nonatomic,copy) NSString *uid;
 @property (nonatomic,copy) NSString *user;
 
 
-///////
+///////用户信息
 @property (nonatomic,copy) NSString *idString;
 @property (nonatomic,copy) NSString *mobile;
 @property (nonatomic,copy) NSString *pictureimg;

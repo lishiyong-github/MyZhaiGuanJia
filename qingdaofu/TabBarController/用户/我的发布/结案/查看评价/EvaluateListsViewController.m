@@ -189,10 +189,12 @@
             evaluateModel = self.evaluateArray[indexPath.row-1];
         }
         
-        cell.evaNameLabel.text = evaluateModel.mobiles;
-        cell.evaTimeLabel.text = [NSDate getYMDhmFormatterTime:evaluateModel.create_time];
-        cell.evaStarImage.currentIndex = [evaluateModel.creditor integerValue];
-        cell.evaTextLabel.text = evaluateModel.content;
+//        cell.evaNameLabel.text = evaluateModel.mobile;
+        [cell.evaNameButton setTitle:evaluateModel.mobile forState:0];
+        
+        cell.evaTimeLabel.text = [NSDate getYMDhmFormatterTime:evaluateModel.action_at];
+//        cell.evaStarImage.currentIndex = [evaluateModel.creditor integerValue];
+        cell.evaTextLabel.text = evaluateModel.memo;
         
         if (evaluateModel.pictures.count == 0) {
             [cell.evaProImageView1 setHidden:YES];
@@ -263,8 +265,10 @@
         launchEvaluateModel = self.launchEvaluateArray[indexPath.row-1];
     }
     
-    cell.evaNameLabel.textColor = kBlueColor;
-    cell.evaNameLabel.text = @"自己";
+//    cell.evaNameLabel.textColor = kBlueColor;
+//    cell.evaNameLabel.text = @"自己";
+    [cell.evaNameButton setTitleColor:kBlueColor forState:0];
+    [cell.evaNameButton setTitleColor:@"自己" forState:0];
     cell.evaTimeLabel.text = [NSDate getYMDhmFormatterTime:launchEvaluateModel.create_time];
     cell.evaStarImage.currentIndex = [launchEvaluateModel.creditor integerValue];
     cell.evaTextLabel.text = launchEvaluateModel.content;

@@ -187,11 +187,13 @@
 #define kMyRecordsString  @"apply/ordertaking"   //申请记录
 #define kMyRecordsMessageString @"apply/user"  //申请记录里的申请人详情
 #define kMyRecordsMessageAgreeString @"apply/agreeorder" //申请记录里的申请人详情的同意申请
-#define kEvaluateString @"public/evaluate"  //去评价
+#define kEvaluateString @"productorders/comment-add"  //去评价
+#define kTwiceEvaluateString @"productorders/comment-additional"  //再次评价
+
 #define kAgreementString @"/protocol/mediacy"   //服务协议
 #define kMyEvaluateString @"apply/userlists"  //我的评价(给出的)
 #define kCheckOrderPeople @"apply/user"   //查看接单方详情
-#define kCheckOrderToEvaluationString @"apply/evaluatewidget"  //查看接单方详情里面的接单方评价信息(收到的)
+#define kCheckOrderToEvaluationString @"userinfo/comment-list"  //查看接单方详情里面的接单方评价信息(收到的)
 #define kCheckOrderToWarnning @"public/remind"   //查看接单方详情里面的提醒
 #define kMyreleaseDealingStateString @"public/wxclosedswidget" //我的发布处理中的状态（没用到）
 #define kMyreleaseDealingEndString @"public/closed" ////我的发布处理中的申请结案
@@ -337,7 +339,7 @@
 #define kMyReleaseOfDeleteString @"product/product-delete"  //删除发布中的产品
 #define kMyReleaseDetailOfDealCloseDetailsAgree @"productorders/orders-closed-agree" //发布详情-处理结案-同意结案
 #define kMyReleaseDetailOfDealCloseDetailsVote @"productorders/orders-closed-veto" //发布详情-处理结案-否决结案
-
+#define kMyReleaseDetailOfMoreMessages @"product/product-details"  //完善信息
 
 
 #define kProductListsString @"product/index"  //产品列表

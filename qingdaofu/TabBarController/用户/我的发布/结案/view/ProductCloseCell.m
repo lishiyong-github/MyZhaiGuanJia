@@ -160,17 +160,17 @@
         _codeLabel = [UILabel newAutoLayoutView];
         _codeLabel.numberOfLines = 0;
         
-        NSString *code1 = @"BX201609280001\n";
-        NSString *code2 = @"订单已结案";
-        NSString *codeStr = [NSString stringWithFormat:@"%@%@",code1,code2];
-        NSMutableAttributedString *attributeCC = [[NSMutableAttributedString alloc] initWithString:codeStr];
-        [attributeCC setAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kBlackColor} range:NSMakeRange(0, code1.length)];
-        [attributeCC setAttributes:@{NSFontAttributeName:kSecondFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(code1.length, code2.length)];
-        NSMutableParagraphStyle *stylerr = [[NSMutableParagraphStyle alloc] init];
-        [stylerr setLineSpacing:kSpacePadding];
-        [attributeCC addAttribute:NSParagraphStyleAttributeName value:stylerr range:NSMakeRange(0, codeStr.length)];
-
-        [_codeLabel setAttributedText:attributeCC];
+//        NSString *code1 = @"BX201609280001\n";
+//        NSString *code2 = @"订单已结案";
+//        NSString *codeStr = [NSString stringWithFormat:@"%@%@",code1,code2];
+//        NSMutableAttributedString *attributeCC = [[NSMutableAttributedString alloc] initWithString:codeStr];
+//        [attributeCC setAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kBlackColor} range:NSMakeRange(0, code1.length)];
+//        [attributeCC setAttributes:@{NSFontAttributeName:kSecondFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(code1.length, code2.length)];
+//        NSMutableParagraphStyle *stylerr = [[NSMutableParagraphStyle alloc] init];
+//        [stylerr setLineSpacing:kSpacePadding];
+//        [attributeCC addAttribute:NSParagraphStyleAttributeName value:stylerr range:NSMakeRange(0, codeStr.length)];
+//
+//        [_codeLabel setAttributedText:attributeCC];
     }
     return _codeLabel;
 }
@@ -179,12 +179,20 @@
 {
     if (!_closeProofButton) {
         _closeProofButton = [UIButton newAutoLayoutView];
-//        _closeProofButton.layer.borderColor = kButtonColor.CGColor;
-//        _closeProofButton.layer.borderWidth = kLineWidth;
+        _closeProofButton.layer.borderColor = kButtonColor.CGColor;
+        _closeProofButton.layer.borderWidth = kLineWidth;
         _closeProofButton.layer.cornerRadius = corner;
         [_closeProofButton setTitle:@"结清证明" forState:0];
         [_closeProofButton setTitleColor:kTextColor forState:0];
         _closeProofButton.titleLabel.font = kFirstFont;
+        _closeProofButton.tag = 330;
+        
+        QDFWeakSelf;
+        [_closeProofButton addAction:^(UIButton *btn) {
+            if (weakself.didselectedBtn) {
+                weakself.didselectedBtn(btn.tag);
+            }
+        }];
     }
     return _closeProofButton;
 }
@@ -214,20 +222,20 @@
         _productTextButton.contentHorizontalAlignment = 1;
         _productTextButton.contentEdgeInsets = UIEdgeInsetsMake(kSmallPadding, kSpacePadding, kSmallPadding, 0);
 
-        NSString *proText1 = @"产品信息\n";
-        NSString *proText2 = @"债权类型：房产抵押、机动车抵押\n";
-        NSString *proText3 = @"固定费用：20万\n";
-        NSString *proText4 = @"委托金额：1000万";
-
-        NSString *proTextStr = [NSString stringWithFormat:@"%@%@%@%@",proText1,proText2,proText3,proText4];
-        NSMutableAttributedString *attributePP = [[NSMutableAttributedString alloc] initWithString:proTextStr];
-        [attributePP setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, proText1.length)];
-        [attributePP setAttributes:@{NSFontAttributeName:kSecondFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(proText1.length, proText2.length+proText3.length+proText4.length)];
-        NSMutableParagraphStyle *stylerr = [[NSMutableParagraphStyle alloc] init];
-        [stylerr setLineSpacing:8];
-        stylerr.alignment = NSTextAlignmentLeft;
-        [attributePP addAttribute:NSParagraphStyleAttributeName value:stylerr range:NSMakeRange(0, proTextStr.length)];
-        [_productTextButton setAttributedTitle:attributePP forState:0];
+//        NSString *proText1 = @"产品信息\n";
+//        NSString *proText2 = @"债权类型：房产抵押、机动车抵押\n";
+//        NSString *proText3 = @"固定费用：20万\n";
+//        NSString *proText4 = @"委托金额：1000万";
+//
+//        NSString *proTextStr = [NSString stringWithFormat:@"%@%@%@%@",proText1,proText2,proText3,proText4];
+//        NSMutableAttributedString *attributePP = [[NSMutableAttributedString alloc] initWithString:proTextStr];
+//        [attributePP setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, proText1.length)];
+//        [attributePP setAttributes:@{NSFontAttributeName:kSecondFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(proText1.length, proText2.length+proText3.length+proText4.length)];
+//        NSMutableParagraphStyle *stylerr = [[NSMutableParagraphStyle alloc] init];
+//        [stylerr setLineSpacing:8];
+//        stylerr.alignment = NSTextAlignmentLeft;
+//        [attributePP addAttribute:NSParagraphStyleAttributeName value:stylerr range:NSMakeRange(0, proTextStr.length)];
+//        [_productTextButton setAttributedTitle:attributePP forState:0];
     }
     return _productTextButton;
 }
@@ -240,9 +248,14 @@
         [_productCheckbutton setTitle:@"查看全部" forState:0];
         _productCheckbutton.titleLabel.font = kFirstFont;
         
-//        QDFWeakSelf;
-//        [_productCheckbutton addAction:^(UIButton *btn) {
-//        }];
+        _productCheckbutton.tag = 331;
+        
+        QDFWeakSelf;
+        [_productCheckbutton addAction:^(UIButton *btn) {
+            if (weakself.didselectedBtn) {
+                weakself.didselectedBtn(btn.tag);
+            }
+        }];
     }
     return _productCheckbutton;
 }
@@ -293,6 +306,15 @@
         [_sighCheckButton setTitleColor:kTextColor forState:0];
         [_sighCheckButton setTitle:@"查看全部" forState:0];
         _sighCheckButton.titleLabel.font = kFirstFont;
+        
+        _sighCheckButton.tag = 332;
+        
+        QDFWeakSelf;
+        [_sighCheckButton addAction:^(UIButton *btn) {
+            if (weakself.didselectedBtn) {
+                weakself.didselectedBtn(btn.tag);
+            }
+        }];
     }
     return _sighCheckButton;
 }
@@ -321,6 +343,15 @@
         _investCheckButton.titleLabel.font = kFirstFont;
 //        _investCheckButton.layer.borderColor = kBorderColor.CGColor;
 //        _investCheckButton.layer.borderWidth = kLineWidth;
+        
+        _investCheckButton.tag = 333;
+        
+        QDFWeakSelf;
+        [_investCheckButton addAction:^(UIButton *btn) {
+            if (weakself.didselectedBtn) {
+                weakself.didselectedBtn(btn.tag);
+            }
+        }];
     }
     return _investCheckButton;
 }
@@ -349,6 +380,16 @@
         _agreementCheckButton.titleLabel.font = kFirstFont;
 //        _agreementCheckButton.layer.borderColor = kBorderColor.CGColor;
 //        _agreementCheckButton.layer.borderWidth = kLineWidth;
+        
+        _agreementCheckButton.tag = 334;
+        
+        QDFWeakSelf;
+        [_agreementCheckButton addAction:^(UIButton *btn) {
+            if (weakself.didselectedBtn) {
+                weakself.didselectedBtn(btn.tag);
+            }
+        }];
+
     }
     return _agreementCheckButton;
 }

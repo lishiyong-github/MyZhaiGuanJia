@@ -12,9 +12,17 @@
 
 + (NSDictionary *)replacedKeyFromPropertyName
 {
-    return @{@"idString" : @"id",
-             @"uidInner" : @"uid"
-             };
+    return @{@"ID" : @"userinfo.id",
+             @"username" : @"userinfo.username",
+             @"realname" : @"userinfo.realname",
+             @"mobile" : @"userinfo.mobile",
+             @"picture" : @"userinfo.picture",
+             @"headimg" : @"userinfo.headimg"};
+}
+
++ (NSDictionary *)objectClassInArray
+{
+    return @{@"headimg" : @"ImageModel"};
 }
 
 

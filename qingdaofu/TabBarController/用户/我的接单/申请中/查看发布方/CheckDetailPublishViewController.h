@@ -19,7 +19,8 @@
 //@property (nonatomic,strong) NSString *evaTypeString;  //评价类型（evaluate(收到的评价) ／launchevaluation(发出的评级)）
 
 
-
+@property (nonatomic,strong) NSString *navTitle; // title
 @property (nonatomic,strong) NSString *productid;
+@property (nonatomic,strong) NSString *userid;
 
 @end

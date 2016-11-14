@@ -20,8 +20,10 @@
 @property (nonatomic,copy) NSString *modify_at;
 @property (nonatomic,copy) NSString *modify_by;
 @property (nonatomic,copy) NSString *productid;
-@property (nonatomic,copy) NSString *status;
+@property (nonatomic,copy) NSString *status;//产品状态
 @property (nonatomic,copy) NSString *validflag;
+
+//显示信息
 @property (nonatomic,copy) NSString *number;  //code
 @property (nonatomic,copy) NSString *statusLabel; //发布中
 @property (nonatomic,copy) NSString *accountLabel;//0万(委托金额)

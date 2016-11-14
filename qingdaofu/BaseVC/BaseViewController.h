@@ -19,6 +19,7 @@
 
 - (NSString *)getValidateToken;
 - (NSString *)getValidateMobile;
+
 - (void)back;
 - (void)rightItemAction;
 @end

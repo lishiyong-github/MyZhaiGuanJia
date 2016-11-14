@@ -10,6 +10,8 @@
 
 @interface ProductCloseCell : UITableViewCell<UIScrollViewDelegate>
 
+@property (nonatomic,strong) void (^didselectedBtn)(NSInteger);
+
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UIImageView *topSpaceImaegView;  //顶部分割线
 @property (nonatomic,strong) UILabel *codeLabel; //单号

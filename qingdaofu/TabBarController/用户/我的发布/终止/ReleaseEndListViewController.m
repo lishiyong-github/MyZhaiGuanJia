@@ -12,6 +12,7 @@
 #import "MyDealingViewController.h"   //我的发布
 #import "MyProcessingViewController.h"  //我的接单
 #import "MyReleaseDetailsViewController.h"  //发布详情
+#import "MyOrderDetailViewController.h"  //接单详情
 
 
 #import "ExtendHomeCell.h"
@@ -107,54 +108,108 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *identifier = @"myRelease0";
-    ExtendHomeCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    if (!cell) {
-        cell = [[ExtendHomeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+    static NSString *identifier;
+    if ([self.personType integerValue] == 1) {
+        identifier = @"myRelease";
+        ExtendHomeCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell) {
+            cell = [[ExtendHomeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        [cell.detailTextLabel setHidden:YES];
+        OrderModel *orderModel = self.releaseEndListArray[indexPath.section];
+        //    RowsModel *orderModel = self.releaseDataArray[indexPath.section];
+        //    RowsModel *product
+        
+        //code
+        [cell.nameButton setTitle:orderModel.number forState:0];
+        
+        //status and action
+        cell.statusLabel.text = orderModel.statusLabel;
+        
+        [cell.actButton2 setTitle:@"协商详情" forState:0];
+        cell.actButton2.layer.borderColor = kBorderColor.CGColor;
+        [cell.actButton2 setTitleColor:kLightGrayColor forState:0];
+        
+        QDFWeakSelf;
+        [cell.actButton2 addAction:^(UIButton *btn) {
+        }];
+        
+        //details
+        //委托本金
+        NSString *orString0 = [NSString stringWithFormat:@"委托本金：%@",orderModel.accountLabel];
+        //债权类型
+        NSString *orString1 = [NSString stringWithFormat:@"债权类型：%@",orderModel.categoryLabel];
+        //委托事项
+        NSString *orString2 = [NSString stringWithFormat:@"委托事项：%@",orderModel.entrustLabel];
+        //委托费用
+        NSString *orString3 = [NSString stringWithFormat:@"委托费用：%@%@",orderModel.typenumLabel,orderModel.typeLabel];
+        
+        //违约期限
+        NSString *orString4 = [NSString stringWithFormat:@"违约期限：%@个月",orderModel.overdue];
+        //合同履行地
+        NSString *orString5 = [NSString stringWithFormat:@"合同履行地：%@",orderModel.addressLabel];
+        
+        NSString *orString = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@\n%@",orString0,orString1,orString2,orString3,orString4,orString5];
+        NSMutableAttributedString *orAttributeStr = [[NSMutableAttributedString alloc] initWithString:orString];
+        [orAttributeStr setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, orString.length)];
+        NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+        [style setLineSpacing:6];
+        [orAttributeStr addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, orString.length)];
+        [cell.contentButton setAttributedTitle:orAttributeStr forState:0];
+        
+        return cell;
+    }else{
+        identifier = @"myOrder";
+        ExtendHomeCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell) {
+            cell = [[ExtendHomeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        [cell.detailTextLabel setHidden:YES];
+        OrderModel *orderModel = self.releaseEndListArray[indexPath.section];
+        RowsModel *rowModel = orderModel.product;
+        
+        //code
+        [cell.nameButton setTitle:rowModel.number forState:0];
+        
+        //status and action
+        cell.statusLabel.text = rowModel.statusLabel;
+        
+        [cell.actButton2 setTitle:@"协商详情" forState:0];
+        cell.actButton2.layer.borderColor = kBorderColor.CGColor;
+        [cell.actButton2 setTitleColor:kLightGrayColor forState:0];
+        
+        QDFWeakSelf;
+        [cell.actButton2 addAction:^(UIButton *btn) {
+        }];
+        
+        //details
+        //委托本金
+        NSString *orString0 = [NSString stringWithFormat:@"委托本金：%@",rowModel.accountLabel];
+        //债权类型
+        NSString *orString1 = [NSString stringWithFormat:@"债权类型：%@",rowModel.categoryLabel];
+        //委托事项
+        NSString *orString2 = [NSString stringWithFormat:@"委托事项：%@",rowModel.entrustLabel];
+        //委托费用
+        NSString *orString3 = [NSString stringWithFormat:@"委托费用：%@%@",rowModel.typenumLabel,rowModel.typeLabel];
+        
+        //违约期限
+        NSString *orString4 = [NSString stringWithFormat:@"违约期限：%@个月",rowModel.overdue];
+        //合同履行地
+        NSString *orString5 = [NSString stringWithFormat:@"合同履行地：%@",rowModel.addressLabel];
+        
+        NSString *orString = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@\n%@",orString0,orString1,orString2,orString3,orString4,orString5];
+        NSMutableAttributedString *orAttributeStr = [[NSMutableAttributedString alloc] initWithString:orString];
+        [orAttributeStr setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, orString.length)];
+        NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+        [style setLineSpacing:6];
+        [orAttributeStr addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, orString.length)];
+        [cell.contentButton setAttributedTitle:orAttributeStr forState:0];
+        
+        return cell;
     }
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    [cell.detailTextLabel setHidden:YES];
-    OrderModel *orderModel = self.releaseEndListArray[indexPath.section];
-//    RowsModel *orderModel = self.releaseDataArray[indexPath.section];
-    
-    //code
-    [cell.nameButton setTitle:orderModel.number forState:0];
-    
-    //status and action
-    cell.statusLabel.text = orderModel.statusLabel;
-    
-    [cell.actButton2 setTitle:@"协商详情" forState:0];
-    cell.actButton2.layer.borderColor = kBorderColor.CGColor;
-    [cell.actButton2 setTitleColor:kLightGrayColor forState:0];
-    
-    QDFWeakSelf;
-    [cell.actButton2 addAction:^(UIButton *btn) {
-    }];
-    
-    //details
-    //委托本金
-    NSString *orString0 = [NSString stringWithFormat:@"委托本金：%@",orderModel.accountLabel];
-    //债权类型
-    NSString *orString1 = [NSString stringWithFormat:@"债权类型：%@",orderModel.categoryLabel];
-    //委托事项
-    NSString *orString2 = [NSString stringWithFormat:@"委托事项：%@",orderModel.entrustLabel];
-    //委托费用
-    NSString *orString3 = [NSString stringWithFormat:@"委托费用：%@%@",orderModel.typenumLabel,orderModel.typeLabel];
-    
-    //违约期限
-    NSString *orString4 = [NSString stringWithFormat:@"违约期限：%@个月",orderModel.overdue];
-    //合同履行地
-    NSString *orString5 = [NSString stringWithFormat:@"合同履行地：%@",orderModel.addressLabel];
-    
-    NSString *orString = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@\n%@",orString0,orString1,orString2,orString3,orString4,orString5];
-    NSMutableAttributedString *orAttributeStr = [[NSMutableAttributedString alloc] initWithString:orString];
-    [orAttributeStr setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, orString.length)];
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    [style setLineSpacing:6];
-    [orAttributeStr addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, orString.length)];
-    [cell.contentButton setAttributedTitle:orAttributeStr forState:0];
-    
-    return cell;
+    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -176,16 +231,21 @@
         myReleaseDetailsVC.productid = orderModel.productid;
         [self.navigationController pushViewController:myReleaseDetailsVC animated:YES];
     }else{
-        MyProcessingViewController *myProcessingVC = [[MyProcessingViewController alloc] init];
-        myProcessingVC.applyid = orderModel.applyid;
-        [self.navigationController pushViewController:myProcessingVC animated:YES];
+        MyOrderDetailViewController *myOrderDetailVC = [[MyOrderDetailViewController alloc] init];
+        myOrderDetailVC.applyid = orderModel.applyid;
+        [self.navigationController pushViewController:myOrderDetailVC animated:YES];
     }
 }
 
 #pragma mark - method
 - (void)getMyReleaseListWithPage:(NSString *)page
 {
-    NSString *myReleaseString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseOfEndString];
+    NSString *myReleaseString;
+    if ([self.personType integerValue] == 1) {//发布列表
+        myReleaseString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseOfEndString];
+    }else{//接单列表
+        myReleaseString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrdersOfEndString];
+    }
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"type" : @"0",
                              @"limit" : @"10",
@@ -193,7 +253,7 @@
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:myReleaseString params:params successBlock:^(id responseObject) {
-        
+            
         if ([page intValue] == 1) {
             [weakself.releaseEndListArray removeAllObjects];
         }

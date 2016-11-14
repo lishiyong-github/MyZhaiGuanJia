@@ -8,10 +8,13 @@
 
 #import "MyReleaseDetailsViewController.h"
 
+#import "MoreMessagesViewController.h"  //更多信息
+
 //面谈中
 #import "ApplyRecordViewController.h"   //申请记录
 #import "DealingEndViewController.h"  //处理终止
 #import "DealingCloseViewController.h" //处理结案
+#import "RequestEndViewController.h" //申请终止
 
 //#import "AdditionMessagesViewController.h"  //补充信息
 //#import "AgreementViewController.h"//协议
@@ -23,6 +26,7 @@
 #import "NewPublishDetailsCell.h"//进度
 #import "NewPublishStateCell.h"//状态
 #import "NewsTableViewCell.h"//选择申请方
+#import "ProductCloseCell.h"  //结案
 
 //面谈中
 #import "OrderPublishCell.h"
@@ -576,14 +580,6 @@
                 cell.progress3.textColor = kRedColor;
                 [cell.line3 setBackgroundColor:kRedColor];
                 cell.progress3.text = @"已终止";
-//                [cell.progress3 setTitle:@"已终止" forState:0];
-//                if ([dataModel.productApply.orders.status integerValue] == 30) {//终止
-//                }else{//处理中
-//                    [cell.point3 setImage:[UIImage imageNamed:@"succee"] forState:0];
-//                    cell.progress3.textColor = kTextColor;
-//                    [cell.line3 setBackgroundColor:kButtonColor];
-//                }
-                
                 return cell;
                 
             }else if (indexPath.row == 2){
@@ -604,27 +600,10 @@
                 //接单方详情
                 QDFWeakSelf;
                 [cell.checkButton addAction:^(UIButton *btn) {
-                    //                if ([userNameModel.jusername isEqualToString:@""] || userNameModel.jusername == nil || !userNameModel.jusername) {
-                    //                    [weakself showHint:@"申请方未认证，不能查看相关信息"];
-                    //                }else{
-                    //                    CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
-                    //                    checkDetailPublishVC.idString = weakself.idString;
-                    //                    checkDetailPublishVC.categoryString = weakself.categaryString;
-                    //                    checkDetailPublishVC.pidString = weakself.pidString;
-                    //                    checkDetailPublishVC.typeString = @"接单方";
-                    //                    //                checkDetailPublishVC.typeDegreeString = @"处理中";
-                    //                    [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];
-                    //                }
                 }];
                 
                 //电话
                 [cell.contactButton addAction:^(UIButton *btn) {
-                    //                if ([userNameModel.jusername isEqualToString:@""] || userNameModel.jusername == nil || !userNameModel.jusername) {
-                    //                    [self showHint:@"申请方未认证，不能打电话"];
-                    //                }else{
-                    //                    NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",userNameModel.jmobile];
-                    //                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
-                    //                }
                 }];
                 return cell;
             }
@@ -675,7 +654,127 @@
             return cell;
         }
     }else if ([dataModel.statusLabel isEqualToString:@"已结案"]) {
-        
+        if (indexPath.section == 0) {
+            identifier = @"close00";
+            PublishingResponse *resModel = self.releaseDetailArray[0];
+            
+            if (indexPath.row == 0){
+                identifier = @"myDealing00";
+                NewPublishDetailsCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+                if (!cell) {
+                    cell = [[NewPublishDetailsCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+                }
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                cell.backgroundColor = kBackColor;
+                
+                [cell.point2 setImage:[UIImage imageNamed:@"succee"] forState:0];
+                cell.progress2.textColor = kTextColor;
+                [cell.line2 setBackgroundColor:kButtonColor];
+                [cell.point3 setImage:[UIImage imageNamed:@"succee"] forState:0];
+                cell.progress3.textColor = kTextColor;
+                [cell.line3 setBackgroundColor:kLightGrayColor];
+                [cell.point4 setImage:[UIImage imageNamed:@"succee"] forState:0];
+                cell.progress4.textColor = kTextColor;
+                
+                return cell;
+                
+            }else if (indexPath.row == 1){
+                identifier = @"myDealing01";
+                OrderPublishCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+                
+                if (!cell) {
+                    cell = [[OrderPublishCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+                }
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                
+                NSString *nameStr = [NSString getValidStringFromString:dataModel.productApply.mobile toString:@"未认证"];
+                NSString *checkStr = [NSString stringWithFormat:@"接单方：%@",nameStr];
+                [cell.checkButton setTitle:checkStr forState:0];
+                [cell.contactButton setTitle:@" 联系TA" forState:0];
+                [cell.contactButton setImage:[UIImage imageNamed:@"phone_blue"] forState:0];
+                
+                //接单方详情
+                QDFWeakSelf;
+                [cell.checkButton addAction:^(UIButton *btn) {
+                }];
+                
+                //电话
+                [cell.contactButton addAction:^(UIButton *btn) {
+                }];
+                return cell;
+            }
+        }else if (indexPath.section == 1){
+            identifier = @"myDealing1";
+            ProductCloseCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[ProductCloseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.backgroundColor = kBackColor;
+            
+            NSString *code1 = [NSString stringWithFormat:@"%@\n",dataModel.number];
+            NSString *code2 = @"订单已结案";
+            NSString *codeStr = [NSString stringWithFormat:@"%@%@",code1,code2];
+            NSMutableAttributedString *attributeCC = [[NSMutableAttributedString alloc] initWithString:codeStr];
+            [attributeCC setAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kBlackColor} range:NSMakeRange(0, code1.length)];
+            [attributeCC setAttributes:@{NSFontAttributeName:kSecondFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(code1.length, code2.length)];
+            NSMutableParagraphStyle *stylerr = [[NSMutableParagraphStyle alloc] init];
+            [stylerr setLineSpacing:kSpacePadding];
+            [attributeCC addAttribute:NSParagraphStyleAttributeName value:stylerr range:NSMakeRange(0, codeStr.length)];
+            [cell.codeLabel setAttributedText:attributeCC];
+            
+            NSString *proText1 = @"产品信息\n";
+            NSString *proText2 = [NSString stringWithFormat:@"债权类型：%@\n",dataModel.categoryLabel];
+            NSString *proText3;
+            if ([dataModel.typeLabel isEqualToString:@"万"]) {
+                proText3 = [NSString stringWithFormat:@"固定费用：%@%@\n",dataModel.typenumLabel,dataModel.typeLabel];
+            }else if ([dataModel.typeLabel isEqualToString:@"%"]){
+                proText3 = [NSString stringWithFormat:@"风险费率：%@%@\n",dataModel.typenumLabel,dataModel.typeLabel];
+            }
+            NSString *proText4 = [NSString stringWithFormat:@"委托金额：%@",dataModel.accountLabel];
+            NSString *proTextStr = [NSString stringWithFormat:@"%@%@%@%@",proText1,proText2,proText3,proText4];
+            NSMutableAttributedString *attributePP = [[NSMutableAttributedString alloc] initWithString:proTextStr];
+            [attributePP setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, proText1.length)];
+            [attributePP setAttributes:@{NSFontAttributeName:kSecondFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(proText1.length, proText2.length+proText3.length+proText4.length)];
+            NSMutableParagraphStyle *styler = [[NSMutableParagraphStyle alloc] init];
+            [styler setLineSpacing:8];
+            styler.alignment = NSTextAlignmentLeft;
+            [attributePP addAttribute:NSParagraphStyleAttributeName value:styler range:NSMakeRange(0, proTextStr.length)];
+            [cell.productTextButton setAttributedTitle:attributePP forState:0];
+            
+            QDFWeakSelf;
+            [cell setDidselectedBtn:^(NSInteger tag) {
+                switch (tag) {
+                    case 330:{//结清证明
+                        DealingCloseViewController *dealingCloseVC = [[DealingCloseViewController alloc] init];
+                        dealingCloseVC.perTypeString = @"2";
+                        dealingCloseVC.productDealModel = dataModel.productOrdersTerminationsApply;
+                        [weakself.navigationController pushViewController:dealingCloseVC animated:YES];
+                    }
+                        break;
+                    case 331:{//查看全部产品信息
+                        
+                    }
+                        break;
+                    case 332:{//查看签约协议
+                        
+                    }
+                        break;
+                    case 333:{//查看尽职调查
+                        
+                    }
+                        break;
+                    case 334:{//查看居间协议
+                        
+                    }
+                        break;
+                    default:
+                        break;
+                }
+            }];
+            
+            return cell;
+        }
     }
     
     return nil;
@@ -695,9 +794,14 @@
 {
     RowsModel *dataModel = self.releaseDetailArray[0];
     
+    if (indexPath.section == 0 && indexPath.row == 0) {//完善信息
+        MoreMessagesViewController *moreMessageVC = [[MoreMessagesViewController alloc] init];
+        moreMessageVC.productid = dataModel.productid;
+        [self.navigationController pushViewController:moreMessageVC animated:YES];
+    }
+    
     if ([dataModel.statusLabel isEqualToString:@"发布中"]) {
         if ([dataModel.productApply.status integerValue] == 20) {//面谈中
-            
         }else{
             if (indexPath.section == 1) {
                 ApplyRecordViewController *applyRecordsVC = [[ApplyRecordViewController alloc] init];
@@ -817,17 +921,24 @@
                 [weakself.publishCheckView setHidden:YES];
                 [weakself.releaseDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
                 
-                [weakself.rightButton setHidden:NO];
-                [weakself.rightButton setTitle:@"申请终止" forState:0];
+                if ([dataModel.productApply.orders.status integerValue] > 10) {
+                    [weakself.rightButton setHidden:NO];
+                    [weakself.rightButton setTitle:@"申请终止" forState:0];
+                }
                 
                 [weakself.view addSubview:weakself.EndOrloseRemindButton];
                 [weakself.EndOrloseRemindButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
                 [weakself.EndOrloseRemindButton autoSetDimension:ALDimensionHeight toSize:kRemindHeight];
-                if (dataModel.productOrdersTerminationsApply || dataModel.productOrdersClosedsApply) {
+                if (dataModel.productOrdersTerminationsApply || dataModel.productOrdersClosedsApply) {//有申请结案终止的消息
                     [weakself.EndOrloseRemindButton setHidden:NO];
                     if (dataModel.productOrdersTerminationsApply) {
                         [weakself.EndOrloseRemindButton setTitle:@"对方申请终止次单，点击处理  " forState:0];
                         [weakself.EndOrloseRemindButton setImage:[UIImage imageNamed:@"more_white"] forState:0];
+                        [weakself.EndOrloseRemindButton addAction:^(UIButton *btn) {
+                            DealingEndViewController *dealEndVC = [[DealingEndViewController alloc] init];
+                            dealEndVC.terminationid = dataModel.productOrdersTerminationsApply.terminationid;
+                            [weakself.navigationController pushViewController:dealEndVC animated:YES];
+                        }];
                     }else{
                         [weakself.EndOrloseRemindButton setTitle:@"对方申请结案，点击处理  " forState:0];
                         [weakself.EndOrloseRemindButton setImage:[UIImage imageNamed:@"more_white"] forState:0];
@@ -933,6 +1044,8 @@
         
         if ([baseModel.code isEqualToString:@"0000"]) {
             
+            [weakself getDetailMessagesssss];
+            
             if ([resultString isEqualToString:@"agree"]) {//同意－处理中
 //                MyDealingViewController *myDealingVC = [[MyDealingViewController alloc] init];
 //                myDealingVC.productid = rowModel.productid;
@@ -953,6 +1066,14 @@
     }];
 }
 
+- (void)rightItemAction//申请终止
+{
+    [self showHint:@"申请终止"];
+    RowsModel *dataModel = self.releaseDetailArray[0];
+    RequestEndViewController *requestEndVC = [[RequestEndViewController alloc] init];
+    requestEndVC.ordersid = dataModel.productApply.orders.ordersid;
+    [self.navigationController pushViewController:requestEndVC animated:YES];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

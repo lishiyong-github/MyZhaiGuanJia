@@ -121,4 +121,9 @@
 @property (nonatomic,copy) NSString *overdue;  //违约期限
 @property (nonatomic,copy) NSString *applyStatus;
 
+
+@property (nonatomic,strong) NSMutableArray *productMortgages1;  //抵押物地址
+@property (nonatomic,strong) NSMutableArray *productMortgages2;//机动车抵押
+@property (nonatomic,strong) NSMutableArray *productMortgages3;//合同纠纷
+
 @end

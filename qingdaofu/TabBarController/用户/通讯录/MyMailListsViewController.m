@@ -182,11 +182,19 @@
 - (void)getListsOfMyMailWithPage:(NSString *)page
 {
     NSString *listsString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyMailListString];
-    NSDictionary *params = @{@"token" : [self getValidateToken],
-                             @"page" : page,
-                             @"limit" : @"10",
-                             @"ordersid" : self.ordersid
-                             };
+    NSDictionary *params;
+    if (!self.ordersid) {
+        params = @{@"token" : [self getValidateToken],
+                    @"page" : page,
+                    @"limit" : @"10"
+                   };
+    }else{
+        params = @{@"token" : [self getValidateToken],
+                   @"page" : page,
+                   @"limit" : @"10",
+                   @"ordersid" : self.ordersid
+                   };
+    }
     
     QDFWeakSelf;
     [self requestDataPostWithString:listsString params:params successBlock:^(id responseObject) {
@@ -250,17 +258,28 @@
     QDFWeakSelf;
     [self requestDataPostWithString:searchUserString params:params successBlock:^(id responseObject) {
         
+        NSDictionary *aoaoa = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
         MailModel *mailModel = [MailModel objectWithKeyValues:responseObject];
         
-        NSString *name = mailModel.realname;
-        NSString *phone = mailModel.mobile;
-                
+        NSString *name;
+        NSString *phone;
+        if ([mailModel.code isEqualToString:@"0000"]) {
+            name = mailModel.realname;
+            phone = mailModel.mobile;
+        }
+        
         [weakself.alertContro addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            NSString *sososo = [NSString stringWithFormat:@"%@\n%@",name,phone];
+            NSString *sososo;
+            if (!name) {
+                sososo = mailModel.msg;
+            }else{
+                sososo = [NSString stringWithFormat:@"%@\n%@",name,phone];
+            }
             textField.text = sososo;
             textField.userInteractionEnabled = NO;
             
-            [weakself confirmToAddContactWithUserId:mailModel.userid];
+//            [weakself confirmToAddContactWithUserId:mailModel.idString];
         }];
         
         

@@ -8,10 +8,7 @@
 
 #import "MyOrderViewController.h"
 #import "ReleaseEndListViewController.h"  //已终止
-#import "MyApplyingViewController.h"  //申请中
-#import "MyProcessingViewController.h"  //处理中
-#import "MyEndingViewController.h" // 终止
-#import "MyClosingViewController.h"  //结案
+#import "MyOrderDetailViewController.h"
 
 #import "EvaTopSwitchView.h"
 
@@ -157,6 +154,7 @@
         QDFWeakSelf;
         [_endListButton addAction:^(UIButton *btn) {
             ReleaseEndListViewController *releaseEndListVC = [[ReleaseEndListViewController alloc] init];
+            releaseEndListVC.personType = @"2";
             [weakself.navigationController pushViewController:releaseEndListVC animated:YES];
         }];
     }
@@ -288,66 +286,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     OrderModel *orderModel = self.orderDataArray[indexPath.section];
-    
-    if ([orderModel.status integerValue] != 40) {
-        MyApplyingViewController *myApplyingVC = [[MyApplyingViewController alloc] init];
-        myApplyingVC.applyid = orderModel.applyid;
-        myApplyingVC.status = orderModel.status;
-        [self.navigationController pushViewController:myApplyingVC animated:YES];
-    }else{
-        if ([orderModel.orders.status integerValue] <= 20) {
-            MyProcessingViewController *myProcessingVC = [[MyProcessingViewController alloc] init];
-            myProcessingVC.applyid = orderModel.applyid;
-            [self.navigationController pushViewController:myProcessingVC animated:YES];
-        }else if ([orderModel.orders.status integerValue] == 30){//终止
-            
-        }else if ([orderModel.orders.status integerValue] == 40){//结案
-            
-        }
-    }
-    
-    
-    
-//    if ([orderModel.statusLabel isEqualToString:@"申请中"]) {
-//        MyApplyingViewController *myApplyingVC = [[MyApplyingViewController alloc] init];
-//        myApplyingVC.applyid = orderModel.applyid;
-//        [self.navigationController pushViewController:myApplyingVC animated:YES];
-//    }else if ([orderModel.statusLabel isEqualToString:@"面谈中"]){
-//    }else if ([orderModel.statusLabel isEqualToString:@"处理中"]){
-//    }else if ([orderModel.statusLabel isEqualToString:@"已结案"]){
-//    }else if ([orderModel.statusLabel isEqualToString:@"申请失败"]){
-//        MyApplyingViewController *myApplyingVC = [[MyApplyingViewController alloc] init];
-//        myApplyingVC.applyid = orderModel.applyid;
-//        [self.navigationController pushViewController:myApplyingVC animated:YES];
-//    }else if ([orderModel.statusLabel isEqualToString:@"面谈失败"]){
-//        
-//    }
-    
-    
-    
-//    MyApplyingViewController *myApplyingVC = [[MyApplyingViewController alloc] init];
-//    myApplyingVC.idString = sModel.idString;
-//    myApplyingVC.categaryString = sModel.category;
-//    myApplyingVC.pidString = sModel.pid;
-//    [self.navigationController pushViewController:myApplyingVC animated:YES];
-    
-//    MyProcessingViewController *myProcessingVC = [[MyProcessingViewController alloc] init];
-//    myProcessingVC.idString = sModel.idString;
-//    myProcessingVC.categaryString = sModel.category;
-//    myProcessingVC.pidString = sModel.uidString;
-////    myProcessingVC.deadLine = self.deadTimeString;
-//    [self.navigationController pushViewController:myProcessingVC animated:YES];
-    
-//
-//    NSString *id_category = [NSString stringWithFormat:@"%@_%@",sModel.idString,sModel.category];
-//    NSString *value1 = self.orderDic[id_category];
-//    
-//    ReleaseCloseViewController *releaseCloseVC = [[ReleaseCloseViewController alloc] init];
-//    releaseCloseVC.evaString = value1;
-//    releaseCloseVC.idString = sModel.idString;
-//    releaseCloseVC.categaryString = sModel.category;
-//    releaseCloseVC.pidString = sModel.pid;
-//    [self.navigationController pushViewController:releaseCloseVC animated:YES];
+    MyOrderDetailViewController *myOrderDetailVC = [[MyOrderDetailViewController alloc] init];
+    myOrderDetailVC.applyid = orderModel.applyid;
+    [self.navigationController pushViewController:myOrderDetailVC animated:YES];
 }
 
 #pragma mark - method

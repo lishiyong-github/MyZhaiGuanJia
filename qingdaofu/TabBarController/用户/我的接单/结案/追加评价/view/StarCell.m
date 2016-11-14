@@ -34,19 +34,19 @@
         [views autoSetViewsDimensionsToSize:CGSizeMake(100, 20)];
         
         [self.starLabel1 autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
-        [self.starLabel1 autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:16];
+        [self.starLabel1 autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kNewPadding];
         
         [self.starView1 autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.starView1 autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.starLabel1];
         
         [self.starLabel2 autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
-        [self.starLabel2 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.starLabel1 withOffset:30];
+        [self.starLabel2 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.starLabel1 withOffset:kNewPadding];
         
         [self.starView2 autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.starView2 autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.starLabel2];
         
         [self.starLabel3 autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
-        [self.starLabel3 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.starLabel2 withOffset:30];
+        [self.starLabel3 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.starLabel2 withOffset:kNewPadding];
         
         [self.starView3 autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.starView3 autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.starLabel3];

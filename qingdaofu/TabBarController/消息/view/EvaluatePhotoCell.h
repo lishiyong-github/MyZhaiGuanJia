@@ -13,7 +13,7 @@
 
 @interface EvaluatePhotoCell : UITableViewCell
 
-@property (nonatomic,strong) UILabel *evaNameLabel;  //评价人
+@property (nonatomic,strong) UIButton *evaNameButton;  //评价人
 @property (nonatomic,strong) UILabel *evaTimeLabel;  //评价时间
 @property (nonatomic,strong) LEOStarView *evaStarImage;  //星级
 @property (nonatomic,strong) UILabel *evaTextLabel;  //内容

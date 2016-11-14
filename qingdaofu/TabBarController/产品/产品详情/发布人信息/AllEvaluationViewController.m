@@ -139,7 +139,7 @@
         
     if (self.allEvaluateArray.count > 0 ) {
         [cell.evaProductButton setHidden:YES];
-        [cell.evaNameLabel setHidden:NO];
+        [cell.evaNameButton setHidden:NO];
         [cell.evaTimeLabel setHidden:NO];
         [cell.evaTextLabel setHidden:NO];
         [cell.evaStarImage setHidden:NO];
@@ -147,10 +147,11 @@
         QDFWeakSelf;
         if ([self.evaTypeString isEqualToString:@"evaluate"]) {//收到的评价
             EvaluateModel *model = self.allEvaluateArray[indexPath.section];
-            cell.evaNameLabel.text = model.mobiles;
-            cell.evaTimeLabel.text = [NSDate getYMDFormatterTime:model.create_time];
-            cell.evaStarImage.currentIndex = [model.creditor intValue];
-            cell.evaTextLabel.text = [NSString getValidStringFromString:model.content toString:@"未填写评价内容"];
+//            cell.evaNameLabel.text = model.mobiles;
+            [cell.evaNameButton setTitle:model.mobile forState:0];
+            cell.evaTimeLabel.text = [NSDate getYMDFormatterTime:model.action_at];
+//            cell.evaStarImage.currentIndex = [model.creditor intValue];
+            cell.evaTextLabel.text = [NSString getValidStringFromString:model.memo toString:@"未填写评价内容"];
             
             //图片
             if (model.pictures.count == 0) {
@@ -186,7 +187,9 @@
             
         }else if([self.evaTypeString isEqualToString:@"launchevaluation"]){//给出的评价
             LaunchEvaluateModel *model = self.allEvaluateArray[indexPath.section];
-            cell.evaNameLabel.text = model.mobiles;
+//            cell.evaNameLabel.text = model.mobiles;
+            [cell.evaNameButton setTitle:model.mobile forState:0];
+            
             cell.evaTimeLabel.text = [NSDate getYMDFormatterTime:model.create_time];
             cell.evaStarImage.currentIndex = [model.creditor intValue];
             cell.evaTextLabel.text = [NSString getValidStringFromString:model.content toString:@"未填写评价内容"];

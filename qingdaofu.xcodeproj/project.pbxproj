@@ -513,6 +513,8 @@
 		A1A0C8CD1D4B2FC500BC63C6 /* AssessSuccessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A0C8CC1D4B2FC500BC63C6 /* AssessSuccessViewController.m */; };
 		A1A0C8D31D4B442D00BC63C6 /* ApplicationGuaranteeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A0C8D21D4B442D00BC63C6 /* ApplicationGuaranteeViewController.m */; };
 		A1A0C8D91D4B540600BC63C6 /* ApplicationCourtViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A0C8D81D4B540600BC63C6 /* ApplicationCourtViewController.m */; };
+		A1A165821DD967F50081D804 /* MyOrderDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A165811DD967F50081D804 /* MyOrderDetailViewController.m */; };
+		A1A165851DD9D10E0081D804 /* MoreMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A165841DD9D10E0081D804 /* MoreMessagesViewController.m */; };
 		A1A3190D1D6D36770001242D /* phone_gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A3190B1D6D36770001242D /* phone_gray@2x.png */; };
 		A1A3190E1D6D36770001242D /* phone_gray@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A3190C1D6D36770001242D /* phone_gray@3x.png */; };
 		A1A319131D6D462E0001242D /* application_record_spot@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A3190F1D6D462E0001242D /* application_record_spot@2x.png */; };
@@ -1532,6 +1534,10 @@
 		A1A0C8D21D4B442D00BC63C6 /* ApplicationGuaranteeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplicationGuaranteeViewController.m; sourceTree = "<group>"; };
 		A1A0C8D71D4B540600BC63C6 /* ApplicationCourtViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationCourtViewController.h; sourceTree = "<group>"; };
 		A1A0C8D81D4B540600BC63C6 /* ApplicationCourtViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplicationCourtViewController.m; sourceTree = "<group>"; };
+		A1A165801DD967F50081D804 /* MyOrderDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyOrderDetailViewController.h; sourceTree = "<group>"; };
+		A1A165811DD967F50081D804 /* MyOrderDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyOrderDetailViewController.m; sourceTree = "<group>"; };
+		A1A165831DD9D10E0081D804 /* MoreMessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreMessagesViewController.h; sourceTree = "<group>"; };
+		A1A165841DD9D10E0081D804 /* MoreMessagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoreMessagesViewController.m; sourceTree = "<group>"; };
 		A1A3190B1D6D36770001242D /* phone_gray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "phone_gray@2x.png"; sourceTree = "<group>"; };
 		A1A3190C1D6D36770001242D /* phone_gray@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "phone_gray@3x.png"; sourceTree = "<group>"; };
 		A1A3190F1D6D462E0001242D /* application_record_spot@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "application_record_spot@2x.png"; sourceTree = "<group>"; };
@@ -2487,6 +2493,8 @@
 				A17691161CD97E30004289DD /* MyApplyingViewController.m */,
 				A1A77A8D1DC0A84A006C1111 /* MyOrderDetailResponse.h */,
 				A1A77A8E1DC0A84A006C1111 /* MyOrderDetailResponse.m */,
+				A1A165831DD9D10E0081D804 /* MoreMessagesViewController.h */,
+				A1A165841DD9D10E0081D804 /* MoreMessagesViewController.m */,
 			);
 			path = "申请中";
 			sourceTree = "<group>";
@@ -3388,6 +3396,8 @@
 				A17EE39B1CD8AF2100ECC631 /* 申请中 */,
 				A17EE3921CD8983900ECC631 /* MyOrderViewController.h */,
 				A17EE3931CD8983900ECC631 /* MyOrderViewController.m */,
+				A1A165801DD967F50081D804 /* MyOrderDetailViewController.h */,
+				A1A165811DD967F50081D804 /* MyOrderDetailViewController.m */,
 				A17D942C1D6AB84C00BF5B5F /* ExtendHomeCell.h */,
 				A17D942D1D6AB84C00BF5B5F /* ExtendHomeCell.m */,
 				A1A77A801DC0817D006C1111 /* model */,
@@ -4837,6 +4847,7 @@
 				A159F97D1D0D727A00A6A024 /* MJRefreshFooterView.m in Sources */,
 				A17634161D065D9A00CD4623 /* CreditorModel.m in Sources */,
 				A194416D1D790BF8003CA99F /* DelayHandleViewController.m in Sources */,
+				A1A165851DD9D10E0081D804 /* MoreMessagesViewController.m in Sources */,
 				A19F88651D51D3D300D4EC92 /* PowerProtectPictureViewController.m in Sources */,
 				A154B8F51CE1C14100884CA4 /* ReportSuitViewController.m in Sources */,
 				A1A0C8CA1D4B21FF00BC63C6 /* HouseChooseViewController.m in Sources */,
@@ -4966,6 +4977,7 @@
 				A1A017581C5B696A00027134 /* NSString+MJExtension.m in Sources */,
 				A187B9151D50966100A91A16 /* PropertyListCell.m in Sources */,
 				A1B028F31D1794DC00F32A09 /* UIView+WebCacheOperation.m in Sources */,
+				A1A165821DD967F50081D804 /* MyOrderDetailViewController.m in Sources */,
 				A1770E191CFE6AB5003579E1 /* CompleteCompanyTableViewCell.m in Sources */,
 				A1A017301C5B607300027134 /* UIImage+Color.m in Sources */,
 				A17634191D065E4900CD4623 /* RowsModel.m in Sources */,

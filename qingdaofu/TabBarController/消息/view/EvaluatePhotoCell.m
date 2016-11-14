@@ -14,7 +14,7 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        [self.contentView addSubview:self.evaNameLabel];
+        [self.contentView addSubview:self.evaNameButton];
         [self.contentView addSubview:self.evaTimeLabel];
         [self.contentView addSubview:self.evaStarImage];
         [self.contentView addSubview:self.evaTextLabel];
@@ -31,14 +31,14 @@
 {
     if (!self.didSetupConstraints) {
         
-        [self.evaNameLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
-        [self.evaNameLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:8];
+        [self.evaNameButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
+        [self.evaNameButton autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:8];
         
         [self.evaTimeLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
-        [self.evaTimeLabel autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.evaNameLabel];
+        [self.evaTimeLabel autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.evaNameButton];
         
         [self.evaStarImage autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
-        [self.evaStarImage autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.evaNameLabel withOffset:kSpacePadding];
+        [self.evaStarImage autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.evaNameButton withOffset:kSpacePadding];
         [self.evaStarImage autoSetDimensionsToSize:CGSizeMake(60, 12)];
         
         [self.evaTextLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.evaStarImage withOffset:kSmallPadding];
@@ -71,14 +71,15 @@
     [super updateConstraints];
 }
 
-- (UILabel *)evaNameLabel
+- (UIButton *)evaNameButton
 {
-    if (!_evaNameLabel) {
-        _evaNameLabel = [UILabel newAutoLayoutView];
-        _evaNameLabel.textColor = kGrayColor;
-        _evaNameLabel.font = kBigFont;
+    if (!_evaNameButton) {
+        _evaNameButton = [UIButton newAutoLayoutView];
+        [_evaNameButton setTitleColor:kGrayColor forState:0];
+        _evaNameButton.titleLabel.font = kBigFont;
+//        _evaNameButton.textColor = kGrayColor;
     }
-    return _evaNameLabel;
+    return _evaNameButton;
 }
 
 - (UILabel *)evaTimeLabel

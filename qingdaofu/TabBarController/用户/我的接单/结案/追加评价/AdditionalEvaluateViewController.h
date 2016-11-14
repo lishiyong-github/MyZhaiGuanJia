@@ -17,4 +17,7 @@
 @property (nonatomic,strong) NSString *categoryString;
 //@property (nonatomic,strong) NSString *codeString;
 
+
+@property (nonatomic,strong) NSString *ordersid;
+
 @end
