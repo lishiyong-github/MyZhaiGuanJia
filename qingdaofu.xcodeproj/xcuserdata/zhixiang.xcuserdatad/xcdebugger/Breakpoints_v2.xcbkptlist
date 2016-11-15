@@ -74,7 +74,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/zhixiang/Documents/iOS_%E7%B1%B3%E6%9C%88%E8%99%B9/ZhaiGuanJia/qingdaofu/TabBarController/%E7%94%A8%E6%88%B7/%E7%99%BB%E5%BD%95%E6%B3%A8%E5%86%8C/controller/RegisterViewController.m"
-                  timestampString = "500817607.506094"
+                  timestampString = "500896382.608761"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "207"
@@ -89,7 +89,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/zhixiang/Documents/iOS_%E7%B1%B3%E6%9C%88%E8%99%B9/ZhaiGuanJia/qingdaofu/TabBarController/%E7%94%A8%E6%88%B7/%E7%99%BB%E5%BD%95%E6%B3%A8%E5%86%8C/controller/RegisterViewController.m"
-                  timestampString = "500817607.506249"
+                  timestampString = "500896382.608882"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "209"
@@ -138,7 +138,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/zhixiang/Documents/iOS_%E7%B1%B3%E6%9C%88%E8%99%B9/ZhaiGuanJia/qingdaofu/TabBarController/%E7%94%A8%E6%88%B7/%E8%AE%BE%E7%BD%AE/%E4%BF%AE%E6%94%B9%E5%AF%86%E7%A0%81/ModifyPassWordViewController.m"
-                  timestampString = "500817607.507781"
+                  timestampString = "500896382.610247"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "159"
@@ -153,7 +153,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/zhixiang/Documents/iOS_%E7%B1%B3%E6%9C%88%E8%99%B9/ZhaiGuanJia/qingdaofu/TabBarController/%E7%94%A8%E6%88%B7/%E8%AE%BE%E7%BD%AE/%E4%BF%AE%E6%94%B9%E5%AF%86%E7%A0%81/ModifyPassWordViewController.m"
-                  timestampString = "500817607.507923"
+                  timestampString = "500896382.610374"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "161"
@@ -186,11 +186,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "qingdaofu/TabBarController/&#x7528;&#x6237;/&#x6211;&#x7684;&#x53d1;&#x5e03;/MyReleaseViewController.m"
-            timestampString = "500533093.736051"
+            timestampString = "500893876.890946"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "432"
-            endingLineNumber = "432"
+            startingLineNumber = "322"
+            endingLineNumber = "322"
             landmarkName = "-goToCheckApplyRecordsOrAdditionMessage:withSection:withEvaString:"
             landmarkType = "5">
          </BreakpointContent>
@@ -234,7 +234,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/zhixiang/Documents/iOS_%E7%B1%B3%E6%9C%88%E8%99%B9/ZhaiGuanJia/qingdaofu/TabBarController/%E7%94%A8%E6%88%B7/%E6%88%91%E7%9A%84%E5%8F%91%E5%B8%83/%E9%9D%A2%E8%B0%88%E4%B8%AD/PublishInterviewViewController.m"
-                  timestampString = "500817607.511499"
+                  timestampString = "500896382.615131"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "333"
@@ -249,7 +249,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/zhixiang/Documents/iOS_%E7%B1%B3%E6%9C%88%E8%99%B9/ZhaiGuanJia/qingdaofu/TabBarController/%E7%94%A8%E6%88%B7/%E6%88%91%E7%9A%84%E5%8F%91%E5%B8%83/%E9%9D%A2%E8%B0%88%E4%B8%AD/PublishInterviewViewController.m"
-                  timestampString = "500817607.511629"
+                  timestampString = "500896382.615739"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "335"
@@ -329,86 +329,6 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "qingdaofu/TabBarController/&#x7528;&#x6237;/&#x6211;&#x7684;&#x53d1;&#x5e03;/&#x7533;&#x8bf7;&#x7ec8;&#x6b62;&#x7ed3;&#x6848;/RequestEndViewController.m"
-            timestampString = "499251878.605451"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "309"
-            endingLineNumber = "309"
-            landmarkName = "-endProduct"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "qingdaofu/TabBarController/&#x7528;&#x6237;/&#x6211;&#x7684;&#x53d1;&#x5e03;/&#x7533;&#x8bf7;&#x7ec8;&#x6b62;&#x7ed3;&#x6848;/RequestEndViewController.m"
-            timestampString = "499251878.605451"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "313"
-            endingLineNumber = "313"
-            landmarkName = "-endProduct"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[RequestEndViewController endProduct]"
-                  moduleName = "qingdaofu"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/zhixiang/Documents/iOS_%E7%B1%B3%E6%9C%88%E8%99%B9/ZhaiGuanJia/qingdaofu/TabBarController/%E7%94%A8%E6%88%B7/%E6%88%91%E7%9A%84%E5%8F%91%E5%B8%83/%E7%94%B3%E8%AF%B7%E7%BB%88%E6%AD%A2%E7%BB%93%E6%A1%88/RequestEndViewController.m"
-                  timestampString = "500817607.515995"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "313"
-                  endingLineNumber = "313"
-                  offsetFromSymbolStart = "1153">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__38-[RequestEndViewController endProduct]_block_invoke"
-                  moduleName = "qingdaofu"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/zhixiang/Documents/iOS_%E7%B1%B3%E6%9C%88%E8%99%B9/ZhaiGuanJia/qingdaofu/TabBarController/%E7%94%A8%E6%88%B7/%E6%88%91%E7%9A%84%E5%8F%91%E5%B8%83/%E7%94%B3%E8%AF%B7%E7%BB%88%E6%AD%A2%E7%BB%93%E6%A1%88/RequestEndViewController.m"
-                  timestampString = "500817607.516111"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "314"
-                  endingLineNumber = "314"
-                  offsetFromSymbolStart = "44">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "qingdaofu/TabBarController/&#x7528;&#x6237;/&#x6211;&#x7684;&#x53d1;&#x5e03;/&#x7533;&#x8bf7;&#x7ec8;&#x6b62;&#x7ed3;&#x6848;/RequestEndViewController.m"
-            timestampString = "499251878.605451"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "304"
-            endingLineNumber = "304"
-            landmarkName = "-endProduct"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "qingdaofu/TabBarController/&#x7528;&#x6237;/&#x6211;&#x7684;&#x63a5;&#x5355;/&#x5904;&#x7406;&#x4e2d;/&#x670d;&#x52a1;&#x534f;&#x8bae;/AgreementViewController.m"
             timestampString = "499238758.431482"
             startingColumnNumber = "9223372036854775807"
@@ -442,7 +362,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/zhixiang/Documents/iOS_%E7%B1%B3%E6%9C%88%E8%99%B9/ZhaiGuanJia/qingdaofu/TabBarController/%E7%94%A8%E6%88%B7/%E9%80%9A%E8%AE%AF%E5%BD%95/MyMailListsViewController.m"
-                  timestampString = "500817607.518559"
+                  timestampString = "500896382.623655"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "348"
@@ -457,7 +377,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/zhixiang/Documents/iOS_%E7%B1%B3%E6%9C%88%E8%99%B9/ZhaiGuanJia/qingdaofu/TabBarController/%E7%94%A8%E6%88%B7/%E9%80%9A%E8%AE%AF%E5%BD%95/MyMailListsViewController.m"
-                  timestampString = "500817607.518799"
+                  timestampString = "500896382.623802"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "349"
@@ -505,22 +425,6 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "qingdaofu/TabBarController/&#x7528;&#x6237;/&#x6211;&#x7684;&#x53d1;&#x5e03;/&#x7533;&#x8bf7;&#x7ec8;&#x6b62;&#x7ed3;&#x6848;/RequestEndViewController.m"
-            timestampString = "499251878.605451"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "314"
-            endingLineNumber = "314"
-            landmarkName = "-endProduct"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "qingdaofu/TabBarController/&#x7528;&#x6237;/&#x6211;&#x7684;&#x63a5;&#x5355;/&#x5904;&#x7406;&#x4e2d;/&#x7ecf;&#x529e;&#x4eba;/OperatorListViewController.m"
             timestampString = "499260593.992376"
             startingColumnNumber = "9223372036854775807"
@@ -544,22 +448,6 @@
             startingLineNumber = "313"
             endingLineNumber = "313"
             landmarkName = "-deleteOperatorWithOperatorModel:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "qingdaofu/TabBarController/&#x7528;&#x6237;/&#x6211;&#x7684;&#x63a5;&#x5355;/&#x5904;&#x7406;&#x4e2d;/&#x670d;&#x52a1;&#x534f;&#x8bae;/SignProtocolViewController.m"
-            timestampString = "499263273.633805"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "305"
-            endingLineNumber = "305"
-            landmarkName = "-getDetailsOfSign"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -634,7 +522,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/zhixiang/Documents/iOS_%E7%B1%B3%E6%9C%88%E8%99%B9/ZhaiGuanJia/qingdaofu/TabBarController/%E7%94%A8%E6%88%B7/%E6%88%91%E7%9A%84%E5%8F%91%E5%B8%83/%E5%A4%84%E7%90%86%E7%BB%88%E6%AD%A2%E7%94%B3%E8%AF%B7/DealingEndViewController.m"
-                  timestampString = "500817607.526752"
+                  timestampString = "500896382.631817"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "242"
@@ -649,7 +537,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/zhixiang/Documents/iOS_%E7%B1%B3%E6%9C%88%E8%99%B9/ZhaiGuanJia/qingdaofu/TabBarController/%E7%94%A8%E6%88%B7/%E6%88%91%E7%9A%84%E5%8F%91%E5%B8%83/%E5%A4%84%E7%90%86%E7%BB%88%E6%AD%A2%E7%94%B3%E8%AF%B7/DealingEndViewController.m"
-                  timestampString = "500817607.52689"
+                  timestampString = "500896382.631963"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "243"
@@ -698,7 +586,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/zhixiang/Documents/iOS_%E7%B1%B3%E6%9C%88%E8%99%B9/ZhaiGuanJia/qingdaofu/TabBarController/%E7%94%A8%E6%88%B7/%E6%88%91%E7%9A%84%E5%8F%91%E5%B8%83/%E7%94%B3%E8%AF%B7%E7%BB%88%E6%AD%A2%E7%BB%93%E6%A1%88/RequestCloseViewController.m"
-                  timestampString = "500817607.528482"
+                  timestampString = "500896382.633422"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "220"
@@ -713,7 +601,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/zhixiang/Documents/iOS_%E7%B1%B3%E6%9C%88%E8%99%B9/ZhaiGuanJia/qingdaofu/TabBarController/%E7%94%A8%E6%88%B7/%E6%88%91%E7%9A%84%E5%8F%91%E5%B8%83/%E7%94%B3%E8%AF%B7%E7%BB%88%E6%AD%A2%E7%BB%93%E6%A1%88/RequestCloseViewController.m"
-                  timestampString = "500817607.528655"
+                  timestampString = "500896382.633563"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "221"
@@ -762,7 +650,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/zhixiang/Documents/iOS_%E7%B1%B3%E6%9C%88%E8%99%B9/ZhaiGuanJia/qingdaofu/TabBarController/%E7%94%A8%E6%88%B7/%E6%88%91%E7%9A%84%E5%8F%91%E5%B8%83/%E5%8F%91%E5%B8%83%E4%B8%AD/MyPublishingViewController.m"
-                  timestampString = "500817607.530506"
+                  timestampString = "500896382.634887"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "383"
@@ -777,7 +665,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/zhixiang/Documents/iOS_%E7%B1%B3%E6%9C%88%E8%99%B9/ZhaiGuanJia/qingdaofu/TabBarController/%E7%94%A8%E6%88%B7/%E6%88%91%E7%9A%84%E5%8F%91%E5%B8%83/%E5%8F%91%E5%B8%83%E4%B8%AD/MyPublishingViewController.m"
-                  timestampString = "500817607.530769"
+                  timestampString = "500896382.635008"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "385"
@@ -858,7 +746,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/zhixiang/Documents/iOS_%E7%B1%B3%E6%9C%88%E8%99%B9/ZhaiGuanJia/qingdaofu/TabBarController/%E7%94%A8%E6%88%B7/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/MyStoreViewController.m"
-                  timestampString = "500817607.534611"
+                  timestampString = "500896382.63818"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "290"
@@ -873,7 +761,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/zhixiang/Documents/iOS_%E7%B1%B3%E6%9C%88%E8%99%B9/ZhaiGuanJia/qingdaofu/TabBarController/%E7%94%A8%E6%88%B7/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/MyStoreViewController.m"
-                  timestampString = "500817607.534853"
+                  timestampString = "500896382.638332"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "290"
@@ -954,11 +842,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "qingdaofu/TabBarController/&#x7528;&#x6237;/&#x6211;&#x7684;&#x63a5;&#x5355;/&#x7533;&#x8bf7;&#x4e2d;/&#x67e5;&#x770b;&#x53d1;&#x5e03;&#x65b9;/CheckDetailPublishViewController.m"
-            timestampString = "500812027.324749"
+            timestampString = "500883290.877075"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "573"
-            endingLineNumber = "573"
+            startingLineNumber = "552"
+            endingLineNumber = "552"
             landmarkName = "-getAllEvaluationListWithPage:"
             landmarkType = "5">
          </BreakpointContent>
@@ -986,7 +874,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/zhixiang/Documents/iOS_%E7%B1%B3%E6%9C%88%E8%99%B9/ZhaiGuanJia/qingdaofu/TabBarController/%E7%94%A8%E6%88%B7/%E6%88%91%E7%9A%84%E6%8E%A5%E5%8D%95/%E7%BB%93%E6%A1%88/%E8%BF%BD%E5%8A%A0%E8%AF%84%E4%BB%B7/AdditionalEvaluateViewController.m"
-                  timestampString = "500817607.539284"
+                  timestampString = "500896382.64305"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "328"
@@ -1001,7 +889,7 @@
                   moduleName = "qingdaofu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/zhixiang/Documents/iOS_%E7%B1%B3%E6%9C%88%E8%99%B9/ZhaiGuanJia/qingdaofu/TabBarController/%E7%94%A8%E6%88%B7/%E6%88%91%E7%9A%84%E6%8E%A5%E5%8D%95/%E7%BB%93%E6%A1%88/%E8%BF%BD%E5%8A%A0%E8%AF%84%E4%BB%B7/AdditionalEvaluateViewController.m"
-                  timestampString = "500817607.539405"
+                  timestampString = "500896382.643174"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "329"
@@ -1017,13 +905,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "qingdaofu/TabBarController/&#x7528;&#x6237;/&#x6211;&#x7684;&#x63a5;&#x5355;/&#x7533;&#x8bf7;&#x4e2d;/MoreMessagesViewController.m"
-            timestampString = "500817606.17672"
+            filePath = "qingdaofu/TabBarController/&#x7528;&#x6237;/&#x6211;&#x7684;&#x53d1;&#x5e03;/&#x5904;&#x7406;&#x8fdb;&#x5ea6;/PaceViewController.m"
+            timestampString = "500893382.811749"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "182"
-            endingLineNumber = "182"
-            landmarkName = "-getMoreMessagesOfProduct"
+            startingLineNumber = "263"
+            endingLineNumber = "263"
+            landmarkName = "-getPaceMessagesListWithPage:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

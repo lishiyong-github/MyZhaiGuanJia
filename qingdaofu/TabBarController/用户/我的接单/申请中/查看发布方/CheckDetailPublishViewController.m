@@ -52,7 +52,7 @@
 //    }
 
     [self.view addSubview:self.checkDetailTableView];
-    [self.view addSubview:self.appAgreeButton];
+//    [self.view addSubview:self.appAgreeButton];
 //    [self.appAgreeButton setHidden:YES];
     
     [self.view setNeedsUpdateConstraints];
@@ -64,35 +64,12 @@
 {
     if (!self.didSetupConstraints) {
         
-        [self.checkDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
-        [self.checkDetailTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.appAgreeButton];
+        [self.checkDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+//        [self.checkDetailTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.appAgreeButton];
         
-        [self.appAgreeButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [self.appAgreeButton autoSetDimension:ALDimensionHeight toSize:kTabBarHeight];
+//        [self.appAgreeButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+//        [self.appAgreeButton autoSetDimension:ALDimensionHeight toSize:kTabBarHeight];
         
-//        if ([self.typeString isEqualToString:@"申请人"]) {
-//
-//        }else{
-//            [self.checkDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
-//        }
-        
-        
-//        if ([self.typeString isEqualToString:@"申请人"]) {
-//            
-//            [self.appAgreeButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-//            [self.appAgreeButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.checkDetailTableView];
-//        }else{
-//            if ([self.typeDegreeString isEqualToString:@"处理中"]) {
-//                
-//                [self.checkDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
-//                [self.checkDetailTableView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kTabBarHeight];
-//                
-//                [self.appAgreeButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-//                [self.appAgreeButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.checkDetailTableView];
-//            }else{
-//                [self.checkDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
-//            }
-//        }
         
         self.didSetupConstraints = YES;
     }
@@ -547,11 +524,13 @@
                 [weakself.certifiDataArray addObject:response.certification];
             }
             
-            [weakself getAllEvaluationListWithPage:@"1"];
+//            [weakself getAllEvaluationListWithPage:@"1"];
             
         }else{
             [weakself showHint:response.msg];
         }
+        [weakself.checkDetailTableView reloadData];
+        
     } andFailBlock:^(NSError *error) {
         
     }];
@@ -562,7 +541,7 @@
     NSString *evaluateString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kCheckOrderToEvaluationString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"page" : page,
-                             @"userid" : self.userid,
+                             @"userid" : [self getValidateUserId],
                              @"limit" : @"10"
                              };
     QDFWeakSelf;

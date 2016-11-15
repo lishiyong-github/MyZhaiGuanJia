@@ -9,11 +9,6 @@
 #import "MyReleaseViewController.h"
 
 #import "ReleaseEndListViewController.h"  //终止列表
-#import "MyPublishingViewController.h"   //发布中
-#import "PublishInterviewViewController.h"  //面谈中
-#import "MyDealingViewController.h"   //处理中
-#import "ReleaseEndViewController.h"   //终止
-#import "ReleaseCloseViewController.h"  //结案
 #import "MyReleaseDetailsViewController.h"  //详情
 
 #import "ApplyRecordViewController.h"     //查看申请
@@ -21,12 +16,14 @@
 #import "CheckDetailPublishViewController.h"  //联系接单方
 #import "AdditionalEvaluateViewController.h"  //去评价
 #import "EvaluateListsViewController.h"  //查看评价
+#import "MoreMessagesViewController.h"  //完善信息
 
 #import "ExtendHomeCell.h"
 #import "EvaTopSwitchView.h"
 
 #import "ReleaseResponse.h"
 #import "RowsModel.h"
+#import "OrdersModel.h"
 
 @interface MyReleaseViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -38,7 +35,6 @@
 
 //json解析
 @property (nonatomic,strong) NSMutableArray *releaseDataArray;
-@property (nonatomic,strong) NSMutableDictionary *releaseDic;
 
 @property (nonatomic,assign) NSInteger pageRelease;//页数
 @property (nonatomic,strong) NSString *progresType;  //1－进行中，2-已完成
@@ -134,70 +130,6 @@
     }
     return _endListButton;
 }
-
-/*
-- (AllProSegView *)releaseProView
-{
-    if (!_releaseProView) {
-        _releaseProView = [AllProSegView newAutoLayoutView];
-        _releaseProView.backgroundColor = kNavColor;
-        [_releaseProView.allButton setTitle:@"全部" forState:0];
-        [_releaseProView.ingButton setTitle:@"已发布" forState:0];
-        [_releaseProView.dealButton setTitle:@"处理中" forState:0];
-        [_releaseProView.endButton setTitle:@"终止" forState:0];
-        [_releaseProView.closeButton setTitle:@"结案" forState:0];
-        
-        if ([self.progreStatus isEqualToString:@"1"]){
-            _releaseProView.leftsConstraints.constant = kScreenWidth/5;
-        }else if ([self.progreStatus isEqualToString:@"2"]){
-            _releaseProView.leftsConstraints.constant = kScreenWidth/5*2;
-        }else if ([self.progreStatus isEqualToString:@"3"]){
-            _releaseProView.leftsConstraints.constant = kScreenWidth/5*3;
-        }else if([self.progreStatus isEqualToString:@"4"]){
-            _releaseProView.leftsConstraints.constant = kScreenWidth/5*4;
-        }else{
-            _releaseProView.leftsConstraints.constant = 0;
-        }
-        
-        QDFWeakSelf;
-        [_releaseProView setDidSelectedSeg:^(NSInteger segTag) {
-            
-            [weakself.releaseDataArray removeAllObjects];
-            
-            switch (segTag) {
-                case 111:{
-                    weakself.progreStatus = @"0";
-                    [weakself refreshHeaderOfMyRelease];
-                }
-                    break;
-                case 112:{
-                    weakself.progreStatus = @"1";
-                    [weakself refreshHeaderOfMyRelease];
-                }
-                    break;
-                case 113:{
-                    weakself.progreStatus = @"2";
-                    [weakself refreshHeaderOfMyRelease];
-                }
-                    break;
-                case 114:{
-                    weakself.progreStatus = @"3";
-                    [weakself refreshHeaderOfMyRelease];
-                }
-                    break;
-                case 115:{
-                    weakself.progreStatus = @"4";
-                    [weakself refreshHeaderOfMyRelease];
-                }
-                    break;
-                default:
-                    break;
-            }
-        }];
-    }
-    return _releaseProView;
-}
-*/
  
 - (UITableView *)myReleaseTableView
 {
@@ -223,14 +155,6 @@
     return _releaseDataArray;
 }
 
-- (NSMutableDictionary *)releaseDic
-{
-    if (!_releaseDic) {
-        _releaseDic = [NSMutableDictionary dictionary];
-    }
-    return _releaseDic;
-}
-
 #pragma mark - 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -244,16 +168,6 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    RowsModel *rModel = self.releaseDataArray[indexPath.section];
-//    if ([rModel.progress_status intValue] == 3) {//终止
-//        return 160;
-//    }else if ([rModel.progress_status integerValue] == 4){//结案
-//        NSString *id_category = [NSString stringWithFormat:@"%@_%@",rModel.idString,rModel.category];
-//        NSString *value = self.releaseDic[id_category];
-//        if ([value integerValue] == 2) {//不能评价
-//            return 160;
-//        }
-//    }
     return 245;
 }
 
@@ -333,30 +247,6 @@
     MyReleaseDetailsViewController *myReleaseDetailsVC = [[MyReleaseDetailsViewController alloc] init];
     myReleaseDetailsVC.productid = sModel.productid;
     [self.navigationController pushViewController:myReleaseDetailsVC animated:YES];
-    
-    return;
-    if ([sModel.statusLabel isEqualToString:@"发布中"]) {
-        MyPublishingViewController *myPublishingVC = [[MyPublishingViewController alloc] init];
-        myPublishingVC.productid = sModel.productid;
-        [self.navigationController pushViewController:myPublishingVC animated:YES];
-    }else if ([sModel.statusLabel isEqualToString:@"面谈中"]) {
-        PublishInterviewViewController *publishInterviewVC = [[PublishInterviewViewController alloc] init];
-        publishInterviewVC.productid = sModel.productid;
-        [self.navigationController pushViewController:publishInterviewVC animated:YES];
-    }else if ([sModel.statusLabel isEqualToString:@"已结案"]){
-//        ReleaseCloseViewController *releaseCloseVC = [[ReleaseCloseViewController alloc] init];
-//        releaseCloseVC.evaString = value1;
-//        releaseCloseVC.idString = sModel.idString;
-//        releaseCloseVC.categaryString = sModel.category;
-//        releaseCloseVC.pidString = sModel.pid;
-//        releaseCloseVC.productid = sModel.productid;
-//        [self.navigationController pushViewController:releaseCloseVC animated:YES];
-    }else{//处理中
-        MyDealingViewController *myDealingVC = [[MyDealingViewController alloc] init];
-        myDealingVC.productid = sModel.productid;
-        myDealingVC.status = sModel.statusLabel;
-        [self.navigationController pushViewController:myDealingVC animated:YES];
-    }
 }
 
 #pragma mark - method
@@ -433,108 +323,33 @@
 {
     RowsModel *ymodel = self.releaseDataArray[section];
     
-    if ([string isEqualToString:@"完善资料"]) {
-        
-    }else if ([string isEqualToString:@"联系申请方"]) {
+    if ([string isEqualToString:@"完善资料"]) {//发布成功
+        MoreMessagesViewController *moreMessagesVC = [[MoreMessagesViewController alloc] init];
+        moreMessagesVC.productid = ymodel.productid;
+        [self.navigationController pushViewController:moreMessagesVC animated:YES];
+    }else if ([string isEqualToString:@"联系申请方"]) {//面谈中
         CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
-        checkDetailPublishVC.typeString = @"接单方";
-        checkDetailPublishVC.idString = ymodel.idString;
-        checkDetailPublishVC.categoryString = ymodel.category;
-        checkDetailPublishVC.pidString = ymodel.pid;
-    //        checkDetailPublishVC.typeDegreeString = @"处理中";
+        checkDetailPublishVC.navTitle = @"申请方详情";
+        checkDetailPublishVC.productid = ymodel.productid;
+        checkDetailPublishVC.userid = ymodel.productApply.create_by;
         [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
         
-        if ([ymodel.applymobile isEqualToString:@""] || !ymodel.applymobile || ymodel.applymobile == nil) {
-            [self showHint:@"接单方未认证，不能打电话"];
+        if ([ymodel.productApply.mobile isEqualToString:@""] || !ymodel.productApply.mobile || ymodel.productApply.mobile == nil) {
+            [self showHint:@"申请方未认证，不能打电话"];
         }else{
-            NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",ymodel.applymobile];
+            NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",ymodel.productApply.mobile];
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
         }
-    }if ([string isEqualToString:@"查看进度"]) {
+    }if ([string isEqualToString:@"查看进度"]) {//处理中
         PaceViewController *paceVC = [[PaceViewController alloc] init];
-        paceVC.idString = ymodel.idString;
-        paceVC.categoryString = ymodel.category;
+        paceVC.processid = ymodel.productid;
         [self.navigationController pushViewController:paceVC animated:YES];
-    }if ([string isEqualToString:@"评价"]) {
+    }if ([string isEqualToString:@"评价"]) {//结案
         AdditionalEvaluateViewController *additionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
-        additionalEvaluateVC.idString = ymodel.idString;
-        additionalEvaluateVC.categoryString = ymodel.category;
-        additionalEvaluateVC.typeString = @"发布方";
-        additionalEvaluateVC.evaString = evaString;
-        
+        additionalEvaluateVC.ordersid = ymodel.productApply.orders.ordersid;
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:additionalEvaluateVC];
         [self presentViewController:nav animated:YES completion:nil];
     }
-    
-    /*
-   if ([string isEqualToString:@"查看申请人"]){
-      ApplyRecordViewController *applyRecordsVC = [[ApplyRecordViewController alloc] init];
-       applyRecordsVC.idStr = ymodel.idString;
-       applyRecordsVC.categaryStr = ymodel.category;
-      [self.navigationController pushViewController:applyRecordsVC animated:YES];
-   }else if ([string isEqualToString:@"查看进度"]){
-        PaceViewController *paceVC = [[PaceViewController alloc] init];
-       paceVC.idString = ymodel.idString;
-       paceVC.categoryString = ymodel.category;
-        [self.navigationController pushViewController:paceVC animated:YES];
-    }else if ([string isEqualToString:@"联系接单方"]){
-        CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
-        checkDetailPublishVC.typeString = @"接单方";
-        checkDetailPublishVC.idString = ymodel.idString;
-        checkDetailPublishVC.categoryString = ymodel.category;
-        checkDetailPublishVC.pidString = ymodel.pid;
-        checkDetailPublishVC.typeDegreeString = @"处理中";
-        [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
-     
-        if ([ymodel.applymobile isEqualToString:@""] || !ymodel.applymobile || ymodel.applymobile == nil) {
-            [self showHint:@"接单方未认证，不能打电话"];
-        }else{
-            NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",ymodel.applymobile];
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
-        }
-    }else if ([string isEqualToString:@"删除订单"]){
-        [self deleteTheProductsWithModel:ymodel];
-    }else if ([string isEqualToString:@"评价接单方"]){
-        AdditionalEvaluateViewController *additionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
-        additionalEvaluateVC.idString = ymodel.idString;
-        additionalEvaluateVC.categoryString = ymodel.category;
-        additionalEvaluateVC.typeString = @"发布方";
-        additionalEvaluateVC.evaString = evaString;
-        
-        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:additionalEvaluateVC];
-        [self presentViewController:nav animated:YES completion:nil];
-    }else if ([string isEqualToString:@"查看评价"]){
-        EvaluateListsViewController *evaluateListVC = [[EvaluateListsViewController alloc] init];
-        evaluateListVC.idString = ymodel.idString;
-        evaluateListVC.categoryString = ymodel.category;
-        evaluateListVC.typeString = @"发布方";
-        [self.navigationController pushViewController:evaluateListVC animated:YES];
-    }
-     */
-}
-
-- (void)deleteTheProductsWithModel:(RowsModel *)yModel
-{
-    NSString *deleteProString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kDeleteProductOfMyReleaseString];
-    NSDictionary *params = @{@"id" : yModel.idString,
-                             @"category" : yModel.category,
-                             @"token" : [self getValidateToken],
-                             @"type" : @"2"
-                             };
-    
-    QDFWeakSelf;
-    [self requestDataPostWithString:deleteProString params:params successBlock:^(id responseObject) {
-        
-        BaseModel *baModel = [BaseModel objectWithKeyValues:responseObject];
-        [weakself showHint:baModel.msg];
-        
-        if ([baModel.code isEqualToString:@"0000"]) {
-            [weakself refreshHeaderOfMyRelease];
-        }
-        
-    } andFailBlock:^(NSError *error) {
-        
-    }];
 }
 
 - (void)didReceiveMemoryWarning {

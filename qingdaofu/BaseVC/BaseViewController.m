@@ -142,6 +142,12 @@
     return mobile;
 }
 
+- (NSString *)getValidateUserId
+{
+    NSString *userid = [[NSUserDefaults standardUserDefaults] objectForKey:@"userid"];
+    return userid;
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

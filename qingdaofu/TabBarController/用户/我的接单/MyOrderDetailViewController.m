@@ -11,11 +11,13 @@
 #import "CheckDetailPublishViewController.h"  //查看发布方
 #import "AgreementViewController.h"  //居间协议
 #import "SignProtocolViewController.h"  //签约协议
+#import "OperatorListViewController.h"  //经办人列表
 #import "AddProgressViewController.h"  //添加进度
 #import "RequestCloseViewController.h"  //申请结案
 #import "RequestEndViewController.h"  //申请终止
 #import "AdditionalEvaluateViewController.h"  //评价
 #import "MoreMessagesViewController.h"  //更多信息
+#import "DealingCloseViewController.h"  //结清证明
 
 #import "BaseRemindButton.h"
 #import "BaseCommitView.h"
@@ -45,7 +47,6 @@
 
 //json
 @property (nonatomic,strong) NSMutableArray *myOrderDetailArray;
-@property (nonatomic,strong) NSString *userId;
 
 @end
 
@@ -59,10 +60,8 @@
     [super viewDidLoad];
     self.navigationItem.title = @"产品详情";
     self.navigationItem.leftBarButtonItem = self.leftItem;
-//    if ([self.status integerValue] == 10) {
-//        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightButton];
-//        [self.rightButton setTitle:@"取消申请" forState:0];
-//    }
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightButton];
+    [self.rightButton setHidden:YES];
     
     [self.view addSubview:self.myOrderDetailTableView];
     [self.view addSubview:self.processinCommitButton];
@@ -260,7 +259,7 @@
     OrderModel *orderModel = self.myOrderDetailArray[0];
     RowsModel *rowModel = orderModel.product;
     
-    if ([orderModel.status integerValue] == 40) {
+    if ([orderModel.status integerValue] == 40) {//处理以后
         if ([orderModel.orders.status integerValue] == 40) {//已结案
             if (indexPath.section == 0) {
                 if (indexPath.row == 0) {//状态
@@ -296,19 +295,21 @@
                     }
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     
-                    NSString *nameStr = [NSString getValidStringFromString:rowModel.productApply.mobile toString:@"未认证"];
+                    NSString *nameStr = [NSString getValidStringFromString:orderModel.product.fabuuser.mobile toString:@"未认证"];
                     NSString *checkStr = [NSString stringWithFormat:@"发布方：%@",nameStr];
                     [cell.checkButton setTitle:checkStr forState:0];
-                    [cell.contactButton setTitle:@" 联系他" forState:0];
+                    [cell.contactButton setTitle:@" 联系TA" forState:0];
                     [cell.contactButton setImage:[UIImage imageNamed:@"phone_blue"] forState:0];
                     
                     //接单方详情
                     QDFWeakSelf;
                     [cell.checkButton addAction:^(UIButton *btn) {
+                        [weakself checkDetailsOfPublisherWithNameStr:nameStr andOrderModel:orderModel];
                     }];
                     
                     //电话
                     [cell.contactButton addAction:^(UIButton *btn) {
+                        [weakself callDetailsOfPublisherWithNameStr:nameStr andOrderModel:orderModel];
                     }];
                     
                     return cell;
@@ -369,18 +370,23 @@
                 [cell setDidselectedBtn:^(NSInteger tag) {
                     switch (tag) {
                         case 330:{//结清证明
-//                            DealingCloseViewController *dealingCloseVC = [[DealingCloseViewController alloc] init];
-//                            dealingCloseVC.perTypeString = @"2";
-//                            dealingCloseVC.productDealModel = rowModel.productOrdersTerminationsApply;
-//                            [weakself.navigationController pushViewController:dealingCloseVC animated:YES];
+                            DealingCloseViewController *dealingCloseVC = [[DealingCloseViewController alloc] init];
+                            dealingCloseVC.perTypeString = @"2";
+                            dealingCloseVC.productDealModel = rowModel.productOrdersTerminationsApply;
+                            [weakself.navigationController pushViewController:dealingCloseVC animated:YES];
                         }
                             break;
                         case 331:{//查看全部产品信息
-                            
+                            MoreMessagesViewController *moreMessagesVC = [[MoreMessagesViewController alloc] init];
+                            moreMessagesVC.productid = orderModel.productid;
+                            [self.navigationController pushViewController:moreMessagesVC animated:YES];
                         }
                             break;
                         case 332:{//查看签约协议
-                            
+                            SignProtocolViewController *signProtocolVC = [[SignProtocolViewController alloc] init];
+                            signProtocolVC.ordersid = orderModel.orders.ordersid;
+                            signProtocolVC.isShowString = @"0";
+                            [self.navigationController pushViewController:signProtocolVC animated:YES];
                         }
                             break;
                         case 333:{//查看尽职调查
@@ -388,7 +394,11 @@
                         }
                             break;
                         case 334:{//查看居间协议
-                            
+                            AgreementViewController *agreementVC = [[AgreementViewController alloc] init];
+                            agreementVC.navTitleString = @"居间协议";
+                            agreementVC.flagString = @"0";
+                            agreementVC.productid = orderModel.productid;
+                            [self.navigationController pushViewController:agreementVC animated:YES];
                         }
                             break;
                         default:
@@ -398,7 +408,7 @@
                 
                 return cell;
             }
-        }else if([orderModel.orders.status integerValue] == 0){
+        }else if([orderModel.orders.status integerValue] == 0){//3
             if (indexPath.section == 0) {
                 if (indexPath.row == 0) {//状态
                     identifier = @"process00";
@@ -434,19 +444,21 @@
                     }
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     
-                    NSString *nameStr = [NSString getValidStringFromString:rowModel.productApply.mobile toString:@"未认证"];
+                    NSString *nameStr = [NSString getValidStringFromString:orderModel.product.fabuuser.mobile toString:@"未认证"];
                     NSString *checkStr = [NSString stringWithFormat:@"发布方：%@",nameStr];
                     [cell.checkButton setTitle:checkStr forState:0];
-                    [cell.contactButton setTitle:@" 联系他" forState:0];
+                    [cell.contactButton setTitle:@" 联系TA" forState:0];
                     [cell.contactButton setImage:[UIImage imageNamed:@"phone_blue"] forState:0];
                     
                     //接单方详情
                     QDFWeakSelf;
                     [cell.checkButton addAction:^(UIButton *btn) {
+                        [weakself checkDetailsOfPublisherWithNameStr:nameStr andOrderModel:orderModel];
                     }];
                     
                     //电话
                     [cell.contactButton addAction:^(UIButton *btn) {
+                        [weakself callDetailsOfPublisherWithNameStr:nameStr andOrderModel:orderModel];
                     }];
                     
                     return cell;
@@ -510,7 +522,7 @@
                 
                 return cell;
             }
-        }else if ([orderModel.orders.status integerValue] == 10){
+        }else if ([orderModel.orders.status integerValue] == 10){//4
             if (indexPath.section == 0) {
                 if (indexPath.row == 0) {//状态
                     identifier = @"processing00";
@@ -546,19 +558,21 @@
                     }
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     
-                    NSString *nameStr = [NSString getValidStringFromString:rowModel.productApply.mobile toString:@"未认证"];
+                    NSString *nameStr = [NSString getValidStringFromString:orderModel.product.fabuuser.mobile toString:@"未认证"];
                     NSString *checkStr = [NSString stringWithFormat:@"发布方：%@",nameStr];
                     [cell.checkButton setTitle:checkStr forState:0];
-                    [cell.contactButton setTitle:@" 联系他" forState:0];
+                    [cell.contactButton setTitle:@" 联系TA" forState:0];
                     [cell.contactButton setImage:[UIImage imageNamed:@"phone_blue"] forState:0];
                     
                     //接单方详情
                     QDFWeakSelf;
                     [cell.checkButton addAction:^(UIButton *btn) {
+                        [weakself checkDetailsOfPublisherWithNameStr:nameStr andOrderModel:orderModel];
                     }];
                     
                     //电话
                     [cell.contactButton addAction:^(UIButton *btn) {
+                        [weakself callDetailsOfPublisherWithNameStr:nameStr andOrderModel:orderModel];
                     }];
                     
                     return cell;
@@ -639,7 +653,7 @@
                 
                 return cell;
             }
-        }else{
+        }else{//6
             if (indexPath.section == 0) {
                 if (indexPath.row == 0) {//状态
                     identifier = @"processed00";
@@ -657,10 +671,12 @@
                     if ([orderModel.product.status integerValue] <= 20) {
                         [cell.point3 setImage:[UIImage imageNamed:@"succee"] forState:0];
                         [cell.progress3 setTextColor:kTextColor];
+                        [cell.progress3 setText:@"订单处理"];
                         [cell.line3 setBackgroundColor:kButtonColor];
                     }else{
                         [cell.point3 setImage:[UIImage imageNamed:@"fail"] forState:0];
                         [cell.progress3 setTextColor:kRedColor];
+                        [cell.progress3 setText:@"已终止"];
                         [cell.line3 setBackgroundColor:kRedColor];
                     }
                     
@@ -675,21 +691,22 @@
                     }
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     
-                    NSString *nameStr = [NSString getValidStringFromString:rowModel.productApply.mobile toString:@"未认证"];
+                    NSString *nameStr = [NSString getValidStringFromString:orderModel.product.fabuuser.mobile toString:@"未认证"];
                     NSString *checkStr = [NSString stringWithFormat:@"发布方：%@",nameStr];
                     [cell.checkButton setTitle:checkStr forState:0];
-                    [cell.contactButton setTitle:@" 联系他" forState:0];
+                    [cell.contactButton setTitle:@" 联系TA" forState:0];
                     [cell.contactButton setImage:[UIImage imageNamed:@"phone_blue"] forState:0];
                     
                     //接单方详情
                     QDFWeakSelf;
                     [cell.checkButton addAction:^(UIButton *btn) {
+                        [weakself checkDetailsOfPublisherWithNameStr:nameStr andOrderModel:orderModel];
                     }];
                     
                     //电话
                     [cell.contactButton addAction:^(UIButton *btn) {
+                        [weakself callDetailsOfPublisherWithNameStr:nameStr andOrderModel:orderModel];
                     }];
-                    
                     return cell;
                 }
             }else if (indexPath.section == 1){//产品信息
@@ -777,7 +794,7 @@
                 
                 [cell.userNameButton setTitle:@"经办人" forState:0];
                 [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-                [cell.userActionButton setTitle:@"添加" forState:0];
+                [cell.userActionButton setTitle:@"查看" forState:0];
                 
                 return cell;
             }else if(indexPath.section == 5){//尽职调查
@@ -878,7 +895,7 @@
                     NSString *checkStr = [NSString stringWithFormat:@"发布方：%@",nameStr];
                     [cell.userNameButton setTitle:checkStr forState:0];
                     [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-                    [cell.userActionButton setTitle:@"发布方详情  " forState:0];
+                    [cell.userActionButton setTitle:@"查看  " forState:0];
                     return cell;
                     
                 }else if ([orderModel.status integerValue] == 20 || [orderModel.status integerValue] == 30){
@@ -895,13 +912,15 @@
                     [cell.contactButton setTitle:@" 联系TA" forState:0];
                     [cell.contactButton setImage:[UIImage imageNamed:@"phone_blue"] forState:0];
                     
-                    //接单方详情
+                    //发布方详情
                     QDFWeakSelf;
                     [cell.checkButton addAction:^(UIButton *btn) {
+                        [weakself checkDetailsOfPublisherWithNameStr:nameStr andOrderModel:orderModel];
                     }];
                     
                     //电话
                     [cell.contactButton addAction:^(UIButton *btn) {
+                        [weakself callDetailsOfPublisherWithNameStr:nameStr andOrderModel:orderModel];
                     }];
                     return cell;
                 }
@@ -1014,38 +1033,56 @@
     if ([orderModel.status integerValue] == 40) {//处理之后
         if ([orderModel.orders.status integerValue] == 0) {//3
             if (indexPath.section == 1 && indexPath.row == 0) {
-                [self showHint:@"查看更多信息"];
+                MoreMessagesViewController *moreMessagesVC = [[MoreMessagesViewController alloc] init];
+                moreMessagesVC.productid = orderModel.productid;
+                [self.navigationController pushViewController:moreMessagesVC animated:YES];
             }
         }else if ([orderModel.orders.status integerValue] == 10){//4
             if (indexPath.section == 1 && indexPath.row == 0) {
-                [self showHint:@"查看更多信息"];
+                MoreMessagesViewController *moreMessagesVC = [[MoreMessagesViewController alloc] init];
+                moreMessagesVC.productid = orderModel.productid;
+                [self.navigationController pushViewController:moreMessagesVC animated:YES];
             }else if (indexPath.section == 2){
-                [self showHint:@"居间协议"];
+                AgreementViewController *agreementVC = [[AgreementViewController alloc] init];
+                agreementVC.navTitleString = @"居间协议";
+                agreementVC.flagString = @"0";
+                agreementVC.productid = orderModel.productid;
+                [self.navigationController pushViewController:agreementVC animated:YES];
             }
         }else if ([orderModel.orders.status integerValue] == 20 || [orderModel.orders.status integerValue] == 30){//处理中6,已终止
-            if (indexPath.section == 1 && indexPath.row == 0) {
-                [self showHint:@"查看更多信息"];
+            if (indexPath.section == 1 && indexPath.row == 0) {//更多信息
                 MoreMessagesViewController *moreMessageVC = [[MoreMessagesViewController alloc] init];
                 moreMessageVC.productid = orderModel.productid;
                 [self.navigationController pushViewController:moreMessageVC animated:YES];
-            }else if (indexPath.section == 2){
-                [self showHint:@"居间协议"];
-            }else if (indexPath.section == 3){
-                [self showHint:@"签约协议"];
-            }else if (indexPath.section == 4){
-                [self showHint:@"经办人"];
+            }else if (indexPath.section == 2){//居间协议
+                AgreementViewController *agreementVC = [[AgreementViewController alloc] init];
+                agreementVC.navTitleString = @"居间协议";
+                agreementVC.flagString = @"0";
+                agreementVC.productid = orderModel.productid;
+                [self.navigationController pushViewController:agreementVC animated:YES];
+            }else if (indexPath.section == 3){//签约协议
+                SignProtocolViewController *signProtocolVC = [[SignProtocolViewController alloc] init];
+                signProtocolVC.ordersid = orderModel.orders.ordersid;
+                signProtocolVC.isShowString = @"0";
+                [self.navigationController pushViewController:signProtocolVC animated:YES];
+            }else if (indexPath.section == 4){//经办人
+                OperatorListViewController *operatorListVC = [[OperatorListViewController alloc] init];
+                operatorListVC.ordersid = orderModel.orders.ordersid;
+                [self.navigationController pushViewController:operatorListVC animated:YES];
             }
         }else if ([orderModel.orders.status integerValue] == 40){//已结案
-            if (indexPath.section == 1) {
-                [self showHint:@"经办人"];
+            if (indexPath.section == 1) {//经办人
+                OperatorListViewController *operatorListVC = [[OperatorListViewController alloc] init];
+                operatorListVC.ordersid = orderModel.orders.ordersid;
+                [self.navigationController pushViewController:operatorListVC animated:YES];
             }
         }
     }else if ([orderModel.status integerValue] == 10 || [orderModel.status integerValue] == 50 || [orderModel.status integerValue] == 60) {//申请中，申请失败，取消申请
         if (indexPath.section == 0 && indexPath.row == 1) {//查看发布方
             CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
-            checkDetailPublishVC.navTitle = @"申请人详情";
+            checkDetailPublishVC.navTitle = @"发布方详情";
             checkDetailPublishVC.productid = orderModel.productid;
-            checkDetailPublishVC.userid = self.userId;
+            checkDetailPublishVC.userid = orderModel.product.create_by;
             [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
         }
     }
@@ -1065,12 +1102,11 @@
         
         MyOrderDetailResponse *response = [MyOrderDetailResponse objectWithKeyValues:responseObject];
         
-        weakself.userId = response.userid;
-        
         OrderModel *orderModel = response.data;
         
         if ([orderModel.status integerValue] == 40) {//处理中以后
             if ([orderModel.orders.status integerValue] == 0) {
+                [self.rightButton setHidden:YES];
                 [weakself.processinCommitButton setHidden:NO];
                 [weakself.myOrderDetailTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.processinCommitButton];
                 [weakself.processinCommitButton.button setTitle:@"签订居间协议" forState:0];
@@ -1078,12 +1114,21 @@
                     [weakself actionOfBottomWithType:@"1" andOrderModel:orderModel];
                 }];
             }else if ([orderModel.orders.status integerValue] == 10){
+                [self.rightButton setHidden:YES];
                 [weakself.processinCommitButton setHidden:NO];
                 [weakself.processinCommitButton.button setTitle:@"上传签约协议" forState:0];
                 [weakself.processinCommitButton addAction:^(UIButton *btn) {
                     [weakself actionOfBottomWithType:@"2" andOrderModel:orderModel];
                 }];
             }else if ([orderModel.orders.status integerValue] == 20){
+                [self.rightButton setHidden:NO];
+                [self.rightButton setTitle:@"申请终止" forState:0];
+                [self.rightButton addAction:^(UIButton *btn) {
+                    RequestEndViewController *requestEndVC = [[RequestEndViewController alloc] init];
+                    requestEndVC.ordersid = orderModel.orders.ordersid;
+                    [weakself.navigationController pushViewController:requestEndVC animated:YES];
+                }];
+
                 [weakself.processinCommitButton setHidden:NO];
                 [weakself.processinCommitButton.button setTitle:@"申请结案" forState:0];
                 [weakself.processinCommitButton addAction:^(UIButton *btn) {
@@ -1094,12 +1139,14 @@
                 [self.rightButton setTitle:@"申请终止" forState:0];
                 
             }else if ([orderModel.orders.status integerValue] == 40){
+                [self.rightButton setHidden:YES];
                 [weakself.processinCommitButton setHidden:NO];
                 [weakself.processinCommitButton.button setTitle:@"评价" forState:0];
                 [weakself.processinCommitButton addAction:^(UIButton *btn) {
                     [weakself actionOfBottomWithType:@"4" andOrderModel:orderModel];
                 }];
-            }else{
+            }else{//终止
+                [self.rightButton setHidden:YES];
                 [weakself.processinCommitButton setHidden:YES];
                 [weakself.myOrderDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
             }
@@ -1108,8 +1155,11 @@
             [weakself.myOrderDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
             
             if ([orderModel.status integerValue] == 10) {//申请中
-                self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightButton];
+                [self.rightButton setHidden:NO];
                 [self.rightButton setTitle:@"取消申请" forState:0];
+                [self.rightButton addTarget:self action:@selector(cancelApplyAction) forControlEvents:UIControlEventTouchUpInside];
+            }else{
+                [self.rightButton setHidden:YES];
             }
         }
         
@@ -1122,6 +1172,12 @@
 }
 
 - (void)rightItemAction
+{
+    
+}
+
+
+- (void)cancelApplyAction //取消申请
 {
     OrderModel *orderModel = self.myOrderDetailArray[0];
     
@@ -1179,6 +1235,29 @@
         
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:additionalEvaluateVC];
         [self presentViewController:nav animated:YES completion:nil];
+    }
+}
+
+- (void)checkDetailsOfPublisherWithNameStr:(NSString *)nameStr andOrderModel:(OrderModel *)orderModel
+{
+    if ([nameStr isEqualToString:@"未认证"]) {
+        [self showHint:@"发布方未认证，不能查看相关信息"];
+    }else{
+        CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+        checkDetailPublishVC.navTitle = @"发布方详情";
+        checkDetailPublishVC.productid = orderModel.productid;
+        checkDetailPublishVC.userid = orderModel.product.create_by;
+        [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
+    }
+}
+
+- (void)callDetailsOfPublisherWithNameStr:(NSString *)nameStr andOrderModel:(OrderModel *)orderModel
+{
+    if ([nameStr isEqualToString:@"未认证"]) {
+        [self showHint:@"发布方未认证，不能打电话"];
+    }else{
+        NSMutableString *phone = [NSMutableString stringWithFormat:@"telprompt://%@",orderModel.product.fabuuser.mobile];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phone]];
     }
 }
 

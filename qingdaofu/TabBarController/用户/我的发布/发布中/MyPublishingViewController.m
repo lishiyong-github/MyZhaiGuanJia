@@ -385,7 +385,7 @@
         BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
         [weakself showHint:baseModel.msg];
         if ([baseModel.code isEqualToString:@"0000"]) {
-            [weakself.navigationController popViewControllerAnimated:YES];
+            [weakself back];
         }
         
     } andFailBlock:^(NSError *error) {

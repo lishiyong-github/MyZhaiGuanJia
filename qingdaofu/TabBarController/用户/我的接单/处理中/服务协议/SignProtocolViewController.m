@@ -10,6 +10,7 @@
 #import "PublishCombineView.h"
 
 #import "UIViewController+MutipleImageChoice.h"
+#import "UIViewController+ImageBrowser.h"
 
 #import "MineUserCell.h"
 #import "TakePictureCell.h"
@@ -33,7 +34,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"签约协议图片";
+    self.title = @"签约协议";
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
     [self.view addSubview:self.sighProtocolTableView];
@@ -176,46 +177,51 @@
     QDFWeakSelf;
     QDFWeak(cell);
     [cell setDidSelectedItem:^(NSInteger itemTag) {
-        if (itemTag == weakcell.collectionDataList.count-1) {//只允许点击最后一个collection
-            if (weakcell.collectionDataList.count < 3) {
-                [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
-                    
-                    if (images.count > 0) {
-                        NSData *imData = [NSData dataWithContentsOfFile:images[0]];
-                        NSString *imString = [NSString stringWithFormat:@"%@",imData];
-                        [weakself uploadImages:imString andType:@"jgp" andFilePath:images[0]];
-                        
-                        [weakself setDidGetValidImage:^(ImageModel *imageModel) {
-                            if ([imageModel.code isEqualToString:@"0000"]) {
-                                [weakself.signImageArray addObject:imageModel.fileid];
-                                
-                                [weakcell.collectionDataList insertObject:images[0] atIndex:0];
-                                [weakcell reloadData];
-                            }else{
-                                [weakself showHint:imageModel.msg];
-                            }
-                        }];
-                    }
-                }];
-            }else{
-                [weakself showHint:@"最多添加2张图片"];
-            }
+        
+        if ([weakself.isShowString integerValue] == 0) {
+            [weakself showImages:self.signDataArray currentIndex:0];
         }else{
-            UIAlertController *alertContr = [UIAlertController alertControllerWithTitle:@"" message:@"确认删除该图片" preferredStyle:0];
-            UIAlertAction *acty1 = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                //                    [weakself.signImageArray removeObjectAtIndex:itemTag];
-                //                    [weakself.additionalTableView reloadData];
+            if (itemTag == weakcell.collectionDataList.count-1) {//只允许点击最后一个collection
+                if (weakcell.collectionDataList.count < 3) {
+                    [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
+                        
+                        if (images.count > 0) {
+                            NSData *imData = [NSData dataWithContentsOfFile:images[0]];
+                            NSString *imString = [NSString stringWithFormat:@"%@",imData];
+                            [weakself uploadImages:imString andType:@"jgp" andFilePath:images[0]];
+                            
+                            [weakself setDidGetValidImage:^(ImageModel *imageModel) {
+                                if ([imageModel.code isEqualToString:@"0000"]) {
+                                    [weakself.signImageArray addObject:imageModel.fileid];
+                                    
+                                    [weakcell.collectionDataList insertObject:images[0] atIndex:0];
+                                    [weakcell reloadData];
+                                }else{
+                                    [weakself showHint:imageModel.msg];
+                                }
+                            }];
+                        }
+                    }];
+                }else{
+                    [weakself showHint:@"最多添加2张图片"];
+                }
+            }else{
+                UIAlertController *alertContr = [UIAlertController alertControllerWithTitle:@"" message:@"确认删除该图片" preferredStyle:0];
+                UIAlertAction *acty1 = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    //                    [weakself.signImageArray removeObjectAtIndex:itemTag];
+                    //                    [weakself.additionalTableView reloadData];
+                    
+                    [weakself.signImageArray removeObjectAtIndex:itemTag];
+                    [weakcell.collectionDataList removeObjectAtIndex:itemTag];
+                    [weakcell reloadData];
+                    
+                }];
+                UIAlertAction *acty0 = [UIAlertAction actionWithTitle:@"否" style:0 handler:nil];
+                [alertContr addAction:acty0];
+                [alertContr addAction:acty1];
                 
-                [weakself.signImageArray removeObjectAtIndex:itemTag];
-                [weakcell.collectionDataList removeObjectAtIndex:itemTag];
-                [weakcell reloadData];
-                
-            }];
-            UIAlertAction *acty0 = [UIAlertAction actionWithTitle:@"否" style:0 handler:nil];
-            [alertContr addAction:acty0];
-            [alertContr addAction:acty1];
-            
-            [weakself presentViewController:alertContr animated:YES completion:nil];
+                [weakself presentViewController:alertContr animated:YES completion:nil];
+            }
         }
     }];
     

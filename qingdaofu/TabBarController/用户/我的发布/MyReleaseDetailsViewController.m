@@ -15,10 +15,9 @@
 #import "DealingEndViewController.h"  //处理终止
 #import "DealingCloseViewController.h" //处理结案
 #import "RequestEndViewController.h" //申请终止
-
-//#import "AdditionMessagesViewController.h"  //补充信息
-//#import "AgreementViewController.h"//协议
-//#import "ReportSuitViewController.h"  //发布催收，发布诉讼
+#import "SignProtocolViewController.h" //签约协议
+#import "AgreementViewController.h"  //居间协议
+#import "CheckDetailPublishViewController.h"  //查看接单方信息
 
 #import "BaseRemindButton.h"
 
@@ -300,27 +299,26 @@
                     //接单方详情
                     QDFWeakSelf;
                     [cell.checkButton addAction:^(UIButton *btn) {
-                        //                if ([userNameModel.jusername isEqualToString:@""] || userNameModel.jusername == nil || !userNameModel.jusername) {
-                        //                    [weakself showHint:@"申请方未认证，不能查看相关信息"];
-                        //                }else{
-                        //                    CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
-                        //                    checkDetailPublishVC.idString = weakself.idString;
-                        //                    checkDetailPublishVC.categoryString = weakself.categaryString;
-                        //                    checkDetailPublishVC.pidString = weakself.pidString;
-                        //                    checkDetailPublishVC.typeString = @"接单方";
-                        //                    //                checkDetailPublishVC.typeDegreeString = @"处理中";
-                        //                    [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];
-                        //                }
+                        if ([nameStr isEqualToString:@"未认证"]) {
+                            [weakself showHint:@"申请方未认证，不能查看相关信息"];
+                        }else{
+                            CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+                            checkDetailPublishVC.navTitle = @"申请方详情";
+                            checkDetailPublishVC.productid = dataModel.productid;
+                            checkDetailPublishVC.userid = dataModel.productApply.create_by;
+                            [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];
+                        }
+
                     }];
                     
                     //电话
                     [cell.contactButton addAction:^(UIButton *btn) {
-                        //                if ([userNameModel.jusername isEqualToString:@""] || userNameModel.jusername == nil || !userNameModel.jusername) {
-                        //                    [self showHint:@"申请方未认证，不能打电话"];
-                        //                }else{
-                        //                    NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",userNameModel.jmobile];
-                        //                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
-                        //                }
+                        if ([nameStr isEqualToString:@"未认证"]) {
+                            [weakself showHint:@"接单方未认证，不能打电话"];
+                        }else{
+                            NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",dataModel.productApply.mobile];
+                            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
+                        }
                     }];
                     return cell;
                 }
@@ -476,33 +474,50 @@
                 //接单方详情
                 QDFWeakSelf;
                 [cell.checkButton addAction:^(UIButton *btn) {
-                    //                if ([userNameModel.jusername isEqualToString:@""] || userNameModel.jusername == nil || !userNameModel.jusername) {
-                    //                    [weakself showHint:@"申请方未认证，不能查看相关信息"];
-                    //                }else{
-                    //                    CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
-                    //                    checkDetailPublishVC.idString = weakself.idString;
-                    //                    checkDetailPublishVC.categoryString = weakself.categaryString;
-                    //                    checkDetailPublishVC.pidString = weakself.pidString;
-                    //                    checkDetailPublishVC.typeString = @"接单方";
-                    //                    //                checkDetailPublishVC.typeDegreeString = @"处理中";
-                    //                    [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];
-                    //                }
+                    if ([nameStr isEqualToString:@"未认证"]) {
+                        [weakself showHint:@"接单方未认证，不能查看相关信息"];
+                    }else{
+                        CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+                        checkDetailPublishVC.navTitle = @"接单方详情";
+                        checkDetailPublishVC.productid = dataModel.productid;
+                        checkDetailPublishVC.userid = dataModel.productApply.create_by;
+                        [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];
+                    }
+                    
                 }];
                 
                 //电话
                 [cell.contactButton addAction:^(UIButton *btn) {
-                    //                if ([userNameModel.jusername isEqualToString:@""] || userNameModel.jusername == nil || !userNameModel.jusername) {
-                    //                    [self showHint:@"申请方未认证，不能打电话"];
-                    //                }else{
-                    //                    NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",userNameModel.jmobile];
-                    //                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
-                    //                }
+                    if ([nameStr isEqualToString:@"未认证"]) {
+                        [weakself showHint:@"接单方未认证，不能打电话"];
+                    }else{
+                        NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",dataModel.productApply.mobile];
+                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
+                    }
                 }];
                 return cell;
             }
             
         }else if (indexPath.section == 1){
             identifier = @"myDealing1";
+            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            [cell.userNameButton setTitle:@"居间协议" forState:0];
+            [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            
+            if ([dataModel.productApply.orders.status integerValue] == 0) {
+                [cell.userActionButton setTitle:@"等待接单方上传" forState:0];
+            }else{
+                [cell.userActionButton setTitle:@"查看" forState:0];
+            }
+            
+            return cell;
+        }else if (indexPath.section == 2){
+            identifier = @"myDealing2";
             MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
             if (!cell) {
                 cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
@@ -518,23 +533,6 @@
                 [cell.userActionButton setTitle:@"查看" forState:0];
             }
             
-            return cell;
-        }else if (indexPath.section == 2){
-            identifier = @"myDealing2";
-            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-            if (!cell) {
-                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-            }
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            [cell.userNameButton setTitle:@"居间协议" forState:0];
-            [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-            
-            if ([dataModel.productApply.orders.status integerValue] == 0) {
-                [cell.userActionButton setTitle:@"等待接单方上传" forState:0];
-            }else{
-                [cell.userActionButton setTitle:@"查看" forState:0];
-            }
             return cell;
         }else if (indexPath.section == 3){
             identifier = @"myDealing3";
@@ -592,7 +590,7 @@
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 
                 NSString *nameStr = [NSString getValidStringFromString:dataModel.productApply.mobile toString:@"未认证"];
-                NSString *checkStr = [NSString stringWithFormat:@"接单方：%@",nameStr];
+                NSString *checkStr = [NSString stringWithFormat:@"申请方：%@",nameStr];
                 [cell.checkButton setTitle:checkStr forState:0];
                 [cell.contactButton setTitle:@" 联系TA" forState:0];
                 [cell.contactButton setImage:[UIImage imageNamed:@"phone_blue"] forState:0];
@@ -600,16 +598,50 @@
                 //接单方详情
                 QDFWeakSelf;
                 [cell.checkButton addAction:^(UIButton *btn) {
+                    if ([nameStr isEqualToString:@"未认证"]) {
+                        [weakself showHint:@"接单方未认证，不能查看相关信息"];
+                    }else{
+                        CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+                        checkDetailPublishVC.navTitle = @"接单方详情";
+                        checkDetailPublishVC.productid = dataModel.productid;
+                        checkDetailPublishVC.userid = dataModel.productApply.create_by;
+                        [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];
+                    }
+                    
                 }];
                 
                 //电话
                 [cell.contactButton addAction:^(UIButton *btn) {
+                    if ([nameStr isEqualToString:@"未认证"]) {
+                        [weakself showHint:@"接单方未认证，不能打电话"];
+                    }else{
+                        NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",dataModel.productApply.mobile];
+                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
+                    }
                 }];
                 return cell;
             }
             
         }else if (indexPath.section == 1){
             identifier = @"myEnding1";
+            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            [cell.userNameButton setTitle:@"居间协议" forState:0];
+            [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            
+            if ([dataModel.productApply.orders.status integerValue] == 0) {
+                [cell.userActionButton setTitle:@"等待接单方上传" forState:0];
+            }else{
+                [cell.userActionButton setTitle:@"查看" forState:0];
+            }
+
+            return cell;
+        }else if (indexPath.section == 2){
+            identifier = @"myEnding2";
             MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
             if (!cell) {
                 cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
@@ -626,23 +658,6 @@
             }
             
             return cell;
-        }else if (indexPath.section == 2){
-            identifier = @"myEnding2";
-            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-            if (!cell) {
-                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-            }
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            [cell.userNameButton setTitle:@"居间协议" forState:0];
-            [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-            
-            if ([dataModel.productApply.orders.status integerValue] == 0) {
-                [cell.userActionButton setTitle:@"等待接单方上传" forState:0];
-            }else{
-                [cell.userActionButton setTitle:@"查看" forState:0];
-            }
-            return cell;
         }else if (indexPath.section == 3){
             identifier = @"myEnding3";
             MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -656,8 +671,6 @@
     }else if ([dataModel.statusLabel isEqualToString:@"已结案"]) {
         if (indexPath.section == 0) {
             identifier = @"close00";
-            PublishingResponse *resModel = self.releaseDetailArray[0];
-            
             if (indexPath.row == 0){
                 identifier = @"myDealing00";
                 NewPublishDetailsCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -696,10 +709,26 @@
                 //接单方详情
                 QDFWeakSelf;
                 [cell.checkButton addAction:^(UIButton *btn) {
+                    if ([nameStr isEqualToString:@"未认证"]) {
+                        [weakself showHint:@"接单方未认证，不能查看相关信息"];
+                    }else{
+                        CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+                        checkDetailPublishVC.navTitle = @"接单方详情";
+                        checkDetailPublishVC.productid = dataModel.productid;
+                        checkDetailPublishVC.userid = dataModel.productApply.create_by;
+                        [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];
+                    }
+                    
                 }];
                 
                 //电话
                 [cell.contactButton addAction:^(UIButton *btn) {
+                    if ([nameStr isEqualToString:@"未认证"]) {
+                        [weakself showHint:@"接单方未认证，不能打电话"];
+                    }else{
+                        NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",dataModel.productApply.mobile];
+                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
+                    }
                 }];
                 return cell;
             }
@@ -731,7 +760,7 @@
             }else if ([dataModel.typeLabel isEqualToString:@"%"]){
                 proText3 = [NSString stringWithFormat:@"风险费率：%@%@\n",dataModel.typenumLabel,dataModel.typeLabel];
             }
-            NSString *proText4 = [NSString stringWithFormat:@"委托金额：%@",dataModel.accountLabel];
+            NSString *proText4 = [NSString stringWithFormat:@"委托金额：%@万",dataModel.accountLabel];
             NSString *proTextStr = [NSString stringWithFormat:@"%@%@%@%@",proText1,proText2,proText3,proText4];
             NSMutableAttributedString *attributePP = [[NSMutableAttributedString alloc] initWithString:proTextStr];
             [attributePP setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, proText1.length)];
@@ -753,11 +782,16 @@
                     }
                         break;
                     case 331:{//查看全部产品信息
-                        
+                        MoreMessagesViewController *moreMessagesVC = [[MoreMessagesViewController alloc] init];
+                        moreMessagesVC.productid = dataModel.productid;
+                        [weakself.navigationController pushViewController:moreMessagesVC animated:YES];
                     }
                         break;
                     case 332:{//查看签约协议
-                        
+                        SignProtocolViewController *signProtocolVC = [[SignProtocolViewController alloc] init];
+                        signProtocolVC.ordersid = dataModel.productApply.orders.ordersid;
+                        signProtocolVC.isShowString = @"0";
+                        [weakself.navigationController pushViewController:signProtocolVC animated:YES];
                     }
                         break;
                     case 333:{//查看尽职调查
@@ -765,7 +799,12 @@
                     }
                         break;
                     case 334:{//查看居间协议
+                        AgreementViewController *agreementVC = [[AgreementViewController alloc] init];
+                        agreementVC.navTitleString = @"居间协议";
+                        agreementVC.flagString = @"0";
+                        agreementVC.productid = dataModel.productid;
                         
+                        [weakself.navigationController pushViewController:agreementVC animated:YES];
                     }
                         break;
                     default:
@@ -794,15 +833,19 @@
 {
     RowsModel *dataModel = self.releaseDetailArray[0];
     
-    if (indexPath.section == 0 && indexPath.row == 0) {//完善信息
-        MoreMessagesViewController *moreMessageVC = [[MoreMessagesViewController alloc] init];
-        moreMessageVC.productid = dataModel.productid;
-        [self.navigationController pushViewController:moreMessageVC animated:YES];
+    if (![dataModel.statusLabel isEqualToString:@"已结案"]) {
+        if (indexPath.section == 0 && indexPath.row == 0) {//完善信息
+            MoreMessagesViewController *moreMessageVC = [[MoreMessagesViewController alloc] init];
+            moreMessageVC.productid = dataModel.productid;
+            [self.navigationController pushViewController:moreMessageVC animated:YES];
+        }
     }
     
     if ([dataModel.statusLabel isEqualToString:@"发布中"]) {
         if ([dataModel.productApply.status integerValue] == 20) {//面谈中
-        }else{
+            
+        }else{//发布中
+
             if (indexPath.section == 1) {
                 ApplyRecordViewController *applyRecordsVC = [[ApplyRecordViewController alloc] init];
                 applyRecordsVC.productid = self.productid;
@@ -828,14 +871,27 @@
                             [weakself choosePersonOfInterView];
                         }
                     }];
-                    
                 }];
             }
         }
-    }else if ([dataModel.statusLabel isEqualToString:@"处理中"]){
-        
-    }else if ([dataModel.statusLabel isEqualToString:@"已终止"]){
-        
+    }else if ([dataModel.statusLabel isEqualToString:@"处理中"] || [dataModel.statusLabel isEqualToString:@"已终止"]){
+        if (indexPath.section == 1) {
+            [self showHint:@"居间协议"];
+            if ([dataModel.productApply.orders.status integerValue] > 0) {
+                AgreementViewController *agreementVC = [[AgreementViewController alloc] init];
+                agreementVC.navTitleString = @"居间协议";
+                agreementVC.flagString = @"0";
+                agreementVC.productid = dataModel.productid;
+                [self.navigationController pushViewController:agreementVC animated:YES];
+            }
+        }else if (indexPath.section == 2){
+            if ([dataModel.productApply.orders.status integerValue] > 10) {
+                SignProtocolViewController *signProtocalVC = [[SignProtocolViewController alloc] init];
+                signProtocalVC.isShowString = @"0";
+                signProtocalVC.ordersid = dataModel.productApply.orders.ordersid;
+                [self.navigationController pushViewController:signProtocalVC animated:YES];
+            }
+        }
     }else if ([dataModel.statusLabel isEqualToString:@"已结案"]){
         
     }
@@ -853,8 +909,6 @@
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
         
         [weakself.releaseDetailArray removeAllObjects];
-        
-        NSDictionary *sososo = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
         
@@ -924,6 +978,11 @@
                 if ([dataModel.productApply.orders.status integerValue] > 10) {
                     [weakself.rightButton setHidden:NO];
                     [weakself.rightButton setTitle:@"申请终止" forState:0];
+                    [weakself.rightButton addAction:^(UIButton *btn) {
+                        RequestEndViewController *requestEndVC = [[RequestEndViewController alloc] init];
+                        requestEndVC.ordersid = dataModel.productApply.orders.ordersid;
+                        [weakself.navigationController pushViewController:requestEndVC animated:YES];
+                    }];
                 }
                 
                 [weakself.view addSubview:weakself.EndOrloseRemindButton];
@@ -1068,11 +1127,6 @@
 
 - (void)rightItemAction//申请终止
 {
-    [self showHint:@"申请终止"];
-    RowsModel *dataModel = self.releaseDetailArray[0];
-    RequestEndViewController *requestEndVC = [[RequestEndViewController alloc] init];
-    requestEndVC.ordersid = dataModel.productApply.orders.ordersid;
-    [self.navigationController pushViewController:requestEndVC animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

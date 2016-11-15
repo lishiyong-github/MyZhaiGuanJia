@@ -21,7 +21,10 @@
     NSMutableArray *basicImageArray = [NSMutableArray array];
     for (id imageObj in images) {
         if ([imageObj isKindOfClass:[NSString class]]) {
-            FSBasicImage *image = [[FSBasicImage alloc] initWithImageURL:[NSURL URLWithString:imageObj]];
+            NSString *ssss = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imageObj];
+            FSBasicImage *image = [[FSBasicImage alloc] initWithImageURL:[NSURL URLWithString:ssss]];
+
+//            FSBasicImage *image = [[FSBasicImage alloc] initWithImageURL:[NSURL URLWithString:imageObj]];
             [basicImageArray addObject:image];
         }else if ([imageObj isKindOfClass:[NSURL class]]){
             FSBasicImage *image = [[FSBasicImage alloc] initWithImageURL:imageObj];

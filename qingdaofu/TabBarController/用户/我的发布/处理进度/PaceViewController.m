@@ -251,9 +251,7 @@
 {
     NSString *paceString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kLookUpScheduleString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
-                             @"id" : self.idString,
-                             @"category" : self.categoryString,
-                             @"page" : page
+                             @"processid" : self.processid
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:paceString params:params successBlock:^(id responseObject) {

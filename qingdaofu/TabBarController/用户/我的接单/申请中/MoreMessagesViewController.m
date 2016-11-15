@@ -25,16 +25,18 @@
 
 @implementation MoreMessagesViewController
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self getMoreMessagesOfProduct];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"code";
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
     [self.view addSubview:self.moreMessageTableView];
     
     [self.view setNeedsUpdateConstraints];
-    
-    [self getMoreMessagesOfProduct];
 }
 
 - (void)updateViewConstraints
@@ -73,17 +75,44 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (self.moreMessageArray.count > 0) {
-//        return 4;
-        
+        return 1;
     }
     return 0;
+//    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == 0) {
         return 7;
+    }else{
+        
+        if (self.moreMessageArray.count > 0) {
+            PublishingResponse *response = self.moreMessageArray[0];
+            RowsModel *rowModel = response.data;
+            
+            //房产抵押，机动车抵押，合同纠纷
+            if ([rowModel.statusLabel containsString:@"发布"] || [rowModel.statusLabel containsString:@"面谈"]) {
+                if (section == 1){
+                    return 1+rowModel.productMortgages1.count;
+                }else if (section == 2){
+                    return 1+rowModel.productMortgages2.count;
+                }else{
+                    return 1+rowModel.productMortgages3.count;
+                }
+            }else{
+                if (section == 1){
+                    return rowModel.productMortgages1.count;
+                }else if (section == 2){
+                    return rowModel.productMortgages2.count;
+                }else{
+                    return rowModel.productMortgages3.count;
+                }
+            }
+        }
+        return 0;
     }
+    
     return 1;
 }
 
@@ -106,7 +135,13 @@
         PublishingResponse *response = self.moreMessageArray[0];
         RowsModel *dataModel = response.data;
         
-        NSArray *www = @[@"基本信息",@"债权类型",@"委托事项",@"委托金额",@"委托费用",@"违约期限",@"合同履行地"];
+        NSArray *www;
+//        = @[@"基本信息",@"债权类型",@"委托事项",@"委托金额",@"委托费用",@"违约期限",@"合同履行地"];
+        if ([dataModel.typeLabel isEqualToString:@"万"]) {
+            www = @[@"基本信息",@"债权类型",@"委托事项",@"委托金额",@"固定费用",@"违约期限",@"合同履行地"];
+        }else if([dataModel.typeLabel isEqualToString:@"%"]){
+            www = @[@"基本信息",@"债权类型",@"委托事项",@"委托金额",@"风险费率",@"违约期限",@"合同履行地"];
+        }
         [cell.userNameButton setTitle:www[indexPath.row] forState:0];
         
         if (indexPath.row == 0) {
@@ -115,7 +150,11 @@
             [cell.userActionButton setTitleColor:kTextColor forState:0];
             cell.userActionButton.titleLabel.font = kBigFont;
             
-            [cell.userActionButton setTitle:@"编辑" forState:0];
+            if ([dataModel.statusLabel containsString:@"发布"] || [dataModel.statusLabel containsString:@"面谈"]) {
+                [cell.userActionButton setTitle:@"编辑" forState:0];
+            }else{
+                [cell.userActionButton setTitle:@"" forState:0];
+            }
         }else {
             
             [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
@@ -141,16 +180,35 @@
         }
         return cell;
     }else{
-        identifier = @"moreMes1";
-        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if (!cell) {
-            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        
+        if (self.moreMessageArray.count > 0) {
+            PublishingResponse *response = self.moreMessageArray[0];
+            RowsModel *rowModel = response.data;
+            if ([rowModel.statusLabel containsString:@"发布"] || [rowModel.statusLabel containsString:@"面谈"]) {//可以添加
+                
+            }else{//无添加功能
+                
+                if (rowModel.productMortgages1.count > 0) {
+
+                    if (indexPath.section == 1) {
+                        identifier = @"moreMes1";
+                        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+                        if (!cell) {
+                            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+                        }
+                        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                        
+                        [cell.userNameButton setTitle:@"房产抵押" forState:0];
+                        
+                        return cell;
+                    }
+                    
+                }else{
+                   
+                }
+                
+            }
         }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        [cell.userNameButton setTitle:@"添加" forState:0];
-        
-        return cell;
     }
     return nil;
 }
@@ -176,10 +234,10 @@
     [self requestDataPostWithString:moreString params:params successBlock:^(id responseObject) {
         
         [weakself.moreMessageArray removeAllObjects];
-        
-        NSDictionary  *sosos = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        
+                
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
+        
+        weakself.title = response.data.number;
         
         [weakself.moreMessageArray addObject:response];
         

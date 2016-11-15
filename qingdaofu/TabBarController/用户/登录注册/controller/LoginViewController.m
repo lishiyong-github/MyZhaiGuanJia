@@ -297,13 +297,14 @@
 
     QDFWeakSelf;
     [self requestDataPostWithString:loginString params:params successBlock:^( id responseObject){
-                        
+            
         BaseModel *loginModel = [BaseModel objectWithKeyValues:responseObject];
         [weakself showHint:loginModel.msg];
         
         if ([loginModel.code isEqualToString:@"0000"]) {
             [[NSUserDefaults standardUserDefaults] setObject:loginModel.token forKey:@"token"];
             [[NSUserDefaults standardUserDefaults] setObject:weakself.loginDictionary[@"mobile"] forKey:@"mobile"];
+
             [[NSUserDefaults standardUserDefaults] synchronize];
             
             [weakself back];
