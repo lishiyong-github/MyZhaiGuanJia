@@ -386,7 +386,8 @@
     self.perDataDictionary[@"name"] = self.perDataDictionary[@"name"]?self.perDataDictionary[@"name"]:self.respnseModel.certification.name;
     self.perDataDictionary[@"cardno"] = self.perDataDictionary[@"cardno"]?self.perDataDictionary[@"cardno"]:self.respnseModel.certification.cardno;
     self.perDataDictionary[@"email"] = self.perDataDictionary[@"email"]?self.perDataDictionary[@"email"]:self.respnseModel.certification.email;
-    self.perDataDictionary[@"completionRate"] = self.respnseModel.completionRate?self.respnseModel.completionRate:@"";
+//    self.perDataDictionary[@"completionRate"] = self.respnseModel.completionRate?self.respnseModel.completionRate:@"";
+    
     [self.perDataDictionary setValue:@"1" forKey:@"category"];//认证类型
     [self.perDataDictionary setValue:[self getValidateToken] forKey:@"token"];
     

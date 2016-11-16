@@ -35,9 +35,9 @@
         [self.countLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:self.imageButton];
         [self.countLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.imageButton];
         
-        [self.contentLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.imageButton withOffset:kBigPadding];
+        [self.contentLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.imageButton withOffset:kSpacePadding];
         [self.contentLabel autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.imageButton];
-        [self.contentLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.timeButton];
+        [self.contentLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:60];
         
         [self.timeButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.timeButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.contentLabel];

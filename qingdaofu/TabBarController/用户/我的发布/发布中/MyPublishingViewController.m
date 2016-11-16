@@ -356,23 +356,6 @@
     }];
 }
 
-
-////编辑信息
-//- (void)editAllMessages
-//{
-//    if (self.publishingDataArray.count > 0) {
-//        PublishingResponse *response = self.publishingDataArray[0];
-//        PublishingModel *rModel = response.product;
-//        
-//        ReportSuitViewController *reportSuiVC = [[ReportSuitViewController alloc] init];
-//        reportSuiVC.categoryString = rModel.category;
-//        reportSuiVC.suResponse = response;
-//        reportSuiVC.tagString = @"3";
-//        UINavigationController *nsop = [[UINavigationController alloc] initWithRootViewController:reportSuiVC];
-//        [self presentViewController:nsop animated:YES completion:nil];
-//    }
-//}
-
 - (void)deleteThePublishing
 {
     NSString *deletePubString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseOfDeleteString];

@@ -653,7 +653,7 @@
     NSString *allProString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductListsString];
     
     [self.paramsDictionary setValue:page forKey:@"page"];
-    [self.paramsDictionary setValue:page forKey:@"limit"];
+    [self.paramsDictionary setValue:@"10" forKey:@"limit"];
     [self.paramsDictionary setValue:[self getValidateToken] forKey:@"token"];
     
     NSDictionary *params = self.paramsDictionary;

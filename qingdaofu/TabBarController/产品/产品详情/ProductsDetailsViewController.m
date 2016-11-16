@@ -27,25 +27,20 @@
 
 //model
 //产品信息
-#import "NewProductResponse.h"
-#import "PublishingModel.h"//产品详情
 #import "CertificationModel.h" //发布人详情
 #import "NumberModel.h" //申请次数
 #import "CreditorFileModel.h"  //债权文件
+#import "ApplyRecordModel.h"
 
 //发布人信息
-#import "CompleteResponse.h"
-
-//收藏状态
-#import "ApplicationStateModel.h"
 
 //评价
 #import "EvaluateResponse.h"
 #import "EvaluateModel.h"
 
 ////////////
-#import "PublishingResponse.h"
-#import "RowsModel.h"
+#import "ProductDetailResponse.h"
+#import "ProductDetailModel.h"
 #import "CompleteResponse.h"
 #import "CertificationModel.h"
 
@@ -178,24 +173,10 @@
         [productSwitchView.shortLineLabel setHidden:YES];
         [self.headerView addSubview:productSwitchView];
         
-//        if ([self.switchType isEqualToString:@"33"]) {
-//            [productSwitchView.getbutton setTitleColor:kBlueColor forState:0];
-//            [productSwitchView.sendButton setTitleColor:kBlackColor forState:0];
-//            productSwitchView.leftBlueConstraints.constant = 0;
-//            
-//        }else if ([self.switchType isEqualToString:@"34"]){
-//            [productSwitchView.sendButton setTitleColor:kBlueColor forState:0];
-//            [productSwitchView.getbutton setTitleColor:kBlackColor forState:0];
-//            productSwitchView.leftBlueConstraints.constant = kScreenWidth/2;
-//        }
-        
         QDFWeak(productSwitchView);
         QDFWeakSelf;
         [productSwitchView setDidSelectedButton:^(NSInteger tag) {
             if (tag == 33) {//产品信息
-//                [weakproductSwitchView.getbutton setTitleColor:kBlueColor forState:0];
-//                [weakproductSwitchView.sendButton setTitleColor:kBlackColor forState:0];
-//                weakproductSwitchView.leftBlueConstraints.constant = 0;
                 weakself.switchType = @"33";
                 
                 if (weakself.messageArray1.count == 0) {
@@ -216,28 +197,6 @@
                     [weakproductSwitchView.sendButton setTitleColor:kBlackColor forState:0];
                     weakproductSwitchView.leftBlueConstraints.constant = 0;
                 }
-//                CertificationModel *certifiteModel;
-//                if (self.certificationArray1.count > 0) {
-//                    certifiteModel = self.certifiDataArray[0];
-//                }
-//                if ([certifiteModel.state isEqualToString:@"1"]){
-//                    [weakproductSwitchView.sendButton setTitleColor:kBlueColor forState:0];
-//                    [weakproductSwitchView.getbutton setTitleColor:kBlackColor forState:0];
-//                    weakproductSwitchView.leftBlueConstraints.constant = kScreenWidth/2;
-//                    weakself.switchType = @"34";
-//                    
-//                    if (weakself.certifiDataArray.count == 0) {
-////                        [weakself getMessageOfPublishPerson];
-//                        [weakself getDetailMessageOfProduct];
-//                    }else{
-//                        [weakself.productsDetailsTableView reloadData];
-//                    }
-//                }else{
-//                    [weakself showHint:@"发布方未认证，不能查看相关信息"];
-//                    [weakproductSwitchView.getbutton setTitleColor:kBlueColor forState:0];
-//                    [weakproductSwitchView.sendButton setTitleColor:kBlackColor forState:0];
-//                    weakproductSwitchView.leftBlueConstraints.constant = 0;
-//                }
             }
         }];
     }
@@ -343,7 +302,7 @@
 {
     static NSString *identifier;
     
-    RowsModel *rowModel = self.recommendDataArray[0];
+    ProductDetailModel *prodDetailModel = self.recommendDataArray[0];
     
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {//产品详情
@@ -356,8 +315,8 @@
             cell.backgroundColor = UIColorFromRGB(0x0da3f8);
             
             cell.deRateLabel.text = @"----    委托费用    ----";
-            NSString *agencyStr1 = rowModel.typenumLabel;
-            NSString *agencyStr2 = rowModel.typeLabel;
+            NSString *agencyStr1 = prodDetailModel.typenumLabel;
+            NSString *agencyStr2 = prodDetailModel.typeLabel;
             NSString *agencyStr = [NSString stringWithFormat:@"%@%@",agencyStr1,agencyStr2];
             NSMutableAttributedString *attAgencyStr = [[NSMutableAttributedString alloc] initWithString:agencyStr];
             [attAgencyStr addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:50],NSForegroundColorAttributeName:kWhiteColor} range:NSMakeRange(0, agencyStr1.length)];
@@ -366,7 +325,7 @@
             
             //左边－－－－委托金额
             cell.deMoneyView.fLabel1.text = @"委托金额";
-            NSString *moneyStr1 = rowModel.accountLabel;
+            NSString *moneyStr1 = prodDetailModel.accountLabel;
             NSString *moneyStr2 = @"万";
             NSString *moneyStr = [NSString stringWithFormat:@"%@%@",moneyStr1,moneyStr2];
             NSMutableAttributedString *attMoneyStr = [[NSMutableAttributedString alloc] initWithString:moneyStr];
@@ -376,7 +335,7 @@
             
             //右边 --违约期限
             cell.deTypeView.fLabel1.text = @"违约期限";
-            NSString *dateStr1 = rowModel.overdue;
+            NSString *dateStr1 = prodDetailModel.overdue;
             NSString *dateStr2 = @"个月";
             NSString *dateStr = [NSString stringWithFormat:@"%@%@",dateStr1,dateStr2];
             NSMutableAttributedString *attDateStr = [[NSMutableAttributedString alloc] initWithString:dateStr];
@@ -397,11 +356,11 @@
         cell.backgroundColor = kWhiteColor;
         
         cell.numberButton1.fLabel1.text = @"浏览次数";
-        cell.numberButton1.fLabel2.text = [NSString getValidStringFromString:rowModel.browsenumber toString:@"0"];
+        cell.numberButton1.fLabel2.text = [NSString getValidStringFromString:prodDetailModel.browsenumber toString:@"0"];
         cell.numberButton2.fLabel1.text = @"申请次数";
-        cell.numberButton2.fLabel2.text = [NSString getValidStringFromString:rowModel.applyTotal toString:@"0"];
+        cell.numberButton2.fLabel2.text = [NSString getValidStringFromString:prodDetailModel.applyTotal toString:@"0"];
         cell.numberButton3.fLabel1.text = @"收藏次数";
-        cell.numberButton3.fLabel2.text = [NSString getValidStringFromString:rowModel.collectionTotal toString:@"0"];
+        cell.numberButton3.fLabel2.text = [NSString getValidStringFromString:prodDetailModel.collectionTotal toString:@"0"];
 
         return cell;
     }
@@ -416,9 +375,9 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         NSArray *arr1;
-        if ([rowModel.typeLabel isEqualToString:@"万"]) {
+        if ([prodDetailModel.typeLabel isEqualToString:@"万"]) {
             arr1 = @[@"基本信息",@"债权类型",@"委托事项",@"委托金额",@"固定费用",@"违约期限",@"合同履行地"];
-        }else if ([rowModel.typeLabel isEqualToString:@"%"]){
+        }else if ([prodDetailModel.typeLabel isEqualToString:@"%"]){
             arr1 = @[@"基本信息",@"债权类型",@"委托事项",@"委托金额",@"风险费率",@"违约期限",@"合同履行地"];
         }
         [cell.userNameButton setTitle:arr1[indexPath.row] forState:0];
@@ -426,20 +385,20 @@
         if (indexPath.row == 0) {
             [cell.userActionButton setTitle:@"" forState:0];
         }else if (indexPath.row == 1){
-            [cell.userActionButton setTitle:rowModel.categoryLabel forState:0];
+            [cell.userActionButton setTitle:prodDetailModel.categoryLabel forState:0];
         }else if (indexPath.row == 2){
-            [cell.userActionButton setTitle:rowModel.entrustLabel forState:0];
+            [cell.userActionButton setTitle:prodDetailModel.entrustLabel forState:0];
         }else if (indexPath.row == 3){
-            NSString *account = [NSString stringWithFormat:@"%@万",rowModel.accountLabel];
+            NSString *account = [NSString stringWithFormat:@"%@万",prodDetailModel.accountLabel];
             [cell.userActionButton setTitle:account forState:0];
         }else if (indexPath.row == 4){
-            NSString *typenum = [NSString stringWithFormat:@"%@%@",rowModel.typenumLabel,rowModel.typeLabel];
+            NSString *typenum = [NSString stringWithFormat:@"%@%@",prodDetailModel.typenumLabel,prodDetailModel.typeLabel];
             [cell.userActionButton setTitle:typenum forState:0];
         }else if (indexPath.row == 5){
-            NSString *overdue = [NSString stringWithFormat:@"%@个月",rowModel.overdue];
+            NSString *overdue = [NSString stringWithFormat:@"%@个月",prodDetailModel.overdue];
             [cell.userActionButton setTitle:overdue forState:0];
         }else if (indexPath.row == 6){
-            [cell.userActionButton setTitle:rowModel.addressLabel forState:0];
+            [cell.userActionButton setTitle:prodDetailModel.addressLabel forState:0];
         }
         
         
@@ -762,35 +721,41 @@
     QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
         
-        NSDictionary *wowoow = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        NSDictionary *apapa = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
-        PublishingResponse *respongh = [PublishingResponse objectWithKeyValues:responseObject];
+        ProductDetailResponse *respongh = [ProductDetailResponse objectWithKeyValues:responseObject];
         
         if ([respongh.code isEqualToString:@"0000"]) {
             
-            RowsModel *rowModel = respongh.data;
+            ProductDetailModel *prodDetailModel = respongh.data;
             //title
-            weakself.title = [NSString stringWithFormat:@"债权%@",rowModel.number];
+            weakself.title = [NSString stringWithFormat:@"债权%@",prodDetailModel.number];
             
             //state
-            if ([rowModel.status integerValue] == 20 || [rowModel.status integerValue] == 30 || [rowModel.status integerValue] == 40) {//已撮合
+            if ([prodDetailModel.status integerValue] == 20 || [prodDetailModel.status integerValue] == 30 || [prodDetailModel.status integerValue] == 40) {//已撮合
                 [weakself.proDetailsCommitButton setTitle:@"已撮合" forState:0];
-            }else if ([rowModel.applyPeople integerValue] > 0){//已申请
-                if (rowModel.apply && [rowModel.applystatussss integerValue] == 10) {
+            }else if ([prodDetailModel.applyPeople integerValue] > 0){//已申请
+                if (prodDetailModel.apply && [prodDetailModel.apply.status integerValue] == 10) {
                     [weakself.proDetailsCommitButton setTitle:@"取消申请" forState:0];
+                    [weakself.proDetailsCommitButton addAction:^(UIButton *btn) {
+                        [weakself cancelApplyWithModel:prodDetailModel];
+                    }];
+                
                 }else{
                     [weakself.proDetailsCommitButton setTitle:@"面谈中" forState:0];
                 }
-            }else if ([rowModel.applyPeople integerValue] == 0 && ![rowModel.create_by isEqualToString:respongh.userid]){//立即申请
+            }else if ([prodDetailModel.applyPeople integerValue] == 0 && ![prodDetailModel.create_by isEqualToString:respongh.userid]){//立即申请
                 [weakself.proDetailsCommitButton setTitle:@"立即申请" forState:0];
+                [weakself.proDetailsCommitButton addAction:^(UIButton *btn) {
+                    [weakself ActionOfApplicationCommitWithModel:prodDetailModel];
+                }];
             }else{
-//                [weakself.proDetailsCommitButton setTitle:@"自己发布的，需要隐藏" forState:0];
                 [weakself.productsDetailsTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
                 [weakself.proDetailsCommitButton setHidden:YES];
             }
             
             //收藏状态
-            if ([rowModel.collectionPeople integerValue] > 0) {
+            if ([prodDetailModel.collectionPeople integerValue] > 0) {
                 [weakself.rightButton setImage:[UIImage imageNamed:@"nav_collection_s"] forState:0];
                 weakself.typetString = @"1";
             }else{
@@ -799,11 +764,11 @@
             }
             
             //债权信息
-            [weakself.recommendDataArray addObject:rowModel];
+            [weakself.recommendDataArray addObject:prodDetailModel];
             
             //*********发布人认证信息////////
-            if (rowModel.User.certification) {
-                CertificationModel *certificationModel = rowModel.User.certification;
+            if (prodDetailModel.User.certification) {
+                CertificationModel *certificationModel = prodDetailModel.User.certification;
                 [weakself.certifiDataArray addObject:certificationModel];
                 NSString *definedStr = @"已认证";
                 
@@ -838,171 +803,30 @@
     }];
 }
 
-////申请状态及收藏状态
-//- (void)applicationForOrdersStates
-//{
-//    NSString *houseString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductHouseStateString];
-//    NSDictionary *params = @{@"id" : self.idString,
-//                             @"category" : self.categoryString,
-//                             @"token" : [self getValidateToken]
-//                             };
-//    QDFWeakSelf;
-//    [self requestDataPostWithString:houseString params:params successBlock:^(id responseObject) {
-//        ApplicationStateModel *stateModel = [ApplicationStateModel objectWithKeyValues:responseObject];
-//        
-//        
-//        PublishingModel *rModel;
-//        if (self.recommendDataArray.count > 0) {
-//            rModel = self.recommendDataArray[0];
-//        }
-//        if ((stateModel.app_id == nil || [stateModel.app_id intValue] == 2) && [rModel.progress_status integerValue] == 1) {
-//            [weakself.proDetailsCommitButton setTitleColor:kWhiteColor forState:0];
-//            [weakself.proDetailsCommitButton setTitle:@"立即申请" forState:0];
-//            [weakself.proDetailsCommitButton addTarget: weakself action:@selector(applicationCommit) forControlEvents:UIControlEventTouchUpInside];
-//            
-//            weakself.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:weakself.rightItemButton];
-//            
-//            if (stateModel.app_id == nil) {//未收藏
-//                [weakself.rightItemButton setImage:[UIImage imageNamed:@"nav_collection"] forState:0];
-//                
-//                QDFWeakSelf;
-//                [weakself.rightItemButton addAction:^(UIButton *btn) {
-//                    
-//                    if (weakself.typetString) {
-//                        [weakself saveOrQuitSaveWithType:weakself.typetString WithButton:btn];
-//                    }else{
-//                        [weakself saveOrQuitSaveWithType:@"1" WithButton:btn];
-//                    }
-//                }];
-//                
-//            }else{//已收藏
-//                [weakself.rightItemButton setImage:[UIImage imageNamed:@"nav_collection_s"] forState:0];
-//                QDFWeakSelf;
-//                [weakself.rightItemButton addAction:^(UIButton *btn) {
-//                    if (weakself.typetString) {
-//                        [weakself saveOrQuitSaveWithType:weakself.typetString WithButton:btn];
-//                    }else{
-//                        [weakself saveOrQuitSaveWithType:@"2" WithButton:btn];
-//                    }
-//                }];
-//            }
-//            
-//        }else if (([stateModel.app_id intValue] == 0) && ([rModel.progress_status intValue] == 1)) {//已申请
-//            [weakself.proDetailsCommitButton setTitleColor:kBlackColor forState:0];
-//            [weakself.proDetailsCommitButton setTitle:@"已申请" forState:0];
-//            [weakself.proDetailsCommitButton setBackgroundColor:kSelectedColor];
-//            weakself.proDetailsCommitButton.userInteractionEnabled = NO;
-//        }else if ([rModel.progress_status intValue] == 2){//申请成功
-//            if ([stateModel.app_id integerValue] == 1) {//自己申请成功
-//                [weakself.proDetailsCommitButton setTitleColor:kBlackColor forState:0];
-//                [weakself.proDetailsCommitButton setTitle:@"申请成功" forState:0];
-//                [weakself.proDetailsCommitButton setBackgroundColor:kSelectedColor];
-//                
-//                //添加电话按钮
-//                UIButton *phoneButton = [UIButton newAutoLayoutView];
-//                [phoneButton setImage:[UIImage imageNamed:@"phone"] forState:0];
-//                phoneButton.backgroundColor = kBlueColor;
-//                [phoneButton addAction:^(UIButton *btn) {
-//                    NSString *phoneStr = [NSString stringWithFormat:@"telprompt://%@",stateModel.mobile];
-//                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
-//                }];
-//                [weakself.proDetailsCommitButton addSubview:phoneButton];
-//                
-//                [phoneButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:weakself.proDetailsCommitButton];
-//                [phoneButton autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:weakself.proDetailsCommitButton];
-//                [phoneButton autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:weakself.proDetailsCommitButton];
-//                [phoneButton autoSetDimension:ALDimensionWidth toSize:kTabBarHeight];
-//            }else{//别人申请成功，自己显示被接单
-//                [weakself.proDetailsCommitButton setTitleColor:kBlackColor forState:0];
-//                [weakself.proDetailsCommitButton setTitle:@"已被接单" forState:0];
-//                [weakself.proDetailsCommitButton setBackgroundColor:kSelectedColor];
-//            }
-//        }else{
-//            [weakself.proDetailsCommitButton setTitleColor:kBlackColor forState:0];
-//            [weakself.proDetailsCommitButton setTitle:@"已终止" forState:0];
-//            [weakself.proDetailsCommitButton setBackgroundColor:kSelectedColor];
-//        }
-//    } andFailBlock:^(NSError *error) {
-//        
-//    }];
-//}
-
-////申请收藏或取消收藏
-//- (void)saveOrQuitSaveWithType:(NSString *)type WithButton:(UIButton *)sender
-//{
-//    sender.selected = !sender.selected;
-//    
-//    PublishingModel *rightModel = self.recommendDataArray[0];
-//    
-//    NSString *rightString;
-//    NSDictionary *params;
-//    
-//    if ([type isEqualToString:@"1"]) {//未收藏 －－ 收藏
-//       rightString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kRequestStoreString];
-//        params = @{@"id" : rightModel.idString,
-//                   @"category" : rightModel.category,
-//                   @"token" : [self getValidateToken]
-//                   };
-//    }else{//收藏 －－ 取消收藏
-//         rightString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kDeleteStoreString];
-//
-//        params = @{@"product_id" : rightModel.idString,
-//                   @"category" : rightModel.category,
-//                   @"token" : [self getValidateToken]
-//                   };
-//    }
-//    
-//    QDFWeakSelf;
-//    [self requestDataPostWithString:rightString params:params successBlock:^(id responseObject){
-//        BaseModel *rightModel = [BaseModel objectWithKeyValues:responseObject];
-//        [weakself showHint:rightModel.msg];
-//        
-//        if ([rightModel.code isEqualToString:@"0000"]) {
-//            if ([type isEqualToString:@"1"]) {//未收藏 －－ 收藏
-//                [weakself.rightItemButton setImage:[UIImage imageNamed:@"nav_collection_s"] forState:0];
-//                weakself.typetString = @"2";
-//            }else{//收藏 －－ 取消收藏
-//                [weakself.rightItemButton setImage:[UIImage imageNamed:@"nav_collection"] forState:0];
-//                weakself.typetString = @"1";
-//            }
-//        }
-//        
-//    }andFailBlock:^(NSError *error) {
-//        
-//    }];
-//}
-
-//- (void)getAllEvaluationListWithPage:(NSString *)page
-//{
-//    NSString *evaluateString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kCheckOrderToEvaluationString];
-//    NSDictionary *params = @{@"token" : [self getValidateToken],
-//                             @"page" : page,
-//                             @"pid" : self.pidString
-//                             };
-//    QDFWeakSelf;
-//    [self requestDataPostWithString:evaluateString params:params successBlock:^(id responseObject) {
-//        
-//        EvaluateResponse *response = [EvaluateResponse objectWithKeyValues:responseObject];
-//        
-//        [weakself.allEvaResponse addObject:response];
-//        
-//        for (EvaluateModel *model in response.evaluate) {
-//            [weakself.allEvaDataArray addObject:model];
-//        }
-//        [weakself.productsDetailsTableView reloadData];
-//        
-//    } andFailBlock:^(NSError *error) {
-//        
-//    }];
-//}
-
-
-//立即申请
-- (void)applicationCommit
+- (void)cancelApplyWithModel:(ProductDetailModel *)prodDetailModel//取消申请
 {
-    NSString *appString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductHouseString];
-    NSDictionary *params = @{@"id" : self.idString,
-                             @"category" : self.categoryString,
+    NSString *cancelString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrderDetailOfCancelApplyString];
+    NSDictionary *params = @{@"applyid" : prodDetailModel.apply.applyid,
+                             @"token" : [self getValidateToken]
+                             };
+    QDFWeakSelf;
+    [self requestDataPostWithString:cancelString params:params successBlock:^(id responseObject) {
+        BaseModel *appModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:appModel.msg];
+        
+        if ([appModel.code isEqualToString:@"0000"]) {
+            [weakself getDetailMessageOfProduct];
+        }
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
+- (void)ActionOfApplicationCommitWithModel:(ProductDetailModel *)prodDetailModel//立即申请
+{
+    NSString *appString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductDetailOfApply];
+    NSDictionary *params = @{@"productid" : prodDetailModel.productid,
                              @"token" : [self getValidateToken]
                              };
     QDFWeakSelf;
@@ -1011,9 +835,7 @@
         [weakself showHint:appModel.msg];
         
         if ([appModel.code isEqualToString:@"0000"]) {
-            [weakself.proDetailsCommitButton setBackgroundColor:kSelectedColor];
-            [weakself.proDetailsCommitButton setTitleColor:kBlackColor forState:0];
-            [weakself.proDetailsCommitButton setTitle:@"申请中" forState:0];
+            [weakself getDetailMessageOfProduct];
         }
         
     } andFailBlock:^(NSError *error) {
@@ -1026,17 +848,17 @@
     NSString *saveString;
     NSDictionary *params;
     
-    RowsModel *rowModel = self.recommendDataArray[0];
+    ProductDetailModel *prodDetailModel = self.recommendDataArray[0];
     if ([self.typetString integerValue] == 1) {//已收藏－>未收藏(取消收藏)
         saveString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductDetailOfCancelSave];
         params = @{@"token" : [self getValidateToken],
-                   @"productid" : rowModel.productid
+                   @"productid" : prodDetailModel.productid
                    };
     }else if ([self.typetString integerValue] == 2) {//未收藏－>已收藏(收藏)
         saveString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductDetailOfSave];
         params = @{@"token" : [self getValidateToken],
-                   @"productid" : rowModel.productid,
-                   @"create_by" : rowModel.create_by
+                   @"productid" : prodDetailModel.productid,
+                   @"create_by" : prodDetailModel.create_by
                    };
     }
     

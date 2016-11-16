@@ -11,11 +11,11 @@
 #import "MyOrderViewController.h" //我的接单
 #import "ProductsDetailsViewController.h" //详细
 
-#import "MineUserCell.h"
-#import "HomeCell.h"
+#import "ExtendHomeCell.h"
 
 #import "ReleaseResponse.h"
 #import "RowsModel.h"
+#import "ProductDetailModel.h"
 
 #import "UIImage+Color.h"
 
@@ -36,9 +36,8 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-//    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:kWhiteColor,NSFontAttributeName:kNavFont}];
-//    
-//    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:kNavColor] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:kWhiteColor,NSFontAttributeName:kNavFont}];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:kNavColor] forBarMetrics:UIBarMetricsDefault];
     
     [self refreshHeaderOfMySave];
 }
@@ -130,110 +129,49 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 130;
+    return 200;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *identifier = @"store";
-    HomeCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    static NSString *identifier = @"myRelease0";
+    ExtendHomeCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
-        cell = [[HomeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        cell = [[ExtendHomeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
-    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    [cell.recommendimageView setHidden:YES];
-    [cell.typeButton setHidden:YES];
+    [cell.actButton2 setHidden:YES];
+    cell.bottomContentConstraints.constant = 0;
     
-    RowsModel *storeModel = self.storeDataList[indexPath.section];
-
-    //image
-    if ([storeModel.category isEqualToString:@"2"]){//清收
-        [cell.typeImageView setImage:[UIImage imageNamed:@"list_collection"]];
-    }else if ([storeModel.category isEqualToString:@"3"]){
-        [cell.typeImageView setImage:[UIImage imageNamed:@"list_litigation"]];
-    }
+    RowsModel *rowModel = self.storeDataList[indexPath.section];
+    ProductDetailModel *storeModel = rowModel.product;
     
     //code
-    cell.nameLabel.text = storeModel.codeString;
+    [cell.nameButton setTitle:storeModel.number forState:0];
     
-    //借款本金
-    NSString *moneySa1 = [NSString getValidStringFromString:storeModel.money toString:@"0"];
-    NSString *moneyQ = [NSString stringWithFormat:@"%@万",moneySa1];
-    NSMutableAttributedString *attrMoney = [[NSMutableAttributedString alloc] initWithString:moneyQ];
-    [attrMoney addAttributes:@{NSFontAttributeName:kBoldFont(24),NSForegroundColorAttributeName:kYellowColor} range:NSMakeRange(0, moneySa1.length)];
-    [attrMoney addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kYellowColor} range:NSMakeRange(moneySa1.length,1)];
-    [cell.moneyView.label1 setAttributedText:attrMoney];
-    cell.moneyView.label2.text = @"借款本金";
-    
-    //代理费用类型
-    if ([storeModel.category isEqualToString:@"2"]){//清收
-        
-        if ([storeModel.agencycommissiontype isEqualToString:@"1"]) {
-            
-            cell.pointView.label2.text = @"服务佣金";
-            
-            NSString *agencyType1 = [NSString getValidStringFromString:storeModel.agencycommission toString:@"0"];
-            NSString *agencyQ = [NSString stringWithFormat:@"%@%@",agencyType1,@"%"];
-            NSMutableAttributedString *attrAgency = [[NSMutableAttributedString alloc] initWithString:agencyQ];
-            [attrAgency addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:24],NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, agencyType1.length)];
-            [attrAgency addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(agencyType1.length,1)];
-            [cell.pointView.label1 setAttributedText:attrAgency];
-            
-        }else{
-            cell.pointView.label2.text = @"固定费用";
-            
-            NSString *agencyType1 = [NSString getValidStringFromString:storeModel.agencycommission toString:@"0"];
-            NSString *agencyQ = [NSString stringWithFormat:@"%@万",agencyType1];
-            NSMutableAttributedString *attrAgency = [[NSMutableAttributedString alloc] initWithString:agencyQ];
-            [attrAgency addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:24],NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, agencyType1.length)];
-            [attrAgency addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(agencyType1.length,1)];
-            [cell.pointView.label1 setAttributedText:attrAgency];
-        }
-    }else if ([storeModel.category isEqualToString:@"3"]){//诉讼
-        
-        if ([storeModel.agencycommissiontype isEqualToString:@"1"]) {
-            
-            cell.pointView.label2.text = @"固定费用";
-            
-            NSString *agencyType1 = [NSString getValidStringFromString:storeModel.agencycommission toString:@"0"];
-            NSString *agencyQ = [NSString stringWithFormat:@"%@万",agencyType1];
-            NSMutableAttributedString *attrAgency = [[NSMutableAttributedString alloc] initWithString:agencyQ];
-            [attrAgency addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:24],NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, agencyType1.length)];
-            [attrAgency addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(agencyType1.length,1)];
-            [cell.pointView.label1 setAttributedText:attrAgency];
-            
-        }else{
-            
-            cell.pointView.label2.text = @"风险费率";
-            
-            NSString *agencyType1 = [NSString getValidStringFromString:storeModel.agencycommission toString:@"0"];
-            NSString *agencyQ = [NSString stringWithFormat:@"%@%@",agencyType1,@"%"];
-            NSMutableAttributedString *attrAgency = [[NSMutableAttributedString alloc] initWithString:agencyQ];
-            [attrAgency addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:24],NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, agencyType1.length)];
-            [attrAgency addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(agencyType1.length,1)];
-            [cell.pointView.label1 setAttributedText:attrAgency];
-        }
-    }
-    
+    //details
+    //委托本金
+    NSString *orString0 = [NSString stringWithFormat:@"委托本金：%@",storeModel.accountLabel];
     //债权类型
-    if ([storeModel.loan_type isEqualToString:@"1"]) {
-        cell.rateView.label1.text = @"房产抵押";
-        cell.addressLabel.text = [NSString getValidStringFromString:storeModel.seatmortgage toString:@"无抵押物地址"];
-    }else if ([storeModel.loan_type isEqualToString:@"2"]){
-        cell.rateView.label1.text = @"应收账款";
-        cell.addressLabel.text = [NSString stringWithFormat:@"应收账款：%@万",storeModel.agencycommission];
-    }else if ([storeModel.loan_type isEqualToString:@"3"]){
-        cell.rateView.label1.text = @"机动车抵押";
-        NSArray *lisence = @[@"沪牌",@"非沪牌"];
-//        NSString *license = lisence[[storeModel.licenseplate integerValue] - 1];
-        cell.addressLabel.text = [NSString stringWithFormat:@"%@%@%@",storeModel.carbrand,storeModel.audi,lisence];
-    }else{
-        cell.rateView.label1.text = @"无抵押";
-        cell.addressLabel.text = @"无抵押";
-    }
-    cell.rateView.label2.text = @"债权类型";
-
+    NSString *orString1 = [NSString stringWithFormat:@"债权类型：%@",storeModel.categoryLabel];
+    //委托事项
+    NSString *orString2 = [NSString stringWithFormat:@"委托事项：%@",storeModel.entrustLabel];
+    //委托费用
+    NSString *orString3 = [NSString stringWithFormat:@"委托费用：%@%@",storeModel.typenumLabel,storeModel.typeLabel];
+    
+    //违约期限
+    NSString *orString4 = [NSString stringWithFormat:@"违约期限：%@个月",storeModel.overdue];
+    //合同履行地
+    NSString *orString5 = [NSString stringWithFormat:@"合同履行地：%@",storeModel.addressLabel];
+    
+    NSString *orString = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@\n%@",orString0,orString1,orString2,orString3,orString4,orString5];
+    NSMutableAttributedString *orAttributeStr = [[NSMutableAttributedString alloc] initWithString:orString];
+    [orAttributeStr setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, orString.length)];
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    [style setLineSpacing:6];
+    [orAttributeStr addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, orString.length)];
+    [cell.contentButton setAttributedTitle:orAttributeStr forState:0];
+    
     return cell;
 }
 
@@ -270,11 +208,10 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    RowsModel *rowModel = self.storeDataList[indexPath.section];
+    RowsModel *storeModel = self.storeDataList[indexPath.section];
     
     ProductsDetailsViewController *myDetailStoreVC = [[ProductsDetailsViewController alloc] init];
-    myDetailStoreVC.idString = rowModel.idString;
-    myDetailStoreVC.categoryString = rowModel.category;
+    myDetailStoreVC.productid = storeModel.productid;
     [self.navigationController pushViewController:myDetailStoreVC animated:YES];
 }
 
@@ -288,21 +225,21 @@
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:storeString params:params successBlock:^(id responseObject){
-                
-        NSDictionary *wowoow = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
+        NSDictionary *aoaoao = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+                    
         if ([page integerValue] == 1) {
             [weakself.storeDataList removeAllObjects];
         }
         
         ReleaseResponse *responseModel = [ReleaseResponse objectWithKeyValues:responseObject];
         
-        if (responseModel.rows.count == 0) {
+        if (responseModel.data.count == 0) {
             [weakself showHint:@"没有更多了"];
             _pageStore--;
         }
         
-        for (RowsModel *storeModel in responseModel.rows) {
+        for (RowsModel *storeModel in responseModel.data) {
             [weakself.storeDataList addObject:storeModel];
         }
         
@@ -363,8 +300,8 @@
             [nav popViewControllerAnimated:NO];
             
             MyOrderViewController *myOrderVC = [[MyOrderViewController alloc] init];
-            myOrderVC.status = @"0";
-            myOrderVC.progresStatus = @"1";
+//            myOrderVC.status = @"0";
+//            myOrderVC.progresStatus = @"1";
             [nav pushViewController:myOrderVC animated:NO];
         }
         

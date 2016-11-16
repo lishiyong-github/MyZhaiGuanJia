@@ -7,13 +7,10 @@
 //
 
 #import "MessageViewController.h"
-//#import "PublishMessagesViewController.h" //发布消息
-//#import "ReceiveMessagesViewController.h"  //接单消息
-//#import "EvaluateMessagesViewController.h"  //评价消息
 #import "SystemMessagesViewController.h"   //系统消息
 #import "LoginViewController.h"  //登录
-#import "MyPublishingViewController.h" //我的发布－发布中
-#import "MyApplyingViewController.h"  //我的接单－接单中
+#import "MyReleaseDetailsViewController.h" //发布详情
+#import "MyOrderDetailViewController.h"  //接单详情
 
 #import "MessageTableViewCell.h"
 #import "MessageSystemView.h"
@@ -144,7 +141,6 @@
     [attributeContent setAttributes:@{NSFontAttributeName:kSecondFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(messageModel.relatitle.length+1, messageModel.content.length)];
     NSMutableParagraphStyle *stylee = [[NSMutableParagraphStyle alloc] init];
     [stylee setParagraphSpacing:kSpacePadding];
-//    stylee.alignment = 1;
     [attributeContent addAttribute:NSParagraphStyleAttributeName value:stylee range:NSMakeRange(0, contentStr.length)];
     [cell.contentLabel setAttributedText:attributeContent];
     
@@ -207,19 +203,15 @@
     }else if ([messageModel.relatype integerValue] == 30) {
         [self showHint:@"30产调消息"];
     }else if ([messageModel.relatype integerValue] == 40) {
-        [self showHint:@"40发布消息"];
-        MyPublishingViewController *myPublishingVC = [[MyPublishingViewController alloc] init];
-        myPublishingVC.hidesBottomBarWhenPushed = YES;
-        myPublishingVC.productid = messageModel.relaid;
-        [self.navigationController pushViewController:myPublishingVC animated:YES];
-        
+        MyReleaseDetailsViewController *myReleaseDetailsVC = [[MyReleaseDetailsViewController alloc] init];
+        myReleaseDetailsVC.hidesBottomBarWhenPushed = YES;
+        myReleaseDetailsVC.productid = messageModel.relaid;
+        [self.navigationController pushViewController:myReleaseDetailsVC animated:YES];
     }else if ([messageModel.relatype integerValue] == 50) {
-        [self showHint:@"50接单消息"];
-        MyApplyingViewController *myapplyingVC = [[MyApplyingViewController alloc] init];
-        myapplyingVC.hidesBottomBarWhenPushed = YES;
-        myapplyingVC.applyid = messageModel.relaid;
-        [self.navigationController pushViewController:myapplyingVC animated:YES];
-        
+        MyOrderDetailViewController *myOrderDetailVC = [[MyOrderDetailViewController alloc] init];
+        myOrderDetailVC.hidesBottomBarWhenPushed = YES;
+        myOrderDetailVC.applyid = messageModel.relaid;
+        [self.navigationController pushViewController:myOrderDetailVC animated:YES];
     }
 }
 
@@ -237,8 +229,6 @@
     
     QDFWeakSelf;
     [self requestDataPostWithString:messageTypeString params:params successBlock:^(id responseObject) {
-        
-        NSDictionary *qpqpq = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
         if ([page integerValue] == 1) {
             [weakself.messageArray removeAllObjects];
@@ -284,164 +274,6 @@
 }
 
 /*
-- (NSMutableDictionary *)resultDic
-{
-    if (!_resultDic) {
-        _resultDic = [NSMutableDictionary dictionary];
-    }
-    return _resultDic;
-}
-
-#pragma mark - tabelView delegate and datasource
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-//    return 2;
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    if (section == 0) {
-        return 4;
-    }
-    return 0;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.section == 0) {
-        return 60;
-    }
-    return 0;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *identifier;
-    
-    //分类消息
-    if (indexPath.section == 0) {
-        identifier = @"all";
-        NSArray *titleArray = @[@"  发布消息",@"  接单消息",@"  评价消息",@"  系统消息"];
-        NSArray *imageArray = @[@"news_publish_icon",@"news_order_icon",@"news_evaluate_icon",@"news_system_icon"];
-        NewsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        
-        if (!cell) {
-            cell = [[NewsTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        
-        NSDictionary *childDic;
-        if (self.resultDic) {
-            NSString *index = [NSString stringWithFormat:@"%ld",indexPath.row+1];
-            childDic = self.resultDic[index];
-        }
-        
-        [cell.newsNameButton setTitle:titleArray[indexPath.row] forState:0];
-        [cell.newsNameButton setImage:[UIImage imageNamed:imageArray[indexPath.row]] forState:0];
-        cell.newsNameButton.titleLabel.font = [UIFont systemFontOfSize:18];
-        
-        [cell.newsActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-        
-        if ([childDic[@"number"] integerValue] == 0) {
-            [cell.newsCountButton setHidden:YES];
-        }else{
-            if (indexPath.row == 2) {
-                [cell.newsCountButton setHidden:YES];
-            }else{
-                [cell.newsCountButton setHidden:NO];
-                if ([childDic[@"number"] integerValue] > 99) {
-                    [cell.newsCountButton setTitle:@"99" forState:0];
-                }else{
-                    [cell.newsCountButton setTitle:childDic[@"number"] forState:0];
-                }
-            }
-        }
-        return cell;
-    }
-    return nil;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    if (section == 0) {
-        return kBigPadding;
-    }
-    return kCellHeight;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return 0.1f;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    if (section == 1) {
-        UIView *headerView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kCellHeight)];
-        headerView1.backgroundColor = kBackColor;
-        
-        UILabel *friendLabel = [UILabel newAutoLayoutView];
-        friendLabel.text = @"最近联系人";
-        friendLabel.textColor = kBlackColor;
-        friendLabel.font = kBigFont;
-        [headerView1 addSubview:friendLabel];
-        
-        [friendLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
-        [friendLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:20];
-        
-        return headerView1;
-    }
-    return nil;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-
-    [self tokenIsValid];
-    QDFWeakSelf;
-    [self setDidTokenValid:^(TokenModel *model) {
-        if ([model.code integerValue] == 0000 || [model.code integerValue] == 3006){//正常
-            if (indexPath.section == 0) {
-                switch (indexPath.row) {
-                    case 0:{//发布消息
-                        PublishMessagesViewController *pubMessagesVC = [[PublishMessagesViewController alloc] init];
-                        pubMessagesVC.hidesBottomBarWhenPushed = YES;
-                        [weakself.navigationController pushViewController:pubMessagesVC animated:YES];
-                    }
-                        break;
-                    case 1:{//接单消息
-                        ReceiveMessagesViewController *receiveMessagesVC = [[ReceiveMessagesViewController alloc] init];
-                        receiveMessagesVC.hidesBottomBarWhenPushed = YES;
-                        [weakself.navigationController pushViewController:receiveMessagesVC animated:YES];
-                    }
-                        break;
-                    case 2:{//评价消息
-                        EvaluateMessagesViewController *evaluateMessagesVC = [[EvaluateMessagesViewController alloc] init];
-                        evaluateMessagesVC.hidesBottomBarWhenPushed = YES;
-                        [weakself.navigationController pushViewController:evaluateMessagesVC animated:YES];
-                    }
-                        break;
-                    case 3:{//系统消息
-                        SystemMessagesViewController *systemMessagesVC = [[SystemMessagesViewController alloc] init];
-                        systemMessagesVC.hidesBottomBarWhenPushed = YES;
-                        [weakself.navigationController pushViewController:systemMessagesVC animated:YES];
-                    }
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }else {
-            [weakself showHint:model.msg];
-            LoginViewController *loginVC = [[LoginViewController alloc] init];
-            loginVC.hidesBottomBarWhenPushed = YES;
-            UINavigationController *uiui = [[UINavigationController alloc] initWithRootViewController:loginVC];
-            [weakself presentViewController:uiui animated:YES completion:nil];
-        }
-    }];
-}
-
 #pragma mark - method
 - (void)getMessageTypeAndNumber
 {

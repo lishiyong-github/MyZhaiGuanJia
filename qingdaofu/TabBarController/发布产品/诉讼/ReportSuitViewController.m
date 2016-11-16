@@ -43,10 +43,6 @@
 @property (nonatomic,strong) NSMutableDictionary *suitDataDictionary;
 @property (nonatomic,strong) NSString *rowString;    //债权类型
 @property (nonatomic,strong) NSString *number;//1.抵押物地址，2.应收帐款，3.机动车抵押，4.无抵押
-//@property (nonatomic,strong) NSMutableArray *creditorInfo;
-//@property (nonatomic,strong) NSMutableArray *borrowinginfos;
-//@property (nonatomic,strong) NSMutableDictionary *creditorfile;
-//省市区
 @property (nonatomic,strong) NSDictionary *provinceDictionary;
 @property (nonatomic,strong) NSDictionary *cityDcitionary;
 @property (nonatomic,strong) NSDictionary *districtDictionary;
@@ -60,42 +56,36 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    if (!self.suResponse) {
+    if (!self.rowModel) {
         self.title = @"发布债权";
     }else{
-        self.title = [NSString stringWithFormat:@"清收%@",self.suResponse.product.codeString];
-        
-//        if ([self.categoryString integerValue] == 2) {
-//            self.navigationItem.title = [NSString stringWithFormat:@"清收%@",self.suResponse.product.codeString];
-//        }else{
-//            self.navigationItem.title = [NSString stringWithFormat:@"诉讼%@",self.suResponse.product.codeString];
-//        }
+        self.title = [NSString stringWithFormat:@"债权%@",self.rowModel.number];
     }
     
     self.navigationItem.leftBarButtonItem = self.leftItemAnother;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightButton];
     [self.rightButton setTitle:@"发布" forState:0];
     
-    PublishingModel *suModel = self.suResponse.product;
-    if (suModel) {
-        if ([suModel.agencycommissiontype integerValue] == 1) {//固定费用
-            SuitBaseCell *cell21 = [self.suitTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:2]];
-            cell21.segment.selectedSegmentIndex = 0;
-            
-            AgentCell *cell22 = [self.suitTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:2]];
-            cell22.agentLabel.text = @"固定费用";
-            cell22.agentTextField.text = suModel.agencycommission;
-            [cell22.agentButton setTitle:@"万" forState:0];
-            
-        }else if ([suModel.agencycommissiontype integerValue] == 2){//风险费率
-            SuitBaseCell *cell21 = [self.suitTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:2]];
-            cell21.segment.selectedSegmentIndex = 1;
-            
-            AgentCell *cell22 = [self.suitTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:2]];
-            cell22.agentLabel.text = @"风险费率";
-            cell22.agentTextField.text = suModel.agencycommission;
-            [cell22.agentButton setTitle:@"%" forState:0];
-        }
+    if (self.rowModel) {//保存进入
+        
+//        if ([suModel.agencycommissiontype integerValue] == 1) {//固定费用
+//            SuitBaseCell *cell21 = [self.suitTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:2]];
+//            cell21.segment.selectedSegmentIndex = 0;
+//            
+//            AgentCell *cell22 = [self.suitTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:2]];
+//            cell22.agentLabel.text = @"固定费用";
+//            cell22.agentTextField.text = suModel.agencycommission;
+//            [cell22.agentButton setTitle:@"万" forState:0];
+//            
+//        }else if ([suModel.agencycommissiontype integerValue] == 2){//风险费率
+//            SuitBaseCell *cell21 = [self.suitTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:2]];
+//            cell21.segment.selectedSegmentIndex = 1;
+//            
+//            AgentCell *cell22 = [self.suitTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:2]];
+//            cell22.agentLabel.text = @"风险费率";
+//            cell22.agentTextField.text = suModel.agencycommission;
+//            [cell22.agentButton setTitle:@"%" forState:0];
+//        }
     }
     
     [self setupForDismissKeyboard];
@@ -329,6 +319,20 @@
         cell.optionTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kSpacePadding, 0)];
         cell.optionTextField.leftViewMode = UITextFieldViewModeAlways;
         
+        if ([self.rowModel.category containsString:@"1"]) {
+            cell.optionButton1.selected = YES;
+        }
+        if ([self.rowModel.category containsString:@"2"]){
+            cell.optionButton2.selected = YES;
+        }
+        if ([self.rowModel.category containsString:@"3"]){
+            cell.optionButton3.selected = YES;
+        }
+        if ([self.rowModel.category containsString:@"4"]) {
+            cell.optionButton4.selected = YES;
+            cell.optionTextField.text = self.rowModel.category_other;
+        }
+        
         return cell;
     }else if (indexPath.section == 1){//委托事项
         
@@ -356,6 +360,20 @@
         [cell.optionButton4 setTitle:@"其他" forState:0];
         cell.optionTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kSpacePadding, 0)];
         cell.optionTextField.leftViewMode = UITextFieldViewModeAlways;
+        
+        if ([self.rowModel.entrust containsString:@"1"]) {
+            cell.optionButton1.selected = YES;
+        }
+        if ([self.rowModel.entrust containsString:@"2"]){
+            cell.optionButton2.selected = YES;
+        }
+        if ([self.rowModel.entrust containsString:@"3"]){
+            cell.optionButton3.selected = YES;
+        }
+        if ([self.rowModel.entrust containsString:@"4"]) {
+            cell.optionButton4.selected = YES;
+            cell.optionTextField.text = self.rowModel.entrust_other;
+        }
         
         return cell;
         

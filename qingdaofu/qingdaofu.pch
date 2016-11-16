@@ -224,7 +224,7 @@
 #define kCityString @"common/city"  //产品页面获取市
 #define kDistrictString @"common/area"  //产品页面获取区
 
-#define kMySaveString @"list/mysave"    //我的保存
+#define kMySaveString @"product/preservation"    //我的保存
 #define kDeleteSaveString  @"public/deleteproduct"  //删除保存
 #define kMySavePublishString @"public/releaselist"  //我的保存里面的发布
 #define kMySavePublishEditString @"publish/editcollection" //我的保存详情里面的编辑发布
@@ -302,9 +302,9 @@
 #define kPersonCenterMessageString @"userinfo/detail"  //用户中心基本信息（头像，昵称，手机号）
 
 
-#define kMyOrdersOfIngString @"productorders/list-processing"  //我的接单－进行中
-#define kMyOrdersOfFinishedString @"productorders/list-completed"//我的接单－已完成
-#define kMyOrdersOfEndString @"productorders/list-aborted"  //我的接单－已终止
+#define kMyOrdersOfIngString @"productorders/list-processing"  //我的接单－进行中(经办事项)
+#define kMyOrdersOfFinishedString @"productorders/list-completed"//我的接单－已完成(经办事项)
+#define kMyOrdersOfEndString @"productorders/list-aborted"  //我的接单－已终止(经办事项)
 #define kMyOrderDetailsString @"productorders/detail"  //接单详情
 #define kMyOrderDetailOfCancelApplyString @"product/apply-cancel" //接单详情－取消申请
 #define kMyOrderDetailOfCheckAgreement @"protocol/index"  //接单详情－居间协议查看
@@ -346,9 +346,16 @@
 #define kProductDetailsString  @"product/detail"  //产品详情
 #define kProductDetailOfSave  @"product/collect"  //产品详情-收藏产品
 #define kProductDetailOfCancelSave  @"product/collect-cancel"  //产品详情-取消收藏产品
+#define kProductDetailOfApply  @"product/apply"  //产品详情－申请
 
 #define kMySaveListsString @"product/collect-list" //我的收藏
 #define kMyDraftListsString @"product/collect-list"  //我的草稿
+
+
+//#define kHandleMatterListOfProcessing @"productorders/list-processing"  //经办事项－进行中
+//#define kHandleMatterListOfClose @"productorders/list-completed"  //经办事项－已完成
+//#define kHandleMatterListOfEnd @"productorders/list-aborted"  //经办事项－已终止
+
 
 
 #endif

@@ -18,6 +18,7 @@
 
 #import "MyReleaseViewController.h" //我的发布
 #import "MyOrderViewController.h"  //我的接单
+#import "HandleMatterViewController.h"  //经办事项
 
 #import "MySaveViewController.h"  //我的保存
 #import "MyStoreViewController.h"  //我的收藏
@@ -215,18 +216,16 @@
                             case 102:{//我的接单
                                 MyOrderViewController *myOrderVC = [[MyOrderViewController alloc] init];
                                 myOrderVC.hidesBottomBarWhenPushed = YES;
-                                myOrderVC.status = @"-1";
-                                myOrderVC.progresStatus = @"0";
+                                myOrderVC.navType = @"2";
                                 [weakself.navigationController pushViewController:myOrderVC animated:YES];
                             }
                                 break;
                             case 103:{//经办事项
                                 [weakself showHint:@"经办事项"];
-//                                MyOrderViewController *myOrderVC = [[MyOrderViewController alloc] init];
-//                                myOrderVC.hidesBottomBarWhenPushed = YES;
-//                                myOrderVC.status = @"-1";
-//                                myOrderVC.progresStatus = @"0";
-//                                [weakself.navigationController pushViewController:myOrderVC animated:YES];
+                                MyOrderViewController *myOrderVC = [[MyOrderViewController alloc] init];
+                                myOrderVC.hidesBottomBarWhenPushed = YES;
+                                myOrderVC.navType = @"3";
+                                [weakself.navigationController pushViewController:myOrderVC animated:YES];
                             }
                                 break;
                             case 9:{//我的收藏

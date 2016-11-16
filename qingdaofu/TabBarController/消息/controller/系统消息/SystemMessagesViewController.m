@@ -144,13 +144,12 @@
     NSString *mesString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMessageOfSystemString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"limit" : @"10",
-                             @"page" : page,
-                             @"type" : @"4"//发布1，接单2
+                             @"page" : page
                              };
     
     QDFWeakSelf;
     [self requestDataPostWithString:mesString params:params successBlock:^(id responseObject) {
-        
+                
         if ([page integerValue] == 1) {
             [weakself.messageSysArray removeAllObjects];
         }

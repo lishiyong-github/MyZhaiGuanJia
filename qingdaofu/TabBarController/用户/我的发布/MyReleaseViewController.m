@@ -30,8 +30,8 @@
 @property (nonatomic,assign) BOOL didSetupConstraints;
 
 @property (nonatomic,strong) EvaTopSwitchView *releaseProView;
-@property (nonatomic,strong) UIButton *endListButton;
 @property (nonatomic,strong) UITableView *myReleaseTableView;
+@property (nonatomic,strong) UIButton *endListButton;
 
 //json解析
 @property (nonatomic,strong) NSMutableArray *releaseDataArray;

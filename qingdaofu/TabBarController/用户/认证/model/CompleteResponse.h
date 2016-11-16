@@ -11,11 +11,11 @@
 
 @interface CompleteResponse : BaseModel
 
-@property (nonatomic,strong) CertificationModel *certification;
+@property (nonatomic,strong) CertificationModel *certification;//认证信息
 
 @property (nonatomic,copy) NSString *completionRate;  //完成度
-@property (nonatomic,copy) NSString *uid;
-@property (nonatomic,copy) NSString *user;
+//@property (nonatomic,copy) NSString *uid;
+//@property (nonatomic,copy) NSString *user;
 
 
 ///////用户信息

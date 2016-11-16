@@ -20,7 +20,6 @@
  */
 //@property (nonatomic,strong) NSString *oFlagString;
 
-@property (nonatomic,strong) NSString *status;
-@property (nonatomic,strong) NSString *progresStatus;
+@property (nonatomic,strong) NSString *navType; //2-我的接单，3-经办事项
 
 @end

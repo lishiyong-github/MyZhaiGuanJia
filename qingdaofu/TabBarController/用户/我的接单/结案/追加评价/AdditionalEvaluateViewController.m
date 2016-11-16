@@ -45,7 +45,6 @@
     
     [self.view addSubview:self.additionalTableView];
     [self.view setNeedsUpdateConstraints];
-    
 }
 
 - (void)dealloc

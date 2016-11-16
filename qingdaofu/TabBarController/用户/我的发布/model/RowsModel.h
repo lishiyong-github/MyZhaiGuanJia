@@ -12,6 +12,7 @@
 @class ApplyRecordModel;//接单方信息
 @class CompleteResponse; //发布方认证信息
 @class ProductOrdersClosedOrEndApplyModel;  //处理结案或终止
+@class ProductDetailModel;
 
 @interface RowsModel : NSObject
 
@@ -86,7 +87,7 @@
 @property (nonatomic,copy) NSString *city_id;
 @property (nonatomic,copy) NSString *district_id;
 @property (nonatomic,copy) NSString *status;
-//@property (nonatomic,copy) NSString *browsenumber;
+
 @property (nonatomic,copy) NSString *validflag;
 @property (nonatomic,copy) NSString *create_at;
 @property (nonatomic,copy) NSString *create_by;
@@ -96,6 +97,11 @@
 @property (nonatomic,copy) NSString *provincename;
 @property (nonatomic,copy) NSString *areaname;
 
+//收藏信息
+@property (nonatomic,copy) NSString *collectid;
+@property (nonatomic,strong) ProductDetailModel *product;
+
+
 //产品详情
 @property (nonatomic,copy) NSString *collectionPeople;//收藏次数
 @property (nonatomic,copy) NSString *collectionTotal;//收藏次数
@@ -104,11 +110,10 @@
 @property (nonatomic,copy) NSString *applyTotal;//申请人数
 
 @property (nonatomic,strong) PublishingModel *fabuuser;  //发布方信息
-@property (nonatomic,strong) ApplyRecordModel *productApply;  //申请人信息
+@property (nonatomic,strong) ApplyRecordModel *productApply;  //申请人信息(接单详情使用)
 @property (nonatomic,strong) CompleteResponse *User;  //发布方认证信息
 @property (nonatomic,strong) ProductOrdersClosedOrEndApplyModel *productOrdersClosedsApply;  //当前申请中的结案
 @property (nonatomic,strong) ProductOrdersClosedOrEndApplyModel *productOrdersTerminationsApply;  //当前申请中的终止
-
 
 //显示信息
 @property (nonatomic,copy) NSString *statusLabel; //发布中

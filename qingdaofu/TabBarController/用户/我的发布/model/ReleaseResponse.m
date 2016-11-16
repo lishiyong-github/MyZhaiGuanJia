@@ -12,21 +12,12 @@
 
 + (NSDictionary *)replacedKeyFromPropertyName
 {
-    return @{@"creditor" : @"result.creditor",
-             @"mobile" : @"result.mobile",
-             @"delays" : @"result.delays",
-             @"page" : @"result.page",
-             @"rows" : @"result.rows",
-             @"data" : @"result.data"
-             };
+    return @{@"data" : @"result.data"};
 }
 
 + (NSDictionary *)objectClassInArray
 {
-    return @{
-             @"rows" : @"RowsModel",
-             @"data" : @"RowsModel"
-             };
+    return @{@"data" : @"RowsModel"};
 }
 
 @end

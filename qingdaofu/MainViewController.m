@@ -241,7 +241,6 @@
             [viewController presentViewController:loginNav animated:YES completion:nil];
         }else{
             ReportSuitViewController *collectVC = [[ReportSuitViewController alloc] init];
-            collectVC.categoryString = @"2";
             collectVC.tagString = @"1";
             collectVC.hidesBottomBarWhenPushed = YES;
             

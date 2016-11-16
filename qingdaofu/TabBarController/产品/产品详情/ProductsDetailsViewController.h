@@ -18,6 +18,7 @@
 @property (nonatomic,strong) NSString *categoryString;
 @property (nonatomic,strong) NSString *pidString;
 
+//////////
 @property (nonatomic,strong) NSString *productid;
 
 @end

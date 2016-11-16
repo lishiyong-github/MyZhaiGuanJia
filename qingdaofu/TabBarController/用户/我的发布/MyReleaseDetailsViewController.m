@@ -908,6 +908,8 @@
     QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
         
+        NSDictionary *apapa = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
         [weakself.releaseDetailArray removeAllObjects];
         
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];

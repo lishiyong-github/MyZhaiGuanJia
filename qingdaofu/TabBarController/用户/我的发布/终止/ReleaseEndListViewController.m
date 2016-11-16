@@ -159,7 +159,7 @@
         [cell.contentButton setAttributedTitle:orAttributeStr forState:0];
         
         return cell;
-    }else{
+    }else {//接档方，经办人
         identifier = @"myOrder";
         ExtendHomeCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         if (!cell) {
@@ -241,19 +241,35 @@
 - (void)getMyReleaseListWithPage:(NSString *)page
 {
     NSString *myReleaseString;
-    if ([self.personType integerValue] == 1) {//发布列表
+    if ([self.personType integerValue] == 1) {//发布方
         myReleaseString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseOfEndString];
-    }else{//接单列表
+    }else{//接单方，经办人
         myReleaseString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrdersOfEndString];
     }
-    NSDictionary *params = @{@"token" : [self getValidateToken],
-                             @"type" : @"0",
-                             @"limit" : @"10",
-                             @"page" : page
-                             };
+    
+    NSDictionary *params;
+    if ([self.personType integerValue] == 1) {//发布
+        params = @{@"token" : [self getValidateToken],
+                   @"limit" : @"10",
+                   @"page" : page
+                   };
+    }else if([self.personType integerValue] == 2){//接单
+        params = @{@"token" : [self getValidateToken],
+                   @"type" : @"0",
+                   @"limit" : @"10",
+                   @"page" : page
+                   };
+    }else if ([self.personType integerValue] == 3){//经办
+        params = @{@"token" : [self getValidateToken],
+                   @"type" : @"1",
+                   @"limit" : @"10",
+                   @"page" : page
+                   };
+    }
+    
     QDFWeakSelf;
     [self requestDataPostWithString:myReleaseString params:params successBlock:^(id responseObject) {
-            
+                
         if ([page intValue] == 1) {
             [weakself.releaseEndListArray removeAllObjects];
         }

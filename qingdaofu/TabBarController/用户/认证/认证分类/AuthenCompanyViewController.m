@@ -453,7 +453,7 @@
     self.comDataDictionary[@"enterprisewebsite"] = self.comDataDictionary[@"enterprisewebsite"]?self.comDataDictionary[@"enterprisewebsite"]:self.responseModel.certification.enterprisewebsite;
     self.comDataDictionary[@"email"] = self.comDataDictionary[@"email"]?self.comDataDictionary[@"email"]:self.responseModel.certification.email;
     self.comDataDictionary[@"casedesc"] = self.comDataDictionary[@"casedesc"]?self.comDataDictionary[@"casedesc"]:self.responseModel.certification.casedesc;
-    self.comDataDictionary[@"completionRate"] = self.responseModel.completionRate?self.responseModel.completionRate:@"";
+//    self.comDataDictionary[@"completionRate"] = self.responseModel.completionRate?self.responseModel.completionRate:@"";
     
     [self.comDataDictionary setValue:@"3" forKey:@"category"];
     [self.comDataDictionary setValue:[self getValidateToken] forKey:@"token"];

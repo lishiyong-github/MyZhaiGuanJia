@@ -18,9 +18,9 @@
         [self.contentView addSubview:self.typeImageView];
         [self.contentView addSubview:self.statusLabel];
         [self.contentView addSubview:self.contentButton];
-//        [self.contentView addSubview:self.deadLineButton];
-//        [self.contentView addSubview:self.actButton1];
         [self.contentView addSubview:self.actButton2];
+        
+        self.bottomContentConstraints = [self.contentButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:42];
         
         [self setNeedsUpdateConstraints];
     }
@@ -34,7 +34,6 @@
         [self.nameButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
         [self.nameButton autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kBigPadding];
         [self.nameButton autoSetDimension:ALDimensionHeight toSize:21];
-//        [self.typeImageView autoSetDimensionsToSize:CGSizeMake(41, 21)];
         
         [self.typeImageView autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.nameButton];
         [self.typeImageView autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.nameButton withOffset:8];
@@ -45,21 +44,7 @@
         [self.contentButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.nameButton withOffset:kBigPadding];
         [self.contentButton autoPinEdgeToSuperviewEdge:ALEdgeLeft];
         [self.contentButton autoPinEdgeToSuperviewEdge:ALEdgeRight];
-        [self.contentButton autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.actButton2 withOffset:-kSpacePadding];
-        
-//        [self.deadLineButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
-//        [self.deadLineButton autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.actButton1 withOffset:kBigPadding];
-//        [self.deadLineButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.actButton1];
-//        
-//        NSArray *views = @[self.actButton1,self.actButton2];
-//        [views autoSetViewsDimensionsToSize:CGSizeMake(75, 30)];
-//        
-//        [self.actButton1 autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.actButton2 withOffset:-kBigPadding];
-//        [self.actButton1 autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:7];
-//        
-//        [self.actButton2 autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
-//        [self.actButton2 autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.actButton1];
-//        [self.actButton2 autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.actButton1];
+//        [self.contentButton autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.actButton2 withOffset:-kSpacePadding];
         
         [self.actButton2 autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.actButton2 autoSetDimensionsToSize:CGSizeMake(75, 30)];
@@ -115,33 +100,6 @@
     }
     return _contentButton;
 }
-
-//- (UIButton *)deadLineButton
-//{
-//    if (!_deadLineButton) {
-//        _deadLineButton = [UIButton newAutoLayoutView];
-//        [_deadLineButton setTitleColor:kBlueColor forState:0];
-//        _deadLineButton.titleLabel.font = kSmallFont;
-//        _deadLineButton.titleLabel.numberOfLines = 0;
-//        _deadLineButton.contentHorizontalAlignment = 1;
-//        _deadLineButton.titleEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0);
-//    }
-//    return _deadLineButton;
-//}
-//
-//- (UIButton *)actButton1
-//{
-//    if (!_actButton1) {
-//        _actButton1 = [UIButton newAutoLayoutView];
-//        _actButton1.backgroundColor = kNavColor;
-//        _actButton1.layer.borderWidth = kLineWidth;
-//        _actButton1.layer.borderColor = kBorderColor.CGColor;
-//        _actButton1.layer.cornerRadius = corner1;
-//        [_actButton1 setTitleColor:kBlackColor forState:0];
-//        _actButton1.titleLabel.font = [UIFont systemFontOfSize:14];
-//    }
-//    return _actButton1;
-//}
 
 - (UIButton *)actButton2
 {

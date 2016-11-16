@@ -10,6 +10,6 @@
 
 @interface ReleaseEndListViewController : NetworkViewController
 
-@property (nonatomic,strong) NSString *personType;  //查看列表的对象1-发布方，2-接单方
+@property (nonatomic,strong) NSString *personType;  //查看列表的对象1-发布方，2-接单方,3-经办人
 
 @end
