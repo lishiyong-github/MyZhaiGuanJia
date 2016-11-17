@@ -10,14 +10,6 @@
 
 @interface ProductsDetailsViewController : NetworkViewController
 
-@property (nonatomic,strong) NSLayoutConstraint *leftCommitConstraints;
-
-//产品ID
-@property (nonatomic,strong) NSString *idString;
-//产品类型
-@property (nonatomic,strong) NSString *categoryString;
-@property (nonatomic,strong) NSString *pidString;
-
 //////////
 @property (nonatomic,strong) NSString *productid;
 

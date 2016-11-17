@@ -279,10 +279,10 @@
 #define kReceiptDefaultAddressString @"address/default"  //默认地址
 #define kReceiptDefaultCancelString @"address/recy" //删除，取消默认地址
 
-
 //////// 新修改的
 
 #define kPublishProduct  @"product/release" //发布＊＊＊＊＊
+#define kPublishProductTwice  @"product/edit" //发布再编辑＊＊＊＊＊
 #define kSaveDraftOfProduct  @"product/draft" //保存草稿＊＊＊＊＊
 
 
@@ -350,11 +350,7 @@
 
 #define kMySaveListsString @"product/collect-list" //我的收藏
 #define kMyDraftListsString @"product/collect-list"  //我的草稿
-
-
-//#define kHandleMatterListOfProcessing @"productorders/list-processing"  //经办事项－进行中
-//#define kHandleMatterListOfClose @"productorders/list-completed"  //经办事项－已完成
-//#define kHandleMatterListOfEnd @"productorders/list-aborted"  //经办事项－已终止
+#define kReportDetailsString @"product/view"  //保存编辑进入发布页面，获取详情
 
 
 

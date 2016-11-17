@@ -7,6 +7,7 @@
 //
 
 #import "MoreMessagesViewController.h"
+#import "ReportSuitViewController.h"  //编辑
 
 #import "MineUserCell.h"
 
@@ -136,7 +137,6 @@
         RowsModel *dataModel = response.data;
         
         NSArray *www;
-//        = @[@"基本信息",@"债权类型",@"委托事项",@"委托金额",@"委托费用",@"违约期限",@"合同履行地"];
         if ([dataModel.typeLabel isEqualToString:@"万"]) {
             www = @[@"基本信息",@"债权类型",@"委托事项",@"委托金额",@"固定费用",@"违约期限",@"合同履行地"];
         }else if([dataModel.typeLabel isEqualToString:@"%"]){
@@ -152,6 +152,16 @@
             
             if ([dataModel.statusLabel containsString:@"发布"] || [dataModel.statusLabel containsString:@"面谈"]) {
                 [cell.userActionButton setTitle:@"编辑" forState:0];
+                cell.userActionButton.userInteractionEnabled = YES;
+                
+                QDFWeakSelf;
+                [cell.userActionButton addAction:^(UIButton *btn) {
+                    ReportSuitViewController *reportSuitVC = [[ReportSuitViewController alloc] init];
+                    reportSuitVC.tagString = @"3";
+                    reportSuitVC.productid = dataModel.productid;
+                    UINavigationController *nabb = [[UINavigationController alloc] initWithRootViewController:reportSuitVC];
+                    [weakself presentViewController:nabb animated:YES completion:nil];
+                }];
             }else{
                 [cell.userActionButton setTitle:@"" forState:0];
             }

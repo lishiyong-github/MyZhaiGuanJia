@@ -355,7 +355,7 @@
                 }else if ([rowModel.typeLabel isEqualToString:@"%"]){
                     proText3 = [NSString stringWithFormat:@"风险费率：%@%@\n",rowModel.typenumLabel,rowModel.typeLabel];
                 }
-                NSString *proText4 = [NSString stringWithFormat:@"委托金额：%@",rowModel.accountLabel];
+                NSString *proText4 = [NSString stringWithFormat:@"委托金额：%@万",rowModel.accountLabel];
                 NSString *proTextStr = [NSString stringWithFormat:@"%@%@%@%@",proText1,proText2,proText3,proText4];
                 NSMutableAttributedString *attributePP = [[NSMutableAttributedString alloc] initWithString:proTextStr];
                 [attributePP setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, proText1.length)];

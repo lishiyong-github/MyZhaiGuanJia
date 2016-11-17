@@ -81,8 +81,8 @@
 @property (nonatomic,copy) NSString *entrust;
 @property (nonatomic,copy) NSString *entrust_other;
 @property (nonatomic,copy) NSString *account;
-@property (nonatomic,copy) NSString *type;
-@property (nonatomic,copy) NSString *typenum;
+@property (nonatomic,copy) NSString *type; //1-固定费用，2-风险费率
+@property (nonatomic,copy) NSString *typenum;//债券费用值
 @property (nonatomic,copy) NSString *province_id;
 @property (nonatomic,copy) NSString *city_id;
 @property (nonatomic,copy) NSString *district_id;

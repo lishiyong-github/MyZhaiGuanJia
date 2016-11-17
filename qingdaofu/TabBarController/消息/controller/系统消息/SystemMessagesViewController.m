@@ -8,7 +8,7 @@
 
 #import "SystemMessagesViewController.h"
 #import "CompleteViewController.h"  //完成认证
-#import "MyPublishingViewController.h"  //发布中
+
 #import "MyAgentListViewController.h" //我的代理
 
 #import "SystemMessageCell.h"

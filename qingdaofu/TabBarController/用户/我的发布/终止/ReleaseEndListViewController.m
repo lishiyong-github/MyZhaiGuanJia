@@ -8,9 +8,7 @@
 
 #import "ReleaseEndListViewController.h"
 
-#import "ReleaseEndViewController.h"  //详情
-#import "MyDealingViewController.h"   //我的发布
-#import "MyProcessingViewController.h"  //我的接单
+
 #import "MyReleaseDetailsViewController.h"  //发布详情
 #import "MyOrderDetailViewController.h"  //接单详情
 

@@ -194,7 +194,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    //1系统消息  10保全消息  20保函消息  30产调消息  40 发布消息  50接单消息'
+    //1系统消息  10保全消息  20保函消息  30产调消息  40 发布消息  50接单消息
     MessagesModel *messageModel = self.messageArray[indexPath.row];
     if ([messageModel.relatype integerValue] == 10) {
         [self showHint:@"10保全消息"];

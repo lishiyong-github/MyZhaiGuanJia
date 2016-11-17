@@ -7,11 +7,6 @@
 //
 
 #import "ProductsDetailsViewController.h"
-#import "CheckDetailPublishViewController.h" //发布人信息
-#import "AllEvaluationViewController.h"  //全部评价
-#import "CaseViewController.h"  //经典案例
-#import "ProductsCheckDetailViewController.h"  //债权人信息
-#import "ProductsCheckFilesViewController.h"  //债权文件
 
 #import "UIImage+Color.h"
 #import "BaseCommitButton.h"
@@ -651,64 +646,6 @@
     }
     return 0.1f;
 }
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    if ([self.switchType isEqualToString:@"33"]) {//产品信息
-        if (indexPath.section == 1 && indexPath.row == 1+self.messageArray1.count+1+1+self.messageArray2.count-1-2) {//债权文件
-            ProductsCheckFilesViewController *productsCheckFilesVC = [[ProductsCheckFilesViewController alloc] init];
-            CreditorFileModel *crediFileModel = self.fileDataArray[0];
-            productsCheckFilesVC.debtFileModel = crediFileModel.creditorfile;
-            [self.navigationController pushViewController:productsCheckFilesVC animated:YES];
-        }else if (indexPath.section == 1 && indexPath.row == 1+self.messageArray1.count+1+1+self.messageArray2.count-1-1){//债权人信息
-            CreditorFileModel *filesModel = self.fileDataArray[0];
-            if (filesModel.creditorinfo.count > 0) {
-                ProductsCheckDetailViewController *productsCheckDetailVC = [[ProductsCheckDetailViewController alloc] init];
-                productsCheckDetailVC.categoryString = @"1";
-                CreditorFileModel *crediFileModel = self.fileDataArray[0];
-                productsCheckDetailVC.listArray = crediFileModel.creditorinfo;
-                [self.navigationController pushViewController:productsCheckDetailVC animated:YES];
-            }
-        }else if (indexPath.section == 1 && indexPath.row == 1+self.messageArray1.count+1+1+self.messageArray2.count-1){//债务人信息
-            CreditorFileModel *filesModel = self.fileDataArray[0];
-            if (filesModel.borrowinginfo.count > 0) {
-                ProductsCheckDetailViewController *productsCheckDetailVC = [[ProductsCheckDetailViewController alloc] init];
-                productsCheckDetailVC.categoryString = @"2";
-                CreditorFileModel *crediFileModel = self.fileDataArray[0];
-                productsCheckDetailVC.listArray = crediFileModel.borrowinginfo;
-                [self.navigationController pushViewController:productsCheckDetailVC animated:YES];
-            }
-        }
-    }else if ([self.switchType isEqualToString:@"34"]){//发布人信息
-        if (indexPath.row == self.certificationArray1.count+1) {//所有评价
-            if (self.allEvaDataArray.count > 0) {
-                AllEvaluationViewController *allEvaluationVC = [[AllEvaluationViewController alloc] init];
-                allEvaluationVC.idString = self.idString;
-                allEvaluationVC.categoryString = self.categoryString;
-                allEvaluationVC.pidString = self.pidString;
-                allEvaluationVC.evaTypeString = @"evaluate";
-                [self.navigationController pushViewController:allEvaluationVC animated:YES];
-            }
-        }else if (indexPath.row == self.certificationArray1.count-1){//经典案例
-            if (self.casedesc) {
-                CaseViewController *caseVC = [[CaseViewController alloc] init];
-                caseVC.caseString = self.casedesc;
-                [self.navigationController pushViewController:caseVC animated:YES];
-            }
-        }
-    }
-}
-
-/*
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-    if (scrollView.contentOffset.y > 0 && scrollView.contentOffset.y < 260+kBigPadding) {
-        [scrollView setContentOffset:CGPointMake(0, 260+kBigPadding)];
-    }
-}
- */
 
 #pragma mark - method
 //产品详情

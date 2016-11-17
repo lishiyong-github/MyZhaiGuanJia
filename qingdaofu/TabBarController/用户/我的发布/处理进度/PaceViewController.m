@@ -8,8 +8,6 @@
 
 #import "PaceViewController.h"
 
-#import "MyScheduleViewController.h"
-
 #import "BaseCommitView.h"
 #import "MineUserCell.h"
 #import "EditDebtAddressCell.h"
@@ -99,10 +97,10 @@
         QDFWeakSelf;
         [_paceCommitView addAction:^(UIButton *btn) {
             NSLog(@"填写进度");
-            MyScheduleViewController *myScheduleVC = [[MyScheduleViewController alloc] init];
-            myScheduleVC.idString = weakself.idString;
-            myScheduleVC.categoryString = weakself.categoryString;
-            [weakself.navigationController pushViewController:myScheduleVC animated:YES];
+//            MyScheduleViewController *myScheduleVC = [[MyScheduleViewController alloc] init];
+//            myScheduleVC.idString = weakself.idString;
+//            myScheduleVC.categoryString = weakself.categoryString;
+//            [weakself.navigationController pushViewController:myScheduleVC animated:YES];
         }];
     }
     return _paceCommitView;

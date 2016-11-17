@@ -84,13 +84,13 @@
         _optionButton1.layer.cornerRadius = corner;
         [_optionButton1 setBackgroundImage:[UIImage imageNamed:@"buttons"] forState:0];
         [_optionButton1 setBackgroundImage:[UIImage imageNamed:@"buttons_s"] forState:UIControlStateSelected];
+        _optionButton1.tag = 101;
         
         QDFWeakSelf;
         [_optionButton1 addAction:^(UIButton *btn) {
             if (weakself.didSelectedButton){
                 weakself.didSelectedButton(btn);
             }
-            btn.selected = !btn.selected;
         }];
     }
     return _optionButton1;
@@ -105,13 +105,13 @@
         _optionButton2.titleLabel.font = kSecondFont;
         [_optionButton2 setBackgroundImage:[UIImage imageNamed:@"buttons"] forState:0];
         [_optionButton2 setBackgroundImage:[UIImage imageNamed:@"buttons_s"] forState:UIControlStateSelected];
+        _optionButton2.tag = 102;
         
         QDFWeakSelf;
         [_optionButton2 addAction:^(UIButton *btn) {
             if (weakself.didSelectedButton){
                 weakself.didSelectedButton(btn);
             }
-            btn.selected = !btn.selected;
         }];
     }
     return _optionButton2;
@@ -126,13 +126,13 @@
         _optionButton3.titleLabel.font = kSecondFont;
         [_optionButton3 setBackgroundImage:[UIImage imageNamed:@"buttons"] forState:0];
         [_optionButton3 setBackgroundImage:[UIImage imageNamed:@"buttons_s"] forState:UIControlStateSelected];
+        _optionButton3.tag = 103;
         
         QDFWeakSelf;
         [_optionButton3 addAction:^(UIButton *btn) {
             if (weakself.didSelectedButton){
                 weakself.didSelectedButton(btn);
             }
-            btn.selected = !btn.selected;
         }];
     }
     return _optionButton3;
@@ -147,13 +147,13 @@
         _optionButton4.titleLabel.font = kSecondFont;
         [_optionButton4 setBackgroundImage:[UIImage imageNamed:@"buttons"] forState:0];
         [_optionButton4 setBackgroundImage:[UIImage imageNamed:@"buttons_s"] forState:UIControlStateSelected];
+        _optionButton4.tag = 104;
         
         QDFWeakSelf;
         [_optionButton4 addAction:^(UIButton *btn) {
             if (weakself.didSelectedButton){
                 weakself.didSelectedButton(btn);
             }
-            btn.selected = !btn.selected;
         }];
     }
     return _optionButton4;
@@ -182,6 +182,13 @@
     }
 }
 
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if (self.didBeginEditting) {
+        self.didBeginEditting(textField.text);
+    }
+    return YES;
+}
 
 - (void)awakeFromNib {
     [super awakeFromNib];

@@ -20,5 +20,6 @@
 
 @property (nonatomic,strong) void (^didSelectedButton)(UIButton *);
 @property (nonatomic,strong) void (^didEndEditting)(NSString *);
+@property (nonatomic,strong) void (^didBeginEditting)(NSString *);
 
 @end

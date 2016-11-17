@@ -82,7 +82,7 @@
 {
     if (!_propertyFooterView) {
         _propertyFooterView = [UIView newAutoLayoutView];
-        _propertyFooterView.backgroundColor = kNavColor;
+        _propertyFooterView.backgroundColor = kWhiteColor;
         _propertyFooterView.layer.borderColor = kBorderColor.CGColor;
         _propertyFooterView.layer.borderWidth = kLineWidth;
         
@@ -95,8 +95,8 @@
         
         UIButton *button = [UIButton newAutoLayoutView];
         [button setTitle:@"点击支付" forState:0];
-        [button setBackgroundColor:kBlueColor];
-        [button setTitleColor:kNavColor forState:0];
+        [button setBackgroundColor:kButtonColor];
+        [button setTitleColor:kWhiteColor forState:0];
         button.titleLabel.font = kBigFont;
         [_propertyFooterView addSubview:button];
         

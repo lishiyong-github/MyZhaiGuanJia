@@ -16,7 +16,7 @@
     
     if (self) {
         
-        self.backgroundColor = kNavColor;
+        self.backgroundColor = kWhiteColor;
         
         [self addSubview:self.firstButton];
         [self addSubview:self.secondButton];
@@ -63,7 +63,7 @@
 {
     if (!_firstButton) {
         _firstButton = [UIButton newAutoLayoutView];
-        [_firstButton setTitleColor:kBlueColor forState:0];
+        [_firstButton setTitleColor:kTextColor forState:0];
         _firstButton.titleLabel.font = kFirstFont;
     }
     return _firstButton;
@@ -93,7 +93,7 @@
 {
     if (!_blueLabel) {
         _blueLabel = [UILabel newAutoLayoutView];
-        _blueLabel.backgroundColor = kBlueColor;
+        _blueLabel.backgroundColor = kButtonColor;
     }
     return _blueLabel;
 }

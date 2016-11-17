@@ -119,7 +119,7 @@
 
     cell.userNameButton.titleLabel.numberOfLines = 0;
     NSString *ss1 = [NSString stringWithFormat:@"债权%@\n",rowModel.number];
-    NSString *ss2 = [NSDate getYMDhmFormatterTime:rowModel.modify_time];
+    NSString *ss2 = [NSDate getYMDhmFormatterTime:rowModel.create_at];
     NSString *ss = [NSString stringWithFormat:@"%@%@",ss1,ss2];
     NSMutableAttributedString *attributeS = [[NSMutableAttributedString alloc] initWithString:ss];
     [attributeS setAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kBlackColor} range:NSMakeRange(0, ss1.length)];
@@ -157,14 +157,13 @@
     return @[deleteAction];
 }
 
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     RowsModel *rowModel = self.mySaveDataList[indexPath.row];
     
     ReportSuitViewController *reportSuitVC = [[ReportSuitViewController alloc] init];
-    reportSuitVC.rowModel = rowModel;
+    reportSuitVC.productid = rowModel.productid;
     reportSuitVC.tagString = @"2";
     UINavigationController *nabb = [[UINavigationController alloc] initWithRootViewController:reportSuitVC];
     [self presentViewController:nabb animated:YES completion:nil];
@@ -180,7 +179,7 @@
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:mySaveString params:params successBlock:^(id responseObject){
-                
+                        
         if ([page integerValue] == 0) {
             [weakself.mySaveDataList removeAllObjects];
         }
