@@ -282,8 +282,9 @@
 //////// 新修改的
 
 #define kPublishProduct  @"product/release" //发布＊＊＊＊＊
-#define kPublishProductTwice  @"product/edit" //发布再编辑＊＊＊＊＊
+#define kPublishProductTwice  @"product/edit" //发布再发布，保存再发布＊＊＊＊＊
 #define kSaveDraftOfProduct  @"product/draft" //保存草稿＊＊＊＊＊
+#define kSaveDraftOfProductTwice @"product/preservation-edit"  //草稿再编辑
 
 
 #define kMessageOfGroupString @"message/group-list"  //分组消息
@@ -294,12 +295,15 @@
 #define kMyMailOfSearchUserString @"contacts/search"  //搜索联系人
 #define kMyMailOfAddUserString @"contacts/apply"  //添加联系人
 
+
 #define kMySettingOfModifyOldMobile @"user/smscode"  //设置－修改手机号－发送验证码到旧手机
-#define kMySettingOfVerifyOldPhone  @"checksmscode"  //设置－修改手机号－验证旧手机
+#define kMySettingOfVerifyOldPhone  @"user/checksmscode"  //设置－修改手机号－验证旧手机
 #define kMySettingOfConfirmNewPhone @"userinfo/changemobile"  ////设置－修改手机号－确认修改新手机号码
 #define kPersonCerterOfChangeNickString @"userinfo/nkname"  //个人中心－修改昵称
 ////////////
-#define kPersonCenterMessageString @"userinfo/detail"  //用户中心基本信息（头像，昵称，手机号）
+#define kPersonCenterMessageString @"userinfo/detail"  //发布方信息
+#define kPersonCenterMessagesString @"userinfo/info"  ////用户中心基本信息（头像，昵称，手机号）
+#define kPersonCenterMessagesStringOfChangePicture @"userinfo/uploadsimg" //用户中心基本信息-修改头像
 
 
 #define kMyOrdersOfIngString @"productorders/list-processing"  //我的接单－进行中(经办事项)

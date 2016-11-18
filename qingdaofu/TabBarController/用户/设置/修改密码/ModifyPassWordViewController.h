@@ -10,4 +10,6 @@
 
 @interface ModifyPassWordViewController : NetworkViewController
 
+@property (nonatomic,strong) NSString *ifFirst;  //0-首次设置，1-修改密码
+
 @end

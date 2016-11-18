@@ -8,11 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "TokenModel.h"
+#import "CompleteResponse.h"
 
 @interface LoginTableView : UITableView<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,strong) void (^didSelectedButton)(NSInteger);
 
-@property (nonatomic,strong) TokenModel *model;
+@property (nonatomic,strong) CompleteResponse *completeResponse;
+
 
 @end

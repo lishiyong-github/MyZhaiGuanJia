@@ -18,8 +18,6 @@
  5.close -- 结案
  */
 
-@property (nonatomic,strong) NSString *progreStatus;
-
 @property (nonatomic,strong) NSString *productid;
 
 

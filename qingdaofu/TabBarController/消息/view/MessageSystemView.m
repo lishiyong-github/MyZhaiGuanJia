@@ -61,7 +61,6 @@
         _imageButton = [UIButton newAutoLayoutView];
         _imageButton.userInteractionEnabled = NO;
         [_imageButton setImage:[UIImage imageNamed:@"news_system"] forState:0];
-        
     }
     return _imageButton;
 }
@@ -72,7 +71,7 @@
         _countLabel = [UILabel newAutoLayoutView];
         _countLabel.backgroundColor = kYellowColor;
         _countLabel.font = kSmallFont;
-        _countLabel.text = @"12";
+//        _countLabel.text = @"12";
         _countLabel.textColor = kWhiteColor;
     }
     return _countLabel;

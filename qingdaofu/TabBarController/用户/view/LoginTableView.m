@@ -7,8 +7,12 @@
 //
 
 #import "LoginTableView.h"
-#import "MineUserCell.h"
-#import "UserPublishCell.h"
+
+#import "MessageTableViewCell.h"  //个人中心
+#import "UserPublishCell.h"//我的发布
+#import "MineUserCell.h"//其他
+
+#import "UIButton+WebCache.h"
 
 @implementation LoginTableView
 - (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style
@@ -39,8 +43,6 @@
         return 4;
     }
     return 1;
-    
-    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -62,45 +64,35 @@
     if (indexPath.section == 0) {//认证
         if (indexPath.row == 0) {
             identifier = @"MineUserCell00";
-            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            MessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
             if (!cell) {
-                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier  ];
+                cell = [[MessageTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier  ];
             }
-            cell.userNameButton.userInteractionEnabled = NO;
-            cell.userActionButton.userInteractionEnabled = NO;
-            [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-            [cell.userActionButton setTitle:@"个人中心    " forState:0];
-            [cell.userNameButton setImage:[UIImage imageNamed:@"authentication_icon"] forState:0];
             
-            if ([self.model.code isEqualToString:@"3006"]) {//未认证
-                
-                [cell.userNameButton setTitle:self.model.mobile forState:0];
-//                [cell.userNameButton setImage:[UIImage imageNamed:@""] forState:0];
-//                [cell.userActionButton setTitle:@"未认证" forState:0];
-                
-            }else if([self.model.code isEqualToString:@"3001"]){//未登录
-                [cell.userNameButton setTitle:@"未登录" forState:0];
-//                [cell.userNameButton setImage:[UIImage imageNamed:@""] forState:0];
-//                [cell.userActionButton setTitle:@"请登录" forState:0];
+            [cell.countLabel setHidden:YES];
+            cell.imageButton.layer.cornerRadius = 25;
+            cell.imageButton.layer.masksToBounds = YES;
+            [cell.imageButton sd_setImageWithURL:[NSURL URLWithString:self.completeResponse.pictureurl] forState:0 placeholderImage:[UIImage imageNamed:@"news_system"]];
+            
+            if (self.completeResponse) {
+                cell.contentLabel.numberOfLines = 0;
+                NSString *ccc1 = [NSString stringWithFormat:@"%@\n",[NSString getValidStringFromString:self.completeResponse.realname toString:self.completeResponse.username]];
+                NSString *ccc2 = self.completeResponse.mobile;
+                NSString *ccc = [NSString stringWithFormat:@"%@%@",ccc1,ccc2];
+                NSMutableAttributedString *attributeCCC = [[NSMutableAttributedString alloc] initWithString:ccc];
+                [attributeCCC setAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kBlackColor} range:NSMakeRange(0, ccc1.length)];
+                [attributeCCC setAttributes:@{NSFontAttributeName:kSecondFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(ccc1.length, ccc2.length)];
+                NSMutableParagraphStyle *styorr = [[NSMutableParagraphStyle alloc] init];
+                [styorr setParagraphSpacing:kSpacePadding];
+                [attributeCCC addAttribute:NSParagraphStyleAttributeName value:styorr range:NSMakeRange(0, ccc.length)];
+                [cell.contentLabel setAttributedText:attributeCCC];
             }else{
-                NSString *mobile = [NSString stringWithFormat:@"%@ ",self.model.mobile];
-                if (mobile.length != 12) {
-                    mobile = @"未登录";
-                }
-                [cell.userNameButton setTitle:mobile forState:0];
-//                [cell.userNameButton setImage:[UIImage imageNamed:@"authentication_icon"] forState:0];
-                
-//                NSString *ererStr;
-//                if ([self.model.category integerValue] == 1) {
-//                    ererStr = @"已认证个人";
-//                }else if ([self.model.category integerValue] == 2){
-//                    ererStr = @"已认证律所";
-//                }else if ([self.model.category integerValue] == 3){
-//                    ererStr = @"已认证公司";
-//                }
-//                [cell.userActionButton setTitle:ererStr forState:0];
+                [cell.contentLabel setText:@"未登录"];
             }
-//            [cell swapUserName];
+            
+            [cell.timeButton setTitleColor:kLightGrayColor forState:0];
+            [cell.timeButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            [cell.timeButton setTitle:@"个人中心" forState:0];
             
             return cell;
         }

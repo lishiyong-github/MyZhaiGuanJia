@@ -217,7 +217,6 @@
         [nav popViewControllerAnimated:NO];
         MyReleaseViewController *myReleaseVC = [[MyReleaseViewController alloc] init];
         myReleaseVC.hidesBottomBarWhenPushed = YES;
-        myReleaseVC.progreStatus = @"1";
         [weakself setSelectedIndex:4];
         UITabBarController *tabBarController = (UITabBarController *)[UIApplication sharedApplication].keyWindow.rootViewController;
         UINavigationController *NavVC = tabBarController.selectedViewController;

@@ -275,7 +275,6 @@
         
         if ([loginModel.code isEqualToString:@"0000"]) {
             [[NSUserDefaults standardUserDefaults] setObject:loginModel.token forKey:@"token"];
-            [[NSUserDefaults standardUserDefaults] setObject:self.registerDictionary[@"mobile"] forKey:@"mobile"];
             [[NSUserDefaults standardUserDefaults] synchronize];
             
             UINavigationController *nav = self.navigationController;

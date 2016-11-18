@@ -216,26 +216,9 @@
 {
     if (!_productTextButton) {
         _productTextButton = [UIButton newAutoLayoutView];
-//        _productTextButton.layer.borderWidth = kLineWidth;
-//        _productTextButton.layer.borderColor = kBorderColor.CGColor;
         _productTextButton.titleLabel.numberOfLines = 0;
         _productTextButton.contentHorizontalAlignment = 1;
         _productTextButton.contentEdgeInsets = UIEdgeInsetsMake(kSmallPadding, kSpacePadding, kSmallPadding, 0);
-
-//        NSString *proText1 = @"产品信息\n";
-//        NSString *proText2 = @"债权类型：房产抵押、机动车抵押\n";
-//        NSString *proText3 = @"固定费用：20万\n";
-//        NSString *proText4 = @"委托金额：1000万";
-//
-//        NSString *proTextStr = [NSString stringWithFormat:@"%@%@%@%@",proText1,proText2,proText3,proText4];
-//        NSMutableAttributedString *attributePP = [[NSMutableAttributedString alloc] initWithString:proTextStr];
-//        [attributePP setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, proText1.length)];
-//        [attributePP setAttributes:@{NSFontAttributeName:kSecondFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(proText1.length, proText2.length+proText3.length+proText4.length)];
-//        NSMutableParagraphStyle *stylerr = [[NSMutableParagraphStyle alloc] init];
-//        [stylerr setLineSpacing:8];
-//        stylerr.alignment = NSTextAlignmentLeft;
-//        [attributePP addAttribute:NSParagraphStyleAttributeName value:stylerr range:NSMakeRange(0, proTextStr.length)];
-//        [_productTextButton setAttributedTitle:attributePP forState:0];
     }
     return _productTextButton;
 }

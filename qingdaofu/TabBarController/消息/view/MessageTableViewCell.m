@@ -62,7 +62,7 @@
         _countLabel = [UILabel newAutoLayoutView];
         _countLabel.backgroundColor = kYellowColor;
         _countLabel.font = kSmallFont;
-        _countLabel.text = @"12";
+//        _countLabel.text = @"12";
         _countLabel.textColor = kWhiteColor;
     }
     return _countLabel;
@@ -73,7 +73,7 @@
     if (!_contentLabel) {
         _contentLabel = [UILabel newAutoLayoutView];
         _contentLabel.textColor = kBlackColor;
-        _contentLabel.text = @"1221221";
+//        _contentLabel.text = @"1221221";
     }
     return _contentLabel;
 }
@@ -82,9 +82,10 @@
 {
     if (!_timeButton) {
         _timeButton = [UIButton newAutoLayoutView];
-        [_timeButton setTitle:@"新进度" forState:0];
+//        [_timeButton setTitle:@"新进度" forState:0];
         [_timeButton setTitleColor:kYellowColor forState:0];
         _timeButton.titleLabel.font = kFirstFont;
+        [_timeButton swapImage];
     }
     return _timeButton;
 }

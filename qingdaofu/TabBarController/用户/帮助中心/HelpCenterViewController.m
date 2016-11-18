@@ -165,9 +165,7 @@
         }
     }else{
         NSString *exitString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kExitString];
-        
-        NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:@"token"];
-        NSDictionary *params = @{@"token" : token};
+        NSDictionary *params = @{@"token" : [self getValidateToken]};
         
         QDFWeakSelf;
         [self requestDataPostWithString:exitString params:params successBlock:^(id responseObject){
@@ -175,10 +173,9 @@
             [weakself showHint:exitModel.msg];
             
             if ([exitModel.code isEqualToString:@"0000"]) {
-                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"token"];
-                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"mobile"];
-                [[NSUserDefaults standardUserDefaults] synchronize];
                 
+                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"token"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
                 [weakself.navigationController popViewControllerAnimated:YES];
             }
             

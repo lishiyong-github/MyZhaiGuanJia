@@ -21,6 +21,11 @@
 @property (nonatomic,strong) BaseCommitButton *neCommitButton;
 @property (nonatomic,strong) UIButton *neCodeButton;
 
+@property (nonatomic,strong) NSString *code1;
+@property (nonatomic,strong) NSString *code2;
+@property (nonatomic,strong) NSString *code3;
+@property (nonatomic,strong) NSString *code4;
+
 @end
 
 @implementation NewMobileViewController
@@ -39,6 +44,8 @@
     [self.view addSubview:self.neCodeButton];
     
     [self.view setNeedsUpdateConstraints];
+    
+    [self sendMobileCode];
 }
 
 - (void)updateViewConstraints
@@ -74,7 +81,7 @@
         _neMobileLabel.numberOfLines = 0;
         _neMobileLabel.textAlignment = 2;
         NSString *sss1 = @"发送验证码到当前手机号码";
-        NSString *sss2 = @"13162521916";
+        NSString *sss2 = self.mobile;
         NSString *sss = [NSString stringWithFormat:@"%@\n%@",sss1,sss2];
         NSMutableAttributedString *attributeSS = [[NSMutableAttributedString alloc] initWithString:sss];
         [attributeSS addAttributes:@{NSFontAttributeName:kFourFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(0, sss1.length)];
@@ -95,6 +102,7 @@
         _neTextField1.layer.borderWidth = kLineWidth;
         _neTextField1.delegate = self;
         _neTextField1.textAlignment = NSTextAlignmentCenter;
+        _neTextField1.tag = 51;
     }
     return _neTextField1;
 }
@@ -106,6 +114,7 @@
         _neTextField2.layer.borderWidth = kLineWidth;
         _neTextField2.delegate = self;
         _neTextField2.textAlignment = NSTextAlignmentCenter;
+        _neTextField2.tag = 52;
     }
     return _neTextField2;
 }
@@ -117,6 +126,7 @@
         _neTextField3.layer.borderWidth = kLineWidth;
         _neTextField3.delegate = self;
         _neTextField3.textAlignment = NSTextAlignmentCenter;
+        _neTextField3.tag = 53;
     }
     return _neTextField3;
 }
@@ -128,6 +138,7 @@
         _neTextField4.layer.borderWidth = kLineWidth;
         _neTextField4.delegate = self;
         _neTextField4.textAlignment = NSTextAlignmentCenter;
+        _neTextField4.tag = 54;
     }
     return _neTextField4;
 }
@@ -173,21 +184,38 @@
     return YES;
 }
 
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    if (textField.tag == 51) {
+        self.code1 = textField.text;
+    }else if (textField.tag == 52){
+        self.code2 = textField.text;
+    }else if (textField.tag == 53){
+        self.code3 = textField.text;
+    }else if (textField.tag == 54){
+        self.code4 = textField.text;
+    }
+}
+
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     return YES;
 }
 
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [self.view endEditing:YES];
+}
 #pragma mark - method
 - (void)sendMobileCode//发送手机验证码
 {
+    [self.view endEditing:YES];
+    
     NSString *oldMobileString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMySettingOfModifyOldMobile];
     NSDictionary *params = @{@"token" : [self getValidateToken],
-                             @"mobile" : @"13162521916",
-//                             @"mobile" : self.mobile,
+                             @"mobile" : self.mobile,
                              @"type" : @"4"
                              };
-    
     QDFWeakSelf;
     [self requestDataPostWithString:oldMobileString params:params successBlock:^(id responseObject) {
         BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
@@ -200,14 +228,16 @@
 
 - (void)VerifyThePldMobile
 {
+    [self.view endEditing:YES];
+    
     NSString *verifyString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMySettingOfVerifyOldPhone];
+    
+    NSString *ccc = [NSString stringWithFormat:@"%@%@%@%@",self.code1,self.code2,self.code3,self.code4];
     NSDictionary *params = @{@"token" : [self getValidateToken],
-//                             @"mobile" : self.mobile,
-                             @"mobile" : @"13162521916",
-                             @"code" : @"",
+                             @"mobile" : self.mobile,
+                             @"code" : ccc,
                              @"type" : @"4"
                              };
-    
     QDFWeakSelf;
     [self requestDataPostWithString:verifyString params:params successBlock:^(id responseObject) {
         BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];

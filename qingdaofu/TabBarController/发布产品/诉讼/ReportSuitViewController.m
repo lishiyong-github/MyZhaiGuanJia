@@ -28,8 +28,9 @@
 @property (nonatomic,strong) NSMutableArray *reportDataArray;//详情
 @property (nonatomic,strong) NSMutableDictionary *reportDictionary;//请求参数
 @property (nonatomic,strong) NSMutableDictionary *addressTestDict;//临时保存抵押物地址
-@property (nonatomic,strong) NSMutableArray *categoryArray;
-@property (nonatomic,strong) NSMutableArray *entrustArray;
+
+@property (nonatomic,strong) NSMutableDictionary *categoryDic; //临时保存债权类型
+@property (nonatomic,strong) NSMutableDictionary *entrustDic;//临时保存委托事项
 
 @end
 
@@ -41,7 +42,7 @@
     if (!self.productid) {
         self.title = @"发布债权";
     }
-    
+
     self.navigationItem.leftBarButtonItem = self.leftItemAnother;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightButton];
     [self.rightButton setTitle:@"发布" forState:0];
@@ -56,8 +57,6 @@
     
     if (self.productid) {
         [self getDetailsOfReportMessage];
-    }else{
-        [self.reportDictionary setValue:@"1" forKey:@"type"];
     }
 }
 
@@ -163,20 +162,20 @@
     return _addressTestDict;
 }
 
-- (NSMutableArray *)categoryArray
+- (NSMutableDictionary *)categoryDic
 {
-    if (!_categoryArray) {
-        _categoryArray = [NSMutableArray array];
+    if (!_categoryDic) {
+        _categoryDic = [NSMutableDictionary dictionary];
     }
-    return _categoryArray;
+    return _categoryDic;
 }
 
-- (NSMutableArray *)entrustArray
+- (NSMutableDictionary *)entrustDic
 {
-    if (!_entrustArray) {
-        _entrustArray = [NSMutableArray array];
+    if (!_entrustDic) {
+        _entrustDic = [NSMutableDictionary dictionary];
     }
-    return _entrustArray;
+    return _entrustDic;
 }
 
 #pragma mark - tableView delegate and datasource
@@ -263,45 +262,64 @@
         [cell setDidBeginEditting:^(NSString *text) {
             if (text.length > 0) {
                 weakcell.optionButton4.selected = YES;
-                if (![weakself.categoryArray containsObject:@"4"]) {
-                    [weakself.categoryArray addObject:@"4"];
-                }
+//                if (![weakself.categoryArray containsObject:@"4"]) {
+//                    [weakself.categoryArray addObject:@"4"];
+//                }
+                [weakself.categoryDic setObject:@"4" forKey:@"4"];
             }else{
                 weakcell.optionButton4.selected = NO;
-                if ([weakself.categoryArray containsObject:@"4"]) {
-                    [weakself.categoryArray removeObject:@"4"];
-                }
+//                if ([weakself.categoryArray containsObject:@"4"]) {
+//                    [weakself.categoryArray removeObject:@"4"];
+//                }
+                [weakself.categoryDic removeObjectForKey:@"4"];
             }
         }];
         [cell setDidEndEditting:^(NSString *text) {
             [weakself.reportDictionary setValue:text forKey:@"category_other"];
         }];
         
-        
         [cell setDidSelectedButton:^(UIButton *btn) {
             btn.selected = !btn.selected;
             switch (btn.tag) {
                 case 101:{//1
                     if (btn.selected) {
-                        [weakself.categoryArray addObject:@"1"];
+                        [weakself.categoryDic setObject:@"1" forKey:@"1"];
+//                        if (![weakself.categoryArray containsObject:@"1"]) {
+//                            [weakself.categoryArray addObject:@"1"];
+//                        }
                     }else{
-                        [weakself.categoryArray removeObject:@"1"];
+//                        if ([weakself.categoryArray containsObject:@"1"]) {
+//                            [weakself.categoryArray removeObject:@"1"];
+//                        }
+                        [weakself.categoryDic removeObjectForKey:@"1"];
                     }
                 }
                     break;
                 case 102:{//2
                     if (btn.selected) {
-                        [weakself.categoryArray addObject:@"2"];
+                        [weakself.categoryDic setObject:@"2" forKey:@"2"];
+                        //                        if (![weakself.categoryArray containsObject:@"1"]) {
+                        //                            [weakself.categoryArray addObject:@"1"];
+                        //                        }
                     }else{
-                        [weakself.categoryArray removeObject:@"2"];
+                        //                        if ([weakself.categoryArray containsObject:@"1"]) {
+                        //                            [weakself.categoryArray removeObject:@"1"];
+                        //                        }
+                        [weakself.categoryDic removeObjectForKey:@"2"];
                     }
                 }
                     break;
                 case 103:{//3
                     if (btn.selected) {
-                        [weakself.categoryArray addObject:@"3"];
+                        [weakself.categoryDic setObject:@"3" forKey:@"3"];
+                        //                        if (![weakself.categoryArray containsObject:@"1"]) {
+                        //                            [weakself.categoryArray addObject:@"1"];
+                        //                        }
                     }else{
-                        [weakself.categoryArray removeObject:@"3"];
+                        //                        if ([weakself.categoryArray containsObject:@"1"]) {
+                        //                            [weakself.categoryArray removeObject:@"1"];
+                        //                        }
+                        [weakself.categoryDic removeObjectForKey:@"3"];
                     }
                 }
                     break;
@@ -309,7 +327,10 @@
                     if (btn.selected) {
                         [weakcell.optionTextField becomeFirstResponder];
                         weakcell.optionTextField.text = weakself.reportDictionary[@"category_other"];
-                        [weakself.categoryArray addObject:@"4"];
+//                        if (![weakself.categoryArray containsObject:@"4"]) {
+//                            [weakself.categoryArray addObject:@"4"];
+//                        }
+                        [weakself.categoryDic setObject:@"4" forKey:@"4"];
                     }
                 }
                     break;
@@ -365,9 +386,10 @@
         [cell setDidBeginEditting:^(NSString *text) {
             if (text.length > 0) {
                 weakcell.optionButton4.selected = YES;
-                if (![weakself.entrustArray containsObject:@"4"]) {
-                    [weakself.entrustArray addObject:@"4"];
-                }
+//                if (![weakself.entrustArray containsObject:@"4"]) {
+//                    [weakself.entrustArray addObject:@"4"];
+//                }
+                [weakself.entrustDic setObject:@"4" forKey:@"4"];
             }
         }];
         [cell setDidEndEditting:^(NSString *text) {
@@ -379,38 +401,42 @@
             switch (btn.tag) {
                 case 101:{//1
                     if (btn.selected) {
-                        [weakself.entrustArray addObject:@"1"];
+                        [weakself.entrustDic setObject:@"1" forKey:@"1"];
+                       
                     }else{
-                        [weakself.entrustArray removeObject:@"1"];
+                        [weakself.entrustDic removeObjectForKey:@"1"];
                     }
                 }
                     break;
                 case 102:{//2
                     if (btn.selected) {
-                        [weakself.entrustArray addObject:@"2"];
+                        [weakself.entrustDic setObject:@"2" forKey:@"2"];
+                        
                     }else{
-                        [weakself.entrustArray removeObject:@"2"];
+                        [weakself.entrustDic removeObjectForKey:@"2"];
                     }
                 }
                     break;
                 case 103:{//3
                     if (btn.selected) {
-                        [weakself.entrustArray addObject:@"3"];
+                        [weakself.entrustDic setObject:@"3" forKey:@"3"];
+                        
                     }else{
-                        [weakself.entrustArray removeObject:@"3"];
+                        [weakself.entrustDic removeObjectForKey:@"3"];
                     }
                 }
                     break;
                 case 104:{//4
+                    
                     if (btn.selected) {
                         [weakcell.optionTextField becomeFirstResponder];
-                        weakcell.optionTextField.text = weakself.reportDictionary[@"entrust_other"];
-                        [weakself.entrustArray addObject:@"4"];
+                         weakcell.optionTextField.text = weakself.reportDictionary[@"entrust_other"];
+                        [weakself.entrustDic setObject:@"4" forKey:@"4"];
                     }else{
                         [weakcell.optionTextField resignFirstResponder];
                         weakcell.optionTextField.text = @"";
                         [weakself.reportDictionary removeObjectForKey:@"entrust_other"];
-                        [weakself.entrustArray removeObject:@"4"];
+                        [weakself.entrustDic removeObjectForKey:@"4"];
                     }
                 }
                     break;
@@ -654,6 +680,18 @@
             [weakself.reportDictionary setValue:rowModel.city_id forKey:@"city_id"];
             [weakself.reportDictionary setValue:rowModel.district_id forKey:@"district_id"];
             [weakself.reportDictionary setValue:rowModel.addressLabel forKey:@"address"];
+            
+            NSArray *a1 = [rowModel.category componentsSeparatedByString:@","];
+            for (int i=0; i<a1.count; i++) {
+                [weakself.categoryDic setObject:a1[i] forKey:a1[i]];
+            }
+            [weakself.categoryDic removeObjectForKey:@""];
+            
+            NSArray *a2 = [rowModel.entrust componentsSeparatedByString:@","];
+            for (int j=0; j<a2.count; j++) {
+                [weakself.entrustDic setObject:a2[j] forKey:a2[j]];
+            }
+            [weakself.entrustDic removeObjectForKey:@""];
         }
         
         [weakself.reportTableView reloadData];
@@ -667,19 +705,19 @@
 {
     [self.view endEditing:YES];
     
-    if (self.categoryArray.count > 0) {
-        NSString *soso = @"";//债权类型
-        for (int i=0; i<self.categoryArray.count; i++) {
-            soso = [NSString stringWithFormat:@"%@,%@",self.categoryArray[i],soso];
+    if (self.categoryDic.allKeys.count > 0) {//债权类型
+        NSString *soso = @"";
+        for (int i=0; i<self.categoryDic.allKeys.count; i++) {
+            soso = [NSString stringWithFormat:@"%@,%@",self.categoryDic.allKeys[i],soso];
         }
         soso = [soso substringWithRange:NSMakeRange(0, soso.length-1)];
         [self.reportDictionary setValue:soso forKey:@"category"];
     }
     
-    if (self.entrustArray.count > 0) {
+    if (self.entrustDic.allKeys.count > 0) {//委托事项
         NSString *wowo = @"";
-        for (int i=0; i<self.entrustArray.count; i++) {
-            wowo = [NSString stringWithFormat:@"%@,%@",self.entrustArray[i],wowo];
+        for (int i=0; i<self.entrustDic.allKeys.count; i++) {
+            wowo = [NSString stringWithFormat:@"%@,%@",self.entrustDic.allKeys[i],wowo];
         }
         wowo = [wowo substringWithRange:NSMakeRange(0, wowo.length-1)];
         [self.reportDictionary setValue:wowo forKey:@"entrust"];
@@ -687,12 +725,12 @@
     
     [self.reportDictionary setValue:[self getValidateToken] forKey:@"token"];
     
-    NSString *reFinanceString;
-    if ([self.tagString integerValue] == 3) {
-        reFinanceString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPublishProductTwice];
-        [self.reportDictionary setValue:self.productid forKey:@"productid"];
-    }else{
+    NSString *reFinanceString;//url
+    if ([self.tagString integerValue] == 1) {//新增发布
         reFinanceString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPublishProduct];
+    }else{//保存再发布，发布再发布
+        [self.reportDictionary setValue:self.productid forKey:@"productid"];
+        reFinanceString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPublishProductTwice];
     }
     NSDictionary *params = self.reportDictionary;
     
@@ -705,7 +743,7 @@
         if ([baseModel.code isEqualToString:@"0000"]) {
             [weakself dismissViewControllerAnimated:YES completion:nil];
         }
-    
+        
     } andFailBlock:^(NSError *error) {
         
     }];
@@ -715,13 +753,34 @@
 {
     [self.view endEditing:YES];
     
+    if (self.categoryDic.allKeys.count > 0) {//债权类型
+        NSString *soso = @"";
+        for (int i=0; i<self.categoryDic.allKeys.count; i++) {
+            soso = [NSString stringWithFormat:@"%@,%@",self.entrustDic.allKeys[i],soso];
+        }
+        soso = [soso substringWithRange:NSMakeRange(0, soso.length-1)];
+        [self.reportDictionary setValue:soso forKey:@"category"];
+    }
+    
+    if (self.entrustDic.allKeys.count > 0) {//委托事项
+        NSString *wowo = @"";
+        for (int i=0; i<self.entrustDic.allKeys.count; i++) {
+            wowo = [NSString stringWithFormat:@"%@,%@",self.entrustDic.allKeys[i],wowo];
+        }
+        wowo = [wowo substringWithRange:NSMakeRange(0, wowo.length-1)];
+        [self.reportDictionary setValue:wowo forKey:@"entrust"];
+    }
+    
+    NSString *saveDraft;
+    if ([self.tagString integerValue] == 1) {//新增保存
+        saveDraft = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kSaveDraftOfProduct];
+    }else if ([self.tagString integerValue] == 2){//保存再保存
+        saveDraft = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kSaveDraftOfProductTwice];
+        [self.reportDictionary setValue:self.productid forKey:@"productid"];
+    }
+    
     [self.reportDictionary setValue:[self getValidateToken] forKey:@"token"];
-//    [self.reportDictionary setValue:@"1,2" forKey:@"category"];//债权类型
-//    [self.reportDictionary setValue:@"" forKey:@"category_other"];
-//    [self.reportDictionary setValue:@"1,3,4" forKey:@"entrust"];  //委托权限
-//    [self.reportDictionary setValue:@"" forKey:@"entrust_other"];
-
-    NSString *saveDraft = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kSaveDraftOfProduct];
+    
     NSDictionary *params = self.reportDictionary;
     
     QDFWeakSelf;
@@ -741,7 +800,7 @@
 
 - (void)back
 {
-    if ([self.tagString integerValue] == 3) {//发布中
+    if ([self.tagString integerValue] == 3) {//发布中编辑，不能保存
         [self dismissViewControllerAnimated:YES completion:nil];
     }else{
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"是否保存" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"保存" otherButtonTitles:@"不保存", nil];

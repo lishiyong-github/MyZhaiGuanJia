@@ -80,7 +80,7 @@
 {
     if (!_rightButton) {
         _rightButton = [UIButton buttonWithType:0];
-        _rightButton.frame = CGRectMake(0, 0, 60, 30);
+        _rightButton.frame = CGRectMake(0, 0, 70, 30);
         [_rightButton setTitleColor:kWhiteColor forState:0];
         _rightButton.titleLabel.font = kFirstFont;
         _rightButton.contentHorizontalAlignment = 2;
@@ -133,6 +133,7 @@
     NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:@"token"];
 //    NSString *token = @"2e56461f7b7ee67f782188272bd98869";
 //    = @"XXX";
+    token = [NSString getValidStringFromString:token toString:@""];
     return token;
 }
 

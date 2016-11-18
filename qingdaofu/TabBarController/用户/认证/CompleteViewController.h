@@ -10,6 +10,6 @@
 
 @interface CompleteViewController : NetworkViewController
 
-@property (nonatomic,strong) NSString *categoryString;
+//@property (nonatomic,strong) NSString *categoryString;
 
 @end

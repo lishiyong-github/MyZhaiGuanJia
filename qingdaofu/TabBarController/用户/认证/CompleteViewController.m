@@ -49,16 +49,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    if ([self.categoryString intValue] == 1) {
-        self.navigationItem.title = @"个人认证成功";
-    }else if ([self.categoryString intValue] == 2){
-        self.navigationItem.title = @"律所认证成功";
-    }else{
-        self.navigationItem.title = @"公司认证成功";
-    }
-    
     self.navigationItem.leftBarButtonItem = self.leftItem;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.navRightButton];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightButton];
+    self.rightButton.layer.cornerRadius = corner;
+    self.rightButton.layer.masksToBounds = YES;
+    self.rightButton.layer.borderColor = kWhiteColor.CGColor;
+    self.rightButton.layer.borderWidth = kLineWidth;
+    [self.rightButton setTitle:@"编辑资料" forState:0];
+    self.rightButton.contentHorizontalAlignment = 0;
+
     
     [self.view addSubview:self.completeTableView];
     [self.view addSubview:self.completeCommitButton];
@@ -79,34 +78,6 @@
         self.didSetupConstraints = YES;
     }
     [super updateViewConstraints];
-}
-
-- (UIButton *)navRightButton
-{
-    if (!_navRightButton) {
-        _navRightButton = [UIButton buttonWithType:0];
-        _navRightButton.frame = CGRectMake(0, 0, 70, 30);
-        _navRightButton.layer.cornerRadius = corner;
-        _navRightButton.layer.masksToBounds = YES;
-        _navRightButton.layer.borderColor = kBlueColor.CGColor;
-        _navRightButton.layer.borderWidth = kLineWidth;
-        [_navRightButton setTitle:@"编辑资料" forState:0];
-        _navRightButton.titleLabel.font = kFirstFont;
-        [_navRightButton setTitleColor:kBlueColor forState:0];
-        
-        QDFWeakSelf;
-        [_navRightButton addAction:^(UIButton *btn) {
-            if (weakself.completeDataArray.count > 0) {
-                CompleteResponse *compleResponse = weakself.completeDataArray[0];
-                if ([compleResponse.completionRate integerValue] < 1) {
-                    [weakself goToEditCompleteMessagesWithResponseModel:weakself.completeDataArray[0]];
-                }else{
-                    [weakself showHint:@"认证信息已完善，不能编辑资料了"];
-                }
-            }
-        }];
-    }
-    return _navRightButton;
 }
 
 - (UITableView *)completeTableView
@@ -165,40 +136,37 @@
 #pragma mark - tableView delegate and datasource
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([self.categoryString integerValue] > 1) {//律所
-        CompleteResponse *response;
-        if (self.completeDataArray.count > 0) {
-            response = self.completeDataArray[0];
+    CompleteResponse *response = self.completeDataArray[0];
+    
+    CGSize titleSize = CGSizeMake(kScreenWidth - 137, MAXFLOAT);
+    CGSize  actualsize =[response.certification.casedesc boundingRectWithSize:titleSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName :kFirstFont} context:nil].size;
+    
+    if ([response.certification.category integerValue] == 1) {
+         return kCellHeight;
+    }else if ([response.certification.category integerValue] == 2){
+        if (indexPath.row == 5) {
+            return 11 + MAX(actualsize.height, 33);
         }
-        
-        CGSize titleSize = CGSizeMake(kScreenWidth - 137, MAXFLOAT);
-        CGSize  actualsize =[response.certification.casedesc boundingRectWithSize:titleSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName :kFirstFont} context:nil].size;
-        
-        if ([self.categoryString integerValue] == 2) {
-            if (indexPath.row == 5) {
-                return 11 + MAX(actualsize.height, 33);
-            }
-            return kCellHeight;
-        }else{
-            if (indexPath.row == 7) {
-                return 11 + MAX(actualsize.height, 33);
-            }
-            return kCellHeight;
+        return kCellHeight;
+    }else if ([response.certification.category integerValue] == 3){
+        if (indexPath.row == 7) {
+            return 11 + MAX(actualsize.height, 33);
         }
+        return kCellHeight;
     }
-    return kCellHeight;
+    
+    return 0;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (self.completeDataArray.count > 0) {
-        CompleteResponse *response;
-        response = self.completeDataArray[0];
+        CompleteResponse *response = self.completeDataArray[0];
         
-        if ([self.categoryString integerValue] == 1) {
+        if ([response.certification.category integerValue] == 1) {
             return 4;
-        }else if ([self.categoryString integerValue] == 2){
+        }else if ([response.certification.category integerValue] == 2){
             return 6;
-        }else if ([self.categoryString integerValue] == 3){
+        }else if ([response.certification.category integerValue] == 3){
             return 8;
         }
     }
@@ -221,13 +189,10 @@
     [cell.userActionButton setTitleColor:kBlackColor forState:0];
     cell.userActionButton.titleLabel.font = kBigFont;
     
-    CertificationModel *model;
-    if (self.completeDataArray.count > 0) {
-        CompleteResponse *response = self.completeDataArray[0];
-        model = response.certification;
-    }
+    CompleteResponse *response = self.completeDataArray[0];
+    CertificationModel *model = response.certification;
     
-    if ([self.categoryString integerValue] == 1) {//个人
+    if ([response.certification.category integerValue] == 1) {//个人
         if (indexPath.row == 0) {
             [cell.userNameButton setTitle:@"姓名" forState:0];
             [cell.userActionButton setTitle:model.name forState:0];
@@ -241,7 +206,7 @@
             [cell.userNameButton setTitle:@"邮箱" forState:0];
             [cell.userActionButton setTitle:[NSString getValidStringFromString:model.email] forState:0];
         }
-    }else if ([self.categoryString integerValue] == 2){//律所
+    }else if ([response.certification.category integerValue] == 2){//律所
         if (indexPath.row == 0) {
             [cell.userNameButton setTitle:@"律所名称" forState:0];
             [cell.userActionButton setTitle:model.name forState:0];
@@ -261,7 +226,7 @@
             [cell.userNameButton setTitle:@"经典案例" forState:0];
             [cell.userActionButton setTitle:[NSString getValidStringFromString:model.casedesc] forState:0];
         }
-    }else if ([self.categoryString integerValue] == 3){//公司
+    }else if ([response.certification.category integerValue] == 3){//公司
         if (indexPath.row == 0) {
             [cell.userNameButton setTitle:@"公司名称" forState:0];
             [cell.userActionButton setTitle:model.name forState:0];
@@ -335,21 +300,31 @@
 #pragma mark - method
 - (void)showCompleteMessages
 {
-    NSString *completeString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kIsCompleteString];
+    NSString *completeString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPersonCenterMessagesString];
     NSDictionary *params = @{@"token" : [self getValidateToken]};
     
     QDFWeakSelf;
     [self requestDataPostWithString:completeString params:params successBlock:^(id responseObject){
+        [weakself.completeDataArray removeAllObjects];
                         
         CompleteResponse *response = [CompleteResponse objectWithKeyValues:responseObject];
-        
-        [weakself.completeDataArray addObject:response];
-        [weakself.completeTableView reloadData];
         
         if ([response.certification.canModify integerValue] == 0) {//canModify＝1可以修改，＝0不可修改
             [weakself.completeCommitButton.button setTitle:@"不可修改认证" forState:0];
             weakself.completeCommitButton.userInteractionEnabled = NO;
         }
+        
+        if ([response.certification.category integerValue] == 1) {
+            self.title = @"个人认证成功";
+        }else if ([response.certification.category integerValue] == 2){
+            self.title = @"律所认证成功";
+        }else if ([response.certification.category integerValue] == 3){
+            self.title = @"公司认证成功";
+        }
+        
+        [weakself.completeDataArray addObject:response];
+        [weakself.completeTableView reloadData];
+        
     } andFailBlock:^(NSError *error){
         
     }];
@@ -358,24 +333,36 @@
 //跳转
 - (void)goToEditCompleteMessagesWithResponseModel:(CompleteResponse *)response
 {
-    if ([self.categoryString intValue] == 1) {//个人
+    if ([response.certification.category intValue] == 1) {//个人
         AuthenPersonViewController *authenPersonVC = [[AuthenPersonViewController alloc] init];
         authenPersonVC.typeAuthen = @"1";
         authenPersonVC.respnseModel = response;
-        authenPersonVC.categoryString = self.categoryString;
+        authenPersonVC.categoryString = response.certification.category;
         [self.navigationController pushViewController:authenPersonVC animated:YES];
-    }else if ([self.categoryString intValue] == 2){//律所
+    }else if ([response.certification.category intValue] == 2){//律所
         AuthenLawViewController *authenLawVC = [[AuthenLawViewController alloc] init];
         authenLawVC.responseModel = response;
         authenLawVC.typeAuthen = @"1";
-        authenLawVC.categoryString = self.categoryString;
+        authenLawVC.categoryString = response.certification.category;
         [self.navigationController pushViewController:authenLawVC animated:YES];
-    }else if([self.categoryString intValue] == 3){//公司
+    }else if([response.certification.category intValue] == 3){//公司
         AuthenCompanyViewController *authenCompanyVC = [[AuthenCompanyViewController alloc] init];
         authenCompanyVC.responseModel = response;
         authenCompanyVC.typeAuthen = @"1";
-        authenCompanyVC.categoryString = self.categoryString;
+        authenCompanyVC.categoryString = response.certification.category;
         [self.navigationController pushViewController:authenCompanyVC animated:YES];
+    }
+}
+
+- (void)rightItemAction
+{
+    if (self.completeDataArray.count > 0) {
+        CompleteResponse *compleResponse = self.completeDataArray[0];
+        if ([compleResponse.completionRate integerValue] < 1) {
+            [self goToEditCompleteMessagesWithResponseModel:compleResponse];
+        }else{
+            [self showHint:@"认证信息已完善，不能编辑资料了"];
+        }
     }
 }
 

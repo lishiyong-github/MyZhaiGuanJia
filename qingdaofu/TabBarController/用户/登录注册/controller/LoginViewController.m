@@ -303,8 +303,6 @@
         
         if ([loginModel.code isEqualToString:@"0000"]) {
             [[NSUserDefaults standardUserDefaults] setObject:loginModel.token forKey:@"token"];
-            [[NSUserDefaults standardUserDefaults] setObject:weakself.loginDictionary[@"mobile"] forKey:@"mobile"];
-
             [[NSUserDefaults standardUserDefaults] synchronize];
             
             [weakself back];

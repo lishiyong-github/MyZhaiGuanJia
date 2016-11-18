@@ -25,7 +25,6 @@
 @property (nonatomic,copy) NSString *create_by;
 @property (nonatomic,copy) NSString *collectionPeople;
 
-
 //显示信息
 @property (nonatomic,copy) NSString *number; //code
 @property (nonatomic,copy) NSString *statusLabel; //发布中

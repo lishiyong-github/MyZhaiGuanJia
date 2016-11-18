@@ -85,6 +85,9 @@
 #pragma mark - 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if ([self.ifFirst integerValue] == 0) {
+        return 1;
+    }
     return 2;
 }
 

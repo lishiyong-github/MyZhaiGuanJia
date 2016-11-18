@@ -17,11 +17,20 @@
 
 #import "MineUserCell.h"
 #import "BidOneCell.h"
+#import "MessageTableViewCell.h"
+
+#import "CompleteResponse.h"
+#import "CertificationModel.h"
+
+#import "UIButton+WebCache.h"
 
 @interface MySettingsViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *mySettingTableView;
+
+//json
+@property (nonatomic,strong) NSMutableArray *mySettingArray;
 
 @end
 
@@ -34,6 +43,8 @@
 
     [self.view addSubview:self.mySettingTableView];
     [self.view setNeedsUpdateConstraints];
+    
+    [self getDetailOfUserPerson];
 }
 
 - (void)updateViewConstraints
@@ -61,10 +72,21 @@
     return _mySettingTableView;
 }
 
+- (NSMutableArray *)mySettingArray
+{
+    if (!_mySettingArray) {
+        _mySettingArray = [NSMutableArray array];
+    }
+    return _mySettingArray;
+}
+
 #pragma mark - tableView delegate and datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 5;
+    if (self.mySettingArray.count > 0) {
+        return 5;
+    }
+    return 0;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -87,24 +109,36 @@
 {
     static NSString *identifier;
     
+    CompleteResponse *response = self.mySettingArray[0];
+    
     if (indexPath.section == 0) {
         identifier = @"setting0";
         
-        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        MessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         
         if (!cell) {
-            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            cell = [[MessageTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
-        
         cell.selectedBackgroundView = [[UIView alloc] init];
         cell.selectedBackgroundView.backgroundColor = kCellSelectedColor;
-        cell.userNameButton.userInteractionEnabled = NO;
-        cell.userActionButton.userInteractionEnabled = NO;
+        [cell.countLabel setHidden:YES];
+        cell.imageButton.layer.cornerRadius = 25;
+        cell.imageButton.layer.masksToBounds = YES;
+        [cell.imageButton sd_setImageWithURL:[NSURL URLWithString:response.pictureurl] forState:0 placeholderImage:[UIImage imageNamed:@"news_system"]];
         
-        [cell.userNameButton setImage:[UIImage imageNamed:@""] forState:0];
-        [cell.userNameButton setTitle:@"13212222222" forState:0];
-        [cell.userActionButton setTitle:@"个人中心    " forState:0];
-        [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        cell.contentLabel.numberOfLines = 0;
+        NSString *ccc1 = [NSString stringWithFormat:@"%@\n",[NSString getValidStringFromString:response.realname toString:response.username]];
+        NSString *ccc2 = response.mobile;
+        NSString *ccc = [NSString stringWithFormat:@"%@%@",ccc1,ccc2];
+        NSMutableAttributedString *attributeCCC = [[NSMutableAttributedString alloc] initWithString:ccc];
+        [attributeCCC setAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kBlackColor} range:NSMakeRange(0, ccc1.length)];
+        [attributeCCC setAttributes:@{NSFontAttributeName:kSecondFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(ccc1.length, ccc2.length)];
+        NSMutableParagraphStyle *styorr = [[NSMutableParagraphStyle alloc] init];
+        [styorr setParagraphSpacing:kSpacePadding];
+        [attributeCCC addAttribute:NSParagraphStyleAttributeName value:styorr range:NSMakeRange(0, ccc.length)];
+        [cell.contentLabel setAttributedText:attributeCCC];
+        
+        [cell.timeButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
         
         return cell;
     }else if (indexPath.section == 1){
@@ -124,10 +158,16 @@
         [cell.userNameButton setTitle:@"身份认证" forState:0];
         [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
         
-        if ([self.toModel.code isEqualToString:@"0000"]) {
-            [cell.userActionButton setTitle:@"已认证    " forState:0];
+        if ([response.code isEqualToString:@"0000"]) {
+            if ([response.certification.category integerValue] == 1) {
+                [cell.userActionButton setTitle:@"已认证个人" forState:0];
+            }else if ([response.certification.category integerValue] == 2){
+                [cell.userActionButton setTitle:@"已认证律所" forState:0];
+            }else if ([response.certification.category integerValue] == 3){
+                [cell.userActionButton setTitle:@"已认证公司" forState:0];
+            }
         }else{
-            [cell.userActionButton setTitle:@"待认证    " forState:0];
+            [cell.userActionButton setTitle:@"待认证" forState:0];
         }
         
         return cell;
@@ -168,11 +208,10 @@
         [cell.userNameButton setTitle:@"绑定手机" forState:0];
         [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
         
-        NSString *mobile = [NSString stringWithFormat:@"%@    ",self.toModel.mobile];
-        if (mobile.length == 15) {
-            [cell.userActionButton setTitle:mobile forState:0];
+        if (response.mobile) {
+            [cell.userActionButton setTitle:response.mobile forState:0];
         }else{
-            [cell.userActionButton setTitle:@"未绑定    " forState:0];
+            [cell.userActionButton setTitle:@"未绑定" forState:0];
         }
         
         return cell;
@@ -228,44 +267,78 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
+    CompleteResponse *response = self.mySettingArray[0];
+    
     if (indexPath.section == 0) {//个人中心
         PersonCerterViewController *personCerterVC = [[PersonCerterViewController alloc] init];
         [self.navigationController pushViewController:personCerterVC animated:YES];
     }else if(indexPath.section == 1){//身份认证
+        if (response.certification) {
+            CompleteViewController *completeVC = [[CompleteViewController alloc] init];
+            [self.navigationController pushViewController:completeVC animated:YES];
+        }else{
+            AuthentyViewController *authentyVC = [[AuthentyViewController alloc] init];
+            authentyVC.typeAuthty = @"1";
+            [self.navigationController pushViewController:authentyVC animated:YES];
+        }
     }else if (indexPath.section == 2 && indexPath.row == 0){//设置登录密码
         ModifyPassWordViewController *modifyPassWordVC = [[ModifyPassWordViewController alloc] init];
+        modifyPassWordVC.ifFirst = response.isSetPassword;
         [self.navigationController pushViewController:modifyPassWordVC animated:YES];
     }else if (indexPath.section == 2 && indexPath.row == 1){//绑定手机
         NewMobileViewController *newMobileVC = [[NewMobileViewController alloc] init];
+        newMobileVC.mobile = response.mobile;
         [self.navigationController pushViewController:newMobileVC animated:YES];
     }else if (indexPath.section == 3){//收货地址
         ReceiptAddressViewController *receiptAddressListViewController = [[ReceiptAddressViewController alloc] init];
         receiptAddressListViewController.cateString = @"1";
         [self.navigationController pushViewController:receiptAddressListViewController animated:YES];
     }else if (indexPath.section == 4){//退出登录
-        NSString *exitString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kExitString];
-        
-        NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:@"token"];
-        NSDictionary *params = @{@"token" : token};
-        
-        QDFWeakSelf;
-        [self requestDataPostWithString:exitString params:params successBlock:^(id responseObject){
-            BaseModel *exitModel = [BaseModel objectWithKeyValues:responseObject];
-            [weakself showHint:exitModel.msg];
-            
-            if ([exitModel.code isEqualToString:@"0000"]) {
-                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"token"];
-                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"mobile"];
-                [[NSUserDefaults standardUserDefaults] synchronize];
-                
-                [weakself.navigationController popViewControllerAnimated:YES];
-            }
-        } andFailBlock:^(NSError *error){
-            
-        }];
+        [self exitUser];
     }
 }
 
+#pragma mark - method
+- (void)getDetailOfUserPerson
+{
+    NSString *aoaoa = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPersonCenterMessagesString];
+    NSDictionary *params = @{@"token" : [self getValidateToken]};
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:aoaoa params:params successBlock:^(id responseObject) {
+        
+        [weakself.mySettingArray removeAllObjects];
+        
+        CompleteResponse *response = [CompleteResponse objectWithKeyValues:responseObject];
+        [weakself.mySettingArray addObject:response];
+        
+        [weakself.mySettingTableView reloadData];
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
+- (void)exitUser
+{
+    NSString *exitString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kExitString];
+    NSDictionary *params = @{@"token" : [self getValidateToken]};
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:exitString params:params successBlock:^(id responseObject){
+        BaseModel *exitModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:exitModel.msg];
+        
+        if ([exitModel.code isEqualToString:@"0000"]) {
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"token"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
+            [weakself.navigationController popViewControllerAnimated:YES];
+        }
+    } andFailBlock:^(NSError *error){
+        
+    }];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
