@@ -72,7 +72,6 @@
         [self.reportTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
         
         [self.reportPickerView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
-//
 //        [self.datePickerView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
         
         self.didSetupConstraints = YES;

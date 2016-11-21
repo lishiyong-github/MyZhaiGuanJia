@@ -47,8 +47,8 @@
         self.title = @"新增地址";
     }
     self.navigationItem.leftBarButtonItem = self.leftItem;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"保存" style:UIBarButtonItemStylePlain target:self action:@selector(saveReceiptAddress)];
-    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kBlueColor} forState:0];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightButton];
+    [self.rightButton setTitle:@"保存" forState:0];
     
     [self setupForDismissKeyboard];
     
@@ -322,9 +322,10 @@
 
 #pragma mark - method
 //new
-- (void)saveReceiptAddress
+- (void)rightItemAction
 {
     [self.view endEditing:YES];
+    
     NSString *receiptString;
     if (self.receiModel) {
         receiptString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kReceiptCopyAddressString];

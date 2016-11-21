@@ -28,9 +28,6 @@
 #import "OrderPublishCell.h"
 #import "ProductCloseCell.h"  //结案
 
-#import "PublishingResponse.h"
-#import "UserNameModel.h"
-
 
 #import "MyOrderDetailResponse.h"
 #import "OrderModel.h"

@@ -36,15 +36,19 @@
 
 @implementation MySettingsViewController
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self getDetailOfUserPerson];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @"设置";
     self.navigationItem.leftBarButtonItem = self.leftItem;
 
     [self.view addSubview:self.mySettingTableView];
-    [self.view setNeedsUpdateConstraints];
     
-    [self getDetailOfUserPerson];
+    [self.view setNeedsUpdateConstraints];
 }
 
 - (void)updateViewConstraints
@@ -152,24 +156,22 @@
         
         cell.selectedBackgroundView = [[UIView alloc] init];
         cell.selectedBackgroundView.backgroundColor = kCellSelectedColor;
-        cell.userNameButton.userInteractionEnabled = NO;
-        cell.userActionButton.userInteractionEnabled = NO;
         
         [cell.userNameButton setTitle:@"身份认证" forState:0];
         [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
         
-        if ([response.code isEqualToString:@"0000"]) {
+        if (response.certification) {
             if ([response.certification.category integerValue] == 1) {
                 [cell.userActionButton setTitle:@"已认证个人" forState:0];
-            }else if ([response.certification.category integerValue] == 2){
+            }else if ([response.certification.category integerValue] == 2) {
                 [cell.userActionButton setTitle:@"已认证律所" forState:0];
-            }else if ([response.certification.category integerValue] == 3){
+            }else if ([response.certification.category integerValue] == 3) {
                 [cell.userActionButton setTitle:@"已认证公司" forState:0];
             }
         }else{
             [cell.userActionButton setTitle:@"待认证" forState:0];
         }
-        
+            
         return cell;
     }else if (indexPath.section == 2){
         if (indexPath.row == 0) {

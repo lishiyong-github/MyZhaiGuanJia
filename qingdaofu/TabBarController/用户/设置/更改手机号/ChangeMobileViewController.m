@@ -138,6 +138,7 @@
         [_changeCommitButton setTitle:@"确定" forState:0];
         [_changeCommitButton setTitleColor:kGrayColor forState:0];
         _changeCommitButton.titleLabel.font = kFourFont;
+        [_changeCommitButton addTarget:self action:@selector(confirmTheChangeOfMobile) forControlEvents:UIControlEventTouchUpInside];
     }
     return _changeCommitButton;
 }
@@ -148,8 +149,7 @@
   
     NSString *oldMobileString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMySettingOfModifyOldMobile];
     NSDictionary *params = @{@"token" : [self getValidateToken],
-                             @"mobile" : @"13162521916",
-                             //                             @"mobile" : self.mobile,
+                             @"mobile" : self.changeMobileTextField.text,
                              @"type" : @"4"
                              };
     

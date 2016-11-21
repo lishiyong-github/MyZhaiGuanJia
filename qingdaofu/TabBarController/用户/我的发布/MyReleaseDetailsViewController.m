@@ -18,8 +18,10 @@
 #import "SignProtocolViewController.h" //签约协议
 #import "AgreementViewController.h"  //居间协议
 #import "CheckDetailPublishViewController.h"  //查看接单方信息
+#import "PaceViewController.h"  //尽职调查
 
 #import "BaseRemindButton.h"
+#import "DialogBoxView.h"
 
 #import "MineUserCell.h"//完善信息
 #import "NewPublishDetailsCell.h"//进度
@@ -29,8 +31,6 @@
 
 //面谈中
 #import "OrderPublishCell.h"
-
-
 #import "PublishCombineView.h"  //底部视图
 
 #import "PublishingResponse.h"
@@ -46,6 +46,8 @@
 
 @property (nonatomic,strong) UITableView *releaseDetailTableView;
 @property (nonatomic,strong) PublishCombineView *publishCheckView;
+@property (nonatomic,strong) DialogBoxView *dialogBoxView;//对话框
+
 @property (nonatomic,strong) BaseRemindButton *EndOrloseRemindButton;  //新的申请记录提示信息
 
 //json
@@ -71,6 +73,10 @@
     
     [self.view addSubview: self.releaseDetailTableView];
     [self.view addSubview:self.publishCheckView];
+    [self.publishCheckView setHidden:YES];
+    [self.view addSubview:self.dialogBoxView];
+    [self.dialogBoxView setHidden:YES];
+    
     [self.view setNeedsUpdateConstraints];
     
     [self getDetailMessagesssss];
@@ -85,23 +91,14 @@
         [self.publishCheckView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
 //        [self.publishCheckView autoSetDimension:ALDimensionHeight toSize:92];
         
+        
+        [self.dialogBoxView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+        [self.dialogBoxView autoSetDimension:ALDimensionHeight toSize:kCellHeight1];
+        
         self.didSetupConstraints = YES;
     }
     [super updateViewConstraints];
 }
-
-//- (UIButton *)rightNavButton
-//{
-//    if (!_rightNavButton) {
-//        _rightNavButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 80, 30)];
-//        [_rightNavButton setContentHorizontalAlignment:2];
-//        [_rightNavButton setTitle:@"删除订单" forState:0];
-//        [_rightNavButton setTitleColor:kWhiteColor forState:0];
-//        _rightNavButton.titleLabel.font = kFirstFont;
-//        [_rightNavButton addTarget:self action:@selector(deleteThePublishing) forControlEvents:UIControlEventTouchUpInside];
-//    }
-//    return _rightNavButton;
-//}
 
 - (UITableView *)releaseDetailTableView
 {
@@ -122,6 +119,15 @@
         _publishCheckView = [PublishCombineView newAutoLayoutView];
     }
     return _publishCheckView;
+}
+
+- (DialogBoxView *)dialogBoxView
+{
+    if (!_dialogBoxView) {
+        _dialogBoxView = [DialogBoxView newAutoLayoutView];
+        _dialogBoxView.backgroundColor = kWhiteColor;
+    }
+    return _dialogBoxView;
 }
 
 - (BaseRemindButton *)EndOrloseRemindButton
@@ -172,6 +178,8 @@
         }else{
             if (section == 0) {
                 return 3;
+            }else if (section == 3){
+                return 1+dataModel.productApply.orders.productOrdersLogs.count;
             }
             return 1;
         }
@@ -208,18 +216,7 @@
                 }
                 return kCellHeight2;
             }
-        }else if ([dataModel.statusLabel isEqualToString:@"处理中"]) {
-            if (indexPath.section == 0) {
-                if (indexPath.row == 0) {
-                    return kCellHeight1;
-                }else if (indexPath.row == 1){
-                    return 72;
-                }else if (indexPath.row == 2){
-                    return kCellHeight3;
-                }
-            }
-            return kCellHeight;
-        }else if ([dataModel.statusLabel isEqualToString:@"已终止"]) {
+        }else if ([dataModel.statusLabel isEqualToString:@"处理中"] || [dataModel.statusLabel isEqualToString:@"已终止"]) {
             if (indexPath.section == 0) {
                 if (indexPath.row == 0) {
                     return kCellHeight1;
@@ -544,7 +541,7 @@
             [cell.userNameButton setTitle:@"尽职调查" forState:0];
             return cell;
         }
-    }else if ([dataModel.statusLabel isEqualToString:@"已终止"]) {
+    }else if ([dataModel.statusLabel isEqualToString:@"已终止"]) {//已终止
         if (indexPath.section == 0) {
             if (indexPath.row == 0) {
                 identifier = @"myEnding00";
@@ -668,7 +665,7 @@
             [cell.userNameButton setTitle:@"尽职调查" forState:0];
             return cell;
         }
-    }else if ([dataModel.statusLabel isEqualToString:@"已结案"]) {
+    }else if ([dataModel.statusLabel isEqualToString:@"已结案"]) {//已结案
         if (indexPath.section == 0) {
             identifier = @"close00";
             if (indexPath.row == 0){
@@ -795,7 +792,9 @@
                     }
                         break;
                     case 333:{//查看尽职调查
-                        
+                        PaceViewController *paceVC = [[PaceViewController alloc] init];
+                        paceVC.ordersid = dataModel.productApply.orders.ordersid;
+                        [weakself.navigationController pushViewController:paceVC animated:YES];
                     }
                         break;
                     case 334:{//查看居间协议
@@ -833,6 +832,7 @@
 {
     RowsModel *dataModel = self.releaseDetailArray[0];
     
+    //通用，查看信息
     if (![dataModel.statusLabel isEqualToString:@"已结案"]) {
         if (indexPath.section == 0 && indexPath.row == 0) {//完善信息
             MoreMessagesViewController *moreMessageVC = [[MoreMessagesViewController alloc] init];
@@ -891,6 +891,10 @@
                 signProtocalVC.ordersid = dataModel.productApply.orders.ordersid;
                 [self.navigationController pushViewController:signProtocalVC animated:YES];
             }
+        }else if (indexPath.section == 3){
+//            if (indexPath.row == 0) {
+//                
+//            }
         }
     }else if ([dataModel.statusLabel isEqualToString:@"已结案"]){
         
@@ -975,7 +979,9 @@
                 }
             }else if ([dataModel.statusLabel isEqualToString:@"处理中"]){
                 [weakself.publishCheckView setHidden:YES];
-                [weakself.releaseDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+                [weakself.dialogBoxView setHidden:NO];
+                [weakself.releaseDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
+                [weakself.releaseDetailTableView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kCellHeight1];
                 
                 if ([dataModel.productApply.orders.status integerValue] > 10) {
                     [weakself.rightButton setHidden:NO];
@@ -988,7 +994,7 @@
                 }
                 
                 [weakself.view addSubview:weakself.EndOrloseRemindButton];
-                [weakself.EndOrloseRemindButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+                [weakself.EndOrloseRemindButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(0, 0, kCellHeight1, 0) excludingEdge:ALEdgeTop];
                 [weakself.EndOrloseRemindButton autoSetDimension:ALDimensionHeight toSize:kRemindHeight];
                 if (dataModel.productOrdersTerminationsApply || dataModel.productOrdersClosedsApply) {//有申请结案终止的消息
                     [weakself.EndOrloseRemindButton setHidden:NO];
@@ -1016,12 +1022,14 @@
                 }
             }else if ([dataModel.statusLabel isEqualToString:@"已终止"]){
                 [weakself.publishCheckView setHidden:YES];
+                [weakself.dialogBoxView setHidden:YES];
                 [weakself.releaseDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
                 
                 [weakself.rightButton setHidden:YES];
                 
             }else if ([dataModel.statusLabel isEqualToString:@"已结案"]){
                 [weakself.publishCheckView setHidden:YES];
+                [weakself.dialogBoxView setHidden:YES];
                 [weakself.releaseDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
                 
                 [weakself.rightButton setHidden:YES];

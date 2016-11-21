@@ -9,7 +9,9 @@
 #import "BaseModel.h"
 
 @interface PaceResponse : BaseModel
-@property (nonatomic,copy) NSString *uid;
-@property (nonatomic,copy) NSMutableArray *disposing;
+//@property (nonatomic,copy) NSString *uid;
+//@property (nonatomic,copy) NSMutableArray *disposing;
+
+@property (nonatomic,strong) NSMutableArray *data;
 
 @end

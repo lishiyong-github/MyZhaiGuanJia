@@ -132,6 +132,7 @@
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.textField.placeholder = @"请详细描述您的问题或建议，您的反馈是我们前进最大的动力";
             cell.textField.font = kSecondFont;
+            cell.topTextViewConstraints.constant = 0;
             
             QDFWeakSelf;
             [cell setDidEndEditing:^(NSString *text) {
@@ -223,25 +224,6 @@
     } andFailBlock:^(NSError *error) {
         
     }];
-    
-    
-    
-    
-    
-    
-    /*
-    [self requestDataPostWithString:suggestionString params:params successBlock:^(id responseObject){
-        BaseModel *suggestModel = [BaseModel objectWithKeyValues:responseObject];
-        [self showHint:suggestModel.msg];
-        
-        if ([suggestModel.code isEqualToString:@"0000"]) {
-            [self.navigationController popViewControllerAnimated:YES];
-        }
-        
-    } andFailBlock:^(NSError *error){
-        
-    }];
-     */
 }
 
 - (void)didReceiveMemoryWarning {

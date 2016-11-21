@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-@class UserModel;
 @class ImageModel;
 
 @interface EvaluateModel : NSObject  //收到的评价

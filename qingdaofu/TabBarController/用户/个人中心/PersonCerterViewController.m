@@ -194,7 +194,7 @@
             [cell.userActionButton setTitle:@"已认证公司" forState:0];
         }
     }else{
-        [cell.userActionButton setTitle:@"未认证" forState:0];
+        [cell.userActionButton setTitle:@"待认证" forState:0];
     }
     
     return cell;

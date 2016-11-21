@@ -25,7 +25,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = @"修改密码";
+    if ([self.ifFirst integerValue] == 0) {
+        self.navigationItem.title = @"设置密码";
+    }else if ([self.ifFirst integerValue] == 1){
+        self.navigationItem.title = @"修改密码";
+    }
+    
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
     [self setupForDismissKeyboard];
@@ -98,75 +103,89 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *identifier = @"modify";
-    AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    if (!cell) {
-        cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-    }
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    NSArray *mArray = @[@"请输入原密码",@"输入新密码"];
-    cell.leftdAgentContraints.constant = kBigPadding;
-    cell.agentTextField.placeholder = mArray[indexPath.row];
-    
-    if (indexPath.row == 0) {
-        [cell setDidEndEditing:^(NSString *text) {
-            [self.modifyDictionary setValue:text forKey:@"old_password"];
-        }];
-    }else if (indexPath.row == 1) {
-        [cell.agentButton setTitle:@"显示密码" forState:0];
+    static NSString *identifier;
+//    = @"modify";
+    if ([self.ifFirst integerValue] == 0) {
+        identifier = @"set";
+        AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell) {
+            cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.agentLabel.text = @"设置密码";
+        cell.agentTextField.placeholder = @"请输入密码";
         
+        QDFWeakSelf;
         [cell setDidEndEditing:^(NSString *text) {
-            [self.modifyDictionary setValue:text forKey:@"new_password"];
+            [weakself.modifyDictionary setValue:text forKey:@"password"];
         }];
         
-        QDFWeak(cell);
-        [cell.agentButton addAction:^(UIButton *btn) {
-            if (!btn.selected) {
-                weakcell.agentTextField.secureTextEntry = NO;
-            }else{
-                weakcell.agentTextField.secureTextEntry = YES;
-            }
-            btn.selected = !btn.selected;
-        }];
-
+        return cell;
+    }else if([self.ifFirst integerValue] == 1){
+        identifier = @"modify";
+        AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell) {
+            cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        NSArray *mArray = @[@"请输入原密码",@"输入新密码"];
+        cell.leftdAgentContraints.constant = kBigPadding;
+        cell.agentTextField.placeholder = mArray[indexPath.row];
+        
+        QDFWeakSelf;
+        if (indexPath.row == 0) {
+            [cell setDidEndEditing:^(NSString *text) {
+                [weakself.modifyDictionary setValue:text forKey:@"old_password"];
+            }];
+        }else if (indexPath.row == 1) {
+            [cell.agentButton setTitle:@"显示密码" forState:0];
+            
+            [cell setDidEndEditing:^(NSString *text) {
+                [weakself.modifyDictionary setValue:text forKey:@"new_password"];
+            }];
+            
+            QDFWeak(cell);
+            [cell.agentButton addAction:^(UIButton *btn) {
+                if (!btn.selected) {
+                    weakcell.agentTextField.secureTextEntry = NO;
+                }else{
+                    weakcell.agentTextField.secureTextEntry = YES;
+                }
+                btn.selected = !btn.selected;
+            }];
+            
+        }
+        return cell;
     }
-    return cell;
+    
+    return nil;
 }
 
 #pragma mark - method
 - (void)modifyPassword
 {
     [self.view endEditing:YES];
-    NSString *modifyString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kModifyPasswordString];
+    NSString *modifyString;
     
-//    NSString *old_password = @"";
-//    NSString *new_password = @"";
-//    
-//    if (self.modifyDictionary[@"old_password"]) {
-//        old_password = self.modifyDictionary[@"old_password"];
-//    }
-//    
-//    if (self.modifyDictionary[@"new_password"]) {
-//       new_password = self.modifyDictionary[@"new_password"];
-//    }
+    if ([self.ifFirst integerValue] == 0) {
+        modifyString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kSetPasswordString];
+    }else if ([self.ifFirst integerValue] == 1){
+         modifyString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kModifyPasswordString];
+    }
     
     [self.modifyDictionary setValue:[self getValidateToken] forKey:@"token"];
     
     NSDictionary *params = self.modifyDictionary;
-//    @{@"token" : [self getValidateToken],
-//                             @"old_password" : old_password,
-//                             @"new_password" : new_password
-//                             };
+    
     QDFWeakSelf;
     [self requestDataPostWithString:modifyString params:params successBlock:^(id responseObject){
-        
         BaseModel *modifyModel = [BaseModel objectWithKeyValues:responseObject];
         [weakself showHint:modifyModel.msg];
-        if ([modifyModel.code isEqualToString:@"0000"]) {
-            [weakself.navigationController popViewControllerAnimated:YES];
-        }
         
+        if ([modifyModel.code isEqualToString:@"0000"]) {
+            [weakself back];
+        }
     } andFailBlock:^(NSError *error){
         
     }];

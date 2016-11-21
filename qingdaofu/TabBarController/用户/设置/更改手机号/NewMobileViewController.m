@@ -245,6 +245,8 @@
         
         if ([baseModel.code isEqualToString:@"0000"]) {
             ChangeMobileViewController *changeMobileVC = [[ChangeMobileViewController alloc] init];
+            changeMobileVC.oldMobile = self.mobile;
+            changeMobileVC.oldCode = ccc;
             [weakself.navigationController pushViewController:changeMobileVC animated:YES];
         }
     } andFailBlock:^(NSError *error) {

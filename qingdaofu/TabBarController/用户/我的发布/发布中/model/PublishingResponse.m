@@ -36,7 +36,6 @@
 + (NSDictionary *)objectClassInArray
 {
     return @{@"uidString" : @"uid",
-             @"user" : @"UserModel",
              @"borrowinginfos" : @"DebtModel",
              @"creditorinfos" : @"DebtModel"
              };

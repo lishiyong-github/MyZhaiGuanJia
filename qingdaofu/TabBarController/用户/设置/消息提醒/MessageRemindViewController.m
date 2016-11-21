@@ -88,7 +88,7 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
     [cell.userNameButton setTitle:@"消息提醒" forState:0];
-    [cell.userActionButton setTitle:@"已开启" forState:0];
+    [cell.userActionButton setTitle:@"未开启" forState:0];
     cell.userActionButton.titleLabel.font = kBigFont;
     
     return cell;

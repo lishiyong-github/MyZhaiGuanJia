@@ -156,6 +156,9 @@
 #define kLoginString    @"user/login"    //登录1
 #define kExitString    @"user/logout"     //退出1
 #define kModifyPasswordString  @"user/modifypassword"  //修改密码1
+
+#define kSetPasswordString  @"userinfo/setpassword" //设置密码
+
 #define kResetPasswordString  @"user/resetpassword"     //重置密码
 #define kTokenOverdue  @"common/application"   //token是否过期
 #define kRegisterAgreement @"/protocol/agreements" //注册协议
@@ -327,6 +330,7 @@
 #define kMyOrderDetailOfDealCloseDetailsAgree @"productorders/orders-closed-agree" //接单详情-处理终止详情-同意结案
 #define kMyOrderDetailOfDealCloseDetailsVote @"productorders/orders-closed-veto" //接单详情-处理终止详情-否决结案
 #define kMyOrderDetailOfAddPace @"productorders/orders-process-add" //接单详情－添加进度
+#define kMyorderDetailOfProgressLogs  @"productorders/logs"  //接单详情－接单日志
 
 
 
