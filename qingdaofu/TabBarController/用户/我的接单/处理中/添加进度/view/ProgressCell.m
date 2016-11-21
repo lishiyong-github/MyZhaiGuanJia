@@ -18,7 +18,7 @@
         
         [self.contentView addSubview:self.ppLine1];
         [self.contentView addSubview:self.ppLabel];
-        [self.contentView addSubview:self.ppImageView];
+        [self.contentView addSubview:self.ppTypeButton];
         [self.contentView addSubview:self.ppLine2];
         
         [self.contentView addSubview:self.ppTextButton];
@@ -34,24 +34,24 @@
         
         [self.ppLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
         [self.ppLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kBigPadding];
-        [self.ppLabel autoSetDimension:ALDimensionWidth toSize:70];
+        [self.ppLabel autoSetDimension:ALDimensionWidth toSize:48];
         
         [self.ppLine1 autoPinEdgeToSuperviewEdge:ALEdgeTop];
         [self.ppLine1 autoSetDimension:ALDimensionWidth toSize:kLineWidth];
-        [self.ppLine1 autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.ppImageView];
-        [self.ppLine1 autoAlignAxis:ALAxisVertical toSameAxisOfView:self.ppImageView];
+        [self.ppLine1 autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.ppTypeButton];
+        [self.ppLine1 autoAlignAxis:ALAxisVertical toSameAxisOfView:self.ppTypeButton];
         
-        [self.ppImageView autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.ppLabel withOffset:kSpacePadding];
-        [self.ppImageView autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.ppLabel];
-        [self.ppImageView autoSetDimensionsToSize:CGSizeMake(20, 20)];
+        [self.ppTypeButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.ppLabel withOffset:kSpacePadding];
+        [self.ppTypeButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.ppLabel];
+        [self.ppTypeButton autoSetDimensionsToSize:CGSizeMake(20, 20)];
         
         
         [self.ppLine2 autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.ppLine1];
-        [self.ppLine2 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.ppImageView];
+        [self.ppLine2 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.ppTypeButton];
         [self.ppLine2 autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.ppLine1];
         [self.ppLine2 autoPinEdgeToSuperviewEdge:ALEdgeBottom];
         
-        [self.ppTextButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.ppImageView withOffset:kBigPadding];
+        [self.ppTextButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.ppTypeButton withOffset:kBigPadding];
         [self.ppTextButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.ppTextButton autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:8];
         
@@ -78,13 +78,14 @@
     return _ppLabel;
 }
 
-- (UIImageView *)ppImageView
+- (UIButton *)ppTypeButton
 {
-    if (!_ppImageView) {
-        _ppImageView = [UIImageView newAutoLayoutView];
-        [_ppImageView setBackgroundColor:kRedColor];
+    if (!_ppTypeButton) {
+        _ppTypeButton = [UIButton newAutoLayoutView];
+        [_ppTypeButton setBackgroundColor:kRedColor];
+        [_ppTypeButton setTitleColor:kWhiteColor forState:0];
     }
-    return _ppImageView;
+    return _ppTypeButton;
 }
 
 - (UIButton *)ppTextButton
@@ -92,6 +93,9 @@
     if (!_ppTextButton) {
         _ppTextButton = [UIButton newAutoLayoutView];
         _ppTextButton.titleLabel.numberOfLines = 0;
+        _ppTextButton.titleLabel.font = kFirstFont;
+        [_ppTextButton setTitleColor:kLightGrayColor forState:0];
+        [_ppTextButton setContentHorizontalAlignment:1];
     }
     return _ppTextButton;
 }

@@ -23,4 +23,8 @@
 
 + (NSString *)getOtherYMDhmsFormatterTime:(NSString *)timeInterval;
 
++ (NSString *)getYMDsFormatterTime:(NSString *)timeInterval;
++ (NSString *)getHMFormatterTime:(NSString *)timeInterval;
+
+
 @end

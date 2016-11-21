@@ -10,9 +10,10 @@
 
 @interface OrdersLogsModel : NSObject
 
-@property (nonatomic,copy) NSString *action;//接单动作日志类型 10系统 20进度30评论 404142结案申请同意否决 			        505152中止申请同意否决',
-@property (nonatomic,copy) NSString *action_at;
+@property (nonatomic,copy) NSString *action;//接单动作日志类型 10系统 20进度30评论 404142结案申请同意否决  505152中止申请同意否决',
+@property (nonatomic,copy) NSString *action_at;//时间
 @property (nonatomic,copy) NSString *action_by;//操作人
+@property (nonatomic,copy) NSString *actionLabel;//操作内容
 @property (nonatomic,copy) NSString *afterstatus;//关联记录新状态
 @property (nonatomic,copy) NSString *beforestatus;//关联记录源状态
 @property (nonatomic,copy) NSString *classString;  //消息类别

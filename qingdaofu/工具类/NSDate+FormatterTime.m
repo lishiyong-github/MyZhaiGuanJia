@@ -89,4 +89,28 @@
     return dateSMS;
 }
 
++ (NSString *)getYMDsFormatterTime:(NSString *)timeInterval
+{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"YYYY-MM-dd"];
+    //处理模型数据时间
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:[timeInterval doubleValue]];
+    NSString *dateSMS = [dateFormatter stringFromDate:date];
+    [dateFormatter setDateFormat:@"YYYY:MM:dd"];
+    dateSMS = [dateFormatter stringFromDate:date];
+    return dateSMS;
+}
+
++ (NSString *)getHMFormatterTime:(NSString *)timeInterval
+{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"YYYY-MM-dd"];
+    //处理模型数据时间
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:[timeInterval doubleValue]];
+    NSString *dateSMS = [dateFormatter stringFromDate:date];
+    [dateFormatter setDateFormat:@"HH:mm"];
+    dateSMS = [dateFormatter stringFromDate:date];
+    return dateSMS;
+}
+
 @end

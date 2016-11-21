@@ -28,6 +28,7 @@
 #import "NewPublishStateCell.h"//状态
 #import "NewsTableViewCell.h"//选择申请方
 #import "ProductCloseCell.h"  //结案
+#import "ProgressCell.h"
 
 //面谈中
 #import "OrderPublishCell.h"
@@ -39,6 +40,9 @@
 #import "ProductOrdersClosedOrEndApplyModel.h"  //处理终止或结案申请
 
 #import "OrdersModel.h"
+#import "OrdersLogsModel.h"
+
+#import "UIView+UITextColor.h"
 
 @interface MyReleaseDetailsViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -204,7 +208,7 @@
                     }
                 }
                 return 216;
-            }else{
+            }else{//发布中
                 if (indexPath.section == 0) {
                     if (indexPath.row == 0) {
                         return kCellHeight1;
@@ -224,6 +228,10 @@
                     return 72;
                 }else if (indexPath.row == 2){
                     return kCellHeight3;
+                }
+            }else if (indexPath.section == 3){
+                if (indexPath.row > 0) {//尽职调查
+                    return kCellHeight4;
                 }
             }
             return kCellHeight;
@@ -413,7 +421,6 @@
         }
     }else if ([dataModel.statusLabel isEqualToString:@"处理中"]) {
         if (indexPath.section == 0) {
-            
             if (indexPath.row == 0) {
                 identifier = @"myDealing00";
                 MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -532,14 +539,91 @@
             
             return cell;
         }else if (indexPath.section == 3){
-            identifier = @"myDealing3";
-            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-            if (!cell) {
-                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            if (indexPath.row == 0) {
+                identifier = @"myEnding30";
+                MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+                if (!cell) {
+                    cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+                }
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                [cell.userNameButton setTitle:@"尽职调查" forState:0];
+                return cell;
+            }else{//ProgressCell.h
+                identifier = @"myEnding31";
+                ProgressCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+                if (!cell) {
+                    cell = [[ProgressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+                }
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                
+                OrdersLogsModel *ordersLogsModel = dataModel.productApply.orders.productOrdersLogs[indexPath.row-1];
+                
+                //time
+                NSString *timess1 = [NSString stringWithFormat:@"%@\n",[NSDate getHMFormatterTime:ordersLogsModel.action_at]];
+                NSString *timess2 = [NSDate getYMDsFormatterTime:ordersLogsModel.action_at];
+                NSString *timess = [NSString stringWithFormat:@"%@%@",timess1,timess2];
+                NSMutableAttributedString *attributeTime = [[NSMutableAttributedString alloc] initWithString:timess];
+                [attributeTime setAttributes:@{NSFontAttributeName:kSecondFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, timess1.length)];
+                [attributeTime setAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:9],NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(timess1.length, timess2.length)];
+                NSMutableParagraphStyle *styleTime = [[NSMutableParagraphStyle alloc] init];
+                [styleTime setParagraphSpacing:6];
+                styleTime.alignment = 2;
+                [attributeTime addAttribute:NSParagraphStyleAttributeName value:styleTime range:NSMakeRange(0, timess.length)];
+                [cell.ppLabel setAttributedText:attributeTime];
+                
+                //image
+                
+                //content
+                [cell.ppTypeButton setTitle:ordersLogsModel.label forState:0];
+                if ([ordersLogsModel.label isEqualToString:@"系"]) {
+                    [cell.ppTypeButton setBackgroundColor:kRedColor];
+                    
+                    NSString *tttt = [NSString stringWithFormat:@"[%@]%@",ordersLogsModel.actionLabel,ordersLogsModel.memo];
+                    [cell.ppTextButton setTitle:tttt forState:0];
+                }else if ([ordersLogsModel.label isEqualToString:@"我"]){
+                    [cell.ppTypeButton setBackgroundColor:kYellowColor];
+
+                    if ([ordersLogsModel.action integerValue] == 41 || [ordersLogsModel.action integerValue] == 42 || [ordersLogsModel.action integerValue] == 50 || [ordersLogsModel.action integerValue] == 51 || [ordersLogsModel.action integerValue] == 52) {
+                        NSString *tttt = [NSString stringWithFormat:@"[%@]%@%@",ordersLogsModel.actionLabel,ordersLogsModel.memo,@"查看详情"];
+                        [cell.ppTextButton setTitle:tttt forState:0];
+                    }else{
+                        NSString *tttt = [NSString stringWithFormat:@"[%@]%@",ordersLogsModel.actionLabel,ordersLogsModel.memo];
+                        [cell.ppTextButton setTitle:tttt forState:0];
+                    }
+                }else if ([ordersLogsModel.label isEqualToString:@"接"]){
+                    [cell.ppTypeButton setBackgroundColor:kButtonColor];
+                    if ([ordersLogsModel.action integerValue] == 40 || [ordersLogsModel.action integerValue] == 50 || [ordersLogsModel.action integerValue] == 51 || [ordersLogsModel.action integerValue] == 52) {
+                        
+                        NSString *tttt;
+                        if (ordersLogsModel.triggerLabel.length == 0) {
+                            tttt = [NSString stringWithFormat:@"[%@]%@%@",ordersLogsModel.actionLabel,ordersLogsModel.memo,@"查看详情"];
+                        }else{
+                            tttt = [NSString stringWithFormat:@"[%@]%@%@",ordersLogsModel.actionLabel,ordersLogsModel.memo,@"点击处理"];
+                        }
+                        [cell.ppTextButton setTitle:tttt forState:0];
+                    }else{
+                        NSString *tttt = [NSString stringWithFormat:@"[%@]%@",ordersLogsModel.actionLabel,ordersLogsModel.memo];
+                        [cell.ppTextButton setTitle:tttt forState:0];
+                    }
+                }else if ([ordersLogsModel.label isEqualToString:@"经"]){
+                    [cell.ppTypeButton setBackgroundColor:kGrayColor];
+                    
+                    NSString *tttt = [NSString stringWithFormat:@"[%@]%@",ordersLogsModel.actionLabel,ordersLogsModel.memo];
+                    NSScanner * scanner = [NSScanner scannerWithString:tttt];
+                    NSString *tt;
+                    while ([scanner isAtEnd] == NO) {
+                        //找到标签的起始位置
+                        [scanner scanUpToString:@"<" intoString:nil];
+                        //找到标签的结束位置
+                        [scanner scanUpToString:@">" intoString:&tt];
+                        //替换字符
+                        tttt = [tttt stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@>",tt] withString:@""];
+                    }
+                    
+                    [cell.ppTextButton setTitle:tttt forState:0];
+                }
+                return cell;
             }
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            [cell.userNameButton setTitle:@"尽职调查" forState:0];
-            return cell;
         }
     }else if ([dataModel.statusLabel isEqualToString:@"已终止"]) {//已终止
         if (indexPath.section == 0) {
@@ -656,14 +740,31 @@
             
             return cell;
         }else if (indexPath.section == 3){
-            identifier = @"myEnding3";
-            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-            if (!cell) {
-                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            if (indexPath.row == 0) {
+                identifier = @"myEnding30";
+                MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+                if (!cell) {
+                    cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+                }
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                [cell.userNameButton setTitle:@"尽职调查" forState:0];
+                return cell;
+            }else{//ProgressCell.h
+                identifier = @"myEnding31";
+                ProgressCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+                if (!cell) {
+                    cell = [[ProgressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+                }
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+                OrdersLogsModel *ordersLogsModel = dataModel.productApply.orders.productOrdersLogs[indexPath.row-1];
+                
+                cell.ppLabel.text = [NSDate getYMDhmsFormatterTime:ordersLogsModel.action_at];
+                NSString *textts = [NSString getValidStringFromString:ordersLogsModel.memo toString:@"无内容"];
+                [cell.ppTextButton setTitle:textts forState:0];
+                
+                return cell;
             }
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            [cell.userNameButton setTitle:@"尽职调查" forState:0];
-            return cell;
         }
     }else if ([dataModel.statusLabel isEqualToString:@"已结案"]) {//已结案
         if (indexPath.section == 0) {
