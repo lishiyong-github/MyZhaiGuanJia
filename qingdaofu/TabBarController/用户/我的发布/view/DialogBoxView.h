@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DialogBoxView : UIView
+@interface DialogBoxView : UIView<UITextFieldDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITextField *dialogTextField;
 @property (nonatomic,strong) UIButton *dialogButton;
+
+@property (nonatomic,strong) void (^didEndEditting)(NSString *);
 
 @end

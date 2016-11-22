@@ -315,7 +315,7 @@
         [weakself showHint:baseModel.msg];
         
         if ([baseModel.code isEqualToString:@"0000"]) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"endProduct" object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh" object:nil];
             [weakself back];
         }
     } andFailBlock:^(NSError *error) {

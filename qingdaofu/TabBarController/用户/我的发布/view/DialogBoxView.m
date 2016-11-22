@@ -45,6 +45,9 @@
         _dialogTextField.font = kSecondFont;
         _dialogTextField.textColor = kBlackColor;
         _dialogTextField.backgroundColor = kBackColor;
+        _dialogTextField.delegate = self;
+        _dialogTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kSpacePadding, 0)];
+        _dialogTextField.leftViewMode = UITextFieldViewModeAlways;
     }
     return _dialogTextField;
 }
@@ -59,6 +62,28 @@
         _dialogButton.titleLabel.font = kSecondFont;
     }
     return _dialogButton;
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    return YES;
+}
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
+{
+    return YES;
+}
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    
+    if (self.didEndEditting) {
+        self.didEndEditting(textField.text);
+    }
+}
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
 }
 
 /*

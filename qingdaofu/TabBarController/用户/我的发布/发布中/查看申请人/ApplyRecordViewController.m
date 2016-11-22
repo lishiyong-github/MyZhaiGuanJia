@@ -157,6 +157,10 @@
         cell.userActionButton.backgroundColor = kLightGrayColor;
         [cell.userActionButton setTitle:@"面谈失败" forState:0];
         cell.userActionButton.userInteractionEnabled = NO;
+    }else{//接单方取消申请
+        cell.userActionButton.backgroundColor = kLightGrayColor;
+        [cell.userActionButton setTitle:@"取消申请" forState:0];
+        cell.userActionButton.userInteractionEnabled = NO;
     }
     
     QDFWeakSelf;

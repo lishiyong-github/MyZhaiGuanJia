@@ -23,6 +23,9 @@
 @property (nonatomic,copy) NSString *level;//日志级别 1进度日志，2子表日志
 @property (nonatomic,copy) NSString *logid; //日志ID
 @property (nonatomic,copy) NSString *memo;//日志描述
+@property (nonatomic,copy) NSString *memoLabel;//日志描述
+@property (nonatomic,copy) NSString *memoTel;//日志描述
+
 @property (nonatomic,copy) NSString *ordersid;//日志归属订单ID
 @property (nonatomic,copy) NSString *relaid; //关联ID
 @property (nonatomic,copy) NSString *relatrigger;//关联触发  0代表未触发  1代表已经处理过了

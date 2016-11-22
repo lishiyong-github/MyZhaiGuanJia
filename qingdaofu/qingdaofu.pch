@@ -333,8 +333,6 @@
 #define kMyorderDetailOfProgressLogs  @"productorders/logs"  //接单详情－接单日志
 
 
-
-
 #define kMyReleaseOfIngString @"product/list-processing"  //我的发布－进行中
 #define kMyReleaseOfFinishedString @"product/list-completed"//我的发布－已完成
 #define kMyReleaseOfEndString @"product/list-aborted"  //我的发布－已终止

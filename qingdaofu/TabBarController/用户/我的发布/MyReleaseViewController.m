@@ -342,7 +342,6 @@
         }
     }if ([string isEqualToString:@"查看进度"]) {//处理中
         PaceViewController *paceVC = [[PaceViewController alloc] init];
-        paceVC.ordersid = ymodel.productApply.orders.ordersid;
         [self.navigationController pushViewController:paceVC animated:YES];
     }if ([string isEqualToString:@"评价"]) {//结案
         AdditionalEvaluateViewController *additionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];

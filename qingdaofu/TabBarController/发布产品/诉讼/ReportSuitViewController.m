@@ -242,6 +242,8 @@
         cell.optionTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kSpacePadding, 0)];
         cell.optionTextField.leftViewMode = UITextFieldViewModeAlways;
         
+        [self.reportDictionary setValue:@"" forKey:@"category_other"];
+        
         if ([self.reportDictionary[@"category"] containsString:@"1"]) {
             cell.optionButton1.selected = YES;
         }
@@ -365,6 +367,8 @@
         [cell.optionButton4 setTitle:@"其他" forState:0];
         cell.optionTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kSpacePadding, 0)];
         cell.optionTextField.leftViewMode = UITextFieldViewModeAlways;
+        [self.reportDictionary setValue:@"" forKey:@"entrust_other"];
+
         
         if ([self.reportDictionary[@"entrust"] containsString:@"1"]) {
             cell.optionButton1.selected = YES;
@@ -379,6 +383,7 @@
             cell.optionButton4.selected = YES;
             cell.optionTextField.text = self.reportDictionary[@"entrust_other"];
         }
+        
         
         QDFWeakSelf;
         QDFWeak(cell);
@@ -477,6 +482,7 @@
             cell.label.text = @"费用类型";
             [cell.segment setTitle:@"固定费用" forSegmentAtIndex:0];
             [cell.segment setTitle:@"风险费率" forSegmentAtIndex:1];
+            [self.reportDictionary setValue:@"1" forKey:@"type"];
             
             if ([self.reportDictionary[@"type"] integerValue] == 1) {
                 cell.segment.selectedSegmentIndex = 0;

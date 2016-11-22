@@ -17,7 +17,6 @@
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 
-@property (nonatomic,strong) UIButton *dealEndRightButton;
 @property (nonatomic,strong) UIView *dealEndWhiteView;
 @property (nonatomic,strong) UILabel *textLabel;
 @property (nonatomic,strong) PublishCombineView *dealEndFootView;
@@ -33,10 +32,17 @@
     [super viewDidLoad];
     self.title = @"处理终止";
     self.navigationItem.leftBarButtonItem = self.leftItem;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.dealEndRightButton];
     
-    [self.view addSubview:self.dealEndWhiteView];
-    [self.view addSubview:self.dealEndFootView];
+    if ([self.isShowAct integerValue] == 1) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightButton];
+        [self.rightButton setTitle:@"平台介入" forState:0];
+        
+        [self.view addSubview:self.dealEndWhiteView];
+        [self.view addSubview:self.dealEndFootView];
+        
+    }else if ([self.isShowAct integerValue] == 2){
+        [self.view addSubview:self.dealEndWhiteView];
+    }
     
     [self.view setNeedsUpdateConstraints];
     
@@ -47,26 +53,19 @@
 {
     if (!self.didSetupConstraints) {
         
-        [self.dealEndWhiteView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(kBigPadding, 0, 0, 0) excludingEdge:ALEdgeBottom];
-        [self.dealEndWhiteView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.dealEndFootView];
-        
-        [self.dealEndFootView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [self.dealEndFootView autoSetDimension:ALDimensionHeight toSize:116];
+        if ([self.isShowAct integerValue] == 1) {
+            [self.dealEndWhiteView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(kBigPadding, 0, 0, 0) excludingEdge:ALEdgeBottom];
+            [self.dealEndWhiteView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.dealEndFootView];
+            
+            [self.dealEndFootView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+            [self.dealEndFootView autoSetDimension:ALDimensionHeight toSize:116];
+        }else if([self.isShowAct integerValue] == 2){
+            [self.dealEndWhiteView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(kBigPadding, 0, 0, 0)];
+        }
         
         self.didSetupConstraints = YES;
     }
     [super updateViewConstraints];
-}
-
-- (UIButton *)dealEndRightButton
-{
-    if (!_dealEndRightButton) {
-        _dealEndRightButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 30)];
-        [_dealEndRightButton setTitleColor:kWhiteColor forState:0];
-        [_dealEndRightButton setTitle:@"平台介入" forState:0];
-        _dealEndRightButton.titleLabel.font = kFirstFont;
-    }
-    return _dealEndRightButton;
 }
 
 - (UIView *)dealEndWhiteView
@@ -227,9 +226,9 @@
 {
     [self.view endEditing:YES];
     NSString *dealEndingString;
-    if ([actType integerValue] == 1) {
+    if ([actType integerValue] == 1) {//同意
         dealEndingString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrderDetailOfDealEndDetailsAgree];
-    }else{
+    }else{//拒绝
         dealEndingString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrderDetailOfDealEndDetailsVote];
     }
 
@@ -237,7 +236,6 @@
                              @"resultmemo" : self.reason,
                              @"terminationid" : self.terminationid
                              };
-
     QDFWeakSelf;
     [self requestDataPostWithString:dealEndingString params:params successBlock:^(id responseObject) {
         BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
@@ -245,10 +243,17 @@
 
         if ([baseModel.code isEqualToString:@"0000"]) {
             [weakself back];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh" object:nil];
         }
     } andFailBlock:^(NSError *error) {
         
     }];
+}
+
+- (void)rightItemAction
+{
+    NSMutableString *phone = [[NSMutableString alloc] initWithFormat:@"telprompt://%@",@"80120900"];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phone]];
 }
 
 #pragma mark - textField delegate

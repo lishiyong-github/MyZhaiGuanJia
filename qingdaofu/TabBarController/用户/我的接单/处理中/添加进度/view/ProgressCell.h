@@ -17,4 +17,6 @@
 @property (nonatomic,strong) UIButton *ppTextButton;
 @property (nonatomic,strong) UILabel *ppLine2; //分割线2
 
+@property (nonatomic,strong) NSLayoutConstraint *leftTextConstraints;
+
 @end

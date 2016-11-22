@@ -22,6 +22,9 @@
         [self.contentView addSubview:self.ppLine2];
         
         [self.contentView addSubview:self.ppTextButton];
+        
+        self.leftTextConstraints = [self.ppTextButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.ppTypeButton withOffset:kBigPadding];
+
 
         [self setNeedsUpdateConstraints];
     }
@@ -34,7 +37,7 @@
         
         [self.ppLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
         [self.ppLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kBigPadding];
-        [self.ppLabel autoSetDimension:ALDimensionWidth toSize:48];
+        [self.ppLabel autoSetDimension:ALDimensionWidth toSize:50];
         
         [self.ppLine1 autoPinEdgeToSuperviewEdge:ALEdgeTop];
         [self.ppLine1 autoSetDimension:ALDimensionWidth toSize:kLineWidth];
@@ -51,9 +54,8 @@
         [self.ppLine2 autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.ppLine1];
         [self.ppLine2 autoPinEdgeToSuperviewEdge:ALEdgeBottom];
         
-        [self.ppTextButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.ppTypeButton withOffset:kBigPadding];
         [self.ppTextButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
-        [self.ppTextButton autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:8];
+        [self.ppTextButton autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.ppLabel];
         
         self.didSetupConstraints = YES;
     }
@@ -82,8 +84,9 @@
 {
     if (!_ppTypeButton) {
         _ppTypeButton = [UIButton newAutoLayoutView];
-        [_ppTypeButton setBackgroundColor:kRedColor];
         [_ppTypeButton setTitleColor:kWhiteColor forState:0];
+        _ppTypeButton.layer.cornerRadius = 10;
+        _ppTypeButton.titleLabel.font = kFourFont;
     }
     return _ppTypeButton;
 }

@@ -177,17 +177,11 @@
 #pragma mark - delegate
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-   if (self.didEndEditting) {
+    [textField resignFirstResponder];
+
+    if (self.didEndEditting) {
         self.didEndEditting(textField.text);
     }
-}
-
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
-    if (self.didBeginEditting) {
-        self.didBeginEditting(textField.text);
-    }
-    return YES;
 }
 
 - (void)awakeFromNib {
