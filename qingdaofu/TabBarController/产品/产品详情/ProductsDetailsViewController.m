@@ -24,7 +24,6 @@
 //产品信息
 #import "CertificationModel.h" //发布人详情
 #import "NumberModel.h" //申请次数
-#import "CreditorFileModel.h"  //债权文件
 #import "ApplyRecordModel.h"
 
 //发布人信息

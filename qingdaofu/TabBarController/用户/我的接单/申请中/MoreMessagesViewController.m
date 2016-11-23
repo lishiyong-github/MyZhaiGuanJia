@@ -177,7 +177,8 @@
             }else if (indexPath.row == 2){
                 [cell.userActionButton setTitle:dataModel.entrustLabel forState:0];
             }else if (indexPath.row == 3){
-                [cell.userActionButton setTitle:dataModel.accountLabel forState:0];
+                NSString *accc = [NSString stringWithFormat:@"%@万",dataModel.accountLabel];
+                [cell.userActionButton setTitle:accc forState:0];
             }else if (indexPath.row == 4){
                 NSString *tytenum = [NSString stringWithFormat:@"%@%@",dataModel.typenumLabel,dataModel.typeLabel];
                 [cell.userActionButton setTitle:tytenum forState:0];

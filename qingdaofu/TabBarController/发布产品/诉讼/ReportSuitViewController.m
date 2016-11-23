@@ -7,8 +7,6 @@
 //
 
 #import "ReportSuitViewController.h"
-#import "ReportFiSucViewController.h"  //发布成功
-#import "MySaveViewController.h"  //我的保存
 
 #import "SuitBaseCell.h" //费用类型
 #import "SuitNewCell.h" //债权类型，委托事项
@@ -611,6 +609,7 @@
         
         [weakself.reportPickerView setHidden:NO];
         weakself.reportPickerView.componentDic1 = dic;
+        
         [weakself.reportPickerView.pickerViews reloadAllComponents];
         
     } andFailBlock:^(NSError *error) {

@@ -201,7 +201,7 @@
     
     //details
     //委托本金
-    NSString *orString0 = [NSString stringWithFormat:@"委托本金：%@",rowModel.accountLabel];
+    NSString *orString0 = [NSString stringWithFormat:@"委托本金：%@万",rowModel.accountLabel];
     //债权类型
     NSString *orString1 = [NSString stringWithFormat:@"债权类型：%@",rowModel.categoryLabel];
     //委托事项

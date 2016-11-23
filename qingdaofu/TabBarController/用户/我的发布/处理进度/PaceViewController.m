@@ -8,13 +8,8 @@
 
 #import "PaceViewController.h"
 
-//#import "BaseCommitView.h"
-//#import "EditDebtAddressCell.h"
-
-#import "MineUserCell.h"
 #import "ProgressCell.h"
 
-#import "PaceResponse.h"
 #import "OrdersLogsModel.h"
 
 #import "UIImageView+WebCache.h"
@@ -71,10 +66,7 @@
 #pragma mark - delegate and datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (self.orderLogsArray.count > 0) {
-        return self.orderLogsArray.count;
-    }
-    return 0;
+    return self.orderLogsArray.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -97,65 +89,33 @@
         [cell.ppLine1 setHidden:YES];
         
         //time
-        NSString *timess1 = [NSString stringWithFormat:@"%@\n",[NSDate getHMFormatterTime:logsModel.action_at]];
-        NSString *timess2 = [NSDate getYMDsFormatterTime:logsModel.action_at];
-        NSString *timess = [NSString stringWithFormat:@"%@%@",timess1,timess2];
-        NSMutableAttributedString *attributeTime = [[NSMutableAttributedString alloc] initWithString:timess];
-        [attributeTime setAttributes:@{NSFontAttributeName:kSecondFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, timess1.length)];
-        [attributeTime setAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:9],NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(timess1.length, timess2.length)];
-        NSMutableParagraphStyle *styleTime = [[NSMutableParagraphStyle alloc] init];
-        [styleTime setParagraphSpacing:6];
-        styleTime.alignment = 2;
-        [attributeTime addAttribute:NSParagraphStyleAttributeName value:styleTime range:NSMakeRange(0, timess.length)];
-        [cell.ppLabel setAttributedText:attributeTime];
+        [cell.ppLabel setAttributedText:[self showPPLabelOfPaceWithModel:logsModel]];
         
-        //content
+        //image
         [cell.ppTypeButton setTitle:logsModel.label forState:0];
-        
         if ([logsModel.label isEqualToString:@"系"]) {
             [cell.ppTypeButton setBackgroundColor:kRedColor];
-            
-            NSString *tttt = [NSString stringWithFormat:@"[%@]%@",logsModel.actionLabel,logsModel.memoLabel];
-            [cell.ppTextButton setTitle:tttt forState:0];
-            
-            //                        cell.ppTextButton.backgroundColor = kBackColor;
-            //                        [cell.ppTextButton setContentEdgeInsets:UIEdgeInsetsMake(kSpacePadding, kSpacePadding, kSpacePadding, kSpacePadding)];
-            //                        cell.leftTextConstraints.constant = kSpacePadding;
-            
         }else if ([logsModel.label isEqualToString:@"我"]){
             [cell.ppTypeButton setBackgroundColor:kYellowColor];
-            NSString *tttt = [NSString stringWithFormat:@"[%@]%@",logsModel.actionLabel,logsModel.memoLabel];
-            [cell.ppTextButton setTitle:tttt forState:0];
         }else if ([logsModel.label isEqualToString:@"接"]){
-            
             [cell.ppTypeButton setBackgroundColor:kButtonColor];
-            NSString *tttt = [NSString stringWithFormat:@"[%@]%@",logsModel.actionLabel,logsModel.memoLabel];
-            [cell.ppTextButton setTitle:tttt forState:0];
-            
+        }else if ([logsModel.label isEqualToString:@"发"]){
+            [cell.ppTypeButton setBackgroundColor:kButtonColor];
         }else if ([logsModel.label isEqualToString:@"经"]){
             [cell.ppTypeButton setBackgroundColor:kGrayColor];
-            
-            if (logsModel.memoTel) {//有电话
-                NSString *mm1 = [NSString stringWithFormat:@"[%@]",logsModel.actionLabel];
-                NSString *mm2 = [NSString stringWithFormat:@"%@%@",logsModel.memoLabel,[logsModel.memoTel substringWithRange:NSMakeRange(0, logsModel.memoTel.length-11)]];
-                NSString *mm3 = [logsModel.memoTel substringWithRange:NSMakeRange(logsModel.memoTel.length-11, 11)];
-                NSString *mm = [NSString stringWithFormat:@"%@%@%@",mm1,mm2,mm3];
-                NSMutableAttributedString *attributeMM = [[NSMutableAttributedString alloc] initWithString:mm];
-                [attributeMM setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(0, mm1.length)];
-                [attributeMM setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(mm1.length, mm2.length)];
-                [attributeMM setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kTextColor} range:NSMakeRange(mm2.length+mm1.length, mm3.length)];
-                [cell.ppTextButton setAttributedTitle:attributeMM forState:0];
-                
-                [cell.ppTextButton addAction:^(UIButton *btn) {
-                    NSMutableString *phone = [NSMutableString stringWithFormat:@"telprompt://%@",mm3];
-                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phone]];
-                }];
-                
-            }else{//无电话
-                NSString *tttt = [NSString stringWithFormat:@"[%@]%@",logsModel.actionLabel,logsModel.memoLabel];
-                [cell.ppTextButton setTitle:tttt forState:0];
-            }
         }
+        
+        //content
+        [cell.ppTextButton setAttributedTitle:[self showPPTextOfPaceWithModel:logsModel] forState:0];
+        
+        //action
+        if ([logsModel.label isEqualToString:@"经"] && logsModel.memoTel.length > 0) {
+            QDFWeakSelf;
+            [cell.ppTextButton addAction:^(UIButton *btn) {
+                [weakself callPhoneWithTel:logsModel.memoTel];
+            }];
+        }
+        
         return cell;
         
     }else if (indexPath.row == self.orderLogsArray.count-1){
@@ -168,65 +128,33 @@
         [cell.ppLine2 setHidden:YES];
         
         //time
-        NSString *timess1 = [NSString stringWithFormat:@"%@\n",[NSDate getHMFormatterTime:logsModel.action_at]];
-        NSString *timess2 = [NSDate getYMDsFormatterTime:logsModel.action_at];
-        NSString *timess = [NSString stringWithFormat:@"%@%@",timess1,timess2];
-        NSMutableAttributedString *attributeTime = [[NSMutableAttributedString alloc] initWithString:timess];
-        [attributeTime setAttributes:@{NSFontAttributeName:kSecondFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, timess1.length)];
-        [attributeTime setAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:9],NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(timess1.length, timess2.length)];
-        NSMutableParagraphStyle *styleTime = [[NSMutableParagraphStyle alloc] init];
-        [styleTime setParagraphSpacing:6];
-        styleTime.alignment = 2;
-        [attributeTime addAttribute:NSParagraphStyleAttributeName value:styleTime range:NSMakeRange(0, timess.length)];
-        [cell.ppLabel setAttributedText:attributeTime];
+        [cell.ppLabel setAttributedText:[self showPPLabelOfPaceWithModel:logsModel]];
         
         //image
-        
-        //content
         [cell.ppTypeButton setTitle:logsModel.label forState:0];
         if ([logsModel.label isEqualToString:@"系"]) {
             [cell.ppTypeButton setBackgroundColor:kRedColor];
-            
-            NSString *tttt = [NSString stringWithFormat:@"[%@]%@",logsModel.actionLabel,logsModel.memoLabel];
-            [cell.ppTextButton setTitle:tttt forState:0];
-            
-            //                        cell.ppTextButton.backgroundColor = kBackColor;
-            //                        [cell.ppTextButton setContentEdgeInsets:UIEdgeInsetsMake(kSpacePadding, kSpacePadding, kSpacePadding, kSpacePadding)];
-            //                        cell.leftTextConstraints.constant = kSpacePadding;
-            
         }else if ([logsModel.label isEqualToString:@"我"]){
             [cell.ppTypeButton setBackgroundColor:kYellowColor];
-                NSString *tttt = [NSString stringWithFormat:@"[%@]%@",logsModel.actionLabel,logsModel.memoLabel];
-                [cell.ppTextButton setTitle:tttt forState:0];
         }else if ([logsModel.label isEqualToString:@"接"]){
             [cell.ppTypeButton setBackgroundColor:kButtonColor];
-            NSString *tttt = [NSString stringWithFormat:@"[%@]%@",logsModel.actionLabel,logsModel.memoLabel];
-            [cell.ppTextButton setTitle:tttt forState:0];
+        }else if ([logsModel.label isEqualToString:@"发"]){
+            [cell.ppTypeButton setBackgroundColor:kButtonColor];
         }else if ([logsModel.label isEqualToString:@"经"]){
             [cell.ppTypeButton setBackgroundColor:kGrayColor];
-            
-            if (logsModel.memoTel) {//有电话
-                NSString *mm1 = [NSString stringWithFormat:@"[%@]",logsModel.actionLabel];
-                NSString *mm2 = [NSString stringWithFormat:@"%@%@",logsModel.memoLabel,[logsModel.memoTel substringWithRange:NSMakeRange(0, logsModel.memoTel.length-11)]];
-                NSString *mm3 = [logsModel.memoTel substringWithRange:NSMakeRange(logsModel.memoTel.length-11, 11)];
-                NSString *mm = [NSString stringWithFormat:@"%@%@%@",mm1,mm2,mm3];
-                NSMutableAttributedString *attributeMM = [[NSMutableAttributedString alloc] initWithString:mm];
-                [attributeMM setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(0, mm1.length)];
-                [attributeMM setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(mm1.length, mm2.length)];
-                [attributeMM setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kTextColor} range:NSMakeRange(mm2.length+mm1.length, mm3.length)];
-                [cell.ppTextButton setAttributedTitle:attributeMM forState:0];
-                
-                [cell.ppTextButton addAction:^(UIButton *btn) {
-                    NSMutableString *phone = [NSMutableString stringWithFormat:@"telprompt://%@",mm3];
-                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phone]];
-                }];
-                
-            }else{//无电话
-                NSString *tttt = [NSString stringWithFormat:@"[%@]%@",logsModel.actionLabel,logsModel.memoLabel];
-                [cell.ppTextButton setTitle:tttt forState:0];
-            }
-            
         }
+        
+        //content
+        [cell.ppTextButton setAttributedTitle:[self showPPTextOfPaceWithModel:logsModel] forState:0];
+        
+        //action
+        if ([logsModel.label isEqualToString:@"经"] && logsModel.memoTel.length > 0) {
+            QDFWeakSelf;
+            [cell.ppTextButton addAction:^(UIButton *btn) {
+                [weakself callPhoneWithTel:logsModel.memoTel];
+            }];
+        }
+        
         return cell;
     }
     
@@ -238,8 +166,42 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     //time
-    NSString *timess1 = [NSString stringWithFormat:@"%@\n",[NSDate getHMFormatterTime:logsModel.action_at]];
-    NSString *timess2 = [NSDate getYMDsFormatterTime:logsModel.action_at];
+    [cell.ppLabel setAttributedText:[self showPPLabelOfPaceWithModel:logsModel]];
+    
+    //image
+    [cell.ppTypeButton setTitle:logsModel.label forState:0];
+    if ([logsModel.label isEqualToString:@"系"]) {
+        [cell.ppTypeButton setBackgroundColor:kRedColor];
+    }else if ([logsModel.label isEqualToString:@"我"]){
+        [cell.ppTypeButton setBackgroundColor:kYellowColor];
+    }else if ([logsModel.label isEqualToString:@"接"]){
+        [cell.ppTypeButton setBackgroundColor:kButtonColor];
+    }else if ([logsModel.label isEqualToString:@"发"]){
+        [cell.ppTypeButton setBackgroundColor:kButtonColor];
+    }else if ([logsModel.label isEqualToString:@"经"]){
+        [cell.ppTypeButton setBackgroundColor:kGrayColor];
+    }
+    
+    //content
+    [cell.ppTextButton setAttributedTitle:[self showPPTextOfPaceWithModel:logsModel] forState:0];
+    
+    //action
+    if ([logsModel.label isEqualToString:@"经"] && logsModel.memoTel.length > 0) {
+        QDFWeakSelf;
+        [cell.ppTextButton addAction:^(UIButton *btn) {
+            [weakself callPhoneWithTel:logsModel.memoTel];
+        }];
+    }
+
+    return cell;
+}
+
+
+#pragma mark
+- (NSMutableAttributedString *)showPPLabelOfPaceWithModel:(OrdersLogsModel *)logModel
+{
+    NSString *timess1 = [NSString stringWithFormat:@"%@\n",[NSDate getHMFormatterTime:logModel.action_at]];
+    NSString *timess2 = [NSDate getYMDsFormatterTime:logModel.action_at];
     NSString *timess = [NSString stringWithFormat:@"%@%@",timess1,timess2];
     NSMutableAttributedString *attributeTime = [[NSMutableAttributedString alloc] initWithString:timess];
     [attributeTime setAttributes:@{NSFontAttributeName:kSecondFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, timess1.length)];
@@ -248,53 +210,52 @@
     [styleTime setParagraphSpacing:6];
     styleTime.alignment = 2;
     [attributeTime addAttribute:NSParagraphStyleAttributeName value:styleTime range:NSMakeRange(0, timess.length)];
-    [cell.ppLabel setAttributedText:attributeTime];
     
-    //content
-    [cell.ppTypeButton setTitle:logsModel.label forState:0];
-    if ([logsModel.label isEqualToString:@"系"]) {
-        [cell.ppTypeButton setBackgroundColor:kRedColor];
+    return attributeTime;
+}
+
+- (NSMutableAttributedString *)showPPTextOfPaceWithModel:(OrdersLogsModel *)logModel
+{
+    if ([logModel.label isEqualToString:@"经"]) {
         
-        NSString *tttt = [NSString stringWithFormat:@"[%@]%@",logsModel.actionLabel,logsModel.memoLabel];
-        [cell.ppTextButton setTitle:tttt forState:0];
-        
-        //                    cell.ppTextButton.backgroundColor = kBackColor;
-        //                    [cell.ppTextButton setContentEdgeInsets:UIEdgeInsetsMake(kSpacePadding, kSpacePadding, kSpacePadding, kSpacePadding)];
-        //                    cell.leftTextConstraints.constant = kSpacePadding;
-        
-    }else if ([logsModel.label isEqualToString:@"我"]){
-        [cell.ppTypeButton setBackgroundColor:kYellowColor];
-        NSString *tttt = [NSString stringWithFormat:@"[%@]%@",logsModel.actionLabel,logsModel.memoLabel];
-        [cell.ppTextButton setTitle:tttt forState:0];
-    }else if ([logsModel.label isEqualToString:@"接"]){
-        [cell.ppTypeButton setBackgroundColor:kButtonColor];
-        NSString *tttt = [NSString stringWithFormat:@"[%@]%@",logsModel.actionLabel,logsModel.memoLabel];
-        [cell.ppTextButton setTitle:tttt forState:0];
-    }else if ([logsModel.label isEqualToString:@"经"]){
-        [cell.ppTypeButton setBackgroundColor:kGrayColor];
-        
-        if (logsModel.memoTel) {//有电话
-            NSString *mm1 = [NSString stringWithFormat:@"[%@]",logsModel.actionLabel];
-            NSString *mm2 = [NSString stringWithFormat:@"%@%@",logsModel.memoLabel,[logsModel.memoTel substringWithRange:NSMakeRange(0, logsModel.memoTel.length-11)]];
-            NSString *mm3 = [logsModel.memoTel substringWithRange:NSMakeRange(logsModel.memoTel.length-11, 11)];
+        NSMutableAttributedString *attributeMM;
+        if (logModel.memoTel.length > 0) {//有电话
+            NSString *mm1 = [NSString stringWithFormat:@"[%@]",logModel.actionLabel];
+            NSString *mm2 = [NSString stringWithFormat:@"%@%@",logModel.memoLabel,[logModel.memoTel substringWithRange:NSMakeRange(0, logModel.memoTel.length-11)]];
+            NSString *mm3 = [logModel.memoTel substringWithRange:NSMakeRange(logModel.memoTel.length-11, 11)];
             NSString *mm = [NSString stringWithFormat:@"%@%@%@",mm1,mm2,mm3];
-            NSMutableAttributedString *attributeMM = [[NSMutableAttributedString alloc] initWithString:mm];
+            attributeMM = [[NSMutableAttributedString alloc] initWithString:mm];
             [attributeMM setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(0, mm1.length)];
             [attributeMM setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(mm1.length, mm2.length)];
             [attributeMM setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kTextColor} range:NSMakeRange(mm2.length+mm1.length, mm3.length)];
-            [cell.ppTextButton setAttributedTitle:attributeMM forState:0];
+//            [cell.ppTextButton setAttributedTitle:attributeMM forState:0];
             
-            [cell.ppTextButton addAction:^(UIButton *btn) {
-                NSMutableString *phone = [NSMutableString stringWithFormat:@"telprompt://%@",mm3];
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phone]];
-            }];
+//            [cell.ppTextButton addAction:^(UIButton *btn) {
+//                NSMutableString *phone = [NSMutableString stringWithFormat:@"telprompt://%@",mm3];
+//                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phone]];
+//            }];
             
         }else{//无电话
-            NSString *tttt = [NSString stringWithFormat:@"[%@]%@",logsModel.actionLabel,logsModel.memoLabel];
-            [cell.ppTextButton setTitle:tttt forState:0];
+            NSString *tttt = [NSString stringWithFormat:@"[%@]%@",logModel.actionLabel,logModel.memoLabel];
+            attributeMM = [[NSMutableAttributedString alloc] initWithString:tttt];
         }
+        return attributeMM;
+    }else{
+        NSString *mm1 = [NSString stringWithFormat:@"[%@]%@",logModel.actionLabel,logModel.memoLabel];
+        NSString *mm2 = [NSString stringWithFormat:@"%@",logModel.triggerLabel];
+        NSString *mm = [NSString stringWithFormat:@"%@%@",mm1,mm2];
+        NSMutableAttributedString *attributeMM = [[NSMutableAttributedString alloc] initWithString:mm];
+        [attributeMM setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(0, mm1.length)];
+        [attributeMM setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(mm1.length, mm2.length)];
+        return attributeMM;
     }
-    return cell;
+    return nil;
+}
+
+- (void)callPhoneWithTel:(NSString *)tel
+{
+    NSMutableString *phone = [NSMutableString stringWithFormat:@"telprompt://%@",tel];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phone]];
 }
 
 - (void)didReceiveryWarning {

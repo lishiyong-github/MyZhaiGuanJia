@@ -15,6 +15,7 @@
 #import "DealingEndViewController.h"  //处理终止
 #import "DealingCloseViewController.h" //处理结案
 #import "RequestEndViewController.h" //申请终止
+#import "RequestCloseViewController.h"
 #import "SignProtocolViewController.h" //签约协议
 #import "AgreementViewController.h"  //居间协议
 #import "CheckDetailPublishViewController.h"  //查看接单方信息
@@ -658,7 +659,7 @@
                     }else if ([ordersLogsModel.label isEqualToString:@"经"]){
                         [cell.ppTypeButton setBackgroundColor:kGrayColor];
                         
-                        if (ordersLogsModel.memoTel) {//有电话
+                        if (ordersLogsModel.memoTel.length > 0) {//有电话
                             NSString *mm1 = [NSString stringWithFormat:@"[%@]",ordersLogsModel.actionLabel];
                             NSString *mm2 = [NSString stringWithFormat:@"%@%@",ordersLogsModel.memoLabel,[ordersLogsModel.memoTel substringWithRange:NSMakeRange(0, ordersLogsModel.memoTel.length-11)]];
                             NSString *mm3 = [ordersLogsModel.memoTel substringWithRange:NSMakeRange(ordersLogsModel.memoTel.length-11, 11)];
@@ -776,7 +777,7 @@
                         }
                     }else if ([ordersLogsModel.label isEqualToString:@"经"]){
                         [cell.ppTypeButton setBackgroundColor:kGrayColor];
-                        if (ordersLogsModel.memoTel) {//有电话
+                        if (ordersLogsModel.memoTel.length > 0) {//有电话
                             NSString *mm1 = [NSString stringWithFormat:@"[%@]",ordersLogsModel.actionLabel];
                             NSString *mm2 = [NSString stringWithFormat:@"%@%@",ordersLogsModel.memoLabel,[ordersLogsModel.memoTel substringWithRange:NSMakeRange(0, ordersLogsModel.memoTel.length-11)]];
                             NSString *mm3 = [ordersLogsModel.memoTel substringWithRange:NSMakeRange(ordersLogsModel.memoTel.length-11, 11)];
@@ -893,7 +894,7 @@
                     }
                 }else if ([ordersLogsModel.label isEqualToString:@"经"]){
                     [cell.ppTypeButton setBackgroundColor:kGrayColor];
-                    if (ordersLogsModel.memoTel) {//有电话
+                    if (ordersLogsModel.memoTel.length > 0) {//有电话
                         NSString *mm1 = [NSString stringWithFormat:@"[%@]",ordersLogsModel.actionLabel];
                         NSString *mm2 = [NSString stringWithFormat:@"%@%@",ordersLogsModel.memoLabel,[ordersLogsModel.memoTel substringWithRange:NSMakeRange(0, ordersLogsModel.memoTel.length-11)]];
                         NSString *mm3 = [ordersLogsModel.memoTel substringWithRange:NSMakeRange(ordersLogsModel.memoTel.length-11, 11)];
@@ -1169,7 +1170,7 @@
                     case 330:{//结清证明
                         DealingCloseViewController *dealingCloseVC = [[DealingCloseViewController alloc] init];
                         dealingCloseVC.perTypeString = @"2";
-                        dealingCloseVC.productDealModel = dataModel.productOrdersTerminationsApply;
+                        dealingCloseVC.closedid = dataModel.productOrdersClosed.closedid;
                         [weakself.navigationController pushViewController:dealingCloseVC animated:YES];
                     }
                         break;
@@ -1306,6 +1307,8 @@
     QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
         
+        NSDictionary *apaap = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
         [weakself.releaseDetailArray removeAllObjects];
         
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
@@ -1405,7 +1408,7 @@
                         [weakself.EndOrloseRemindButton addAction:^(UIButton *btn) {
                             DealingCloseViewController *dealCloseVC = [[DealingCloseViewController alloc] init];
                             dealCloseVC.perTypeString = @"1";
-                            dealCloseVC.productDealModel = dataModel.productOrdersClosedsApply;
+                            dealCloseVC.closedid = dataModel.productOrdersClosed.closedid;
                             [weakself.navigationController pushViewController:dealCloseVC animated:YES];
                         }];
                     }
@@ -1569,12 +1572,12 @@
     if ([actionType integerValue] == 40) {//接单方申请结案
         DealingCloseViewController *dealCloseVC = [[DealingCloseViewController alloc] init];
         dealCloseVC.perTypeString = @"1";
-        dealCloseVC.productDealModel = rowModel.productOrdersClosedsApply;
+        dealCloseVC.closedid = rowModel.productOrdersClosed.closedid;
         [self.navigationController pushViewController:dealCloseVC animated:YES];
     }else if ([actionType integerValue] == 41){//发布方同意结案
         DealingCloseViewController *dealCloseVC = [[DealingCloseViewController alloc] init];
         dealCloseVC.perTypeString = @"2";
-        dealCloseVC.productDealModel = rowModel.productOrdersClosedsApply;
+        dealCloseVC.closedid = rowModel.productOrdersClosed.closedid;
         [self.navigationController pushViewController:dealCloseVC animated:YES];
     }else if ([actionType integerValue] == 50 && [person isEqualToString:@"发布方"]){
         //发布方申请终止

@@ -7,10 +7,18 @@
 //
 
 #import "NetworkViewController.h"
+#import "OrderModel.h"
+#import "OrdersModel.h"
 
 @interface RequestCloseViewController : NetworkViewController
 
-@property (nonatomic,strong) NSString *closedid;
-@property (nonatomic,strong) NSString *ordersid;
+//@property (nonatomic,strong) NSString *ordersid;
 
+//示例显示信息
+@property (nonatomic,strong) OrderModel *orderModell;
+//@property (nonatomic,strong) NSString *accountLabel;
+//@property (nonatomic,strong) NSString *typenumLabel;
+//@property (nonatomic,strong) NSString *typeLabel;
+//@property (nonatomic,strong) NSString *number;
+//
 @end

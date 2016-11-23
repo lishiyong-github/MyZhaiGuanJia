@@ -9,7 +9,6 @@
 #import "BaseModel.h"
 
 @class PublishingModel;
-@class DebtModel;
 @class UserNameModel;
 @class RowsModel;
 

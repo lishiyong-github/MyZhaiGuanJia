@@ -33,12 +33,4 @@
            };
 }
 
-+ (NSDictionary *)objectClassInArray
-{
-    return @{@"uidString" : @"uid",
-             @"borrowinginfos" : @"DebtModel",
-             @"creditorinfos" : @"DebtModel"
-             };
-}
-
 @end

@@ -12,7 +12,11 @@
 
 + (NSDictionary *)replacedKeyFromPropertyName
 {
-    return @{@"filesImg" : @"ImageModel"};
+    return @{@"filesImg" : @"ImageModel",
+             @"accountLabel" : @"product.accountLabel",
+             @"number" : @"product.number",
+             @"typenumLabel" : @"product.typenumLabel",
+             @"typeLabel" : @"product.typeLabel"};
 }
 
 @end

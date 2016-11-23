@@ -39,8 +39,11 @@
     [super viewDidLoad];
     self.title = @"经办人";
     self.navigationItem.leftBarButtonItem = self.leftItem;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightButton];
-    [self.rightButton setTitle:@"编辑" forState:0];
+    
+    if ([self.isAdd integerValue] == 1) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightButton];
+        [self.rightButton setTitle:@"编辑" forState:0];
+    }
     
     [self.view addSubview:self.operatorListTableView];
     [self.view setNeedsUpdateConstraints];
@@ -81,22 +84,45 @@
 #pragma mark - delegate and datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (self.operatorListArray.count == 0) {
+    if ([self.isAdd integerValue] == 1) {
+        //可新增
+        if (self.operatorListArray.count > 0) {
+            return 3;
+        }
         return 2;
     }
     
-    return 3;
+    //不可新增
+    if (self.operatorListArray.count > 0) {
+        return 2;
+    }
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (self.operatorListArray.count <= 0) {
+    if ([self.isAdd integerValue] == 1) {//可新增
+        if (self.operatorListArray.count == 0) {
+            return 1;
+        }else{
+            if (section == 1) {
+                return self.operatorListArray.count;
+            }
+            return 1;
+        }
+    }
+    
+    ////不可新增
+    if (self.operatorListArray.count == 0) {
+        return 1;
+    }else{
+        if (section == 0) {
+            return self.operatorListArray.count;
+        }
         return 1;
     }
-    if (section == 0 || section == 2) {
-        return 1;
-    }
-    return self.operatorListArray.count;
+    
+    return 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -107,99 +133,186 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier;
-    if (indexPath.section == 0) {//MineUserCell.h
-        identifier = @"operator0";
-        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if (!cell) {
-            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        [cell.userNameButton setTitle:@" 从通讯录选择经办人" forState:0];
-        [cell.userNameButton setImage:[UIImage imageNamed:@"select_p"] forState:0];
-        [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+    
+    if ([self.isAdd integerValue] == 1) {
         
-        return cell;
-        
-    }else{
-        //没有经办人的时候
-        if (self.operatorListArray.count <= 0) {
-            if (indexPath.section == 1){
-                identifier = @"operator1";
-                OperatorCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-                if (!cell) {
-                    cell = [[OperatorCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-                }
-                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                [cell.bbButton setHidden:YES];
-                [cell.ddButton setHidden:YES];
-                [cell.ccButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:cell.aabutton withOffset:kSpacePadding];
-                
-                [cell.aabutton setTitle:@"接单方" forState:0];
-                [cell.aabutton setTitleColor:kBlackColor forState:0];
-                cell.aabutton.titleLabel.font = kBigFont;
-                
-                [cell.ccButton setImage:[UIImage imageNamed:@"contacts_icon_mark"] forState:0];
-                
-                return cell;
+        if (indexPath.section == 0) {//MineUserCell.h
+            identifier = @"operator0";
+            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
             }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            [cell.userNameButton setTitle:@" 从通讯录选择经办人" forState:0];
+            [cell.userNameButton setImage:[UIImage imageNamed:@"select_p"] forState:0];
+            [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            
+            return cell;
+            
         }else{
-            //有经办人的时候
-            if (indexPath.section == 2){
-                identifier = @"operator22";
-                OperatorCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-                if (!cell) {
-                    cell = [[OperatorCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-                }
-                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                [cell.bbButton setHidden:YES];
-                [cell.ddButton setHidden:YES];
-                [cell.ccButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:cell.aabutton withOffset:kSpacePadding];
-
-                [cell.aabutton setTitle:@"接单方" forState:0];
-                [cell.aabutton setTitleColor:kBlackColor forState:0];
-                cell.aabutton.titleLabel.font = kBigFont;
-                
-                [cell.ccButton setImage:[UIImage imageNamed:@"contacts_icon_mark"] forState:0];
-                
-                return cell;
-            }else if(indexPath.section == 1){
-                identifier = @"operator11";
-                OperatorCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-                if (!cell) {
-                    cell = [[OperatorCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-                }
-                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                
-                OperatorModel *operatorModel = self.operatorListArray[indexPath.row];
-                
-                if ([operatorModel.level integerValue] == 1) {
-                    [cell.aabutton setImage:[UIImage imageNamed:@"triangle"] forState:0];
-                    [cell.ddButton setHidden:NO];
-                    [cell.ddButton setImage:[UIImage imageNamed:@"phoneqq"] forState:0];
-                }else if ([operatorModel.level integerValue] == 2){
-                    [cell.aabutton setImage:[UIImage imageNamed:@"packet"] forState:0];
-                    [cell.ddButton setHidden:YES];
-                }
-                
-                NSString *picture = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,operatorModel.headimg.file];
-                [cell.bbButton sd_setImageWithURL:[NSURL URLWithString:picture] forState:0 placeholderImage:[UIImage imageNamed:@"contacts_icon_head"]];
-                
-                NSString *name = [NSString getValidStringFromString:operatorModel.realname toString:operatorModel.username];
-                [cell.ccButton setTitle:name forState:0];
-                
-                QDFWeakSelf;
-                [cell.ddButton addAction:^(UIButton *btn) {
-                    if (weakself.rightButton.selected) {//编辑状态
-                        [weakself deleteOperatorWithOperatorModel:operatorModel];
-                    }else{
-                        NSMutableString *phone = [NSMutableString stringWithFormat:@"telprompt://%@",operatorModel.mobile];
-                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phone]];
+            
+            //没有经办人
+            if (self.operatorListArray.count == 0) {
+                if (indexPath.section == 1){
+                    identifier = @"operator1";
+                    OperatorCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+                    if (!cell) {
+                        cell = [[OperatorCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                     }
-                }];
-                return cell;
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    [cell.bbButton setHidden:YES];
+                    [cell.ddButton setHidden:YES];
+                    [cell.ccButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:cell.aabutton withOffset:kSpacePadding];
+                    
+                    [cell.aabutton setTitle:@"接单方" forState:0];
+                    [cell.aabutton setTitleColor:kBlackColor forState:0];
+                    cell.aabutton.titleLabel.font = kBigFont;
+                    
+                    [cell.ccButton setImage:[UIImage imageNamed:@"contacts_icon_mark"] forState:0];
+                    
+                    return cell;
+                }
+            }else{
+                //有经办人的时候
+                if (indexPath.section == 2){
+                    identifier = @"operator22";
+                    OperatorCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+                    if (!cell) {
+                        cell = [[OperatorCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+                    }
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    [cell.bbButton setHidden:YES];
+                    [cell.ddButton setHidden:YES];
+                    [cell.ccButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:cell.aabutton withOffset:kSpacePadding];
+                    
+                    [cell.aabutton setTitle:@"接单方" forState:0];
+                    [cell.aabutton setTitleColor:kBlackColor forState:0];
+                    cell.aabutton.titleLabel.font = kBigFont;
+                    
+                    [cell.ccButton setImage:[UIImage imageNamed:@"contacts_icon_mark"] forState:0];
+                    
+                    return cell;
+                }else if(indexPath.section == 1){
+                    identifier = @"operator11";
+                    OperatorCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+                    if (!cell) {
+                        cell = [[OperatorCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+                    }
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    
+                    OperatorModel *operatorModel = self.operatorListArray[indexPath.row];
+                    
+                    if ([operatorModel.level integerValue] == 1) {
+                        [cell.aabutton setImage:[UIImage imageNamed:@"triangle"] forState:0];
+                        [cell.ddButton setHidden:NO];
+                        [cell.ddButton setImage:[UIImage imageNamed:@"phoneqq"] forState:0];
+                    }else if ([operatorModel.level integerValue] == 2){
+                        [cell.aabutton setImage:[UIImage imageNamed:@"packet"] forState:0];
+                        [cell.ddButton setHidden:YES];
+                    }
+                    
+                    NSString *picture = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,operatorModel.headimg.file];
+                    [cell.bbButton sd_setImageWithURL:[NSURL URLWithString:picture] forState:0 placeholderImage:[UIImage imageNamed:@"contacts_icon_head"]];
+                    
+                    NSString *name = [NSString getValidStringFromString:operatorModel.realname toString:operatorModel.username];
+                    [cell.ccButton setTitle:name forState:0];
+                    
+                    QDFWeakSelf;
+                    [cell.ddButton addAction:^(UIButton *btn) {
+                        if (weakself.rightButton.selected) {//编辑状态
+                            [weakself deleteOperatorWithOperatorModel:operatorModel];
+                        }else{
+                            NSMutableString *phone = [NSMutableString stringWithFormat:@"telprompt://%@",operatorModel.mobile];
+                            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phone]];
+                        }
+                    }];
+                    return cell;
+                }
             }
         }
     }
+    
+    ///////不能新增
+    if (self.operatorListArray.count == 0) {
+        //没有经办人
+        if (indexPath.section == 0) {//显示接单方
+            identifier = @"operator2220";
+            OperatorCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[OperatorCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            [cell.bbButton setHidden:YES];
+            [cell.ddButton setHidden:YES];
+            [cell.ccButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:cell.aabutton withOffset:kSpacePadding];
+            
+            [cell.aabutton setTitle:@"接单方" forState:0];
+            [cell.aabutton setTitleColor:kBlackColor forState:0];
+            cell.aabutton.titleLabel.font = kBigFont;
+            
+            [cell.ccButton setImage:[UIImage imageNamed:@"contacts_icon_mark"] forState:0];
+            
+            return cell;
+        }
+    }else{
+        //有经办人
+        if (indexPath.section == 1) {
+            identifier = @"operator22221";
+            OperatorCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[OperatorCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            [cell.bbButton setHidden:YES];
+            [cell.ddButton setHidden:YES];
+            [cell.ccButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:cell.aabutton withOffset:kSpacePadding];
+            
+            [cell.aabutton setTitle:@"接单方" forState:0];
+            [cell.aabutton setTitleColor:kBlackColor forState:0];
+            cell.aabutton.titleLabel.font = kBigFont;
+            
+            [cell.ccButton setImage:[UIImage imageNamed:@"contacts_icon_mark"] forState:0];
+            
+            return cell;
+            
+        }else{//显示经办人列表
+            identifier = @"operator22222";
+            OperatorCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[OperatorCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            OperatorModel *operatorModel = self.operatorListArray[indexPath.row];
+            
+            if ([operatorModel.level integerValue] == 1) {
+                [cell.aabutton setImage:[UIImage imageNamed:@"triangle"] forState:0];
+                [cell.ddButton setHidden:NO];
+                [cell.ddButton setImage:[UIImage imageNamed:@"phoneqq"] forState:0];
+            }else if ([operatorModel.level integerValue] == 2){
+                [cell.aabutton setImage:[UIImage imageNamed:@"packet"] forState:0];
+                [cell.ddButton setHidden:YES];
+            }
+            
+            NSString *picture = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,operatorModel.headimg.file];
+            [cell.bbButton sd_setImageWithURL:[NSURL URLWithString:picture] forState:0 placeholderImage:[UIImage imageNamed:@"contacts_icon_head"]];
+            
+            NSString *name = [NSString getValidStringFromString:operatorModel.realname toString:operatorModel.username];
+            [cell.ccButton setTitle:name forState:0];
+            
+            QDFWeakSelf;
+            [cell.ddButton addAction:^(UIButton *btn) {
+                if (weakself.rightButton.selected) {//编辑状态
+                    [weakself deleteOperatorWithOperatorModel:operatorModel];
+                }else{
+                    NSMutableString *phone = [NSMutableString stringWithFormat:@"telprompt://%@",operatorModel.mobile];
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phone]];
+                }
+            }];
+            return cell;
+        }
+    }
+    
     return nil;
 }
 
@@ -208,7 +321,7 @@
 //    if (section == 0 || section == self.operatorListArray.count+1) {
 //        return 0.1;
 //    }
-//    
+//
 //    return kCellHeight;
     
     return 0.1;

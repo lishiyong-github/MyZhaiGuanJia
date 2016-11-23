@@ -23,11 +23,17 @@
 @property (nonatomic,copy) NSString *modify_by;//审核人
 
 
-
 @property (nonatomic,copy) NSString *closedid;  //结案ID
 @property (nonatomic,copy) NSString *price;// 结案金额
 @property (nonatomic,copy) NSString *price2;//实收佣金
+@property (nonatomic,copy) NSString *priceLabel;// 结案金额显示
+@property (nonatomic,copy) NSString *price2Label;//实收佣金显示
 
 @property (nonatomic,strong) NSMutableArray *filesImg; //图片
+
+@property (nonatomic,copy) NSString *number; //合同编号
+@property (nonatomic,copy) NSString *accountLabel; //委托金额
+@property (nonatomic,copy) NSString *typeLabel;//委托费用单位
+@property (nonatomic,copy) NSString *typenumLabel;//委托费用金额
 
 @end

@@ -36,8 +36,6 @@
     [self.view addSubview:self.requestCloseCommitView];
     
     [self.view setNeedsUpdateConstraints];
-    
-//    [self getDetailsOfClosed];
 }
 
 - (void)updateViewConstraints
@@ -163,24 +161,6 @@
 }
 
 #pragma mark - method
-//- (void)getDetailsOfClosed
-//{
-//    NSString *closeDetailString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrderDetailOfDealClosedDetails];
-//    NSDictionary *params = @{@"token" : [self getValidateToken],
-//                             @"closedid" : self.closedid
-//                             };
-//    
-//    QDFWeakSelf;
-//    [self requestDataPostWithString:closeDetailString params:params successBlock:^(id responseObject) {
-//        
-//        NSDictionary *qpqppq = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-//        NSString *oooo ;
-//        
-//    } andFailBlock:^(NSError *error) {
-//        
-//    }];
-//}
-
 - (void)showAlertOfCloseApply
 {
     UIAlertController *closeAlert = [UIAlertController alertControllerWithTitle:@"是否立即申请结案" message:nil preferredStyle:UIAlertControllerStyleAlert];
@@ -211,7 +191,7 @@
     self.closeApplyDic[@"price"] =  self.closeApplyDic[@"price"]?self.closeApplyDic[@"price"]:@"";
     self.closeApplyDic[@"price2"] =  self.closeApplyDic[@"price2"]?self.closeApplyDic[@"price2"]:@"";//applymemo
 
-    [self.closeApplyDic setValue:self.ordersid forKey:@"ordersid"];
+    [self.closeApplyDic setValue:self.orderModell.orders.ordersid forKey:@"ordersid"];
     [self.closeApplyDic setValue:[self getValidateToken] forKey:@"token"];
     
     NSDictionary *params = self.closeApplyDic;
@@ -234,6 +214,7 @@
 {
     DealingCloseViewController *dealCloseVC = [[DealingCloseViewController alloc] init];
     dealCloseVC.perTypeString = @"2";
+    dealCloseVC.orderModell = self.orderModell;
     [self.navigationController pushViewController:dealCloseVC animated:YES];
 }
 

@@ -15,9 +15,11 @@
 #import "AddProgressViewController.h"  //添加进度
 #import "RequestCloseViewController.h"  //申请结案
 #import "RequestEndViewController.h"  //申请终止
+#import "DealingEndViewController.h"  //处理终止
+#import "DealingCloseViewController.h"  //处理结案
 #import "AdditionalEvaluateViewController.h"  //评价
 #import "MoreMessagesViewController.h"  //更多信息
-#import "DealingCloseViewController.h"  //结清证明
+#import "PaceViewController.h"  //尽职调查
 
 #import "BaseRemindButton.h"
 #import "BaseCommitView.h"
@@ -325,7 +327,7 @@
                     
                     return cell;
                 }
-            }else if(indexPath.section == 1){
+            }else if(indexPath.section == 1){//结案
                 identifier = @"close1";
                 MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
                 if (!cell) {
@@ -334,8 +336,13 @@
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 
                 [cell.userNameButton setTitle:@"经办人" forState:0];
-                [cell.userActionButton setTitle:@"查看" forState:0];
                 [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+                
+                if ([orderModel.productOrdersOperatorsCount integerValue] > 0) {
+                    [cell.userActionButton setTitle:@"查看" forState:0];
+                }else{
+                    [cell.userActionButton setTitle:@"无经办人" forState:0];
+                }
                 
                 return cell;
             }else{
@@ -383,7 +390,7 @@
                         case 330:{//结清证明
                             DealingCloseViewController *dealingCloseVC = [[DealingCloseViewController alloc] init];
                             dealingCloseVC.perTypeString = @"2";
-                            dealingCloseVC.productDealModel = rowModel.productOrdersTerminationsApply;
+                            dealingCloseVC.closedid = orderModel.productOrdersClosed.closedid;
                             [weakself.navigationController pushViewController:dealingCloseVC animated:YES];
                         }
                             break;
@@ -401,7 +408,10 @@
                         }
                             break;
                         case 333:{//查看尽职调查
-                            
+//                            aaaa;
+                            PaceViewController *paceVC = [[PaceViewController alloc] init];
+                            paceVC.orderLogsArray = orderModel.orders.productOrdersLogs;
+                            [weakself.navigationController pushViewController:paceVC animated:YES];
                         }
                             break;
                         case 334:{//查看居间协议
@@ -482,7 +492,12 @@
                 }
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 
-                NSArray *textArr = @[@"产品详情",@"债权类型",@"委托费用",@"委托金额"];
+                NSArray *textArr;
+                if ([orderModel.product.typeLabel isEqualToString:@"万"]) {
+                    textArr = @[@"产品详情",@"债权类型",@"固定费用",@"委托金额"];
+                }else if ([orderModel.product.typeLabel isEqualToString:@"%"]){
+                    textArr = @[@"产品详情",@"债权类型",@"风险费率",@"委托金额"];
+                }
                 [cell.userNameButton setTitle:textArr[indexPath.row] forState:0];
                 
                 if (indexPath.row == 0) {
@@ -517,13 +532,14 @@
                     
                     [cell.userActionButton setTitleColor:kGrayColor forState:0];
                     cell.userActionButton.titleLabel.font = kBigFont;
-                    [cell.userActionButton setTitle:rowModel.accountLabel forState:0];
+                    NSString *accountt = [NSString stringWithFormat:@"%@万",rowModel.accountLabel];
+                    [cell.userActionButton setTitle:accountt forState:0];
                     [cell.userActionButton setImage:[UIImage imageNamed:@""] forState:0];
                 }
                 
                 return cell;
                 
-            }else{//尽职调查
+            }else{//尽职调查(3)
                 if (indexPath.row == 0) {
                     identifier = @"process2";
                     MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -531,6 +547,8 @@
                         cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                     }
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    
+                    [cell.userNameButton setTitle:@"尽职调查" forState:0];
                     
                     return cell;
                 }else{//具体进度
@@ -544,6 +562,7 @@
                             cell = [[ProgressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                         }
                         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                        [cell.ppLine1 setHidden:YES];
                         
                         //time
                         [cell.ppLabel setAttributedText:[self showPPLabelOfProgressWithOrderLogModel:orderLogsModel]];
@@ -556,12 +575,20 @@
                             [cell.ppTypeButton setBackgroundColor:kYellowColor];
                         }else if ([orderLogsModel.label isEqualToString:@"系"]){
                             [cell.ppTypeButton setBackgroundColor:kRedColor];
-                        }else if ([orderLogsModel.label isEqualToString:@"经"]){
+                        }else if ([orderLogsModel.label isEqualToString:@"接"]){
                             [cell.ppTypeButton setBackgroundColor:kGrayColor];
                         }
                         
                         //content
-                        [cell.ppTextButton setAttributedTitle:[self showPPTypeButtonOfProgressWithModel:orderModel andOrderLogModel:orderLogsModel] forState:0];
+                        [cell.ppTextButton setAttributedTitle:[self showPPTextButtonOfProgressWithModel:orderModel andOrderLogModel:orderLogsModel] forState:0];
+                        
+                        //action
+                        if (orderLogsModel.triggerLabel.length > 0) {
+                            QDFWeakSelf;
+                            [cell.ppTextButton addAction:^(UIButton *btn) {
+                                [weakself actionOfMyOrderWithModel:orderModel andPerson:orderLogsModel.label andAction:orderLogsModel.action];
+                            }];
+                        }
                         
                         return cell;
                         
@@ -572,7 +599,8 @@
                             cell = [[ProgressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                         }
                         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                        
+                        [cell.ppLine2 setHidden:YES];
+
                         //time
                         [cell.ppLabel setAttributedText:[self showPPLabelOfProgressWithOrderLogModel:orderLogsModel]];
                         
@@ -584,13 +612,20 @@
                             [cell.ppTypeButton setBackgroundColor:kYellowColor];
                         }else if ([orderLogsModel.label isEqualToString:@"系"]){
                             [cell.ppTypeButton setBackgroundColor:kRedColor];
-                        }else if ([orderLogsModel.label isEqualToString:@"经"]){
+                        }else if ([orderLogsModel.label isEqualToString:@"接"]){
                             [cell.ppTypeButton setBackgroundColor:kGrayColor];
                         }
                         
                         //content
-                        [cell.ppTextButton setAttributedTitle:[self showPPTypeButtonOfProgressWithModel:orderModel andOrderLogModel:orderLogsModel] forState:0];
+                        [cell.ppTextButton setAttributedTitle:[self showPPTextButtonOfProgressWithModel:orderModel andOrderLogModel:orderLogsModel] forState:0];
                         
+                        //action
+                        if (orderLogsModel.triggerLabel.length > 0) {
+                            QDFWeakSelf;
+                            [cell.ppTextButton addAction:^(UIButton *btn) {
+                                [weakself actionOfMyOrderWithModel:orderModel andPerson:orderLogsModel.label andAction:orderLogsModel.action];
+                            }];
+                        }
                         return cell;
                         
                     }else{//中间行
@@ -611,13 +646,20 @@
                             [cell.ppTypeButton setBackgroundColor:kYellowColor];
                         }else if ([orderLogsModel.label isEqualToString:@"系"]){
                             [cell.ppTypeButton setBackgroundColor:kRedColor];
-                        }else if ([orderLogsModel.label isEqualToString:@"经"]){
+                        }else if ([orderLogsModel.label isEqualToString:@"接"]){
                             [cell.ppTypeButton setBackgroundColor:kGrayColor];
                         }
                         
                         //content
-                        [cell.ppTextButton setAttributedTitle:[self showPPTypeButtonOfProgressWithModel:orderModel andOrderLogModel:orderLogsModel] forState:0];
+                        [cell.ppTextButton setAttributedTitle:[self showPPTextButtonOfProgressWithModel:orderModel andOrderLogModel:orderLogsModel] forState:0];
                         
+                        //action
+                        if (orderLogsModel.triggerLabel.length > 0) {
+                            QDFWeakSelf;
+                            [cell.ppTextButton addAction:^(UIButton *btn) {
+                                [weakself actionOfMyOrderWithModel:orderModel andPerson:orderLogsModel.label andAction:orderLogsModel.action];
+                            }];
+                        }
                         return cell;
                     }
                 }
@@ -685,7 +727,12 @@
                 }
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 
-                NSArray *textArr = @[@"产品详情",@"债权类型",@"委托费用",@"委托金额"];
+                NSArray *textArr;
+                if ([orderModel.product.typeLabel isEqualToString:@"万"]) {
+                    textArr = @[@"产品详情",@"债权类型",@"固定费用",@"委托金额"];
+                }else if ([orderModel.product.typeLabel isEqualToString:@"%"]){
+                    textArr = @[@"产品详情",@"债权类型",@"风险费率",@"委托金额"];
+                }
                 [cell.userNameButton setTitle:textArr[indexPath.row] forState:0];
                 
                 if (indexPath.row == 0) {
@@ -720,7 +767,9 @@
                     
                     [cell.userActionButton setTitleColor:kGrayColor forState:0];
                     cell.userActionButton.titleLabel.font = kBigFont;
-                    [cell.userActionButton setTitle:rowModel.accountLabel forState:0];
+                    
+                    NSString *accountt = [NSString stringWithFormat:@"%@万",rowModel.accountLabel];
+                    [cell.userActionButton setTitle:accountt forState:0];
                     [cell.userActionButton setImage:[UIImage imageNamed:@""] forState:0];
                 }
                 
@@ -740,7 +789,7 @@
                 
                 return cell;
                 
-            }else{//尽职调查
+            }else{//尽职调查(4)
                 if (indexPath.row == 0) {
                     identifier = @"process3";
                     MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -748,6 +797,8 @@
                         cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                     }
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    
+                    [cell.userNameButton setTitle:@"尽职调查" forState:0];
                     
                     return cell;
                 }else{//具体进度
@@ -761,7 +812,8 @@
                             cell = [[ProgressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                         }
                         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                        
+                        [cell.ppLine1 setHidden:YES];
+
                         //time
                         [cell.ppLabel setAttributedText:[self showPPLabelOfProgressWithOrderLogModel:orderLogsModel]];
                         
@@ -773,12 +825,20 @@
                             [cell.ppTypeButton setBackgroundColor:kYellowColor];
                         }else if ([orderLogsModel.label isEqualToString:@"系"]){
                             [cell.ppTypeButton setBackgroundColor:kRedColor];
-                        }else if ([orderLogsModel.label isEqualToString:@"经"]){
+                        }else if ([orderLogsModel.label isEqualToString:@"接"]){
                             [cell.ppTypeButton setBackgroundColor:kGrayColor];
                         }
                         
                         //content
-                        [cell.ppTextButton setAttributedTitle:[self showPPTypeButtonOfProgressWithModel:orderModel andOrderLogModel:orderLogsModel] forState:0];
+                        [cell.ppTextButton setAttributedTitle:[self showPPTextButtonOfProgressWithModel:orderModel andOrderLogModel:orderLogsModel] forState:0];
+                        
+                        //action
+                        if (orderLogsModel.triggerLabel.length > 0) {
+                            QDFWeakSelf;
+                            [cell.ppTextButton addAction:^(UIButton *btn) {
+                                [weakself actionOfMyOrderWithModel:orderModel andPerson:orderLogsModel.label andAction:orderLogsModel.action];
+                            }];
+                        }
                         
                         return cell;
                         
@@ -789,7 +849,8 @@
                             cell = [[ProgressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                         }
                         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                        
+                        [cell.ppLine2 setHidden:YES];
+
                         //time
                         [cell.ppLabel setAttributedText:[self showPPLabelOfProgressWithOrderLogModel:orderLogsModel]];
                         
@@ -801,12 +862,20 @@
                             [cell.ppTypeButton setBackgroundColor:kYellowColor];
                         }else if ([orderLogsModel.label isEqualToString:@"系"]){
                             [cell.ppTypeButton setBackgroundColor:kRedColor];
-                        }else if ([orderLogsModel.label isEqualToString:@"经"]){
+                        }else if ([orderLogsModel.label isEqualToString:@"接"]){
                             [cell.ppTypeButton setBackgroundColor:kGrayColor];
                         }
                         
                         //content
-                        [cell.ppTextButton setAttributedTitle:[self showPPTypeButtonOfProgressWithModel:orderModel andOrderLogModel:orderLogsModel] forState:0];
+                        [cell.ppTextButton setAttributedTitle:[self showPPTextButtonOfProgressWithModel:orderModel andOrderLogModel:orderLogsModel] forState:0];
+                        
+                        //action
+                        if (orderLogsModel.triggerLabel.length > 0) {
+                            QDFWeakSelf;
+                            [cell.ppTextButton addAction:^(UIButton *btn) {
+                                [weakself actionOfMyOrderWithModel:orderModel andPerson:orderLogsModel.label andAction:orderLogsModel.action];
+                            }];
+                        }
                         
                         return cell;
                         
@@ -828,12 +897,20 @@
                             [cell.ppTypeButton setBackgroundColor:kYellowColor];
                         }else if ([orderLogsModel.label isEqualToString:@"系"]){
                             [cell.ppTypeButton setBackgroundColor:kRedColor];
-                        }else if ([orderLogsModel.label isEqualToString:@"经"]){
+                        }else if ([orderLogsModel.label isEqualToString:@"接"]){
                             [cell.ppTypeButton setBackgroundColor:kGrayColor];
                         }
                         
                         //content
-                        [cell.ppTextButton setAttributedTitle:[self showPPTypeButtonOfProgressWithModel:orderModel andOrderLogModel:orderLogsModel] forState:0];
+                        [cell.ppTextButton setAttributedTitle:[self showPPTextButtonOfProgressWithModel:orderModel andOrderLogModel:orderLogsModel] forState:0];
+                        
+                        //action
+                        if (orderLogsModel.triggerLabel.length > 0) {
+                            QDFWeakSelf;
+                            [cell.ppTextButton addAction:^(UIButton *btn) {
+                                [weakself actionOfMyOrderWithModel:orderModel andPerson:orderLogsModel.label andAction:orderLogsModel.action];
+                            }];
+                        }
                         
                         return cell;
                     }
@@ -903,7 +980,12 @@
                 }
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 
-                NSArray *textArr = @[@"产品详情",@"债权类型",@"委托费用",@"委托金额"];
+                NSArray *textArr;
+                if ([orderModel.product.typeLabel isEqualToString:@"万"]) {
+                    textArr = @[@"产品详情",@"债权类型",@"固定费用",@"委托金额"];
+                }else if ([orderModel.product.typeLabel isEqualToString:@"%"]){
+                    textArr = @[@"产品详情",@"债权类型",@"风险费率",@"委托金额"];
+                }
                 [cell.userNameButton setTitle:textArr[indexPath.row] forState:0];
                 
                 if (indexPath.row == 0) {
@@ -938,7 +1020,8 @@
                     
                     [cell.userActionButton setTitleColor:kGrayColor forState:0];
                     cell.userActionButton.titleLabel.font = kBigFont;
-                    [cell.userActionButton setTitle:rowModel.accountLabel forState:0];
+                    NSString *accountt = [NSString stringWithFormat:@"%@万",rowModel.accountLabel];
+                    [cell.userActionButton setTitle:accountt forState:0];
                     [cell.userActionButton setImage:[UIImage imageNamed:@""] forState:0];
                 }
                 
@@ -980,10 +1063,19 @@
                 
                 [cell.userNameButton setTitle:@"经办人" forState:0];
                 [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-                [cell.userActionButton setTitle:@"查看" forState:0];
+                
+                if ([orderModel.productOrdersOperatorsCount integerValue] > 0) {
+                    [cell.userActionButton setTitle:@"查看" forState:0];
+                }else{
+                    if ([orderModel.orders.status integerValue] <= 20) {
+                        [cell.userActionButton setTitle:@"添加" forState:0];
+                    }else{
+                        [cell.userActionButton setTitle:@"无经办人" forState:0];
+                    }
+                }
                 
                 return cell;
-            }else if(indexPath.section == 5){//尽职调查
+            }else if(indexPath.section == 5){//尽职调查(6)
                 if (indexPath.row == 0) {
                     identifier = @"processed5";
                     MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -995,31 +1087,25 @@
                     
                     [cell.userNameButton setTitle:@"尽职调查" forState:0];
                     
-                    [cell.userActionButton setHidden:NO];
-                    cell.userActionButton.userInteractionEnabled = YES;
-                    cell.userActionButton.layer.borderWidth = kLineWidth;
-                    [cell.userActionButton setContentHorizontalAlignment:0];
-                    [cell.userActionButton setTitle:@"  添加进度  " forState:0];
-                    cell.userActionButton.layer.borderColor = kButtonColor.CGColor;
-                    [cell.userActionButton setTitleColor:kTextColor forState:0];
-                    cell.userActionButton.userInteractionEnabled = YES;
-                    
-//                    if ([orderModel.product.status integerValue] <= 20) {
-//                    }else{
-//                        cell.userActionButton.layer.borderColor = kBorderColor.CGColor;
-//                        [cell.userActionButton setTitleColor:kLightGrayColor forState:0];
-//                        cell.userActionButton.userInteractionEnabled = NO;
-//                    }
-                    
-                    QDFWeakSelf;
-                    [cell.userActionButton addAction:^(UIButton *btn) {
-                        [weakself showHint:@"添加进度"];
-                        AddProgressViewController *addProgressVC = [[AddProgressViewController alloc] init];
-                        //                    paceVC.idString = weakself.idString;
-                        //                    paceVC.categoryString = self.categaryString;
-                        //                    paceVC.existence = @"2";
-                        [weakself.navigationController pushViewController:addProgressVC animated:YES];
-                    }];
+                    if ([orderModel.orders.status integerValue] == 20) {//处理中
+                        [cell.userActionButton setHidden:NO];
+                        cell.userActionButton.userInteractionEnabled = YES;
+                        cell.userActionButton.layer.borderWidth = kLineWidth;
+                        [cell.userActionButton setContentHorizontalAlignment:0];
+                        [cell.userActionButton setTitle:@"  添加进度  " forState:0];
+                        cell.userActionButton.layer.borderColor = kButtonColor.CGColor;
+                        [cell.userActionButton setTitleColor:kTextColor forState:0];
+                        cell.userActionButton.userInteractionEnabled = YES;
+                        
+                        QDFWeakSelf;
+                        [cell.userActionButton addAction:^(UIButton *btn) {
+                            [weakself showHint:@"添加进度"];
+                            AddProgressViewController *addProgressVC = [[AddProgressViewController alloc] init];
+                            [weakself.navigationController pushViewController:addProgressVC animated:YES];
+                        }];
+                    }else if ([orderModel.orders.status integerValue] == 30){//已终止
+                        [cell.userActionButton setHidden:YES];
+                    }
                     
                     return cell;
                 }else{//具体进度
@@ -1033,7 +1119,8 @@
                             cell = [[ProgressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                         }
                         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                        
+                        [cell.ppLine1 setHidden:YES];
+
                         //time
                         [cell.ppLabel setAttributedText:[self showPPLabelOfProgressWithOrderLogModel:orderLogsModel]];
                         
@@ -1045,12 +1132,20 @@
                             [cell.ppTypeButton setBackgroundColor:kYellowColor];
                         }else if ([orderLogsModel.label isEqualToString:@"系"]){
                             [cell.ppTypeButton setBackgroundColor:kRedColor];
-                        }else if ([orderLogsModel.label isEqualToString:@"经"]){
+                        }else if ([orderLogsModel.label isEqualToString:@"接"]){
                             [cell.ppTypeButton setBackgroundColor:kGrayColor];
                         }
                         
                         //content
-                        [cell.ppTextButton setAttributedTitle:[self showPPTypeButtonOfProgressWithModel:orderModel andOrderLogModel:orderLogsModel] forState:0];
+                        [cell.ppTextButton setAttributedTitle:[self showPPTextButtonOfProgressWithModel:orderModel andOrderLogModel:orderLogsModel] forState:0];
+                        
+                        //action
+                        if (orderLogsModel.triggerLabel.length > 0) {
+                            QDFWeakSelf;
+                            [cell.ppTextButton addAction:^(UIButton *btn) {
+                                [weakself actionOfMyOrderWithModel:orderModel andPerson:orderLogsModel.label andAction:orderLogsModel.action];
+                            }];
+                        }
                         
                         return cell;
                         
@@ -1061,7 +1156,8 @@
                             cell = [[ProgressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                         }
                         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                        
+                        [cell.ppLine2 setHidden:YES];
+
                         //time
                         [cell.ppLabel setAttributedText:[self showPPLabelOfProgressWithOrderLogModel:orderLogsModel]];
                         
@@ -1073,12 +1169,20 @@
                             [cell.ppTypeButton setBackgroundColor:kYellowColor];
                         }else if ([orderLogsModel.label isEqualToString:@"系"]){
                             [cell.ppTypeButton setBackgroundColor:kRedColor];
-                        }else if ([orderLogsModel.label isEqualToString:@"经"]){
+                        }else if ([orderLogsModel.label isEqualToString:@"接"]){
                             [cell.ppTypeButton setBackgroundColor:kGrayColor];
                         }
                         
                         //content
-                        [cell.ppTextButton setAttributedTitle:[self showPPTypeButtonOfProgressWithModel:orderModel andOrderLogModel:orderLogsModel] forState:0];
+                        [cell.ppTextButton setAttributedTitle:[self showPPTextButtonOfProgressWithModel:orderModel andOrderLogModel:orderLogsModel] forState:0];
+                        
+                        //action
+                        if (orderLogsModel.triggerLabel.length > 0) {
+                            QDFWeakSelf;
+                            [cell.ppTextButton addAction:^(UIButton *btn) {
+                                [weakself actionOfMyOrderWithModel:orderModel andPerson:orderLogsModel.label andAction:orderLogsModel.action];
+                            }];
+                        }
                         
                         return cell;
                         
@@ -1100,12 +1204,20 @@
                             [cell.ppTypeButton setBackgroundColor:kYellowColor];
                         }else if ([orderLogsModel.label isEqualToString:@"系"]){
                             [cell.ppTypeButton setBackgroundColor:kRedColor];
-                        }else if ([orderLogsModel.label isEqualToString:@"经"]){
+                        }else if ([orderLogsModel.label isEqualToString:@"接"]){
                             [cell.ppTypeButton setBackgroundColor:kGrayColor];
                         }
                         
                         //content
-                        [cell.ppTextButton setAttributedTitle:[self showPPTypeButtonOfProgressWithModel:orderModel andOrderLogModel:orderLogsModel] forState:0];
+                        [cell.ppTextButton setAttributedTitle:[self showPPTextButtonOfProgressWithModel:orderModel andOrderLogModel:orderLogsModel] forState:0];
+                        
+                        //action
+                        if (orderLogsModel.triggerLabel.length > 0) {
+                            QDFWeakSelf;
+                            [cell.ppTextButton addAction:^(UIButton *btn) {
+                                [weakself actionOfMyOrderWithModel:orderModel andPerson:orderLogsModel.label andAction:orderLogsModel.action];
+                            }];
+                        }
                         
                         return cell;
                     }
@@ -1246,7 +1358,13 @@
             [cell.userActionButton setTitleColor:kGrayColor forState:0];
             cell.userActionButton.titleLabel.font = kBigFont;
             
-            NSArray *textArr = @[@"产品详情",@"债权类型",@"委托事项",@"委托金额",@"委托费用",@"违约期限",@"合同履行地"];
+            NSArray *textArr;
+            if ([orderModel.product.typeLabel isEqualToString:@"万"]) {
+                textArr = @[@"产品详情",@"债权类型",@"委托事项",@"委托金额",@"固定费用",@"违约期限",@"合同履行地"];
+            }else if ([orderModel.product.typeLabel isEqualToString:@"%"]){
+                textArr = @[@"产品详情",@"债权类型",@"委托事项",@"委托金额",@"风险费率",@"违约期限",@"合同履行地"];
+            }
+            
             [cell.userNameButton setTitle:textArr[indexPath.row] forState:0];
                         
             if (indexPath.row == 0) {
@@ -1264,7 +1382,9 @@
             }else if (indexPath.row == 3){
                 [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
                 cell.userNameButton.titleLabel.font = kFirstFont;
-                [cell.userActionButton setTitle:orderModel.product.accountLabel forState:0];
+                
+                NSString *accountt = [NSString stringWithFormat:@"%@万",rowModel.accountLabel];
+                [cell.userActionButton setTitle:accountt forState:0];
             }else if (indexPath.row == 4){
                 [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
                 cell.userNameButton.titleLabel.font = kFirstFont;
@@ -1339,15 +1459,33 @@
                 signProtocolVC.isShowString = @"0";
                 [self.navigationController pushViewController:signProtocolVC animated:YES];
             }else if (indexPath.section == 4){//经办人
-                OperatorListViewController *operatorListVC = [[OperatorListViewController alloc] init];
-                operatorListVC.ordersid = orderModel.orders.ordersid;
-                [self.navigationController pushViewController:operatorListVC animated:YES];
+                if ([orderModel.productOrdersOperatorsCount integerValue] > 0) {
+                    OperatorListViewController *operatorListVC = [[OperatorListViewController alloc] init];
+                    operatorListVC.ordersid = orderModel.orders.ordersid;
+                    
+                    if ([orderModel.orders.status integerValue] <= 20) {
+                        operatorListVC.isAdd = @"1";
+                    }else{
+                        operatorListVC.isAdd = @"2";
+                    }
+                    [self.navigationController pushViewController:operatorListVC animated:YES];
+                }else{//没经办人时，若还在处理中则可添加新的经办人
+                    if ([orderModel.orders.status integerValue] <= 20) {
+                        OperatorListViewController *operatorListVC = [[OperatorListViewController alloc] init];
+                        operatorListVC.ordersid = orderModel.orders.ordersid;
+                        operatorListVC.isAdd = @"1";
+                        [self.navigationController pushViewController:operatorListVC animated:YES];
+                    }
+                }
             }
         }else if ([orderModel.orders.status integerValue] == 40){//已结案
             if (indexPath.section == 1) {//经办人
-                OperatorListViewController *operatorListVC = [[OperatorListViewController alloc] init];
-                operatorListVC.ordersid = orderModel.orders.ordersid;
-                [self.navigationController pushViewController:operatorListVC animated:YES];
+                if ([orderModel.productOrdersOperatorsCount integerValue] > 0) {
+                    OperatorListViewController *operatorListVC = [[OperatorListViewController alloc] init];
+                    operatorListVC.ordersid = orderModel.orders.ordersid;
+                    operatorListVC.isAdd = @"2";
+                    [self.navigationController pushViewController:operatorListVC animated:YES];
+                }
             }
         }
     }else if ([orderModel.status integerValue] == 10 || [orderModel.status integerValue] == 50 || [orderModel.status integerValue] == 60) {//申请中，申请失败，取消申请
@@ -1370,6 +1508,8 @@
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
+        
+        NSDictionary *apapa = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
         [weakself.myOrderDetailArray removeAllObjects];
         
@@ -1449,7 +1589,6 @@
     
 }
 
-
 - (void)cancelApplyAction //取消申请
 {
     OrderModel *orderModel = self.myOrderDetailArray[0];
@@ -1499,7 +1638,7 @@
     }else if([actType integerValue] == 3){
         [self showHint:@"申请结案"];
         RequestCloseViewController *requestCloseVC = [[RequestCloseViewController alloc] init];
-        requestCloseVC.ordersid = orderModel.orders.ordersid;
+        requestCloseVC.orderModell = orderModel;
         [self.navigationController pushViewController:requestCloseVC animated:YES];
         
     }else{//评价
@@ -1511,6 +1650,7 @@
     }
 }
 
+//查看发布方信息
 - (void)checkDetailsOfPublisherWithNameStr:(NSString *)nameStr andOrderModel:(OrderModel *)orderModel
 {
     if ([nameStr isEqualToString:@"未认证"]) {
@@ -1524,6 +1664,7 @@
     }
 }
 
+//拨打发布方电话
 - (void)callDetailsOfPublisherWithNameStr:(NSString *)nameStr andOrderModel:(OrderModel *)orderModel
 {
     if ([nameStr isEqualToString:@"未认证"]) {
@@ -1534,6 +1675,7 @@
     }
 }
 
+//显示尽职调查信息PPLabel(time)
 - (NSMutableAttributedString *)showPPLabelOfProgressWithOrderLogModel:(OrdersLogsModel *)orderLogsModel;
 {
     //time
@@ -1551,10 +1693,10 @@
 }
 
 //ppTypebutton(content)
-- (NSMutableAttributedString *)showPPTypeButtonOfProgressWithModel:(OrderModel *)orderModel andOrderLogModel:(OrdersLogsModel *)orderLogsModel
+- (NSMutableAttributedString *)showPPTextButtonOfProgressWithModel:(OrderModel *)orderModel andOrderLogModel:(OrdersLogsModel *)orderLogsModel
 {
-    if ([orderLogsModel.label isEqualToString:@"经"]) {
-        if (orderLogsModel.memoTel) {//有电话
+    if ([orderLogsModel.label isEqualToString:@"接"]) {
+        if (orderLogsModel.memoTel.length > 0) {//有电话
             NSString *mm1 = [NSString stringWithFormat:@"[%@]",orderLogsModel.actionLabel];
             NSString *mm2 = [NSString stringWithFormat:@"%@%@",orderLogsModel.memoLabel,[orderLogsModel.memoTel substringWithRange:NSMakeRange(0, orderLogsModel.memoTel.length-11)]];
             NSString *mm3 = [orderLogsModel.memoTel substringWithRange:NSMakeRange(orderLogsModel.memoTel.length-11, 11)];
@@ -1591,104 +1733,53 @@
     }
     
     return nil;
-    
-    /*
-//    [cell.ppTypeButton setTitle:orderLogsModel.label forState:0];
-    if ([orderLogsModel.label isEqualToString:@"系"]) {
-//        [cell.ppTypeButton setBackgroundColor:kRedColor];
-        
-//        NSString *tttt = [NSString stringWithFormat:@"[%@]%@",orderLogsModel.actionLabel,orderLogsModel.memoLabel];
-        
-        
-        
-        
-//        [cell.ppTextButton setTitle:tttt forState:0];
-        
-        
-        
-        
-        //                    cell.ppTextButton.backgroundColor = kBackColor;
-        //                    [cell.ppTextButton setContentEdgeInsets:UIEdgeInsetsMake(kSpacePadding, kSpacePadding, kSpacePadding, kSpacePadding)];
-        //                    cell.leftTextConstraints.constant = kSpacePadding;
-        
-    }else if ([orderLogsModel.label isEqualToString:@"发"]){
-//        [cell.ppTypeButton setBackgroundColor:kYellowColor];
-        
-        if ([orderModel.status integerValue] < 30) {//处理中，可操作
-            if ([orderLogsModel.action integerValue] == 41 || [orderLogsModel.action integerValue] == 50 || [orderLogsModel.action integerValue] == 51) {
-                
-                NSString *po1 = [NSString stringWithFormat:@"[%@]%@",orderLogsModel.actionLabel,orderLogsModel.memoLabel];
-                NSString *po2 = orderLogsModel.triggerLabel;
-                NSString *po = [NSString stringWithFormat:@"%@%@",po1,po2];
-                NSMutableAttributedString *attributePo = [[NSMutableAttributedString alloc] initWithString:po];
-                [attributePo setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(0, po1.length)];
-                [attributePo setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kTextColor} range:NSMakeRange(po1.length, po2.length)];
-                [cell.ppTextButton setAttributedTitle:attributePo forState:0];
-                
-                QDFWeakSelf;
-                [cell.ppTextButton addAction:^(UIButton *btn) {
-                    //                                        [weakself actionOfEndOrCloseWithModel:dataModel andActionType:ordersLogsModel.action andPerson:@"发布方"];
-                }];
-            }else{
-                NSString *tttt = [NSString stringWithFormat:@"[%@]%@",orderLogsModel.actionLabel,orderLogsModel.memoLabel];
-                [cell.ppTextButton setTitle:tttt forState:0];
-            }
-        }else{
-            NSString *tttt = [NSString stringWithFormat:@"[%@]%@",orderLogsModel.actionLabel,orderLogsModel.memoLabel];
-            [cell.ppTextButton setTitle:tttt forState:0];
-        }
-    }else if ([orderLogsModel.label isEqualToString:@"我"]){
-        [cell.ppTypeButton setBackgroundColor:kButtonColor];
-        
-        if ([orderModel.status integerValue] < 30) {
-            if ([orderLogsModel.action integerValue] == 40 || [orderLogsModel.action integerValue] == 50 || [orderLogsModel.action integerValue] == 51) {
-                
-                NSString *qo1 = [NSString stringWithFormat:@"[%@]%@",orderLogsModel.actionLabel,orderLogsModel.memoLabel];
-                NSString *qo2 = orderLogsModel.triggerLabel;
-                NSString *qo = [NSString stringWithFormat:@"%@%@",qo1,qo2];
-                NSMutableAttributedString *attributeQo = [[NSMutableAttributedString alloc] initWithString:qo];
-                [attributeQo setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(0, qo1.length)];
-                [attributeQo setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kTextColor   } range:NSMakeRange(qo1.length, qo2.length)];
-                
-                [cell.ppTextButton setAttributedTitle:attributeQo forState:0];
-                
-                QDFWeakSelf;
-                [cell.ppTextButton addAction:^(UIButton *btn) {
-                    //                                        [weakself actionOfEndOrCloseWithModel:dataModel andActionType:ordersLogsModel.action andPerson:@"接单方"];
-                }];
-                
-            }else{
-                NSString *tttt = [NSString stringWithFormat:@"[%@]%@",orderLogsModel.actionLabel,orderLogsModel.memoLabel];
-                [cell.ppTextButton setTitle:tttt forState:0];
-            }
-        }else{
-            NSString *tttt = [NSString stringWithFormat:@"[%@]%@",orderLogsModel.actionLabel,orderLogsModel.memoLabel];
-            [cell.ppTextButton setTitle:tttt forState:0];
-        }
-    }else if ([orderLogsModel.label isEqualToString:@"经"]){
-        [cell.ppTypeButton setBackgroundColor:kGrayColor];
-        if (orderLogsModel.memoTel) {//有电话
-            NSString *mm1 = [NSString stringWithFormat:@"[%@]",orderLogsModel.actionLabel];
-            NSString *mm2 = [NSString stringWithFormat:@"%@%@",orderLogsModel.memoLabel,[orderLogsModel.memoTel substringWithRange:NSMakeRange(0, orderLogsModel.memoTel.length-11)]];
-            NSString *mm3 = [orderLogsModel.memoTel substringWithRange:NSMakeRange(orderLogsModel.memoTel.length-11, 11)];
-            NSString *mm = [NSString stringWithFormat:@"%@%@%@",mm1,mm2,mm3];
-            NSMutableAttributedString *attributeMM = [[NSMutableAttributedString alloc] initWithString:mm];
-            [attributeMM setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(0, mm1.length)];
-            [attributeMM setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(mm1.length, mm2.length)];
-            [attributeMM setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kTextColor} range:NSMakeRange(mm2.length+mm1.length, mm3.length)];
-            [cell.ppTextButton setAttributedTitle:attributeMM forState:0];
+}
+
+- (void)actionOfMyOrderWithModel:(OrderModel *)orderModel andPerson:(NSString *)person andAction:(NSString *)action
+{
+    if ([person isEqualToString:@"发"]) {
+        if ([action integerValue] == 41) {
+            [self showHint:@"发同意结案"];
+            DealingCloseViewController *dealCloseVC = [[DealingCloseViewController alloc] init];
+            dealCloseVC.perTypeString = @"2";
+            dealCloseVC.closedid = orderModel.productOrdersClosed.closedid;
+            [self.navigationController pushViewController:dealCloseVC animated:YES];
             
-            [cell.ppTextButton addAction:^(UIButton *btn) {
-                NSMutableString *phone = [NSMutableString stringWithFormat:@"telprompt://%@",mm3];
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phone]];
-            }];
+        }else if ([action integerValue] == 50){
+            [self showHint:@"发申请终止"];
+            DealingEndViewController *dealingEndVC = [[DealingEndViewController alloc] init];
+            dealingEndVC.terminationid = orderModel.productOrdersTerminationsApply.terminationid;
+            dealingEndVC.isShowAct = @"1";
+            [self.navigationController pushViewController:dealingEndVC animated:YES];
+        }else if ([action integerValue] == 51){
+            [self showHint:@"发同意终止"];
+            DealingEndViewController *dealingEndVC = [[DealingEndViewController alloc] init];
+            dealingEndVC.terminationid = orderModel.productOrdersTerminationsApply.terminationid;
+            dealingEndVC.isShowAct = @"2";
+            [self.navigationController pushViewController:dealingEndVC animated:YES];
+        }
+    }else if ([person isEqualToString:@"我"]){
+        if ([action integerValue] == 40) {
+            [self showHint:@"接申请结案"];
+            DealingCloseViewController *dealCloseVC = [[DealingCloseViewController alloc] init];
+            dealCloseVC.perTypeString = @"2";
+            dealCloseVC.closedid = orderModel.productOrdersClosed.closedid;
+            [self.navigationController pushViewController:dealCloseVC animated:YES];
             
-        }else{//无电话
-            NSString *tttt = [NSString stringWithFormat:@"[%@]%@",orderLogsModel.actionLabel,orderLogsModel.memoLabel];
-            [cell.ppTextButton setTitle:tttt forState:0];
+        }else if ([action integerValue] == 50){
+            [self showHint:@"接申请终止"];
+            DealingEndViewController *dealingEndVC = [[DealingEndViewController alloc] init];
+            dealingEndVC.terminationid = orderModel.productOrdersTerminationsApply.terminationid;
+            dealingEndVC.isShowAct = @"2";
+            [self.navigationController pushViewController:dealingEndVC animated:YES];
+        }else if ([action integerValue] == 51){
+            [self showHint:@"接同意终止"];
+            DealingEndViewController *dealingEndVC = [[DealingEndViewController alloc] init];
+            dealingEndVC.terminationid = orderModel.productOrdersTerminationsApply.terminationid;
+            dealingEndVC.isShowAct = @"2";
+            [self.navigationController pushViewController:dealingEndVC animated:YES];
         }
     }
-     */
 }
 
 - (void)didReceiveMemoryWarning {

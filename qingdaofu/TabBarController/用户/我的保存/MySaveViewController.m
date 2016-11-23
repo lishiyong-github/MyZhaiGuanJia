@@ -138,12 +138,9 @@
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(tableView.editing) {//是否处于编辑状态
-        return UITableViewCellEditingStyleDelete;
-    }
-    return UITableViewCellEditingStyleNone;
+    [tableView setEditing:YES animated:YES];
+    return UITableViewCellEditingStyleDelete;
 }
-
 
 - (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -157,9 +154,16 @@
     return @[deleteAction];
 }
 
+//编辑状态不缩进
+- (BOOL)tableView: (UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
     RowsModel *rowModel = self.mySaveDataList[indexPath.row];
     
     ReportSuitViewController *reportSuitVC = [[ReportSuitViewController alloc] init];

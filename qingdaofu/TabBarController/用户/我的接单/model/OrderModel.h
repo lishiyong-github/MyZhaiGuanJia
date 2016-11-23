@@ -59,11 +59,13 @@
 @property (nonatomic,copy) NSString *accessTerminationREAD;//当前用户对查看终止的权限
 @property (nonatomic,copy) NSString *checkStatus;//当前接单所处状态  满足相关的所处状态和权限可执行
 @property (nonatomic,copy) NSString *myCommentTotal;
-@property (nonatomic,strong) ProductOrdersClosedOrEndApplyModel *productOrdersClosedsApply;//当前申请中的结案
 @property (nonatomic,copy) NSString *productOrdersClosedsApplyCount;  //申请结案数量
 @property (nonatomic,copy) NSString *productOrdersCommentsNum;
 @property (nonatomic,copy) NSString *productOrdersOperatorsCount;////经办人数量
+@property (nonatomic,strong) ProductOrdersClosedOrEndApplyModel *productOrdersClosedsApply;//当前申请中的结案
 @property (nonatomic,strong) ProductOrdersClosedOrEndApplyModel *productOrdersTerminationsApply;//当前申请中的终止
+@property (nonatomic,strong) ProductOrdersClosedOrEndApplyModel *productOrdersClosed;//仅在结案时返回
+
 
 @property (nonatomic,copy) NSString *productOrdersTerminationsApplyCount; //申请/终止数量
 

@@ -23,10 +23,8 @@
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *myStoreTableView;
-@property (nonatomic,strong) UIButton *rightNavButton;
 
 //json
-@property (nonatomic,assign) BOOL editState;
 @property (nonatomic,strong) NSMutableArray *storeDataList;
 @property (nonatomic,assign) NSInteger pageStore;
 
@@ -46,7 +44,8 @@
     [super viewDidLoad];
     self.title = @"我的收藏";
     self.navigationItem.leftBarButtonItem = self.leftItem;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightNavButton];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightButton];
+    [self.rightButton setTitle:@"编辑" forState:0];
     
     [self.view addSubview:self.myStoreTableView];
     [self.view addSubview:self.baseRemindImageView];
@@ -84,29 +83,6 @@
         [_myStoreTableView addFooterWithTarget:self action:@selector(refreshFooterOfMySave)];
     }
     return _myStoreTableView;
-}
-
-- (UIButton *)rightNavButton
-{
-    if (!_rightNavButton) {
-        _rightNavButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 44)];
-        _rightNavButton.titleLabel.font = kFirstFont;
-        [_rightNavButton setTitle:@"编辑" forState:0];
-        [_rightNavButton setTitleColor:kBlueColor forState:0];
-        
-        QDFWeakSelf;
-        [_rightNavButton addAction:^(UIButton *btn) {
-            
-            [weakself.myStoreTableView setEditing:!weakself.myStoreTableView.editing animated:YES];
-            
-            if (weakself.myStoreTableView.editing){
-                [btn setTitle:@"完成" forState:0];
-            }else{
-                [btn setTitle:@"编辑" forState:0];
-            }
-        }];
-    }
-    return _rightNavButton;
 }
 
 - (NSMutableArray *)storeDataList
@@ -198,7 +174,7 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSUInteger section = [indexPath section]; //获取当前jie
-    [self deleteOneStoreOfRow:section];
+//    [self deleteOneStoreOfRow:section];
 //    [self.storeDataList removeObjectAtIndex:section]; //在数据中删除当前对象
 //    [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade]; //数组执行删除 操作
 }
@@ -279,63 +255,74 @@
     });
 }
 
-#pragma mark - method
-- (void)goToApplyWithRow:(NSInteger)row
+- (void)rightItemAction
 {
-    RowsModel *appModel = self.storeDataList[row];
-    NSString *appString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductHouseString];
-    NSDictionary *params = @{@"id" : appModel.idString,
-                             @"category" : appModel.category,
-                             @"token" : [self getValidateToken]
-                             };
-    QDFWeakSelf;
-    [self requestDataPostWithString:appString params:params successBlock:^(id responseObject) {
-        BaseModel *appModel = [BaseModel objectWithKeyValues:responseObject];
-        [weakself showHint:appModel.msg];
-        if ([appModel.code isEqualToString:@"0000"]) {
-            [weakself.storeDataList removeObjectAtIndex:row];
-            [weakself.myStoreTableView reloadData];
-            
-            UINavigationController *nav = self.navigationController;
-            [nav popViewControllerAnimated:NO];
-            
-            MyOrderViewController *myOrderVC = [[MyOrderViewController alloc] init];
-//            myOrderVC.status = @"0";
-//            myOrderVC.progresStatus = @"1";
-            [nav pushViewController:myOrderVC animated:NO];
-        }
-        
-    } andFailBlock:^(NSError *error) {
-        
-    }];
+    [self.myStoreTableView setEditing:!self.myStoreTableView.editing animated:YES];
+    
+    if (self.myStoreTableView.editing){
+        [self.rightButton setTitle:@"完成" forState:0];
+    }else{
+        [self.rightButton setTitle:@"编辑" forState:0];
+    }
 }
 
-//删除
-- (void)deleteOneStoreOfRow:(NSInteger)indexRow
-{
-    RowsModel *deleteModel = self.storeDataList[indexRow];
-    NSString *deleteString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kDeleteStoreString];
-    NSDictionary *params = @{@"product_id" : deleteModel.idString,
-                             @"category" : deleteModel.category,
-                             @"token" : [self getValidateToken]
-                             };
-    QDFWeakSelf;
-    [self requestDataPostWithString:deleteString params:params successBlock:^(id responseObject){
-        BaseModel *deleteModel = [BaseModel objectWithKeyValues:responseObject];
-        [weakself showHint:deleteModel.msg];
-        if ([deleteModel.code isEqualToString:@"0000"]) {
-            [weakself.storeDataList removeObjectAtIndex:indexRow];
-            [weakself.myStoreTableView reloadData];
-            if (weakself.storeDataList.count > 0) {
-                [weakself.baseRemindImageView setHidden:YES];
-            }else{
-                [weakself.baseRemindImageView setHidden:NO];
-            }
-        }
-    } andFailBlock:^(NSError *error){
-        
-    }];
-}
+//#pragma mark - method
+//- (void)goToApplyWithRow:(NSInteger)row
+//{
+//    RowsModel *appModel = self.storeDataList[row];
+//    NSString *appString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductHouseString];
+//    NSDictionary *params = @{@"id" : appModel.idString,
+//                             @"category" : appModel.category,
+//                             @"token" : [self getValidateToken]
+//                             };
+//    QDFWeakSelf;
+//    [self requestDataPostWithString:appString params:params successBlock:^(id responseObject) {
+//        BaseModel *appModel = [BaseModel objectWithKeyValues:responseObject];
+//        [weakself showHint:appModel.msg];
+//        if ([appModel.code isEqualToString:@"0000"]) {
+//            [weakself.storeDataList removeObjectAtIndex:row];
+//            [weakself.myStoreTableView reloadData];
+//            
+//            UINavigationController *nav = self.navigationController;
+//            [nav popViewControllerAnimated:NO];
+//            
+//            MyOrderViewController *myOrderVC = [[MyOrderViewController alloc] init];
+////            myOrderVC.status = @"0";
+////            myOrderVC.progresStatus = @"1";
+//            [nav pushViewController:myOrderVC animated:NO];
+//        }
+//        
+//    } andFailBlock:^(NSError *error) {
+//        
+//    }];
+//}
+
+////删除
+//- (void)deleteOneStoreOfRow:(NSInteger)indexRow
+//{
+//    RowsModel *deleteModel = self.storeDataList[indexRow];
+//    NSString *deleteString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kDeleteStoreString];
+//    NSDictionary *params = @{@"product_id" : deleteModel.idString,
+//                             @"category" : deleteModel.category,
+//                             @"token" : [self getValidateToken]
+//                             };
+//    QDFWeakSelf;
+//    [self requestDataPostWithString:deleteString params:params successBlock:^(id responseObject){
+//        BaseModel *deleteModel = [BaseModel objectWithKeyValues:responseObject];
+//        [weakself showHint:deleteModel.msg];
+//        if ([deleteModel.code isEqualToString:@"0000"]) {
+//            [weakself.storeDataList removeObjectAtIndex:indexRow];
+//            [weakself.myStoreTableView reloadData];
+//            if (weakself.storeDataList.count > 0) {
+//                [weakself.baseRemindImageView setHidden:YES];
+//            }else{
+//                [weakself.baseRemindImageView setHidden:NO];
+//            }
+//        }
+//    } andFailBlock:^(NSError *error){
+//        
+//    }];
+//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

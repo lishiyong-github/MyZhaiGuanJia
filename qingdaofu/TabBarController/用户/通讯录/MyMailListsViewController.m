@@ -21,7 +21,7 @@
 @property (nonatomic,strong) UITableView *myMailListsTableView;
 @property (nonatomic,strong) ChooseOperatorView *chooseOperatorView;
 
-@property (nonatomic,strong) UIAlertController *alertContro;
+//@property (nonatomic,strong) UIAlertController *alertContro;
 
 //json
 @property (nonatomic,strong) NSMutableArray *myMailDataArray;
@@ -247,8 +247,6 @@
 
 - (void)searchUserWithPhone:(NSString *)phoneString
 {
-    [self presentViewController:self.alertContro animated:YES completion:nil];
-    
     [self.view endEditing:YES];
     NSString *searchUserString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyMailOfSearchUserString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
@@ -262,26 +260,27 @@
         
         MailModel *mailModel = [MailModel objectWithKeyValues:responseObject];
         
-        NSString *name;
-        NSString *phone;
+        NSString *ssss;
         if ([mailModel.code isEqualToString:@"0000"]) {
-            name = mailModel.realname;
-            phone = mailModel.mobile;
+            NSString *name = [NSString getValidStringFromString:mailModel.realname toString:mailModel.username];
+            ssss = [NSString stringWithFormat:@"%@\n%@",name,mailModel.mobile];
+        }else{
+            ssss = mailModel.msg;
         }
+        UIAlertController *resultAlert = [UIAlertController alertControllerWithTitle:@"添加联系人" message:ssss preferredStyle:UIAlertControllerStyleAlert];
         
-        [weakself.alertContro addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            NSString *sososo;
-            if (!name) {
-                sososo = mailModel.msg;
-            }else{
-                sososo = [NSString stringWithFormat:@"%@\n%@",name,phone];
-            }
-            textField.text = sososo;
-            textField.userInteractionEnabled = NO;
-            
-//            [weakself confirmToAddContactWithUserId:mailModel.idString];
+        UIAlertAction *alertAct0 = [UIAlertAction actionWithTitle:@"重新输入" style:0 handler:^(UIAlertAction * _Nonnull action) {
+            [weakself rightItemAction];
         }];
         
+        UIAlertAction *alertAct1 = [UIAlertAction actionWithTitle:@"确认添加" style:0 handler:^(UIAlertAction * _Nonnull action) {
+            [weakself headerRefreshOfMyMail];
+        }];
+        
+        [resultAlert addAction:alertAct0];
+        [resultAlert addAction:alertAct1];
+        
+        [weakself presentViewController:resultAlert animated:YES completion:nil];
         
     } andFailBlock:^(NSError *error) {
         
@@ -359,11 +358,10 @@
 
 - (void)rightItemAction
 {
-    self.alertContro = [UIAlertController alertControllerWithTitle:@"添加联系人" message:@"" preferredStyle:UIAlertControllerStyleAlert];
-    
+    UIAlertController *alertControl = [UIAlertController alertControllerWithTitle:@"添加联系人" message:@"" preferredStyle:UIAlertControllerStyleAlert];
     
     QDFWeakSelf;
-    [self.alertContro addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+    [alertControl addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
         textField.placeholder = @"请输入手机号码";
         textField.delegate = weakself;
         //        textField.background = [UIImage imageNamed:@"list_more"];
@@ -375,10 +373,10 @@
         [weakself searchUserWithPhone:@""];
     }];
     
-    [self.alertContro addAction:alertAct0];
-    [self.alertContro addAction:alertAct1];
+    [alertControl addAction:alertAct0];
+    [alertControl addAction:alertAct1];
     
-    [self presentViewController:self.alertContro animated:YES completion:nil];
+    [self presentViewController:alertControl animated:YES completion:nil];
 }
 
 

@@ -237,13 +237,18 @@
     
     //details
     //委托本金
-    NSString *orString0 = [NSString stringWithFormat:@"委托本金：%@",rowModel.accountLabel];
+    NSString *orString0 = [NSString stringWithFormat:@"委托本金：%@万",rowModel.accountLabel];
     //债权类型
     NSString *orString1 = [NSString stringWithFormat:@"债权类型：%@",rowModel.categoryLabel];
     //委托事项
     NSString *orString2 = [NSString stringWithFormat:@"委托事项：%@",rowModel.entrustLabel];
     //委托费用
-    NSString *orString3 = [NSString stringWithFormat:@"委托费用：%@%@",rowModel.typenumLabel,rowModel.typeLabel];
+    NSString *orString3;
+    if ([rowModel.typeLabel isEqualToString:@"万"]) {
+        orString3 = [NSString stringWithFormat:@"固定费用：%@%@",rowModel.typenumLabel,rowModel.typeLabel];
+    }else if ([rowModel.typeLabel isEqualToString:@"%"]){
+        orString3 = [NSString stringWithFormat:@"风险费率：%@%@",rowModel.typenumLabel,rowModel.typeLabel];
+    }
     
     //违约期限
     NSString *orString4 = [NSString stringWithFormat:@"违约期限：%@个月",rowModel.overdue];
