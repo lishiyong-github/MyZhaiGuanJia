@@ -34,8 +34,6 @@
     if (self.closedid) {
         [self getDetailsOfClosed];
     }else{
-        [self.view addSubview:self.backWhiteView];
-        
         //content
         NSString *aaaa1 = @"合同编号：";
         NSString *aaaa2 = [NSString stringWithFormat:@"%@\n",self.orderModell.product.number];
@@ -93,17 +91,14 @@
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
     [self.view addSubview:self.backWhiteView];
+    [self.view addSubview:self.dealCloseFootView];
+    [self.dealCloseFootView setHidden:YES];
     
-    if ([self.perTypeString integerValue] == 1) {
-        self.title = @"处理结案申请";
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightButton];
-        [self.rightButton setTitle:@"平台介入" forState:0];
-        
-        [self.view addSubview:self.dealCloseFootView];
-        
-    }else if ([self.perTypeString integerValue] == 2){
-        self.title = @"结清证明";
-    }
+//    if ([self.perTypeString integerValue] == 1) {
+//        
+//    }else if ([self.perTypeString integerValue] == 2){
+//        self.title = @"结清证明";
+//    }
     
     [self.view setNeedsUpdateConstraints];
 }
@@ -243,6 +238,8 @@
     QDFWeakSelf;
     [self requestDataPostWithString:closeDetailString params:params successBlock:^(id responseObject) {
         
+        NSDictionary *apaap = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
         DealEndDeatiResponse *response = [DealEndDeatiResponse objectWithKeyValues:responseObject];
         
         if ([response.code isEqualToString:@"0000"]) {
@@ -300,8 +297,21 @@
             style1.alignment = NSTextAlignmentCenter;
             [attributeEE addAttribute:NSParagraphStyleAttributeName value:style1 range:NSMakeRange(0, eee.length)];
             [weakself.endButton setAttributedTitle:attributeEE forState:0];
+            
+            if ([response.accessTerminationAUTH integerValue] == 0) {
+                self.title = @"处理结案申请";
+                weakself.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightButton];
+                [weakself.rightButton setTitle:@"平台介入" forState:0];
+                
+                [weakself.dealCloseFootView setHidden:NO];
+                
+            }else{
+                self.title = @"结清证明";
+                [weakself.rightButton removeFromSuperview];
+                [weakself.dealCloseFootView setHidden:YES];
+            }
+            
         }else{
-            [weakself.backWhiteView removeFromSuperview];
             [weakself showHint:response.msg];
         }
         

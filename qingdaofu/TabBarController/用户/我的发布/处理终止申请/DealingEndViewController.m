@@ -28,40 +28,32 @@
 
 @implementation DealingEndViewController
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self getDetailsOfDealEnding];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"处理终止";
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
-    if ([self.isShowAct integerValue] == 1) {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightButton];
-        [self.rightButton setTitle:@"平台介入" forState:0];
-        
-        [self.view addSubview:self.dealEndWhiteView];
-        [self.view addSubview:self.dealEndFootView];
-        
-    }else if ([self.isShowAct integerValue] == 2){
-        [self.view addSubview:self.dealEndWhiteView];
-    }
+    [self.view addSubview:self.dealEndWhiteView];
+    [self.view addSubview:self.dealEndFootView];
+    [self.dealEndFootView setHidden:YES];
     
     [self.view setNeedsUpdateConstraints];
-    
-    [self getDetailsOfDealEnding];
 }
 
 - (void)updateViewConstraints
 {
     if (!self.didSetupConstraints) {
         
-        if ([self.isShowAct integerValue] == 1) {
-            [self.dealEndWhiteView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(kBigPadding, 0, 0, 0) excludingEdge:ALEdgeBottom];
-            [self.dealEndWhiteView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.dealEndFootView];
-            
-            [self.dealEndFootView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-            [self.dealEndFootView autoSetDimension:ALDimensionHeight toSize:116];
-        }else if([self.isShowAct integerValue] == 2){
-            [self.dealEndWhiteView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(kBigPadding, 0, 0, 0)];
-        }
+        [self.dealEndWhiteView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(kBigPadding, 0, 0, 0) excludingEdge:ALEdgeBottom];
+        [self.dealEndWhiteView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.dealEndFootView];
+        
+        [self.dealEndFootView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+        [self.dealEndFootView autoSetDimension:ALDimensionHeight toSize:116];
         
         self.didSetupConstraints = YES;
     }
@@ -170,7 +162,7 @@
         
         DealEndDeatiResponse *respinde = [DealEndDeatiResponse objectWithKeyValues:responseObject];
         
-        [weakself.dealEndDataArray addObject:respinde];
+//        [weakself.dealEndDataArray addObject:respinde];
         
         NSString *lll1 = [NSString stringWithFormat:@"申请事项：%@\n",respinde.dataLabel];
         NSString *lll2 = [NSString stringWithFormat:@"申请时间：%@\n",[NSDate getYMDhmFormatterTime:respinde.data.create_at]];
@@ -185,6 +177,18 @@
         [style setHeadIndent:kBigPadding];
         [attributeLL addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, lll.length)];
         [weakself.textLabel setAttributedText:attributeLL];
+        
+        //权限
+        if ([respinde.accessTerminationAUTH integerValue] == 0) {//能操作
+            [weakself.dealEndFootView setHidden:NO];
+            weakself.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightButton];
+            [weakself.rightButton setTitle:@"平台介入" forState:0];
+        }else{
+            [weakself.dealEndFootView setHidden:YES];
+            [weakself.rightButton removeFromSuperview];
+        }
+        
+        
         
     } andFailBlock:^(NSError *error) {
         

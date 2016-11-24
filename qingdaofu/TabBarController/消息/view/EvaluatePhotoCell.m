@@ -20,7 +20,7 @@
         [self.contentView addSubview:self.evaTextLabel];
         [self.contentView addSubview:self.evaProImageView1];
         [self.contentView addSubview:self.evaProImageView2];
-        [self.contentView addSubview:self.evaProductButton];
+//        [self.contentView addSubview:self.evaProductButton];
         
         [self.contentView setNeedsUpdateConstraints];
     }
@@ -32,21 +32,21 @@
     if (!self.didSetupConstraints) {
         
         [self.evaNameButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
-        [self.evaNameButton autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:8];
+        [self.evaNameButton autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kSpacePadding];
         
         [self.evaTimeLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.evaTimeLabel autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.evaNameButton];
         
         [self.evaStarImage autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
-        [self.evaStarImage autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.evaNameButton withOffset:kSpacePadding];
+        [self.evaStarImage autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.evaNameButton];
         [self.evaStarImage autoSetDimensionsToSize:CGSizeMake(60, 12)];
         
-        [self.evaTextLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.evaStarImage withOffset:kSmallPadding];
+        [self.evaTextLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.evaStarImage withOffset:kSpacePadding];
         [self.evaTextLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
         [self.evaTextLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         
         [self.evaProImageView1 autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
-        [self.evaProImageView1 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.evaTextLabel withOffset:kSmallPadding];
+        [self.evaProImageView1 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.evaTextLabel withOffset:10];
         [self.evaProImageView1 autoSetDimensionsToSize:CGSizeMake(50, 50)];
         
         [self.evaProImageView2 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.evaProImageView1 withOffset:kBigPadding];
@@ -54,18 +54,18 @@
         [self.evaProImageView2 autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.evaProImageView1];
         [self.evaProImageView2 autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.evaProImageView1];
         
-        [self.evaProductButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
-        [self.evaProductButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.evaProImageView1 withOffset:kSmallPadding];
-        [self.evaProductButton autoSetDimension:ALDimensionHeight toSize:40];
-        [self.evaProductButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
+//        [self.evaProductButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
+//        [self.evaProductButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.evaProImageView1 withOffset:kSmallPadding];
+//        [self.evaProductButton autoSetDimension:ALDimensionHeight toSize:40];
+//        [self.evaProductButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
+//        
+//        [self.evaInnnerButton autoAlignAxisToSuperviewMarginAxis:ALAxisHorizontal];
+//        [self.evaInnnerButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kSmallPadding];
+//        [self.evaInnnerButton autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.evaInnerImage withOffset:-kBigPadding];
+//        
+//        [self.evaInnerImage autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:10];
+//        [self.evaInnerImage autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.evaInnnerButton];
         
-        [self.evaInnnerButton autoAlignAxisToSuperviewMarginAxis:ALAxisHorizontal];
-        [self.evaInnnerButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kSmallPadding];
-        [self.evaInnnerButton autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.evaInnerImage withOffset:-kBigPadding];
-        
-        [self.evaInnerImage autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:10];
-        [self.evaInnerImage autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.evaInnnerButton];
-                
         self.didSetupConstraints = YES;
     }
     [super updateConstraints];
@@ -96,7 +96,6 @@
 {
     if (!_evaStarImage) {
         _evaStarImage = [LEOStarView newAutoLayoutView];
-//        _evaStarImage.currentIndex = 4;
         _evaStarImage.starImage = [UIImage imageNamed:@"publish_star"];
         _evaStarImage.markType = EMarkTypeInteger;
         _evaStarImage.starFrontColor = kYellowColor;
@@ -132,40 +131,40 @@
     return _evaProImageView2;
 }
 
-- (UIButton *)evaProductButton
-{
-    if (!_evaProductButton) {
-        _evaProductButton = [UIButton newAutoLayoutView];
-        _evaProductButton.layer.borderWidth = kLineWidth;
-        _evaProductButton.layer.borderColor = kGrayColor.CGColor;
-
-        [_evaProductButton addSubview:self.evaInnnerButton];
-        [_evaProductButton addSubview:self.evaInnerImage];
-    }
-    return _evaProductButton;
-}
-
-- (UIButton *)evaInnnerButton
-{
-    if (!_evaInnnerButton) {
-        _evaInnnerButton = [UIButton newAutoLayoutView];
-        [_evaInnnerButton setTitleColor:kLightGrayColor forState:0];
-        _evaInnnerButton.titleLabel.font = kFirstFont;
-        [_evaInnnerButton setTitleEdgeInsets:UIEdgeInsetsMake(0, kSmallPadding, 0, 0)];
-        _evaInnnerButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        _evaInnnerButton.userInteractionEnabled = NO;
-    }
-    return _evaInnnerButton;
-}
-
-- (UIImageView *)evaInnerImage
-{
-    if (!_evaInnerImage) {
-        _evaInnerImage = [UIImageView newAutoLayoutView];
-        [_evaInnerImage setImage:[UIImage imageNamed:@"list_more"]];
-    }
-    return _evaInnerImage;
-}
+//- (UIButton *)evaProductButton
+//{
+//    if (!_evaProductButton) {
+//        _evaProductButton = [UIButton newAutoLayoutView];
+//        _evaProductButton.layer.borderWidth = kLineWidth;
+//        _evaProductButton.layer.borderColor = kGrayColor.CGColor;
+//
+//        [_evaProductButton addSubview:self.evaInnnerButton];
+//        [_evaProductButton addSubview:self.evaInnerImage];
+//    }
+//    return _evaProductButton;
+//}
+//
+//- (UIButton *)evaInnnerButton
+//{
+//    if (!_evaInnnerButton) {
+//        _evaInnnerButton = [UIButton newAutoLayoutView];
+//        [_evaInnnerButton setTitleColor:kLightGrayColor forState:0];
+//        _evaInnnerButton.titleLabel.font = kFirstFont;
+//        [_evaInnnerButton setTitleEdgeInsets:UIEdgeInsetsMake(0, kSmallPadding, 0, 0)];
+//        _evaInnnerButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+//        _evaInnnerButton.userInteractionEnabled = NO;
+//    }
+//    return _evaInnnerButton;
+//}
+//
+//- (UIImageView *)evaInnerImage
+//{
+//    if (!_evaInnerImage) {
+//        _evaInnerImage = [UIImageView newAutoLayoutView];
+//        [_evaInnerImage setImage:[UIImage imageNamed:@"list_more"]];
+//    }
+//    return _evaInnerImage;
+//}
 
 - (void)awakeFromNib {
     // Initialization code

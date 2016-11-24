@@ -12,13 +12,7 @@
 
 + (NSDictionary *)replacedKeyFromPropertyName
 {
-    return @{@"fileid" : @"result.fileid",
-             @"name" : @"result.name",
-             @"size" : @"result.size",
-             @"type" : @"result.type",
-             @"url" : @"result.url",
-             @"idString" : @"id"
-             };
+    return @{@"idString" : @"id"};
 }
 
 @end

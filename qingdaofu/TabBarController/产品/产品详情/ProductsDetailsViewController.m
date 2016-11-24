@@ -20,20 +20,9 @@
 #import "ProDetailNumberCell.h"  //浏览次数
 #import "EvaluatePhotoCell.h"
 
-//model
-//产品信息
-#import "CertificationModel.h" //发布人详情
-#import "NumberModel.h" //申请次数
-#import "ApplyRecordModel.h"
-
-//发布人信息
-
-//评价
-#import "EvaluateResponse.h"
-#import "EvaluateModel.h"
-
 ////////////
 #import "ProductDetailResponse.h"
+#import "ApplyRecordModel.h"
 #import "ProductDetailModel.h"
 #import "CompleteResponse.h"
 #import "CertificationModel.h"
@@ -522,7 +511,9 @@
             [cell.userActionButton setHidden:YES];
             cell.backgroundColor = kBackColor;
             return cell;
-        }else if (indexPath.row == self.certificationArray1.count+1){
+        }
+        /*
+        else if (indexPath.row == self.certificationArray1.count+1){
             identifier = @"proDetais22";
             MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
             if (!cell) {
@@ -553,11 +544,6 @@
             EvaluateModel *evaModel;
             if (self.allEvaDataArray.count > 0 ) {
 //                [cell.remindImageButton setHidden:YES];
-                [cell.evaProductButton setHidden:YES];
-                [cell.evaNameButton setHidden:NO];
-                [cell.evaTimeLabel setHidden:NO];
-                [cell.evaTextLabel setHidden:NO];
-                [cell.evaStarImage setHidden:NO];
                 
                 evaModel = self.allEvaDataArray[indexPath.row-1];
                 //0为正常评价。1为匿名评价
@@ -575,28 +561,28 @@
                 cell.evaProImageView2.backgroundColor = kLightGrayColor;
                 cell.evaTextLabel.text = [NSString getValidStringFromString:evaModel.content toString:@"未填写评价内容"];
                 
-                 */
+         
                 // 图片
-                if (evaModel.pictures.count == 1) {
-                    if ([evaModel.pictures[0] isEqualToString:@""]) {//没有图片
+                if (evaModel.filesImg.count == 1) {
+                    if ([evaModel.filesImg[0] isEqualToString:@""]) {//没有图片
                         [cell.evaProImageView1 setHidden:YES];
                         [cell.evaProImageView2 setHidden:YES];
                     }else{//有图片
                         [cell.evaProImageView1 setHidden:NO];
                         [cell.evaProImageView2 setHidden:YES];
                         
-                        NSString *str1 = [evaModel.pictures[0] substringWithRange:NSMakeRange(1, [evaModel.pictures[0] length]-2)];
+                        NSString *str1 = [evaModel.filesImg[0] substringWithRange:NSMakeRange(1, [evaModel.filesImg[0] length]-2)];
                         NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str1];
                         NSURL *url1 = [NSURL URLWithString:imageStr1];
                         [cell.evaProImageView1 sd_setBackgroundImageWithURL:url1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
                     }
-                }else if (evaModel.pictures.count >= 2){
+                }else if (evaModel.filesImg.count >= 2){
                     [cell.evaProImageView1 setHidden:NO];
                     [cell.evaProImageView2 setHidden:NO];
-                    NSString *str1 = [evaModel.pictures[0] substringWithRange:NSMakeRange(1, [evaModel.pictures[0] length]-2)];
+                    NSString *str1 = [evaModel.filesImg[0] substringWithRange:NSMakeRange(1, [evaModel.filesImg[0] length]-2)];
                     NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str1];
                     NSURL *url1 = [NSURL URLWithString:imageStr1];
-                    NSString *str2 = [evaModel.pictures[1] substringWithRange:NSMakeRange(1, [evaModel.pictures[1] length]-2)];
+                    NSString *str2 = [evaModel.filesImg[1] substringWithRange:NSMakeRange(1, [evaModel.filesImg[1] length]-2)];
                     NSString *imageStr2 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,str2];
                     NSURL *url2 = [NSURL URLWithString:imageStr2];
                     
@@ -605,18 +591,17 @@
                 }
             }else{
 //                [cell.remindImageButton setHidden:NO];
-                [cell.evaProductButton setHidden:YES];
                 [cell.evaNameButton setHidden:YES];
                 [cell.evaTimeLabel setHidden:YES];
                 [cell.evaTextLabel setHidden:YES];
                 [cell.evaStarImage setHidden:YES];
                 [cell.evaProImageView1 setHidden:YES];
                 [cell.evaProImageView2 setHidden:YES];
-                [cell.evaProductButton setHidden:YES];
             }
             
             return cell;
         }
+         */
     }
     return nil;
 }
@@ -703,8 +688,8 @@
             [weakself.recommendDataArray addObject:prodDetailModel];
             
             //*********发布人认证信息////////
-            if (prodDetailModel.User.certification) {
-                CertificationModel *certificationModel = prodDetailModel.User.certification;
+            if (prodDetailModel.certification) {
+                CertificationModel *certificationModel = prodDetailModel.certification;
                 [weakself.certifiDataArray addObject:certificationModel];
                 NSString *definedStr = @"已认证";
                 

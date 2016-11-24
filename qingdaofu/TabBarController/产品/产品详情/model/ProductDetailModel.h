@@ -10,11 +10,13 @@
 
 @class ApplyRecordModel;
 @class CompleteResponse;
+@class  CertificationModel;
 
 @interface ProductDetailModel : NSObject
 
 @property (nonatomic,strong) ApplyRecordModel *apply;  //申请人信息
 @property (nonatomic,strong) CompleteResponse *User;  //发布方认证信息
+@property (nonatomic,strong) CertificationModel *certification;
 
 @property (nonatomic,copy) NSString *status;
 @property (nonatomic,copy) NSString *applyPeople;

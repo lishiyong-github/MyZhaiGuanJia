@@ -10,5 +10,10 @@
 
 @implementation ProductDetailModel
 
++ (NSDictionary *)replacedKeyFromPropertyName
+{
+    return @{@"certification" : @"User.certification"};
+}
+
 
 @end

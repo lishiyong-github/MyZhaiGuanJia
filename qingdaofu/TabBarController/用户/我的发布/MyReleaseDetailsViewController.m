@@ -1398,7 +1398,6 @@
                         [weakself.EndOrloseRemindButton addAction:^(UIButton *btn) {
                             DealingEndViewController *dealEndVC = [[DealingEndViewController alloc] init];
                             dealEndVC.terminationid = dataModel.productOrdersTerminationsApply.terminationid;
-                            dealEndVC.isShowAct = @"1";
                             [weakself.navigationController pushViewController:dealEndVC animated:YES];
                         }];
                     }else{
@@ -1583,25 +1582,21 @@
         //发布方申请终止
         DealingEndViewController *dealEndVC = [[DealingEndViewController alloc] init];
         dealEndVC.terminationid = rowModel.productOrdersTerminationsApply.terminationid;
-        dealEndVC.isShowAct = @"2";
         [self.navigationController pushViewController:dealEndVC animated:YES];
     }else if ([actionType integerValue] == 51 && [person isEqualToString:@"发布方"]){
         //发布方同意终止
         DealingEndViewController *dealEndVC = [[DealingEndViewController alloc] init];
         dealEndVC.terminationid = rowModel.productOrdersTerminationsApply.terminationid;
-        dealEndVC.isShowAct = @"2";
         [self.navigationController pushViewController:dealEndVC animated:YES];
     }else if ([actionType integerValue] == 50 && [person isEqualToString:@"接单方"]){
         //接单方申请终止
         DealingEndViewController *dealEndVC = [[DealingEndViewController alloc] init];
         dealEndVC.terminationid = rowModel.productOrdersTerminationsApply.terminationid;
-        dealEndVC.isShowAct = @"1";
         [self.navigationController pushViewController:dealEndVC animated:YES];
     }else if ([actionType integerValue] == 50 && [person isEqualToString:@"接单方"]){
         //接单方同意终止
         DealingEndViewController *dealEndVC = [[DealingEndViewController alloc] init];
         dealEndVC.terminationid = rowModel.productOrdersTerminationsApply.terminationid;
-        dealEndVC.isShowAct = @"2";
         [self.navigationController pushViewController:dealEndVC animated:YES];
     }
 }

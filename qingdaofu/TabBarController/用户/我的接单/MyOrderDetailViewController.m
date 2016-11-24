@@ -583,12 +583,10 @@
                         [cell.ppTextButton setAttributedTitle:[self showPPTextButtonOfProgressWithModel:orderModel andOrderLogModel:orderLogsModel] forState:0];
                         
                         //action
-                        if (orderLogsModel.triggerLabel.length > 0) {
-                            QDFWeakSelf;
-                            [cell.ppTextButton addAction:^(UIButton *btn) {
-                                [weakself actionOfMyOrderWithModel:orderModel andPerson:orderLogsModel.label andAction:orderLogsModel.action];
-                            }];
-                        }
+                        QDFWeakSelf;
+                        [cell.ppTextButton addAction:^(UIButton *btn) {
+                            [weakself actionOfMyOrderWithModel:orderLogsModel andPerson:orderLogsModel.label andAction:orderLogsModel.action];
+                        }];
                         
                         return cell;
                         
@@ -620,12 +618,11 @@
                         [cell.ppTextButton setAttributedTitle:[self showPPTextButtonOfProgressWithModel:orderModel andOrderLogModel:orderLogsModel] forState:0];
                         
                         //action
-                        if (orderLogsModel.triggerLabel.length > 0) {
-                            QDFWeakSelf;
-                            [cell.ppTextButton addAction:^(UIButton *btn) {
-                                [weakself actionOfMyOrderWithModel:orderModel andPerson:orderLogsModel.label andAction:orderLogsModel.action];
-                            }];
-                        }
+                        QDFWeakSelf;
+                        [cell.ppTextButton addAction:^(UIButton *btn) {
+                            [weakself actionOfMyOrderWithModel:orderLogsModel andPerson:orderLogsModel.label andAction:orderLogsModel.action];
+                        }];
+                        
                         return cell;
                         
                     }else{//中间行
@@ -653,13 +650,11 @@
                         //content
                         [cell.ppTextButton setAttributedTitle:[self showPPTextButtonOfProgressWithModel:orderModel andOrderLogModel:orderLogsModel] forState:0];
                         
-                        //action
-                        if (orderLogsModel.triggerLabel.length > 0) {
-                            QDFWeakSelf;
-                            [cell.ppTextButton addAction:^(UIButton *btn) {
-                                [weakself actionOfMyOrderWithModel:orderModel andPerson:orderLogsModel.label andAction:orderLogsModel.action];
-                            }];
-                        }
+                        QDFWeakSelf;
+                        [cell.ppTextButton addAction:^(UIButton *btn) {
+                            [weakself actionOfMyOrderWithModel:orderLogsModel andPerson:orderLogsModel.label andAction:orderLogsModel.action];
+                        }];
+                        
                         return cell;
                     }
                 }
@@ -833,12 +828,10 @@
                         [cell.ppTextButton setAttributedTitle:[self showPPTextButtonOfProgressWithModel:orderModel andOrderLogModel:orderLogsModel] forState:0];
                         
                         //action
-                        if (orderLogsModel.triggerLabel.length > 0) {
-                            QDFWeakSelf;
-                            [cell.ppTextButton addAction:^(UIButton *btn) {
-                                [weakself actionOfMyOrderWithModel:orderModel andPerson:orderLogsModel.label andAction:orderLogsModel.action];
-                            }];
-                        }
+                        QDFWeakSelf;
+                        [cell.ppTextButton addAction:^(UIButton *btn) {
+                            [weakself actionOfMyOrderWithModel:orderLogsModel andPerson:orderLogsModel.label andAction:orderLogsModel.action];
+                        }];
                         
                         return cell;
                         
@@ -870,12 +863,10 @@
                         [cell.ppTextButton setAttributedTitle:[self showPPTextButtonOfProgressWithModel:orderModel andOrderLogModel:orderLogsModel] forState:0];
                         
                         //action
-                        if (orderLogsModel.triggerLabel.length > 0) {
-                            QDFWeakSelf;
-                            [cell.ppTextButton addAction:^(UIButton *btn) {
-                                [weakself actionOfMyOrderWithModel:orderModel andPerson:orderLogsModel.label andAction:orderLogsModel.action];
-                            }];
-                        }
+                        QDFWeakSelf;
+                        [cell.ppTextButton addAction:^(UIButton *btn) {
+                            [weakself actionOfMyOrderWithModel:orderLogsModel andPerson:orderLogsModel.label andAction:orderLogsModel.action];
+                        }];
                         
                         return cell;
                         
@@ -905,12 +896,10 @@
                         [cell.ppTextButton setAttributedTitle:[self showPPTextButtonOfProgressWithModel:orderModel andOrderLogModel:orderLogsModel] forState:0];
                         
                         //action
-                        if (orderLogsModel.triggerLabel.length > 0) {
-                            QDFWeakSelf;
-                            [cell.ppTextButton addAction:^(UIButton *btn) {
-                                [weakself actionOfMyOrderWithModel:orderModel andPerson:orderLogsModel.label andAction:orderLogsModel.action];
-                            }];
-                        }
+                        QDFWeakSelf;
+                        [cell.ppTextButton addAction:^(UIButton *btn) {
+                            [weakself actionOfMyOrderWithModel:orderLogsModel andPerson:orderLogsModel.label andAction:orderLogsModel.action];
+                        }];
                         
                         return cell;
                     }
@@ -1140,12 +1129,10 @@
                         [cell.ppTextButton setAttributedTitle:[self showPPTextButtonOfProgressWithModel:orderModel andOrderLogModel:orderLogsModel] forState:0];
                         
                         //action
-                        if (orderLogsModel.triggerLabel.length > 0) {
-                            QDFWeakSelf;
-                            [cell.ppTextButton addAction:^(UIButton *btn) {
-                                [weakself actionOfMyOrderWithModel:orderModel andPerson:orderLogsModel.label andAction:orderLogsModel.action];
-                            }];
-                        }
+                        QDFWeakSelf;
+                        [cell.ppTextButton addAction:^(UIButton *btn) {
+                            [weakself actionOfMyOrderWithModel:orderLogsModel andPerson:orderLogsModel.label andAction:orderLogsModel.action];
+                        }];
                         
                         return cell;
                         
@@ -1177,12 +1164,10 @@
                         [cell.ppTextButton setAttributedTitle:[self showPPTextButtonOfProgressWithModel:orderModel andOrderLogModel:orderLogsModel] forState:0];
                         
                         //action
-                        if (orderLogsModel.triggerLabel.length > 0) {
-                            QDFWeakSelf;
-                            [cell.ppTextButton addAction:^(UIButton *btn) {
-                                [weakself actionOfMyOrderWithModel:orderModel andPerson:orderLogsModel.label andAction:orderLogsModel.action];
-                            }];
-                        }
+                        QDFWeakSelf;
+                        [cell.ppTextButton addAction:^(UIButton *btn) {
+                            [weakself actionOfMyOrderWithModel:orderLogsModel andPerson:orderLogsModel.label andAction:orderLogsModel.action];
+                        }];
                         
                         return cell;
                         
@@ -1212,12 +1197,10 @@
                         [cell.ppTextButton setAttributedTitle:[self showPPTextButtonOfProgressWithModel:orderModel andOrderLogModel:orderLogsModel] forState:0];
                         
                         //action
-                        if (orderLogsModel.triggerLabel.length > 0) {
-                            QDFWeakSelf;
-                            [cell.ppTextButton addAction:^(UIButton *btn) {
-                                [weakself actionOfMyOrderWithModel:orderModel andPerson:orderLogsModel.label andAction:orderLogsModel.action];
-                            }];
-                        }
+                        QDFWeakSelf;
+                        [cell.ppTextButton addAction:^(UIButton *btn) {
+                            [weakself actionOfMyOrderWithModel:orderLogsModel andPerson:orderLogsModel.label andAction:orderLogsModel.action];
+                        }];
                         
                         return cell;
                     }
@@ -1675,6 +1658,7 @@
     }
 }
 
+#pragma mark - 显示尽职调查信息
 //显示尽职调查信息PPLabel(time)
 - (NSMutableAttributedString *)showPPLabelOfProgressWithOrderLogModel:(OrdersLogsModel *)orderLogsModel;
 {
@@ -1692,7 +1676,7 @@
     return attributeTime;
 }
 
-//ppTypebutton(content)
+//ppTextbutton(content)
 - (NSMutableAttributedString *)showPPTextButtonOfProgressWithModel:(OrderModel *)orderModel andOrderLogModel:(OrdersLogsModel *)orderLogsModel
 {
     if ([orderLogsModel.label isEqualToString:@"接"]) {
@@ -1724,7 +1708,19 @@
         }
     }else{//其他消息
         NSString *po1 = [NSString stringWithFormat:@"[%@]%@",orderLogsModel.actionLabel,orderLogsModel.memoLabel];
-        NSString *po2 = orderLogsModel.triggerLabel;
+        NSString *po2;
+        if ([orderLogsModel.label isEqualToString:@"我"]) {
+            po2 = @"查看详情";
+        }else if ([orderLogsModel.label isEqualToString:@"发"]){
+            if ([orderLogsModel.action integerValue] == 41 || [orderLogsModel.action integerValue] == 51) {//同意终止，同意结案（查看详情）
+                po2 = @"查看详情";
+            }else{
+                po2 = orderLogsModel.triggerLabel;
+            }
+        }else{
+            po2 = orderLogsModel.triggerLabel;
+        }
+        
         NSString *po = [NSString stringWithFormat:@"%@%@",po1,po2];
         NSMutableAttributedString *attributePo = [[NSMutableAttributedString alloc] initWithString:po];
         [attributePo setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(0, po1.length)];
@@ -1735,48 +1731,38 @@
     return nil;
 }
 
-- (void)actionOfMyOrderWithModel:(OrderModel *)orderModel andPerson:(NSString *)person andAction:(NSString *)action
+- (void)actionOfMyOrderWithModel:(OrdersLogsModel *)orderLogModel andPerson:(NSString *)person andAction:(NSString *)action
 {
     if ([person isEqualToString:@"发"]) {
         if ([action integerValue] == 41) {
             [self showHint:@"发同意结案"];
             DealingCloseViewController *dealCloseVC = [[DealingCloseViewController alloc] init];
             dealCloseVC.perTypeString = @"2";
-            dealCloseVC.closedid = orderModel.productOrdersClosed.closedid;
+            dealCloseVC.closedid = orderLogModel.relaid;
             [self.navigationController pushViewController:dealCloseVC animated:YES];
             
         }else if ([action integerValue] == 50){
             [self showHint:@"发申请终止"];
             DealingEndViewController *dealingEndVC = [[DealingEndViewController alloc] init];
-            dealingEndVC.terminationid = orderModel.productOrdersTerminationsApply.terminationid;
-            dealingEndVC.isShowAct = @"1";
+            dealingEndVC.terminationid = orderLogModel.relaid;
             [self.navigationController pushViewController:dealingEndVC animated:YES];
-        }else if ([action integerValue] == 51){
+        }else if ([action integerValue] == 51){//51,52
             [self showHint:@"发同意终止"];
             DealingEndViewController *dealingEndVC = [[DealingEndViewController alloc] init];
-            dealingEndVC.terminationid = orderModel.productOrdersTerminationsApply.terminationid;
-            dealingEndVC.isShowAct = @"2";
+            dealingEndVC.terminationid = orderLogModel.relaid;
             [self.navigationController pushViewController:dealingEndVC animated:YES];
         }
     }else if ([person isEqualToString:@"我"]){
-        if ([action integerValue] == 40) {
+        if ([action integerValue] <= 42 && [action integerValue] >= 40) {//40,41,42
             [self showHint:@"接申请结案"];
             DealingCloseViewController *dealCloseVC = [[DealingCloseViewController alloc] init];
-            dealCloseVC.perTypeString = @"2";
-            dealCloseVC.closedid = orderModel.productOrdersClosed.closedid;
+            dealCloseVC.closedid = orderLogModel.relaid;
             [self.navigationController pushViewController:dealCloseVC animated:YES];
             
-        }else if ([action integerValue] == 50){
+        }else if ([action integerValue] >= 50 && [action integerValue] <= 52){ //50,51,52
             [self showHint:@"接申请终止"];
             DealingEndViewController *dealingEndVC = [[DealingEndViewController alloc] init];
-            dealingEndVC.terminationid = orderModel.productOrdersTerminationsApply.terminationid;
-            dealingEndVC.isShowAct = @"2";
-            [self.navigationController pushViewController:dealingEndVC animated:YES];
-        }else if ([action integerValue] == 51){
-            [self showHint:@"接同意终止"];
-            DealingEndViewController *dealingEndVC = [[DealingEndViewController alloc] init];
-            dealingEndVC.terminationid = orderModel.productOrdersTerminationsApply.terminationid;
-            dealingEndVC.isShowAct = @"2";
+            dealingEndVC.terminationid = orderLogModel.relaid;
             [self.navigationController pushViewController:dealingEndVC animated:YES];
         }
     }

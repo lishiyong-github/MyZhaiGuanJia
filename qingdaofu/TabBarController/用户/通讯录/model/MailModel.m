@@ -13,10 +13,9 @@
 + (NSDictionary *)replacedKeyFromPropertyName
 {
     return @{@"mobile" : @"result.userData.mobile",
-             @"id" : @"result.userData.id",
+             @"ID" : @"result.userData.id",
              @"username" : @"result.userData.username",
-             @"realname" : @"result.userData.realname",
-             @"contactsid" : @"result.userData.contactsid"
+             @"realname" : @"result.userData.realname"
              };
 }
 

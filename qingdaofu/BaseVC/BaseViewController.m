@@ -117,22 +117,9 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-//返回主页
-- (void)anotherBack
-{
-    
-}
-
-//- (void)backAnother
-//{
-//    [self.navigationController popViewControllerAnimated:YES];
-//}
-
 - (NSString *)getValidateToken
 {
     NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:@"token"];
-//    NSString *token = @"2e56461f7b7ee67f782188272bd98869";
-//    = @"XXX";
     token = [NSString getValidStringFromString:token toString:@""];
     return token;
 }

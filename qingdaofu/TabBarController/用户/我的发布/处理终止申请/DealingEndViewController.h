@@ -11,6 +11,5 @@
 @interface DealingEndViewController : NetworkViewController
 
 @property (nonatomic,strong) NSString *terminationid;
-@property (nonatomic,strong) NSString *isShowAct;  //1-显示操作按钮，2-不显示
 
 @end

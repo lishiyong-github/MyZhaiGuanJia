@@ -10,8 +10,6 @@
 
 @interface MyOrderDetailViewController : NetworkViewController
 
-
 @property (nonatomic,strong) NSString *applyid;  //接单ID
-//@property (nonatomic,strong) NSString *status; //状态ID
 
 @end

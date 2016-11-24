@@ -1,13 +1,12 @@
 //
-//  AllEvaluationViewController.m
+//  AllCommentsViewController.m
 //  qingdaofu
 //
-//  Created by zhixiang on 16/5/26.
+//  Created by zhixiang on 16/11/24.
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
-#import "AllEvaluationViewController.h"
-
+#import "AllCommentsViewController.h"
 #import "EvaluatePhotoCell.h"
 
 #import "EvaluateResponse.h"
@@ -17,19 +16,19 @@
 #import "UIButton+WebCache.h"
 #import "UIViewController+ImageBrowser.h"
 
-@interface AllEvaluationViewController ()<UITableViewDataSource,UITableViewDelegate>
+@interface AllCommentsViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *allEvaTableView;
 
 //json解析
-@property (nonatomic,strong) NSMutableArray *responseArray;
 @property (nonatomic,strong) NSMutableArray *allEvaluateArray;
 @property (nonatomic,assign) NSInteger pageEva;
 
+
 @end
 
-@implementation AllEvaluationViewController
+@implementation AllCommentsViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -74,13 +73,6 @@
     }
     return _allEvaTableView;
 }
-- (NSMutableArray *)responseArray
-{
-    if (!_responseArray) {
-        _responseArray = [NSMutableArray array];
-    }
-    return _responseArray;
-}
 
 - (NSMutableArray *)allEvaluateArray
 {
@@ -94,10 +86,7 @@
 #pragma mark - tableView delegate and datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (self.allEvaluateArray.count > 0) {
-        return 1;
-    }
-    return 0;
+    return  1;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -108,20 +97,11 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (self.allEvaluateArray.count > 0) {
-        if ([self.evaTypeString isEqualToString:@"evaluate"]) {
-            EvaluateModel *model = self.allEvaluateArray[indexPath.section];
-            if (model.filesImg.count == 0) {
-                return 80;
-            }else{
-                return 145;
-            }
-        }else if ([self.evaTypeString isEqualToString:@"launchevaluation"]){
-            LaunchEvaluateModel *model = self.allEvaluateArray[indexPath.section];
-            if (model.pictures.count == 0) {
-                return 80;
-            }else{
-                return 145;
-            }
+        EvaluateModel *model = self.allEvaluateArray[indexPath.section];
+        if (model.filesImg.count == 0) {
+            return 80;
+        }else{
+            return 145;
         }
     }
     return 0;
@@ -129,7 +109,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *identifier = @"allEva";
+    static NSString *identifier = @"allComments";
     
     EvaluatePhotoCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
@@ -137,34 +117,46 @@
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
+    EvaluateModel *evaluateModel = self.allEvaluateArray[indexPath.section];
+        
     QDFWeakSelf;
-    EvaluateModel *model = self.allEvaluateArray[indexPath.section];
-    [cell.evaNameButton setTitle:model.mobile forState:0];
-    cell.evaTimeLabel.text = [NSDate getYMDFormatterTime:model.action_at];
-    cell.evaTextLabel.text = [NSString getValidStringFromString:model.memo toString:@"未填写评价内容"];
+    NSString *namee = [NSString getValidStringFromString:evaluateModel.realname toString:evaluateModel.username];
+    [cell.evaNameButton setTitle:namee forState:0];
+    [cell.evaNameButton sd_setImageWithURL:[NSURL URLWithString:evaluateModel.headimg.file] forState:0 placeholderImage:nil];
+    
+    cell.evaTimeLabel.text = [NSDate getYMDFormatterTime:evaluateModel.action_at];
+    cell.evaTextLabel.text = [NSString getValidStringFromString:evaluateModel.memo toString:@"未填写评价内容"];
+    [cell.evaStarImage setCurrentIndex:[evaluateModel.assort_score integerValue]];
     
     //图片
-    if (model.filesImg.count == 0) {
+    if (evaluateModel.filesImg.count == 0) {
         [cell.evaProImageView1 setHidden:YES];
         [cell.evaProImageView2 setHidden:YES];
-    }else if (model.filesImg.count == 1) {
+    }else if (evaluateModel.filesImg.count == 1) {
+        
+        ImageModel *imageModel = [ImageModel objectWithKeyValues:evaluateModel.filesImg[0]];
+        
         [cell.evaProImageView1 setHidden:NO];
         [cell.evaProImageView2 setHidden:YES];
-        NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,model.filesImg[0]];
+        NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imageModel.file];
         NSURL *url1 = [NSURL URLWithString:imageStr1];
         
-        [cell.evaProImageView1 sd_setBackgroundImageWithURL:url1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+        [cell.evaProImageView1 sd_setImageWithURL:url1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+        
         [cell.evaProImageView1 addAction:^(UIButton *btn) {
             [weakself showImages:@[url1]];
         }];
-    }else if (model.filesImg.count >= 2){
+    }else if (evaluateModel.filesImg.count >= 2){
         [cell.evaProImageView1 setHidden:NO];
         [cell.evaProImageView2 setHidden:NO];
-        NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,model.filesImg[0]];
-        NSURL *url1 = [NSURL URLWithString:imageStr1];
-        NSString *imageStr2 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,model.filesImg[1]];
-        NSURL *url2 = [NSURL URLWithString:imageStr2];
         
+        ImageModel *imageModel1 = [ImageModel objectWithKeyValues:evaluateModel.filesImg[0]];
+        ImageModel *imageModel2 = [ImageModel objectWithKeyValues:evaluateModel.filesImg[1]];
+        
+        NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imageModel1.file];
+        NSURL *url1 = [NSURL URLWithString:imageStr1];
+        NSString *imageStr2 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imageModel2.file];
+        NSURL *url2 = [NSURL URLWithString:imageStr2];
         [cell.evaProImageView1 sd_setBackgroundImageWithURL:url1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
         [cell.evaProImageView2 sd_setBackgroundImageWithURL:url2 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
         [cell.evaProImageView1 addAction:^(UIButton *btn) {
@@ -192,36 +184,27 @@
 {
     NSString *evaluateString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kCheckOrderToEvaluationString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
-               @"userid" : self.userid,
-               @"page" : page,
-               @"limit" : @"10"
-               };
+                             @"userid" : self.userid,
+                             @"page" : page,
+                             @"limit" : @"10"
+                             };
     
     QDFWeakSelf;
     [self requestDataPostWithString:evaluateString params:params successBlock:^(id responseObject) {
-        
-        NSDictionary *apap = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
         if ([page integerValue] == 1) {
             [weakself.allEvaluateArray removeAllObjects];
         }
         
         EvaluateResponse *response = [EvaluateResponse objectWithKeyValues:responseObject];
-        [weakself.responseArray addObject:response];
         
         if (response.evaluate.count == 0) {
             [weakself showHint:@"没有更多了"];
             _pageEva--;
         }
         
-        if ([weakself.evaTypeString isEqualToString:@"evaluate"]) {//收到的评价
-            for (EvaluateModel *model in response.evaluate) {
-                [weakself.allEvaluateArray addObject:model];
-            }
-        }else if([weakself.evaTypeString isEqualToString:@"launchevaluation"]){//给出的评价
-            for (LaunchEvaluateModel *model in response.launchevaluation) {
-                [weakself.allEvaluateArray addObject:model];
-            }
+        for (EvaluateModel *model in response.Comments1) {
+            [weakself.allEvaluateArray addObject:model];
         }
         
         if (weakself.allEvaluateArray.count > 0) {

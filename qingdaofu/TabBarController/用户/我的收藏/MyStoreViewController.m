@@ -37,7 +37,7 @@
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:kWhiteColor,NSFontAttributeName:kNavFont}];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:kNavColor] forBarMetrics:UIBarMetricsDefault];
     
-    [self refreshHeaderOfMySave];
+    [self refreshHeaderOfMyStore];
 }
 - (void)viewDidLoad {
     
@@ -79,7 +79,7 @@
         _myStoreTableView.separatorColor = kSeparateColor;
         _myStoreTableView.backgroundColor = kBackColor;
         
-        [_myStoreTableView addHeaderWithTarget:self action:@selector(refreshHeaderOfMySave)];
+        [_myStoreTableView addHeaderWithTarget:self action:@selector(refreshHeaderOfMyStore)];
         [_myStoreTableView addFooterWithTarget:self action:@selector(refreshFooterOfMySave)];
     }
     return _myStoreTableView;
@@ -174,7 +174,7 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSUInteger section = [indexPath section]; //获取当前jie
-//    [self deleteOneStoreOfRow:section];
+    [self deleteOneStoreOfRow:section];
 //    [self.storeDataList removeObjectAtIndex:section]; //在数据中删除当前对象
 //    [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade]; //数组执行删除 操作
 }
@@ -232,7 +232,7 @@
     }];
 }
 
-- (void)refreshHeaderOfMySave
+- (void)refreshHeaderOfMyStore
 {
     _pageStore = 1;
     [self getMyStoreListWithPage:@"1"];
@@ -266,63 +266,26 @@
     }
 }
 
-//#pragma mark - method
-//- (void)goToApplyWithRow:(NSInteger)row
-//{
-//    RowsModel *appModel = self.storeDataList[row];
-//    NSString *appString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductHouseString];
-//    NSDictionary *params = @{@"id" : appModel.idString,
-//                             @"category" : appModel.category,
-//                             @"token" : [self getValidateToken]
-//                             };
-//    QDFWeakSelf;
-//    [self requestDataPostWithString:appString params:params successBlock:^(id responseObject) {
-//        BaseModel *appModel = [BaseModel objectWithKeyValues:responseObject];
-//        [weakself showHint:appModel.msg];
-//        if ([appModel.code isEqualToString:@"0000"]) {
-//            [weakself.storeDataList removeObjectAtIndex:row];
-//            [weakself.myStoreTableView reloadData];
-//            
-//            UINavigationController *nav = self.navigationController;
-//            [nav popViewControllerAnimated:NO];
-//            
-//            MyOrderViewController *myOrderVC = [[MyOrderViewController alloc] init];
-////            myOrderVC.status = @"0";
-////            myOrderVC.progresStatus = @"1";
-//            [nav pushViewController:myOrderVC animated:NO];
-//        }
-//        
-//    } andFailBlock:^(NSError *error) {
-//        
-//    }];
-//}
-
 ////删除
-//- (void)deleteOneStoreOfRow:(NSInteger)indexRow
-//{
-//    RowsModel *deleteModel = self.storeDataList[indexRow];
-//    NSString *deleteString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kDeleteStoreString];
-//    NSDictionary *params = @{@"product_id" : deleteModel.idString,
-//                             @"category" : deleteModel.category,
-//                             @"token" : [self getValidateToken]
-//                             };
-//    QDFWeakSelf;
-//    [self requestDataPostWithString:deleteString params:params successBlock:^(id responseObject){
-//        BaseModel *deleteModel = [BaseModel objectWithKeyValues:responseObject];
-//        [weakself showHint:deleteModel.msg];
-//        if ([deleteModel.code isEqualToString:@"0000"]) {
-//            [weakself.storeDataList removeObjectAtIndex:indexRow];
-//            [weakself.myStoreTableView reloadData];
-//            if (weakself.storeDataList.count > 0) {
-//                [weakself.baseRemindImageView setHidden:YES];
-//            }else{
-//                [weakself.baseRemindImageView setHidden:NO];
-//            }
-//        }
-//    } andFailBlock:^(NSError *error){
-//        
-//    }];
-//}
+- (void)deleteOneStoreOfRow:(NSInteger)indexRow
+{
+    RowsModel *deleteModel = self.storeDataList[indexRow];
+    
+    NSString *deleteString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductDetailOfCancelSave];
+    NSDictionary *params = @{@"token" : [self getValidateToken],
+                             @"productid" : deleteModel.productid};
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:deleteString params:params successBlock:^(id responseObject){
+        BaseModel *deleteModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:deleteModel.msg];
+        if ([deleteModel.code isEqualToString:@"0000"]) {
+            [weakself refreshHeaderOfMyStore];
+        }
+    } andFailBlock:^(NSError *error){
+        
+    }];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

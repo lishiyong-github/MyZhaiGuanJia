@@ -138,7 +138,7 @@
     
     if (indexPath.section == 0 && indexPath.row > 0) {
         EvaluateModel *evaModel = self.evaluateArray[indexPath.row-1];
-        if (evaModel.pictures.count > 0) {
+        if (evaModel.filesImg.count > 0) {
             return 145;
         }else{
             return 80;
@@ -182,7 +182,6 @@
             cell = [[EvaluatePhotoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        [cell.evaProductButton setHidden:YES];
         
         EvaluateModel *evaluateModel;
         if (self.evaluateArray.count > 0) {
@@ -196,13 +195,13 @@
 //        cell.evaStarImage.currentIndex = [evaluateModel.creditor integerValue];
         cell.evaTextLabel.text = evaluateModel.memo;
         
-        if (evaluateModel.pictures.count == 0) {
+        if (evaluateModel.filesImg.count == 0) {
             [cell.evaProImageView1 setHidden:YES];
             [cell.evaProImageView2 setHidden:YES];
-        }else if (evaluateModel.pictures.count == 1){
+        }else if (evaluateModel.filesImg.count == 1){
             [cell.evaProImageView1 setHidden:NO];
             [cell.evaProImageView2 setHidden:YES];
-            NSString *imgString1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,evaluateModel.pictures[0]];
+            NSString *imgString1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,evaluateModel.filesImg[0]];
             NSURL *imgUrl1 = [NSURL URLWithString:imgString1];
             [cell.evaProImageView1 sd_setImageWithURL:imgUrl1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
             
@@ -215,11 +214,11 @@
             [cell.evaProImageView1 setHidden:NO];
             [cell.evaProImageView2 setHidden:NO];
             
-            NSString *imgString1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,evaluateModel.pictures[0]];
+            NSString *imgString1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,evaluateModel.filesImg[0]];
             NSURL *imgUrl1 = [NSURL URLWithString:imgString1];
             [cell.evaProImageView1 sd_setImageWithURL:imgUrl1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
 
-            NSString *imgString2 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,evaluateModel.pictures[0]];
+            NSString *imgString2 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,evaluateModel.filesImg[0]];
             NSURL *imgUrl2 = [NSURL URLWithString:imgString2];
             [cell.evaProImageView2 sd_setImageWithURL:imgUrl2 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
             
@@ -258,17 +257,14 @@
         cell = [[EvaluatePhotoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    [cell.evaProductButton setHidden:YES];
     
     LaunchEvaluateModel *launchEvaluateModel;
     if (self.launchEvaluateArray.count > 0) {
         launchEvaluateModel = self.launchEvaluateArray[indexPath.row-1];
     }
     
-//    cell.evaNameLabel.textColor = kBlueColor;
-//    cell.evaNameLabel.text = @"自己";
     [cell.evaNameButton setTitleColor:kBlueColor forState:0];
-    [cell.evaNameButton setTitleColor:@"自己" forState:0];
+    [cell.evaNameButton setTitle:@"自己" forState:0];
     cell.evaTimeLabel.text = [NSDate getYMDhmFormatterTime:launchEvaluateModel.create_time];
     cell.evaStarImage.currentIndex = [launchEvaluateModel.creditor integerValue];
     cell.evaTextLabel.text = launchEvaluateModel.content;

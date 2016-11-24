@@ -12,22 +12,13 @@
 
 + (NSDictionary *)replacedKeyFromPropertyName
 {
-    return @{@"creditor" : @"result.creditor",
-             @"creditors" : @"result.creditors",
-             @"evalua" : @"result.evalua",
-             @"evaluate" : @"result.evaluate",
-             @"launchevaluation" : @"result.launchevaluation",
-             @"uid" : @"result.uid",
-             @"Comments1" : @"result.data.Comments1"
-             };
+    return @{@"Comments1" : @"result.data.Comments1",
+             @"commentsScore" : @"result.data.commentsScore"};
 }
 
 + (NSDictionary *)objectClassInArray
 {
-    return @{@"evaluate" : @"EvaluateModel",
-             @"launchevaluation" : @"LaunchEvaluateModel",
-             @"Comments1" : @"EvaluateModel"
-             };
+    return @{@"Comments1" : @"EvaluateModel"};
 }
 
 @end

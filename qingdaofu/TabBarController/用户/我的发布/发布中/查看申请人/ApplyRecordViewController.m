@@ -141,7 +141,6 @@
     
     [cell.userNameButton setAttributedTitle:applyAttribute forState:0];
     
-//    [cell.userActionButton setTitle:@"同意" forState:0];
     cell.userActionButton.titleLabel.font = kFourFont;
     [cell.userActionButton setTitleColor:kWhiteColor forState:0];
     

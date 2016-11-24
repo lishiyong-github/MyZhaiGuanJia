@@ -79,6 +79,8 @@
         _myMailListsTableView.dataSource = self;
         _myMailListsTableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
         _myMailListsTableView.tableFooterView = [[UIView alloc] init];
+        [_myMailListsTableView addHeaderWithTarget:self action:@selector(headerRefreshOfMyMail)];
+        [_myMailListsTableView addHeaderWithTarget:self action:@selector(footerRefreshOfMyMail)];
     }
     return _myMailListsTableView;
 }
@@ -262,7 +264,7 @@
         
         NSString *ssss;
         if ([mailModel.code isEqualToString:@"0000"]) {
-            NSString *name = [NSString getValidStringFromString:mailModel.realname toString:mailModel.username];
+            NSString *name = [NSString getValidStringFromString:mailModel.username toString:mailModel.realname];
             ssss = [NSString stringWithFormat:@"%@\n%@",name,mailModel.mobile];
         }else{
             ssss = mailModel.msg;
@@ -273,9 +275,14 @@
             [weakself rightItemAction];
         }];
         
-        UIAlertAction *alertAct1 = [UIAlertAction actionWithTitle:@"确认添加" style:0 handler:^(UIAlertAction * _Nonnull action) {
-            [weakself headerRefreshOfMyMail];
-        }];
+        UIAlertAction *alertAct1;
+        if ([mailModel.code isEqualToString:@"0000"]) {
+            alertAct1 = [UIAlertAction actionWithTitle:@"确认添加" style:0 handler:^(UIAlertAction * _Nonnull action) {
+                [weakself confirmToAddContactWithUserId:mailModel.ID];
+            }];
+        }else{
+            alertAct1 = [UIAlertAction actionWithTitle:@"取消" style:0 handler:nil];
+        }
         
         [resultAlert addAction:alertAct0];
         [resultAlert addAction:alertAct1];

@@ -12,7 +12,7 @@
 @interface DealEndDeatiResponse : BaseModel
 
 @property (nonatomic,strong) ProductOrdersClosedOrEndApplyModel *data;
-@property (nonatomic,copy) NSString *accessTerminationAUTH;
+@property (nonatomic,copy) NSString *accessTerminationAUTH; //是否能操作0-能操作，1-不能
 @property (nonatomic,copy) NSString *dataLabel;
 
 

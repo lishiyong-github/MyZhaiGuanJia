@@ -11,10 +11,12 @@
 @interface MailModel : BaseModel
 
 @property (nonatomic,copy) NSString *mobile;
-@property (nonatomic,copy) NSString *idString;
+@property (nonatomic,copy) NSString *ID;
 @property (nonatomic,copy) NSString *username;
 @property (nonatomic,copy) NSString *realname;
-@property (nonatomic,copy) NSString *contactsid;
-@property (nonatomic,copy) NSString *userid;//***参数
 
+
+
+@property (nonatomic,copy) NSString *userid;
+@property (nonatomic,copy) NSString *contactsid;//***参数
 @end

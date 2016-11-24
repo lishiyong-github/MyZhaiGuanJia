@@ -7,7 +7,7 @@
 //
 
 #import "CheckDetailPublishViewController.h"
-#import "AllEvaluationViewController.h"  //所有评价
+#import "AllCommentsViewController.h"  //所有评价
 #import "CaseViewController.h"  //经典案例
 #import "AgreementViewController.h" //同意
 
@@ -35,8 +35,7 @@
 @property (nonatomic,strong) UIButton *rightBarBtn;
 
 @property (nonatomic,strong) NSMutableArray *certifiDataArray;
-//@property (nonatomic,strong) NSMutableArray *allEvaResponse;
-@property (nonatomic,strong) NSMutableArray *allEvaDataArray;
+@property (nonatomic,strong) NSString *userId;
 
 @end
 
@@ -121,58 +120,6 @@
             agreementVC.pidString = weakself.pidString;
             [weakself.navigationController pushViewController:agreementVC animated:YES];
         }];
-        
-        /*
-        if ([self.typeString isEqualToString:@"申请人"]) {
-        
-            
-//            [_appAgreeButton addAction:^(UIButton *btn) {
-//                [weakself tokenIsValid];
-//                [weakself setDidTokenValid:^(TokenModel *tModel) {
-//                    if ([tModel.code integerValue] == 0000) {
-//                    }else if ([tModel.code integerValue] == 3006){
-//                        [weakself showHint:tModel.msg];
-//                        AuthentyViewController *authentyVC = [[AuthentyViewController alloc] init];
-//                        authentyVC.typeAuthty = @"0";
-//                        [weakself.navigationController pushViewController:authentyVC animated:YES];
-//                    }else{
-//                        [weakself showHint:tModel.msg];
-//                        LoginViewController *loginVC = [[LoginViewController alloc] init];
-//                        
-//                        UINavigationController *gygy = [[UINavigationController alloc] initWithRootViewController:loginVC];
-//                        [weakself presentViewController:gygy animated:YES completion:nil];
-//                    }
-//                }];
-//            }];
-        }else{
-            //1.处理中
-            if ([self.typeDegreeString isEqualToString:@"处理中"]) {
-                [_appAgreeButton setTitle:@"已同意" forState:0];
-                [_appAgreeButton setBackgroundColor:kSelectedColor];
-                [_appAgreeButton setTitleColor:kBlackColor forState:0];
-                
-                //添加电话按钮
-                UIButton *phoneButton = [UIButton newAutoLayoutView];
-                [phoneButton setImage:[UIImage imageNamed:@"phone"] forState:0];
-                phoneButton.backgroundColor = kBlueColor;
-                [phoneButton addAction:^(UIButton *btn) {
-                    if (weakself.certifiDataArray.count > 0) {
-                        CertificationModel *model = weakself.certifiDataArray[0];
-                        NSString *phoneStr = [NSString stringWithFormat:@"telprompt://%@",model.mobile];
-                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
-                    }
-                }];
-                [self.appAgreeButton addSubview:phoneButton];
-                
-                [phoneButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.appAgreeButton];
-                [phoneButton autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.appAgreeButton];
-                [phoneButton autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.appAgreeButton];
-                [phoneButton autoSetDimension:ALDimensionWidth toSize:kTabBarHeight];
-            }else{
-                [_appAgreeButton setHidden:YES];
-            }
-        }
-         */
     }
     return _appAgreeButton;
 }
@@ -183,22 +130,6 @@
         _certifiDataArray = [NSMutableArray array];
     }
     return _certifiDataArray;
-}
-//
-//- (NSMutableArray *)allEvaResponse
-//{
-//    if (!_allEvaResponse) {
-//        _allEvaResponse = [NSMutableArray array];
-//    }
-//    return _allEvaResponse;
-//}
-
-- (NSMutableArray *)allEvaDataArray
-{
-    if (!_allEvaDataArray) {
-        _allEvaDataArray = [NSMutableArray array];
-    }
-    return _allEvaDataArray;
 }
 
 #pragma mark - 
@@ -221,34 +152,12 @@
         }else if ([certificationModel.category integerValue] == 3){//公司
             return 10;
         }
-    }else{//评价
-        if (self.allEvaDataArray.count > 0) {
-            EvaluateResponse *response = self.allEvaDataArray[0];
-            if (response.Comments1.count > 0) {
-                return 2;
-            }else{
-                return 1;
-            }
-        }else{
-            return 1;
-        }
     }
-    
-    return 0;
+    return 1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ((indexPath.section == 1) && (indexPath.row == 1)) {
-        EvaluateResponse *response = self.allEvaDataArray[0];
-        EvaluateModel *evaluateModel = response.Comments1[0];
-        if (evaluateModel.files.count == 0) {
-            return 80;
-        }else{
-            return 145;
-        }
-    }
-    
     return kCellHeight;
 }
 
@@ -374,80 +283,9 @@
         }
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.userActionButton.userInteractionEnabled = NO;
-        
-        if (self.allEvaDataArray.count > 0) {
-            
-            EvaluateResponse *response = self.allEvaDataArray[0];
-            
-            NSString *creditor1 = @"收到的评价";
-            NSString *creditor2 = [NSString stringWithFormat:@"(%@分)",response.commentsScore];
-            NSString *creditorStr = [NSString stringWithFormat:@"%@%@",creditor1,creditor2];
-            NSMutableAttributedString *attributeCreditor = [[NSMutableAttributedString alloc] initWithString:creditorStr];
-            [attributeCreditor addAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kBlackColor} range:NSMakeRange(0, creditor1.length)];
-            [attributeCreditor addAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kBlackColor} range:NSMakeRange(creditor1.length, creditor2.length)];
-            [cell.userNameButton setAttributedTitle:attributeCreditor forState:0];
-                        
-            [cell.userActionButton setTitle:@"查看全部  " forState:0];
-            [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-        }else{
-            [cell.userNameButton setTitle:@"收到的评价" forState:0];
-            [cell.userActionButton setTitle:@"暂无" forState:0];
-        }
-        return cell;
-    }else{//评价详情
-        identifier = @"evaluate01";
-        EvaluatePhotoCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        
-        if (!cell) {
-            cell = [[EvaluatePhotoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        [cell.evaProductButton setHidden:YES];
-        [cell.evaNameButton setHidden:NO];
-        [cell.evaTimeLabel setHidden:NO];
-        [cell.evaTextLabel setHidden:NO];
-        [cell.evaStarImage setHidden:NO];
-        
-        EvaluateResponse *response = self.allEvaDataArray[0];
-        
-        EvaluateModel *evaModel = response.Comments1[indexPath.row-1];
-        
-        [cell.evaNameButton setTitle:evaModel.mobile forState:0];
-        [cell.evaNameButton sd_setImageWithURL:[NSURL URLWithString:evaModel.headimg.idString] forState:0 placeholderImage:nil];
-        
-        cell.evaTimeLabel.text = [NSDate getYMDFormatterTime:evaModel.action_at];
-//        cell.evaStarImage.currentIndex = [evaModel.creditor integerValue];
-        cell.evaProImageView1.backgroundColor = kLightGrayColor;
-        cell.evaProImageView2.backgroundColor = kLightGrayColor;
-//        cell.evaTextLabel.text = [NSString getValidStringFromString:evaModel.content toString:@"未填写评价内容"];
-        /*
-        if (evaModel.pictures.count == 0) {
-            [cell.evaProImageView1 setHidden:YES];
-            [cell.evaProImageView2 setHidden:YES];
-            
-        }else if (evaModel.pictures.count == 1) {
-            [cell.evaProImageView1 setHidden:NO];
-            [cell.evaProImageView2 setHidden:YES];
-            
-            //图片
-            NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,evaModel.pictures[0]];
-            NSURL *url1 = [NSURL URLWithString:imageStr1];
-            [cell.evaProImageView1 sd_setBackgroundImageWithURL:url1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
-        }else{
-            [cell.evaProImageView1 setHidden:NO];
-            [cell.evaProImageView2 setHidden:NO];
-            
-            NSString *imageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,evaModel.pictures[0]];
-            NSURL *url1 = [NSURL URLWithString:imageStr1];
-            NSString *imageStr2 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,evaModel.pictures[1]];
-            NSURL *url2 = [NSURL URLWithString:imageStr2];
-            
-            [cell.evaProImageView1 sd_setBackgroundImageWithURL:url1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
-            [cell.evaProImageView2 sd_setBackgroundImageWithURL:url2 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
-        }
-         */
+        [cell.userNameButton setTitle:@"收到的评价" forState:0];
+        [cell.userActionButton setTitle:@"点击查看" forState:0];
+        [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
         
         return cell;
     }
@@ -468,10 +306,7 @@
 {
     if (indexPath.section == 0) {
         
-        CertificationModel *certificateModel;
-        if (self.certifiDataArray.count > 0) {
-            certificateModel = self.certifiDataArray[0];
-        }
+        CertificationModel *certificateModel = self.certifiDataArray[0];
         
         if ([certificateModel.category integerValue] == 2){
             if (indexPath.row == 7) {
@@ -494,14 +329,9 @@
         }
     }else if ((indexPath.section == 1) && (indexPath.row == 0)) {//全部评价
         
-        if (self.allEvaDataArray.count > 0) {
-            AllEvaluationViewController *allEvaluationVC = [[AllEvaluationViewController alloc] init];
-            allEvaluationVC.idString = self.idString;
-            allEvaluationVC.categoryString = self.categoryString;
-            allEvaluationVC.pidString = self.pidString;
-            allEvaluationVC.evaTypeString = @"evaluate";
-            [self.navigationController pushViewController:allEvaluationVC animated:YES];
-        }
+        AllCommentsViewController *allCommentsVC = [[AllCommentsViewController alloc] init];
+        allCommentsVC.userid = self.userid;
+        [self.navigationController pushViewController:allCommentsVC animated:YES];
     }
 }
 
@@ -519,13 +349,12 @@
         
         CompleteResponse *response = [CompleteResponse objectWithKeyValues:responseObject];
         
+        weakself.userid = response.userid;
+        
         if ([response.code isEqualToString:@"0000"]) {
             if (response.certification) {
                 [weakself.certifiDataArray addObject:response.certification];
             }
-            
-//            [weakself getAllEvaluationListWithPage:@"1"];
-            
         }else{
             [weakself showHint:response.msg];
         }
@@ -533,37 +362,6 @@
         
     } andFailBlock:^(NSError *error) {
         
-    }];
-}
-
-- (void)getAllEvaluationListWithPage:(NSString *)page
-{
-    NSString *evaluateString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kCheckOrderToEvaluationString];
-    NSDictionary *params = @{@"token" : [self getValidateToken],
-                             @"page" : page,
-                             @"userid" : [self getValidateUserId],
-                             @"limit" : @"10"
-                             };
-    QDFWeakSelf;
-    [self requestDataPostWithString:evaluateString params:params successBlock:^(id responseObject) {
-        
-        NSDictionary *qpqqp = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        
-        EvaluateResponse *response = [EvaluateResponse objectWithKeyValues:responseObject];
-        [weakself showHint:response.msg];
-        
-        if ([response.code isEqualToString:@"0000"]) {
-            [weakself.allEvaDataArray addObject:response];
-            
-//            for (EvaluateModel *evaluateModel in response.Comments1) {
-//                [weakself.allEvaDataArray addObject:evaluateModel];
-//            }
-        }
-        
-        [weakself.checkDetailTableView reloadData];
-        
-    } andFailBlock:^(NSError *error) {
-        [weakself.checkDetailTableView reloadData];
     }];
 }
 
