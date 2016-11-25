@@ -15,9 +15,10 @@
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 
-@property (nonatomic,strong) SingleButton *financeButton;
-@property (nonatomic,strong) SingleButton *collectionButton;
-@property (nonatomic,strong) SingleButton *suitButton;
+@property (nonatomic,strong) SingleButton *functionButton1;
+@property (nonatomic,strong) SingleButton *functionButton2;
+@property (nonatomic,strong) SingleButton *functionButton3;
+@property (nonatomic,strong) SingleButton *functionButton4;
 
 @property (nonatomic,strong) void (^didSelectedItem)(NSInteger);
 

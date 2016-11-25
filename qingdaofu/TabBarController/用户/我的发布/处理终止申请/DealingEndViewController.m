@@ -21,7 +21,6 @@
 @property (nonatomic,strong) UILabel *textLabel;
 @property (nonatomic,strong) PublishCombineView *dealEndFootView;
 
-@property (nonatomic,strong) NSMutableArray *dealEndDataArray;
 @property (nonatomic,strong) NSString *reason;
 
 @end
@@ -139,14 +138,6 @@
     return _dealEndFootView;
 }
 
-- (NSMutableArray *)dealEndDataArray
-{
-    if (!_dealEndDataArray) {
-        _dealEndDataArray = [NSMutableArray array];
-    }
-    return _dealEndDataArray;
-}
-
 #pragma mark - method
 - (void)getDetailsOfDealEnding
 {
@@ -161,8 +152,6 @@
         NSDictionary *sososo = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
         DealEndDeatiResponse *respinde = [DealEndDeatiResponse objectWithKeyValues:responseObject];
-        
-//        [weakself.dealEndDataArray addObject:respinde];
         
         NSString *lll1 = [NSString stringWithFormat:@"申请事项：%@\n",respinde.dataLabel];
         NSString *lll2 = [NSString stringWithFormat:@"申请时间：%@\n",[NSDate getYMDhmFormatterTime:respinde.data.create_at]];
@@ -179,7 +168,7 @@
         [weakself.textLabel setAttributedText:attributeLL];
         
         //权限
-        if ([respinde.accessTerminationAUTH integerValue] == 0) {//能操作
+        if ([respinde.accessTerminationAUTH integerValue] == 1 && [respinde.data.status integerValue] == 0 && ![respinde.data.create_by isEqualToString:respinde.userid]) {//能操作
             [weakself.dealEndFootView setHidden:NO];
             weakself.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightButton];
             [weakself.rightButton setTitle:@"平台介入" forState:0];

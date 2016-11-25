@@ -389,7 +389,6 @@
                     switch (tag) {
                         case 330:{//结清证明
                             DealingCloseViewController *dealingCloseVC = [[DealingCloseViewController alloc] init];
-                            dealingCloseVC.perTypeString = @"2";
                             dealingCloseVC.closedid = orderModel.productOrdersClosed.closedid;
                             [weakself.navigationController pushViewController:dealingCloseVC animated:YES];
                         }
@@ -1689,14 +1688,8 @@
             [attributeMM setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(0, mm1.length)];
             [attributeMM setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(mm1.length, mm2.length)];
             [attributeMM setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kTextColor} range:NSMakeRange(mm2.length+mm1.length, mm3.length)];
+            
             return attributeMM;
-//            [cell.ppTextButton setAttributedTitle:attributeMM forState:0];
-            
-//            [cell.ppTextButton addAction:^(UIButton *btn) {
-//                NSMutableString *phone = [NSMutableString stringWithFormat:@"telprompt://%@",mm3];
-//                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phone]];
-//            }];
-            
         }else{//无电话
             NSString *po1 = [NSString stringWithFormat:@"[%@]%@",orderLogsModel.actionLabel,orderLogsModel.memoLabel];
             NSString *po2 = orderLogsModel.triggerLabel;
@@ -1710,7 +1703,11 @@
         NSString *po1 = [NSString stringWithFormat:@"[%@]%@",orderLogsModel.actionLabel,orderLogsModel.memoLabel];
         NSString *po2;
         if ([orderLogsModel.label isEqualToString:@"我"]) {
-            po2 = @"查看详情";
+            if ([orderLogsModel.action integerValue] != 42 && [orderLogsModel.action integerValue] != 52) {
+                po2 = @"查看详情";
+            }else{
+                po2 = orderLogsModel.triggerLabel;
+            }
         }else if ([orderLogsModel.label isEqualToString:@"发"]){
             if ([orderLogsModel.action integerValue] == 41 || [orderLogsModel.action integerValue] == 51) {//同意终止，同意结案（查看详情）
                 po2 = @"查看详情";
@@ -1737,30 +1734,25 @@
         if ([action integerValue] == 41) {
             [self showHint:@"发同意结案"];
             DealingCloseViewController *dealCloseVC = [[DealingCloseViewController alloc] init];
-            dealCloseVC.perTypeString = @"2";
             dealCloseVC.closedid = orderLogModel.relaid;
             [self.navigationController pushViewController:dealCloseVC animated:YES];
             
         }else if ([action integerValue] == 50){
-            [self showHint:@"发申请终止"];
             DealingEndViewController *dealingEndVC = [[DealingEndViewController alloc] init];
             dealingEndVC.terminationid = orderLogModel.relaid;
             [self.navigationController pushViewController:dealingEndVC animated:YES];
-        }else if ([action integerValue] == 51){//51,52
-            [self showHint:@"发同意终止"];
+        }else if ([action integerValue] == 51){
             DealingEndViewController *dealingEndVC = [[DealingEndViewController alloc] init];
             dealingEndVC.terminationid = orderLogModel.relaid;
             [self.navigationController pushViewController:dealingEndVC animated:YES];
         }
     }else if ([person isEqualToString:@"我"]){
-        if ([action integerValue] <= 42 && [action integerValue] >= 40) {//40,41,42
-            [self showHint:@"接申请结案"];
+        if ([action integerValue] == 40 || [action integerValue] == 41) {
             DealingCloseViewController *dealCloseVC = [[DealingCloseViewController alloc] init];
             dealCloseVC.closedid = orderLogModel.relaid;
             [self.navigationController pushViewController:dealCloseVC animated:YES];
             
-        }else if ([action integerValue] >= 50 && [action integerValue] <= 52){ //50,51,52
-            [self showHint:@"接申请终止"];
+        }else if ([action integerValue] == 50 || [action integerValue] ==51){
             DealingEndViewController *dealingEndVC = [[DealingEndViewController alloc] init];
             dealingEndVC.terminationid = orderLogModel.relaid;
             [self.navigationController pushViewController:dealingEndVC animated:YES];

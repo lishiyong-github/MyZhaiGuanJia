@@ -121,8 +121,6 @@
 		A16E47B71D1A6A5400870B8A /* account_bitmap@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A16E47B51D1A6A5400870B8A /* account_bitmap@3x.png */; };
 		A16E47BA1D1A8C4800870B8A /* FourCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A16E47B91D1A8C4800870B8A /* FourCell.m */; };
 		A16FF58E1D05050F00C50A0B /* BaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A16FF58D1D05050F00C50A0B /* BaseModel.m */; };
-		A16FF59D1D05813900C50A0B /* NewProductModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A16FF59C1D05813900C50A0B /* NewProductModel.m */; };
-		A16FF5A01D0581DF00C50A0B /* NewProductListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A16FF59F1D0581DF00C50A0B /* NewProductListModel.m */; };
 		A16FF5A31D05935D00C50A0B /* list_label_recommen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A16FF5A11D05935D00C50A0B /* list_label_recommen@2x.png */; };
 		A16FF5A41D05935D00C50A0B /* list_label_recommen@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A16FF5A21D05935D00C50A0B /* list_label_recommen@3x.png */; };
 		A16FF5A81D05A3E400C50A0B /* ReleaseResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A16FF5A71D05A3E400C50A0B /* ReleaseResponse.m */; };
@@ -914,10 +912,6 @@
 		A16E47B91D1A8C4800870B8A /* FourCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FourCell.m; sourceTree = "<group>"; };
 		A16FF58C1D05050F00C50A0B /* BaseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseModel.h; sourceTree = "<group>"; };
 		A16FF58D1D05050F00C50A0B /* BaseModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseModel.m; sourceTree = "<group>"; };
-		A16FF59B1D05813900C50A0B /* NewProductModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewProductModel.h; sourceTree = "<group>"; };
-		A16FF59C1D05813900C50A0B /* NewProductModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewProductModel.m; sourceTree = "<group>"; };
-		A16FF59E1D0581DF00C50A0B /* NewProductListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewProductListModel.h; sourceTree = "<group>"; };
-		A16FF59F1D0581DF00C50A0B /* NewProductListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewProductListModel.m; sourceTree = "<group>"; };
 		A16FF5A11D05935D00C50A0B /* list_label_recommen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list_label_recommen@2x.png"; sourceTree = "<group>"; };
 		A16FF5A21D05935D00C50A0B /* list_label_recommen@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list_label_recommen@3x.png"; sourceTree = "<group>"; };
 		A16FF5A61D05A3E400C50A0B /* ReleaseResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReleaseResponse.h; sourceTree = "<group>"; };
@@ -3956,10 +3950,6 @@
 				A19D29461CD1B44D00DAAEA7 /* MoneyView.m */,
 				A17F7BF31CE5C52700E882A3 /* NewPublishCell.h */,
 				A17F7BF41CE5C52700E882A3 /* NewPublishCell.m */,
-				A16FF59B1D05813900C50A0B /* NewProductModel.h */,
-				A16FF59C1D05813900C50A0B /* NewProductModel.m */,
-				A16FF59E1D0581DF00C50A0B /* NewProductListModel.h */,
-				A16FF59F1D0581DF00C50A0B /* NewProductListModel.m */,
 				A16E47B81D1A8C4800870B8A /* FourCell.h */,
 				A16E47B91D1A8C4800870B8A /* FourCell.m */,
 			);
@@ -4598,7 +4588,6 @@
 				A17964E51CD3436700B6AD47 /* AuthenCell.m in Sources */,
 				A1A69DE11D62F4C20053FFED /* AuthentyWaitingViewController.m in Sources */,
 				A18FC05D1D33937E00B1FCD4 /* IntroduceViewController.m in Sources */,
-				A16FF59D1D05813900C50A0B /* NewProductModel.m in Sources */,
 				A19B8E4D1CCF531900F8EBF2 /* MessageViewController.m in Sources */,
 				A1602E771CEDA9F50053F850 /* CompletePhotoView.m in Sources */,
 				A1882F601D2E2AE40064BD38 /* NSString+ValidString.m in Sources */,
@@ -4705,7 +4694,6 @@
 				A1A7D08D1D65840F00E84329 /* PowerModel.m in Sources */,
 				A1A155BE1DDC3D7E00FEC011 /* ProductDetailModel.m in Sources */,
 				A19B8E2B1CCF474B00F8EBF2 /* TabBar.m in Sources */,
-				A16FF5A01D0581DF00C50A0B /* NewProductListModel.m in Sources */,
 				A196CDE81CFBC4D300AC6C87 /* UIViewController+DismissKeyboard.m in Sources */,
 				A1A77A8C1DC0A234006C1111 /* OrdersModel.m in Sources */,
 				A192B4B81CDB34030053FC4C /* PaceViewController.m in Sources */,

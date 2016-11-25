@@ -135,9 +135,9 @@
         _dialogBoxView.backgroundColor = kWhiteColor;
         
         QDFWeakSelf;
-        [_dialogBoxView setDidEndEditting:^(NSString *text) {
-            if (text.length > 0) {
-                [weakself sendDialogWithText:text];
+        [_dialogBoxView.dialogButton addAction:^(UIButton *btn) {
+            if (weakself.dialogBoxView.dialogTextField.text.length > 0) {
+                [weakself sendDialogWithText:weakself.dialogBoxView.dialogTextField.text];
             }
         }];
     }
@@ -460,6 +460,7 @@
                 
                 if ([dataModel.productApply.orders.status integerValue] == 30) {//终止
                     [cell.point3 setImage:[UIImage imageNamed:@"fail"] forState:0];
+                    [cell.progress3 setText:@"已终止"];
                     cell.progress3.textColor = kRedColor;
                     [cell.line3 setBackgroundColor:kRedColor];
                 }else{//处理中
@@ -572,114 +573,28 @@
                     OrdersLogsModel *ordersLogsModel = dataModel.productApply.orders.productOrdersLogs[indexPath.row-1];
                     
                     //time
-                    NSString *timess1 = [NSString stringWithFormat:@"%@\n",[NSDate getHMFormatterTime:ordersLogsModel.action_at]];
-                    NSString *timess2 = [NSDate getYMDsFormatterTime:ordersLogsModel.action_at];
-                    NSString *timess = [NSString stringWithFormat:@"%@%@",timess1,timess2];
-                    NSMutableAttributedString *attributeTime = [[NSMutableAttributedString alloc] initWithString:timess];
-                    [attributeTime setAttributes:@{NSFontAttributeName:kSecondFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, timess1.length)];
-                    [attributeTime setAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:9],NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(timess1.length, timess2.length)];
-                    NSMutableParagraphStyle *styleTime = [[NSMutableParagraphStyle alloc] init];
-                    [styleTime setParagraphSpacing:6];
-                    styleTime.alignment = 2;
-                    [attributeTime addAttribute:NSParagraphStyleAttributeName value:styleTime range:NSMakeRange(0, timess.length)];
-                    [cell.ppLabel setAttributedText:attributeTime];
+                    [cell.ppLabel setAttributedText:[self showPPLabelOfMyReleaseDetailWithModel:ordersLogsModel]];
                     
                     //image
-                    
-                    //content
                     [cell.ppTypeButton setTitle:ordersLogsModel.label forState:0];
-                    
-                    if ([ordersLogsModel.label isEqualToString:@"系"]) {
-                        [cell.ppTypeButton setBackgroundColor:kRedColor];
-                        
-                        NSString *tttt = [NSString stringWithFormat:@"[%@]%@",ordersLogsModel.actionLabel,ordersLogsModel.memoLabel];
-                        [cell.ppTextButton setTitle:tttt forState:0];
-                        
-//                        cell.ppTextButton.backgroundColor = kBackColor;
-//                        [cell.ppTextButton setContentEdgeInsets:UIEdgeInsetsMake(kSpacePadding, kSpacePadding, kSpacePadding, kSpacePadding)];
-//                        cell.leftTextConstraints.constant = kSpacePadding;
-                        
-                    }else if ([ordersLogsModel.label isEqualToString:@"我"]){
-                        [cell.ppTypeButton setBackgroundColor:kYellowColor];
-                        
-                        //已终止不能在尽职调查里面操作
-                        if ([dataModel.statusLabel isEqualToString:@"处理中"]) {
-                            if ([ordersLogsModel.action integerValue] == 41 || [ordersLogsModel.action integerValue] == 50 || [ordersLogsModel.action integerValue] == 51) {
-                                
-                                NSString *po1 = [NSString stringWithFormat:@"[%@]%@",ordersLogsModel.actionLabel,ordersLogsModel.memoLabel];
-                                NSString *po2 = ordersLogsModel.triggerLabel;
-                                NSString *po = [NSString stringWithFormat:@"%@%@",po1,po2];
-                                NSMutableAttributedString *attributePo = [[NSMutableAttributedString alloc] initWithString:po];
-                                [attributePo setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(0, po1.length)];
-                                [attributePo setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kTextColor} range:NSMakeRange(po1.length, po2.length)];
-                                [cell.ppTextButton setAttributedTitle:attributePo forState:0];
-                                
-                                QDFWeakSelf;
-                                [cell.ppTextButton addAction:^(UIButton *btn) {
-                                    [weakself actionOfEndOrCloseWithModel:dataModel andActionType:ordersLogsModel.action andPerson:@"发布方"];
-                                }];
-                                
-                            }else{
-                                NSString *tttt = [NSString stringWithFormat:@"[%@]%@",ordersLogsModel.actionLabel,ordersLogsModel.memoLabel];
-                                [cell.ppTextButton setTitle:tttt forState:0];
-                            }
-                        }else{//已终止
-                            NSString *tttt = [NSString stringWithFormat:@"[%@]%@",ordersLogsModel.actionLabel,ordersLogsModel.memoLabel];
-                            [cell.ppTextButton setTitle:tttt forState:0];
-                        }
-                    }else if ([ordersLogsModel.label isEqualToString:@"接"]){
-                        
+                    if ([ordersLogsModel.label isEqualToString:@"我"]) {
                         [cell.ppTypeButton setBackgroundColor:kButtonColor];
-                        
-                        if ([dataModel.statusLabel isEqualToString:@"处理中"]) {
-                            if ([ordersLogsModel.action integerValue] == 40 || [ordersLogsModel.action integerValue] == 50 || [ordersLogsModel.action integerValue] == 51) {
-                                
-                                NSString *qo1 = [NSString stringWithFormat:@"[%@]%@",ordersLogsModel.actionLabel,ordersLogsModel.memoLabel];
-                                NSString *qo2 = ordersLogsModel.triggerLabel;
-                                NSString *qo = [NSString stringWithFormat:@"%@%@",qo1,qo2];
-                                NSMutableAttributedString *attributeQo = [[NSMutableAttributedString alloc] initWithString:qo];
-                                [attributeQo setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(0, qo1.length)];
-                                [attributeQo setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kTextColor   } range:NSMakeRange(qo1.length, qo2.length)];
-                                [cell.ppTextButton setAttributedTitle:attributeQo forState:0];
-                                
-                                QDFWeakSelf;
-                                [cell.ppTextButton addAction:^(UIButton *btn) {
-                                    [weakself actionOfEndOrCloseWithModel:dataModel andActionType:ordersLogsModel.action andPerson:@"接单方"];
-                                }];
-                                
-                            }else{
-                                NSString *tttt = [NSString stringWithFormat:@"[%@]%@",ordersLogsModel.actionLabel,ordersLogsModel.memoLabel];
-                                [cell.ppTextButton setTitle:tttt forState:0];
-                            }
-                        }else{//已终止
-                            NSString *tttt = [NSString stringWithFormat:@"[%@]%@",ordersLogsModel.actionLabel,ordersLogsModel.memoLabel];
-                            [cell.ppTextButton setTitle:tttt forState:0];
-
-                        }
                     }else if ([ordersLogsModel.label isEqualToString:@"经"]){
                         [cell.ppTypeButton setBackgroundColor:kGrayColor];
-                        
-                        if (ordersLogsModel.memoTel.length > 0) {//有电话
-                            NSString *mm1 = [NSString stringWithFormat:@"[%@]",ordersLogsModel.actionLabel];
-                            NSString *mm2 = [NSString stringWithFormat:@"%@%@",ordersLogsModel.memoLabel,[ordersLogsModel.memoTel substringWithRange:NSMakeRange(0, ordersLogsModel.memoTel.length-11)]];
-                            NSString *mm3 = [ordersLogsModel.memoTel substringWithRange:NSMakeRange(ordersLogsModel.memoTel.length-11, 11)];
-                            NSString *mm = [NSString stringWithFormat:@"%@%@%@",mm1,mm2,mm3];
-                            NSMutableAttributedString *attributeMM = [[NSMutableAttributedString alloc] initWithString:mm];
-                            [attributeMM setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(0, mm1.length)];
-                            [attributeMM setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(mm1.length, mm2.length)];
-                            [attributeMM setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kTextColor} range:NSMakeRange(mm2.length+mm1.length, mm3.length)];
-                            [cell.ppTextButton setAttributedTitle:attributeMM forState:0];
-                            
-                            [cell.ppTextButton addAction:^(UIButton *btn) {
-                                NSMutableString *phone = [NSMutableString stringWithFormat:@"telprompt://%@",mm3];
-                                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phone]];
-                            }];
-
-                        }else{//无电话
-                            NSString *tttt = [NSString stringWithFormat:@"[%@]%@",ordersLogsModel.actionLabel,ordersLogsModel.memoLabel];
-                            [cell.ppTextButton setTitle:tttt forState:0];
-                        }
+                    }else if ([ordersLogsModel.label isEqualToString:@"系"]){
+                        [cell.ppTypeButton setBackgroundColor:kRedColor];
+                    }else if ([ordersLogsModel.label isEqualToString:@"接"]){
+                        [cell.ppTypeButton setBackgroundColor:kYellowColor];
                     }
+                    
+                    //content
+                    [cell.ppTextButton setAttributedTitle:[self showPPTextButtonOfMyReleaseDetailWithModel:ordersLogsModel] forState:0];
+                    
+                    QDFWeakSelf;
+                    [cell.ppTextButton addAction:^(UIButton *btn) {
+                        [weakself actionOfEndOrCloseWithModel:ordersLogsModel];
+                    }];
+                    
                     return cell;
                     
                 }else if (indexPath.row == dataModel.productApply.orders.productOrdersLogs.count){
@@ -694,110 +609,28 @@
                     OrdersLogsModel *ordersLogsModel = dataModel.productApply.orders.productOrdersLogs[indexPath.row-1];
                     
                     //time
-                    NSString *timess1 = [NSString stringWithFormat:@"%@\n",[NSDate getHMFormatterTime:ordersLogsModel.action_at]];
-                    NSString *timess2 = [NSDate getYMDsFormatterTime:ordersLogsModel.action_at];
-                    NSString *timess = [NSString stringWithFormat:@"%@%@",timess1,timess2];
-                    NSMutableAttributedString *attributeTime = [[NSMutableAttributedString alloc] initWithString:timess];
-                    [attributeTime setAttributes:@{NSFontAttributeName:kSecondFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, timess1.length)];
-                    [attributeTime setAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:9],NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(timess1.length, timess2.length)];
-                    NSMutableParagraphStyle *styleTime = [[NSMutableParagraphStyle alloc] init];
-                    [styleTime setParagraphSpacing:6];
-                    styleTime.alignment = 2;
-                    [attributeTime addAttribute:NSParagraphStyleAttributeName value:styleTime range:NSMakeRange(0, timess.length)];
-                    [cell.ppLabel setAttributedText:attributeTime];
+                    [cell.ppLabel setAttributedText:[self showPPLabelOfMyReleaseDetailWithModel:ordersLogsModel]];
                     
                     //image
-                    
-                    //content
                     [cell.ppTypeButton setTitle:ordersLogsModel.label forState:0];
-                    if ([ordersLogsModel.label isEqualToString:@"系"]) {
-                        [cell.ppTypeButton setBackgroundColor:kRedColor];
-                        
-                        NSString *tttt = [NSString stringWithFormat:@"[%@]%@",ordersLogsModel.actionLabel,ordersLogsModel.memoLabel];
-                        [cell.ppTextButton setTitle:tttt forState:0];
-                        
-//                        cell.ppTextButton.backgroundColor = kBackColor;
-//                        [cell.ppTextButton setContentEdgeInsets:UIEdgeInsetsMake(kSpacePadding, kSpacePadding, kSpacePadding, kSpacePadding)];
-//                        cell.leftTextConstraints.constant = kSpacePadding;
-                        
-                    }else if ([ordersLogsModel.label isEqualToString:@"我"]){
-                        [cell.ppTypeButton setBackgroundColor:kYellowColor];
-                        
-                        if ([dataModel.statusLabel isEqualToString:@"处理中"]) {
-                            if ([ordersLogsModel.action integerValue] == 41 || [ordersLogsModel.action integerValue] == 50 || [ordersLogsModel.action integerValue] == 51) {
-                                
-                                NSString *po1 = [NSString stringWithFormat:@"[%@]%@",ordersLogsModel.actionLabel,ordersLogsModel.memoLabel];
-                                NSString *po2 = ordersLogsModel.triggerLabel;
-                                NSString *po = [NSString stringWithFormat:@"%@%@",po1,po2];
-                                NSMutableAttributedString *attributePo = [[NSMutableAttributedString alloc] initWithString:po];
-                                [attributePo setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(0, po1.length)];
-                                [attributePo setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kTextColor} range:NSMakeRange(po1.length, po2.length)];
-                                [cell.ppTextButton setAttributedTitle:attributePo forState:0];
-                                
-                                QDFWeakSelf;
-                                [cell.ppTextButton addAction:^(UIButton *btn) {
-                                    [weakself actionOfEndOrCloseWithModel:dataModel andActionType:ordersLogsModel.action andPerson:@"发布方"];
-                                }];
-                                
-                            }else{
-                                NSString *tttt = [NSString stringWithFormat:@"[%@]%@",ordersLogsModel.actionLabel,ordersLogsModel.memoLabel];
-                                [cell.ppTextButton setTitle:tttt forState:0];
-                            }
-                        }else{
-                            NSString *tttt = [NSString stringWithFormat:@"[%@]%@",ordersLogsModel.actionLabel,ordersLogsModel.memoLabel];
-                            [cell.ppTextButton setTitle:tttt forState:0];
-                        }
-                    }else if ([ordersLogsModel.label isEqualToString:@"接"]){
+                    if ([ordersLogsModel.label isEqualToString:@"我"]) {
                         [cell.ppTypeButton setBackgroundColor:kButtonColor];
-                        
-                        if ([dataModel.statusLabel isEqualToString:@"处理中"]) {
-                            if ([ordersLogsModel.action integerValue] == 40 || [ordersLogsModel.action integerValue] == 50 || [ordersLogsModel.action integerValue] == 51) {
-                                
-                                NSString *qo1 = [NSString stringWithFormat:@"[%@]%@",ordersLogsModel.actionLabel,ordersLogsModel.memoLabel];
-                                NSString *qo2 = ordersLogsModel.triggerLabel;
-                                NSString *qo = [NSString stringWithFormat:@"%@%@",qo1,qo2];
-                                NSMutableAttributedString *attributeQo = [[NSMutableAttributedString alloc] initWithString:qo];
-                                [attributeQo setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(0, qo1.length)];
-                                [attributeQo setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kTextColor   } range:NSMakeRange(qo1.length, qo2.length)];
-                                
-                                [cell.ppTextButton setAttributedTitle:attributeQo forState:0];
-                                
-                                QDFWeakSelf;
-                                [cell.ppTextButton addAction:^(UIButton *btn) {
-                                    [weakself actionOfEndOrCloseWithModel:dataModel andActionType:ordersLogsModel.action andPerson:@"接单方"];
-                                }];
-                                
-                            }else{
-                                NSString *tttt = [NSString stringWithFormat:@"[%@]%@",ordersLogsModel.actionLabel,ordersLogsModel.memoLabel];
-                                [cell.ppTextButton setTitle:tttt forState:0];
-                            }
-                        }else{
-                            NSString *tttt = [NSString stringWithFormat:@"[%@]%@",ordersLogsModel.actionLabel,ordersLogsModel.memoLabel];
-                            [cell.ppTextButton setTitle:tttt forState:0];
-                        }
                     }else if ([ordersLogsModel.label isEqualToString:@"经"]){
                         [cell.ppTypeButton setBackgroundColor:kGrayColor];
-                        if (ordersLogsModel.memoTel.length > 0) {//有电话
-                            NSString *mm1 = [NSString stringWithFormat:@"[%@]",ordersLogsModel.actionLabel];
-                            NSString *mm2 = [NSString stringWithFormat:@"%@%@",ordersLogsModel.memoLabel,[ordersLogsModel.memoTel substringWithRange:NSMakeRange(0, ordersLogsModel.memoTel.length-11)]];
-                            NSString *mm3 = [ordersLogsModel.memoTel substringWithRange:NSMakeRange(ordersLogsModel.memoTel.length-11, 11)];
-                            NSString *mm = [NSString stringWithFormat:@"%@%@%@",mm1,mm2,mm3];
-                            NSMutableAttributedString *attributeMM = [[NSMutableAttributedString alloc] initWithString:mm];
-                            [attributeMM setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(0, mm1.length)];
-                            [attributeMM setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(mm1.length, mm2.length)];
-                            [attributeMM setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kTextColor} range:NSMakeRange(mm2.length+mm1.length, mm3.length)];
-                            [cell.ppTextButton setAttributedTitle:attributeMM forState:0];
-                            
-                            [cell.ppTextButton addAction:^(UIButton *btn) {
-                                NSMutableString *phone = [NSMutableString stringWithFormat:@"telprompt://%@",mm3];
-                                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phone]];
-                            }];
-                            
-                        }else{//无电话
-                            NSString *tttt = [NSString stringWithFormat:@"[%@]%@",ordersLogsModel.actionLabel,ordersLogsModel.memoLabel];
-                            [cell.ppTextButton setTitle:tttt forState:0];
-                        }
+                    }else if ([ordersLogsModel.label isEqualToString:@"系"]){
+                        [cell.ppTypeButton setBackgroundColor:kRedColor];
+                    }else if ([ordersLogsModel.label isEqualToString:@"接"]){
+                        [cell.ppTypeButton setBackgroundColor:kYellowColor];
                     }
+                    
+                    //content
+                    [cell.ppTextButton setAttributedTitle:[self showPPTextButtonOfMyReleaseDetailWithModel:ordersLogsModel] forState:0];
+                    
+                    QDFWeakSelf;
+                    [cell.ppTextButton addAction:^(UIButton *btn) {
+                        [weakself actionOfEndOrCloseWithModel:ordersLogsModel];
+                    }];
+                    
                     return cell;
                 }
                 
@@ -811,257 +644,32 @@
                 OrdersLogsModel *ordersLogsModel = dataModel.productApply.orders.productOrdersLogs[indexPath.row-1];
                 
                 //time
-                NSString *timess1 = [NSString stringWithFormat:@"%@\n",[NSDate getHMFormatterTime:ordersLogsModel.action_at]];
-                NSString *timess2 = [NSDate getYMDsFormatterTime:ordersLogsModel.action_at];
-                NSString *timess = [NSString stringWithFormat:@"%@%@",timess1,timess2];
-                NSMutableAttributedString *attributeTime = [[NSMutableAttributedString alloc] initWithString:timess];
-                [attributeTime setAttributes:@{NSFontAttributeName:kSecondFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, timess1.length)];
-                [attributeTime setAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:9],NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(timess1.length, timess2.length)];
-                NSMutableParagraphStyle *styleTime = [[NSMutableParagraphStyle alloc] init];
-                [styleTime setParagraphSpacing:6];
-                styleTime.alignment = 2;
-                [attributeTime addAttribute:NSParagraphStyleAttributeName value:styleTime range:NSMakeRange(0, timess.length)];
-                [cell.ppLabel setAttributedText:attributeTime];
+                [cell.ppLabel setAttributedText:[self showPPLabelOfMyReleaseDetailWithModel:ordersLogsModel]];
                 
                 //image
-                
-                //content
                 [cell.ppTypeButton setTitle:ordersLogsModel.label forState:0];
-                if ([ordersLogsModel.label isEqualToString:@"系"]) {
-                    [cell.ppTypeButton setBackgroundColor:kRedColor];
-                    
-                    NSString *tttt = [NSString stringWithFormat:@"[%@]%@",ordersLogsModel.actionLabel,ordersLogsModel.memoLabel];
-                    [cell.ppTextButton setTitle:tttt forState:0];
-                    
-//                    cell.ppTextButton.backgroundColor = kBackColor;
-//                    [cell.ppTextButton setContentEdgeInsets:UIEdgeInsetsMake(kSpacePadding, kSpacePadding, kSpacePadding, kSpacePadding)];
-//                    cell.leftTextConstraints.constant = kSpacePadding;
-                    
-                }else if ([ordersLogsModel.label isEqualToString:@"我"]){
-                    [cell.ppTypeButton setBackgroundColor:kYellowColor];
-
-                    if ([dataModel.statusLabel isEqualToString:@"处理中"]) {
-                        if ([ordersLogsModel.action integerValue] == 41 || [ordersLogsModel.action integerValue] == 50 || [ordersLogsModel.action integerValue] == 51) {
-                            
-                            NSString *po1 = [NSString stringWithFormat:@"[%@]%@",ordersLogsModel.actionLabel,ordersLogsModel.memoLabel];
-                            NSString *po2 = ordersLogsModel.triggerLabel;
-                            NSString *po = [NSString stringWithFormat:@"%@%@",po1,po2];
-                            NSMutableAttributedString *attributePo = [[NSMutableAttributedString alloc] initWithString:po];
-                            [attributePo setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(0, po1.length)];
-                            [attributePo setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kTextColor} range:NSMakeRange(po1.length, po2.length)];
-                            [cell.ppTextButton setAttributedTitle:attributePo forState:0];
-                            
-                            QDFWeakSelf;
-                            [cell.ppTextButton addAction:^(UIButton *btn) {
-                                [weakself actionOfEndOrCloseWithModel:dataModel andActionType:ordersLogsModel.action andPerson:@"发布方"];
-                            }];
-                            
-                        }else{
-                            NSString *tttt = [NSString stringWithFormat:@"[%@]%@",ordersLogsModel.actionLabel,ordersLogsModel.memoLabel];
-                            [cell.ppTextButton setTitle:tttt forState:0];
-                        }
-                    }else{
-                        NSString *tttt = [NSString stringWithFormat:@"[%@]%@",ordersLogsModel.actionLabel,ordersLogsModel.memoLabel];
-                        [cell.ppTextButton setTitle:tttt forState:0];
-                    }
-                }else if ([ordersLogsModel.label isEqualToString:@"接"]){
+                if ([ordersLogsModel.label isEqualToString:@"我"]) {
                     [cell.ppTypeButton setBackgroundColor:kButtonColor];
-                    
-                    if ([dataModel.statusLabel isEqualToString:@"处理中"]) {
-                        if ([ordersLogsModel.action integerValue] == 40 || [ordersLogsModel.action integerValue] == 50 || [ordersLogsModel.action integerValue] == 51) {
-                            
-                            NSString *qo1 = [NSString stringWithFormat:@"[%@]%@",ordersLogsModel.actionLabel,ordersLogsModel.memoLabel];
-                            NSString *qo2 = ordersLogsModel.triggerLabel;
-                            NSString *qo = [NSString stringWithFormat:@"%@%@",qo1,qo2];
-                            NSMutableAttributedString *attributeQo = [[NSMutableAttributedString alloc] initWithString:qo];
-                            [attributeQo setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(0, qo1.length)];
-                            [attributeQo setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kTextColor   } range:NSMakeRange(qo1.length, qo2.length)];
-                            
-                            [cell.ppTextButton setAttributedTitle:attributeQo forState:0];
-                            
-                            QDFWeakSelf;
-                            [cell.ppTextButton addAction:^(UIButton *btn) {
-                                [weakself actionOfEndOrCloseWithModel:dataModel andActionType:ordersLogsModel.action andPerson:@"接单方"];
-                            }];
-                            
-                        }else{
-                            NSString *tttt = [NSString stringWithFormat:@"[%@]%@",ordersLogsModel.actionLabel,ordersLogsModel.memoLabel];
-                            [cell.ppTextButton setTitle:tttt forState:0];
-                        }
-                    }else{
-                        NSString *tttt = [NSString stringWithFormat:@"[%@]%@",ordersLogsModel.actionLabel,ordersLogsModel.memoLabel];
-                        [cell.ppTextButton setTitle:tttt forState:0];
-                    }
                 }else if ([ordersLogsModel.label isEqualToString:@"经"]){
                     [cell.ppTypeButton setBackgroundColor:kGrayColor];
-                    if (ordersLogsModel.memoTel.length > 0) {//有电话
-                        NSString *mm1 = [NSString stringWithFormat:@"[%@]",ordersLogsModel.actionLabel];
-                        NSString *mm2 = [NSString stringWithFormat:@"%@%@",ordersLogsModel.memoLabel,[ordersLogsModel.memoTel substringWithRange:NSMakeRange(0, ordersLogsModel.memoTel.length-11)]];
-                        NSString *mm3 = [ordersLogsModel.memoTel substringWithRange:NSMakeRange(ordersLogsModel.memoTel.length-11, 11)];
-                        NSString *mm = [NSString stringWithFormat:@"%@%@%@",mm1,mm2,mm3];
-                        NSMutableAttributedString *attributeMM = [[NSMutableAttributedString alloc] initWithString:mm];
-                        [attributeMM setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(0, mm1.length)];
-                        [attributeMM setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(mm1.length, mm2.length)];
-                        [attributeMM setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kTextColor} range:NSMakeRange(mm2.length+mm1.length, mm3.length)];
-                        [cell.ppTextButton setAttributedTitle:attributeMM forState:0];
-                        
-                        [cell.ppTextButton addAction:^(UIButton *btn) {
-                            NSMutableString *phone = [NSMutableString stringWithFormat:@"telprompt://%@",mm3];
-                            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phone]];
-                        }];
-                        
-                    }else{//无电话
-                        NSString *tttt = [NSString stringWithFormat:@"[%@]%@",ordersLogsModel.actionLabel,ordersLogsModel.memoLabel];
-                        [cell.ppTextButton setTitle:tttt forState:0];
-                    }
+                }else if ([ordersLogsModel.label isEqualToString:@"系"]){
+                    [cell.ppTypeButton setBackgroundColor:kRedColor];
+                }else if ([ordersLogsModel.label isEqualToString:@"接"]){
+                    [cell.ppTypeButton setBackgroundColor:kYellowColor];
                 }
+                
+                //content
+                [cell.ppTextButton setAttributedTitle:[self showPPTextButtonOfMyReleaseDetailWithModel:ordersLogsModel] forState:0];
+                
+                QDFWeakSelf;
+                [cell.ppTextButton addAction:^(UIButton *btn) {
+                    [weakself actionOfEndOrCloseWithModel:ordersLogsModel];
+                }];
+                
                 return cell;
             }
         }
-    }
-//    else if ([dataModel.statusLabel isEqualToString:@"已终止"]) {//已终止
-//        if (indexPath.section == 0) {
-//            if (indexPath.row == 0) {
-//                identifier = @"myEnding00";
-//                MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-//                if (!cell) {
-//                    cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-//                }
-//                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//                
-//                [cell.userNameButton setTitle:dataModel.number forState:0];
-//                [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-//                [cell.userActionButton setTitle:@"查看详情" forState:0];
-//                
-//                return cell;
-//                
-//            }else if (indexPath.row == 1){
-//                identifier = @"myEnding01";
-//                NewPublishDetailsCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-//                if (!cell) {
-//                    cell = [[NewPublishDetailsCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-//                }
-//                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//                cell.backgroundColor = kBackColor;
-//                
-//                [cell.point2 setImage:[UIImage imageNamed:@"succee"] forState:0];
-//                cell.progress2.textColor = kTextColor;
-//                [cell.line2 setBackgroundColor:kButtonColor];
-//                
-//                
-//                [cell.point3 setImage:[UIImage imageNamed:@"fail"] forState:0];
-//                cell.progress3.textColor = kRedColor;
-//                [cell.line3 setBackgroundColor:kRedColor];
-//                cell.progress3.text = @"已终止";
-//                return cell;
-//                
-//            }else if (indexPath.row == 2){
-//                identifier = @"myEnding02";
-//                OrderPublishCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-//                
-//                if (!cell) {
-//                    cell = [[OrderPublishCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-//                }
-//                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//                
-//                NSString *nameStr = [NSString getValidStringFromString:dataModel.productApply.mobile toString:@"未认证"];
-//                NSString *checkStr = [NSString stringWithFormat:@"申请方：%@",nameStr];
-//                [cell.checkButton setTitle:checkStr forState:0];
-//                [cell.contactButton setTitle:@" 联系TA" forState:0];
-//                [cell.contactButton setImage:[UIImage imageNamed:@"phone_blue"] forState:0];
-//                
-//                //接单方详情
-//                QDFWeakSelf;
-//                [cell.checkButton addAction:^(UIButton *btn) {
-//                    if ([nameStr isEqualToString:@"未认证"]) {
-//                        [weakself showHint:@"接单方未认证，不能查看相关信息"];
-//                    }else{
-//                        CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
-//                        checkDetailPublishVC.navTitle = @"接单方详情";
-//                        checkDetailPublishVC.productid = dataModel.productid;
-//                        checkDetailPublishVC.userid = dataModel.productApply.create_by;
-//                        [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];
-//                    }
-//                    
-//                }];
-//                
-//                //电话
-//                [cell.contactButton addAction:^(UIButton *btn) {
-//                    if ([nameStr isEqualToString:@"未认证"]) {
-//                        [weakself showHint:@"接单方未认证，不能打电话"];
-//                    }else{
-//                        NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",dataModel.productApply.mobile];
-//                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
-//                    }
-//                }];
-//                return cell;
-//            }
-//            
-//        }else if (indexPath.section == 1){
-//            identifier = @"myEnding1";
-//            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-//            if (!cell) {
-//                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-//            }
-//            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//            
-//            [cell.userNameButton setTitle:@"居间协议" forState:0];
-//            [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-//            
-//            if ([dataModel.productApply.orders.status integerValue] == 0) {
-//                [cell.userActionButton setTitle:@"等待接单方上传" forState:0];
-//            }else{
-//                [cell.userActionButton setTitle:@"查看" forState:0];
-//            }
-//
-//            return cell;
-//        }else if (indexPath.section == 2){
-//            identifier = @"myEnding2";
-//            MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-//            if (!cell) {
-//                cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-//            }
-//            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//            
-//            [cell.userNameButton setTitle:@"签约协议详情" forState:0];
-//            [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-//            
-//            if ([dataModel.productApply.orders.status integerValue] <= 10) {
-//                [cell.userActionButton setTitle:@"等待接单方上传" forState:0];
-//            }else{
-//                [cell.userActionButton setTitle:@"查看" forState:0];
-//            }
-//            
-//            return cell;
-//        }else if (indexPath.section == 3){
-//            if (indexPath.row == 0) {
-//                identifier = @"myEnding30";
-//                MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-//                if (!cell) {
-//                    cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-//                }
-//                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//                [cell.userNameButton setTitle:@"尽职调查" forState:0];
-//                return cell;
-//            }else{//ProgressCell.h
-//                identifier = @"myEnding31";
-//                ProgressCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-//                if (!cell) {
-//                    cell = [[ProgressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-//                }
-//                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//
-//                OrdersLogsModel *ordersLogsModel = dataModel.productApply.orders.productOrdersLogs[indexPath.row-1];
-//                
-//                cell.ppLabel.text = [NSDate getYMDhmsFormatterTime:ordersLogsModel.action_at];
-//                NSString *textts = [NSString getValidStringFromString:ordersLogsModel.memoLabel toString:@"无内容"];
-//                [cell.ppTextButton setTitle:textts forState:0];
-//                
-//                return cell;
-//            }
-//        }
-//    }
-    else if ([dataModel.statusLabel isEqualToString:@"已结案"]) {//已结案
+    }else if ([dataModel.statusLabel isEqualToString:@"已结案"]) {//已结案
         if (indexPath.section == 0) {
             identifier = @"close00";
             if (indexPath.row == 0){
@@ -1169,7 +777,6 @@
                 switch (tag) {
                     case 330:{//结清证明
                         DealingCloseViewController *dealingCloseVC = [[DealingCloseViewController alloc] init];
-                        dealingCloseVC.perTypeString = @"2";
                         dealingCloseVC.closedid = dataModel.productOrdersClosed.closedid;
                         [weakself.navigationController pushViewController:dealingCloseVC animated:YES];
                     }
@@ -1393,20 +1000,27 @@
                 if (dataModel.productOrdersTerminationsApply || dataModel.productOrdersClosedsApply) {//有申请结案终止的消息
                     [weakself.EndOrloseRemindButton setHidden:NO];
                     if (dataModel.productOrdersTerminationsApply) {
-                        [weakself.EndOrloseRemindButton setTitle:@"对方申请终止次单，点击处理  " forState:0];
-                        [weakself.EndOrloseRemindButton setImage:[UIImage imageNamed:@"more_white"] forState:0];
-                        [weakself.EndOrloseRemindButton addAction:^(UIButton *btn) {
-                            DealingEndViewController *dealEndVC = [[DealingEndViewController alloc] init];
-                            dealEndVC.terminationid = dataModel.productOrdersTerminationsApply.terminationid;
-                            [weakself.navigationController pushViewController:dealEndVC animated:YES];
-                        }];
+                        
+                        if ([dataModel.productOrdersTerminationsApply.create_by isEqualToString:response.userid]) {//发布方
+                            [weakself.EndOrloseRemindButton setHidden:YES];
+                        }else{//接单方
+                            [weakself.EndOrloseRemindButton setHidden:NO];;
+                            [weakself.EndOrloseRemindButton setTitle:@"对方申请终止此单，点击处理  " forState:0];
+                            [weakself.EndOrloseRemindButton setImage:[UIImage imageNamed:@"more_white"] forState:0];
+                            [weakself.EndOrloseRemindButton addAction:^(UIButton *btn) {
+                                DealingEndViewController *dealEndVC = [[DealingEndViewController alloc] init];
+                                dealEndVC.terminationid = dataModel.productOrdersTerminationsApply.terminationid;
+                                [weakself.navigationController pushViewController:dealEndVC animated:YES];
+                            }];
+                        }
+                        
                     }else{
+                        [weakself.EndOrloseRemindButton setHidden:NO];
                         [weakself.EndOrloseRemindButton setTitle:@"对方申请结案，点击处理  " forState:0];
                         [weakself.EndOrloseRemindButton setImage:[UIImage imageNamed:@"more_white"] forState:0];
                         
                         [weakself.EndOrloseRemindButton addAction:^(UIButton *btn) {
                             DealingCloseViewController *dealCloseVC = [[DealingCloseViewController alloc] init];
-                            dealCloseVC.perTypeString = @"1";
                             dealCloseVC.closedid = dataModel.productOrdersClosed.closedid;
                             [weakself.navigationController pushViewController:dealCloseVC animated:YES];
                         }];
@@ -1547,6 +1161,7 @@
     NSString *dialogString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrderDetailOfAddPace];
     
     RowsModel *rowModel = self.releaseDetailArray[0];
+    
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"ordersid" : rowModel.productApply.orders.ordersid,
                              @"memo" : text};
@@ -1566,37 +1181,83 @@
     }];
 }
 
-- (void)actionOfEndOrCloseWithModel:(RowsModel *)rowModel andActionType:(NSString *)actionType andPerson:(NSString *)person//person分接单方和发布方；；actionType分40，41，42，50，51，52
+#pragma mark - show content
+- (NSMutableAttributedString *)showPPLabelOfMyReleaseDetailWithModel:(OrdersLogsModel *)logModel
 {
-    if ([actionType integerValue] == 40) {//接单方申请结案
+    NSString *timess1 = [NSString stringWithFormat:@"%@\n",[NSDate getHMFormatterTime:logModel.action_at]];
+    NSString *timess2 = [NSDate getYMDsFormatterTime:logModel.action_at];
+    NSString *timess = [NSString stringWithFormat:@"%@%@",timess1,timess2];
+    NSMutableAttributedString *attributeTime = [[NSMutableAttributedString alloc] initWithString:timess];
+    [attributeTime setAttributes:@{NSFontAttributeName:kSecondFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, timess1.length)];
+    [attributeTime setAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:9],NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(timess1.length, timess2.length)];
+    NSMutableParagraphStyle *styleTime = [[NSMutableParagraphStyle alloc] init];
+    [styleTime setParagraphSpacing:6];
+    styleTime.alignment = 2;
+    [attributeTime addAttribute:NSParagraphStyleAttributeName value:styleTime range:NSMakeRange(0, timess.length)];
+    return attributeTime;
+}
+
+- (NSMutableAttributedString *)showPPTextButtonOfMyReleaseDetailWithModel:(OrdersLogsModel *)logModel
+{
+    if ([logModel.label isEqualToString:@"经"]) {
+        if (logModel.memoTel.length > 0) {//有电话
+            NSString *mm1 = [NSString stringWithFormat:@"[%@]",logModel.actionLabel];
+            NSString *mm2 = [NSString stringWithFormat:@"%@%@",logModel.memoLabel,[logModel.memoTel substringWithRange:NSMakeRange(0, logModel.memoTel.length-11)]];
+            NSString *mm3 = [logModel.memoTel substringWithRange:NSMakeRange(logModel.memoTel.length-11, 11)];
+            NSString *mm = [NSString stringWithFormat:@"%@%@%@",mm1,mm2,mm3];
+            NSMutableAttributedString *attributeMM = [[NSMutableAttributedString alloc] initWithString:mm];
+            [attributeMM setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(0, mm1.length)];
+            [attributeMM setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(mm1.length, mm2.length)];
+            [attributeMM setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kTextColor} range:NSMakeRange(mm2.length+mm1.length, mm3.length)];
+            
+            return attributeMM;
+            
+        }else{//无电话
+            NSString *po1 = [NSString stringWithFormat:@"[%@]%@",logModel.actionLabel,logModel.memoLabel];
+            NSString *po2 = logModel.triggerLabel;
+            NSString *po = [NSString stringWithFormat:@"%@%@",po1,po2];
+            NSMutableAttributedString *attributePo = [[NSMutableAttributedString alloc] initWithString:po];
+            [attributePo setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(0, po1.length)];
+            [attributePo setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kTextColor} range:NSMakeRange(po1.length, po2.length)];
+            return attributePo;
+        }
+    }else{//其他消息
+        NSString *po1 = [NSString stringWithFormat:@"[%@]%@",logModel.actionLabel,logModel.memoLabel];
+        NSString *po2;
+        
+        if ([logModel.label isEqualToString:@"我"] || [logModel.label isEqualToString:@"接"]) {
+            if ([logModel.action integerValue] >= 40 && [logModel.action integerValue] <= 52) {
+                if (logModel.triggerLabel.length > 0) {
+                    po2 = logModel.triggerLabel;
+                }else{
+                    po2 = @"查看详情";
+                }
+            }else{
+                po2 = logModel.triggerLabel;
+            }
+        }else{
+            po2 = logModel.triggerLabel;
+        }
+        
+        NSString *po = [NSString stringWithFormat:@"%@%@",po1,po2];
+        NSMutableAttributedString *attributePo = [[NSMutableAttributedString alloc] initWithString:po];
+        [attributePo setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(0, po1.length)];
+        [attributePo setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kTextColor} range:NSMakeRange(po1.length, po2.length)];
+        return attributePo;
+    }
+    
+    return nil;
+}
+
+- (void)actionOfEndOrCloseWithModel:(OrdersLogsModel *)logModel//40，41，42，50，51，52
+{
+    if ([logModel.action integerValue] >= 40 && [logModel.action integerValue] <= 42) {//结案详情
         DealingCloseViewController *dealCloseVC = [[DealingCloseViewController alloc] init];
-        dealCloseVC.perTypeString = @"1";
-        dealCloseVC.closedid = rowModel.productOrdersClosed.closedid;
+        dealCloseVC.closedid = logModel.relaid;
         [self.navigationController pushViewController:dealCloseVC animated:YES];
-    }else if ([actionType integerValue] == 41){//发布方同意结案
-        DealingCloseViewController *dealCloseVC = [[DealingCloseViewController alloc] init];
-        dealCloseVC.perTypeString = @"2";
-        dealCloseVC.closedid = rowModel.productOrdersClosed.closedid;
-        [self.navigationController pushViewController:dealCloseVC animated:YES];
-    }else if ([actionType integerValue] == 50 && [person isEqualToString:@"发布方"]){
-        //发布方申请终止
+    }else if ([logModel.action integerValue] >= 50 && [logModel.action integerValue] <= 52){//终止详情
         DealingEndViewController *dealEndVC = [[DealingEndViewController alloc] init];
-        dealEndVC.terminationid = rowModel.productOrdersTerminationsApply.terminationid;
-        [self.navigationController pushViewController:dealEndVC animated:YES];
-    }else if ([actionType integerValue] == 51 && [person isEqualToString:@"发布方"]){
-        //发布方同意终止
-        DealingEndViewController *dealEndVC = [[DealingEndViewController alloc] init];
-        dealEndVC.terminationid = rowModel.productOrdersTerminationsApply.terminationid;
-        [self.navigationController pushViewController:dealEndVC animated:YES];
-    }else if ([actionType integerValue] == 50 && [person isEqualToString:@"接单方"]){
-        //接单方申请终止
-        DealingEndViewController *dealEndVC = [[DealingEndViewController alloc] init];
-        dealEndVC.terminationid = rowModel.productOrdersTerminationsApply.terminationid;
-        [self.navigationController pushViewController:dealEndVC animated:YES];
-    }else if ([actionType integerValue] == 50 && [person isEqualToString:@"接单方"]){
-        //接单方同意终止
-        DealingEndViewController *dealEndVC = [[DealingEndViewController alloc] init];
-        dealEndVC.terminationid = rowModel.productOrdersTerminationsApply.terminationid;
+        dealEndVC.terminationid = logModel.relaid;
         [self.navigationController pushViewController:dealEndVC animated:YES];
     }
 }

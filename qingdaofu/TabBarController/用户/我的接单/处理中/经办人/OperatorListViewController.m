@@ -349,11 +349,13 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    if (indexPath.section == 0) {
-        MyMailListsViewController *myMailListsVC = [[MyMailListsViewController alloc] init];
-        myMailListsVC.mailType = @"2";
-        myMailListsVC.ordersid = self.ordersid;
-        [self.navigationController pushViewController:myMailListsVC animated:YES];
+    if ([self.isAdd integerValue] == 1) {
+        if (indexPath.section == 0) {
+            MyMailListsViewController *myMailListsVC = [[MyMailListsViewController alloc] init];
+            myMailListsVC.mailType = @"2";
+            myMailListsVC.ordersid = self.ordersid;
+            [self.navigationController pushViewController:myMailListsVC animated:YES];
+        }        
     }
 }
 

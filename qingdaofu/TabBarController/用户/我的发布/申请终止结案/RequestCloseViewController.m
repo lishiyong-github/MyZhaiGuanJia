@@ -213,7 +213,6 @@
 - (void)rightItemAction
 {
     DealingCloseViewController *dealCloseVC = [[DealingCloseViewController alloc] init];
-    dealCloseVC.perTypeString = @"2";
     dealCloseVC.orderModell = self.orderModell;
     [self.navigationController pushViewController:dealCloseVC animated:YES];
 }

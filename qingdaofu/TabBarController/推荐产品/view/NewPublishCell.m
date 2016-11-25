@@ -14,9 +14,11 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        [self.contentView addSubview:self.financeButton];
-        [self.contentView addSubview:self.collectionButton];
-        [self.contentView addSubview:self.suitButton];
+        
+        [self.contentView addSubview:self.functionButton1];
+        [self.contentView addSubview:self.functionButton2];
+        [self.contentView addSubview:self.functionButton3];
+        [self.contentView addSubview:self.functionButton4];
         
         [self setNeedsUpdateConstraints];
     }
@@ -26,73 +28,95 @@
 - (void)updateConstraints
 {
     if (!self.didSetupConstraints) {
-        NSArray *views = @[self.financeButton,self.collectionButton,self.suitButton];
-        [views autoSetViewsDimensionsToSize:CGSizeMake(85, 85+18)];
+        NSArray *views = @[self.functionButton1,self.functionButton2,self.functionButton3,self.functionButton4];
+        [views autoSetViewsDimensionsToSize:CGSizeMake(kScreenWidth/4,80)];
         
-        [self.financeButton autoPinEdgeToSuperviewEdge:ALEdgeTop];
-        [self.financeButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:5];
+        [views autoMatchViewsDimension:ALDimensionWidth];
+        [views autoAlignViewsToAxis:ALAxisHorizontal];
         
-        [self.collectionButton autoPinEdgeToSuperviewEdge:ALEdgeTop];
-        [self.collectionButton autoAlignAxisToSuperviewAxis:ALAxisVertical];
-        
-        [self.suitButton autoPinEdgeToSuperviewEdge:ALEdgeTop];
-        [self.suitButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:5];
+        [self.functionButton1 autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kBigPadding];
+        [self.functionButton1 autoPinEdgeToSuperviewEdge:ALEdgeLeft];
+
+        [self.functionButton2 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.functionButton1];
+
+        [self.functionButton3 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.functionButton2];
+
+        [self.functionButton4 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.functionButton3];
+
         self.didSetupConstraints = YES;
     }
     [super updateConstraints];
 }
 
-- (SingleButton *)financeButton
+- (SingleButton *)functionButton1
 {
-    if (!_financeButton) {
-        _financeButton = [SingleButton newAutoLayoutView];
-        _financeButton.label.text = @"发布融资";
-        [_financeButton.button setBackgroundImage:[UIImage imageNamed:@"btn_financing"] forState:0];
-        _financeButton.button.userInteractionEnabled = NO;
+    if (!_functionButton1) {
+        _functionButton1 = [SingleButton newAutoLayoutView];
+        _functionButton1.label.text = @"诉讼保全";
+        [_functionButton1.button setImage:[UIImage imageNamed:@"btn_financing"] forState:0];
+        _functionButton1.button.userInteractionEnabled = NO;
 
         QDFWeakSelf;
-        [_financeButton addAction:^(UIButton *btn) {
+        [_functionButton1 addAction:^(UIButton *btn) {
             if (weakself.didSelectedItem) {
                 weakself.didSelectedItem(11);
             }
         }];
     }
-    return _financeButton;
+    return _functionButton1;
 }
 
-- (SingleButton *)collectionButton
+- (SingleButton *)functionButton2
 {
-    if (!_collectionButton) {
-        _collectionButton = [SingleButton newAutoLayoutView];
-        _collectionButton.label.text = @"发布清收";
-        [_collectionButton.button setBackgroundImage:[UIImage imageNamed:@"btn_collection"] forState:0];
-        _collectionButton.button.userInteractionEnabled = NO;
+    if (!_functionButton2) {
+        _functionButton2 = [SingleButton newAutoLayoutView];
+        _functionButton2.label.text = @"申请保函";
+        [_functionButton2.button setImage:[UIImage imageNamed:@"btn_collection"] forState:0];
+        _functionButton2.button.userInteractionEnabled = NO;
         QDFWeakSelf;
-        [_collectionButton addAction:^(UIButton *btn) {
+        [_functionButton2 addAction:^(UIButton *btn) {
             if (weakself.didSelectedItem) {
                 weakself.didSelectedItem(12);
             }
         }];
     }
-    return _collectionButton;
+    return _functionButton2;
 }
 
-- (SingleButton *)suitButton
+- (SingleButton *)functionButton3
 {
-    if (!_suitButton) {
-        _suitButton = [SingleButton newAutoLayoutView];
-        _suitButton.label.text = @"发布诉讼";
-        [_suitButton.button setBackgroundImage:[UIImage imageNamed:@"btn_litigation"] forState:0];
-        _suitButton.button.userInteractionEnabled = NO;
+    if (!_functionButton3) {
+        _functionButton3 = [SingleButton newAutoLayoutView];
+        _functionButton3.label.text = @"房产评估";
+        [_functionButton3.button setImage:[UIImage imageNamed:@"btn_litigation"] forState:0];
+        _functionButton3.button.userInteractionEnabled = NO;
         
         QDFWeakSelf;
-        [_suitButton addAction:^(UIButton *btn) {
+        [_functionButton3 addAction:^(UIButton *btn) {
             if (weakself.didSelectedItem) {
                 weakself.didSelectedItem(13);
             }
         }];
     }
-    return _suitButton;
+    return _functionButton3;
+}
+
+- (SingleButton *)functionButton4
+{
+    if (!_functionButton4) {
+        _functionButton4 = [SingleButton newAutoLayoutView];
+        _functionButton4.label.text = @"产调查询";
+        [_functionButton4.button setImage:[UIImage imageNamed:@"btn_financing"] forState:0];
+        _functionButton4.button.userInteractionEnabled = NO;
+        
+        QDFWeakSelf;
+        [_functionButton4 addAction:^(UIButton *btn) {
+            if (weakself.didSelectedItem) {
+                weakself.didSelectedItem(14);
+            }
+        }];
+    }
+    return _functionButton4;
 }
 
 - (void)awakeFromNib {

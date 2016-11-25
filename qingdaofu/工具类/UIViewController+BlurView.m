@@ -203,57 +203,6 @@
         }];
         
     }
-    
-//    if (finishBlock) {
-//    }
-
-        /*
-    NewPublishCell *cell;
-    if (!tagView) {
-        tagView = [UIView newAutoLayoutView];
-        tagView.backgroundColor = UIColorFromRGB1(0x333333, 0.8);
-        tagView.tag = 99999;
-        if (!view) {
-            view = self.view;
-        }
-        [view addSubview:tagView];
-        [tagView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
-
-        cell = [NewPublishCell newAutoLayoutView];
-        [cell.financeButton.label setTextColor:kNavColor];
-        [cell.collectionButton.label setTextColor:kNavColor];
-        [cell.suitButton.label  setTextColor:kNavColor];
-        [tagView addSubview:cell];
-        
-        UIButton *cancelButton = [UIButton newAutoLayoutView];
-        [cancelButton setImage:[UIImage imageNamed:@"btn_close"] forState:0];
-        [cancelButton addAction:^(UIButton *btn) {
-            [tagView removeFromSuperview];
-        }];
-        [tagView addSubview:cancelButton];
-        
-        [cell autoPinEdgeToSuperviewEdge:ALEdgeLeft];
-        [cell autoPinEdgeToSuperviewEdge:ALEdgeRight];
-        [cell autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
-        [cell autoSetDimension:ALDimensionHeight toSize:115];
-        
-        [cancelButton autoAlignAxis:ALAxisVertical toSameAxisOfView:cell];
-        [cancelButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:40];
-    }
-    
-    if (finishBlock) {
-        [cell setDidSelectedItem:^(NSInteger item) {
-            [tagView removeFromSuperview];
-            if (item == 11) {//融资
-                finishBlock(11);
-            }else if (item == 12){//清收
-                finishBlock(12);
-            }else if (item == 13){//诉讼
-                finishBlock(13);
-            }
-        }];
-    }
-     */
 }
 
 

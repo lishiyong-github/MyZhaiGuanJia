@@ -33,6 +33,8 @@
     }
     
     [self.view setNeedsUpdateConstraints];
+    
+    [self resuweeee];
 }
 
 - (void)updateViewConstraints
@@ -56,10 +58,15 @@
 {
     if (!_agreementWebView) {
         _agreementWebView = [UIWebView newAutoLayoutView];
-        NSString *urlString  = [NSString stringWithFormat:@"%@%@?productid=%@",kQDFTestUrlString,kMyOrderDetailOfCheckAgreement,self.productid];
-        NSURL *url = [NSURL URLWithString:urlString];
-        NSURLRequest *request = [NSURLRequest requestWithURL:url];
-        [_agreementWebView loadRequest:request];
+//        NSString *urlString  = [NSString stringWithFormat:@"%@%@?type=view&productid=%@?token=%@",kQDFTestUrlString,kMyorderDetailOfAgreement,self.productid,[self getValidateToken]];
+        
+        
+        
+        
+//        NSURL *url = [NSURL URLWithString:urlString];
+//        NSURLRequest *request = [NSURLRequest requestWithURL:url];
+//        
+//        [_agreementWebView loadRequest:request];
     }
     return _agreementWebView;
 }
@@ -75,6 +82,29 @@
 }
 
 #pragma mark - method
+
+- (void)resuweeee
+{
+    NSString *aoaoao = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyorderDetailOfAgreement];
+    NSDictionary *params = @{@"token" : [self getValidateToken],
+                             @"productid" : self.productid,
+                             @"type" : @"pdf"};
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:aoaoao params:params successBlock:^(id responseObject) {
+        
+//        [responseObject JSONString];
+        
+        NSDictionary *apapap = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+        
+//        [weakself.agreementWebView loadData:responseObject MIMEType:@"pdf" textEncodingName:nil baseURL:nil];
+        
+        [weakself.agreementWebView loadHTMLString:@"http://www.zcb2016.com/site/pdf?type=I&types=6" baseURL:nil];
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
 - (void)agreeForAgreement
 {
     NSString *agreementString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrderDetailOfConfirmAgreement];
@@ -92,6 +122,60 @@
     } andFailBlock:^(NSError *error) {
         
     }];
+}
+
+
+-(void)loadDocument:(NSString *)documentName inView:(UIWebView *)webView
+{
+    NSString *path = [[NSBundle mainBundle] pathForResource:documentName ofType:nil];
+    NSURL *url = [NSURL fileURLWithPath:path];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    [webView loadRequest:request];
+}
+
+CGPDFDocumentRef GetPDFDocumentRef(NSString *filename)
+{
+    
+    CFStringRef path;
+    CFURLRef url;
+    CGPDFDocumentRef document;
+    size_t count;
+    
+    path = CFStringCreateWithCString (NULL, [filename UTF8String], kCFStringEncodingUTF8);
+    
+    url = CFURLCreateWithFileSystemPath (NULL, path, kCFURLPOSIXPathStyle, 0);
+    
+    CFRelease (path);
+    
+    document = CGPDFDocumentCreateWithURL (url);
+    
+    CFRelease(url);
+    
+    count = CGPDFDocumentGetNumberOfPages (document);
+    
+    if(count == 0) {
+            printf (
+             "[%s] needs at least one page!\n"
+             , [filename UTF8String]);
+            
+            return NULL;
+        }
+    else{
+        printf (
+         "[%ld] pages loaded in this PDF!\n"
+         , count);
+    }
+    return document;
+}
+
+void  DisplayPDFPage (CGContextRef myContext,size_t pageNumber, NSString *filename)
+{
+    CGPDFDocumentRef document;
+    CGPDFPageRef page;
+    document = GetPDFDocumentRef (filename);
+    page = CGPDFDocumentGetPage (document, pageNumber);
+    CGContextDrawPDFPage (myContext, page);
+    CGPDFDocumentRelease (document);  
 }
 
 - (void)didReceiveMemoryWarning {

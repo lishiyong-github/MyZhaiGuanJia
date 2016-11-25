@@ -34,23 +34,12 @@
 - (void)updateConstraints
 {
     if (!self.didSetupConstraints) {
-        [self.button autoPinEdgeToSuperviewEdge:ALEdgeTop];
         [self.button autoAlignAxisToSuperviewAxis:ALAxisVertical];
-        [self.button autoSetDimensionsToSize:CGSizeMake(80, 80)];
-        
-       
-        [self.label autoPinEdgeToSuperviewEdge:ALEdgeLeft];
-        [self.label autoPinEdgeToSuperviewEdge:ALEdgeRight];
-        [self.label autoSetDimension:ALDimensionHeight toSize:20];
-
-//        [self.label autoAlignAxis:ALAxisVertical toSameAxisOfView:self.button];
-//        [self.label autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
-        
-//        [self.button autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
 //        [self.button autoSetDimensionsToSize:CGSizeMake(80, 80)];
-//        
-//        [self.label autoAlignAxis:ALAxisVertical toSameAxisOfView:self.button];
-//        [self.label autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.button withOffset:20];
+        [self.button autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
+       
+        [self.label autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.button withOffset:kBigPadding];
+        [self.label autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
         
         self.didSetupConstraints = YES;
     }
@@ -73,7 +62,6 @@
     if (!_label) {
         _label = [UILabel newAutoLayoutView];
         _label.font = kSecondFont;
-//        _label.text = @"发布清收";
         _label.textAlignment = NSTextAlignmentCenter;
         _label.textColor = kGrayColor;
     }

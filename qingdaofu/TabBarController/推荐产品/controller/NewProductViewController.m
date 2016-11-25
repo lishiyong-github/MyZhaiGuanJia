@@ -17,16 +17,13 @@
 #import "LoginViewController.h" //登录
 #import "AuthentyViewController.h"//认证
 
-//#import "NewPublishCell.h"
-//#import "HomeCell.h"
+#import "MineUserCell.h"
 #import "FourCell.h"
+#import "NewPublishCell.h"  //诉讼保全
 #import "HomesCell.h"
 
-//#import "NewProductModel.h"
-//#import "NewProductListModel.h"
-
 #import "ReleaseResponse.h"
-#import "RowsModel.h";
+#import "RowsModel.h"
 
 #import "UIImage+Color.h"
 #import "UIViewController+BlurView.h"
@@ -54,10 +51,17 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:kBlackColor,NSFontAttributeName:kNavFont}];
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:kNavColor] forBarMetrics:UIBarMetricsDefault];
+    
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
     
     [self getRecommendProductslist];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
 - (void)viewDidLoad {
@@ -66,14 +70,8 @@
     self.navigationItem.titleView = self.titleView;
     
     [self.view addSubview:self.mainTableView];
-    [self.view setNeedsUpdateConstraints];
     
-//    QDFWeakSelf;
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        [weakself chechAppNewVersion];
-//    });
-//    
-//    [self performSelector:@selector(chechAppNewVersion) withObject:nil afterDelay:10];
+    [self.view setNeedsUpdateConstraints];
 }
 
 - (UIButton *)titleView
@@ -200,7 +198,7 @@
 #pragma mark - tableView delelagte and datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1+self.productsDataListArray.count;
+    return 2+self.productsDataListArray.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -210,8 +208,10 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0) {
-        return 140;
+    if (indexPath.section == 0) {//累计交易总量
+        return 90;
+    }else if (indexPath.section == 1){
+        return 110;
     }
     return 122;//产品列表
 }
@@ -219,59 +219,73 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier;
-    if (indexPath.section == 0){
-        identifier = @"main0";
-        FourCell *cell = [tableView dequeueReusableCellWithIdentifier: identifier];
+    if (indexPath.section == 0) {//累计交易总量
+        identifier = @"main1";
+        MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier: identifier];
         if (!cell) {
-            cell = [[FourCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        [cell.userActionButton setTitle:@"查看详情  " forState:0];
+        [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+        cell.userNameButton.titleLabel.numberOfLines = 0;
+        
+        NSString *all1 = @"累计交易总量\n";
+        NSString *all2 = @"120209999";
+        NSString *all3 = @"元";
+        NSString *all = [NSString stringWithFormat:@"%@%@%@",all1,all2,all3];
+        NSMutableAttributedString *attributeAll = [[NSMutableAttributedString alloc] initWithString:all];
+        [attributeAll setAttributes:@{NSFontAttributeName : kFourFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, all1.length)];
+        [attributeAll setAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:30],NSForegroundColorAttributeName:kTextColor} range:NSMakeRange(all1.length, all2.length)];
+        [attributeAll setAttributes:@{NSFontAttributeName : kFourFont,NSForegroundColorAttributeName:kTextColor} range:NSMakeRange(all1.length  + all2.length,all3.length)];
+
+        NSMutableParagraphStyle *styleAll = [[NSMutableParagraphStyle alloc] init];
+        [styleAll setLineSpacing:kSmallPadding];
+        styleAll.alignment = 0;
+        [attributeAll addAttribute:NSParagraphStyleAttributeName value:styleAll range:NSMakeRange(0, all.length)];
+        [cell.userNameButton setAttributedTitle:attributeAll forState:0];
+        
+        return cell;
+        
+    }else if (indexPath.section == 1){//四大功能
+        identifier = @"main1";
+        NewPublishCell *cell = [tableView dequeueReusableCellWithIdentifier: identifier];
+        if (!cell) {
+            cell = [[NewPublishCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         QDFWeakSelf;
-        [cell setDidClickButton:^(NSInteger tag) {
-            
-            [weakself tokenIsValid];
-            [weakself setDidTokenValid:^(TokenModel *tokenModel) {
-                if ([tokenModel.code isEqualToString:@"0000"] || [tokenModel.code isEqualToString:@"3006"]) {
-                    if (tag == 11) {//房产评估
-                        HouseAssessViewController *houseAssessVC = [[HouseAssessViewController alloc] init];
-                        houseAssessVC.hidesBottomBarWhenPushed = YES;
-                        [weakself.navigationController pushViewController:houseAssessVC animated:YES];
-                    }else if (tag == 22){//产调
-                        HousePropertyViewController *housePropertyVC = [[HousePropertyViewController alloc] init];
-                        housePropertyVC.hidesBottomBarWhenPushed = YES;
-                        [weakself.navigationController pushViewController:housePropertyVC animated:YES];
-                        
-                    }else if (tag == 33){//保全
-                        PowerProtectViewController *powerProtectVC = [[PowerProtectViewController alloc] init];
-                        powerProtectVC.hidesBottomBarWhenPushed = YES;
-                        [weakself.navigationController pushViewController:powerProtectVC animated:YES];
-                        
-                    }else if (tag == 44){//保函
-                        ApplicationGuaranteeViewController *applicationGuaranteeVC = [[ApplicationGuaranteeViewController alloc] init];
-                        applicationGuaranteeVC.hidesBottomBarWhenPushed = YES;
-                        [weakself.navigationController pushViewController:applicationGuaranteeVC animated:YES];
-                    }
-                }else{//未登录
-                    [weakself showHint:tokenModel.msg];
-                    LoginViewController *loginVC = [[LoginViewController alloc] init];
-                    loginVC.hidesBottomBarWhenPushed = YES;
-                    UINavigationController *uiui = [[UINavigationController alloc] initWithRootViewController:loginVC];
-                    [weakself presentViewController:uiui animated:YES completion:nil];
-                }
-            }];
+        [cell setDidSelectedItem:^(NSInteger tag) {
+            if (tag == 11){//保全
+                PowerProtectViewController *powerProtectVC = [[PowerProtectViewController alloc] init];
+                powerProtectVC.hidesBottomBarWhenPushed = YES;
+                [weakself.navigationController pushViewController:powerProtectVC animated:YES];
+            }else if (tag == 12){//保函
+                ApplicationGuaranteeViewController *applicationGuaranteeVC = [[ApplicationGuaranteeViewController alloc] init];
+                applicationGuaranteeVC.hidesBottomBarWhenPushed = YES;
+                [weakself.navigationController pushViewController:applicationGuaranteeVC animated:YES];
+            }else if (tag == 13) {//房产评估
+                HouseAssessViewController *houseAssessVC = [[HouseAssessViewController alloc] init];
+                houseAssessVC.hidesBottomBarWhenPushed = YES;
+                [weakself.navigationController pushViewController:houseAssessVC animated:YES];
+            }else if (tag == 14){//产调
+                HousePropertyViewController *housePropertyVC = [[HousePropertyViewController alloc] init];
+                housePropertyVC.hidesBottomBarWhenPushed = YES;
+                [weakself.navigationController pushViewController:housePropertyVC animated:YES];
+            }
         }];
         return cell;
     }
     
-    identifier = @"main1";//精选列表
+    identifier = @"main2";//精选列表
     HomesCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
         cell = [[HomesCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    RowsModel *rowModel = self.productsDataListArray[indexPath.section - 1];
+    RowsModel *rowModel = self.productsDataListArray[indexPath.section - 2];
     
     cell.nameLabel.text = rowModel.number;
     cell.addressLabel.text = rowModel.addressLabel;
@@ -334,48 +348,27 @@
     [attriRR setAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kTextColor} range:NSMakeRange(rowModel.overdue.length,2)];
     [cell.rateView.label1 setAttributedText:attriRR];
     
-    
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return kBigPadding;
+    return 0.1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return 0.1f;
+    return kBigPadding;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section > 0) {
-        
-        [self tokenIsValid];
-        
-        QDFWeakSelf;
-        [self setDidTokenValid:^(TokenModel *model) {
-            if ([model.code isEqualToString:@"0000"]) {//正常
-                RowsModel *sModel = weakself.productsDataListArray[indexPath.section - 1];
-                ProductsDetailsViewController *productsDetailVC = [[ProductsDetailsViewController alloc] init];
-                productsDetailVC.hidesBottomBarWhenPushed = YES;
-                productsDetailVC.productid = sModel.productid;
-                [weakself.navigationController pushViewController:productsDetailVC animated:YES];
-            }else if([model.code isEqualToString:@"3006"]){//已登录，未认证
-                [weakself showHint:model.msg];
-                AuthentyViewController *authentyVC = [[AuthentyViewController alloc] init];
-                authentyVC.hidesBottomBarWhenPushed = YES;
-                authentyVC.typeAuthty = @"0";
-                [weakself.navigationController pushViewController:authentyVC animated:YES];
-            }else{//未登录
-                [weakself showHint:model.msg];
-                LoginViewController *loginVC = [[LoginViewController alloc] init];
-                loginVC.hidesBottomBarWhenPushed = YES;
-                UINavigationController *uiui = [[UINavigationController alloc] initWithRootViewController:loginVC];
-                [weakself presentViewController:uiui animated:YES completion:nil];
-            }
-        }];
+    if (indexPath.section > 1) {
+        RowsModel *sModel = self.productsDataListArray[indexPath.section - 2];
+        ProductsDetailsViewController *productsDetailVC = [[ProductsDetailsViewController alloc] init];
+        productsDetailVC.hidesBottomBarWhenPushed = YES;
+        productsDetailVC.productid = sModel.productid;
+        [self.navigationController pushViewController:productsDetailVC animated:YES];
     }
 }
 
@@ -398,12 +391,14 @@
     NSString *allProString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductListsString];
     
     NSDictionary *params = @{@"page" : @"1",
-                             @"limit" : @"3",
+                             @"limit" : @"1",
                              @"token" : [self getValidateToken]
                              };
     
     QDFWeakSelf;
     [self requestDataPostWithString:allProString params:params successBlock:^(id responseObject) {
+        
+        NSDictionary *apapa = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
         [weakself.productsDataListArray removeAllObjects];
         
@@ -428,28 +423,6 @@
     } andFailBlock:^(NSError *error) {
         
     }];
-
-    
-//    NSString *recommendString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductsRecommendListString];
-//    NSDictionary *params = @{@"limit" : @"6"};
-//    
-//    QDFWeakSelf;
-//    [self requestDataPostWithString:recommendString params:params successBlock:^(id responseObject) {
-//                
-//        [weakself.productsDataListArray removeAllObjects];
-//        
-//        NewProductModel *model = [NewProductModel objectWithKeyValues:responseObject];
-//        for (NewProductListModel *listModel in model.result) {
-//            [weakself.productsDataListArray addObject:listModel];
-//        }
-//        [weakself.mainTableView reloadData];
-//        
-//        if (weakself.propagandaDic.allKeys.count == 0) {
-//            [weakself getPropagandaChar];
-//        }
-//    } andFailBlock:^(NSError *error) {
-//        
-//    }];
 }
 
 //轮播图

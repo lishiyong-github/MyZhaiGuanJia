@@ -94,12 +94,6 @@
     [self.view addSubview:self.dealCloseFootView];
     [self.dealCloseFootView setHidden:YES];
     
-//    if ([self.perTypeString integerValue] == 1) {
-//        
-//    }else if ([self.perTypeString integerValue] == 2){
-//        self.title = @"结清证明";
-//    }
-    
     [self.view setNeedsUpdateConstraints];
 }
 
@@ -107,36 +101,16 @@
 {
     if (!self.didSetupConstraints) {
         
-        if ([self.perTypeString integerValue] == 1) {
-            [self.backWhiteView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(kBigPadding, 0, 0, 0) excludingEdge:ALEdgeBottom];
-            [self.backWhiteView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.dealCloseFootView];
-            
-            [self.dealCloseFootView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-            [self.dealCloseFootView autoSetDimension:ALDimensionHeight toSize:116];
-        }else if ([self.perTypeString integerValue] == 2){
-            [self.backWhiteView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(kBigPadding, 0, 0, 0)];
-        }
+        [self.backWhiteView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(kBigPadding, 0, 0, 0) excludingEdge:ALEdgeBottom];
+        [self.backWhiteView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.dealCloseFootView];
+        
+        [self.dealCloseFootView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+        [self.dealCloseFootView autoSetDimension:ALDimensionHeight toSize:116];
         
         self.didSetupConstraints = YES;
     }
     [super updateViewConstraints];
 }
-
-//- (UIButton *)dealCloseRightButton
-//{
-//    if (!_dealCloseRightButton) {
-//        _dealCloseRightButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 30)];
-//        [_dealCloseRightButton setTitleColor:kWhiteColor forState:0];
-//        [_dealCloseRightButton setTitle:@"平台介入" forState:0];
-//        _dealCloseRightButton.titleLabel.font = kFirstFont;
-//        
-//        [_dealCloseRightButton addAction:^(UIButton *btn) {
-//            NSMutableString *tel = [NSMutableString stringWithFormat:@"telprompt://%@",@"400-855-7022"];
-//            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:tel]];
-//        }];
-//    }
-//    return _dealCloseRightButton;
-//}
 
 - (UIView *)backWhiteView
 {
@@ -298,7 +272,7 @@
             [attributeEE addAttribute:NSParagraphStyleAttributeName value:style1 range:NSMakeRange(0, eee.length)];
             [weakself.endButton setAttributedTitle:attributeEE forState:0];
             
-            if ([response.accessTerminationAUTH integerValue] == 0) {
+            if ([response.accessTerminationAUTH integerValue] == 0 && ![response.data.create_by isEqualToString:response.userid] && [response.data.status integerValue] == 0) {
                 self.title = @"处理结案申请";
                 weakself.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightButton];
                 [weakself.rightButton setTitle:@"平台介入" forState:0];
@@ -327,7 +301,7 @@
 }
 
 - (void)showAlertOfProductDealWithType:(NSString *)type
-{
+{    
     NSString *message;
     if ([type integerValue] == 1) {
         message = @"同意结案？";
@@ -364,7 +338,7 @@
         dealString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseDetailOfDealCloseDetailsVote];
     }
     NSDictionary *params = @{@"token" : [self getValidateToken],
-                             @"resultmemo" : self.dealReason,
+                             @"resultmemo" : self.dealReason?self.dealReason:@"",
                              @"closedid" : self.closedid
                              };
     
@@ -385,6 +359,7 @@
 #pragma mark - textField delegate
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
+    [textField resignFirstResponder];
     self.dealReason = textField.text;
 }
 - (BOOL)textFieldShouldReturn:(UITextField *)textField

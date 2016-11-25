@@ -25,7 +25,6 @@
     [self setUpMessage];
 }
 
-
 - (void)setUpMessage
 {
     self.view.backgroundColor = kBackColor;

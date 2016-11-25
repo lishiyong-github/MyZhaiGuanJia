@@ -331,6 +331,7 @@
 #define kMyOrderDetailOfDealCloseDetailsVote @"productorders/orders-closed-veto" //接单详情-处理终止详情-否决结案
 #define kMyOrderDetailOfAddPace @"productorders/orders-process-add" //接单详情－添加进度
 #define kMyorderDetailOfProgressLogs  @"productorders/logs"  //接单详情－接单日志
+#define kMyorderDetailOfAgreement @"product/agreement" //居间协议
 
 
 #define kMyReleaseOfIngString @"product/list-processing"  //我的发布－进行中
