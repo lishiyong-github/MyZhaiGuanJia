@@ -16,6 +16,7 @@
     if (self) {
         [self.contentView addSubview:self.cancelButton];
         [self.contentView addSubview:self.oneButton];
+        [self.contentView addSubview:self.sureButton];
         
         [self.contentView setNeedsUpdateConstraints];
     }
@@ -31,6 +32,9 @@
         
         [self.oneButton autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
         [self.oneButton autoAlignAxisToSuperviewAxis:ALAxisVertical];
+        
+        [self.sureButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
+        [self.sureButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.oneButton];
         
         self.didSetupConstraints = YES;
     }
@@ -57,6 +61,16 @@
         _oneButton.titleLabel.numberOfLines = 0;
     }
     return _oneButton;
+}
+
+- (UIButton *)sureButton
+{
+    if (!_sureButton) {
+        _sureButton = [UIButton newAutoLayoutView];
+        _sureButton.titleLabel.font = kBigFont;
+        [_sureButton setTitleColor:kBlackColor forState:0];
+    }
+    return _sureButton;
 }
 
 - (void)awakeFromNib {

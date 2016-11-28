@@ -13,6 +13,7 @@
 
 @property (nonatomic,strong) UIButton *cancelButton;
 @property (nonatomic,strong) UIButton *oneButton;
+@property (nonatomic,strong) UIButton *sureButton;
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 

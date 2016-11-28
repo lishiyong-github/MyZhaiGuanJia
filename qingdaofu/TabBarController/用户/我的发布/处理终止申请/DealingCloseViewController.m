@@ -348,8 +348,8 @@
         [weakself showHint:baseModel.msg];
         
         if ([baseModel.code isEqualToString:@"0000"]) {
-            [weakself back];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh" object:nil];
+            [weakself back];
         }
     } andFailBlock:^(NSError *error) {
         

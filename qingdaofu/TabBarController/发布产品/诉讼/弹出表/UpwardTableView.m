@@ -16,11 +16,11 @@
 {
     self = [super initWithFrame:frame style:style];
     if (self) {
-        self.tableFooterView = [[UIView alloc] init];
         self.delegate = self;
         self.dataSource = self;
         self.separatorColor = kSeparateColor;
         self.backgroundColor = kBackColor;
+        self.tableFooterView = [[UIView alloc] init];
         
         if ([self respondsToSelector:@selector(setSeparatorInset:)]) {
             [self setSeparatorInset:UIEdgeInsetsZero];

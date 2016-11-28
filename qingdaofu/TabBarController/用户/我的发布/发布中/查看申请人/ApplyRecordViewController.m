@@ -9,10 +9,8 @@
 #import "ApplyRecordViewController.h"
 
 #import "CheckDetailPublishViewController.h"   //申请人信息
-#import "AgreementViewController.h" //同意申请
 
 #import "MineUserCell.h"
-#import "BidOneCell.h"
 
 #import "ApplyRecordResponse.h"
 
@@ -164,13 +162,6 @@
     
     QDFWeakSelf;
     [cell.userActionButton addAction:^(UIButton *btn) {
-//        AgreementViewController *agreementVC = [[AgreementViewController alloc] init];
-//        agreementVC.flagString = @"1";
-//        agreementVC.idString = self.idStr;
-//        agreementVC.categoryString = self.categaryStr;
-//        agreementVC.pidString = recordModel.uidInner;
-//        [weakself.navigationController pushViewController:agreementVC animated:YES];
-        
         if (weakself.didChooseApplyUser) {
             weakself.didChooseApplyUser(recordModel);
         }

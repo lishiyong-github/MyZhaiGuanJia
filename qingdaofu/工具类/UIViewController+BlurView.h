@@ -10,13 +10,11 @@
 
 @interface UIViewController (BlurView)
 
-@property (nonatomic,strong) void (^didSelectedSingleButton)(NSInteger);
-
 - (void)showBlurInView:(UIView *)view withArray:(NSArray *)array andTitle:(NSString *)title finishBlock:(void(^)(NSString *text,NSInteger row))finishBlock;
 
 - (void)showBlurInView:(UIView *)view withArray:(NSArray *)array withTop:(CGFloat)top finishBlock:(void(^)(NSString *text,NSInteger row))finishBlock;
 
-- (void)showBlurInView:(UIView *)view withArray:(NSArray *)array finishBlock:(void(^)(NSInteger row))finishBlock;
+- (void)showBlurInView:(UIView *)view withType:(NSString *)type andCategory:(NSString *)category andArray:(NSArray *)array finishBlock:(void(^)())finishBlock;//type:add or edit ,, category:房产抵押，机动车抵押，合同纠纷
 
 - (void)hiddenBlurView;
 

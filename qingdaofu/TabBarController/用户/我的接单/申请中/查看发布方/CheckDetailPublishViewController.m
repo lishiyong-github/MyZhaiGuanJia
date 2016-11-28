@@ -114,10 +114,10 @@
         QDFWeakSelf;
         [_appAgreeButton addAction:^(UIButton *btn) {
             AgreementViewController *agreementVC = [[AgreementViewController alloc] init];
-            agreementVC.flagString = @"1";
-            agreementVC.idString = weakself.idString;
-            agreementVC.categoryString = weakself.categoryString;
-            agreementVC.pidString = weakself.pidString;
+//            agreementVC.flagString = @"1";
+//            agreementVC.idString = weakself.idString;
+//            agreementVC.categoryString = weakself.categoryString;
+//            agreementVC.pidString = weakself.pidString;
             [weakself.navigationController pushViewController:agreementVC animated:YES];
         }];
     }

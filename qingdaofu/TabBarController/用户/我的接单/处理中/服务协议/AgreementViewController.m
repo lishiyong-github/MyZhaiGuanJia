@@ -58,15 +58,6 @@
 {
     if (!_agreementWebView) {
         _agreementWebView = [UIWebView newAutoLayoutView];
-//        NSString *urlString  = [NSString stringWithFormat:@"%@%@?type=view&productid=%@?token=%@",kQDFTestUrlString,kMyorderDetailOfAgreement,self.productid,[self getValidateToken]];
-        
-        
-        
-        
-//        NSURL *url = [NSURL URLWithString:urlString];
-//        NSURLRequest *request = [NSURLRequest requestWithURL:url];
-//        
-//        [_agreementWebView loadRequest:request];
     }
     return _agreementWebView;
 }
@@ -88,18 +79,12 @@
     NSString *aoaoao = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyorderDetailOfAgreement];
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"productid" : self.productid,
-                             @"type" : @"pdf"};
+                             @"type" : @"view"};
     
     QDFWeakSelf;
     [self requestDataPostWithString:aoaoao params:params successBlock:^(id responseObject) {
         
-//        [responseObject JSONString];
-        
-        NSDictionary *apapap = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        
-//        [weakself.agreementWebView loadData:responseObject MIMEType:@"pdf" textEncodingName:nil baseURL:nil];
-        
-        [weakself.agreementWebView loadHTMLString:@"http://www.zcb2016.com/site/pdf?type=I&types=6" baseURL:nil];
+        [weakself.agreementWebView loadHTMLString:[responseObject JSONString] baseURL:nil];
         
     } andFailBlock:^(NSError *error) {
         

@@ -9,11 +9,10 @@
 #import "UIViewController+BlurView.h"
 #import <objc/runtime.h>
 #import "UpwardTableView.h"
-#import "SingleButton.h"
+#import "EditUpTableView.h"
 
 @implementation UIViewController (BlurView)
 
-@dynamic didSelectedSingleButton;
 
 //有标题
 - (void)showBlurInView:(UIView *)view withArray:(NSArray *)array andTitle:(NSString *)title finishBlock:(void (^)(NSString *text,NSInteger row))finishBlock
@@ -110,17 +109,14 @@
     }
 }
 
-//推荐页面的发布
-- (void)showBlurInView:(UIView *)view withArray:(NSArray *)array finishBlock:(void(^)(NSInteger row))finishBlock
+- (void)showBlurInView:(UIView *)view withType:(NSString *)type andCategory:(NSString *)category andArray:(NSArray *)array finishBlock:(void (^)())finishBlock
 {
     [self hiddenBlurView];
-    UIView *tagView = [self.view viewWithTag:99999];
-    SingleButton *collectionButton;
-    SingleButton *suitButton;
-
+    UIView *tagView = [self.view viewWithTag:99999];//背景
+    EditUpTableView *tableView = [self.view viewWithTag:99998];//tableview
     if (!tagView) {
         tagView = [UIView newAutoLayoutView];
-        tagView.backgroundColor = UIColorFromRGB1(0xffffff, 1);
+        tagView.backgroundColor = UIColorFromRGB1(0x333333, 0.3);
         tagView.tag = 99999;
         if (!view) {
             view = self.view;
@@ -128,83 +124,32 @@
         [view addSubview:tagView];
         [tagView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
         
-        //清收
-        collectionButton = [[SingleButton alloc] init];
-        collectionButton.center = CGPointMake(kScreenWidth/4, kScreenHeight/2);
-        [collectionButton.button setImage:[UIImage imageNamed:@"release_clearance"] forState:0];
-        collectionButton.label.text = @"发布清收";
-        [tagView addSubview:collectionButton];
-        QDFWeakSelf;
-        [collectionButton addAction:^(UIButton *btn) {
-            if (weakself.didSelectedSingleButton) {
-                weakself.didSelectedSingleButton(77);
-            }
-        }];
+        tableView = [EditUpTableView newAutoLayoutView];
+        tableView.type = type;
+        tableView.category = category;
+        [tagView addSubview:tableView];
         
-        //诉讼
-        suitButton = [[SingleButton alloc] init];
-        suitButton.center = CGPointMake((kScreenWidth/4*3), kScreenHeight/2);
-        [suitButton.button setImage:[UIImage imageNamed:@"release_proceedings"] forState:0];
-        suitButton.label.text = @"发布诉讼";
-        [tagView addSubview:suitButton];
-        [suitButton addAction:^(UIButton *btn) {
-            if (weakself.didSelectedSingleButton) {
-                weakself.didSelectedSingleButton(78);
-            }
-        }];
-        
-        //取消按钮
-        UIButton *cancelButton = [UIButton newAutoLayoutView];
-        [cancelButton setImage:[UIImage imageNamed:@"closew"] forState:0];
-        [cancelButton addAction:^(UIButton *btn) {
+        [tableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+        [tableView autoSetDimension:ALDimensionHeight toSize:4*kCellHeight+kCellHeight4];
+    }
+    
+    if (tagView) {//点击蒙板，界面消失
+        UIButton *control = [UIButton newAutoLayoutView];
+        [tagView addSubview:control];
+        [control autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+        [control autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:tableView];
+        [control addAction:^(UIButton *btn) {
             [tagView removeFromSuperview];
-        }];
-        [tagView addSubview:cancelButton];
-        [cancelButton autoAlignAxisToSuperviewAxis:ALAxisVertical];
-        [cancelButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:40];
-        [cancelButton autoSetDimensionsToSize:CGSizeMake(50, 50)];
-        
-        [UIView animateWithDuration:0.3 animations:^{
-            collectionButton.frame = CGRectMake(0, 0, 80, 80);
-            collectionButton.center = CGPointMake((kScreenWidth/4), kScreenHeight/2);
-            
-            suitButton.frame = CGRectMake(0, 0, 80, 80);
-            suitButton.center = CGPointMake((kScreenWidth/4*3), kScreenHeight/2);
-        } completion:^(BOOL finished) {
-            
         }];
     }
     
     if (finishBlock) {
-        
-//        QDFWeakSelf;
-        
-        [collectionButton addAction:^(UIButton *btn) {
-//            if (weakself.didSelectedSingleButton) {
-//                weakself.didSelectedSingleButton(77);
-//            }
-//            [weakself hiddenBlurView];
-            
+        [tableView setDidSelectedBtn:^(NSInteger btnTag) {
             [tagView removeFromSuperview];
-
-            finishBlock(77);
-        
+            finishBlock(btnTag);
         }];
-        
-        [suitButton addAction:^(UIButton *btn) {
-//            if (weakself.didSelectedSingleButton) {
-//                weakself.didSelectedSingleButton(78);
-//            }
-//            [weakself hiddenBlurView];
-            
-            [tagView removeFromSuperview];
-            finishBlock(78);
-
-        }];
-        
     }
 }
-
 
 - (void)hiddenBlurView
 {

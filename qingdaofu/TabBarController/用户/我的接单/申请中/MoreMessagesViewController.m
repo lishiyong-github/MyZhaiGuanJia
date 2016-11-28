@@ -8,11 +8,16 @@
 
 #import "MoreMessagesViewController.h"
 #import "ReportSuitViewController.h"  //编辑
+#import "EditMessageViewController.h"
 
 #import "MineUserCell.h"
+#import "BidOneCell.h"
+#import "AgentCell.h"
 
 #import "PublishingResponse.h"
 #import "RowsModel.h"
+
+#import "UIViewController+BlurView.h"
 
 @interface MoreMessagesViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -76,10 +81,14 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (self.moreMessageArray.count > 0) {
+        PublishingResponse *response = self.moreMessageArray[0];
+        RowsModel *rowModel = response.data;
+        if ([rowModel.statusLabel containsString:@"发布"] || [rowModel.statusLabel containsString:@"面谈"]){
+            return 4;
+        }
         return 1;
     }
     return 0;
-//    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -191,14 +200,59 @@
         }
         return cell;
     }else{
+        //剩余section
         
         if (self.moreMessageArray.count > 0) {
             PublishingResponse *response = self.moreMessageArray[0];
             RowsModel *rowModel = response.data;
             if ([rowModel.statusLabel containsString:@"发布"] || [rowModel.statusLabel containsString:@"面谈"]) {//可以添加
+                if (indexPath.section == 1) {//房产抵押，机动车抵押，合同纠纷
+                    if (indexPath.row == rowModel.productMortgages1.count) {
+                        //最后一行，显示添加按钮
+                        BidOneCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+                        if (!cell) {
+                            cell = [[BidOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+                        }
+                        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                        
+                        [cell.oneButton setTitle:@"添加房产抵押" forState:0];
+                        
+                        return cell;
+                    }else{//剩余行，显示添加的内容
+                        AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+                        if (!cell) {
+                            cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+                        }
+                        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                        
+                        cell.agentLabel.text = [NSString stringWithFormat:@"房产抵押%ld",(long)indexPath.row];
+                        
+                        return cell;
+                    }
+                }else if (indexPath.section == 2){
+                    BidOneCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+                    if (!cell) {
+                        cell = [[BidOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+                    }
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    
+                    [cell.oneButton setTitle:@"添加机动车抵押" forState:0];
+                    
+                    return cell;
+                    
+                }else if (indexPath.section == 3){
+                    BidOneCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+                    if (!cell) {
+                        cell = [[BidOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+                    }
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    
+                    [cell.oneButton setTitle:@"添加合同纠纷" forState:0];
+                    
+                    return cell;
+                }
                 
             }else{//无添加功能
-                
                 if (rowModel.productMortgages1.count > 0) {
 
                     if (indexPath.section == 1) {
@@ -214,11 +268,10 @@
                         return cell;
                     }
                     
-                }else{
-                   
                 }
-                
             }
+        }else{//不可编辑
+            
         }
     }
     return nil;
@@ -231,6 +284,67 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return 0.1;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.moreMessageArray.count > 0) {//只有面谈或发布中的数据可以修改
+        PublishingResponse *response = self.moreMessageArray[0];
+        RowsModel *rowModel = response.data;
+        if ([rowModel.statusLabel containsString:@"发布"] || [rowModel.statusLabel containsString:@"面谈"]){
+            if (indexPath.section == 1) {//房产抵押
+                if (indexPath.row == rowModel.productMortgages1.count) {
+                    QDFWeakSelf;
+                    [self showBlurInView:self.view withType:@"添加" andCategory:@"房产抵押" andArray:nil finishBlock:^(NSInteger btnTag){
+                        switch (btnTag) {
+                            case 51:{//返回
+                                
+                            }
+                                break;
+                            case 52:{//选择地区
+                                
+                            }
+                                break;
+                            case 53:{//保存
+                                
+                            }
+                                break;
+                            default:
+                                break;
+                        }
+                    }];
+                }else{
+                    QDFWeakSelf;
+                    [self showBlurInView:self.view withType:@"编辑" andCategory:@"房产抵押" andArray:nil finishBlock:^(NSInteger btnTag){
+                        switch (btnTag) {
+                            case 51:{//返回
+                                
+                            }
+                                break;
+                            case 52:{//选择地区
+                                
+                            }
+                                break;
+                            case 54:{//保存
+                                
+                            }
+                                break;
+                            case 55:{//删除
+                                
+                            }
+                                break;
+                            default:
+                                break;
+                        }
+                    }];
+                }
+            }else if(indexPath.section == 2){//机动车抵押
+                
+            }else if (indexPath.section == 3){//合同纠纷
+                
+            }
+        }
+    }
 }
 
 #pragma mark - method
