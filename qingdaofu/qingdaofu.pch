@@ -288,6 +288,9 @@
 #define kPublishProductTwice  @"product/edit" //发布再发布，保存再发布＊＊＊＊＊
 #define kSaveDraftOfProduct  @"product/draft" //保存草稿＊＊＊＊＊
 #define kSaveDraftOfProductTwice @"product/preservation-edit"  //草稿再编辑
+#define kPublishproductOfProvince @"product/province"  //省
+#define kPublishproductOfCity @"product/city"  //市
+#define kPublishproductOfArea @"product/district"  //区
 
 
 #define kMessageOfGroupString @"message/group-list"  //分组消息
@@ -347,6 +350,11 @@
 #define kMyReleaseDetailOfDealCloseDetailsAgree @"productorders/orders-closed-agree" //发布详情-处理结案-同意结案
 #define kMyReleaseDetailOfDealCloseDetailsVote @"productorders/orders-closed-veto" //发布详情-处理结案-否决结案
 #define kMyReleaseDetailOfMoreMessages @"product/product-details"  //完善信息
+#define kMykMyReleaseDetailOfMoreMessagesToAdd @"product/mortgage-add"  //新增
+#define kMykMyReleaseDetailOfMoreMessagesToEdit @"product/mortgage-edit"  //编辑
+#define kMykMyReleaseDetailOfMoreMessagesToDelete @"product/mortgage-del"  //删除
+
+
 
 
 #define kProductListsString @"product/index"  //产品列表

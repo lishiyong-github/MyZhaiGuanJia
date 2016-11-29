@@ -186,7 +186,6 @@
                         weakself.chooseView.squrebutton.selected = NO;
                         weakself.chooseView.stateButton.selected = NO;
                         
-                        
                         NSArray *moneyArray = @[@"不限",@"30万以下",@"30-100万",@"100-500万",@"500万以上"];
                         [weakself showBlurInView:weakself.view withArray:moneyArray withTop:selectedButton.height finishBlock:^(NSString *text, NSInteger row) {
                             [selectedButton setTitle:text forState:0];
@@ -197,11 +196,6 @@
                                 NSString *value = [NSString stringWithFormat:@"%ld",(long)row+1];
                                 [weakself.paramsDictionary setValue:value forKey:@"account"];
                             }
-                            
-                            
-//                            NSString *value = [NSString stringWithFormat:@"%ld",(long)row];
-//                            [selectedButton setTitle:text forState:0];
-//                            [weakself.paramsDictionary setValue:value forKey:@"account"];
                             [weakself headerRefreshWithAllProducts];
                         }];
                     }

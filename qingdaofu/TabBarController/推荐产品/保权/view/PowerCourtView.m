@@ -79,7 +79,7 @@
             }else{
                 
                 if (weakself.didSelectdRow) {
-                    weakself.didSelectdRow(2,0,nil);
+                    weakself.didSelectdRow(3,0,nil);
                 }
             }
         }];
@@ -107,7 +107,6 @@
     return _controllio;
 }
 
-
 - (NSMutableArray *)component1
 {
     if (!_component1) {
@@ -124,11 +123,18 @@
     return _component2;
 }
 
+- (NSMutableArray *)component3
+{
+    if (!_component3) {
+        _component3 = [NSMutableArray array];
+    }
+    return _component3;
+}
+
 - (void)hiddenDateViewscc
 {
     UIView *ioCView = [self viewWithTag:1111];
     [ioCView setHidden:YES];
-
 }
 
 #pragma mark - delegate and datasource
@@ -147,6 +153,8 @@
         return 1;
     }else if ([self.typeComponent integerValue] == 2){
         return 2;
+    }else if ([self.typeComponent integerValue] == 3){
+        return 3;
     }
     return 0;
 }
@@ -165,6 +173,8 @@
         return self.component1.count;
     }else if (component == 1){
         return self.component2.count;
+    }else if (component == 2){
+        return self.component3.count;
     }
     
     return 0;
@@ -175,21 +185,15 @@
     return 30;
 }
 
-- (nullable NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+- ( NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
     if ([self.publishStr isEqualToString:@"3"]) {
         if (component == 0) {
-//            CourtProvinceModel *model = self.component1[row];
-//            return model.name;
            return self.componentDic1.allValues[row];
         }else if (component == 1){
-//            CourtProvinceModel *model = self.component2[row];
-//            return model.name;
            return self.componentDic2.allValues[row];
 
         }
-//        CourtProvinceModel *model = self.component2[row];
-//        return model.name;
         return self.componentDic3.allValues[row];
     }
     
@@ -198,6 +202,9 @@
         return model.name;
     }else if (component == 1){
         CourtProvinceModel *model = self.component2[row];
+        return model.name;
+    }else if (component == 2){
+        CourtProvinceModel *model = self.component3[row];
         return model.name;
     }
     return nil;
@@ -223,6 +230,8 @@
             self.didSelectdRow(component,row,self.component1[row]);
         }else if(component == 1){
             self.didSelectdRow(component,row,self.component2[row]);
+        }else if(component == 2){
+            self.didSelectdRow(component,row,self.component3[row]);
         }
     }
 }

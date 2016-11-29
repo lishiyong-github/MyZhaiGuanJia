@@ -16,6 +16,12 @@
 #import "PublishingResponse.h"
 #import "RowsModel.h"
 
+#import "CityResponse.h"
+#import "CityModel.h"
+
+#import "CourtProvinceResponse.h"
+#import "CourtProvinceModel.h"
+
 @interface ReportSuitViewController ()<UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
@@ -70,7 +76,6 @@
         [self.reportTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
         
         [self.reportPickerView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
-//        [self.datePickerView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
         
         self.didSetupConstraints = YES;
     }
@@ -95,40 +100,33 @@
 {
     if (!_reportPickerView) {
         _reportPickerView = [PowerCourtView newAutoLayoutView];
-        _reportPickerView.publishStr = @"3";
-        
+
         QDFWeakSelf;
-        [_reportPickerView setDidSelectedComponent:^(NSInteger component, NSInteger row, NSString *idString, NSString *nameString) {
-            
+        [_reportPickerView setDidSelectdRow:^(NSInteger component, NSInteger row,CourtProvinceModel *model) {
             if (component == 0) {//省
-                [weakself.addressTestDict setObject:nameString forKey:@"proName"];
-                [weakself.addressTestDict setObject:idString forKey:@"proID"];
+                [weakself.addressTestDict setObject:model.name forKey:@"proName"];
+                [weakself.addressTestDict setObject:model.idString forKey:@"proID"];
                 
-                [weakself getCityListWithProvinceID:idString];
-                
+                [weakself getCityListWithProvinceID:model.idString];
             }else if (component == 1){//市
-                
-                [weakself.addressTestDict setObject:nameString forKey:@"cityName"];
-                [weakself.addressTestDict setObject:idString forKey:@"cityID"];
-                [weakself getDistrictListWithCityID:idString];
-                
+                [weakself.addressTestDict setObject:model.name forKey:@"cityName"];
+                [weakself.addressTestDict setObject:model.idString forKey:@"cityID"];
+                [weakself getDistrictListWithCityID:model.idString];
             }else if (component == 2){//区
+                [weakself.addressTestDict setObject:model.name forKey:@"districtName"];
+                [weakself.addressTestDict setObject:model.idString forKey:@"districtID"];
                 
-                [weakself.addressTestDict setObject:nameString forKey:@"districtName"];
-                [weakself.addressTestDict setObject:idString forKey:@"districtID"];
-                
-            }else if (component == 3){//确定
-                
+            }else if (component == 3){
                 if (weakself.addressTestDict[@"proName"] && weakself.addressTestDict[@"cityName"] && weakself.addressTestDict[@"districtName"]) {//都选择
-                    
-                    AgentCell *cell = [weakself.reportTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:4]];
-                    cell.agentTextField.text = [NSString stringWithFormat:@"%@%@%@",weakself.addressTestDict[@"proName"],weakself.addressTestDict[@"cityName"],weakself.addressTestDict[@"districtName"]];
-                    
-                    [weakself.reportDictionary setValue:weakself.addressTestDict[@"proID"] forKey:@"province_id"];
-                    [weakself.reportDictionary setValue:weakself.addressTestDict[@"cityID"] forKey:@"city_id"];
-                    [weakself.reportDictionary setValue:weakself.addressTestDict[@"districtID"] forKey:@"district_id"];
-                    [weakself.reportDictionary setValue:cell.agentTextField.text forKey:@"address"];
-                }
+                        AgentCell *cell = [weakself.reportTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:4]];
+                        cell.agentTextField.text = [NSString stringWithFormat:@"%@%@%@",weakself.addressTestDict[@"proName"],weakself.addressTestDict[@"cityName"],weakself.addressTestDict[@"districtName"]];
+    
+                        [weakself.reportDictionary setValue:weakself.addressTestDict[@"proID"] forKey:@"province_id"];
+                        [weakself.reportDictionary setValue:weakself.addressTestDict[@"cityID"] forKey:@"city_id"];
+                        [weakself.reportDictionary setValue:weakself.addressTestDict[@"districtID"] forKey:@"district_id"];
+                        [weakself.reportDictionary setValue:cell.agentTextField.text forKey:@"address"];
+                    }
+                
             }
         }];
     }
@@ -261,15 +259,9 @@
         [cell setDidBeginEditting:^(NSString *text) {
             if (text.length > 0) {
                 weakcell.optionButton4.selected = YES;
-//                if (![weakself.categoryArray containsObject:@"4"]) {
-//                    [weakself.categoryArray addObject:@"4"];
-//                }
                 [weakself.categoryDic setObject:@"4" forKey:@"4"];
             }else{
                 weakcell.optionButton4.selected = NO;
-//                if ([weakself.categoryArray containsObject:@"4"]) {
-//                    [weakself.categoryArray removeObject:@"4"];
-//                }
                 [weakself.categoryDic removeObjectForKey:@"4"];
             }
         }];
@@ -283,13 +275,7 @@
                 case 101:{//1
                     if (btn.selected) {
                         [weakself.categoryDic setObject:@"1" forKey:@"1"];
-//                        if (![weakself.categoryArray containsObject:@"1"]) {
-//                            [weakself.categoryArray addObject:@"1"];
-//                        }
                     }else{
-//                        if ([weakself.categoryArray containsObject:@"1"]) {
-//                            [weakself.categoryArray removeObject:@"1"];
-//                        }
                         [weakself.categoryDic removeObjectForKey:@"1"];
                     }
                 }
@@ -297,13 +283,7 @@
                 case 102:{//2
                     if (btn.selected) {
                         [weakself.categoryDic setObject:@"2" forKey:@"2"];
-                        //                        if (![weakself.categoryArray containsObject:@"1"]) {
-                        //                            [weakself.categoryArray addObject:@"1"];
-                        //                        }
                     }else{
-                        //                        if ([weakself.categoryArray containsObject:@"1"]) {
-                        //                            [weakself.categoryArray removeObject:@"1"];
-                        //                        }
                         [weakself.categoryDic removeObjectForKey:@"2"];
                     }
                 }
@@ -311,13 +291,7 @@
                 case 103:{//3
                     if (btn.selected) {
                         [weakself.categoryDic setObject:@"3" forKey:@"3"];
-                        //                        if (![weakself.categoryArray containsObject:@"1"]) {
-                        //                            [weakself.categoryArray addObject:@"1"];
-                        //                        }
                     }else{
-                        //                        if ([weakself.categoryArray containsObject:@"1"]) {
-                        //                            [weakself.categoryArray removeObject:@"1"];
-                        //                        }
                         [weakself.categoryDic removeObjectForKey:@"3"];
                     }
                 }
@@ -480,7 +454,9 @@
             cell.label.text = @"费用类型";
             [cell.segment setTitle:@"固定费用" forSegmentAtIndex:0];
             [cell.segment setTitle:@"风险费率" forSegmentAtIndex:1];
-            [self.reportDictionary setValue:@"1" forKey:@"type"];
+            if (!self.reportDictionary[@"type"]) {
+                [self.reportDictionary setValue:@"1" forKey:@"type"];
+            }
             
             if ([self.reportDictionary[@"type"] integerValue] == 1) {
                 cell.segment.selectedSegmentIndex = 0;
@@ -602,14 +578,24 @@
 #pragma mark - get province city and dictrict
 - (void)getProvinceList
 {
-    NSString *provinceString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProvinceString];
+    NSString *provinceString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPublishproductOfProvince];
+    
+    NSDictionary *params = @{@"token" : [self getValidateToken],
+                             @"type" : @"app"};
+    
     QDFWeakSelf;
-    [self requestDataPostWithString:provinceString params:nil successBlock:^(id responseObject) {
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+    [self requestDataPostWithString:provinceString params:params successBlock:^(id responseObject) {
+        
+        [weakself.reportPickerView.component1 removeAllObjects];
+        
+        CourtProvinceResponse *courtResponse = [CourtProvinceResponse objectWithKeyValues:responseObject];
+        
+        for (CourtProvinceModel *proModel in courtResponse.data) {
+            [weakself.reportPickerView.component1 addObject:proModel];
+        }
         
         [weakself.reportPickerView setHidden:NO];
-        weakself.reportPickerView.componentDic1 = dic;
-        
+        weakself.reportPickerView.typeComponent = @"1";
         [weakself.reportPickerView.pickerViews reloadAllComponents];
         
     } andFailBlock:^(NSError *error) {
@@ -619,19 +605,23 @@
 
 - (void)getCityListWithProvinceID:(NSString *)provinceId
 {
-    NSString *cityString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kCityString];
-    NSDictionary *params = @{@"fatherID" : provinceId};
+    NSString *cityString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPublishproductOfCity];
+    NSDictionary *params = @{@"province_id" : provinceId,
+                             @"token" : [self getValidateToken],
+                             @"type" : @"app"};
     
     QDFWeakSelf;
     [self requestDataPostWithString:cityString params:params successBlock:^(id responseObject) {
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
         
-        weakself.reportPickerView.componentDic2 = dic[provinceId];
-        if (weakself.reportPickerView.componentDic3.allKeys.count > 0) {
-            weakself.reportPickerView.typeComponent = @"3";
-        }else{
-            weakself.reportPickerView.typeComponent = @"2";
+        [weakself.reportPickerView.component2 removeAllObjects];
+        
+        CourtProvinceResponse *courtResponse = [CourtProvinceResponse objectWithKeyValues:responseObject];
+        
+        for (CourtProvinceModel *cityModel in courtResponse.data) {
+            [weakself.reportPickerView.component2 addObject:cityModel];
         }
+        
+        weakself.reportPickerView.typeComponent = @"2";
         [weakself.reportPickerView.pickerViews reloadAllComponents];
         
     } andFailBlock:^(NSError *error) {
@@ -641,14 +631,21 @@
 
 - (void)getDistrictListWithCityID:(NSString *)cityId
 {
-    NSString *districtString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kDistrictString];
-    NSDictionary *params = @{@"fatherID" : cityId};
+    NSString *districtString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPublishproductOfArea];
+    NSDictionary *params = @{@"city" : cityId,
+                             @"token" : [self getValidateToken],
+                             @"type" : @"app"};
     
     QDFWeakSelf;
     [self requestDataPostWithString:districtString params:params successBlock:^(id responseObject) {
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        [weakself.reportPickerView.component3 removeAllObjects];
         
-        weakself.reportPickerView.componentDic3 = dic[cityId];
+        CourtProvinceResponse *courtResponse = [CourtProvinceResponse objectWithKeyValues:responseObject];
+        
+        for (CourtProvinceModel *districtModel in courtResponse.data) {
+            [weakself.reportPickerView.component3 addObject:districtModel];
+        }
+        
         weakself.reportPickerView.typeComponent = @"3";
         [weakself.reportPickerView.pickerViews reloadAllComponents];
         

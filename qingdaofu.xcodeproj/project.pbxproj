@@ -481,7 +481,6 @@
 		A1A155BB1DDC3D3400FEC011 /* ProductDetailResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A155BA1DDC3D3400FEC011 /* ProductDetailResponse.m */; };
 		A1A155BE1DDC3D7E00FEC011 /* ProductDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A155BD1DDC3D7E00FEC011 /* ProductDetailModel.m */; };
 		A1A165821DD967F50081D804 /* MyOrderDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A165811DD967F50081D804 /* MyOrderDetailViewController.m */; };
-		A1A165851DD9D10E0081D804 /* MoreMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A165841DD9D10E0081D804 /* MoreMessagesViewController.m */; };
 		A1A3190D1D6D36770001242D /* phone_gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A3190B1D6D36770001242D /* phone_gray@2x.png */; };
 		A1A3190E1D6D36770001242D /* phone_gray@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A3190C1D6D36770001242D /* phone_gray@3x.png */; };
 		A1A319131D6D462E0001242D /* application_record_spot@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1A3190F1D6D462E0001242D /* application_record_spot@2x.png */; };
@@ -698,10 +697,16 @@
 		A1CBAABE1DBA00E200049E56 /* selected@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1CBAAB81DBA00E200049E56 /* selected@3x.png */; };
 		A1CBAAC21DBA156E00049E56 /* OperatorModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A1CBAAC11DBA156E00049E56 /* OperatorModel.m */; };
 		A1CBAAC51DBA158700049E56 /* OperatorResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A1CBAAC41DBA158700049E56 /* OperatorResponse.m */; };
-		A1D1E0EF1DEBD49300C94FE9 /* EditMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1D1E0EE1DEBD49300C94FE9 /* EditMessageViewController.m */; };
-		A1D1E0F21DEBE03300C94FE9 /* EditUpTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = A1D1E0F11DEBE03300C94FE9 /* EditUpTableView.m */; };
 		A1D2C4C61DE697B000C67E15 /* AllCommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1D2C4C51DE697B000C67E15 /* AllCommentsViewController.m */; };
 		A1E4AFB71CD0C674001A5E9E /* SingleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A1E4AFB61CD0C674001A5E9E /* SingleButton.m */; };
+		A1E669291DED1FE900B69927 /* MoreMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1E669281DED1FE900B69927 /* MoreMessagesViewController.m */; };
+		A1E6692C1DED208700B69927 /* EditUpTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = A1E6692B1DED208700B69927 /* EditUpTableView.m */; };
+		A1E6692F1DED20FE00B69927 /* MoreMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A1E6692E1DED20FE00B69927 /* MoreMessageModel.m */; };
+		A1E669321DED28D300B69927 /* CityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A1E669311DED28D300B69927 /* CityModel.m */; };
+		A1E669351DED54C400B69927 /* HouseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1E669341DED54C400B69927 /* HouseViewController.m */; };
+		A1E669391DED5B7400B69927 /* CityResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A1E669381DED5B7400B69927 /* CityResponse.m */; };
+		A1E6693C1DED620C00B69927 /* DistrictResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A1E6693B1DED620C00B69927 /* DistrictResponse.m */; };
+		A1E6693F1DED622700B69927 /* DistrictModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A1E6693E1DED622700B69927 /* DistrictModel.m */; };
 		A1EBC27D1D82672B005B29A0 /* NewProductResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A1EBC27C1D82672B005B29A0 /* NewProductResponse.m */; };
 		A1EBC2801D8286A7005B29A0 /* NumberModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A1EBC27F1D8286A7005B29A0 /* NumberModel.m */; };
 		A1ECB66F1CED6CA70017EA10 /* PlaceHolderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = A1ECB66E1CED6CA70017EA10 /* PlaceHolderTextView.m */; };
@@ -1432,8 +1437,6 @@
 		A1A155BD1DDC3D7E00FEC011 /* ProductDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductDetailModel.m; sourceTree = "<group>"; };
 		A1A165801DD967F50081D804 /* MyOrderDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyOrderDetailViewController.h; sourceTree = "<group>"; };
 		A1A165811DD967F50081D804 /* MyOrderDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyOrderDetailViewController.m; sourceTree = "<group>"; };
-		A1A165831DD9D10E0081D804 /* MoreMessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreMessagesViewController.h; sourceTree = "<group>"; };
-		A1A165841DD9D10E0081D804 /* MoreMessagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoreMessagesViewController.m; sourceTree = "<group>"; };
 		A1A3190B1D6D36770001242D /* phone_gray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "phone_gray@2x.png"; sourceTree = "<group>"; };
 		A1A3190C1D6D36770001242D /* phone_gray@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "phone_gray@3x.png"; sourceTree = "<group>"; };
 		A1A3190F1D6D462E0001242D /* application_record_spot@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "application_record_spot@2x.png"; sourceTree = "<group>"; };
@@ -1738,14 +1741,26 @@
 		A1CBAAC11DBA156E00049E56 /* OperatorModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OperatorModel.m; sourceTree = "<group>"; };
 		A1CBAAC31DBA158700049E56 /* OperatorResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OperatorResponse.h; sourceTree = "<group>"; };
 		A1CBAAC41DBA158700049E56 /* OperatorResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OperatorResponse.m; sourceTree = "<group>"; };
-		A1D1E0ED1DEBD49300C94FE9 /* EditMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditMessageViewController.h; sourceTree = "<group>"; };
-		A1D1E0EE1DEBD49300C94FE9 /* EditMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditMessageViewController.m; sourceTree = "<group>"; };
-		A1D1E0F01DEBE03300C94FE9 /* EditUpTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditUpTableView.h; sourceTree = "<group>"; };
-		A1D1E0F11DEBE03300C94FE9 /* EditUpTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditUpTableView.m; sourceTree = "<group>"; };
 		A1D2C4C41DE697B000C67E15 /* AllCommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllCommentsViewController.h; sourceTree = "<group>"; };
 		A1D2C4C51DE697B000C67E15 /* AllCommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllCommentsViewController.m; sourceTree = "<group>"; };
 		A1E4AFB51CD0C674001A5E9E /* SingleButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SingleButton.h; sourceTree = "<group>"; };
 		A1E4AFB61CD0C674001A5E9E /* SingleButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SingleButton.m; sourceTree = "<group>"; };
+		A1E669271DED1FE900B69927 /* MoreMessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreMessagesViewController.h; sourceTree = "<group>"; };
+		A1E669281DED1FE900B69927 /* MoreMessagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoreMessagesViewController.m; sourceTree = "<group>"; };
+		A1E6692A1DED208700B69927 /* EditUpTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditUpTableView.h; sourceTree = "<group>"; };
+		A1E6692B1DED208700B69927 /* EditUpTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditUpTableView.m; sourceTree = "<group>"; };
+		A1E6692D1DED20FE00B69927 /* MoreMessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreMessageModel.h; sourceTree = "<group>"; };
+		A1E6692E1DED20FE00B69927 /* MoreMessageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoreMessageModel.m; sourceTree = "<group>"; };
+		A1E669301DED28D300B69927 /* CityModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CityModel.h; sourceTree = "<group>"; };
+		A1E669311DED28D300B69927 /* CityModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CityModel.m; sourceTree = "<group>"; };
+		A1E669331DED54C400B69927 /* HouseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HouseViewController.h; sourceTree = "<group>"; };
+		A1E669341DED54C400B69927 /* HouseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HouseViewController.m; sourceTree = "<group>"; };
+		A1E669371DED5B7400B69927 /* CityResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CityResponse.h; sourceTree = "<group>"; };
+		A1E669381DED5B7400B69927 /* CityResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CityResponse.m; sourceTree = "<group>"; };
+		A1E6693A1DED620C00B69927 /* DistrictResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DistrictResponse.h; sourceTree = "<group>"; };
+		A1E6693B1DED620C00B69927 /* DistrictResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DistrictResponse.m; sourceTree = "<group>"; };
+		A1E6693D1DED622700B69927 /* DistrictModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DistrictModel.h; sourceTree = "<group>"; };
+		A1E6693E1DED622700B69927 /* DistrictModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DistrictModel.m; sourceTree = "<group>"; };
 		A1EBC27B1D82672B005B29A0 /* NewProductResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewProductResponse.h; sourceTree = "<group>"; };
 		A1EBC27C1D82672B005B29A0 /* NewProductResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewProductResponse.m; sourceTree = "<group>"; };
 		A1EBC27E1D8286A7005B29A0 /* NumberModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberModel.h; sourceTree = "<group>"; };
@@ -1962,6 +1977,8 @@
 				A15F61881D1905940060AF7B /* GuarantyResponse.m */,
 				A15F618A1D1906820060AF7B /* GuarantyModel.h */,
 				A15F618B1D1906820060AF7B /* GuarantyModel.m */,
+				A1E669331DED54C400B69927 /* HouseViewController.h */,
+				A1E669341DED54C400B69927 /* HouseViewController.m */,
 			);
 			path = "抵押物小区";
 			sourceTree = "<group>";
@@ -2277,12 +2294,6 @@
 				A176912B1CD99DDE004289DD /* 查看发布方 */,
 				A1A77A8D1DC0A84A006C1111 /* MyOrderDetailResponse.h */,
 				A1A77A8E1DC0A84A006C1111 /* MyOrderDetailResponse.m */,
-				A1A165831DD9D10E0081D804 /* MoreMessagesViewController.h */,
-				A1A165841DD9D10E0081D804 /* MoreMessagesViewController.m */,
-				A1D1E0ED1DEBD49300C94FE9 /* EditMessageViewController.h */,
-				A1D1E0EE1DEBD49300C94FE9 /* EditMessageViewController.m */,
-				A1D1E0F01DEBE03300C94FE9 /* EditUpTableView.h */,
-				A1D1E0F11DEBE03300C94FE9 /* EditUpTableView.m */,
 			);
 			path = "申请中";
 			sourceTree = "<group>";
@@ -2875,6 +2886,7 @@
 				A15F61811D18DEC90060AF7B /* 抵押物小区 */,
 				A1522BE21D0F90BD00135C72 /* 机动车品牌 */,
 				A10D7B881CEB222A00422D7D /* 债权人信息 */,
+				A1E669361DED5B5D00B69927 /* model */,
 				A154B8F61CE1C49500884CA4 /* view */,
 				A154B8F31CE1C14100884CA4 /* ReportSuitViewController.h */,
 				A154B8F41CE1C14100884CA4 /* ReportSuitViewController.m */,
@@ -3740,6 +3752,7 @@
 		A1A97E641CDC985200EDE320 /* 发布中 */ = {
 			isa = PBXGroup;
 			children = (
+				A1E669261DED1FD000B69927 /* 完善信息 */,
 				A194416E1D791AC1003CA99F /* 查看申请人 */,
 				A176341A1D067A4F00CD4623 /* model */,
 				A1C2F0F51DAF2D3F00016D25 /* view */,
@@ -3959,6 +3972,34 @@
 				A16E47B91D1A8C4800870B8A /* FourCell.m */,
 			);
 			path = view;
+			sourceTree = "<group>";
+		};
+		A1E669261DED1FD000B69927 /* 完善信息 */ = {
+			isa = PBXGroup;
+			children = (
+				A1E669271DED1FE900B69927 /* MoreMessagesViewController.h */,
+				A1E669281DED1FE900B69927 /* MoreMessagesViewController.m */,
+				A1E6692A1DED208700B69927 /* EditUpTableView.h */,
+				A1E6692B1DED208700B69927 /* EditUpTableView.m */,
+				A1E6692D1DED20FE00B69927 /* MoreMessageModel.h */,
+				A1E6692E1DED20FE00B69927 /* MoreMessageModel.m */,
+				A1E669301DED28D300B69927 /* CityModel.h */,
+				A1E669311DED28D300B69927 /* CityModel.m */,
+			);
+			path = "完善信息";
+			sourceTree = "<group>";
+		};
+		A1E669361DED5B5D00B69927 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				A1E669371DED5B7400B69927 /* CityResponse.h */,
+				A1E669381DED5B7400B69927 /* CityResponse.m */,
+				A1E6693A1DED620C00B69927 /* DistrictResponse.h */,
+				A1E6693B1DED620C00B69927 /* DistrictResponse.m */,
+				A1E6693D1DED622700B69927 /* DistrictModel.h */,
+				A1E6693E1DED622700B69927 /* DistrictModel.m */,
+			);
+			path = model;
 			sourceTree = "<group>";
 		};
 		A1FB265C1CF2CD7300B66608 /* 搜索 */ = {
@@ -4543,7 +4584,6 @@
 				A16856A11CE9B3AD006A0887 /* ProdRightView.m in Sources */,
 				A192386F1D7429E300C824D6 /* ReceiptResponse.m in Sources */,
 				A159F97D1D0D727A00A6A024 /* MJRefreshFooterView.m in Sources */,
-				A1A165851DD9D10E0081D804 /* MoreMessagesViewController.m in Sources */,
 				A19F88651D51D3D300D4EC92 /* PowerProtectPictureViewController.m in Sources */,
 				A154B8F51CE1C14100884CA4 /* ReportSuitViewController.m in Sources */,
 				A1A0C8CA1D4B21FF00BC63C6 /* HouseChooseViewController.m in Sources */,
@@ -4563,6 +4603,7 @@
 				A159F9451D0BEE5E00A6A024 /* StandardPaths.m in Sources */,
 				A19C3BFB1DBF0ABE000E39EA /* MailModel.m in Sources */,
 				A19506371D6FE80F00CE87B5 /* ReportDatePickerView.m in Sources */,
+				A1E6693F1DED622700B69927 /* DistrictModel.m in Sources */,
 				A187B9121D508BAA00A91A16 /* HousePropertyListViewController.m in Sources */,
 				A1A7020F1DC1CDAF00DA4CFB /* SignPactsResonse.m in Sources */,
 				A19657241D780E0000F846D4 /* PropertyResultCell.m in Sources */,
@@ -4583,6 +4624,7 @@
 				A1C2F1161DAF4F0C00016D25 /* PublishCombineView.m in Sources */,
 				A1982B361CFFD730001770A7 /* CompanyWebSiteViewController.m in Sources */,
 				A1718E0E1CFD84B60007DA6F /* AuthenCompanyViewController.m in Sources */,
+				A1E6693C1DED620C00B69927 /* DistrictResponse.m in Sources */,
 				A160245C1D8FBE43002E2236 /* CallPhoneButton.m in Sources */,
 				A187B90C1D5073FE00A91A16 /* HousePayingViewController.m in Sources */,
 				A19D944B1D64436B00DE89FC /* CourtProvinceModel.m in Sources */,
@@ -4621,7 +4663,6 @@
 				A1AD9B961D499729001F3076 /* UIView+LBExtension.m in Sources */,
 				A1B0ED321DD047D1004A5AAA /* HandleMatterViewController.m in Sources */,
 				A1A0B1191D754F4E009B1DB4 /* PowerCell.m in Sources */,
-				A1D1E0EF1DEBD49300C94FE9 /* EditMessageViewController.m in Sources */,
 				A168569E1CE9B39D006A0887 /* ProdLeftView.m in Sources */,
 				A19C3BF01DBEF516000E39EA /* MessageSystemView.m in Sources */,
 				A1A34C3A1CE32C9300AD454A /* ForgetPassViewController.m in Sources */,
@@ -4630,6 +4671,7 @@
 				A1A39BBE1DB0820B00B84B1A /* RequestEndCell.m in Sources */,
 				A1B6FD561D4F1B7C0059690B /* PowerProtectViewController.m in Sources */,
 				A19B8E571CCF640300F8EBF2 /* MessageCell.m in Sources */,
+				A1E669291DED1FE900B69927 /* MoreMessagesViewController.m in Sources */,
 				A1A0C8C71D4B061B00BC63C6 /* AssessCell.m in Sources */,
 				A1A34C371CE32C8000AD454A /* RegisterViewController.m in Sources */,
 				A1B0ED351DD07AC2004A5AAA /* MyReleaseDetailsViewController.m in Sources */,
@@ -4679,10 +4721,12 @@
 				A17EE3941CD8983900ECC631 /* MyOrderViewController.m in Sources */,
 				A176913F1CD9D5CE004289DD /* MyReleaseViewController.m in Sources */,
 				A17EE3911CD8796900ECC631 /* SuggestionViewController.m in Sources */,
+				A1E669321DED28D300B69927 /* CityModel.m in Sources */,
 				A19D294E1CD1E04300DAAEA7 /* HomeCell.m in Sources */,
 				A159F9801D0D727A00A6A024 /* UIScrollView+MJRefresh.m in Sources */,
 				A16391711D20194B0051F1D0 /* FSBasicImage.m in Sources */,
 				A1A0C8C41D4B046B00BC63C6 /* HouseAssessViewController.m in Sources */,
+				A1E6692F1DED20FE00B69927 /* MoreMessageModel.m in Sources */,
 				A16175561D12A1CF001BB200 /* LoginTableView.m in Sources */,
 				A1A5F55E1DB8B3F8007D8023 /* RequestCloseViewController.m in Sources */,
 				A1B028EE1D1794DC00F32A09 /* UIButton+WebCache.m in Sources */,
@@ -4720,6 +4764,7 @@
 				A1A017351C5B67D400027134 /* MBProgressHUD.m in Sources */,
 				A19985191CE02BFC0055A572 /* ModifyView.m in Sources */,
 				A1CBAAAB1DB9EDBB00049E56 /* OperatorListViewController.m in Sources */,
+				A1E669391DED5B7400B69927 /* CityResponse.m in Sources */,
 				A1A017571C5B696A00027134 /* NSObject+MJProperty.m in Sources */,
 				A1A34C341CE32C7100AD454A /* LoginViewController.m in Sources */,
 				A19D943D1D63FDF200DE89FC /* AssessModel.m in Sources */,
@@ -4734,7 +4779,7 @@
 				A1A530CE1DC2F8EB002DC050 /* DealEndDeatiResponse.m in Sources */,
 				A16391731D20194B0051F1D0 /* FSImageLoader.m in Sources */,
 				A187B90F1D50885400A91A16 /* HousePayingEditViewController.m in Sources */,
-				A1D1E0F21DEBE03300C94FE9 /* EditUpTableView.m in Sources */,
+				A1E6692C1DED208700B69927 /* EditUpTableView.m in Sources */,
 				A17D942E1D6AB84C00BF5B5F /* ExtendHomeCell.m in Sources */,
 				A1A39BC91DB0E31300B84B1A /* ReleaseEndListViewController.m in Sources */,
 				A1B0292A1D17CE6F00F32A09 /* AFHTTPSessionManager.m in Sources */,
@@ -4768,6 +4813,7 @@
 				A19D296D1CD208FB00DAAEA7 /* CompleteViewController.m in Sources */,
 				A17EE3891CD86B3E00ECC631 /* AboutViewController.m in Sources */,
 				A1882F511D2DF6200064BD38 /* RegisterAgreementViewController.m in Sources */,
+				A1E669351DED54C400B69927 /* HouseViewController.m in Sources */,
 				A1AD9B901D499414001F3076 /* ZYTabBar.m in Sources */,
 				A1A017551C5B696A00027134 /* NSObject+MJCoding.m in Sources */,
 				A1B6FD4D1D4EEDDD0059690B /* ApplicationSuccessCell.m in Sources */,

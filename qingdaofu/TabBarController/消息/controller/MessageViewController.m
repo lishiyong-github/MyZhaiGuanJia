@@ -123,7 +123,7 @@
     cell.imageButton.layer.cornerRadius = 25;
     cell.imageButton.layer.masksToBounds = YES;
     NSString *imgString = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,messageModel.headimg.file];
-    [cell.imageButton sd_setImageWithURL:[NSURL URLWithString:imgString] forState:0 placeholderImage:[UIImage imageNamed:@""]];
+    [cell.imageButton sd_setImageWithURL:[NSURL URLWithString:imgString] forState:0 placeholderImage:nil];
     
     //count
     if ([messageModel.isRead intValue] > 0) {//有未读消息

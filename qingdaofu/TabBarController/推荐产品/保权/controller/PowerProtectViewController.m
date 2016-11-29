@@ -124,7 +124,7 @@
             }else if (component == 1){//市
                 [weakself.powerDic setObject:model.idString forKey:@"area_id"];
                 weakself.courtCityString = model.name;
-            }else if (component == 2){//完成
+            }else if (component == 3){//完成
                 [weakself.powerPickerView setHidden:YES];
                 
                 if (weakself.powerPickerView.component2.count > 0) {

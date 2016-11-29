@@ -2,11 +2,12 @@
 //  EditUpTableView.m
 //  qingdaofu
 //
-//  Created by zhixiang on 16/11/28.
+//  Created by zhixiang on 16/11/29.
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 
 #import "EditUpTableView.h"
+
 #import "AgentCell.h"
 #import "BidOneCell.h"
 
@@ -14,7 +15,10 @@
 #import "BaseCommitView.h"
 #import "BaseCommitButton.h"
 
+#import "CityModel.h"
+
 @implementation EditUpTableView
+
 
 - (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style
 {
@@ -62,6 +66,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier;
+        
     if ([self.category isEqualToString:@"房产抵押"]) {
         if (indexPath.row == 0) {
             identifier = @"house0";
@@ -81,7 +86,7 @@
                     weakself.didSelectedBtn(51);
                 }
             }];
-
+            
             return cell;
         }else if (indexPath.row == 1) {
             //选择省份
@@ -97,6 +102,10 @@
             [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
             cell.agentButton.userInteractionEnabled = NO;
             
+            if (self.moreModel) {
+                cell.agentTextField.text = [NSString stringWithFormat:@"%@%@%@",self.moreModel.provincename.province,self.moreModel.cityname.city,self.moreModel.areaname.area];
+            }
+            
             return cell;
             
         }else if (indexPath.row == 2){
@@ -111,30 +120,68 @@
             cell.agentTextField.placeholder = @"请输入";
             [cell.agentButton setHidden:YES];
             
+            if (self.moreModel) {
+                cell.agentTextField.text = self.moreModel.relation_desc;
+            }
+            
             return cell;
         }
     }else{//合同纠纷，机动车抵押
         //选择省份
-        identifier = @"car0";
-        AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if (!cell) {
-            cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        if (indexPath.row == 0) {
+            identifier = @"car0";
+            BidOneCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[BidOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            NSString *titie = [NSString stringWithFormat:@"%@%@",self.type,self.category];
+            [cell.oneButton setTitle:titie forState:0];
+            
+            [cell.sureButton setImage:[UIImage imageNamed:@"deletes"] forState:0];
+            
+            QDFWeakSelf;
+            [cell.sureButton addAction:^(UIButton *btn) {
+                if (weakself.didSelectedBtn) {
+                    weakself.didSelectedBtn(51);
+                }
+            }];
+            
+            return cell;
+            
+        }else if (indexPath.row == 1){
+            identifier = @"car1";
+            AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell) {
+                cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            cell.agentTextField.userInteractionEnabled = NO;
+            [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+            cell.agentButton.userInteractionEnabled = NO;
+            
+            if ([self.category isEqualToString:@"机动车抵押"]) {
+                cell.leftdAgentContraints.constant = 130;
+                cell.agentLabel.text = @"选择机动车品牌";
+                cell.agentTextField.placeholder = @"请选择";
+            }else if ([self.category isEqualToString:@"合同纠纷"]){
+                cell.leftdAgentContraints.constant = 90;
+                cell.agentLabel.text = @"选择类型";
+                cell.agentTextField.placeholder = @"请选择";
+            }
+            
+            if (self.moreModel) {
+                if ([self.category isEqualToString:@"机动车抵押"]) {
+                    cell.agentTextField.text = self.moreModel.brandLabel;
+                }else if ([self.category isEqualToString:@"合同纠纷"]){
+                    cell.agentTextField.text = self.moreModel.contractLabel;
+                }
+            }
+            
+            return cell;
+            
         }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        cell.agentTextField.userInteractionEnabled = NO;
-        [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
-        cell.agentButton.userInteractionEnabled = NO;
-        
-        if ([self.category isEqualToString:@"机动车抵押"]) {
-            cell.agentLabel.text = @"选择机动车品牌";
-            cell.agentTextField.placeholder = @"请选择";
-        }else if ([self.category isEqualToString:@"合同纠纷"]){
-            cell.agentLabel.text = @"选择类型";
-            cell.agentTextField.placeholder = @"请选择";
-        }
-        
-        return cell;
     }
     
     return nil;
@@ -142,7 +189,12 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return 100;
+    if ([self.type isEqualToString:@"添加"]) {
+        return 100;
+    }else if ([self.type isEqualToString:@"编辑"]){
+        return 116;
+    }
+    return 0.1;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
@@ -168,7 +220,7 @@
         
         return footerView1;
     }else if ([self.type isEqualToString:@"编辑"]){//,PublishCombineView
-        UIView *footerView2 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 100)];
+        UIView *footerView2 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 116)];
         
         PublishCombineView *combileView = [PublishCombineView newAutoLayoutView];
         [combileView.comButton1 setTitle:@"保存" forState:0];
@@ -179,6 +231,12 @@
         combileView.comButton2.layer.borderColor = kRedColor.CGColor;
         combileView.comButton2.layer.borderWidth = kLineWidth;
         [footerView2 addSubview:combileView];
+        
+        [combileView autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:footerView2];
+        [combileView autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:footerView2];
+        [combileView autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:footerView2];
+        [combileView autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:footerView2];
+        combileView.heightBtnConstraints.constant = 116;
         
         QDFWeakSelf;
         [combileView.comButton1 addAction:^(UIButton *btn) {

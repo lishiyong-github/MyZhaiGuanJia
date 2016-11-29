@@ -109,7 +109,8 @@
     }
 }
 
-- (void)showBlurInView:(UIView *)view withType:(NSString *)type andCategory:(NSString *)category andArray:(NSArray *)array finishBlock:(void (^)())finishBlock
+//我的发布中－完善信息
+- (void)showBlurInView:(UIView *)view withType:(NSString *)type andCategory:(NSString *)category andModel:(MoreMessageModel *)moreModel finishBlock:(void (^)())finishBlock
 {
     [self hiddenBlurView];
     UIView *tagView = [self.view viewWithTag:99999];//背景
@@ -127,10 +128,16 @@
         tableView = [EditUpTableView newAutoLayoutView];
         tableView.type = type;
         tableView.category = category;
+        tableView.moreModel = moreModel;
         [tagView addSubview:tableView];
         
         [tableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [tableView autoSetDimension:ALDimensionHeight toSize:4*kCellHeight+kCellHeight4];
+        
+        if ([type isEqualToString:@"添加"]) {
+            [tableView autoSetDimension:ALDimensionHeight toSize:4*kCellHeight+kCellHeight4];
+        }else if ([type isEqualToString:@"编辑"]){
+            [tableView autoSetDimension:ALDimensionHeight toSize:3*kCellHeight+116];
+        }
     }
     
     if (tagView) {//点击蒙板，界面消失
@@ -145,7 +152,10 @@
     
     if (finishBlock) {
         [tableView setDidSelectedBtn:^(NSInteger btnTag) {
-            [tagView removeFromSuperview];
+            
+            if (btnTag != 52) {
+                [tagView removeFromSuperview];
+            }
             finishBlock(btnTag);
         }];
     }

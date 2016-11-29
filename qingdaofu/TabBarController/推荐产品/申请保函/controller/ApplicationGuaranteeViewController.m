@@ -369,7 +369,7 @@
             }else if (component == 1){//市
                 [weakself.applicationDic setObject:model.idString forKey:@"area_id"];
                 weakself.cityStr = model.name;
-            }else if (component == 2){//完成
+            }else if (component == 3){//完成
                 [weakself.applicationPickerView setHidden:YES];
                 
                 if (weakself.applicationPickerView.component2.count > 0) {

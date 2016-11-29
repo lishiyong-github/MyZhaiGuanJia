@@ -34,6 +34,7 @@
         
         [self.countLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:self.imageButton];
         [self.countLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.imageButton];
+        [self.countLabel autoSetDimensionsToSize:CGSizeMake(16, 16)];
         
         [self.contentLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.imageButton withOffset:kSpacePadding];
         [self.contentLabel autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.imageButton];
@@ -62,8 +63,10 @@
         _countLabel = [UILabel newAutoLayoutView];
         _countLabel.backgroundColor = kYellowColor;
         _countLabel.font = kSmallFont;
-//        _countLabel.text = @"12";
+        _countLabel.layer.cornerRadius = 8;
+        _countLabel.layer.masksToBounds = YES;
         _countLabel.textColor = kWhiteColor;
+        _countLabel.textAlignment = 1;
     }
     return _countLabel;
 }

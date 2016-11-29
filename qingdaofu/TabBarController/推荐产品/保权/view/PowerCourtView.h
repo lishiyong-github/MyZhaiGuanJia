@@ -29,7 +29,6 @@
 @property (nonatomic,strong) UIPickerView *pickerViews;
 @property (nonatomic,strong) UIControl *controllio;
 
-
 @property (nonatomic,assign) BOOL didSetupConstraints;
 
 @end
