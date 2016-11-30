@@ -273,39 +273,6 @@
     });
 }
 
-/*
-#pragma mark - method
-- (void)getMessageTypeAndNumber
-{
-    NSString *messageTypeString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMessageTypeAndNumbersString];
-    NSString *token = [self getValidateToken]?[self getValidateToken]:@"";
-    NSDictionary *params = @{@"token" : token};
-    QDFWeakSelf;
-    [self requestDataPostWithString:messageTypeString params:params successBlock:^(id responseObject) {
-        NSDictionary *opopo = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        weakself.resultDic = [NSMutableDictionary dictionaryWithDictionary:opopo[@"result"]];
-        [weakself.messageTableView reloadData];
-        
-        NSInteger n1 = [weakself.resultDic[@"1"][@"number"] integerValue];
-        NSInteger n2 = [weakself.resultDic[@"2"][@"number"] integerValue];
-        NSInteger n4 = [weakself.resultDic[@"4"][@"number"] integerValue];
-
-        NSString *all = [NSString stringWithFormat:@"%ld",n1+n2+n4];
-        
-        if ([all integerValue] == 0) {
-            //隐藏
-            [self.tabBarController.tabBar hideBadgeOnItemIndex:3];
-        }else{
-            //显示
-            [self.tabBarController.tabBar showBadgeOnItemIndex:3];
-        }
-        
-    } andFailBlock:^(NSError *error) {
-        
-    }];
-}
-
- */
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

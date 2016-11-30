@@ -9,8 +9,12 @@
 #import "ReceiptAddressEditViewController.h"
 #import "HouseChooseViewController.h"
 
-#import "PowerCourtView.h"
+//model
+#import "CourtProvinceResponse.h"
+#import "CourtProvinceModel.h"
 
+//view
+#import "PowerCourtView.h"
 #import "AgentCell.h"
 #import "EditDebtAddressCell.h"
 #import "LoginCell.h"
@@ -27,10 +31,9 @@
 
 
 //省市区
-@property (nonatomic,strong) NSDictionary *provinceDict;
-@property (nonatomic,strong) NSDictionary *cityDcit;
-@property (nonatomic,strong) NSDictionary *districtDict;
-
+//@property (nonatomic,strong) NSDictionary *provinceDict;
+//@property (nonatomic,strong) NSDictionary *cityDcit;
+//@property (nonatomic,strong) NSDictionary *districtDict;
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 
@@ -90,41 +93,69 @@
 {
     if (!_receiptPickerView) {
         _receiptPickerView = [PowerCourtView newAutoLayoutView];
-        _receiptPickerView.publishStr = @"3";
         
         QDFWeakSelf;
-        [_receiptPickerView setDidSelectedComponent:^(NSInteger component, NSInteger row, NSString *idString, NSString *nameString) {
-            
-            if (component == 0) {
-                [weakself.receiptTestDic setObject:idString forKey:@"proID"];
-                [weakself.receiptTestDic setObject:nameString forKey:@"proName"];
-                [weakself getCityListsWithProvinceID:idString];
-            }else if (component == 1){
+        [_receiptPickerView setDidSelectdRow:^(NSInteger component, NSInteger row,CourtProvinceModel *model) {
+            if (component == 0) {//省
+                [weakself.receiptTestDic setObject:model.name forKey:@"proName"];
+                [weakself.receiptTestDic setObject:model.idString forKey:@"proID"];
                 
-                [weakself.receiptTestDic setObject:idString forKey:@"cityID"];
-                [weakself.receiptTestDic setObject:nameString forKey:@"cityName"];
-                [weakself getDistrictListsWithCityID:idString];
-                
-            }else if (component == 2){
-                
-                [weakself.receiptTestDic setObject:idString forKey:@"districtID"];
-                [weakself.receiptTestDic setObject:nameString forKey:@"districtName"];
+                [weakself getCityListsWithProvinceID:model.idString];
+            }else if (component == 1){//市
+                [weakself.receiptTestDic setObject:model.name forKey:@"cityName"];
+                [weakself.receiptTestDic setObject:model.idString forKey:@"cityID"];
+                [weakself getDistrictListsWithCityID:model.idString];
+            }else if (component == 2){//区
+                [weakself.receiptTestDic setObject:model.name forKey:@"districtName"];
+                [weakself.receiptTestDic setObject:model.idString forKey:@"districtID"];
                 
             }else if (component == 3){
-                
                 if (weakself.receiptTestDic[@"proName"] && weakself.receiptTestDic[@"cityName"] && weakself.receiptTestDic[@"districtName"]) {//都选择
-                    
-                    //显示
                     AgentCell *cell = [weakself.receiptEditTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]];
                     cell.agentTextField.text = [NSString stringWithFormat:@"%@%@%@",weakself.receiptTestDic[@"proName"],weakself.receiptTestDic[@"cityName"],weakself.receiptTestDic[@"districtName"]];
                     
-                    //保存参数
-                    [weakself.receiptDic setObject:weakself.receiptTestDic[@"proID"] forKey:@"province"];
-                    [weakself.receiptDic setObject:weakself.receiptTestDic[@"cityID"] forKey:@"city"];
-                    [weakself.receiptDic setObject:weakself.receiptTestDic[@"districtID"] forKey:@"area"];
+                    [weakself.receiptDic setValue:weakself.receiptTestDic[@"proID"] forKey:@"province"];
+                    [weakself.receiptDic setValue:weakself.receiptTestDic[@"cityID"] forKey:@"city"];
+                    [weakself.receiptDic setValue:weakself.receiptTestDic[@"districtID"] forKey:@"area"];
+                    [weakself.receiptDic setValue:cell.agentTextField.text forKey:@"address"];
                 }
+                
             }
         }];
+        
+        
+//        [_receiptPickerView setDidSelectedComponent:^(NSInteger component, NSInteger row, NSString *idString, NSString *nameString) {
+//            
+//            if (component == 0) {
+//                [weakself.receiptTestDic setObject:idString forKey:@"proID"];
+//                [weakself.receiptTestDic setObject:nameString forKey:@"proName"];
+//                [weakself getCityListsWithProvinceID:idString];
+//            }else if (component == 1){
+//                
+//                [weakself.receiptTestDic setObject:idString forKey:@"cityID"];
+//                [weakself.receiptTestDic setObject:nameString forKey:@"cityName"];
+//                [weakself getDistrictListsWithCityID:idString];
+//                
+//            }else if (component == 2){
+//                
+//                [weakself.receiptTestDic setObject:idString forKey:@"districtID"];
+//                [weakself.receiptTestDic setObject:nameString forKey:@"districtName"];
+//                
+//            }else if (component == 3){
+//                
+//                if (weakself.receiptTestDic[@"proName"] && weakself.receiptTestDic[@"cityName"] && weakself.receiptTestDic[@"districtName"]) {//都选择
+//                    
+//                    //显示
+//                    AgentCell *cell = [weakself.receiptEditTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]];
+//                    cell.agentTextField.text = [NSString stringWithFormat:@"%@%@%@",weakself.receiptTestDic[@"proName"],weakself.receiptTestDic[@"cityName"],weakself.receiptTestDic[@"districtName"]];
+//                    
+//                    //保存参数
+//                    [weakself.receiptDic setObject:weakself.receiptTestDic[@"proID"] forKey:@"province"];
+//                    [weakself.receiptDic setObject:weakself.receiptTestDic[@"cityID"] forKey:@"city"];
+//                    [weakself.receiptDic setObject:weakself.receiptTestDic[@"districtID"] forKey:@"area"];
+//                }
+//            }
+//        }];
     }
     return _receiptPickerView;
 }
@@ -321,7 +352,7 @@
 }
 
 #pragma mark - method
-//new
+//save
 - (void)rightItemAction
 {
     [self.view endEditing:YES];
@@ -364,13 +395,23 @@
 #pragma mark - get province city and dictrict
 - (void)getProvinceLists
 {
-    NSString *provinceString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProvinceString];
+    NSString *provinceString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPublishproductOfProvince];
+    NSDictionary *params = @{@"token" : [self getValidateToken],
+                             @"type" : @"app"};
+    
     QDFWeakSelf;
-    [self requestDataPostWithString:provinceString params:nil successBlock:^(id responseObject) {
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+    [self requestDataPostWithString:provinceString params:params successBlock:^(id responseObject) {
         
-        weakself.receiptPickerView.componentDic1 = dic;
+        [weakself.receiptPickerView.component1 removeAllObjects];
+        
+        CourtProvinceResponse *courtResponse = [CourtProvinceResponse objectWithKeyValues:responseObject];
+        
+        for (CourtProvinceModel *proModel in courtResponse.data) {
+            [weakself.receiptPickerView.component1 addObject:proModel];
+        }
+        
         [weakself.receiptPickerView setHidden:NO];
+        weakself.receiptPickerView.typeComponent = @"1";
         [weakself.receiptPickerView.pickerViews reloadAllComponents];
         
     } andFailBlock:^(NSError *error) {
@@ -380,19 +421,23 @@
 
 - (void)getCityListsWithProvinceID:(NSString *)provinceId
 {
-    NSString *cityString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kCityString];
-    NSDictionary *params = @{@"fatherID" : provinceId};
+    NSString *cityString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPublishproductOfCity];
+    NSDictionary *params = @{@"province_id" : provinceId,
+                             @"token" : [self getValidateToken],
+                             @"type" : @"app"};
     
     QDFWeakSelf;
     [self requestDataPostWithString:cityString params:params successBlock:^(id responseObject) {
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
         
-        weakself.receiptPickerView.componentDic2 = dic[provinceId];
-        if (weakself.receiptPickerView.componentDic3.allKeys.count > 0) {
-            weakself.receiptPickerView.typeComponent = @"3";
-        }else{
-            weakself.receiptPickerView.typeComponent = @"2";
+        [weakself.receiptPickerView.component2 removeAllObjects];
+        
+        CourtProvinceResponse *courtResponse = [CourtProvinceResponse objectWithKeyValues:responseObject];
+        
+        for (CourtProvinceModel *cityModel in courtResponse.data) {
+            [weakself.receiptPickerView.component2 addObject:cityModel];
         }
+        
+        weakself.receiptPickerView.typeComponent = @"2";
         [weakself.receiptPickerView.pickerViews reloadAllComponents];
         
     } andFailBlock:^(NSError *error) {
@@ -402,14 +447,21 @@
 
 - (void)getDistrictListsWithCityID:(NSString *)cityId
 {
-    NSString *districtString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kDistrictString];
-    NSDictionary *params = @{@"fatherID" : cityId};
+    NSString *districtString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPublishproductOfArea];
+    NSDictionary *params = @{@"city" : cityId,
+                             @"token" : [self getValidateToken],
+                             @"type" : @"app"};
     
     QDFWeakSelf;
     [self requestDataPostWithString:districtString params:params successBlock:^(id responseObject) {
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        [weakself.receiptPickerView.component3 removeAllObjects];
         
-        weakself.receiptPickerView.componentDic3 = dic[cityId];
+        CourtProvinceResponse *courtResponse = [CourtProvinceResponse objectWithKeyValues:responseObject];
+        
+        for (CourtProvinceModel *districtModel in courtResponse.data) {
+            [weakself.receiptPickerView.component3 addObject:districtModel];
+        }
+        
         weakself.receiptPickerView.typeComponent = @"3";
         [weakself.receiptPickerView.pickerViews reloadAllComponents];
         

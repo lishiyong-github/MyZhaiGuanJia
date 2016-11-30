@@ -160,68 +160,30 @@
 #define kSetPasswordString  @"userinfo/setpassword" //设置密码
 
 #define kResetPasswordString  @"user/resetpassword"     //重置密码
-#define kTokenOverdue  @"common/application"   //token是否过期
 #define kRegisterAgreement @"/protocol/agreements" //注册协议
 #define kSettingProblems  @"/protocol/question"  //常见问答
-#define kIsLoginString  @"common/islogin"   //检验token与认证类型
 #define kSuggestionString @"public/opinion"    //意见反馈1
 
 /*发布产品*/
-#define kPublishFinanceString @"publish/financing"  //发布融资
-#define kPublishCollection    @"publish/creditorcollection"  //发布清收
-#define kPublishSuit          @"publish/creditorcollection"  //发布诉讼
 #define kBrandString  @"common/brand"  //机动车品牌
 #define kBrandAudiString  @"common/brandchild"  //车系
-#define kGuarantyString @"common/getsearch"   //小区
+
 ///////////////
 ////////
 
 //我的接单 我的发布
-#define kMyOrdersString   @"apply/index"    //我的接单
 #define kMyscheduleString @"public/speedo"  //填写进度
-#define kIsDelayRequestString  @"public/wxextendwidget" //是否能延期
-#define kMyDelayRequestString @"public/delayapply"   //延期申请
-#define kCheckReleasePeople @"apply/users"   //查看发布方详情
-
-#define kMyReleaseString  @"apply/released"   //我的发布
-#define kMyReleaseDetailString @"public/wxreleaseinformationwidget"  //我的发布详情/我的接单详情
-#define kLookUpScheduleString @"productorders/orders-process-detail"   //查看进度
-#define kRequestApplyString @"capital/Shoucang"   //立即申请
-#define kMyRecordsString  @"apply/ordertaking"   //申请记录
-#define kMyRecordsMessageString @"apply/user"  //申请记录里的申请人详情
-#define kMyRecordsMessageAgreeString @"apply/agreeorder" //申请记录里的申请人详情的同意申请
 #define kEvaluateString @"productorders/comment-add"  //去评价
 #define kTwiceEvaluateString @"productorders/comment-additional"  //再次评价
 
-#define kAgreementString @"/protocol/mediacy"   //服务协议
-#define kMyEvaluateString @"apply/userlists"  //我的评价(给出的)
-#define kCheckOrderPeople @"apply/user"   //查看接单方详情
-#define kCheckOrderToEvaluationString @"userinfo/comment-list"  //查看接单方详情里面的接单方评价信息(收到的)
-#define kCheckOrderToWarnning @"public/remind"   //查看接单方详情里面的提醒
-#define kMyreleaseDealingStateString @"public/wxclosedswidget" //我的发布处理中的状态（没用到）
-#define kMyreleaseDealingEndString @"public/closed" ////我的发布处理中的申请结案
+#define kMyEvaluateString @"apply/userlists"  //我的评价
+#define kCheckOrderToEvaluationString @"userinfo/comment-list"  //查看接单方详情里面的接单方评价信息
 
-
-#define kMessageTypeAndNumbersString @"message/type" //消息
 #define kMessageIsReadString @"message/read" //消息未读变已读
-#define kMessageOfPublishString @"message/index"  //发布消息，接单消息
-#define kMessageOfEvaluateString @"apply/listdata" //评价消息
-#define kMessageOfDeleteString @"apply/deleteeva"  //删除评价
-
-//#define kMessageOfEvaluateString @"apply/userlists"  //评价列表
-//评价类型（evaluate(收到的评价) ／launchevaluation(给出的评级)）
 
 #define kAuthenString @"certification/add"   //认证
-#define kIsCompleteString  @"certification/view"  //是否认证
 
-#define kProductsListString @"capital/list"    //产品列表
 #define kProductsRecommendListString  @"capital/recommendlist"   //推荐产品列表
-#define kProdutsDetailString @"capital/view"    //产品详情1
-#define kProductDetailString @"capital/shoucanss"  //产品详情2(最新的)
-#define kEndProductsString   @"public/wxclosedswidget"   //发布中的产品可结案
-#define kProductHouseStateString @"capital/shoucans"  //申请状态
-#define kProductHouseString @"capital/shenqing"   //申请接单
-#define kRequestStoreString @"capital/shoucang"   //申请收藏
 
 #define kProvinceString @"common/province"  //产品页面获取省份
 #define kCityString @"common/city"  //产品页面获取市

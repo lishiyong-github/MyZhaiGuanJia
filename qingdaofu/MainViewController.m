@@ -223,76 +223,17 @@
 #pragma mark - tabBar delegate
 - (void)tabBarDidSelectedRiseButton
 {
-    [self tokenIsValid];
+    UIWindow *window = [UIApplication sharedApplication].keyWindow;
+    UITabBarController *tabBarController = (UITabBarController *)window.rootViewController;
+    UINavigationController *viewController = tabBarController.selectedViewController;
     
-    QDFWeakSelf;
-    [self setDidTokenValid:^(TokenModel *tokenModel) {
-        
-        UIWindow *window = [UIApplication sharedApplication].keyWindow;
-        UITabBarController *tabBarController = (UITabBarController *)window.rootViewController;
-        UINavigationController *viewController = tabBarController.selectedViewController;
-        
-        if ([tokenModel.code isEqualToString:@"3001"]) {
-            [weakself showHint:tokenModel.msg];
-            
-            LoginViewController *loginVC = [[LoginViewController alloc] init];
-            loginVC.hidesBottomBarWhenPushed = YES;
-            UINavigationController *loginNav = [[UINavigationController alloc] initWithRootViewController:loginVC];
-            [viewController presentViewController:loginNav animated:YES completion:nil];
-        }else{
-            ReportSuitViewController *collectVC = [[ReportSuitViewController alloc] init];
-            collectVC.tagString = @"1";
-            collectVC.hidesBottomBarWhenPushed = YES;
-            
-            UINavigationController *nav1 = [[UINavigationController alloc] initWithRootViewController:collectVC];
-            
-            [viewController presentViewController:nav1 animated:YES completion:nil];
-        }
-    }];
+    ReportSuitViewController *collectVC = [[ReportSuitViewController alloc] init];
+    collectVC.tagString = @"1";
+    collectVC.hidesBottomBarWhenPushed = YES;
     
-//    QDFWeakSelf;
-//    [self showBlurInView:[UIApplication sharedApplication].keyWindow withArray:nil finishBlock:^(NSInteger row) {
-//        
-//        UIWindow *window = [UIApplication sharedApplication].keyWindow;
-//        UITabBarController *tabBarController = (UITabBarController *)window.rootViewController;
-//        UINavigationController *viewController = tabBarController.selectedViewController;
-//        
-//        [weakself tokenIsValid];
-//        [weakself setDidTokenValid:^(TokenModel *tokenModel) {
-//            if ([tokenModel.code isEqualToString:@"3001"]) {//未登录
-//                [weakself showHint:tokenModel.msg];
-//                
-//                LoginViewController *loginVC = [[LoginViewController alloc] init];
-//                loginVC.hidesBottomBarWhenPushed = YES;
-//                UINavigationController *loginNav = [[UINavigationController alloc] initWithRootViewController:loginVC];
-//                [viewController presentViewController:loginNav animated:YES completion:nil];
-//                
-////                [viewController pushViewController:loginVC animated:YES];
-//            }else{//已登录或未认证
-//                if (row == 77) {
-//                    ReportSuitViewController *collectVC = [[ReportSuitViewController alloc] init];
-//                    collectVC.categoryString = @"2";
-//                    collectVC.tagString = @"1";
-//                    collectVC.hidesBottomBarWhenPushed = YES;
-//                    
-//                    UINavigationController *nav1 = [[UINavigationController alloc] initWithRootViewController:collectVC];
-//                    
-//                    [viewController presentViewController:nav1 animated:YES completion:nil];
-//                    
-//                }else if (row == 78){
-//                    ReportSuitViewController *reportSuitVC = [[ReportSuitViewController alloc] init];
-//                    reportSuitVC.categoryString = @"3";
-//                    reportSuitVC.tagString = @"1";
-//                    reportSuitVC.hidesBottomBarWhenPushed = YES;
-////                    [viewController pushViewController:reportSuitVC animated:YES];
-//                    
-//                    UINavigationController *nav2 = [[UINavigationController alloc] initWithRootViewController:reportSuitVC];
-//                    
-//                    [viewController presentViewController:nav2 animated:YES completion:nil];
-//                }
-//            }
-//        }];
-//    }];
+    UINavigationController *nav1 = [[UINavigationController alloc] initWithRootViewController:collectVC];
+    
+    [viewController presentViewController:nav1 animated:YES completion:nil];
 }
 
  

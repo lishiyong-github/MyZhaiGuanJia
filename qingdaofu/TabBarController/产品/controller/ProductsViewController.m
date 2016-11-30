@@ -25,6 +25,9 @@
 #import "ReleaseResponse.h"
 #import "RowsModel.h"
 
+#import "CourtProvinceResponse.h"
+#import "CourtProvinceModel.h"
+
 @interface ProductsViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
@@ -38,16 +41,19 @@
 @property (nonatomic,strong) UITableView *tableView13;
 
 //json解析
-@property (nonatomic,strong) NSDictionary *provinceDictionary;
-@property (nonatomic,strong) NSDictionary *cityDcitionary;
-@property (nonatomic,strong) NSDictionary *districtDictionary;
+//@property (nonatomic,strong) NSDictionary *provinceDictionary;
+//@property (nonatomic,strong) NSDictionary *cityDcitionary;
+//@property (nonatomic,strong) NSDictionary *districtDictionary;
+@property (nonatomic,strong) NSMutableArray *provinceArray;
+@property (nonatomic,strong) NSMutableArray *cityArray;
+@property (nonatomic,strong) NSMutableArray *districtArray;
 
 //参数 json
 @property (nonatomic,strong) NSMutableDictionary *paramsDictionary;
 @property (nonatomic,strong) NSMutableArray *allDataList;
 @property (nonatomic,assign) NSInteger page;
 
-//记住选中的省份市区
+//记住选中的省份市区id
 @property (nonatomic,strong) NSString *proString;
 @property (nonatomic,strong) NSString *cityString;
 @property (nonatomic,assign) NSInteger selectedRow1;
@@ -243,7 +249,7 @@
         _tableView11.tableFooterView = [[UIView alloc] init];
         _tableView11.layer.borderColor = kBorderColor.CGColor;
         _tableView11.layer.borderWidth = kLineWidth;
-        _tableView11.backgroundColor = kNavColor;
+        _tableView11.backgroundColor = kBackColor;
     }
     return _tableView11;
 }
@@ -255,7 +261,7 @@
         _tableView12.delegate = self;
         _tableView12.dataSource = self;
         _tableView12.tableFooterView = [[UIView alloc] init];
-        _tableView12.backgroundColor = kNavColor;
+        _tableView12.backgroundColor = kBackColor;
         _tableView12.layer.borderColor = kSeparateColor.CGColor;
         _tableView12.layer.borderWidth = kLineWidth;
     }
@@ -269,11 +275,35 @@
         _tableView13.delegate = self;
         _tableView13.dataSource = self;
         _tableView13.tableFooterView = [[UIView alloc] init];
-        _tableView13.backgroundColor = kNavColor;
+        _tableView13.backgroundColor = kBackColor;
         _tableView13.layer.borderColor = kSeparateColor.CGColor;
         _tableView13.layer.borderWidth = kLineWidth;
     }
     return _tableView13;
+}
+
+- (NSMutableArray *)provinceArray
+{
+    if (!_provinceArray) {
+        _provinceArray = [NSMutableArray array];
+    }
+    return _provinceArray;
+}
+
+- (NSMutableArray *)cityArray
+{
+    if (!_cityArray) {
+        _cityArray = [NSMutableArray array];
+    }
+    return _cityArray;
+}
+
+- (NSMutableArray *)districtArray
+{
+    if (!_districtArray) {
+        _districtArray = [NSMutableArray array];
+    }
+    return _districtArray;
 }
 
 - (NSMutableDictionary *)paramsDictionary
@@ -306,11 +336,11 @@
     if (tableView == self.productsTableView) {
         return 1;
     }else if (tableView == self.tableView11){
-        return self.provinceDictionary.allKeys.count + 1;
+        return self.provinceArray.count + 1;
     }else if (tableView == self.tableView12){
-        return self.cityDcitionary.allKeys.count;
+        return self.cityArray.count;
     }else if (tableView == self.tableView13){
-        return self.districtDictionary.allKeys.count;
+        return self.districtArray.count;
     }
     return 0;
 }
@@ -417,7 +447,8 @@
         if (indexPath.row == 0) {
             [cell.oneButton setTitle:@"不限" forState:0];
         }else{
-            [cell.oneButton setTitle:self.provinceDictionary.allValues[indexPath.row-1] forState:0];
+            CourtProvinceModel *provinceModel = self.provinceArray[indexPath.row-1];
+            [cell.oneButton setTitle:provinceModel.name forState:0];
         }
         
         return cell;
@@ -434,7 +465,8 @@
         cell.selectedBackgroundView = [[UIView alloc] init];
         cell.selectedBackgroundView.backgroundColor = kCellSelectedColor;
 
-        [cell.oneButton setTitle:self.cityDcitionary.allValues[indexPath.row] forState:0];
+        CourtProvinceModel *cityModel = self.cityArray[indexPath.row];
+        [cell.oneButton setTitle:cityModel.name forState:0];
 
         return cell;
     }else if (tableView == self.tableView13){//区
@@ -446,7 +478,9 @@
         
         cell.oneButton.userInteractionEnabled = NO;
         [cell.oneButton setTitleColor:kLightGrayColor forState:0];
-        [cell.oneButton setTitle:self.districtDictionary.allValues[indexPath.row] forState:0];
+        
+        CourtProvinceModel *districtModel = self.districtArray[indexPath.row];
+        [cell.oneButton setTitle:districtModel.name forState:0];
 
         return cell;
     }
@@ -458,39 +492,11 @@
     if (tableView == self.productsTableView) {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         
-        [self tokenIsValid];
-        QDFWeakSelf;
-        [self setDidTokenValid:^(TokenModel *model) {
-            if ([model.code isEqualToString:@"0000"]) {//正常
-                RowsModel *sModel = weakself.allDataList[indexPath.section];
-                
-                ProductsDetailsViewController *productsDetailVC = [[ProductsDetailsViewController alloc] init];
-                productsDetailVC.hidesBottomBarWhenPushed = YES;
-                productsDetailVC.productid = sModel.productid;
-                [weakself.navigationController pushViewController:productsDetailVC animated:YES];
-                
-//                if ([sModel.progress_status integerValue] == 1) {
-//                    productsDetailVC.idString = sModel.idString;
-//                    productsDetailVC.categoryString = sModel.category;
-//                    productsDetailVC.pidString = sModel.uidString;
-//                    [weakself.navigationController pushViewController:productsDetailVC animated:YES];
-//                }else{
-//                    [weakself showHint:@"已撮合，不可查看"];
-//                }
-            }else if([model.code isEqualToString:@"3001"] || [self getValidateToken] == nil){//未登录
-                [weakself showHint:model.msg];
-                LoginViewController *loginVC = [[LoginViewController alloc] init];
-                loginVC.hidesBottomBarWhenPushed = YES;
-                UINavigationController *uiui = [[UINavigationController alloc] initWithRootViewController:loginVC];
-                [weakself presentViewController:uiui animated:YES completion:nil];
-            }else if([model.code isEqualToString:@"3006"]){//已登录，未认证
-                [weakself showHint:model.msg];
-                AuthentyViewController *authentyVC = [[AuthentyViewController alloc] init];
-                authentyVC.hidesBottomBarWhenPushed = YES;
-                authentyVC.typeAuthty = @"0";
-                [weakself.navigationController pushViewController:authentyVC animated:YES];
-            }
-        }];
+        RowsModel *sModel = self.allDataList[indexPath.section];
+        ProductsDetailsViewController *productsDetailVC = [[ProductsDetailsViewController alloc] init];
+        productsDetailVC.hidesBottomBarWhenPushed = YES;
+        productsDetailVC.productid = sModel.productid;
+        [self.navigationController pushViewController:productsDetailVC animated:YES];
     } else if (tableView == self.tableView11){//省份
         
         if (indexPath.row == 0) {
@@ -524,9 +530,9 @@
             [self.tableView12 autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.tableView11];
             [self.tableView12 autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.tableView11];
             
-            _proString = self.provinceDictionary.allKeys[indexPath.row-1];
-            
-            [self getCityListWithProvinceID:self.provinceDictionary.allKeys[indexPath.row-1]];
+            CourtProvinceModel *provinceModel = self.provinceArray[indexPath.row-1];
+            _proString = provinceModel.idString;
+            [self getCityListWithProvinceID:provinceModel.idString];
         }
     }else if (tableView == self.tableView12){//市
         
@@ -547,27 +553,31 @@
         [self.tableView13 autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.tableView11];
         [self.tableView13 autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.tableView11];
         
-        _cityString = self.cityDcitionary.allKeys[indexPath.row];
-
-        [self getDistrictListWithCityID:self.cityDcitionary.allKeys[indexPath.row]];
+        
+        CourtProvinceModel *cityModel = self.cityArray[indexPath.row];
+        _cityString = cityModel.idString;
+        [self getDistrictListWithCityID:cityModel.idString];
         
     }else if (tableView == self.tableView13){//区
         
+        //hidden
         [self.backBlurView removeFromSuperview];
         
         UIButton *but1 = [self.view viewWithTag:202];
         UIButton *but2 = [self.view viewWithTag:203];
         but1.userInteractionEnabled = YES;
         but2.userInteractionEnabled = YES;
-
-        [self.chooseView.squrebutton setTitle:self.districtDictionary.allValues[indexPath.row] forState:0];
         
         self.widthConstraints.constant = kScreenWidth;
         
+        CourtProvinceModel *districtModel = self.districtArray[indexPath.row];
+        [self.chooseView.squrebutton setTitle:districtModel.name forState:0];
+        
         [self.paramsDictionary setValue:_proString forKey:@"province"];
         [self.paramsDictionary setValue:_cityString forKey:@"city"];
-        [self.paramsDictionary setValue:self.districtDictionary.allKeys[indexPath.row] forKey:@"district"];
+        [self.paramsDictionary setValue:districtModel.idString forKey:@"district"];
         
+        //refresh
         [self headerRefreshWithAllProducts];
     }
 }
@@ -588,12 +598,20 @@
 #pragma mark - get province city and dictrict
 - (void)getProvinceList
 {
-    NSString *provinceString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProvinceString];
+    NSString *provinceString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPublishproductOfProvince];
+    NSDictionary *params = @{@"token" : [self getValidateToken],
+                             @"type" : @"app"};
     QDFWeakSelf;
-    [self requestDataPostWithString:provinceString params:nil successBlock:^(id responseObject) {
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+    [self requestDataPostWithString:provinceString params:params successBlock:^(id responseObject) {
         
-        weakself.provinceDictionary = dic;
+        CourtProvinceResponse *response = [CourtProvinceResponse objectWithKeyValues:responseObject];
+        for (CourtProvinceModel *provinceModel in response.data) {
+            [weakself.provinceArray addObject:provinceModel];
+        }
+        
+//        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        
+//        weakself.provinceDictionary = dic;
         [weakself.tableView11 reloadData];
         
     } andFailBlock:^(NSError *error) {
@@ -603,14 +621,21 @@
 
 - (void)getCityListWithProvinceID:(NSString *)provinceId
 {
-    NSString *cityString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kCityString];
-    NSDictionary *params = @{@"fatherID" : provinceId};
+    NSString *cityString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPublishproductOfCity];
+    NSDictionary *params = @{@"province_id" : provinceId,
+                             @"token" : [self getValidateToken],
+                             @"type" : @"app"};
     
     QDFWeakSelf;
     [self requestDataPostWithString:cityString params:params successBlock:^(id responseObject) {
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
         
-        weakself.cityDcitionary = dic[provinceId];
+        [weakself.cityArray removeAllObjects];
+        
+        CourtProvinceResponse *response = [CourtProvinceResponse objectWithKeyValues:responseObject];
+        for (CourtProvinceModel *cityModel in response.data) {
+            [weakself.cityArray addObject:cityModel];
+        }
+        
         [weakself.tableView12 reloadData];
         
     } andFailBlock:^(NSError *error) {
@@ -620,14 +645,20 @@
 
 - (void)getDistrictListWithCityID:(NSString *)cityId
 {
-    NSString *districtString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kDistrictString];
-    NSDictionary *params = @{@"fatherID" : cityId};
+    NSString *districtString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPublishproductOfArea];
+    NSDictionary *params = @{@"city" : cityId,
+                             @"token" : [self getValidateToken],
+                             @"type" : @"app"};
     
     QDFWeakSelf;
     [self requestDataPostWithString:districtString params:params successBlock:^(id responseObject) {
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
         
-        weakself.districtDictionary = dic[cityId];
+        [weakself.districtArray removeAllObjects];
+        
+        CourtProvinceResponse *response = [CourtProvinceResponse objectWithKeyValues:responseObject];
+        for (CourtProvinceModel *districtModel in response.data) {
+            [weakself.districtArray addObject:districtModel];
+        }
         [weakself.tableView13 reloadData];
         
     } andFailBlock:^(NSError *error) {

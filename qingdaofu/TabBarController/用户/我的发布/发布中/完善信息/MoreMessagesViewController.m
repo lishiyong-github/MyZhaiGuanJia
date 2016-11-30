@@ -102,11 +102,11 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (self.moreMessageArray.count > 0) {
-        RowsModel *rowModel = self.moreMessageArray[0];;
-        if ([rowModel.statusLabel containsString:@"发布"] || [rowModel.statusLabel containsString:@"面谈"]){
-            return 1+self.productDic.allKeys.count;
-        }
-        return 1;
+//        RowsModel *rowModel = self.moreMessageArray[0];;
+//        if ([rowModel.statusLabel containsString:@"发布"] || [rowModel.statusLabel containsString:@"面谈"]){
+//        }
+//        return 1;
+        return 1+self.productDic.allKeys.count;
     }
     return 0;
 }
@@ -126,6 +126,8 @@
             }else{
                 return 1+rowModel.productMortgages3.count;
             }
+            
+            
         }else{
             if (section == 1){
                 return rowModel.productMortgages1.count;

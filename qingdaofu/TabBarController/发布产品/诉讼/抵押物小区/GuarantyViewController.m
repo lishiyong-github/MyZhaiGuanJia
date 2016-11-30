@@ -133,7 +133,8 @@
 #pragma mark - method
 - (void)getGuarantyListWithString:(NSString *)predicate
 {
-    NSString *guarantyString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kGuarantyString];
+    NSString *guarantyString;
+//    = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kGuarantyString];
     NSDictionary *params = @{@"name" : predicate};
     
     QDFWeakSelf;

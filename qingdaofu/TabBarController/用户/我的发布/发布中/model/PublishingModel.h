@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+@class ImageModel;
 
 @interface PublishingModel : NSObject
 
@@ -83,5 +84,6 @@
 @property (nonatomic,copy) NSString *pid;
 @property (nonatomic,copy) NSString *realname;
 @property (nonatomic,copy) NSString *username;
+@property (nonatomic,strong) ImageModel *headimg;
 
 @end

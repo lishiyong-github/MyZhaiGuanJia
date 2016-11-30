@@ -119,7 +119,6 @@
 		A16C1C391D23B2F8002CBCB0 /* MAMapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A16C1C381D23B2F8002CBCB0 /* MAMapKit.framework */; };
 		A16E47B61D1A6A5400870B8A /* account_bitmap@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A16E47B41D1A6A5400870B8A /* account_bitmap@2x.png */; };
 		A16E47B71D1A6A5400870B8A /* account_bitmap@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A16E47B51D1A6A5400870B8A /* account_bitmap@3x.png */; };
-		A16E47BA1D1A8C4800870B8A /* FourCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A16E47B91D1A8C4800870B8A /* FourCell.m */; };
 		A16FF58E1D05050F00C50A0B /* BaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A16FF58D1D05050F00C50A0B /* BaseModel.m */; };
 		A16FF5A31D05935D00C50A0B /* list_label_recommen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A16FF5A11D05935D00C50A0B /* list_label_recommen@2x.png */; };
 		A16FF5A41D05935D00C50A0B /* list_label_recommen@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A16FF5A21D05935D00C50A0B /* list_label_recommen@3x.png */; };
@@ -698,6 +697,7 @@
 		A1CBAAC21DBA156E00049E56 /* OperatorModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A1CBAAC11DBA156E00049E56 /* OperatorModel.m */; };
 		A1CBAAC51DBA158700049E56 /* OperatorResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A1CBAAC41DBA158700049E56 /* OperatorResponse.m */; };
 		A1D2C4C61DE697B000C67E15 /* AllCommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1D2C4C51DE697B000C67E15 /* AllCommentsViewController.m */; };
+		A1D7832A1DEE814C0099F834 /* MainProductview.m in Sources */ = {isa = PBXBuildFile; fileRef = A1D783291DEE814C0099F834 /* MainProductview.m */; };
 		A1E4AFB71CD0C674001A5E9E /* SingleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A1E4AFB61CD0C674001A5E9E /* SingleButton.m */; };
 		A1E669291DED1FE900B69927 /* MoreMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1E669281DED1FE900B69927 /* MoreMessagesViewController.m */; };
 		A1E6692C1DED208700B69927 /* EditUpTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = A1E6692B1DED208700B69927 /* EditUpTableView.m */; };
@@ -914,8 +914,6 @@
 		A16C1C381D23B2F8002CBCB0 /* MAMapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MAMapKit.framework; sourceTree = "<group>"; };
 		A16E47B41D1A6A5400870B8A /* account_bitmap@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "account_bitmap@2x.png"; sourceTree = "<group>"; };
 		A16E47B51D1A6A5400870B8A /* account_bitmap@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "account_bitmap@3x.png"; sourceTree = "<group>"; };
-		A16E47B81D1A8C4800870B8A /* FourCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FourCell.h; sourceTree = "<group>"; };
-		A16E47B91D1A8C4800870B8A /* FourCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FourCell.m; sourceTree = "<group>"; };
 		A16FF58C1D05050F00C50A0B /* BaseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseModel.h; sourceTree = "<group>"; };
 		A16FF58D1D05050F00C50A0B /* BaseModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseModel.m; sourceTree = "<group>"; };
 		A16FF5A11D05935D00C50A0B /* list_label_recommen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list_label_recommen@2x.png"; sourceTree = "<group>"; };
@@ -1743,6 +1741,8 @@
 		A1CBAAC41DBA158700049E56 /* OperatorResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OperatorResponse.m; sourceTree = "<group>"; };
 		A1D2C4C41DE697B000C67E15 /* AllCommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllCommentsViewController.h; sourceTree = "<group>"; };
 		A1D2C4C51DE697B000C67E15 /* AllCommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllCommentsViewController.m; sourceTree = "<group>"; };
+		A1D783281DEE814C0099F834 /* MainProductview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainProductview.h; sourceTree = "<group>"; };
+		A1D783291DEE814C0099F834 /* MainProductview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainProductview.m; sourceTree = "<group>"; };
 		A1E4AFB51CD0C674001A5E9E /* SingleButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SingleButton.h; sourceTree = "<group>"; };
 		A1E4AFB61CD0C674001A5E9E /* SingleButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SingleButton.m; sourceTree = "<group>"; };
 		A1E669271DED1FE900B69927 /* MoreMessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreMessagesViewController.h; sourceTree = "<group>"; };
@@ -1828,7 +1828,8 @@
 				A1044E001DAB6B8C007F857D /* HelpCenterViewController.h */,
 				A1044E011DAB6B8C007F857D /* HelpCenterViewController.m */,
 			);
-			path = "帮助中心";
+			name = "帮助中心";
+			path = "../帮助中心";
 			sourceTree = "<group>";
 		};
 		A1044E031DAB88A7007F857D /* 个人中心 */ = {
@@ -2988,7 +2989,6 @@
 				A1B0ED2E1DD0471F004A5AAA /* 经办事项 */,
 				A1CBAAAC1DB9F46900049E56 /* 通讯录 */,
 				A1044E031DAB88A7007F857D /* 个人中心 */,
-				A1044DFF1DAB6B67007F857D /* 帮助中心 */,
 				A1A34C2F1CE32A2F00AD454A /* 登录注册 */,
 				A19D29671CD2087F00DAAEA7 /* 设置 */,
 				A10D7B701CEAF40300422D7D /* 我的代理 */,
@@ -3607,6 +3607,7 @@
 		A1A34C2F1CE32A2F00AD454A /* 登录注册 */ = {
 			isa = PBXGroup;
 			children = (
+				A1044DFF1DAB6B67007F857D /* 帮助中心 */,
 				A16175501D1291BA001BB200 /* model */,
 				A1A34C311CE32C6200AD454A /* view */,
 				A1A34C301CE32C5800AD454A /* controller */,
@@ -3968,8 +3969,8 @@
 				A19D29461CD1B44D00DAAEA7 /* MoneyView.m */,
 				A17F7BF31CE5C52700E882A3 /* NewPublishCell.h */,
 				A17F7BF41CE5C52700E882A3 /* NewPublishCell.m */,
-				A16E47B81D1A8C4800870B8A /* FourCell.h */,
-				A16E47B91D1A8C4800870B8A /* FourCell.m */,
+				A1D783281DEE814C0099F834 /* MainProductview.h */,
+				A1D783291DEE814C0099F834 /* MainProductview.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -4596,6 +4597,7 @@
 				A19657181D77F8BB00F846D4 /* PropertyResultResponse.m in Sources */,
 				A1D2C4C61DE697B000C67E15 /* AllCommentsViewController.m in Sources */,
 				A187B9001D50336500A91A16 /* BaseCommitView.m in Sources */,
+				A1D7832A1DEE814C0099F834 /* MainProductview.m in Sources */,
 				A1A155BB1DDC3D3400FEC011 /* ProductDetailResponse.m in Sources */,
 				A1A6C84F1D669D9A00EC060E /* ImageModel.m in Sources */,
 				A1044E0A1DAB9340007F857D /* ChangeMobileViewController.m in Sources */,
@@ -4643,7 +4645,6 @@
 				A19D94481D64430400DE89FC /* CourtProvinceResponse.m in Sources */,
 				A16486BE1D011FE900B442C1 /* MarkingViewController.m in Sources */,
 				A159F9571D0D456700A6A024 /* ScheduleModel.m in Sources */,
-				A16E47BA1D1A8C4800870B8A /* FourCell.m in Sources */,
 				A19D29741CD2158100DAAEA7 /* AuthenPersonViewController.m in Sources */,
 				A19657271D78273C00F846D4 /* BaseRemindButton.m in Sources */,
 				A1A34C021CE2F8F900AD454A /* MineUserCell.m in Sources */,

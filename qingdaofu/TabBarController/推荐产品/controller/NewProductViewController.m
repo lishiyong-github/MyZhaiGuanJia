@@ -11,33 +11,35 @@
 #import "ApplicationGuaranteeViewController.h" //申请保函
 #import "PowerProtectViewController.h" //诉讼保全
 #import "HousePropertyViewController.h" //产调
-
 #import "ProductsDetailsViewController.h" //详细信息
 #import "MarkingViewController.h"
 #import "LoginViewController.h" //登录
 #import "AuthentyViewController.h"//认证
 
 #import "MineUserCell.h"
-#import "FourCell.h"
 #import "NewPublishCell.h"  //诉讼保全
 #import "HomesCell.h"
+#import "MainProductview.h"
 
 #import "ReleaseResponse.h"
 #import "RowsModel.h"
+#import "PublishingModel.h"
+#import "ImageModel.h"
 
 #import "UIImage+Color.h"
 #import "UIViewController+BlurView.h"
 #import "UIButton+WebCache.h"
+#import "UIImageView+WebCache.h"
 
 @interface NewProductViewController ()<UITableViewDataSource,UITableViewDelegate,UIScrollViewDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate,UIGestureRecognizerDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
-
-@property (nonatomic,strong) UIButton *titleView;
 @property (nonatomic,strong) UITableView *mainTableView;
 @property (nonatomic,strong) UIView *mainHeaderView;
 @property (nonatomic,strong) UIScrollView *mainHeaderScrollView;
 @property (nonatomic,strong) UIPageControl *pageControl;
+
+@property (nonatomic,strong) UIScrollView *mainProductScrollView;
 
 //json解析
 @property (nonatomic,strong) NSMutableArray *productsDataListArray;
@@ -66,28 +68,17 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    self.navigationItem.titleView = self.titleView;
     
     [self.view addSubview:self.mainTableView];
     
     [self.view setNeedsUpdateConstraints];
 }
 
-- (UIButton *)titleView
-{
-    if (!_titleView) {
-        _titleView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 80, 44)];
-        [_titleView setImage:[UIImage imageNamed:@"nav_logo"] forState:0];
-    }
-    return _titleView;
-}
-
 - (void)updateViewConstraints
 {
     if (!self.didSetupConstraints) {
         
-        [self.mainTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
+        [self.mainTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(20, 0, 0, 0) excludingEdge:ALEdgeBottom];
         [self.mainTableView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kTabBarHeight];
         
         self.didSetupConstraints = YES;
@@ -104,7 +95,7 @@
         _mainTableView.delegate = self;
         _mainTableView.dataSource = self;
         _mainTableView.separatorColor = kSeparateColor;
-        _mainTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
+//        _mainTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding*10)];
     }
     return _mainTableView;
 }
@@ -114,8 +105,10 @@
     if (!_mainHeaderView) {
         _mainHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 110)];
         _mainHeaderView.backgroundColor = kBackColor;
+        
         [_mainHeaderView addSubview:self.mainHeaderScrollView];
         [_mainHeaderView addSubview:self.pageControl];
+        
         [self.mainHeaderScrollView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
         [self.pageControl autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:20];
         [self.pageControl autoAlignAxisToSuperviewAxis:ALAxisVertical];
@@ -137,7 +130,6 @@
         for (NSInteger t=0; t<self.propagandaDic.allKeys.count/2; t++) {
             
             NSString *tyString = [NSString stringWithFormat:@"banner%dios",t+1];
-//            NSString *urlString = [NSString stringWithFormat:@"http://%@",self.propagandaDic[tyString]];
             NSString *urlString = self.propagandaDic[tyString];
             NSURL *tyURL = [NSURL URLWithString:urlString];
             
@@ -171,6 +163,92 @@
     return _pageControl;
 }
 
+- (UIScrollView *)mainProductScrollView
+{
+    if (!_mainProductScrollView) {
+        _mainProductScrollView = [UIScrollView newAutoLayoutView];
+        _mainProductScrollView.backgroundColor = kWhiteColor;
+        _mainProductScrollView.contentSize = CGSizeMake(130*self.productsDataListArray.count+10, 200);
+        _mainProductScrollView.showsHorizontalScrollIndicator = NO;
+        
+        for (NSInteger k=0; k<self.productsDataListArray.count; k++) {//MainProductview.h
+            MainProductview *productView = [[MainProductview alloc] initWithFrame:CGRectMake(120*k + 10*(k+1), 0, 120, 190)];
+            productView.backgroundColor = kBackColor;
+            [_mainProductScrollView addSubview:productView];
+            
+            //show details
+            RowsModel *rowModel = self.productsDataListArray[k];
+            
+            //image
+            NSString *iiii = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,rowModel.fabuuser.headimg.file];
+            [productView.userImageView sd_setImageWithURL:[NSURL URLWithString:iiii]];
+            
+            //store
+            [productView.storeButton setImage:[UIImage imageNamed:@"nav_collection"] forState:0];
+            [productView.storeButton setImage:[UIImage imageNamed:@"nav_collection_s"] forState:UIControlStateSelected];
+            
+            //category
+            NSArray *ssssArray = [rowModel.categoryLabel componentsSeparatedByString:@","];
+            [productView.categoryLabel1 setText:@"房产抵押"];
+            
+            //委托费用
+            NSString *ttt1 = rowModel.typenumLabel;
+            NSString *ttt2 = [NSString stringWithFormat:@"%@\n",rowModel.typeLabel];
+            NSString *ttt3;
+            if ([rowModel.typeLabel isEqualToString:@"%"]) {
+                 ttt3 = @"风险费率";
+            }else if ([rowModel.typeLabel isEqualToString:@"万"]){
+                ttt3 = @"固定费用";
+            }
+            NSString *tttt = [NSString stringWithFormat:@"%@%@%@",ttt1,ttt2,ttt3];
+            NSMutableAttributedString *attriTT = [[NSMutableAttributedString alloc] initWithString:tttt];
+            [attriTT setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kRedColor} range:NSMakeRange(0,ttt1.length)];
+            [attriTT setAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kRedColor} range:NSMakeRange(ttt1.length,ttt2.length)];
+            [attriTT setAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(ttt1.length+ttt2.length,ttt3.length)];
+            NSMutableParagraphStyle *stylrr = [[NSMutableParagraphStyle alloc] init];
+            [stylrr setLineSpacing:4];
+            stylrr.alignment = 1;
+            [attriTT addAttribute:NSParagraphStyleAttributeName value:stylrr range:NSMakeRange(0, tttt.length)];
+            [productView.leftButton setAttributedTitle:attriTT forState:0];
+            
+            //委托金额
+            NSString *mmm1 = rowModel.accountLabel;
+            NSString *mmm2 = [NSString stringWithFormat:@"万\n"];
+            NSString *mmm3 = @"委托金额";
+            NSString *mmmm = [NSString stringWithFormat:@"%@%@%@",mmm1,mmm2,mmm3];
+            NSMutableAttributedString *attriMMM = [[NSMutableAttributedString alloc] initWithString:mmmm];
+            [attriMMM setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kRedColor} range:NSMakeRange(0,mmm1.length)];
+            [attriMMM setAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kRedColor} range:NSMakeRange(mmm1.length,mmm2.length)];
+            [attriMMM setAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(mmm1.length+mmm2.length,mmm3.length)];
+            NSMutableParagraphStyle *styler = [[NSMutableParagraphStyle alloc] init];
+            [styler setLineSpacing:4];
+            styler.alignment = 1;
+            [attriMMM addAttribute:NSParagraphStyleAttributeName value:styler range:NSMakeRange(0, mmmm.length)];
+            [productView.rightButton setAttributedTitle:attriMMM forState:0];
+            
+            //立即申请
+            [productView.applyButton setTitle:@"立即申请" forState:0];
+            [productView.applyButton setTitleColor:kTextColor forState:0];
+            productView.applyButton.layer.borderColor = kButtonColor.CGColor;
+            
+            //action
+            QDFWeakSelf;
+            [productView.applyButton addAction:^(UIButton *btn) {
+                [weakself goApplyProductWithModel:rowModel andButton:btn];
+            }];
+            
+            [productView addAction:^(UIButton *btn) {
+                ProductsDetailsViewController *productsDetailVC = [[ProductsDetailsViewController alloc] init];
+                productsDetailVC.hidesBottomBarWhenPushed = YES;
+                productsDetailVC.productid = rowModel.productid;
+                [weakself.navigationController pushViewController:productsDetailVC animated:YES];
+            }];
+            
+        }
+    }
+    return _mainProductScrollView;
+}
+
 - (NSMutableArray *)productsDataListArray
 {
     if (!_productsDataListArray) {
@@ -198,7 +276,7 @@
 #pragma mark - tableView delelagte and datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2+self.productsDataListArray.count;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -358,18 +436,47 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
+    if (section == 1) {
+        return 250;
+    }
     return kBigPadding;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    if (indexPath.section > 1) {
-        RowsModel *sModel = self.productsDataListArray[indexPath.section - 2];
-        ProductsDetailsViewController *productsDetailVC = [[ProductsDetailsViewController alloc] init];
-        productsDetailVC.hidesBottomBarWhenPushed = YES;
-        productsDetailVC.productid = sModel.productid;
-        [self.navigationController pushViewController:productsDetailVC animated:YES];
+    if (section == 1) {
+        UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, kSmallPadding, kScreenWidth, 250)];
+        footerView.backgroundColor = kBackColor;
+        
+        if (self.productsDataListArray.count > 0) {
+            
+            //推荐产品
+            UIButton *sssButton = [UIButton newAutoLayoutView];
+            [sssButton setTitle:@"推荐产品" forState:0];
+            [sssButton setTitleColor:kBlackColor forState:0];
+            sssButton.titleLabel.font = kFirstFont;
+            [sssButton setBackgroundColor:kWhiteColor];
+            [sssButton setContentHorizontalAlignment:1];
+            [sssButton setContentEdgeInsets:UIEdgeInsetsMake(0, kSmallPadding, 0, 0)];
+            
+            [footerView addSubview:sssButton];
+            [footerView addSubview:self.mainProductScrollView];
+            
+            [sssButton autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:footerView withOffset:kSmallPadding];
+            [sssButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:footerView];
+            [sssButton autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:footerView];
+            
+            [sssButton autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.mainProductScrollView];
+            
+            [self.mainProductScrollView autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:footerView withOffset:-kSmallPadding];
+            [self.mainProductScrollView autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:footerView];
+            [self.mainProductScrollView autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:footerView];
+            [self.mainProductScrollView autoSetDimension:ALDimensionHeight toSize:200];
+        }
+        
+        return footerView;
     }
+    return nil;
 }
 
 #pragma mark - uiscrollViewdelegate and pageControlDelegate
@@ -391,14 +498,11 @@
     NSString *allProString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductListsString];
     
     NSDictionary *params = @{@"page" : @"1",
-                             @"limit" : @"1",
+                             @"limit" : @"10",
                              @"token" : [self getValidateToken]
                              };
-    
     QDFWeakSelf;
     [self requestDataPostWithString:allProString params:params successBlock:^(id responseObject) {
-        
-        NSDictionary *apapa = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
         [weakself.productsDataListArray removeAllObjects];
         
@@ -408,16 +512,46 @@
             [weakself.productsDataListArray addObject:rowModel];
         }
         
-        if (weakself.productsDataListArray.count == 0) {
-            [weakself.baseRemindImageView setHidden:NO];
-        }else{
-            [weakself.baseRemindImageView setHidden:YES];
-        }
-        
         [weakself.mainTableView reloadData];
         
         if (weakself.propagandaDic.allKeys.count == 0) {
             [weakself getPropagandaChar];
+        }
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
+- (void)goApplyProductWithModel:(RowsModel *)rowModel andButton:(UIButton *)sender
+{
+    NSString *appString;
+    NSDictionary *params;
+    if ([sender.titleLabel.text isEqualToString:@"立即申请"]) {
+        appString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductDetailOfApply];
+        params = @{@"productid" : rowModel.productid,
+                   @"token" : [self getValidateToken]};
+    }else if ([sender.titleLabel.text isEqualToString:@"取消申请"]){
+        appString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrderDetailOfCancelApplyString];
+        params = @{@"applyid" : rowModel.productid,
+                   @"token" : [self getValidateToken]};
+    }
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:appString params:params successBlock:^(id responseObject) {
+        BaseModel *appModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:appModel.msg];
+        
+        if ([appModel.code isEqualToString:@"0000"]) {
+            if ([sender.titleLabel.text isEqualToString:@"立即申请"]) {
+                [sender setTitle:@"取消申请" forState:0];
+                [sender setTitleColor:kLightGrayColor forState:0];
+                sender.layer.borderColor = kBorderColor.CGColor;
+            }else if ([sender.titleLabel.text isEqualToString:@"取消申请"]){
+                [sender setTitle:@"立即申请" forState:0];
+                [sender setTitleColor:kTextColor forState:0];
+                sender.layer.borderColor = kButtonColor.CGColor;
+            }
         }
         
     } andFailBlock:^(NSError *error) {
