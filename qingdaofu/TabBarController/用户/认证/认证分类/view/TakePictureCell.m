@@ -113,7 +113,6 @@
             cell.cellImageView.image = [UIImage imageNamed:file];
         }
     }
-    
     return cell;
 }
 

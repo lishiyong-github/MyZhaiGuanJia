@@ -38,8 +38,9 @@
 //        [self.button autoSetDimensionsToSize:CGSizeMake(80, 80)];
         [self.button autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
        
-        [self.label autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.button withOffset:kBigPadding];
-        [self.label autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+//        [self.label autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.button withOffset:kBigPadding];
+//        [self.label autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+        [self.label autoAlignAxis:ALAxisVertical toSameAxisOfView:self.button];
         
         self.didSetupConstraints = YES;
     }
@@ -61,9 +62,9 @@
 {
     if (!_label) {
         _label = [UILabel newAutoLayoutView];
-        _label.font = kSecondFont;
+        _label.font = kSmallFont;
         _label.textAlignment = NSTextAlignmentCenter;
-        _label.textColor = kGrayColor;
+        _label.textColor = kBlackColor;
     }
     return _label;
 }

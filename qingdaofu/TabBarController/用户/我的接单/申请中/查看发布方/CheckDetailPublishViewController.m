@@ -45,14 +45,8 @@
     [super viewDidLoad];
     self.navigationItem.title = self.navTitle;
     self.navigationItem.leftBarButtonItem = self.leftItem;
-    
-//    if (![self.typeDegreeString isEqualToString:@"1"]) {
-//        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightBarBtn];
-//    }
 
     [self.view addSubview:self.checkDetailTableView];
-//    [self.view addSubview:self.appAgreeButton];
-//    [self.appAgreeButton setHidden:YES];
     
     [self.view setNeedsUpdateConstraints];
     
@@ -354,7 +348,13 @@
         if ([response.code isEqualToString:@"0000"]) {
             if (response.certification) {
                 [weakself.certifiDataArray addObject:response.certification];
+            
+                if ([weakself.navTitle containsString:@"申请方"]) {
+                    weakself.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:weakself.rightButton];
+                    [weakself.rightButton setImage:[UIImage imageNamed:@"phone_blue"] forState:0];
+                }
             }
+            
         }else{
             [weakself showHint:response.msg];
         }
@@ -363,6 +363,15 @@
     } andFailBlock:^(NSError *error) {
         
     }];
+}
+
+- (void)rightItemAction
+{
+    CertificationModel *certificationModel = self.certifiDataArray[0];
+    //显示电话
+    NSMutableString *phonne = [NSMutableString stringWithFormat:@"telprompt://%@",certificationModel.mobile];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phonne]];
+
 }
 
 - (void)didReceiveMemoryWarning {

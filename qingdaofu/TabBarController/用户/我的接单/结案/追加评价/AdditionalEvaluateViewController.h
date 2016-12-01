@@ -11,8 +11,8 @@
 @interface AdditionalEvaluateViewController : NetworkViewController
 
 
-@property (nonatomic,strong) NSString *idString;
-@property (nonatomic,strong) NSString *categoryString;
+//@property (nonatomic,strong) NSString *idString;
+//@property (nonatomic,strong) NSString *categoryString;
 //@property (nonatomic,strong) NSString *codeString;
 
 

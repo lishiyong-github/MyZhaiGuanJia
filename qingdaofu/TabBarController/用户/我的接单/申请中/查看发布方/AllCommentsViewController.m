@@ -10,7 +10,6 @@
 #import "EvaluatePhotoCell.h"
 
 #import "EvaluateResponse.h"
-#import "LaunchEvaluateModel.h"
 #import "EvaluateModel.h"
 
 #import "UIButton+WebCache.h"

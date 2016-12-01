@@ -24,6 +24,9 @@
 #import "ReleaseResponse.h"
 #import "RowsModel.h"
 #import "PublishingModel.h"
+#import "ApplyRecordModel.h"
+//轮播图
+#import "BannerResponse.h"
 #import "ImageModel.h"
 
 #import "UIImage+Color.h"
@@ -35,17 +38,19 @@
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *mainTableView;
+////////轮播图
 @property (nonatomic,strong) UIView *mainHeaderView;
 @property (nonatomic,strong) UIScrollView *mainHeaderScrollView;
 @property (nonatomic,strong) UIPageControl *pageControl;
 
-@property (nonatomic,strong) UIScrollView *mainProductScrollView;
+@property (nonatomic,strong) UIScrollView *mainProductScrollView;//产品列表
 
 //json解析
 @property (nonatomic,strong) NSMutableArray *productsDataListArray;
-@property (nonatomic,strong) NSMutableArray *propagandaDataArray;
 @property (nonatomic,strong) NSMutableDictionary *propagandaDic;
-@property (nonatomic,strong) NSString *trackViewUrl;
+@property (nonatomic,strong) NSMutableArray *propagandaArray; //轮播图
+@property (nonatomic,strong) NSString *sumString; //累计交易总量
+
 @end
 
 @implementation NewProductViewController
@@ -95,7 +100,6 @@
         _mainTableView.delegate = self;
         _mainTableView.dataSource = self;
         _mainTableView.separatorColor = kSeparateColor;
-//        _mainTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding*10)];
     }
     return _mainTableView;
 }
@@ -121,28 +125,26 @@
 {
     if (!_mainHeaderScrollView) {
         _mainHeaderScrollView = [UIScrollView newAutoLayoutView];
-        _mainHeaderScrollView.contentSize = CGSizeMake(kScreenWidth*self.propagandaDic.allKeys.count/2, 110);
+        _mainHeaderScrollView.contentSize = CGSizeMake(kScreenWidth*self.propagandaArray.count, 110);
         _mainHeaderScrollView.pagingEnabled = YES;//分页
         _mainHeaderScrollView.delegate = self;
         _mainHeaderScrollView.scrollEnabled = YES;
         _mainHeaderScrollView.showsHorizontalScrollIndicator = NO;
         
-        for (NSInteger t=0; t<self.propagandaDic.allKeys.count/2; t++) {
+        for (NSInteger t=0; t<self.propagandaArray.count; t++) {
             
-            NSString *tyString = [NSString stringWithFormat:@"banner%dios",t+1];
-            NSString *urlString = self.propagandaDic[tyString];
-            NSURL *tyURL = [NSURL URLWithString:urlString];
+            ImageModel *bannerModel = self.propagandaArray[t];
             
             UIButton *imageButton = [[UIButton alloc] initWithFrame:CGRectMake(kScreenWidth*t, 0, kScreenWidth, 110)];
-            [imageButton sd_setBackgroundImageWithURL:tyURL forState:0 placeholderImage:[UIImage imageNamed:@"banner_account_bitmap"]];
+            [imageButton sd_setBackgroundImageWithURL:[NSURL URLWithString:bannerModel.file] forState:0 placeholderImage:[UIImage imageNamed:@"banner_account_bitmap"]];
             [_mainHeaderScrollView addSubview:imageButton];
             
             QDFWeakSelf;
             [imageButton addAction:^(UIButton *btn) {
                 MarkingViewController *markingVC = [[MarkingViewController alloc] init];
                 markingVC.hidesBottomBarWhenPushed = YES;
-                NSString *wewe = [NSString stringWithFormat:@"banner%d",t+1];
-                markingVC.markString = weakself.propagandaDic[wewe];
+                markingVC.markString = bannerModel.url;
+                markingVC.title = bannerModel.title;
                 [weakself.navigationController pushViewController:markingVC animated:YES];
             }];
         }
@@ -168,83 +170,8 @@
     if (!_mainProductScrollView) {
         _mainProductScrollView = [UIScrollView newAutoLayoutView];
         _mainProductScrollView.backgroundColor = kWhiteColor;
-        _mainProductScrollView.contentSize = CGSizeMake(130*self.productsDataListArray.count+10, 200);
+        _mainProductScrollView.contentSize = CGSizeMake(150*self.productsDataListArray.count+10, 200);
         _mainProductScrollView.showsHorizontalScrollIndicator = NO;
-        
-        for (NSInteger k=0; k<self.productsDataListArray.count; k++) {//MainProductview.h
-            MainProductview *productView = [[MainProductview alloc] initWithFrame:CGRectMake(120*k + 10*(k+1), 0, 120, 190)];
-            productView.backgroundColor = kBackColor;
-            [_mainProductScrollView addSubview:productView];
-            
-            //show details
-            RowsModel *rowModel = self.productsDataListArray[k];
-            
-            //image
-            NSString *iiii = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,rowModel.fabuuser.headimg.file];
-            [productView.userImageView sd_setImageWithURL:[NSURL URLWithString:iiii]];
-            
-            //store
-            [productView.storeButton setImage:[UIImage imageNamed:@"nav_collection"] forState:0];
-            [productView.storeButton setImage:[UIImage imageNamed:@"nav_collection_s"] forState:UIControlStateSelected];
-            
-            //category
-            NSArray *ssssArray = [rowModel.categoryLabel componentsSeparatedByString:@","];
-            [productView.categoryLabel1 setText:@"房产抵押"];
-            
-            //委托费用
-            NSString *ttt1 = rowModel.typenumLabel;
-            NSString *ttt2 = [NSString stringWithFormat:@"%@\n",rowModel.typeLabel];
-            NSString *ttt3;
-            if ([rowModel.typeLabel isEqualToString:@"%"]) {
-                 ttt3 = @"风险费率";
-            }else if ([rowModel.typeLabel isEqualToString:@"万"]){
-                ttt3 = @"固定费用";
-            }
-            NSString *tttt = [NSString stringWithFormat:@"%@%@%@",ttt1,ttt2,ttt3];
-            NSMutableAttributedString *attriTT = [[NSMutableAttributedString alloc] initWithString:tttt];
-            [attriTT setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kRedColor} range:NSMakeRange(0,ttt1.length)];
-            [attriTT setAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kRedColor} range:NSMakeRange(ttt1.length,ttt2.length)];
-            [attriTT setAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(ttt1.length+ttt2.length,ttt3.length)];
-            NSMutableParagraphStyle *stylrr = [[NSMutableParagraphStyle alloc] init];
-            [stylrr setLineSpacing:4];
-            stylrr.alignment = 1;
-            [attriTT addAttribute:NSParagraphStyleAttributeName value:stylrr range:NSMakeRange(0, tttt.length)];
-            [productView.leftButton setAttributedTitle:attriTT forState:0];
-            
-            //委托金额
-            NSString *mmm1 = rowModel.accountLabel;
-            NSString *mmm2 = [NSString stringWithFormat:@"万\n"];
-            NSString *mmm3 = @"委托金额";
-            NSString *mmmm = [NSString stringWithFormat:@"%@%@%@",mmm1,mmm2,mmm3];
-            NSMutableAttributedString *attriMMM = [[NSMutableAttributedString alloc] initWithString:mmmm];
-            [attriMMM setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kRedColor} range:NSMakeRange(0,mmm1.length)];
-            [attriMMM setAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kRedColor} range:NSMakeRange(mmm1.length,mmm2.length)];
-            [attriMMM setAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(mmm1.length+mmm2.length,mmm3.length)];
-            NSMutableParagraphStyle *styler = [[NSMutableParagraphStyle alloc] init];
-            [styler setLineSpacing:4];
-            styler.alignment = 1;
-            [attriMMM addAttribute:NSParagraphStyleAttributeName value:styler range:NSMakeRange(0, mmmm.length)];
-            [productView.rightButton setAttributedTitle:attriMMM forState:0];
-            
-            //立即申请
-            [productView.applyButton setTitle:@"立即申请" forState:0];
-            [productView.applyButton setTitleColor:kTextColor forState:0];
-            productView.applyButton.layer.borderColor = kButtonColor.CGColor;
-            
-            //action
-            QDFWeakSelf;
-            [productView.applyButton addAction:^(UIButton *btn) {
-                [weakself goApplyProductWithModel:rowModel andButton:btn];
-            }];
-            
-            [productView addAction:^(UIButton *btn) {
-                ProductsDetailsViewController *productsDetailVC = [[ProductsDetailsViewController alloc] init];
-                productsDetailVC.hidesBottomBarWhenPushed = YES;
-                productsDetailVC.productid = rowModel.productid;
-                [weakself.navigationController pushViewController:productsDetailVC animated:YES];
-            }];
-            
-        }
     }
     return _mainProductScrollView;
 }
@@ -257,20 +184,12 @@
     return _productsDataListArray;
 }
 
-- (NSMutableArray *)propagandaDataArray
+- (NSMutableArray *)propagandaArray
 {
-    if (!_propagandaDataArray) {
-        _propagandaDataArray = [NSMutableArray array];
+    if (!_propagandaArray) {
+        _propagandaArray = [NSMutableArray array];
     }
-    return _propagandaDataArray;
-}
-
-- (NSMutableDictionary *)propagandaDic
-{
-    if (!_propagandaDic) {
-        _propagandaDic = [NSMutableDictionary dictionary];
-    }
-    return _propagandaDic;
+    return _propagandaArray;
 }
 
 #pragma mark - tableView delelagte and datasource
@@ -289,7 +208,7 @@
     if (indexPath.section == 0) {//累计交易总量
         return 90;
     }else if (indexPath.section == 1){
-        return 110;
+        return 100;
     }
     return 122;//产品列表
 }
@@ -309,13 +228,13 @@
         cell.userNameButton.titleLabel.numberOfLines = 0;
         
         NSString *all1 = @"累计交易总量\n";
-        NSString *all2 = @"120209999";
+        NSString *all2 = [NSString getValidStringFromString:self.sumString toString:@"1000000"];
         NSString *all3 = @"元";
         NSString *all = [NSString stringWithFormat:@"%@%@%@",all1,all2,all3];
         NSMutableAttributedString *attributeAll = [[NSMutableAttributedString alloc] initWithString:all];
-        [attributeAll setAttributes:@{NSFontAttributeName : kFourFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(0, all1.length)];
+        [attributeAll setAttributes:@{NSFontAttributeName : kFirstFont,NSForegroundColorAttributeName:kBlackColor} range:NSMakeRange(0, all1.length)];
         [attributeAll setAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:30],NSForegroundColorAttributeName:kTextColor} range:NSMakeRange(all1.length, all2.length)];
-        [attributeAll setAttributes:@{NSFontAttributeName : kFourFont,NSForegroundColorAttributeName:kTextColor} range:NSMakeRange(all1.length  + all2.length,all3.length)];
+        [attributeAll setAttributes:@{NSFontAttributeName : kNavFont,NSForegroundColorAttributeName:kTextColor} range:NSMakeRange(all1.length  + all2.length,all3.length)];
 
         NSMutableParagraphStyle *styleAll = [[NSMutableParagraphStyle alloc] init];
         [styleAll setLineSpacing:kSmallPadding];
@@ -449,7 +368,6 @@
         footerView.backgroundColor = kBackColor;
         
         if (self.productsDataListArray.count > 0) {
-            
             //推荐产品
             UIButton *sssButton = [UIButton newAutoLayoutView];
             [sssButton setTitle:@"推荐产品" forState:0];
@@ -472,6 +390,100 @@
             [self.mainProductScrollView autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:footerView];
             [self.mainProductScrollView autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:footerView];
             [self.mainProductScrollView autoSetDimension:ALDimensionHeight toSize:200];
+            
+            /////////
+            for (NSInteger k=0; k<self.productsDataListArray.count; k++) {
+                MainProductview *productView = [[MainProductview alloc] initWithFrame:CGRectMake(140*k + 10*(k+1), 0, 140, 190)];
+                productView.backgroundColor = kBackColor;
+                [self.mainProductScrollView addSubview:productView];
+                
+                RowsModel *rowModel = self.productsDataListArray[k];
+                
+                //image
+                NSString *iiii = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,rowModel.fabuuser.headimg.file];
+                [productView.userImageView sd_setImageWithURL:[NSURL URLWithString:iiii]];
+                
+                //store state
+                if (!rowModel.collectSelf) {//未收藏
+                [productView.storeButton setImage:[UIImage imageNamed:@"nav_collection"] forState:0];
+                }else{
+                    [productView.storeButton setImage:[UIImage imageNamed:@"nav_collection_s"] forState:0];
+                }
+                QDFWeakSelf;
+                [productView.storeButton addAction:^(UIButton *btn) {
+                    [weakself goStoreProductWithModel:rowModel andButton:btn];
+                }];
+                
+                //category
+                NSArray *ssssArray = [rowModel.categoryLabel componentsSeparatedByString:@","];
+                [productView.categoryLabel1 setText:@"房产抵押"];
+                
+                //委托费用
+                NSString *ttt1 = rowModel.typenumLabel;
+                NSString *ttt2 = [NSString stringWithFormat:@"%@\n",rowModel.typeLabel];
+                NSString *ttt3;
+                if ([rowModel.typeLabel isEqualToString:@"%"]) {
+                    ttt3 = @"风险费率";
+                }else if ([rowModel.typeLabel isEqualToString:@"万"]){
+                    ttt3 = @"固定费用";
+                }
+                NSString *tttt = [NSString stringWithFormat:@"%@%@%@",ttt1,ttt2,ttt3];
+                NSMutableAttributedString *attriTT = [[NSMutableAttributedString alloc] initWithString:tttt];
+                [attriTT setAttributes:@{NSFontAttributeName:kBoldFont1,NSForegroundColorAttributeName:kRedColor} range:NSMakeRange(0,ttt1.length)];
+                [attriTT setAttributes:@{NSFontAttributeName:kFont10,NSForegroundColorAttributeName:kRedColor} range:NSMakeRange(ttt1.length,ttt2.length)];
+                [attriTT setAttributes:@{NSFontAttributeName:kTabBarFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(ttt1.length+ttt2.length,ttt3.length)];
+                NSMutableParagraphStyle *stylrr = [[NSMutableParagraphStyle alloc] init];
+                [stylrr setLineSpacing:4];
+                stylrr.alignment = 1;
+                [attriTT addAttribute:NSParagraphStyleAttributeName value:stylrr range:NSMakeRange(0, tttt.length)];
+                [productView.leftButton setAttributedTitle:attriTT forState:0];
+                
+                //委托金额
+                NSString *mmm1 = rowModel.accountLabel;
+                NSString *mmm2 = [NSString stringWithFormat:@"万\n"];
+                NSString *mmm3 = @"委托金额";
+                NSString *mmmm = [NSString stringWithFormat:@"%@%@%@",mmm1,mmm2,mmm3];
+                NSMutableAttributedString *attriMMM = [[NSMutableAttributedString alloc] initWithString:mmmm];
+                [attriMMM setAttributes:@{NSFontAttributeName:kBoldFont1,NSForegroundColorAttributeName:kRedColor} range:NSMakeRange(0,mmm1.length)];
+                [attriMMM setAttributes:@{NSFontAttributeName:kFont10,NSForegroundColorAttributeName:kRedColor} range:NSMakeRange(mmm1.length,mmm2.length)];
+                [attriMMM setAttributes:@{NSFontAttributeName:kTabBarFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(mmm1.length+mmm2.length,mmm3.length)];
+                NSMutableParagraphStyle *styler = [[NSMutableParagraphStyle alloc] init];
+                [styler setLineSpacing:4];
+                styler.alignment = 1;
+                [attriMMM addAttribute:NSParagraphStyleAttributeName value:styler range:NSMakeRange(0, mmmm.length)];
+                [productView.rightButton setAttributedTitle:attriMMM forState:0];
+                
+                //立即申请
+                if ([rowModel.status integerValue] > 10) {
+                    [productView.applyButton setTitle:@"已撮合" forState:0];
+                    [productView.applyButton setTitleColor:kLightGrayColor  forState:0];
+                    productView.applyButton.layer.borderColor = kBorderColor.CGColor;
+                }else if(rowModel.applySelf){
+                    [productView.applyButton setTitleColor:kLightGrayColor  forState:0];
+                    productView.applyButton.layer.borderColor = kBorderColor.CGColor;
+                    if ([rowModel.status integerValue] == 10) {
+                        [productView.applyButton setTitle:@"取消申请" forState:0];
+                    }else{
+                        [productView.applyButton setTitle:@"面谈中" forState:0];
+                    }
+                }else{
+                    [productView.applyButton setTitle:@"立即申请" forState:0];
+                    [productView.applyButton setTitleColor:kTextColor forState:0];
+                    productView.applyButton.layer.borderColor = kButtonColor.CGColor;
+                }
+                [productView.applyButton addAction:^(UIButton *btn) {
+                    [weakself goApplyProductWithModel:rowModel andButton:btn];
+                }];
+                
+                //check details
+                [productView addAction:^(UIButton *btn) {
+                    ProductsDetailsViewController *productsDetailVC = [[ProductsDetailsViewController alloc] init];
+                    productsDetailVC.hidesBottomBarWhenPushed = YES;
+                    productsDetailVC.productid = rowModel.productid;
+                    [weakself.navigationController pushViewController:productsDetailVC animated:YES];
+                }];
+                
+            }
         }
         
         return footerView;
@@ -499,8 +511,7 @@
     
     NSDictionary *params = @{@"page" : @"1",
                              @"limit" : @"10",
-                             @"token" : [self getValidateToken]
-                             };
+                             @"showtype" : @"1"};
     QDFWeakSelf;
     [self requestDataPostWithString:allProString params:params successBlock:^(id responseObject) {
         
@@ -512,11 +523,11 @@
             [weakself.productsDataListArray addObject:rowModel];
         }
         
+        weakself.sumString = response.sum;
+        
         [weakself.mainTableView reloadData];
         
-        if (weakself.propagandaDic.allKeys.count == 0) {
-            [weakself getPropagandaChar];
-        }
+        [weakself getPropagandaChar];
         
     } andFailBlock:^(NSError *error) {
         
@@ -533,7 +544,7 @@
                    @"token" : [self getValidateToken]};
     }else if ([sender.titleLabel.text isEqualToString:@"取消申请"]){
         appString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrderDetailOfCancelApplyString];
-        params = @{@"applyid" : rowModel.productid,
+        params = @{@"applyid" : rowModel.applySelf.applyid,
                    @"token" : [self getValidateToken]};
     }
     
@@ -543,15 +554,37 @@
         [weakself showHint:appModel.msg];
         
         if ([appModel.code isEqualToString:@"0000"]) {
-            if ([sender.titleLabel.text isEqualToString:@"立即申请"]) {
-                [sender setTitle:@"取消申请" forState:0];
-                [sender setTitleColor:kLightGrayColor forState:0];
-                sender.layer.borderColor = kBorderColor.CGColor;
-            }else if ([sender.titleLabel.text isEqualToString:@"取消申请"]){
-                [sender setTitle:@"立即申请" forState:0];
-                [sender setTitleColor:kTextColor forState:0];
-                sender.layer.borderColor = kButtonColor.CGColor;
-            }
+            [weakself getRecommendProductslist];
+        }
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
+- (void)goStoreProductWithModel:(RowsModel *)rowModel andButton:(UIButton *)sender
+{
+    NSString *saveString;
+    NSDictionary *params;
+    if (rowModel.collectSelf) {//(取消收藏)
+        saveString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductDetailOfCancelSave];
+        params = @{@"token" : [self getValidateToken],
+                   @"productid" : rowModel.productid,
+                   @"create_by" : rowModel.collectSelf.create_by
+                   };
+    }else{//(收藏)
+        saveString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductDetailOfSave];
+        params = @{@"token" : [self getValidateToken],
+                   @"productid" : rowModel.productid
+                   };
+    }
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:saveString params:params successBlock:^(id responseObject) {
+        BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:baseModel.msg];
+        if ([baseModel.code isEqualToString:@"0000"]) {
+            [weakself getRecommendProductslist];
         }
         
     } andFailBlock:^(NSError *error) {
@@ -562,11 +595,15 @@
 //轮播图
 - (void)getPropagandaChar
 {
-    NSString *propagandaString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPropagandaString];
+    NSString *propagandaString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPropagandasString];
     QDFWeakSelf;
     [self requestDataPostWithString:propagandaString params:nil successBlock:^(id responseObject) {
-        NSDictionary *dedfr = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        weakself.propagandaDic = [NSMutableDictionary dictionaryWithDictionary:dedfr];
+        BannerResponse *response = [BannerResponse objectWithKeyValues:responseObject];
+        
+        for (ImageModel *nannerModel in response.banner) {
+            [weakself.propagandaArray addObject:nannerModel];
+        }
+        
         weakself.mainTableView.tableHeaderView = weakself.mainHeaderView;
         
     } andFailBlock:^(NSError *error) {
@@ -594,7 +631,7 @@
     NSDictionary *infoDic1 = resultArr[0];
     //需要version,trackViewUrl,trackName
     NSString *latestVersion = infoDic1[@"version"];
-    _trackViewUrl = infoDic1[@"trackViewUrl"];
+    NSString *trackUrl = infoDic1[@"trackViewUrl"];
     NSString *trackName = infoDic1[@"trackName"];
     
     //当前版本
@@ -604,26 +641,38 @@
     //比较版本号
     NSString *s1 = [currentVersion substringToIndex:1];//当前
     NSString *s2 = [latestVersion substringToIndex:1];//最新
-    if ([s1 integerValue] <= [s2 integerValue]) {//第一位
+    if ([s1 integerValue] == [s2 integerValue]) {//第一位
         NSString *s11 = [currentVersion substringWithRange:NSMakeRange(2,1)];
-        NSString *s12 = [latestVersion substringWithRange:NSMakeRange(2,1)];
-
-        if ([s11 intValue] < [s12 intValue]) {
-            NSString *titleStr = [NSString stringWithFormat:@"检查更新:%@",trackName];
-            NSString *messageStr = [NSString stringWithFormat:@"发现新版本(%@),是否升级?",latestVersion];
-            
-            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:titleStr message:messageStr preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleDefault handler:nil];
-            
-            UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/us/app/qing-dao-fu-zhai-guan-jia/id1116869191?l=zh&ls=1&mt=8"]];
-            }];
-            
-            [alertController addAction:action1];
-            [alertController addAction:action2];
-            [self presentViewController:alertController animated:YES completion:nil];
+        NSString *s22 = [latestVersion substringWithRange:NSMakeRange(2,1)];
+        if ([s11 intValue] == [s22 intValue]) {
+            NSString *s111 = [currentVersion substringFromIndex:4];
+            NSString *s222 = [latestVersion substringFromIndex:4];
+            if ([s111 integerValue] < [s222 integerValue]) {
+                [self showNewVersionAlertWithTrackUrl:trackUrl andTrackName:trackName andLatestVersion:latestVersion];
+            }
+        }else if ([s11 integerValue] < [s22 integerValue]){
+            [self showNewVersionAlertWithTrackUrl:trackUrl andTrackName:trackName andLatestVersion:latestVersion];
         }
+    }else if ([s1 integerValue] < [s2 integerValue]){
+        [self showNewVersionAlertWithTrackUrl:trackUrl andTrackName:trackName andLatestVersion:latestVersion];
     }
+}
+
+- (void)showNewVersionAlertWithTrackUrl:(NSString *)trackUrl andTrackName:(NSString *)trackName andLatestVersion:(NSString *)latestVersion
+{
+    NSString *titleStr = [NSString stringWithFormat:@"检查更新:%@",trackName];
+    NSString *messageStr = [NSString stringWithFormat:@"发现新版本(%@),是否升级?",latestVersion];
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:titleStr message:messageStr preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleDefault handler:nil];
+    
+    UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:trackUrl]];//@"itms-apps://itunes.apple.com/us/app/qing-dao-fu-zhai-guan-jia/id1116869191?l=zh&ls=1&mt=8"
+    }];
+    
+    [alertController addAction:action1];
+    [alertController addAction:action2];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning {

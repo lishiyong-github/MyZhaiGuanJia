@@ -13,5 +13,6 @@
 
 /////////
 @property (nonatomic,strong) NSMutableArray *data;
+@property (nonatomic,copy) NSString *sum;  //累计交易总量
 
 @end

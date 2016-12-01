@@ -15,12 +15,14 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         [self.contentView addSubview:self.evaNameButton];
+        [self.contentView addSubview:self.evaNameLabel];
         [self.contentView addSubview:self.evaTimeLabel];
         [self.contentView addSubview:self.evaStarImage];
         [self.contentView addSubview:self.evaTextLabel];
         [self.contentView addSubview:self.evaProImageView1];
         [self.contentView addSubview:self.evaProImageView2];
-//        [self.contentView addSubview:self.evaProductButton];
+        
+        self.topTextConstraints = [self.evaStarImage autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.evaNameButton withOffset:kSpacePadding];
         
         [self.contentView setNeedsUpdateConstraints];
     }
@@ -33,13 +35,16 @@
         
         [self.evaNameButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
         [self.evaNameButton autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kSpacePadding];
+        [self.evaNameButton autoSetDimensionsToSize:CGSizeMake(30, 30)];
+        
+        [self.evaNameLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.evaNameButton withOffset:kBigPadding];
+        [self.evaNameLabel autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.evaNameButton];
         
         [self.evaTimeLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
-        [self.evaTimeLabel autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.evaNameButton];
+        [self.evaTimeLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.evaNameButton];
         
         [self.evaStarImage autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
-        [self.evaStarImage autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.evaNameButton];
-        [self.evaStarImage autoSetDimensionsToSize:CGSizeMake(60, 12)];
+        [self.evaStarImage autoSetDimensionsToSize:CGSizeMake(60, kBigPadding)];
         
         [self.evaTextLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.evaStarImage withOffset:kSpacePadding];
         [self.evaTextLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
@@ -54,32 +59,30 @@
         [self.evaProImageView2 autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.evaProImageView1];
         [self.evaProImageView2 autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.evaProImageView1];
         
-//        [self.evaProductButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
-//        [self.evaProductButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.evaProImageView1 withOffset:kSmallPadding];
-//        [self.evaProductButton autoSetDimension:ALDimensionHeight toSize:40];
-//        [self.evaProductButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
-//        
-//        [self.evaInnnerButton autoAlignAxisToSuperviewMarginAxis:ALAxisHorizontal];
-//        [self.evaInnnerButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kSmallPadding];
-//        [self.evaInnnerButton autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.evaInnerImage withOffset:-kBigPadding];
-//        
-//        [self.evaInnerImage autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:10];
-//        [self.evaInnerImage autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.evaInnnerButton];
-        
         self.didSetupConstraints = YES;
     }
     [super updateConstraints];
 }
 
+
 - (UIButton *)evaNameButton
 {
     if (!_evaNameButton) {
         _evaNameButton = [UIButton newAutoLayoutView];
-        [_evaNameButton setTitleColor:kGrayColor forState:0];
-        _evaNameButton.titleLabel.font = kBigFont;
-//        _evaNameButton.textColor = kGrayColor;
+        _evaNameButton.layer.cornerRadius = 15;
+        _evaNameButton.layer.masksToBounds = YES;
     }
     return _evaNameButton;
+}
+
+- (UILabel *)evaNameLabel
+{
+    if (!_evaNameLabel) {
+        _evaNameLabel = [UILabel newAutoLayoutView];
+        _evaNameLabel.textColor = kGrayColor;
+        _evaNameLabel.font = kBigFont;
+    }
+    return _evaNameLabel;
 }
 
 - (UILabel *)evaTimeLabel

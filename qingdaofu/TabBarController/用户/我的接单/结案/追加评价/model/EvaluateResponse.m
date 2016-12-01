@@ -13,12 +13,14 @@
 + (NSDictionary *)replacedKeyFromPropertyName
 {
     return @{@"Comments1" : @"result.data.Comments1",
+             @"Comments2" : @"result.data.Comments2",
              @"commentsScore" : @"result.data.commentsScore"};
 }
 
 + (NSDictionary *)objectClassInArray
 {
-    return @{@"Comments1" : @"EvaluateModel"};
+    return @{@"Comments1" : @"EvaluateModel",
+             @"Comments2" : @"EvaluateModel"};
 }
 
 @end

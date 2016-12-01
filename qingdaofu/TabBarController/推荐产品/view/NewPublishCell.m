@@ -29,19 +29,23 @@
 {
     if (!self.didSetupConstraints) {
         NSArray *views = @[self.functionButton1,self.functionButton2,self.functionButton3,self.functionButton4];
-        [views autoSetViewsDimensionsToSize:CGSizeMake(kScreenWidth/4,80)];
+        [views autoSetViewsDimension:ALDimensionWidth toSize:kScreenWidth/4];
         
         [views autoMatchViewsDimension:ALDimensionWidth];
         [views autoAlignViewsToAxis:ALAxisHorizontal];
         
-        [self.functionButton1 autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kBigPadding];
+        [self.functionButton1 autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:20];
         [self.functionButton1 autoPinEdgeToSuperviewEdge:ALEdgeLeft];
+        [self.functionButton1 autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
 
         [self.functionButton2 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.functionButton1];
+        [self.functionButton2 autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:20];
 
         [self.functionButton3 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.functionButton2];
+        [self.functionButton3 autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:20];
 
         [self.functionButton4 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.functionButton3];
+        [self.functionButton4 autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:20];
 
         self.didSetupConstraints = YES;
     }
@@ -53,7 +57,7 @@
     if (!_functionButton1) {
         _functionButton1 = [SingleButton newAutoLayoutView];
         _functionButton1.label.text = @"诉讼保全";
-        [_functionButton1.button setImage:[UIImage imageNamed:@"btn_financing"] forState:0];
+        [_functionButton1.button setImage:[UIImage imageNamed:@"home_preservation"] forState:0];
         _functionButton1.button.userInteractionEnabled = NO;
 
         QDFWeakSelf;
@@ -71,7 +75,7 @@
     if (!_functionButton2) {
         _functionButton2 = [SingleButton newAutoLayoutView];
         _functionButton2.label.text = @"申请保函";
-        [_functionButton2.button setImage:[UIImage imageNamed:@"btn_collection"] forState:0];
+        [_functionButton2.button setImage:[UIImage imageNamed:@"home_letter"] forState:0];
         _functionButton2.button.userInteractionEnabled = NO;
         QDFWeakSelf;
         [_functionButton2 addAction:^(UIButton *btn) {
@@ -88,7 +92,7 @@
     if (!_functionButton3) {
         _functionButton3 = [SingleButton newAutoLayoutView];
         _functionButton3.label.text = @"房产评估";
-        [_functionButton3.button setImage:[UIImage imageNamed:@"btn_litigation"] forState:0];
+        [_functionButton3.button setImage:[UIImage imageNamed:@"home_property"] forState:0];
         _functionButton3.button.userInteractionEnabled = NO;
         
         QDFWeakSelf;
@@ -106,7 +110,7 @@
     if (!_functionButton4) {
         _functionButton4 = [SingleButton newAutoLayoutView];
         _functionButton4.label.text = @"产调查询";
-        [_functionButton4.button setImage:[UIImage imageNamed:@"btn_financing"] forState:0];
+        [_functionButton4.button setImage:[UIImage imageNamed:@"home_production"] forState:0];//btn_financing
         _functionButton4.button.userInteractionEnabled = NO;
         
         QDFWeakSelf;

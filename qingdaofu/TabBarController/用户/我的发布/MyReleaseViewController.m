@@ -11,12 +11,12 @@
 #import "ReleaseEndListViewController.h"  //终止列表
 #import "MyReleaseDetailsViewController.h"  //详情
 
+#import "MoreMessagesViewController.h"  //完善信息
 #import "ApplyRecordViewController.h"     //查看申请
 #import "PaceViewController.h"          //查看进度
 #import "CheckDetailPublishViewController.h"  //联系接单方
 #import "AdditionalEvaluateViewController.h"  //去评价
 #import "EvaluateListsViewController.h"  //查看评价
-#import "MoreMessagesViewController.h"  //完善信息
 
 #import "ExtendHomeCell.h"
 #import "EvaTopSwitchView.h"
@@ -24,6 +24,7 @@
 #import "ReleaseResponse.h"
 #import "RowsModel.h"
 #import "OrdersModel.h"
+#import "ApplyRecordModel.h"
 
 @interface MyReleaseViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -196,12 +197,16 @@
     }else if ([rowModel.statusLabel isEqualToString:@"处理中"]){
         [cell.actButton2 setTitle:@"查看进度" forState:0];
     }else if ([rowModel.statusLabel isEqualToString:@"已结案"]){
-        [cell.actButton2 setTitle:@"评价" forState:0];
+        if ([rowModel.commentTotal integerValue] > 0) {
+            [cell.actButton2 setTitle:@"查看评价" forState:0];
+        }else{
+            [cell.actButton2 setTitle:@"评价" forState:0];
+        }
     }
     
     QDFWeakSelf;
     [cell.actButton2 addAction:^(UIButton *btn) {
-        [weakself goToCheckApplyRecordsOrAdditionMessage:btn.titleLabel.text withSection:indexPath.section withEvaString:@""];
+        [weakself goToCheckApplyRecordsOrAdditionMessage:btn.titleLabel.text andModel:rowModel];
     }];
     
     //details
@@ -271,8 +276,6 @@
     QDFWeakSelf;
     [self requestDataPostWithString:myReleaseString params:params successBlock:^(id responseObject) {
         
-        NSDictionary *sososo = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        
         if ([page intValue] == 1) {
             [weakself.releaseDataArray removeAllObjects];
         }
@@ -322,12 +325,8 @@
     });
 }
 
-
-
-- (void)goToCheckApplyRecordsOrAdditionMessage:(NSString *)string withSection:(NSInteger)section withEvaString:(NSString *)evaString
+- (void)goToCheckApplyRecordsOrAdditionMessage:(NSString *)string andModel:(RowsModel *)ymodel
 {
-    RowsModel *ymodel = self.releaseDataArray[section];
-    
     if ([string isEqualToString:@"完善资料"]) {//发布成功
         MoreMessagesViewController *moreMessagesVC = [[MoreMessagesViewController alloc] init];
         moreMessagesVC.productid = ymodel.productid;
@@ -336,23 +335,25 @@
         CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
         checkDetailPublishVC.navTitle = @"申请方详情";
         checkDetailPublishVC.productid = ymodel.productid;
-        checkDetailPublishVC.userid = ymodel.productApply.create_by;
+        checkDetailPublishVC.userid = ymodel.curapply.create_by;
+        checkDetailPublishVC.mobile = ymodel.curapply.mobile;
         [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
-        
-        if ([ymodel.productApply.mobile isEqualToString:@""] || !ymodel.productApply.mobile || ymodel.productApply.mobile == nil) {
-            [self showHint:@"申请方未认证，不能打电话"];
-        }else{
-            NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",ymodel.productApply.mobile];
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
-        }
-    }if ([string isEqualToString:@"查看进度"]) {//处理中
-        PaceViewController *paceVC = [[PaceViewController alloc] init];
-        [self.navigationController pushViewController:paceVC animated:YES];
-    }if ([string isEqualToString:@"评价"]) {//结案
+    }else if ([string isEqualToString:@"查看进度"]) {//处理中
+        MyReleaseDetailsViewController *myReleaseDetailsVC = [[MyReleaseDetailsViewController alloc] init];
+        myReleaseDetailsVC.productid = ymodel.productid;
+        [self.navigationController pushViewController:myReleaseDetailsVC animated:YES];
+    }else if ([string isEqualToString:@"评价"]) {//结案
         AdditionalEvaluateViewController *additionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
-        additionalEvaluateVC.ordersid = ymodel.productApply.orders.ordersid;
+        additionalEvaluateVC.typeString = @"发布方";
+        additionalEvaluateVC.evaString = @"0";
+        additionalEvaluateVC.ordersid = ymodel.orders.ordersid;
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:additionalEvaluateVC];
         [self presentViewController:nav animated:YES completion:nil];
+    }else if ([string isEqualToString:@"查看评价"]){
+        EvaluateListsViewController *evaluateListsVC = [[EvaluateListsViewController alloc] init];
+        evaluateListsVC.typeString = @"发布方";
+        evaluateListsVC.ordersid = ymodel.orders.ordersid;
+        [self.navigationController pushViewController:evaluateListsVC animated:YES];
     }
 }
 

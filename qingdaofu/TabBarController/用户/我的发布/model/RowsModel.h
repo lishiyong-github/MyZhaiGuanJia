@@ -13,12 +13,22 @@
 @class CompleteResponse; //发布方认证信息
 @class ProductOrdersClosedOrEndApplyModel;  //处理结案或终止
 @class ProductDetailModel;
+@class OrdersModel;
 
 @interface RowsModel : NSObject
 
 /////////
 @property (nonatomic,copy) NSString *apply;
 @property (nonatomic,copy) NSString *applystatussss;//产品列表判断申请状态
+@property (nonatomic,copy) NSString *commentTotal;  //评论次数
+
+//首页产品列表
+@property (nonatomic,strong) ApplyRecordModel *collectSelf;  //收藏与否
+@property (nonatomic,strong) ApplyRecordModel *applySelf;  //申请与否
+
+//我的发布列表
+@property (nonatomic,strong) ApplyRecordModel *curapply;  //当前申请人信息
+@property (nonatomic,strong) OrdersModel *orders;  //接单人
 
 
 @property (nonatomic,copy) NSString *applyCount;  //申请次数（产品详情用）

@@ -22,7 +22,7 @@
 
 + (NSDictionary *)objectClassInArray
 {
-    return @{@"headimg" : @"ImageModel"};
+    return @{@"filesImg" : @"ImageModel"};
 }
 
 

@@ -8,6 +8,7 @@
 
 #import "NetworkViewController.h"
 #import "MBProgressHUD.h"
+#import "ImageResponse.h"
 
 @interface NetworkViewController ()
 
@@ -54,10 +55,12 @@
     
     QDFWeakSelf;
     [self requestDataPostWithString:uploadsString params:params successBlock:^(id responseObject) {
-        ImageModel *imModel = [ImageModel objectWithKeyValues:responseObject];
         [weakself hideHud];
+        
+        ImageResponse *imResponse = [ImageResponse objectWithKeyValues:responseObject];
+        
         if (weakself.didGetValidImage) {
-            weakself.didGetValidImage(imModel);
+            weakself.didGetValidImage(imResponse.result);
         }
     } andFailBlock:^(NSError *error) {
         [weakself hideHud];

@@ -11,11 +11,15 @@
 
 @interface ApplyRecordModel : NSObject
 
+//申请model
 @property (nonatomic,copy) NSString *applyid;
 @property (nonatomic,copy) NSString *create_at;
 @property (nonatomic,copy) NSString *create_by;
 @property (nonatomic,copy) NSString *productid;
 @property (nonatomic,copy) NSString *status;
+
+//收藏model
+@property (nonatomic,copy) NSString *collectid;
 
 //生成者信息
 @property (nonatomic,copy) NSString *mobile;

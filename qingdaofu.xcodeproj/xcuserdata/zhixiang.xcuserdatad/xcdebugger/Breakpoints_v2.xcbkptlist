@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "qingdaofu/TabBarController/&#x63a8;&#x8350;&#x4ea7;&#x54c1;/controller/NewProductViewController.m"
-            timestampString = "502191658.856559"
+            timestampString = "502274741.3882"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "526"
-            endingLineNumber = "526"
-            landmarkName = "-goApplyProductWithModel:andButton:"
+            startingLineNumber = "583"
+            endingLineNumber = "583"
+            landmarkName = "-goStoreProductWithModel:andButton:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,13 +25,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "qingdaofu/TabBarController/&#x7528;&#x6237;/&#x767b;&#x5f55;&#x6ce8;&#x518c;/controller/RegisterAgreementViewController.m"
-            timestampString = "502189895.649353"
+            filePath = "qingdaofu/TabBarController/&#x7528;&#x6237;/&#x6211;&#x7684;&#x53d1;&#x5e03;/MyReleaseViewController.m"
+            timestampString = "502277719.055812"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "47"
-            endingLineNumber = "47"
-            landmarkName = "-registerWebview"
+            startingLineNumber = "330"
+            endingLineNumber = "330"
+            landmarkName = "-goToCheckApplyRecordsOrAdditionMessage:andModel:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

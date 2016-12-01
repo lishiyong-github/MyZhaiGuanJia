@@ -12,7 +12,8 @@
 
 + (NSDictionary *)replacedKeyFromPropertyName
 {
-    return @{@"data" : @"result.data"};
+    return @{@"data" : @"result.data",
+             @"sum" : @"result.sum"};
 }
 
 + (NSDictionary *)objectClassInArray

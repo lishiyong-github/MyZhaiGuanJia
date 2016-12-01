@@ -9,20 +9,22 @@
 #import "MyReleaseDetailsViewController.h"
 
 #import "MoreMessagesViewController.h"  //更多信息
-
-//面谈中
 #import "ApplyRecordViewController.h"   //申请记录
 #import "DealingEndViewController.h"  //处理终止
 #import "DealingCloseViewController.h" //处理结案
 #import "RequestEndViewController.h" //申请终止
-#import "RequestCloseViewController.h"
 #import "SignProtocolViewController.h" //签约协议
 #import "AgreementViewController.h"  //居间协议
 #import "CheckDetailPublishViewController.h"  //查看接单方信息
 #import "PaceViewController.h"  //尽职调查
+//#import "AllEvaluationViewController.h"  //查看评价
+#import "AdditionalEvaluateViewController.h"  //去评价
+#import "EvaluateListsViewController.h"//评价列表
 
 #import "BaseRemindButton.h"
 #import "DialogBoxView.h"//对话框
+#import "PublishCombineView.h"  //底部视图
+#import "BaseCommitButton.h" //评价
 
 #import "MineUserCell.h"//完善信息
 #import "NewPublishDetailsCell.h"//进度
@@ -30,20 +32,15 @@
 #import "NewsTableViewCell.h"//选择申请方
 #import "ProductCloseCell.h"  //结案
 #import "ProgressCell.h"
-
-//面谈中
 #import "OrderPublishCell.h"
-#import "PublishCombineView.h"  //底部视图
+#import "OrdersModel.h"
+
 
 #import "PublishingResponse.h"
 #import "RowsModel.h"
 #import "ApplyRecordModel.h"  //申请人
 #import "ProductOrdersClosedOrEndApplyModel.h"  //处理终止或结案申请
-
-#import "OrdersModel.h"
-#import "OrdersLogsModel.h"
-
-#import "UIView+UITextColor.h"
+#import "OrdersLogsModel.h" //日志
 
 @interface MyReleaseDetailsViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -52,6 +49,7 @@
 @property (nonatomic,strong) UITableView *releaseDetailTableView;
 @property (nonatomic,strong) PublishCombineView *publishCheckView;
 @property (nonatomic,strong) DialogBoxView *dialogBoxView;//对话框
+@property (nonatomic,strong) BaseCommitButton *evaluateButton;  //评价
 
 @property (nonatomic,strong) BaseRemindButton *EndOrloseRemindButton;  //新的申请记录提示信息
 
@@ -82,6 +80,8 @@
     [self.publishCheckView setHidden:YES];
     [self.view addSubview:self.dialogBoxView];
     [self.dialogBoxView setHidden:YES];
+    [self.view addSubview:self.evaluateButton];
+    [self.evaluateButton setHidden:YES];
     
     [self.view setNeedsUpdateConstraints];
     
@@ -92,14 +92,17 @@
 {
     if (!self.didSetupConstraints) {
         [self.releaseDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
-//        [self.releaseDetailTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.publishCheckView];
         
+        //处理中之前（发布中，面谈中）
         [self.publishCheckView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-//        [self.publishCheckView autoSetDimension:ALDimensionHeight toSize:92];
         
-        
+        //处理中的对话框
         [self.dialogBoxView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
         [self.dialogBoxView autoSetDimension:ALDimensionHeight toSize:kCellHeight1];
+        
+        //结案的评价
+        [self.evaluateButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+        [self.evaluateButton autoSetDimension:ALDimensionHeight toSize:kCellHeight1];
         
         self.didSetupConstraints = YES;
     }
@@ -115,7 +118,7 @@
         _releaseDetailTableView.separatorColor = kSeparateColor;
         _releaseDetailTableView.delegate = self;
         _releaseDetailTableView.dataSource = self;
-        _releaseDetailTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 100)];
+        _releaseDetailTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 140)];
     }
     return _releaseDetailTableView;
 }
@@ -142,6 +145,14 @@
         }];
     }
     return _dialogBoxView;
+}
+
+- (BaseCommitButton *)evaluateButton
+{
+    if (!_evaluateButton) {
+        _evaluateButton = [BaseCommitButton newAutoLayoutView];
+    }
+    return _evaluateButton;
 }
 
 - (BaseRemindButton *)EndOrloseRemindButton
@@ -846,10 +857,11 @@
     
     if ([dataModel.statusLabel isEqualToString:@"发布中"]) {
         if ([dataModel.productApply.status integerValue] == 20) {//面谈中
-            
+            if (indexPath.section == 1) {//材料清单
+                [self showMaterialList];
+            }
         }else{//发布中
-
-            if (indexPath.section == 1) {
+            if (indexPath.section == 1) {//选择申请方
                 ApplyRecordViewController *applyRecordsVC = [[ApplyRecordViewController alloc] init];
                 applyRecordsVC.productid = self.productid;
                 [self.navigationController pushViewController:applyRecordsVC animated:YES];
@@ -868,7 +880,7 @@
                     
                     [weakself.publishCheckView setDidSelectedBtn:^(NSInteger tag)  {
                         if (tag == 111) {
-                            [weakself showHint:@"材料清单"];
+                            [self showMaterialList];
                         }else if (tag == 112){
                             [weakself showHint:@"发起面谈"];
                             [weakself choosePersonOfInterView];
@@ -913,8 +925,6 @@
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
-        
-        NSDictionary *apaap = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
         [weakself.releaseDetailArray removeAllObjects];
         
@@ -972,7 +982,7 @@
                     QDFWeakSelf;
                     [weakself.publishCheckView setDidSelectedBtn:^(NSInteger tag)  {
                         if (tag == 111) {
-                            [weakself showHint:@"材料清单"];
+                            [self showMaterialList];
                         }else if (tag == 112){
                             [weakself showHint:@"发起面谈"];
                             [weakself choosePersonOfInterView];
@@ -1039,10 +1049,33 @@
                 }
                 
             }else if ([dataModel.statusLabel isEqualToString:@"已结案"]){
+                [weakself.rightButton setHidden:YES];
+                
                 [weakself.publishCheckView setHidden:YES];
                 [weakself.dialogBoxView setHidden:YES];
+                [weakself.evaluateButton setHidden:NO];
                 
-                [weakself.rightButton setHidden:YES];
+                if ([dataModel.commentTotal integerValue] == 0) {
+                    [weakself.evaluateButton setTitle:@"评价" forState:0];
+                    [weakself.evaluateButton addAction:^(UIButton *btn) {
+                        [weakself showHint:@"评价"];
+                        AdditionalEvaluateViewController *additionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
+                        additionalEvaluateVC.ordersid = dataModel.productApply.orders.ordersid;
+                        additionalEvaluateVC.typeString = @"发布方";
+                        additionalEvaluateVC.evaString = @"0";
+                        UINavigationController *navv = [[UINavigationController alloc] initWithRootViewController:additionalEvaluateVC];
+                        [weakself presentViewController:navv animated:YES completion:nil];
+                    }];
+                }else{
+                    [weakself.evaluateButton setTitle:@"查看评价" forState:0];
+                    [weakself.evaluateButton addAction:^(UIButton *btn) {
+                        [weakself showHint:@"查看评价"];
+                        EvaluateListsViewController *evaluateListsVC = [[EvaluateListsViewController alloc] init];
+                        evaluateListsVC.ordersid = dataModel.productApply.orders.ordersid;
+                        evaluateListsVC.typeString = @"发布方";
+                        [weakself.navigationController pushViewController:evaluateListsVC animated:YES];
+                    }];
+                }
                 
                 if (weakself.EndOrloseRemindButton) {
                     [weakself.EndOrloseRemindButton removeFromSuperview];
@@ -1147,6 +1180,11 @@
     } andFailBlock:^(NSError *error) {
         
     }];
+}
+
+- (void)showMaterialList
+{
+    [self showHint:@"材料清单"];
 }
 
 - (void)rightItemAction//申请终止

@@ -12,7 +12,6 @@
 #import "MyReleaseDetailsViewController.h"  //发布详情
 #import "MyOrderDetailViewController.h"  //接单详情
 
-
 #import "ExtendHomeCell.h"
 
 #import "OrderResponse.h"
@@ -128,10 +127,7 @@
         [cell.actButton2 setTitle:@"协商详情" forState:0];
         cell.actButton2.layer.borderColor = kBorderColor.CGColor;
         [cell.actButton2 setTitleColor:kLightGrayColor forState:0];
-        
-        QDFWeakSelf;
-        [cell.actButton2 addAction:^(UIButton *btn) {
-        }];
+        cell.actButton2.userInteractionEnabled = NO;
         
         //details
         //委托本金

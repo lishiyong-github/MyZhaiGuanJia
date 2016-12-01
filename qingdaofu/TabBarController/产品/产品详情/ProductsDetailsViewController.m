@@ -642,8 +642,6 @@
     QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
         
-        NSDictionary *apapa = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        
         ProductDetailResponse *respongh = [ProductDetailResponse objectWithKeyValues:responseObject];
         
         if ([respongh.code isEqualToString:@"0000"]) {
@@ -800,8 +798,6 @@
     } andFailBlock:^(NSError *error) {
         
     }];
-    
-    
 }
 
 

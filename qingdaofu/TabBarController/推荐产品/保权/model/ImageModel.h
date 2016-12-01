@@ -15,6 +15,8 @@
 @property (nonatomic,copy) NSString *size;  //图片大小
 @property (nonatomic,copy) NSString *type;  // 图片类型
 @property (nonatomic,copy) NSString *url;  //图片下载地址
+@property (nonatomic,copy) NSString *error;  //0-正确
+@property (nonatomic,copy) NSString *title;  //nav title
 
 //列表里的图片
 @property (nonatomic,copy) NSString *file;

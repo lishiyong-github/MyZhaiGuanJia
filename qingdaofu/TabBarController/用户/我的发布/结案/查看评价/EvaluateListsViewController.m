@@ -16,7 +16,6 @@
 
 #import "EvaluateResponse.h"
 #import "EvaluateModel.h"  //收到的评价
-#import "LaunchEvaluateModel.h"  //给出的评价
 
 #import "UIButton+WebCache.h"
 #import "UIViewController+ImageBrowser.h"
@@ -29,7 +28,7 @@
 
 //json
 @property (nonatomic,strong) NSMutableArray *evaluateArray;
-@property (nonatomic,strong) NSMutableArray *launchEvaluateArray;
+@property (nonatomic,strong) NSMutableArray *twiceEvaluateArray;
 
 @end
 
@@ -89,11 +88,9 @@
         QDFWeakSelf;
         [_evaluateCommitView addAction:^(UIButton *btn) {
             AdditionalEvaluateViewController *additionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
-            additionalEvaluateVC.typeString = weakself.typeString;
-            additionalEvaluateVC.idString = weakself.idString;
-            additionalEvaluateVC.categoryString = weakself.categoryString;
             additionalEvaluateVC.evaString = @"1";
-            
+            additionalEvaluateVC.typeString = weakself.typeString;
+            additionalEvaluateVC.ordersid = weakself.ordersid;
             UINavigationController *nasi = [[UINavigationController alloc] initWithRootViewController:additionalEvaluateVC];
             [weakself presentViewController:nasi animated:YES completion:nil];
         }];
@@ -110,18 +107,21 @@
     return _evaluateArray;
 }
 
-- (NSMutableArray *)launchEvaluateArray
+- (NSMutableArray *)twiceEvaluateArray
 {
-    if (!_launchEvaluateArray) {
-        _launchEvaluateArray = [NSMutableArray array];
+    if (!_twiceEvaluateArray) {
+        _twiceEvaluateArray = [NSMutableArray array];
     }
-    return _launchEvaluateArray;
+    return _twiceEvaluateArray;
 }
 
 #pragma mark - delegate and datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    if (self.twiceEvaluateArray.count > 0) {
+        return 2;
+    }
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -130,29 +130,26 @@
         return 1+self.evaluateArray.count;
     }
     
-    return 1+self.launchEvaluateArray.count;
+    return 1+self.twiceEvaluateArray.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     if (indexPath.section == 0 && indexPath.row > 0) {
         EvaluateModel *evaModel = self.evaluateArray[indexPath.row-1];
         if (evaModel.filesImg.count > 0) {
-            return 145;
+            return 150;
         }else{
-            return 80;
+            return 85;
         }
-        
     }else if (indexPath.section == 1 && indexPath.row > 0){
-        LaunchEvaluateModel *launchEvaModel = self.launchEvaluateArray[indexPath.row-1];
-        if (launchEvaModel.pictures.count > 0) {
-            return 145;
+        EvaluateModel *evaModel = self.twiceEvaluateArray[indexPath.row-1];
+        if (evaModel.filesImg.count > 0) {
+            return 130;
         }else{
-            return 80;
+            return 65;
         }
     }
-    
     return kCellHeight;
 }
 
@@ -169,13 +166,12 @@
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             [cell.userActionButton setHidden:YES];
             
-            NSString *evaGetString = [NSString stringWithFormat:@"收到的评价（ %lu ）",(unsigned long)self.evaluateArray.count];
-            [cell.userNameButton setTitle:evaGetString forState:0];
+            [cell.userNameButton setTitle:@"评价" forState:0];
             
             return cell;
         }
         
-        //收到的评价
+        //评价
         identifier = @"evaGet1";
         EvaluatePhotoCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         if (!cell) {
@@ -183,16 +179,24 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        EvaluateModel *evaluateModel;
-        if (self.evaluateArray.count > 0) {
-            evaluateModel = self.evaluateArray[indexPath.row-1];
-        }
+        EvaluateModel *evaluateModel = self.evaluateArray[indexPath.row-1];
         
-//        cell.evaNameLabel.text = evaluateModel.mobile;
-        [cell.evaNameButton setTitle:evaluateModel.mobile forState:0];
+        //user image
+        NSString *sosos = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,evaluateModel.headimg.file];
+        [cell.evaNameButton sd_setImageWithURL:[NSURL URLWithString:sosos] forState:0 placeholderImage:nil];
         
+        //user name
+        NSString *nanan = [NSString getValidStringFromString:evaluateModel.realname toString:evaluateModel.username];
+        [cell.evaNameLabel setText:nanan];
+        
+        //time
         cell.evaTimeLabel.text = [NSDate getYMDhmFormatterTime:evaluateModel.action_at];
-//        cell.evaStarImage.currentIndex = [evaluateModel.creditor integerValue];
+        
+        //star
+        NSInteger starr = [evaluateModel.truth_score integerValue] + [evaluateModel.assort_score integerValue] + [evaluateModel.response_score integerValue];
+        cell.evaStarImage.currentIndex = starr/3;
+        
+        //text
         cell.evaTextLabel.text = evaluateModel.memo;
         
         if (evaluateModel.filesImg.count == 0) {
@@ -201,7 +205,9 @@
         }else if (evaluateModel.filesImg.count == 1){
             [cell.evaProImageView1 setHidden:NO];
             [cell.evaProImageView2 setHidden:YES];
-            NSString *imgString1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,evaluateModel.filesImg[0]];
+            
+            ImageModel *imgModel1 = evaluateModel.filesImg[0];
+            NSString *imgString1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imgModel1.file];
             NSURL *imgUrl1 = [NSURL URLWithString:imgString1];
             [cell.evaProImageView1 sd_setImageWithURL:imgUrl1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
             
@@ -214,11 +220,13 @@
             [cell.evaProImageView1 setHidden:NO];
             [cell.evaProImageView2 setHidden:NO];
             
-            NSString *imgString1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,evaluateModel.filesImg[0]];
+            ImageModel *imgModel1 =evaluateModel.filesImg[0];
+            NSString *imgString1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imgModel1.file];
             NSURL *imgUrl1 = [NSURL URLWithString:imgString1];
             [cell.evaProImageView1 sd_setImageWithURL:imgUrl1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
 
-            NSString *imgString2 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,evaluateModel.filesImg[0]];
+            ImageModel *imgModel2 = evaluateModel.filesImg[1];
+            NSString *imgString2 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imgModel2.file];
             NSURL *imgUrl2 = [NSURL URLWithString:imgString2];
             [cell.evaProImageView2 sd_setImageWithURL:imgUrl2 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
             
@@ -234,9 +242,9 @@
         return cell;
     }
     
-    //section=1
+    //section=1(追评)
     if (indexPath.row == 0) {
-        identifier = @"evaSend0";
+        identifier = @"evaTwice0";
         MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         if (!cell) {
             cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
@@ -244,107 +252,116 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         [cell.userActionButton setHidden:YES];
         
-        NSString *evaGetString = [NSString stringWithFormat:@"发出的评价（ %lu ）",(unsigned long)self.launchEvaluateArray.count];
-        [cell.userNameButton setTitle:evaGetString forState:0];
+        [cell.userNameButton setTitle:@"追加" forState:0];
+        
+        return cell;
+    }else{//追评
+        identifier = @"evaTwice2";
+        EvaluatePhotoCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell) {
+            cell = [[EvaluatePhotoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        [cell.evaStarImage setHidden:YES];
+        cell.topTextConstraints.constant = -kBigPadding;
+        
+        EvaluateModel *evaluateModel = self.twiceEvaluateArray[indexPath.row-1];
+        
+        //user image
+        NSString *sosos = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,evaluateModel.headimg.file];
+        [cell.evaNameButton sd_setImageWithURL:[NSURL URLWithString:sosos] forState:0 placeholderImage:nil];
+        
+        //user name
+        NSString *nanan = [NSString getValidStringFromString:evaluateModel.realname toString:evaluateModel.username];
+        [cell.evaNameLabel setText:nanan];
+        
+        //time
+        cell.evaTimeLabel.text = [NSDate getYMDhmFormatterTime:evaluateModel.action_at];
+        
+        //star
+        NSInteger starr = [evaluateModel.truth_score integerValue] + [evaluateModel.assort_score integerValue] + [evaluateModel.response_score integerValue];
+        cell.evaStarImage.currentIndex = starr/3;
+
+        
+        //text
+        cell.evaTextLabel.text = evaluateModel.memo;
+        
+        if (evaluateModel.filesImg.count == 0) {
+            [cell.evaProImageView1 setHidden:YES];
+            [cell.evaProImageView2 setHidden:YES];
+        }else if (evaluateModel.filesImg.count == 1){
+            [cell.evaProImageView1 setHidden:NO];
+            [cell.evaProImageView2 setHidden:YES];
+            
+            ImageModel *imgModel1 = evaluateModel.filesImg[0];
+            NSString *imgString1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imgModel1.file];
+            NSURL *imgUrl1 = [NSURL URLWithString:imgString1];
+            [cell.evaProImageView1 sd_setImageWithURL:imgUrl1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+            
+            QDFWeakSelf;
+            [cell.evaProImageView1 addAction:^(UIButton *btn) {
+                [weakself showImages:@[imgUrl1]];
+            }];
+            
+        }else{
+            [cell.evaProImageView1 setHidden:NO];
+            [cell.evaProImageView2 setHidden:NO];
+            
+            ImageModel *imgModel1 = evaluateModel.filesImg[0];
+            NSString *imgString1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imgModel1.file];
+            NSURL *imgUrl1 = [NSURL URLWithString:imgString1];
+            [cell.evaProImageView1 sd_setImageWithURL:imgUrl1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+            
+            ImageModel *imgModel2 = evaluateModel.filesImg[1];
+            NSString *imgString2 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imgModel2.file];
+            NSURL *imgUrl2 = [NSURL URLWithString:imgString2];
+            [cell.evaProImageView2 sd_setImageWithURL:imgUrl2 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
+            
+            QDFWeakSelf;
+            [cell.evaProImageView1 addAction:^(UIButton *btn) {
+                [weakself showImages:@[imgUrl1,imgUrl2]];
+            }];
+            [cell.evaProImageView2 addAction:^(UIButton *btn) {
+                [weakself showImages:@[imgUrl1,imgUrl2]];
+            }];
+        }
         
         return cell;
     }
-    
-    //发出的评价
-    identifier = @"evaSend1";
-    EvaluatePhotoCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    if (!cell) {
-        cell = [[EvaluatePhotoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-    }
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    LaunchEvaluateModel *launchEvaluateModel;
-    if (self.launchEvaluateArray.count > 0) {
-        launchEvaluateModel = self.launchEvaluateArray[indexPath.row-1];
-    }
-    
-    [cell.evaNameButton setTitleColor:kBlueColor forState:0];
-    [cell.evaNameButton setTitle:@"自己" forState:0];
-    cell.evaTimeLabel.text = [NSDate getYMDhmFormatterTime:launchEvaluateModel.create_time];
-    cell.evaStarImage.currentIndex = [launchEvaluateModel.creditor integerValue];
-    cell.evaTextLabel.text = launchEvaluateModel.content;
-    
-    if (launchEvaluateModel.pictures.count == 0) {
-        [cell.evaProImageView1 setHidden:YES];
-        [cell.evaProImageView2 setHidden:YES];
-    }else if (launchEvaluateModel.pictures.count == 1){
-        [cell.evaProImageView1 setHidden:NO];
-        [cell.evaProImageView2 setHidden:YES];
-        NSString *imgString1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,launchEvaluateModel.pictures[0]];
-        NSURL *imgUrl1 = [NSURL URLWithString:imgString1];
-        [cell.evaProImageView1 sd_setImageWithURL:imgUrl1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
-        
-        QDFWeakSelf;
-        [cell.evaProImageView1 addAction:^(UIButton *btn) {
-            [weakself showImages:@[imgUrl1]];
-        }];
-        
-    }else{
-        [cell.evaProImageView1 setHidden:NO];
-        [cell.evaProImageView2 setHidden:NO];
-        
-        NSString *imgString1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,launchEvaluateModel.pictures[0]];
-        NSURL *imgUrl1 = [NSURL URLWithString:imgString1];
-        [cell.evaProImageView1 sd_setImageWithURL:imgUrl1 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
-        
-        NSString *imgString2 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,launchEvaluateModel.pictures[0]];
-        NSURL *imgUrl2 = [NSURL URLWithString:imgString2];
-        [cell.evaProImageView2 sd_setImageWithURL:imgUrl2 forState:0 placeholderImage:[UIImage imageNamed:@"account_bitmap"]];
-        
-        QDFWeakSelf;
-        [cell.evaProImageView1 addAction:^(UIButton *btn) {
-            [weakself showImages:@[imgUrl1,imgUrl2]];
-        }];
-        [cell.evaProImageView2 addAction:^(UIButton *btn) {
-            [weakself showImages:@[imgUrl1,imgUrl2]];
-        }];
-        
-    }
-    return cell;
-    
+    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 0.1;
+    return kBigPadding;;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (section == 0) {
-        return kBigPadding;
-    }
     return 0.1;
 }
 
 #pragma mark - method
 - (void)getAllEvaluetasContainGetingAndSending
 {
-    NSString *allEvaContainString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyEvaluateString];
-    NSDictionary *params = @{@"id" : self.idString,
-                             @"category" : self.categoryString,
-                             @"token" : [self getValidateToken]
-                             };
+    NSString *allEvaContainString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kEvalueteListString];
+    NSDictionary *params = @{@"ordersid" : self.ordersid,
+                             @"token" : [self getValidateToken]};
     
     QDFWeakSelf;
     [self requestDataPostWithString:allEvaContainString params:params successBlock:^(id responseObject) {
                 
         [weakself.evaluateArray removeAllObjects];
-        [weakself.launchEvaluateArray removeAllObjects];
+        [weakself.twiceEvaluateArray removeAllObjects];
         
         EvaluateResponse *evaResponse = [EvaluateResponse objectWithKeyValues:responseObject];
         
-        for (EvaluateModel *evaluateModel in evaResponse.evaluate) {
+        for (EvaluateModel *evaluateModel in evaResponse.Comments1) {//评价
             [weakself.evaluateArray addObject:evaluateModel];
         }
         
-        for (LaunchEvaluateModel *launchEvaluateModel in evaResponse.launchevaluation) {
-            [weakself.launchEvaluateArray addObject:launchEvaluateModel];
+        for (EvaluateModel *twiceEvaluateModel in evaResponse.Comments2) {//追评
+            [weakself.twiceEvaluateArray addObject:twiceEvaluateModel];
         }
         
         [weakself.evaluateListTableView reloadData];

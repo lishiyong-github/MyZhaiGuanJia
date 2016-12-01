@@ -20,5 +20,6 @@
 @property (nonatomic,strong) UIButton *leftButton; //委托费用
 @property (nonatomic,strong) UIButton *rightButton; //委托金额
 @property (nonatomic,strong) UIButton *applyButton;  //立即申请按钮
+@property (nonatomic,strong) UILabel *line11;  //分割线
 
 @end
