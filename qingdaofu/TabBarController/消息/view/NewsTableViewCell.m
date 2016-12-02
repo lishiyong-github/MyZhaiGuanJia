@@ -68,7 +68,6 @@
         _newsCountButton.backgroundColor = kButtonColor;
         [_newsCountButton setTitleColor:kWhiteColor forState:0];
         _newsCountButton.titleLabel.font = kSmallFont;
-        _newsCountButton.layer.cornerRadius = 10;
         _newsCountButton.userInteractionEnabled = NO;
     }
     return _newsCountButton;

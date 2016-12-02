@@ -12,6 +12,9 @@
 #import "TakePictureCell.h"
 #import "AgentCell.h"
 
+#import "UIViewController+MutipleImageChoice.h"
+#import "UIViewController+BlurView.h"
+
 @interface AddProgressViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
@@ -19,6 +22,8 @@
 
 //json
 @property (nonatomic,strong) NSMutableDictionary *addPaceDic;
+
+@property (nonatomic,strong) NSMutableArray *evaImageArray;
 
 @end
 
@@ -67,6 +72,14 @@
     return _addPaceDic;
 }
 
+- (NSMutableArray *)evaImageArray
+{
+    if (!_evaImageArray) {
+        _evaImageArray = [NSMutableArray array];
+    }
+    return _evaImageArray;
+}
+
 #pragma mark - delegate and datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -86,9 +99,9 @@
 {
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-            return kCellHeight4;
+            return 80;
         }
-        return 60;
+        return 50+kBigPadding*2;
     }
     return kCellHeight;
 }
@@ -110,6 +123,10 @@
             cell.ediTextView.placeholder = @"请输入进度详情";
             
             QDFWeakSelf;
+            [cell setTouchBeginPoint:^(CGPoint point) {
+                weakself.touchPoint = point;
+            }];
+            
             [cell setDidEndEditing:^(NSString *text) {
                 [weakself.addPaceDic setValue:text forKey:@"memo"];
             }];
@@ -124,7 +141,51 @@
             cell = [[TakePictureCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.backgroundColor = kTextColor;
+        cell.collectionDataList = [NSMutableArray arrayWithObjects:@"upload_pictures", nil];
+        
+        QDFWeakSelf;
+        QDFWeak(cell);
+        [cell setDidSelectedItem:^(NSInteger itemTag) {
+            if (itemTag == weakcell.collectionDataList.count-1) {//只允许点击最后一个collection
+                if (weakcell.collectionDataList.count < 3) {
+                    [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
+
+                        if (images.count > 0) {
+                            NSData *imData = [NSData dataWithContentsOfFile:images[0]];
+                            NSString *imString = [NSString stringWithFormat:@"%@",imData];
+                            [weakself uploadImages:imString andType:@"jgp" andFilePath:images[0]];
+                            
+                            [weakself setDidGetValidImage:^(ImageModel *imageModel) {
+                                if ([imageModel.error isEqualToString:@"0"]) {
+                                    [weakself.evaImageArray addObject:imageModel.fileid];
+                                    
+                                    [weakcell.collectionDataList insertObject:images[0] atIndex:0];
+                                    [weakcell reloadData];
+                                }else{
+                                    [weakself showHint:imageModel.msg];
+                                }
+                            }];
+                        }
+                    }];
+                }else{
+                    [weakself showHint:@"最多添加2张图片"];
+                }
+            }else{
+                UIAlertController *alertContr = [UIAlertController alertControllerWithTitle:@"" message:@"确认删除该图片" preferredStyle:0];
+                UIAlertAction *acty1 = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    
+                    [weakself.evaImageArray removeObjectAtIndex:itemTag];
+                    [weakcell.collectionDataList removeObjectAtIndex:itemTag];
+                    [weakcell reloadData];
+                    
+                }];
+                UIAlertAction *acty0 = [UIAlertAction actionWithTitle:@"否" style:0 handler:nil];
+                [alertContr addAction:acty0];
+                [alertContr addAction:acty1];
+                
+                [weakself presentViewController:alertContr animated:YES completion:nil];
+            }
+        }];
         
         return cell;
     }else if (indexPath.section == 1){
@@ -160,8 +221,16 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 1) {
-        [self showHint:@"选择类型"];
-        [self.addPaceDic setValue:@"" forKey:@"type"];
+        NSArray *uiuiui = @[@"留言",@"清收",@"查封",@"材料复合",@"产调",@"实地评估"];
+        
+        QDFWeakSelf;
+        [self showBlurInView:self.view withArray:uiuiui andTitle:@"选择进度类型" finishBlock:^(NSString *text, NSInteger row) {
+            AgentCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
+            cell.agentTextField.text = text;
+            
+            NSString *tttt = [NSString stringWithFormat:@"%d",row-1];
+            [weakself.addPaceDic setValue:tttt forKey:@"type"];
+        }];
     }
 }
 
@@ -170,9 +239,15 @@
 {
     NSString *addPaceString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrderDetailOfAddPace];
     
-    self.addPaceDic[@"memo"] =  self.addPaceDic[@"memo"]?self.addPaceDic[@"memo"]:@"";
-    self.addPaceDic[@"type"] =  self.addPaceDic[@"type"]?self.addPaceDic[@"type"]:@"";
-    self.addPaceDic[@"files"] =  self.addPaceDic[@"files"]?self.addPaceDic[@"files"]:@"";
+    NSString *imageStr = @"";
+    if (self.evaImageArray.count > 0) {
+        for (NSInteger i=0; i<self.evaImageArray.count; i++) {
+            imageStr = [NSString stringWithFormat:@"%@,%@",self.evaImageArray[i],imageStr];
+        }
+        imageStr = [imageStr substringToIndex:imageStr.length-1];
+    }
+    [self.addPaceDic setValue:imageStr forKey:@"file"];
+    
     [self.addPaceDic setValue:[self getValidateToken] forKey:@"token"];
     [self.addPaceDic setValue:self.ordersid forKey:@"ordersid"];
     
@@ -184,7 +259,7 @@
         [weakself showHint:baseModel.msg];
         
         if ([baseModel.code isEqualToString:@"0000"]) {
-            [weakself back];
+            [weakself.navigationController popViewControllerAnimated:YES];
         }
     } andFailBlock:^(NSError *error) {
         

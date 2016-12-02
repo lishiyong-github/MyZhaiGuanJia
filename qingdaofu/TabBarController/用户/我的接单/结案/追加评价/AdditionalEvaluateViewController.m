@@ -415,8 +415,6 @@
     //发布方：办事效率。接单方：响应度
     self.evaDataDictionary[@"response_score"] = [NSString getValidStringFromString:self.evaDataDictionary[@"response_score"] toString:@""];
     
-//    self.evaDataDictionary[@"memo"] = [NSString getValidStringFromString:self.evaDataDictionary[@"memo"] toString:@"优质，专业，高效，快捷"];
-
     [self.evaDataDictionary setValue:self.ordersid forKey:@"ordersid"];
     [self.evaDataDictionary setValue:[self getValidateToken] forKey:@"token"];
     

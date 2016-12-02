@@ -79,7 +79,7 @@
         
         if (indexPath.row == 0) {
             cell.backgroundColor = UIColorFromRGB(0xd8e5ee);
-            [cell.cancelButton setTitleColor:kBlueColor forState:0];
+            [cell.cancelButton setTitleColor:kTextColor forState:0];
             [cell.cancelButton setTitle:@"取消" forState:0];
             cell.cancelButton.userInteractionEnabled = YES;
             [cell.oneButton setTitleColor:kBlackColor forState:0];
@@ -92,7 +92,7 @@
                 }
             }];
         }else{
-            cell.backgroundColor = kNavColor;
+            cell.backgroundColor = kWhiteColor;
             cell.cancelButton.userInteractionEnabled = NO;
             [cell.cancelButton setTitleColor:kBlackColor forState:0];
             [cell.oneButton setHidden:YES];

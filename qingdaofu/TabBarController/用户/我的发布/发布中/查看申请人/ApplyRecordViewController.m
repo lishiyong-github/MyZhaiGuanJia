@@ -183,18 +183,21 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    UIButton *footerButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 40)];
-    footerButton.titleLabel.numberOfLines = 0;
-    [footerButton setContentEdgeInsets:UIEdgeInsetsMake(kBigPadding, kBigPadding, 0, kBigPadding)];
-    NSString *ffff = @"选择申请记录中其中一个作为意向接单方，如果选择后面谈结果不符合可以选择其他申请方作为意向接单方。";
-    NSMutableAttributedString *attributeFF = [[NSMutableAttributedString alloc] initWithString:ffff];
-    [attributeFF setAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(0, ffff.length)];
-    NSMutableParagraphStyle *atype = [[NSMutableParagraphStyle alloc] init];
-    [atype setLineSpacing:kSpacePadding];
-    [attributeFF addAttribute:NSParagraphStyleAttributeName value:atype range:NSMakeRange(0, ffff.length)];
-    [footerButton setAttributedTitle:attributeFF forState:0];
-    
-    return footerButton;
+    if (self.recordsDataArray.count > 0) {
+        UIButton *footerButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 40)];
+        footerButton.titleLabel.numberOfLines = 0;
+        [footerButton setContentEdgeInsets:UIEdgeInsetsMake(kBigPadding, kBigPadding, 0, kBigPadding)];
+        NSString *ffff = @"选择申请记录中其中一个作为意向接单方，如果选择后面谈结果不符合可以选择其他申请方作为意向接单方。";
+        NSMutableAttributedString *attributeFF = [[NSMutableAttributedString alloc] initWithString:ffff];
+        [attributeFF setAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(0, ffff.length)];
+        NSMutableParagraphStyle *atype = [[NSMutableParagraphStyle alloc] init];
+        [atype setLineSpacing:kSpacePadding];
+        [attributeFF addAttribute:NSParagraphStyleAttributeName value:atype range:NSMakeRange(0, ffff.length)];
+        [footerButton setAttributedTitle:attributeFF forState:0];
+        
+        return footerButton;
+    }
+    return nil;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -220,8 +223,6 @@
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:listString params:params successBlock:^(id responseObject){
-        
-        NSDictionary *aoao = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
         ApplyRecordResponse *response = [ApplyRecordResponse objectWithKeyValues:responseObject];
         

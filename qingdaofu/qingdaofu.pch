@@ -205,15 +205,7 @@
 #define kMyAgentAddString @"certification/addagent"  //添加代理
 #define kMyAgentModifyString @"certification/modifyagent"  //修改代理
 
-#define kPropagandaString  @"capital/picture"  //轮播图
 #define kPropagandasString @"capital/banner"  //最新轮播图
-
-//新增部分接口
-#define kDeleteProductOfMyReleaseString @"public/deleteproduct" //删除
-#define kCancelProductOfMyOrderString @"public/cancels" //接单申请中取消申请
-#define kAgreeProductOfMyReleaseString @"public/coufirm"  //发布方同意申请延期
-#define kDisAgreeProductOfMyReleaseString @"public/cancel"  //发布方取消同意申请延期
-#define kDelayDetailsOfMyReleaseString @"public/time"  //发布方查看延期详情
 
 //新增四大模块
 #define kHouseAssessString @"producedata/estate" //房产评估
@@ -283,6 +275,8 @@
 #define kMyOrdersOfEndString @"productorders/list-aborted"  //我的接单－已终止(经办事项)
 #define kMyOrderDetailsString @"productorders/detail"  //接单详情
 #define kMyOrderDetailOfCancelApplyString @"product/apply-cancel" //接单详情－取消申请
+#define kMyOrderDetailsOfDeleteString @"productorders/apply-del" //接单详情－删除
+
 #define kMyOrderDetailOfCheckAgreement @"protocol/index"  //接单详情－居间协议查看
 #define kMyOrderDetailOfConfirmAgreement @"productorders/orders-confirm"  //接单详情－居间协议确认
 #define kMyOrderDetailOfSaveSign @"productorders/orders-pact-add" //接单详情－保存接单协议

@@ -311,6 +311,7 @@
         [cell setTouchBeginPoint:^(CGPoint point) {
             weakself.touchPoint = point;
         }];
+        
         QDFWeak(cell);
         [cell setDidEndEditing:^(NSString *text) {
             weakcell.ediTextView.text = text;

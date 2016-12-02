@@ -42,9 +42,7 @@
         [self.contentView addSubview:self.line6];
 
         [self setNeedsUpdateConstraints];
-
     }
-    
     return self;
 }
 
@@ -52,59 +50,73 @@
 {
     if (!self.didSetupConstraints) {
         
+        //分割图片
         [self.topSpaceImaegView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
         [self.topSpaceImaegView autoSetDimension:ALDimensionHeight toSize:5];
         
+        //number
         [self.codeLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
         [self.codeLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.topSpaceImaegView withOffset:kSpacePadding];
-//
+
+        //结清证明
         [self.closeProofButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.closeProofButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.codeLabel];
         [self.closeProofButton autoSetDimensionsToSize:CGSizeMake(75, 30)];
 
+        //产品信息
         [self.productTitleLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft ];
         [self.productTitleLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.codeLabel withOffset:kSpacePadding];
         [self.productTitleLabel autoSetDimension:ALDimensionWidth toSize:kCellHeight3];
         [self.productTitleLabel autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.productTextButton];
 
+        //详细产品信息
         [self.productTextButton autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.productTitleLabel];
         [self.productTextButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.productTitleLabel];
         [self.productTextButton autoPinEdgeToSuperviewEdge:ALEdgeRight];
-//
+
+        //查看全部产品信息
         [self.productCheckbutton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.productCheckbutton autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.productTextButton];
-//
+
+        //签约协议
         [self.signTitleLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.productTitleLabel];
         [self.signTitleLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.productTitleLabel];
         [self.signTitleLabel autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.productTitleLabel];
         [self.signTitleLabel autoSetDimension:ALDimensionHeight toSize:114];
 
+        //签约协议详情
         [self.signTextButton autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.signTitleLabel];
         [self.signTextButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.signTitleLabel];
 
+        //查看全部签约协议
         [self.sighCheckButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.signTextButton];
         [self.sighCheckButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
 
+        //scrollview
         [self.signDetailScrollView autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.signTextButton];
         [self.signDetailScrollView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.signTextButton withOffset:kBigPadding];
         [self.signDetailScrollView autoSetDimension:ALDimensionHeight toSize:60];
         [self.signDetailScrollView autoPinEdgeToSuperviewEdge:ALEdgeRight];
         
+        //尽职调查
         [self.investLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.signTitleLabel];
         [self.investLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.signTitleLabel];
         [self.investLabel autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.signTitleLabel];
         [self.investLabel autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.signTitleLabel];
         
+        //查看尽职调查
         [self.investCheckButton autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.investLabel];
         [self.investCheckButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.investLabel];
         [self.investCheckButton autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.investLabel];
         [self.investCheckButton autoSetDimension:ALDimensionWidth toSize:(kScreenWidth-kBigPadding*2-kCellHeight3*2)/2];
         
+        //居间协议
         [self.agreementLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.investCheckButton];
         [self.agreementLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.investCheckButton];
         [self.agreementLabel autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.investLabel];
         [self.agreementLabel autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.investLabel];
         
+        //查看居间协议
         [self.agreementCheckButton autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.agreementLabel];
         [self.agreementCheckButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.agreementLabel];
         [self.agreementCheckButton autoPinEdgeToSuperviewEdge:ALEdgeRight];
@@ -114,12 +126,12 @@
         [self.line1 autoPinEdgeToSuperviewEdge:ALEdgeRight];
         [self.line1 autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.productTitleLabel];
         [self.line1 autoSetDimension:ALDimensionHeight toSize:kLineWidth];
-//
+
         [self.line2 autoPinEdgeToSuperviewEdge:ALEdgeLeft];
         [self.line2 autoPinEdgeToSuperviewEdge:ALEdgeRight];
         [self.line2 autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.signTitleLabel];
         [self.line2 autoSetDimension:ALDimensionHeight toSize:kLineWidth];
-//
+
         [self.line3 autoPinEdgeToSuperviewEdge:ALEdgeLeft];
         [self.line3 autoPinEdgeToSuperviewEdge:ALEdgeRight];
         [self.line3 autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.investLabel];
@@ -159,18 +171,6 @@
     if (!_codeLabel) {
         _codeLabel = [UILabel newAutoLayoutView];
         _codeLabel.numberOfLines = 0;
-        
-//        NSString *code1 = @"BX201609280001\n";
-//        NSString *code2 = @"订单已结案";
-//        NSString *codeStr = [NSString stringWithFormat:@"%@%@",code1,code2];
-//        NSMutableAttributedString *attributeCC = [[NSMutableAttributedString alloc] initWithString:codeStr];
-//        [attributeCC setAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kBlackColor} range:NSMakeRange(0, code1.length)];
-//        [attributeCC setAttributes:@{NSFontAttributeName:kSecondFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(code1.length, code2.length)];
-//        NSMutableParagraphStyle *stylerr = [[NSMutableParagraphStyle alloc] init];
-//        [stylerr setLineSpacing:kSpacePadding];
-//        [attributeCC addAttribute:NSParagraphStyleAttributeName value:stylerr range:NSMakeRange(0, codeStr.length)];
-//
-//        [_codeLabel setAttributedText:attributeCC];
     }
     return _codeLabel;
 }
@@ -206,8 +206,6 @@
         _productTitleLabel.font = kBigFont;
         _productTitleLabel.numberOfLines = 0;
         _productTitleLabel.textAlignment = NSTextAlignmentCenter;
-//        _productTitleLabel.layer.borderColor = kBorderColor.CGColor;
-//        _productTitleLabel.layer.borderWidth = kLineWidth;
     }
     return _productTitleLabel;
 }
@@ -252,8 +250,6 @@
         _signTitleLabel.font = kBigFont;
         _signTitleLabel.numberOfLines = 0;
         _signTitleLabel.textAlignment = NSTextAlignmentCenter;
-//        _signTitleLabel.layer.borderColor = kBorderColor.CGColor;
-//        _signTitleLabel.layer.borderWidth = kLineWidth;
     }
     return _signTitleLabel;
 }
@@ -289,6 +285,8 @@
         [_sighCheckButton setTitleColor:kTextColor forState:0];
         [_sighCheckButton setTitle:@"查看全部" forState:0];
         _sighCheckButton.titleLabel.font = kFirstFont;
+        _sighCheckButton.contentHorizontalAlignment = 1;
+        _sighCheckButton.contentEdgeInsets = UIEdgeInsetsMake(kSmallPadding, kSpacePadding, 0, 0);
         
         _sighCheckButton.tag = 332;
         

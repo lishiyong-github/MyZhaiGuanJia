@@ -402,7 +402,6 @@
                         case 332:{//查看签约协议
                             SignProtocolViewController *signProtocolVC = [[SignProtocolViewController alloc] init];
                             signProtocolVC.ordersid = orderModel.orders.ordersid;
-                            signProtocolVC.isShowString = @"0";
                             [self.navigationController pushViewController:signProtocolVC animated:YES];
                         }
                             break;
@@ -1438,7 +1437,6 @@
             }else if (indexPath.section == 3){//签约协议
                 SignProtocolViewController *signProtocolVC = [[SignProtocolViewController alloc] init];
                 signProtocolVC.ordersid = orderModel.orders.ordersid;
-                signProtocolVC.isShowString = @"0";
                 [self.navigationController pushViewController:signProtocolVC animated:YES];
             }else if (indexPath.section == 4){//经办人
                 if ([orderModel.productOrdersOperatorsCount integerValue] > 0) {
@@ -1615,7 +1613,6 @@
         [self showHint:@"上传签约协议"];
         SignProtocolViewController *signProtocolVC = [[SignProtocolViewController alloc] init];
         signProtocolVC.ordersid = orderModel.orders.ordersid;
-        signProtocolVC.isShowString = @"1";
         [self.navigationController pushViewController:signProtocolVC animated:YES];
     }else if([actType integerValue] == 3){
         [self showHint:@"申请结案"];

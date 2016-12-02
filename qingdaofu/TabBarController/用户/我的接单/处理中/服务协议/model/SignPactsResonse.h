@@ -11,6 +11,7 @@
 @interface SignPactsResonse : BaseModel
 
 @property (nonatomic,copy) NSString *OrdersStatus; //接单当前状态
-@property (nonatomic,copy) NSString *accessOrdersORDERCOMFIRM; //可否协议确认权限
+@property (nonatomic,assign) BOOL accessOrdersORDERCOMFIRM; //可否协议确认权限
 @property (nonatomic,strong) NSMutableArray *pacts;//图片内容集
+
 @end

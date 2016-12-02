@@ -25,13 +25,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "qingdaofu/TabBarController/&#x7528;&#x6237;/&#x6211;&#x7684;&#x53d1;&#x5e03;/MyReleaseViewController.m"
-            timestampString = "502277719.055812"
+            filePath = "qingdaofu/TabBarController/&#x7528;&#x6237;/&#x6211;&#x7684;&#x53d1;&#x5e03;/MyReleaseDetailsViewController.m"
+            timestampString = "502361432.732366"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "330"
-            endingLineNumber = "330"
-            landmarkName = "-goToCheckApplyRecordsOrAdditionMessage:andModel:"
+            startingLineNumber = "1096"
+            endingLineNumber = "1096"
+            landmarkName = "-choosePersonOfInterView"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "qingdaofu/TabBarController/&#x7528;&#x6237;/&#x6211;&#x7684;&#x53d1;&#x5e03;/MyReleaseDetailsViewController.m"
+            timestampString = "502361432.732366"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1118"
+            endingLineNumber = "1118"
+            landmarkName = "-deleteThePublishing"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

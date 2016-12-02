@@ -27,6 +27,7 @@
 //json
 @property (nonatomic,strong) NSMutableArray *signImageArray; //添加图片
 @property (nonatomic,strong) NSMutableArray *signDataArray;  //解析
+@property (nonatomic,assign) BOOL isShow;
 
 @end
 
@@ -38,30 +39,25 @@
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
     [self.view addSubview:self.sighProtocolTableView];
+    [self.view addSubview:self.signCommitButton];
+    [self.signCommitButton setHidden:YES];
     
-    if ([self.isShowString integerValue] == 1) {
-        [self.view addSubview:self.signCommitButton];
-    }else{
-        [self getDetailsOfSign];
-    }
-    
+//    if ([self.isShowString integerValue] == 1) {
+//    }else{
+//    }
     [self.view setNeedsUpdateConstraints];
+    
+    [self getDetailsOfSign];
 }
 
 - (void)updateViewConstraints
 {
     if (!self.didSetupConstarints) {
+        [self.sighProtocolTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
+        [self.sighProtocolTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.signCommitButton];
         
-        if ([self.isShowString integerValue] == 1) {
-            [self.sighProtocolTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
-            [self.sighProtocolTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.signCommitButton];
-            
-            [self.signCommitButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-            [self.signCommitButton autoSetDimension:ALDimensionHeight toSize:116];
-            
-        }else{
-            [self.sighProtocolTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
-        }
+        [self.signCommitButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+        [self.signCommitButton autoSetDimension:ALDimensionHeight toSize:116];
         
         self.didSetupConstarints = YES;
     }
@@ -178,7 +174,7 @@
     QDFWeak(cell);
     [cell setDidSelectedItem:^(NSInteger itemTag) {
         
-        if ([weakself.isShowString integerValue] == 0) {
+        if (!weakself.isShow) {
             [weakself showImages:self.signDataArray currentIndex:0];
         }else{
             if (itemTag == weakcell.collectionDataList.count-1) {//只允许点击最后一个collection
@@ -305,10 +301,13 @@
     QDFWeakSelf;
     [self requestDataPostWithString:saveSignString params:params successBlock:^(id responseObject) {
         
-        NSDictionary *qop = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        
-        
         SignPactsResonse *responsed = [SignPactsResonse objectWithKeyValues:responseObject];
+        
+        if (!responsed.accessOrdersORDERCOMFIRM) {//显示图片
+            [weakself.signCommitButton setHidden:YES];
+        }else{
+            [weakself.signCommitButton setHidden:NO];
+        }
         
         for (ImageModel *imageModel in responsed.pacts) {
             [weakself.signDataArray addObject:imageModel.file];

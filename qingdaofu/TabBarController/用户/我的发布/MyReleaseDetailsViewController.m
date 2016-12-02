@@ -9,35 +9,37 @@
 #import "MyReleaseDetailsViewController.h"
 
 #import "MoreMessagesViewController.h"  //更多信息
+#import "CheckDetailPublishViewController.h"  //查看接单方信息
+
+//面谈中，发布中
 #import "ApplyRecordViewController.h"   //申请记录
-#import "DealingEndViewController.h"  //处理终止
-#import "DealingCloseViewController.h" //处理结案
-#import "RequestEndViewController.h" //申请终止
+//处理中，终止
 #import "SignProtocolViewController.h" //签约协议
 #import "AgreementViewController.h"  //居间协议
-#import "CheckDetailPublishViewController.h"  //查看接单方信息
+#import "RequestEndViewController.h" //申请终止
+#import "DealingEndViewController.h"  //处理终止
+#import "DealingCloseViewController.h" //处理结案
 #import "PaceViewController.h"  //尽职调查
-//#import "AllEvaluationViewController.h"  //查看评价
+//结案
 #import "AdditionalEvaluateViewController.h"  //去评价
 #import "EvaluateListsViewController.h"//评价列表
 
-#import "BaseRemindButton.h"
-#import "DialogBoxView.h"//对话框
 #import "PublishCombineView.h"  //底部视图
+#import "BaseRemindButton.h"//提示框
+#import "DialogBoxView.h"//对话框
 #import "BaseCommitButton.h" //评价
 
 #import "MineUserCell.h"//完善信息
-#import "NewPublishDetailsCell.h"//进度
-#import "NewPublishStateCell.h"//状态
+#import "NewPublishDetailsCell.h"//产品进度
+#import "NewPublishStateCell.h"//等待面谈状态
 #import "NewsTableViewCell.h"//选择申请方
 #import "ProductCloseCell.h"  //结案
-#import "ProgressCell.h"
-#import "OrderPublishCell.h"
-#import "OrdersModel.h"
-
+#import "ProgressCell.h" //尽职调查
+#import "OrderPublishCell.h"//查看接单方
 
 #import "PublishingResponse.h"
-#import "RowsModel.h"
+#import "RowsModel.h"//data
+#import "OrdersModel.h" //接单人
 #import "ApplyRecordModel.h"  //申请人
 #import "ProductOrdersClosedOrEndApplyModel.h"  //处理终止或结案申请
 #import "OrdersLogsModel.h" //日志
@@ -52,6 +54,7 @@
 @property (nonatomic,strong) BaseCommitButton *evaluateButton;  //评价
 
 @property (nonatomic,strong) BaseRemindButton *EndOrloseRemindButton;  //新的申请记录提示信息
+@property (nonatomic,strong) NSLayoutConstraint *heightCheckViewConstraints;  //publishCheckView的高度
 
 //json
 @property (nonatomic,strong) NSMutableArray *releaseDetailArray;
@@ -82,6 +85,10 @@
     [self.dialogBoxView setHidden:YES];
     [self.view addSubview:self.evaluateButton];
     [self.evaluateButton setHidden:YES];
+    [self.view addSubview:self.EndOrloseRemindButton];
+    [self.EndOrloseRemindButton setHidden:YES];
+    
+    self.heightCheckViewConstraints = [self.publishCheckView autoSetDimension:ALDimensionHeight toSize:92];
     
     [self.view setNeedsUpdateConstraints];
     
@@ -99,6 +106,10 @@
         //处理中的对话框
         [self.dialogBoxView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
         [self.dialogBoxView autoSetDimension:ALDimensionHeight toSize:kCellHeight1];
+        
+        //处理中的结案终止提醒
+        [self.EndOrloseRemindButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(0, 0, kCellHeight1, 0) excludingEdge:ALEdgeTop];
+        [self.EndOrloseRemindButton autoSetDimension:ALDimensionHeight toSize:kRemindHeight];
         
         //结案的评价
         [self.evaluateButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
@@ -682,9 +693,8 @@
         }
     }else if ([dataModel.statusLabel isEqualToString:@"已结案"]) {//已结案
         if (indexPath.section == 0) {
-            identifier = @"close00";
             if (indexPath.row == 0){
-                identifier = @"myDealing00";
+                identifier = @"close00";
                 NewPublishDetailsCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
                 if (!cell) {
                     cell = [[NewPublishDetailsCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
@@ -704,7 +714,7 @@
                 return cell;
                 
             }else if (indexPath.row == 1){
-                identifier = @"myDealing01";
+                identifier = @"close01";
                 OrderPublishCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
                 
                 if (!cell) {
@@ -745,7 +755,7 @@
                 return cell;
             }
         }else if (indexPath.section == 1){
-            identifier = @"myDealing1";
+            identifier = @"close1";
             ProductCloseCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
             if (!cell) {
                 cell = [[ProductCloseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
@@ -801,7 +811,6 @@
                     case 332:{//查看签约协议
                         SignProtocolViewController *signProtocolVC = [[SignProtocolViewController alloc] init];
                         signProtocolVC.ordersid = dataModel.productApply.orders.ordersid;
-                        signProtocolVC.isShowString = @"0";
                         [weakself.navigationController pushViewController:signProtocolVC animated:YES];
                     }
                         break;
@@ -882,7 +891,6 @@
                         if (tag == 111) {
                             [self showMaterialList];
                         }else if (tag == 112){
-                            [weakself showHint:@"发起面谈"];
                             [weakself choosePersonOfInterView];
                         }
                     }];
@@ -902,7 +910,6 @@
         }else if (indexPath.section == 2){
             if ([dataModel.productApply.orders.status integerValue] > 10) {
                 SignProtocolViewController *signProtocalVC = [[SignProtocolViewController alloc] init];
-                signProtocalVC.isShowString = @"0";
                 signProtocalVC.ordersid = dataModel.productApply.orders.ordersid;
                 [self.navigationController pushViewController:signProtocalVC animated:YES];
             }
@@ -940,8 +947,7 @@
                 [weakself.rightButton addTarget:self action:@selector(deleteThePublishing) forControlEvents:UIControlEventTouchUpInside];
                 
                 if ([dataModel.productApply.status integerValue] == 20) {//面谈中
-                    
-                    [weakself.publishCheckView autoSetDimension:ALDimensionHeight toSize:116];
+                    weakself.heightCheckViewConstraints.constant = 116;
                     weakself.publishCheckView.topBtnConstraints.constant = kBigPadding;
                     [weakself.publishCheckView.comButton1 setBackgroundColor:kButtonColor];
                     weakself.publishCheckView.comButton2.userInteractionEnabled = YES;
@@ -966,7 +972,7 @@
                         }
                     }];
                 }else{//发布中
-                    [weakself.publishCheckView autoSetDimension:ALDimensionHeight toSize:92];
+                    weakself.heightCheckViewConstraints.constant = 92;
                     weakself.publishCheckView.topBtnConstraints.constant = 0;
                     [weakself.publishCheckView.comButton2 setBackgroundColor:kSeparateColor];
                     weakself.publishCheckView.comButton2.userInteractionEnabled = NO;
@@ -984,7 +990,6 @@
                         if (tag == 111) {
                             [self showMaterialList];
                         }else if (tag == 112){
-                            [weakself showHint:@"发起面谈"];
                             [weakself choosePersonOfInterView];
                         }
                     }];
@@ -1003,12 +1008,7 @@
                     }];
                 }
                 
-                [weakself.view addSubview:weakself.EndOrloseRemindButton];
-                [weakself.EndOrloseRemindButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(0, 0, kCellHeight1, 0) excludingEdge:ALEdgeTop];
-                [weakself.EndOrloseRemindButton autoSetDimension:ALDimensionHeight toSize:kRemindHeight];
-                
                 if (dataModel.productOrdersTerminationsApply || dataModel.productOrdersClosedsApply) {//有申请结案终止的消息
-                    [weakself.EndOrloseRemindButton setHidden:NO];
                     if (dataModel.productOrdersTerminationsApply) {
                         
                         if ([dataModel.productOrdersTerminationsApply.create_by isEqualToString:response.userid]) {//发布方
@@ -1031,7 +1031,7 @@
                         
                         [weakself.EndOrloseRemindButton addAction:^(UIButton *btn) {
                             DealingCloseViewController *dealCloseVC = [[DealingCloseViewController alloc] init];
-                            dealCloseVC.closedid = dataModel.productOrdersClosed.closedid;
+                            dealCloseVC.closedid = dataModel.productOrdersClosedsApply.closedid;
                             [weakself.navigationController pushViewController:dealCloseVC animated:YES];
                         }];
                     }
@@ -1041,6 +1041,7 @@
             }else if ([dataModel.statusLabel isEqualToString:@"已终止"]){
                 [weakself.publishCheckView setHidden:YES];
                 [weakself.dialogBoxView setHidden:YES];
+                [weakself.EndOrloseRemindButton setHidden:YES];
                 
                 [weakself.rightButton setHidden:YES];
                 
@@ -1053,6 +1054,7 @@
                 
                 [weakself.publishCheckView setHidden:YES];
                 [weakself.dialogBoxView setHidden:YES];
+                [weakself.EndOrloseRemindButton setHidden:YES];
                 [weakself.evaluateButton setHidden:NO];
                 
                 if ([dataModel.commentTotal integerValue] == 0) {
@@ -1159,22 +1161,8 @@
         [weakself showHint:baseModel.msg];
         
         if ([baseModel.code isEqualToString:@"0000"]) {
-            
+            [weakself.rightButton setHidden:YES];
             [weakself getDetailMessagesssss];
-            
-            if ([resultString isEqualToString:@"agree"]) {//同意－处理中
-//                MyDealingViewController *myDealingVC = [[MyDealingViewController alloc] init];
-//                myDealingVC.productid = rowModel.productid;
-//                UINavigationController *navv = weakself.navigationController;
-//                [navv popViewControllerAnimated:NO];
-//                [navv pushViewController:myDealingVC animated:NO];
-            }else if ([resultString isEqualToString:@"cancel"]){//拒绝－发布中
-//                MyPublishingViewController *myPublishingVC = [[MyPublishingViewController alloc] init];
-//                myPublishingVC.productid = rowModel.productid;
-//                UINavigationController *navv = weakself.navigationController;
-//                [navv popViewControllerAnimated:NO];
-//                [navv pushViewController:myPublishingVC animated:NO];
-            }
         }
         
     } andFailBlock:^(NSError *error) {
@@ -1187,8 +1175,9 @@
     [self showHint:@"材料清单"];
 }
 
-- (void)rightItemAction//申请终止
+- (void)rightItemAction
 {
+    
 }
 
 //对话框
@@ -1211,6 +1200,7 @@
         [weakself showHint:baseModel.msg];
         
         if ([baseModel.code isEqualToString:@"0000"]) {
+            weakself.dialogBoxView.dialogTextField.text = nil;
             [weakself getDetailMessagesssss];
         }
         

@@ -239,10 +239,8 @@
                                 [weakself uploadImages:imString andType:@"jgp" andFilePath:images[0]];
                                 
                                 [weakself setDidGetValidImage:^(ImageModel *imageModel) {
-                                    if ([imageModel.code isEqualToString:@"0000"]) {
-                                        
+                                    if ([imageModel.error isEqualToString:@"0"]) {
                                         [weakself.reEndImageArray addObject:imageModel.fileid];
-//                                        [weakself.reEndImageArray addObject:imageModel.url];
                                         [weakcell.collectionDataList insertObject:images[0] atIndex:0];
                                         [weakcell reloadData];
                                     }else{
@@ -298,7 +296,6 @@
         for (int i=0; i<self.reEndImageArray.count; i++) {
             aaaa = [NSString stringWithFormat:@"%@,%@",self.reEndImageArray[i],aaaa];
         }
-        
         aaaa = [aaaa substringWithRange:NSMakeRange(0, aaaa.length-1)];
     }
     
