@@ -100,7 +100,7 @@
     if (!_backButton) {
         _backButton = [UIButton newAutoLayoutView];
         _backButton.layer.cornerRadius = 5;
-        _backButton.backgroundColor = kNavColor;
+        _backButton.backgroundColor = kWhiteColor;
     }
     return _backButton;
 }

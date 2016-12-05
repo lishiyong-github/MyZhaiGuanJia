@@ -71,7 +71,7 @@
 {
     if (!_deRateLabel1) {
         _deRateLabel1 = [UILabel newAutoLayoutView];
-        _deRateLabel1.textColor = kNavColor;
+        _deRateLabel1.textColor = kWhiteColor;
         _deRateLabel1.font = [UIFont systemFontOfSize:50];  //24
     }
     return _deRateLabel1;

@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "qingdaofu/TabBarController/&#x63a8;&#x8350;&#x4ea7;&#x54c1;/controller/NewProductViewController.m"
-            timestampString = "502274741.3882"
+            timestampString = "502601488.436403"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "583"
-            endingLineNumber = "583"
+            startingLineNumber = "582"
+            endingLineNumber = "582"
             landmarkName = "-goStoreProductWithModel:andButton:"
             landmarkType = "5">
          </BreakpointContent>
@@ -49,6 +49,118 @@
             endingLineNumber = "1118"
             landmarkName = "-deleteThePublishing"
             landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "qingdaofu/TabBarController/&#x7528;&#x6237;/&#x6211;&#x7684;&#x63a5;&#x5355;/&#x5904;&#x7406;&#x4e2d;/&#x670d;&#x52a1;&#x534f;&#x8bae;/SignProtocolViewController.m"
+            timestampString = "502617603.413895"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "248"
+            endingLineNumber = "248"
+            landmarkName = "-saveSignImages"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[SignProtocolViewController saveSignImages]"
+                  moduleName = "qingdaofu"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/zhixiang/Documents/iOS_%E7%B1%B3%E6%9C%88%E8%99%B9/ZhaiGuanJia/qingdaofu/TabBarController/%E7%94%A8%E6%88%B7/%E6%88%91%E7%9A%84%E6%8E%A5%E5%8D%95/%E5%A4%84%E7%90%86%E4%B8%AD/%E6%9C%8D%E5%8A%A1%E5%8D%8F%E8%AE%AE/SignProtocolViewController.m"
+                  timestampString = "502625346.891298"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "248"
+                  endingLineNumber = "248"
+                  offsetFromSymbolStart = "981">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__44-[SignProtocolViewController saveSignImages]_block_invoke"
+                  moduleName = "qingdaofu"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/zhixiang/Documents/iOS_%E7%B1%B3%E6%9C%88%E8%99%B9/ZhaiGuanJia/qingdaofu/TabBarController/%E7%94%A8%E6%88%B7/%E6%88%91%E7%9A%84%E6%8E%A5%E5%8D%95/%E5%A4%84%E7%90%86%E4%B8%AD/%E6%9C%8D%E5%8A%A1%E5%8D%8F%E8%AE%AE/SignProtocolViewController.m"
+                  timestampString = "502625346.891444"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "249"
+                  endingLineNumber = "249"
+                  offsetFromSymbolStart = "44">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "qingdaofu/TabBarController/&#x7528;&#x6237;/&#x6211;&#x7684;&#x63a5;&#x5355;/&#x5904;&#x7406;&#x4e2d;/&#x670d;&#x52a1;&#x534f;&#x8bae;/SignProtocolViewController.m"
+            timestampString = "502617603.413895"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "242"
+            endingLineNumber = "242"
+            landmarkName = "-saveSignImages"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "qingdaofu/TabBarController/&#x7528;&#x6237;/&#x6211;&#x7684;&#x63a5;&#x5355;/&#x5904;&#x7406;&#x4e2d;/&#x6dfb;&#x52a0;&#x8fdb;&#x5ea6;/AddProgressViewController.m"
+            timestampString = "502602374.398474"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "258"
+            endingLineNumber = "258"
+            landmarkName = "-rightItemAction"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[AddProgressViewController rightItemAction]"
+                  moduleName = "qingdaofu"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/zhixiang/Documents/iOS_%E7%B1%B3%E6%9C%88%E8%99%B9/ZhaiGuanJia/qingdaofu/TabBarController/%E7%94%A8%E6%88%B7/%E6%88%91%E7%9A%84%E6%8E%A5%E5%8D%95/%E5%A4%84%E7%90%86%E4%B8%AD/%E6%B7%BB%E5%8A%A0%E8%BF%9B%E5%BA%A6/AddProgressViewController.m"
+                  timestampString = "502625346.893171"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "258"
+                  endingLineNumber = "258"
+                  offsetFromSymbolStart = "1127">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__44-[AddProgressViewController rightItemAction]_block_invoke"
+                  moduleName = "qingdaofu"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/zhixiang/Documents/iOS_%E7%B1%B3%E6%9C%88%E8%99%B9/ZhaiGuanJia/qingdaofu/TabBarController/%E7%94%A8%E6%88%B7/%E6%88%91%E7%9A%84%E6%8E%A5%E5%8D%95/%E5%A4%84%E7%90%86%E4%B8%AD/%E6%B7%BB%E5%8A%A0%E8%BF%9B%E5%BA%A6/AddProgressViewController.m"
+                  timestampString = "502625346.893321"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "259"
+                  endingLineNumber = "259"
+                  offsetFromSymbolStart = "44">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

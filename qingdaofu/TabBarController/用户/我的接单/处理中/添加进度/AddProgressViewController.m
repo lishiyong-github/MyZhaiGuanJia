@@ -237,6 +237,7 @@
 #pragma mark - method
 - (void)rightItemAction//添加进度
 {
+    [self.view endEditing:YES];
     NSString *addPaceString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrderDetailOfAddPace];
     
     NSString *imageStr = @"";

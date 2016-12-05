@@ -327,7 +327,7 @@
                     }
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     
-                    NSString *nameStr = [NSString getValidStringFromString:dataModel.productApply.mobile toString:@"未认证"];
+                    NSString *nameStr = [NSString getValidStringFromString:dataModel.productApply.realname toString:dataModel.productApply.username];
                     NSString *checkStr = [NSString stringWithFormat:@"申请方：%@",nameStr];
                     [cell.checkButton setTitle:checkStr forState:0];
                     [cell.contactButton setTitle:@" 联系TA" forState:0];
@@ -502,7 +502,7 @@
                 }
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 
-                NSString *nameStr = [NSString getValidStringFromString:dataModel.productApply.mobile toString:@"未认证"];
+                NSString *nameStr = [NSString getValidStringFromString:dataModel.productApply.realname toString:dataModel.productApply.username];
                 NSString *checkStr = [NSString stringWithFormat:@"接单方：%@",nameStr];
                 [cell.checkButton setTitle:checkStr forState:0];
                 [cell.contactButton setTitle:@" 联系TA" forState:0];
@@ -722,7 +722,7 @@
                 }
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 
-                NSString *nameStr = [NSString getValidStringFromString:dataModel.productApply.mobile toString:@"未认证"];
+                NSString *nameStr = [NSString getValidStringFromString:dataModel.productApply.realname toString:dataModel.productApply.username];
                 NSString *checkStr = [NSString stringWithFormat:@"接单方：%@",nameStr];
                 [cell.checkButton setTitle:checkStr forState:0];
                 [cell.contactButton setTitle:@" 联系TA" forState:0];

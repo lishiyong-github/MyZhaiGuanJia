@@ -188,19 +188,18 @@
     if (!self.ordersid) {
         params = @{@"token" : [self getValidateToken],
                     @"page" : page,
-                    @"limit" : @"10"
+                    @"limit" : @"6"
                    };
     }else{
         params = @{@"token" : [self getValidateToken],
                    @"page" : page,
-                   @"limit" : @"10",
+                   @"limit" : @"6",
                    @"ordersid" : self.ordersid
                    };
     }
     
     QDFWeakSelf;
     [self requestDataPostWithString:listsString params:params successBlock:^(id responseObject) {
-        NSDictionary *sosos = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
         
         if ([page integerValue] == 1) {
             [weakself.myMailDataArray removeAllObjects];

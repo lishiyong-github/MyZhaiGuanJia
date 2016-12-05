@@ -13,7 +13,8 @@
 + (NSDictionary *)replacedKeyFromPropertyName
 {
     return @{@"operators" : @"result.data.operators",
-             @"orders" : @"result.data.orders"
+             @"orders" : @"result.data.orders",
+             @"accessOrdersADDOPERATOR" : @"result.data.accessOrdersADDOPERATOR"
              };
 }
 

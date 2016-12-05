@@ -18,18 +18,19 @@
 #import "DealingEndViewController.h"  //处理终止
 #import "DealingCloseViewController.h"  //处理结案
 #import "AdditionalEvaluateViewController.h"  //评价
+#import "EvaluateListsViewController.h"  //评价列表
 #import "MoreMessagesViewController.h"  //更多信息
 #import "PaceViewController.h"  //尽职调查
 
 #import "BaseRemindButton.h"
 #import "BaseCommitView.h"
 
-#import "NewPublishDetailsCell.h"//进度
-#import "NewPublishStateCell.h"//状态
+#import "NewPublishDetailsCell.h"
+#import "NewPublishStateCell.h"//等待发布方同意
 #import "MineUserCell.h"//完善信息
-#import "OrderPublishCell.h"
+#import "OrderPublishCell.h" //接单方信息
 #import "ProductCloseCell.h"  //结案
-#import "ProgressCell.h"
+#import "ProgressCell.h"//尽职调查
 
 
 #import "MyOrderDetailResponse.h"
@@ -308,7 +309,7 @@
                     }
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     
-                    NSString *nameStr = [NSString getValidStringFromString:orderModel.product.fabuuser.mobile toString:@"未认证"];
+                    NSString *nameStr = [NSString getValidStringFromString:orderModel.product.fabuuser.realname toString:orderModel.product.fabuuser.username];
                     NSString *checkStr = [NSString stringWithFormat:@"发布方：%@",nameStr];
                     [cell.checkButton setTitle:checkStr forState:0];
                     [cell.contactButton setTitle:@" 联系TA" forState:0];
@@ -354,6 +355,7 @@
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 cell.backgroundColor = kBackColor;
                 
+                //codelabel
                 NSString *code1 = [NSString stringWithFormat:@"%@\n",rowModel.number];
                 NSString *code2 = @"订单已结案";
                 NSString *codeStr = [NSString stringWithFormat:@"%@%@",code1,code2];
@@ -365,6 +367,7 @@
                 [attributeCC addAttribute:NSParagraphStyleAttributeName value:stylerr range:NSMakeRange(0, codeStr.length)];
                 [cell.codeLabel setAttributedText:attributeCC];
                 
+                // productTextButton
                 NSString *proText1 = @"产品信息\n";
                 NSString *proText2 = [NSString stringWithFormat:@"债权类型：%@\n",rowModel.categoryLabel];
                 NSString *proText3;
@@ -383,6 +386,9 @@
                 styler.alignment = NSTextAlignmentLeft;
                 [attributePP addAttribute:NSParagraphStyleAttributeName value:styler range:NSMakeRange(0, proTextStr.length)];
                 [cell.productTextButton setAttributedTitle:attributePP forState:0];
+                
+                //signScrollView
+                cell.signImageArray = orderModel.SignPicture;
                 
                 QDFWeakSelf;
                 [cell setDidselectedBtn:^(NSInteger tag) {
@@ -463,7 +469,7 @@
                     }
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     
-                    NSString *nameStr = [NSString getValidStringFromString:orderModel.product.fabuuser.mobile toString:@"未认证"];
+                    NSString *nameStr = [NSString getValidStringFromString:orderModel.product.fabuuser.realname toString:orderModel.product.fabuuser.username];
                     NSString *checkStr = [NSString stringWithFormat:@"发布方：%@",nameStr];
                     [cell.checkButton setTitle:checkStr forState:0];
                     [cell.contactButton setTitle:@" 联系TA" forState:0];
@@ -560,6 +566,7 @@
                             cell = [[ProgressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                         }
                         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                        cell.separatorInset = UIEdgeInsetsMake(0, kScreenWidth, 0, 0);
                         [cell.ppLine1 setHidden:YES];
                         
                         //time
@@ -575,6 +582,8 @@
                             [cell.ppTypeButton setBackgroundColor:kRedColor];
                         }else if ([orderLogsModel.label isEqualToString:@"接"]){
                             [cell.ppTypeButton setBackgroundColor:kGrayColor];
+                        }else if ([orderLogsModel.label isEqualToString:@"经"]){
+                            [cell.ppTypeButton setBackgroundColor:kButtonColor];
                         }
                         
                         //content
@@ -595,6 +604,8 @@
                             cell = [[ProgressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                         }
                         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                        cell.separatorInset = UIEdgeInsetsMake(0, kScreenWidth, 0, 0);
+
                         [cell.ppLine2 setHidden:YES];
 
                         //time
@@ -610,6 +621,8 @@
                             [cell.ppTypeButton setBackgroundColor:kRedColor];
                         }else if ([orderLogsModel.label isEqualToString:@"接"]){
                             [cell.ppTypeButton setBackgroundColor:kGrayColor];
+                        }else if ([orderLogsModel.label isEqualToString:@"经"]){
+                            [cell.ppTypeButton setBackgroundColor:kButtonColor];
                         }
                         
                         //content
@@ -630,6 +643,8 @@
                             cell = [[ProgressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                         }
                         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                        cell.separatorInset = UIEdgeInsetsMake(0, kScreenWidth, 0, 0);
+
                         //time
                         [cell.ppLabel setAttributedText:[self showPPLabelOfProgressWithOrderLogModel:orderLogsModel]];
                         
@@ -643,6 +658,8 @@
                             [cell.ppTypeButton setBackgroundColor:kRedColor];
                         }else if ([orderLogsModel.label isEqualToString:@"接"]){
                             [cell.ppTypeButton setBackgroundColor:kGrayColor];
+                        }else if ([orderLogsModel.label isEqualToString:@"经"]){
+                            [cell.ppTypeButton setBackgroundColor:kButtonColor];
                         }
                         
                         //content
@@ -693,7 +710,7 @@
                     }
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     
-                    NSString *nameStr = [NSString getValidStringFromString:orderModel.product.fabuuser.mobile toString:@"未认证"];
+                    NSString *nameStr = [NSString getValidStringFromString:orderModel.product.fabuuser.realname toString:orderModel.product.fabuuser.username];
                     NSString *checkStr = [NSString stringWithFormat:@"发布方：%@",nameStr];
                     [cell.checkButton setTitle:checkStr forState:0];
                     [cell.contactButton setTitle:@" 联系TA" forState:0];
@@ -805,6 +822,8 @@
                             cell = [[ProgressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                         }
                         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                        cell.separatorInset = UIEdgeInsetsMake(0, kScreenWidth, 0, 0);
+
                         [cell.ppLine1 setHidden:YES];
 
                         //time
@@ -820,6 +839,8 @@
                             [cell.ppTypeButton setBackgroundColor:kRedColor];
                         }else if ([orderLogsModel.label isEqualToString:@"接"]){
                             [cell.ppTypeButton setBackgroundColor:kGrayColor];
+                        }else if ([orderLogsModel.label isEqualToString:@"经"]){
+                            [cell.ppTypeButton setBackgroundColor:kButtonColor];
                         }
                         
                         //content
@@ -840,6 +861,8 @@
                             cell = [[ProgressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                         }
                         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                        cell.separatorInset = UIEdgeInsetsMake(0, kScreenWidth, 0, 0);
+
                         [cell.ppLine2 setHidden:YES];
 
                         //time
@@ -855,6 +878,8 @@
                             [cell.ppTypeButton setBackgroundColor:kRedColor];
                         }else if ([orderLogsModel.label isEqualToString:@"接"]){
                             [cell.ppTypeButton setBackgroundColor:kGrayColor];
+                        }else if ([orderLogsModel.label isEqualToString:@"经"]){
+                            [cell.ppTypeButton setBackgroundColor:kButtonColor];
                         }
                         
                         //content
@@ -875,6 +900,8 @@
                             cell = [[ProgressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                         }
                         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                        cell.separatorInset = UIEdgeInsetsMake(0, kScreenWidth, 0, 0);
+
                         //time
                         [cell.ppLabel setAttributedText:[self showPPLabelOfProgressWithOrderLogModel:orderLogsModel]];
                         
@@ -888,6 +915,8 @@
                             [cell.ppTypeButton setBackgroundColor:kRedColor];
                         }else if ([orderLogsModel.label isEqualToString:@"接"]){
                             [cell.ppTypeButton setBackgroundColor:kGrayColor];
+                        }else if ([orderLogsModel.label isEqualToString:@"经"]){
+                            [cell.ppTypeButton setBackgroundColor:kButtonColor];
                         }
                         
                         //content
@@ -941,7 +970,7 @@
                     }
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     
-                    NSString *nameStr = [NSString getValidStringFromString:orderModel.product.fabuuser.mobile toString:@"未认证"];
+                    NSString *nameStr = [NSString getValidStringFromString:orderModel.product.fabuuser.realname toString:orderModel.product.fabuuser.username];
                     NSString *checkStr = [NSString stringWithFormat:@"发布方：%@",nameStr];
                     [cell.checkButton setTitle:checkStr forState:0];
                     [cell.contactButton setTitle:@" 联系TA" forState:0];
@@ -1088,6 +1117,7 @@
                         [cell.userActionButton addAction:^(UIButton *btn) {
                             [weakself showHint:@"添加进度"];
                             AddProgressViewController *addProgressVC = [[AddProgressViewController alloc] init];
+                            addProgressVC.ordersid = orderModel.orders.ordersid;
                             [weakself.navigationController pushViewController:addProgressVC animated:YES];
                         }];
                     }else if ([orderModel.orders.status integerValue] == 30){//已终止
@@ -1106,6 +1136,8 @@
                             cell = [[ProgressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                         }
                         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                        cell.separatorInset = UIEdgeInsetsMake(0, kScreenWidth, 0, 0);
+
                         [cell.ppLine1 setHidden:YES];
 
                         //time
@@ -1121,6 +1153,8 @@
                             [cell.ppTypeButton setBackgroundColor:kRedColor];
                         }else if ([orderLogsModel.label isEqualToString:@"接"]){
                             [cell.ppTypeButton setBackgroundColor:kGrayColor];
+                        }else if ([orderLogsModel.label isEqualToString:@"经"]){
+                            [cell.ppTypeButton setBackgroundColor:kButtonColor];
                         }
                         
                         //content
@@ -1141,6 +1175,8 @@
                             cell = [[ProgressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                         }
                         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                        cell.separatorInset = UIEdgeInsetsMake(0, kScreenWidth, 0, 0);
+
                         [cell.ppLine2 setHidden:YES];
 
                         //time
@@ -1156,6 +1192,8 @@
                             [cell.ppTypeButton setBackgroundColor:kRedColor];
                         }else if ([orderLogsModel.label isEqualToString:@"接"]){
                             [cell.ppTypeButton setBackgroundColor:kGrayColor];
+                        }else if ([orderLogsModel.label isEqualToString:@"经"]){
+                            [cell.ppTypeButton setBackgroundColor:kButtonColor];
                         }
                         
                         //content
@@ -1176,6 +1214,8 @@
                             cell = [[ProgressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                         }
                         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                        cell.separatorInset = UIEdgeInsetsMake(0, kScreenWidth, 0, 0);
+
                         //time
                         [cell.ppLabel setAttributedText:[self showPPLabelOfProgressWithOrderLogModel:orderLogsModel]];
                         
@@ -1189,6 +1229,8 @@
                             [cell.ppTypeButton setBackgroundColor:kRedColor];
                         }else if ([orderLogsModel.label isEqualToString:@"接"]){
                             [cell.ppTypeButton setBackgroundColor:kGrayColor];
+                        }else if ([orderLogsModel.label isEqualToString:@"经"]){
+                            [cell.ppTypeButton setBackgroundColor:kButtonColor];
                         }
                         
                         //content
@@ -1257,7 +1299,7 @@
                     }
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     
-                    NSString *nameStr = [NSString getValidStringFromString:orderModel.product.fabuuser.mobile toString:@"未认证"];
+                    NSString *nameStr = [NSString getValidStringFromString:orderModel.product.fabuuser.realname toString:orderModel.product.fabuuser.username];
                     NSString *checkStr = [NSString stringWithFormat:@"发布方：%@",nameStr];
                     [cell.userNameButton setTitle:checkStr forState:0];
                     [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
@@ -1272,7 +1314,7 @@
                     }
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     
-                    NSString *nameStr = [NSString getValidStringFromString:orderModel.product.fabuuser.mobile toString:@"未认证"];
+                    NSString *nameStr = [NSString getValidStringFromString:orderModel.product.fabuuser.realname toString:orderModel.product.fabuuser.username];
                     NSString *checkStr = [NSString stringWithFormat:@"发布方：%@",nameStr];
                     [cell.checkButton setTitle:checkStr forState:0];
                     [cell.contactButton setTitle:@" 联系TA" forState:0];
@@ -1443,17 +1485,11 @@
                     OperatorListViewController *operatorListVC = [[OperatorListViewController alloc] init];
                     operatorListVC.ordersid = orderModel.orders.ordersid;
                     
-                    if ([orderModel.orders.status integerValue] <= 20) {
-                        operatorListVC.isAdd = @"1";
-                    }else{
-                        operatorListVC.isAdd = @"2";
-                    }
                     [self.navigationController pushViewController:operatorListVC animated:YES];
                 }else{//没经办人时，若还在处理中则可添加新的经办人
                     if ([orderModel.orders.status integerValue] <= 20) {
                         OperatorListViewController *operatorListVC = [[OperatorListViewController alloc] init];
                         operatorListVC.ordersid = orderModel.orders.ordersid;
-                        operatorListVC.isAdd = @"1";
                         [self.navigationController pushViewController:operatorListVC animated:YES];
                     }
                 }
@@ -1463,7 +1499,6 @@
                 if ([orderModel.productOrdersOperatorsCount integerValue] > 0) {
                     OperatorListViewController *operatorListVC = [[OperatorListViewController alloc] init];
                     operatorListVC.ordersid = orderModel.orders.ordersid;
-                    operatorListVC.isAdd = @"2";
                     [self.navigationController pushViewController:operatorListVC animated:YES];
                 }
             }
@@ -1489,8 +1524,6 @@
     QDFWeakSelf;
     [self requestDataPostWithString:detailString params:params successBlock:^(id responseObject){
         
-        NSDictionary *apapa = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        
         [weakself.myOrderDetailArray removeAllObjects];
         
         MyOrderDetailResponse *response = [MyOrderDetailResponse objectWithKeyValues:responseObject];
@@ -1501,7 +1534,6 @@
             if ([orderModel.orders.status integerValue] == 0) {
                 [self.rightButton setHidden:YES];
                 [weakself.processinCommitButton setHidden:NO];
-//                [weakself.myOrderDetailTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.processinCommitButton];
                 [weakself.processinCommitButton.button setTitle:@"签订居间协议" forState:0];
                 [weakself.processinCommitButton addAction:^(UIButton *btn) {
                     [weakself actionOfBottomWithType:@"1" andOrderModel:orderModel];
@@ -1514,30 +1546,60 @@
                     [weakself actionOfBottomWithType:@"2" andOrderModel:orderModel];
                 }];
             }else if ([orderModel.orders.status integerValue] == 20){
-                [self.rightButton setHidden:NO];
-                [self.rightButton setTitle:@"申请终止" forState:0];
-                [self.rightButton addAction:^(UIButton *btn) {
-                    RequestEndViewController *requestEndVC = [[RequestEndViewController alloc] init];
-                    requestEndVC.ordersid = orderModel.orders.ordersid;
-                    [weakself.navigationController pushViewController:requestEndVC animated:YES];
-                }];
-
-                [weakself.processinCommitButton setHidden:NO];
-                [weakself.processinCommitButton.button setTitle:@"申请结案" forState:0];
-                [weakself.processinCommitButton addAction:^(UIButton *btn) {
-                    [weakself actionOfBottomWithType:@"3" andOrderModel:orderModel];
-                }];
+                //申请终止状态
+                if (response.data.productOrdersTerminationsApply && [response.data.productOrdersTerminationsApply.status integerValue] == 0) {
+                    [weakself.rightButton setHidden:NO];
+                    [weakself.rightButton setTitle:@"终止中" forState:0];
+                }else{//接单方显示，经办人不显示
+                    if ([response.data.create_by isEqualToString:response.userid]) {
+                        [weakself.rightButton setHidden:NO];
+                        [weakself.rightButton setTitle:@"申请终止" forState:0];
+                        [weakself.rightButton addAction:^(UIButton *btn) {
+                            RequestEndViewController *requestEndVC = [[RequestEndViewController alloc] init];
+                            requestEndVC.ordersid = orderModel.orders.ordersid;
+                            [weakself.navigationController pushViewController:requestEndVC animated:YES];
+                        }];
+                    }else{
+                        [weakself.rightButton setHidden:YES];
+                    }
+                }
                 
-                self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightButton];
-                [self.rightButton setTitle:@"申请终止" forState:0];
+                //申请结案状态
+                if (response.data.productOrdersClosedsApply && [response.data.productOrdersClosedsApply.status integerValue] == 0) {
+                    [weakself.processinCommitButton setHidden:NO];
+                    [weakself.processinCommitButton.button setTitle:@"结案中" forState:0];
+                }else{
+                    if ([response.data.create_by isEqualToString:response.userid]) {
+                        [weakself.processinCommitButton setHidden:NO];
+                        [weakself.processinCommitButton.button setTitle:@"申请结案" forState:0];
+                        [weakself.processinCommitButton addAction:^(UIButton *btn) {
+                            [weakself actionOfBottomWithType:@"3" andOrderModel:orderModel];
+                        }];
+                    }else{
+                        [weakself.processinCommitButton setHidden:YES];
+                    }
+                }
                 
             }else if ([orderModel.orders.status integerValue] == 40){
                 [self.rightButton setHidden:YES];
-                [weakself.processinCommitButton setHidden:NO];
-                [weakself.processinCommitButton.button setTitle:@"评价" forState:0];
-                [weakself.processinCommitButton addAction:^(UIButton *btn) {
-                    [weakself actionOfBottomWithType:@"4" andOrderModel:orderModel];
-                }];
+                
+                if ([response.userid isEqualToString:orderModel.create_by]) {
+                    [weakself.processinCommitButton setHidden:NO];
+                    
+                    if ([response.data.myCommentTotal integerValue] > 0) {
+                        [weakself.processinCommitButton.button setTitle:@"查看评价" forState:0];
+                        [weakself.processinCommitButton addAction:^(UIButton *btn) {
+                            [weakself actionOfBottomWithType:@"5" andOrderModel:orderModel];
+                        }];
+                    }else{
+                        [weakself.processinCommitButton.button setTitle:@"评价" forState:0];
+                        [weakself.processinCommitButton addAction:^(UIButton *btn) {
+                            [weakself actionOfBottomWithType:@"4" andOrderModel:orderModel];
+                        }];
+                    }
+                }else{
+                    [weakself.processinCommitButton setHidden:YES];
+                }
             }else{//终止
                 [self.rightButton setHidden:YES];
                 [weakself.processinCommitButton setHidden:YES];
@@ -1600,7 +1662,8 @@
     }
 }
 
-- (void)actionOfBottomWithType:(NSString *)actType andOrderModel:(OrderModel *)orderModel//1-确认居间协议，2-上传签约协议，3-申请结案
+
+- (void)actionOfBottomWithType:(NSString *)actType andOrderModel:(OrderModel *)orderModel//1-确认居间协议，2-上传签约协议，3-申请结案,4-评价，5-查看评价
 {
     if ([actType integerValue] == 1) {
         AgreementViewController *agreementVC = [[AgreementViewController alloc] init];
@@ -1620,12 +1683,17 @@
         requestCloseVC.orderModell = orderModel;
         [self.navigationController pushViewController:requestCloseVC animated:YES];
         
-    }else{//评价
+    }else if([actType integerValue] == 4){//评价
         AdditionalEvaluateViewController *additionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
         additionalEvaluateVC.ordersid = orderModel.orders.ordersid;
         
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:additionalEvaluateVC];
         [self presentViewController:nav animated:YES completion:nil];
+    }else if ([actType integerValue] == 5){
+        EvaluateListsViewController *evaluateListsVC = [[EvaluateListsViewController alloc] init];
+        evaluateListsVC.typeString = @"接单方";
+        evaluateListsVC.ordersid = orderModel.orders.ordersid;
+        [self.navigationController pushViewController:evaluateListsVC animated:YES];
     }
 }
 
@@ -1675,7 +1743,7 @@
 //ppTextbutton(content)
 - (NSMutableAttributedString *)showPPTextButtonOfProgressWithModel:(OrderModel *)orderModel andOrderLogModel:(OrdersLogsModel *)orderLogsModel
 {
-    if ([orderLogsModel.label isEqualToString:@"接"]) {
+    if ([orderLogsModel.label isEqualToString:@"经"]) {
         if (orderLogsModel.memoTel.length > 0) {//有电话
             NSString *mm1 = [NSString stringWithFormat:@"[%@]",orderLogsModel.actionLabel];
             NSString *mm2 = [NSString stringWithFormat:@"%@%@",orderLogsModel.memoLabel,[orderLogsModel.memoTel substringWithRange:NSMakeRange(0, orderLogsModel.memoTel.length-11)]];
@@ -1699,15 +1767,23 @@
     }else{//其他消息
         NSString *po1 = [NSString stringWithFormat:@"[%@]%@",orderLogsModel.actionLabel,orderLogsModel.memoLabel];
         NSString *po2;
-        if ([orderLogsModel.label isEqualToString:@"我"]) {
-            if ([orderLogsModel.action integerValue] != 42 && [orderLogsModel.action integerValue] != 52) {
-                po2 = @"查看详情";
+        if ([orderLogsModel.label isEqualToString:@"我"] || [orderLogsModel.label isEqualToString:@"接"]) {
+            if ([orderLogsModel.action integerValue] >= 40 && [orderLogsModel.action integerValue] <= 52) {
+                if (orderLogsModel.triggerLabel.length > 0) {
+                    po2 = orderLogsModel.triggerLabel;
+                }else{
+                    po2 = @"查看详情";
+                }
             }else{
                 po2 = orderLogsModel.triggerLabel;
             }
         }else if ([orderLogsModel.label isEqualToString:@"发"]){
-            if ([orderLogsModel.action integerValue] == 41 || [orderLogsModel.action integerValue] == 51) {//同意终止，同意结案（查看详情）
-                po2 = @"查看详情";
+            if ([orderLogsModel.action integerValue] >= 40 && [orderLogsModel.action integerValue] <= 52) {
+                if (orderLogsModel.triggerLabel.length > 0) {
+                    po2 = orderLogsModel.triggerLabel;
+                }else{
+                    po2 = @"查看详情";
+                }
             }else{
                 po2 = orderLogsModel.triggerLabel;
             }
@@ -1728,28 +1804,22 @@
 - (void)actionOfMyOrderWithModel:(OrdersLogsModel *)orderLogModel andPerson:(NSString *)person andAction:(NSString *)action
 {
     if ([person isEqualToString:@"发"]) {
-        if ([action integerValue] == 41) {
-            [self showHint:@"发同意结案"];
+        if ([action integerValue] == 41 || [action integerValue] == 42) {
             DealingCloseViewController *dealCloseVC = [[DealingCloseViewController alloc] init];
             dealCloseVC.closedid = orderLogModel.relaid;
             [self.navigationController pushViewController:dealCloseVC animated:YES];
-            
-        }else if ([action integerValue] == 50){
-            DealingEndViewController *dealingEndVC = [[DealingEndViewController alloc] init];
-            dealingEndVC.terminationid = orderLogModel.relaid;
-            [self.navigationController pushViewController:dealingEndVC animated:YES];
-        }else if ([action integerValue] == 51){
+        }else if ([action integerValue] == 50 || [action integerValue] == 51 || [action integerValue] == 52){
             DealingEndViewController *dealingEndVC = [[DealingEndViewController alloc] init];
             dealingEndVC.terminationid = orderLogModel.relaid;
             [self.navigationController pushViewController:dealingEndVC animated:YES];
         }
-    }else if ([person isEqualToString:@"我"]){
+    }else if ([person isEqualToString:@"我"] || [person isEqualToString:@"接"]){
         if ([action integerValue] == 40 || [action integerValue] == 41) {
             DealingCloseViewController *dealCloseVC = [[DealingCloseViewController alloc] init];
             dealCloseVC.closedid = orderLogModel.relaid;
             [self.navigationController pushViewController:dealCloseVC animated:YES];
             
-        }else if ([action integerValue] == 50 || [action integerValue] ==51){
+        }else if ([action integerValue] == 50 || [action integerValue] == 51 || [action integerValue] == 52){
             DealingEndViewController *dealingEndVC = [[DealingEndViewController alloc] init];
             dealingEndVC.terminationid = orderLogModel.relaid;
             [self.navigationController pushViewController:dealingEndVC animated:YES];

@@ -94,7 +94,7 @@
         _countLabel.font = kSecondFont;
         _countLabel.textAlignment = NSTextAlignmentCenter;
         _countLabel.backgroundColor = kBlueColor;
-        _countLabel.textColor = kNavColor;
+        _countLabel.textColor = kWhiteColor;
         [_countLabel sizeToFit];
     }
     return _countLabel;
@@ -104,7 +104,7 @@
 {
     if (!_actButton) {
         _actButton = [UIButton newAutoLayoutView];
-        [_actButton setTitleColor:kNavColor forState:0];
+        [_actButton setTitleColor:kWhiteColor forState:0];
         _actButton.titleLabel.font = kSecondFont;
         _actButton.backgroundColor = kBlueColor;
     }

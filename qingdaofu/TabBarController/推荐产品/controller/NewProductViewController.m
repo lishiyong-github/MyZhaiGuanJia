@@ -556,7 +556,6 @@
         if ([appModel.code isEqualToString:@"0000"]) {
             [weakself getRecommendProductslist];
         }
-        
     } andFailBlock:^(NSError *error) {
         
     }];

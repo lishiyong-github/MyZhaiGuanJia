@@ -28,6 +28,7 @@
 @property (nonatomic,strong) NSMutableArray *signImageArray; //添加图片
 @property (nonatomic,strong) NSMutableArray *signDataArray;  //解析
 @property (nonatomic,assign) BOOL isShow;
+@property (nonatomic,strong) NSString *OrdersStatus;
 
 @end
 
@@ -41,10 +42,7 @@
     [self.view addSubview:self.sighProtocolTableView];
     [self.view addSubview:self.signCommitButton];
     [self.signCommitButton setHidden:YES];
-    
-//    if ([self.isShowString integerValue] == 1) {
-//    }else{
-//    }
+
     [self.view setNeedsUpdateConstraints];
     
     [self getDetailsOfSign];
@@ -163,18 +161,24 @@
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    if (self.signDataArray.count > 0) {
-        cell.collectionDataList = [NSMutableArray arrayWithArray:self.signDataArray];
-        [cell reloadData];
+    if (!_isShow) {
+         cell.collectionDataList = [NSMutableArray arrayWithArray:self.signDataArray];
     }else{
-        cell.collectionDataList = [NSMutableArray arrayWithObjects:@"upload_pictures", nil];
+        if (self.signDataArray.count > 0) {
+            [self.signDataArray addObject:@"upload_pictures"];
+            cell.collectionDataList = [NSMutableArray arrayWithArray:self.signDataArray];
+        }else{
+            cell.collectionDataList = [NSMutableArray arrayWithObjects:@"upload_pictures", nil];
+        }
     }
+    [cell reloadData];
+    
     
     QDFWeakSelf;
     QDFWeak(cell);
     [cell setDidSelectedItem:^(NSInteger itemTag) {
         
-        if (!weakself.isShow) {
+        if (!_isShow) {
             [weakself showImages:self.signDataArray currentIndex:0];
         }else{
             if (itemTag == weakcell.collectionDataList.count-1) {//只允许点击最后一个collection
@@ -187,7 +191,7 @@
                             [weakself uploadImages:imString andType:@"jgp" andFilePath:images[0]];
                             
                             [weakself setDidGetValidImage:^(ImageModel *imageModel) {
-                                if ([imageModel.code isEqualToString:@"0000"]) {
+                                if ([imageModel.error isEqualToString:@"0"]) {
                                     [weakself.signImageArray addObject:imageModel.fileid];
                                     
                                     [weakcell.collectionDataList insertObject:images[0] atIndex:0];
@@ -204,8 +208,6 @@
             }else{
                 UIAlertController *alertContr = [UIAlertController alertControllerWithTitle:@"" message:@"确认删除该图片" preferredStyle:0];
                 UIAlertAction *acty1 = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                    //                    [weakself.signImageArray removeObjectAtIndex:itemTag];
-                    //                    [weakself.additionalTableView reloadData];
                     
                     [weakself.signImageArray removeObjectAtIndex:itemTag];
                     [weakcell.collectionDataList removeObjectAtIndex:itemTag];
@@ -303,14 +305,18 @@
         
         SignPactsResonse *responsed = [SignPactsResonse objectWithKeyValues:responseObject];
         
-        if (!responsed.accessOrdersORDERCOMFIRM) {//显示图片
-            [weakself.signCommitButton setHidden:YES];
-        }else{
+        _isShow = responsed.accessOrdersORDERCOMFIRM;
+        weakself.OrdersStatus = responsed.OrdersStatus;
+        
+        if (responsed.accessOrdersORDERCOMFIRM && [responsed.OrdersStatus isEqualToString:@"ORDERSPACT"]) {//添加图片
             [weakself.signCommitButton setHidden:NO];
+        }else{//仅查看图片
+            [weakself.signCommitButton setHidden:YES];
         }
         
         for (ImageModel *imageModel in responsed.pacts) {
             [weakself.signDataArray addObject:imageModel.file];
+            [weakself.signImageArray addObject:imageModel.idString];
         }
         
         [weakself.sighProtocolTableView reloadData];

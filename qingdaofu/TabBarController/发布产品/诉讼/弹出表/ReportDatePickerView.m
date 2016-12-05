@@ -51,7 +51,7 @@
 {
     if (!_finishButton) {
         _finishButton = [UIButton newAutoLayoutView];
-        _finishButton.backgroundColor = kNavColor;
+        _finishButton.backgroundColor = kWhiteColor;
         [_finishButton setTitle:@"完成" forState:0];
         [_finishButton setTitleColor:kBlackColor forState:0];
         _finishButton.titleLabel.font = kFirstFont;
@@ -75,7 +75,7 @@
 {
     if (!_datePickerView) {
         _datePickerView = [UIDatePicker newAutoLayoutView];
-        _datePickerView.backgroundColor = kNavColor;
+        _datePickerView.backgroundColor = kWhiteColor;
         _datePickerView.datePickerMode = UIDatePickerModeDate;
         _datePickerView.maximumDate = [NSDate date];
     }

@@ -156,7 +156,7 @@
         NSString *lll1 = [NSString stringWithFormat:@"申请事项：%@\n",respinde.dataLabel];
         NSString *lll2 = [NSString stringWithFormat:@"申请时间：%@\n",[NSDate getYMDhmFormatterTime:respinde.data.create_at]];
         NSString *lll3 = [NSString stringWithFormat:@"申请终止原因：%@",respinde.data.applymemo];
-        NSString *lll4 = [NSString stringWithFormat:@"\n拒绝终止原因：%@",respinde.data.resultmemo];
+        NSString *lll4 = [NSString stringWithFormat:@"\n否决终止原因：%@",respinde.data.resultmemo];
         NSString *lll;
         if ([respinde.data.status integerValue] == 0) {
             lll = [NSString stringWithFormat:@"%@%@%@",lll1,lll2,lll3];

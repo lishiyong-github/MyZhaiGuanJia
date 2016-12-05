@@ -76,7 +76,7 @@
 {
     if (!_lastButton) {
         _lastButton = [UIButton newAutoLayoutView];
-        [_lastButton setBackgroundColor:kNavColor];
+        [_lastButton setBackgroundColor:kWhiteColor];
         [_lastButton setTitle:@"上一步" forState:0];
         [_lastButton setTitleColor:kGrayColor forState:0];
         _lastButton.titleLabel.font = kBigFont;
@@ -99,7 +99,7 @@
         _applyButton = [UIButton newAutoLayoutView];
         [_applyButton setTitle:@"立即申请" forState:0];
         [_applyButton setBackgroundColor:kBlueColor];
-        [_applyButton setTitleColor:kNavColor forState:0];
+        [_applyButton setTitleColor:kWhiteColor forState:0];
         _applyButton.titleLabel.font = kBigFont;
         
         QDFWeakSelf;

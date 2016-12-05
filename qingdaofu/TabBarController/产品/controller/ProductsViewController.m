@@ -69,7 +69,7 @@
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:kWhiteColor,NSFontAttributeName:kNavFont}];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:kNavColor] forBarMetrics:UIBarMetricsDefault];
         
-//    [self headerRefreshWithAllProducts];
+    [self headerRefreshWithAllProducts];
 }
 
 - (void)viewDidLoad {
@@ -86,7 +86,7 @@
     
     [self.view setNeedsUpdateConstraints];
     
-    [self headerRefreshWithAllProducts];
+//    [self headerRefreshWithAllProducts];
 }
 
 - (void)updateViewConstraints

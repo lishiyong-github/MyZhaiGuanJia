@@ -17,6 +17,7 @@
 @property (nonatomic,copy) NSString *pact;
 @property (nonatomic,copy) NSString *create_at;
 @property (nonatomic,copy) NSString *create_by;
+@property (nonatomic,strong) NSString *createuser;//接单人信息
 
 
 @property (nonatomic,strong) NSMutableArray *productOrdersLogs;//日志

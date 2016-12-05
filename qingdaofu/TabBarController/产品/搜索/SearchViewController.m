@@ -118,7 +118,7 @@
     }
     
     cell.selectedBackgroundView.backgroundColor = kSeparateColor;
-    cell.backgroundColor = kNavColor;
+    cell.backgroundColor = kWhiteColor;
     [cell.userNameButton setImage:[UIImage imageNamed:@"list_financing"] forState:0];
     [cell.userNameButton setTitle:self.dataArray[indexPath.row] forState:0];
     

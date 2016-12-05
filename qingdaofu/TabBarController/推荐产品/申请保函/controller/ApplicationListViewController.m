@@ -84,7 +84,7 @@
         [_applicationSwitchView.shortLineLabel setHidden:YES];
         _applicationSwitchView.leftBlueConstraints.constant = 0;
         _applicationSwitchView.widthBlueConstraints.constant = kScreenWidth/2;
-        _applicationSwitchView.backgroundColor = kNavColor;
+        _applicationSwitchView.backgroundColor = kWhiteColor;
         
         [_applicationSwitchView.getbutton setTitle:@"未完成的订单" forState:0];
         [_applicationSwitchView.sendButton setTitle:@"已完成的订单" forState:0];

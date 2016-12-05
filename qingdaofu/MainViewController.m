@@ -170,7 +170,7 @@
     tabBarController.viewControllers = @[newproductNav,productsNav,messageNav,mineNav];
     
     TabBar *tabBar = [[TabBar alloc] initWithFrame:tabBarController.tabBar.bounds];
-    tabBar.backgroundColor = kNavColor;
+    tabBar.backgroundColor = kWhiteColor;
 //    [tabBar setClipsToBounds:YES];
 //    tabBar.opaque = YES;
 //    

@@ -7,6 +7,8 @@
 //
 
 #import "ProductCloseCell.h"
+#import "UIButton+WebCache.h"
+#import "ImageModel.h"
 
 @implementation ProductCloseCell
 
@@ -271,9 +273,19 @@
 {
     if (!_signDetailScrollView) {
         _signDetailScrollView = [UIScrollView newAutoLayoutView];
-        _signDetailScrollView.backgroundColor = kYellowColor;
         _signDetailScrollView.contentSize = CGSizeMake(80, 60);
         _signDetailScrollView.delegate = self;
+        
+        for (NSInteger i=0; i<self.signImageArray.count ; i++) {
+            UIButton *imgButton = [[UIButton alloc] initWithFrame:CGRectMake(70*i, 0, 60, 60)];
+            [_signDetailScrollView addSubview:imgButton];
+            
+            ImageModel *imgModel = self.signImageArray[i];
+            NSString *imgString = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imgModel.file];
+            [imgButton sd_setImageWithURL:[NSURL URLWithString:imgString] forState:0 placeholderImage:nil];
+            
+            
+        }
     }
     return _signDetailScrollView;
 }
@@ -309,8 +321,6 @@
         _investLabel.font = kBigFont;
         _investLabel.numberOfLines = 0;
         _investLabel.textAlignment = NSTextAlignmentCenter;
-//        _investLabel.layer.borderColor = kBorderColor.CGColor;
-//        _investLabel.layer.borderWidth = kLineWidth;
     }
     return _investLabel;
 }
@@ -322,8 +332,6 @@
         [_investCheckButton setTitleColor:kTextColor forState:0];
         [_investCheckButton setTitle:@"查看详情" forState:0];
         _investCheckButton.titleLabel.font = kFirstFont;
-//        _investCheckButton.layer.borderColor = kBorderColor.CGColor;
-//        _investCheckButton.layer.borderWidth = kLineWidth;
         
         _investCheckButton.tag = 333;
         
@@ -346,8 +354,6 @@
         _agreementLabel.font = kBigFont;
         _agreementLabel.numberOfLines = 0;
         _agreementLabel.textAlignment = NSTextAlignmentCenter;
-//        _agreementLabel.layer.borderColor = kBorderColor.CGColor;
-//        _agreementLabel.layer.borderWidth = kLineWidth;
     }
     return _agreementLabel;
 }
@@ -359,8 +365,6 @@
         [_agreementCheckButton setTitleColor:kTextColor forState:0];
         [_agreementCheckButton setTitle:@"查看详情" forState:0];
         _agreementCheckButton.titleLabel.font = kFirstFont;
-//        _agreementCheckButton.layer.borderColor = kBorderColor.CGColor;
-//        _agreementCheckButton.layer.borderWidth = kLineWidth;
         
         _agreementCheckButton.tag = 334;
         
@@ -424,6 +428,13 @@
     return _line6;
 }
 
+- (NSMutableArray *)signImageArray
+{
+    if (!_signImageArray) {
+        _signImageArray = [NSMutableArray new];
+    }
+    return _signImageArray;
+}
 
 - (void)awakeFromNib {
     [super awakeFromNib];

@@ -12,6 +12,8 @@
 
 @property (nonatomic,strong) void (^didselectedBtn)(NSInteger);
 
+@property (nonatomic,strong) NSMutableArray *signImageArray; //签约协议图片
+
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UIImageView *topSpaceImaegView;  //顶部分割线
 @property (nonatomic,strong) UILabel *codeLabel; //单号

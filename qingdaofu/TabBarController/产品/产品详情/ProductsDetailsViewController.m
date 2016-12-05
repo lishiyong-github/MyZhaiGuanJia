@@ -150,7 +150,7 @@
         
         EvaTopSwitchView *productSwitchView = [[EvaTopSwitchView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 50)];
         productSwitchView.widthBlueConstraints.constant = kScreenWidth/2;
-        productSwitchView.backgroundColor = kNavColor;
+        productSwitchView.backgroundColor = kWhiteColor;
         [productSwitchView.getbutton  setTitle:@"产品信息" forState:0];//33
         [productSwitchView.sendButton  setTitle:@"发布方信息" forState:0];//34
         [productSwitchView.shortLineLabel setHidden:YES];

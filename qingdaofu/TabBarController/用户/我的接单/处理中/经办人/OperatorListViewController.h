@@ -12,6 +12,4 @@
 
 @property (nonatomic,strong) NSString *ordersid;
 
-@property (nonatomic,strong) NSString *isAdd; //1-可以新增，2-只可查看
-
 @end

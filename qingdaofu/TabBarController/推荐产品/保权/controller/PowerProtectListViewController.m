@@ -81,7 +81,7 @@
         [_powerSwitchView.shortLineLabel setHidden:YES];
         _powerSwitchView.leftBlueConstraints.constant = 0;
         _powerSwitchView.widthBlueConstraints.constant = kScreenWidth/2;
-        _powerSwitchView.backgroundColor = kNavColor;
+        _powerSwitchView.backgroundColor = kWhiteColor;
         
         [_powerSwitchView.getbutton setTitle:@"未完成的订单" forState:0];
         [_powerSwitchView.sendButton setTitle:@"已完成的订单" forState:0];
