@@ -283,7 +283,7 @@
                             [weakself uploadImages:imgString andType:@"jpg" andFilePath:@"1"];
                             
                             [weakself setDidGetValidImage:^(ImageModel *imgModel) {
-                                if ([imgModel.code isEqualToString:@"0000"]) {
+                                if ([imgModel.error isEqualToString:@"0"]) {
                                     if (tag == 1) {
                                         TakePictureCell *cell = [weakself.guaranteeSecondView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
                                         [cell.collectionDataList insertObject:images[0] atIndex:0];

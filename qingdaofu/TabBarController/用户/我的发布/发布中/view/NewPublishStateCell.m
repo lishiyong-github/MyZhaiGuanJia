@@ -57,7 +57,6 @@
 {
     if (!_stateButton) {
         _stateButton = [UIButton newAutoLayoutView];
-        [_stateButton setBackgroundColor:kLightGrayColor];
         _stateButton.userInteractionEnabled = NO;
     }
     return _stateButton;

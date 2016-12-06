@@ -17,9 +17,9 @@
         [self addSubview:self.userImageView];
         [self addSubview:self.storeButton];
         [self addSubview:self.categoryLabel1];
-//        [self addSubview:self.categoryLabel2];
-//        [self addSubview:self.categoryLabel3];
-//        [self addSubview:self.categoryLabel4];
+        [self addSubview:self.categoryLabel2];
+        [self addSubview:self.categoryLabel3];
+        [self addSubview:self.categoryLabel4];
         [self addSubview:self.leftButton];
         [self addSubview:self.rightButton];
         [self addSubview:self.applyButton];
@@ -43,6 +43,8 @@
         
         [self.categoryLabel1 autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kSmallPadding];
         [self.categoryLabel1 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.userImageView withOffset:kSmallPadding];
+        
+        [self.categoryLabel2 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.categoryLabel1 withOffset:kBigPadding];
         
         [self.leftButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.categoryLabel1 withOffset:kBigPadding];
         [self.leftButton autoPinEdgeToSuperviewEdge:ALEdgeLeft];

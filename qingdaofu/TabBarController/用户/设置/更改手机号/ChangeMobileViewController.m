@@ -133,10 +133,10 @@
 {
     if (!_changeCommitButton) {
         _changeCommitButton = [UIButton newAutoLayoutView];
-        _changeCommitButton.backgroundColor = kBorderColor;
+        _changeCommitButton.backgroundColor = kButtonColor;
         _changeCommitButton.layer.cornerRadius = corner;
         [_changeCommitButton setTitle:@"确定" forState:0];
-        [_changeCommitButton setTitleColor:kGrayColor forState:0];
+        [_changeCommitButton setTitleColor:kWhiteColor forState:0];
         _changeCommitButton.titleLabel.font = kFourFont;
         [_changeCommitButton addTarget:self action:@selector(confirmTheChangeOfMobile) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -204,6 +204,11 @@
     } andFailBlock:^(NSError *error) {
         
     }];
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [self.view endEditing:YES];
 }
 
 - (void)didReceiveMemoryWarning {

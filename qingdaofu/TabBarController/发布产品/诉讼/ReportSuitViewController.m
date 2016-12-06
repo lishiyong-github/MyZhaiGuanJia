@@ -757,7 +757,7 @@
     if (self.categoryDic.allKeys.count > 0) {//债权类型
         NSString *soso = @"";
         for (int i=0; i<self.categoryDic.allKeys.count; i++) {
-            soso = [NSString stringWithFormat:@"%@,%@",self.entrustDic.allKeys[i],soso];
+            soso = [NSString stringWithFormat:@"%@,%@",self.categoryDic.allKeys[i],soso];
         }
         soso = [soso substringWithRange:NSMakeRange(0, soso.length-1)];
         [self.reportDictionary setValue:soso forKey:@"category"];

@@ -173,7 +173,7 @@
                     [weakself uploadImages:imgStr andType:nil andFilePath:nil];
                     
                     [weakself setDidGetValidImage:^(ImageModel *imgModel) {
-                        if ([imgModel.code isEqualToString:@"0000"]) {
+                        if ([imgModel.error isEqualToString:@"0"]) {
                             [btn setImage:[UIImage imageWithContentsOfFile:images[0]] forState:0];
                             weakself.imgFileIdString1 = imgModel.fileid;
                             weakself.imgFileUrlString1 = imgModel.url;
@@ -192,7 +192,7 @@
                     [weakself uploadImages:imgStr andType:nil andFilePath:nil];
                     
                     [weakself setDidGetValidImage:^(ImageModel *imgModel) {
-                        if ([imgModel.code isEqualToString:@"0000"]) {
+                        if ([imgModel.error isEqualToString:@"0"]) {
                             [btn setImage:[UIImage imageWithContentsOfFile:images[0]] forState:0];
                             weakself.imgFileIdString2 = imgModel.fileid;
                             weakself.imgFileUrlString2 = imgModel.url;

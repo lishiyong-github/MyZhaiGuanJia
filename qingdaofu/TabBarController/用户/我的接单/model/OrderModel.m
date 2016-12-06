@@ -21,4 +21,9 @@
              };
 }
 
++ (NSDictionary *)objectClassInArray
+{
+    return @{@"SignPicture" : @"ImageModel"};
+}
+
 @end

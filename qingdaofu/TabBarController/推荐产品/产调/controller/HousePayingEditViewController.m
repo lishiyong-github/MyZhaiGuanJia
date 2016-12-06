@@ -168,13 +168,14 @@
 {
     if (indexPath.row == 0) {
         HouseChooseViewController *houseChooseVC = [[HouseChooseViewController alloc] init];
+        houseChooseVC.cateString = @"2";
         [self.navigationController pushViewController:houseChooseVC animated:YES];
         
         QDFWeakSelf;
-        [houseChooseVC setDidSelectedRow:^(NSString *text) {
+        [houseChooseVC setDidSelectedRow:^(NSString *name,NSString *idString,NSInteger row) {
             MineUserCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-            [cell.userActionButton setTitle:text forState:0];
-            [weakself.payEditDic setObject:text forKey:@"area"];
+            [cell.userActionButton setTitle:name forState:0];
+            [weakself.payEditDic setObject:idString forKey:@"area"];
         }];
     }
 }

@@ -90,7 +90,10 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 3;
+    if (self.powerDetalArray.count > 0) {
+        return 3;
+    }
+    return 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -105,10 +108,7 @@
 {
     static NSString *identifier;
     
-    PowerModel *powerModel;
-    if (self.powerDetalArray.count > 0) {
-        powerModel = self.powerDetalArray[0];
-    }
+    PowerModel *powerModel = self.powerDetalArray[0];
     
     if (indexPath.section == 0) {//保权进度
         identifier = @"power00";
@@ -210,7 +210,9 @@
         }else if (indexPath.row == 2){
             [cell.userActionButton setTitle:powerModel.fayuan_name forState:0];
         }else if (indexPath.row == 3){
-            [cell.userActionButton setTitle:powerModel.category forState:0];
+            NSArray *cateArray =  @[@"借贷纠纷",@"房产土地",@"劳动纠纷",@"婚姻家庭",@" 合同纠纷",@"公司治理",@"知识产权",@"其他民事纠纷"];
+            NSString *cateStr = cateArray[[powerModel.category integerValue] -1];
+            [cell.userActionButton setTitle:cateStr forState:0];
         }else if (indexPath.row == 4){
             [cell.userActionButton setTitle:powerModel.phone forState:0];
         }else if (indexPath.row == 5){
@@ -354,7 +356,7 @@
 - (void)getDetailsOfPower
 {
     NSString *detailPowerString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPowerDetailString];
-    NSDictionary *params = @{@"id" : self.pModel.idString,
+    NSDictionary *params = @{@"id" : self.idString,
                              @"token" : [self getValidateToken]
                              };
     

@@ -19,10 +19,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = self.title;
+    self.navigationItem.title = self.navTitle;
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
     [self.view addSubview:self.markingWebView];
+    
     [self.view setNeedsUpdateConstraints];
 }
 

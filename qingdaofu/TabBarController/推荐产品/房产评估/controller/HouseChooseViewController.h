@@ -10,6 +10,8 @@
 
 @interface HouseChooseViewController : NetworkViewController
 
-@property (nonatomic,strong) void (^didSelectedRow)(NSString *);
+@property (nonatomic,strong) void (^didSelectedRow)(NSString *,NSString *,NSInteger);//name , id,row 
+
+@property (nonatomic,strong) NSString *cateString; //1-房产评估，2-产调查询
 
 @end

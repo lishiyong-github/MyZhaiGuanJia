@@ -11,6 +11,7 @@
 
 @interface PowerDetailsViewController : NetworkViewController
 
-@property (nonatomic,strong) PowerModel *pModel;
+//@property (nonatomic,strong) PowerModel *pModel;
+@property (nonatomic,strong) NSString *idString;
 
 @end

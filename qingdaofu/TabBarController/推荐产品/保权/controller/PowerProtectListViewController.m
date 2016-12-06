@@ -241,8 +241,9 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.row == 0) {
+        PowerModel *pModel = self.powerListArray[indexPath.section];
         PowerDetailsViewController *powerDetailsVC = [[PowerDetailsViewController alloc] init];
-        powerDetailsVC.pModel = self.powerListArray[indexPath.section];
+        powerDetailsVC.idString = pModel.idString;
         [self.navigationController pushViewController:powerDetailsVC animated:YES];
     }
 }

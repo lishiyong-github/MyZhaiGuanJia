@@ -100,7 +100,7 @@
         button.titleLabel.font = kBigFont;
         [_propertyFooterView addSubview:button];
         
-        [button addTarget:self action:@selector(generateOrder) forControlEvents:UIControlEventTouchUpInside];
+//        [button addTarget:self action:@selector(generateOrder) forControlEvents:UIControlEventTouchUpInside];
         
         [label autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
         [label autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
@@ -210,13 +210,14 @@
 {
     if (indexPath.row == 0) {
         HouseChooseViewController *houseChooseVC = [[HouseChooseViewController alloc] init];
+        houseChooseVC.cateString = @"2";
         [self.navigationController pushViewController:houseChooseVC animated:YES];
         
         QDFWeakSelf;
-        [houseChooseVC setDidSelectedRow:^(NSString *text) {
+        [houseChooseVC setDidSelectedRow:^(NSString *name,NSString *idString,NSInteger row) {
             AgentCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-            cell.agentTextField.text = text;
-            [weakself.propertyDic setObject:text forKey:@"area"];
+            cell.agentTextField.text = name;
+            [weakself.propertyDic setObject:idString forKey:@"area"];
         }];
     }
 }

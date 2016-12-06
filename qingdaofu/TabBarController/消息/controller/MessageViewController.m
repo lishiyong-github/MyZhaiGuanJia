@@ -11,6 +11,10 @@
 #import "LoginViewController.h"  //登录
 #import "MyReleaseDetailsViewController.h" //发布详情
 #import "MyOrderDetailViewController.h"  //接单详情
+#import "PowerDetailsViewController.h"  //保全详情
+#import "ApplicationDetailsViewController.h"   //保函详情
+#import "HouseCopyViewController.h"
+#import "HousePropertyListViewController.h"
 
 #import "MessageTableViewCell.h"
 #import "MessageSystemView.h"
@@ -41,7 +45,6 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-//    [self getMessageTypeAndNumber:<#(NSString *)#>];
     [self headerRefreshOfMessageGroup];
 }
 
@@ -116,14 +119,24 @@
         cell = [[MessageTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.imageButton.userInteractionEnabled = NO;
+    cell.timeButton.userInteractionEnabled = NO;
     
     MessagesModel *messageModel = self.messageArray[indexPath.row];
     
     //image
     cell.imageButton.layer.cornerRadius = 25;
     cell.imageButton.layer.masksToBounds = YES;
-    NSString *imgString = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,messageModel.headimg.file];
-    [cell.imageButton sd_setImageWithURL:[NSURL URLWithString:imgString] forState:0 placeholderImage:nil];
+    if ([messageModel.relatype integerValue] == 10) {//保全
+        [cell.imageButton setImage:[UIImage imageNamed:@"news_guarantee"] forState:0];
+    }else if ([messageModel.relatype integerValue] == 20){//保函
+        [cell.imageButton setImage:[UIImage imageNamed:@"news_letter"] forState:0];
+    }else if ([messageModel.relatype integerValue] == 30){//产调
+        [cell.imageButton setImage:[UIImage imageNamed:@"news_transfer"] forState:0];
+    }else{
+        NSString *imgString = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,messageModel.headimg.file];
+        [cell.imageButton sd_setImageWithURL:[NSURL URLWithString:imgString] forState:0 placeholderImage:nil];
+    }
     
     //count
     if ([messageModel.isRead intValue] > 0) {//有未读消息
@@ -196,12 +209,19 @@
     
     //1系统消息  10保全消息  20保函消息  30产调消息  40 发布消息  50接单消息
     MessagesModel *messageModel = self.messageArray[indexPath.row];
-    if ([messageModel.relatype integerValue] == 10) {
-        [self showHint:@"10保全消息"];
-    }else if ([messageModel.relatype integerValue] == 20) {
-        [self showHint:@"20保函消息 "];
-    }else if ([messageModel.relatype integerValue] == 30) {
-        [self showHint:@"30产调消息"];
+    if ([messageModel.relatype integerValue] == 10) {//保全
+        PowerDetailsViewController *powerDetailsVC = [[PowerDetailsViewController alloc] init];
+        powerDetailsVC.idString = messageModel.relaid;
+        powerDetailsVC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:powerDetailsVC animated:YES];
+    }else if ([messageModel.relatype integerValue] == 20) {//保函消息
+        ApplicationDetailsViewController *applicationDetailsVC = [[ApplicationDetailsViewController alloc] init];
+        applicationDetailsVC.idString = messageModel.relaid;
+        applicationDetailsVC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:applicationDetailsVC animated:YES];
+    }else if ([messageModel.relatype integerValue] == 30) {//产调消息
+        HousePropertyListViewController *housePropertyListVC = [[HousePropertyListViewController alloc] init];
+        [self.navigationController pushViewController:housePropertyListVC animated:YES];
     }else if ([messageModel.relatype integerValue] == 40) {
         MyReleaseDetailsViewController *myReleaseDetailsVC = [[MyReleaseDetailsViewController alloc] init];
         myReleaseDetailsVC.hidesBottomBarWhenPushed = YES;
@@ -271,6 +291,25 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [weakself.messageTableView footerEndRefreshing];
     });
+}
+
+- (void)readMessagesWithMessageModel:(MessagesModel *)messagesModel
+{
+    NSString *readString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMessageIsReadString];
+    NSDictionary *params = @{@"token" : [self getValidateToken],
+                             @"id" : messagesModel.relaid};
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:readString params:params successBlock:^(id responseObject) {
+        BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
+        if ([baseModel.code isEqualToString:@"0000"]) {
+            
+        }else{
+            [weakself showHint:baseModel.msg];
+        }
+    } andFailBlock:^(NSError *error) {
+        
+    }];
 }
 
 - (void)didReceiveMemoryWarning {

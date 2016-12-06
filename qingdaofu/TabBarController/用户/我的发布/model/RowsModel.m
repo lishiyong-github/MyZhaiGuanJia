@@ -15,6 +15,11 @@
     return @{@"applystatussss" : @"apply.status"};
 }
 
++ (NSDictionary *)objectClassInArray
+{
+    return @{@"SignPicture" : @"ImageModel"};
+}
+
 //+ (NSDictionary *)objectClassInArray
 //{
 //    return @{@"productMortgages1" : @"MoreMessageModel",//抵押物地址

@@ -28,6 +28,8 @@
     AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
     session.responseSerializer = [AFHTTPResponseSerializer serializer];
     session.requestSerializer = [AFHTTPRequestSerializer serializer];
+    session.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/html", nil];
+
     
     QDFWeakSelf;
     [session POST:string parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {

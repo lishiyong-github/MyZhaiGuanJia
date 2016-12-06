@@ -10,6 +10,9 @@
 
 #import "MineUserCell.h"
 
+#import "CourtProvinceResponse.h"
+#import "CourtProvinceModel.h"
+
 @interface HouseChooseViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic,strong) UITableView *houseChooseTableView;
@@ -84,7 +87,13 @@
         cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
 
-    [cell.userNameButton setTitle:self.listArray[indexPath.row] forState:0];
+    if ([self.cateString integerValue] == 1) {
+        [cell.userNameButton setTitle:self.listArray[indexPath.row] forState:0];
+    }else if([self.cateString integerValue] == 2){
+        CourtProvinceModel *cityModel = self.listArray[indexPath.row];
+        [cell.userNameButton setTitle:cityModel.name forState:0];
+
+    }
     
     return cell;
 }
@@ -110,27 +119,52 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if (self.didSelectedRow) {
-        self.didSelectedRow(self.listArray[indexPath.row]);
-        [self.navigationController popViewControllerAnimated:YES];
+        
+        if ([self.cateString integerValue] == 1) {
+            self.didSelectedRow(self.listArray[indexPath.row],nil,0);
+            [self.navigationController popViewControllerAnimated:YES];
+        }else if ([self.cateString integerValue] == 2){
+            CourtProvinceModel *cityModel = self.listArray[indexPath.row];
+            self.didSelectedRow(cityModel.name,cityModel.idString,indexPath.row);
+            [self.navigationController popViewControllerAnimated:YES];
+        }
     }
 }
 
 #pragma mark - method
 - (void)getCityList
 {
-    NSString *cityString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kHouseCityString];
+    NSString *cityString;
+    if ([self.cateString integerValue] == 1) {
+        cityString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kHouseCityString];
+    }else if ([self.cateString integerValue] == 2){
+        cityString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kHouseCitysString];
+    }
     NSDictionary *params = @{@"token" : [self getValidateToken]};
     
     QDFWeakSelf;
     [self requestDataPostWithString:cityString params:params successBlock:^(id responseObject) {
         
-        NSDictionary *uiui = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        
-        if ([uiui[@"code"] isEqualToString:@"0000"]) {
-            weakself.listArray = [NSMutableArray arrayWithArray:[uiui[@"result"][@"data"] allValues]];
-            [weakself.houseChooseTableView reloadData];
-        }else{
-            [weakself showHint:uiui[@"msg"]];
+        if ([weakself.cateString integerValue] == 1) {//房产评估
+            NSDictionary *uiui = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+            
+            if ([uiui[@"code"] isEqualToString:@"0000"]) {
+                weakself.listArray = [NSMutableArray arrayWithArray:[uiui[@"result"][@"data"] allValues]];
+                [weakself.houseChooseTableView reloadData];
+            }else{
+                [weakself showHint:uiui[@"msg"]];
+            }
+        }else if ([weakself.cateString integerValue] == 2){//产调查询
+            CourtProvinceResponse *response = [CourtProvinceResponse objectWithKeyValues:responseObject];
+            
+            if ([response.code isEqualToString:@"0000"]) {
+                for (CourtProvinceModel *cityModel in response.data) {
+                    [weakself.listArray addObject:cityModel];
+                }
+                [weakself.houseChooseTableView reloadData];
+            }else{
+                [weakself showHint:response.msg];
+            }
         }
         
     } andFailBlock:^(NSError *error) {

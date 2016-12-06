@@ -12,6 +12,6 @@
 @interface MarkingViewController : BaseViewController
 
 @property (nonatomic,strong) NSString *markString;
-@property (nonatomic,strong) NSString *title;
+@property (nonatomic,strong) NSString *navTitle;
 
 @end

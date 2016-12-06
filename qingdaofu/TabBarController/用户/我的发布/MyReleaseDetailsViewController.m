@@ -44,6 +44,8 @@
 #import "ProductOrdersClosedOrEndApplyModel.h"  //处理终止或结案申请
 #import "OrdersLogsModel.h" //日志
 
+#import "UIButton+WebCache.h"
+
 @interface MyReleaseDetailsViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
@@ -298,7 +300,9 @@
                     }
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     
-                    [cell.userNameButton setTitle:dataModel.number forState:0];
+                    [cell.userNameButton setImage:[UIImage imageNamed:@"product＿icon"] forState:0];
+                    NSString *numberd = [NSString stringWithFormat:@" %@",dataModel.number];
+                    [cell.userNameButton setTitle:numberd forState:0];
                     [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
                     [cell.userActionButton setTitle:@"完善信息" forState:0];
                     
@@ -399,7 +403,9 @@
                     }
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     
-                    [cell.userNameButton setTitle:dataModel.number forState:0];
+                    [cell.userNameButton setImage:[UIImage imageNamed:@"product＿icon"] forState:0];
+                    NSString *numberd = [NSString stringWithFormat:@" %@",dataModel.number];
+                    [cell.userNameButton setTitle:numberd forState:0];
                     [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
                     [cell.userActionButton setTitle:@"完善信息" forState:0];
                     
@@ -424,6 +430,10 @@
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     cell.backgroundColor = kWhiteColor;
                     
+                    cell.stateLabel1.text = @"发布成功";
+                    [cell.stateButton setImage:[UIImage imageNamed:@"release_image_success"] forState:0];
+                    cell.stateLabel2.text = @"选择一个申请方作为意向接单方进行约见面谈";
+                    
                     return cell;
                 }
                 
@@ -436,7 +446,8 @@
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 
                 if (!self.applyidString) {
-                    [cell.newsNameButton setTitle:@"选择申请方" forState:0];
+                    [cell.newsNameButton setImage:[UIImage imageNamed:@"product_application"] forState:0];
+                    [cell.newsNameButton setTitle:@" 选择申请方" forState:0];
                     [cell.newsActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
                     if ([dataModel.applyCount integerValue] == 0) {
                         [cell.newsCountButton setTitle:@"请选择申请方" forState:0];
@@ -461,7 +472,9 @@
                 }
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 
-                [cell.userNameButton setTitle:dataModel.number forState:0];
+                [cell.userNameButton setImage:[UIImage imageNamed:@"product＿icon"] forState:0];
+                NSString *numberd = [NSString stringWithFormat:@" %@",dataModel.number];
+                [cell.userNameButton setTitle:numberd forState:0];
                 [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
                 [cell.userActionButton setTitle:@"查看详情" forState:0];
                 
@@ -793,6 +806,11 @@
             [attributePP addAttribute:NSParagraphStyleAttributeName value:styler range:NSMakeRange(0, proTextStr.length)];
             [cell.productTextButton setAttributedTitle:attributePP forState:0];
             
+            //签约协议图片
+            ImageModel *imgModel = dataModel.SignPicture[0];
+            NSString *imgString = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imgModel.file];
+            [cell.signPictureButton1 sd_setImageWithURL:[NSURL URLWithString:imgString] forState:0 placeholderImage:nil];
+            
             QDFWeakSelf;
             [cell setDidselectedBtn:^(NSInteger tag) {
                 switch (tag) {
@@ -878,7 +896,8 @@
                 QDFWeakSelf;
                 [applyRecordsVC setDidChooseApplyUser:^(ApplyRecordModel *recordModel) {
                     NewsTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-                    [cell.newsNameButton setTitle:@"申请方" forState:0];
+                    NSString *names = [NSString stringWithFormat:@" %@",[NSString getValidStringFromString:recordModel.realname toString:recordModel.username]];
+                    [cell.newsNameButton setTitle:names forState:0];
                     [cell.newsCountButton setTitle:recordModel.mobile forState:0];
                     [cell.newsCountButton setBackgroundColor:kWhiteColor];
                     [cell.newsCountButton setTitleColor:kLightGrayColor forState:0];

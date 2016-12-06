@@ -40,6 +40,9 @@
 #import "PublishingModel.h"
 #import "ApplyRecordModel.h"
 #import "OrdersLogsModel.h"  //日志
+#import "ImageModel.h"
+
+#import "UIButton+WebCache.h"
 
 @interface MyOrderDetailViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -388,7 +391,9 @@
                 [cell.productTextButton setAttributedTitle:attributePP forState:0];
                 
                 //signScrollView
-                cell.signImageArray = orderModel.SignPicture;
+                ImageModel *imgModel = orderModel.SignPicture[0];
+                NSString *imgString = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imgModel.file];
+                [cell.signPictureButton1 sd_setImageWithURL:[NSURL URLWithString:imgString] forState:0 placeholderImage:nil];
                 
                 QDFWeakSelf;
                 [cell setDidselectedBtn:^(NSInteger tag) {

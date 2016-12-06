@@ -248,10 +248,11 @@
 {
     if (indexPath.section == 0 && indexPath.row == 0) {
         HouseChooseViewController *houseChooseVC = [[HouseChooseViewController alloc] init];
+        houseChooseVC.cateString = @"1";
         [self.navigationController pushViewController:houseChooseVC animated:YES];
         
         QDFWeakSelf;
-        [houseChooseVC setDidSelectedRow:^(NSString *placeString) {
+        [houseChooseVC setDidSelectedRow:^(NSString *placeString,NSString *nn,NSInteger row) {
             AgentCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
             cell.agentTextField.text = placeString;
             [weakself.assessDic setObject:placeString forKey:@"district"];

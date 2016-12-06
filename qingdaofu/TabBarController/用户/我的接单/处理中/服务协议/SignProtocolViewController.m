@@ -161,15 +161,15 @@
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    if (!_isShow) {
-         cell.collectionDataList = [NSMutableArray arrayWithArray:self.signDataArray];
-    }else{
+    if (_isShow && [self.OrdersStatus isEqualToString:@"ORDERSPACT"]) {
         if (self.signDataArray.count > 0) {
             [self.signDataArray addObject:@"upload_pictures"];
             cell.collectionDataList = [NSMutableArray arrayWithArray:self.signDataArray];
         }else{
             cell.collectionDataList = [NSMutableArray arrayWithObjects:@"upload_pictures", nil];
         }
+    }else{
+        cell.collectionDataList = [NSMutableArray arrayWithArray:self.signDataArray];
     }
     [cell reloadData];
     
@@ -178,9 +178,7 @@
     QDFWeak(cell);
     [cell setDidSelectedItem:^(NSInteger itemTag) {
         
-        if (!_isShow) {
-            [weakself showImages:self.signDataArray currentIndex:0];
-        }else{
+        if (_isShow && [weakself.OrdersStatus isEqualToString:@"ORDERSPACT"]) {
             if (itemTag == weakcell.collectionDataList.count-1) {//只允许点击最后一个collection
                 if (weakcell.collectionDataList.count < 3) {
                     [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
@@ -220,6 +218,8 @@
                 
                 [weakself presentViewController:alertContr animated:YES completion:nil];
             }
+        }else{
+            [weakself showImages:self.signDataArray currentIndex:0];
         }
     }];
     

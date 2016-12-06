@@ -84,6 +84,7 @@
 @property (nonatomic,copy) NSString *addressLabel; //上海市杨浦区(合同履行地)
 @property (nonatomic,copy) NSString *overdue;  //违约期限
 @property (nonatomic,copy) NSString *applyStatus;
+@property (nonatomic,strong) NSMutableArray *SignPicture;  //签约协议图片
 
 
 @property (nonatomic,strong) NSMutableArray *productMortgages1;  //抵押物地址

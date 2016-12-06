@@ -59,7 +59,7 @@
 {
     [super viewWillAppear:animated];
     
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
     
     [self getRecommendProductslist];
 }
@@ -68,7 +68,7 @@
 {
     [super viewWillDisappear:animated];
     
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
 }
 
 - (void)viewDidLoad {
@@ -100,6 +100,7 @@
         _mainTableView.delegate = self;
         _mainTableView.dataSource = self;
         _mainTableView.separatorColor = kSeparateColor;
+        _mainTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding*2)];
     }
     return _mainTableView;
 }
@@ -144,7 +145,7 @@
                 MarkingViewController *markingVC = [[MarkingViewController alloc] init];
                 markingVC.hidesBottomBarWhenPushed = YES;
                 markingVC.markString = bannerModel.url;
-                markingVC.title = bannerModel.title;
+                markingVC.navTitle = bannerModel.title;
                 [weakself.navigationController pushViewController:markingVC animated:YES];
             }];
         }
@@ -156,11 +157,16 @@
 {
     if (!_pageControl) {
         _pageControl = [UIPageControl newAutoLayoutView];
-        _pageControl.numberOfPages = self.propagandaDic.allKeys.count/2;
-        _pageControl.currentPage = 0;
         _pageControl.pageIndicatorTintColor = UIColorFromRGB1(0xffffff, 0.5);
         _pageControl.currentPageIndicatorTintColor = kBlueColor;
         [_pageControl addTarget:self action:@selector(pageTurn:) forControlEvents:UIControlEventValueChanged];
+        if (self.propagandaArray.count <= 1) {
+            _pageControl.numberOfPages = 0;
+            _pageControl.currentPage = 0;
+        }else{
+            _pageControl.numberOfPages = self.propagandaArray.count;
+            _pageControl.currentPage = 0;
+        }
     }
     return _pageControl;
 }
@@ -489,6 +495,17 @@
         return footerView;
     }
     return nil;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 0) {
+        MarkingViewController *markingVC = [[MarkingViewController alloc] init];
+        markingVC.navTitle = @"累计交易总量";
+        markingVC.markString = @"";
+        markingVC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:markingVC animated:YES];
+    }
 }
 
 #pragma mark - uiscrollViewdelegate and pageControlDelegate

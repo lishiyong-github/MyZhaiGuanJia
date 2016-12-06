@@ -29,19 +29,18 @@
     self.title = @"评估结果";
     
     if ([self.fromType integerValue] == 1) {
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"back" style:UIBarButtonItemStylePlain target:self action:nil];
-        [self.navigationItem.leftBarButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName:kWhiteColor} forState:0];
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStylePlain target:self action:@selector(finish)];
-        [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kBlueColor} forState:0];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightButton];
+        [self.rightButton setTitle:@"完成" forState:0];
     }else{
         self.navigationItem.leftBarButtonItem = self.leftItem;
     }
     
     [self.view addSubview:self.assessSuccessTableView];
+    
     [self.view setNeedsUpdateConstraints];
 }
 
-- (void)finish
+- (void)rightItemAction
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -151,6 +150,7 @@
         
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
         [paragraphStyle setLineSpacing:6];
+        paragraphStyle.alignment = 1;
         [attributeStr addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [moneyStr length])];
 
         [cell.oneButton setAttributedTitle:attributeStr forState:0];

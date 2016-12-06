@@ -307,9 +307,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 2) {//上传材料
-        
         ApplicationModel *appliModel = self.appDetailArray[0];
-        if (indexPath.row == 0) {
+        if (indexPath.row == 0) {//编辑
             if ([appliModel.status integerValue] < 2) {
                 PowerProtectPictureViewController *powerProtectPictureVC = [[PowerProtectPictureViewController alloc] init];
                 powerProtectPictureVC.aModel = appliModel;
@@ -320,8 +319,7 @@
             NSMutableArray *fileArray1 = [NSMutableArray array];
             for (int i=0; i<appliModel.qisus.count; i++) {
                 ImageModel *fileModel = appliModel.qisus[i];
-                NSString *file = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,fileModel.file];
-                [fileArray1 addObject:file];
+                [fileArray1 addObject:fileModel.file];
             }
             [self showImages:fileArray1];
             
@@ -329,16 +327,14 @@
             NSMutableArray *fileArray2 = [NSMutableArray array];
             for (int i=0; i<appliModel.caichans.count; i++) {
                 ImageModel *fileModel = appliModel.caichans[i];
-                NSString *file = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,fileModel.file];
-                [fileArray2 addObject:file];
+                [fileArray2 addObject:fileModel.file];
             }
             [self showImages:fileArray2];
         }else if (indexPath.row == 3){
             NSMutableArray *fileArray3 = [NSMutableArray array];
             for (int i=0; i<appliModel.zhengjus.count; i++) {
                 ImageModel *fileModel = appliModel.zhengjus[i];
-                NSString *file = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,fileModel.file];
-                [fileArray3 addObject:file];
+                [fileArray3 addObject:fileModel.file];
             }
             [self showImages:fileArray3];
             
@@ -346,8 +342,7 @@
             NSMutableArray *fileArray4 = [NSMutableArray array];
             for (int i=0; i<appliModel.anjians.count; i++) {
                 ImageModel *fileModel = appliModel.anjians[i];
-                NSString *file = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,fileModel.file];
-                [fileArray4 addObject:file];
+                [fileArray4 addObject:fileModel.file];
             }
             [self showImages:fileArray4];
         }

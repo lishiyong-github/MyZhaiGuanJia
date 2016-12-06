@@ -45,49 +45,13 @@
     [super viewDidLoad];
     self.title = @"完善资料";
     self.navigationItem.leftBarButtonItem = self.leftItem;
-    
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"查看示例" style:UIBarButtonItemStylePlain target:self action:@selector(viewExample)];
-    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kBlueColor} forState:0];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightButton];
+    [self.rightButton setTitle:@"查看示例" forState:0];
     
     [self.view addSubview:self.powerPictureTableView];
     [self.view addSubview:self.powerPictureButton];
     
     [self.view setNeedsUpdateConstraints];
-}
-
-- (void)viewExample
-{
-    if (self.exampleDic.allKeys.count == 0) {
-        NSString *viewExampleString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kViewExampleString];
-        NSDictionary *params = @{@"token" : [self getValidateToken]};
-        
-        QDFWeakSelf;
-        [self requestDataPostWithString:viewExampleString params:params successBlock:^(id responseObject) {
-            NSDictionary *sisis = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-            weakself.exampleDic = sisis;
-            
-            NSArray *pArray = [NSArray arrayWithObjects:sisis[@"baodan1ios"],sisis[@"baodan2ios"],sisis[@"baodan3ios"], nil];
-            NSArray *aArray = [NSArray arrayWithObjects:sisis[@"baohan1ios"], nil];
-            
-            if (weakself.pModel) {//保权
-                [weakself showImages:pArray];
-            }else if (weakself.aModel){//保函
-                [weakself showImages:aArray];
-            }
-            
-        } andFailBlock:^(NSError *error) {
-            
-        }];
-    }else{
-        NSArray *pArray = [NSArray arrayWithObjects:self.exampleDic[@"baodan1ios"],self.exampleDic[@"baodan2ios"],self.exampleDic[@"baodan3ios"], nil];
-        NSArray *aArray = [NSArray arrayWithObjects:self.exampleDic[@"baohan1ios"], nil];
-        
-        if (self.pModel) {//保权
-            [self showImages:pArray];
-        }else if (self.aModel){//保函
-            [self showImages:aArray];
-        }
-    }
 }
 
 - (void)updateViewConstraints
@@ -250,8 +214,8 @@
                 NSMutableArray *aaaa = [NSMutableArray array];
                 for (NSInteger i=0; i<self.pModel.qisus.count; i++) {
                     ImageModel *imaModel = self.pModel.qisus[i];
-                    NSString *files = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imaModel.file];
-                    [aaaa addObject:files];
+//                    NSString *files = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imaModel.file];
+                    [aaaa addObject:imaModel.file];
                 }
                 _qisuArray1 = [NSMutableArray arrayWithArray:aaaa];
                 [_qisuArray1 addObject:@"upload_pictures"];
@@ -263,8 +227,8 @@
                 NSMutableArray *aaaa = [NSMutableArray array];
                 for (NSInteger i=0; i<self.aModel.qisus.count; i++) {
                     ImageModel *imaModel = self.aModel.qisus[i];
-                    NSString *files = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imaModel.file];
-                    [aaaa addObject:files];
+//                    NSString *files = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imaModel.file];
+                    [aaaa addObject:imaModel.file];
                 }
                 _qisuArray1 = [NSMutableArray arrayWithArray:aaaa];
                 [_qisuArray1 addObject:@"upload_pictures"];
@@ -284,8 +248,8 @@
                 NSMutableArray *bbbb = [NSMutableArray array];
                 for (NSInteger i=0; i<self.pModel.caichans.count; i++) {
                     ImageModel *imaModel = self.pModel.caichans[i];
-                    NSString *files = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imaModel.file];
-                    [bbbb addObject:files];
+//                    NSString *files = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imaModel.file];
+                    [bbbb addObject:imaModel.file];
                 }
                 _caichanArray1 = [NSMutableArray arrayWithArray:bbbb];
                 [_caichanArray1 addObject:@"upload_pictures"];
@@ -297,8 +261,8 @@
                 NSMutableArray *bbbb = [NSMutableArray array];
                 for (NSInteger i=0; i<self.aModel.caichans.count; i++) {
                     ImageModel *imaModel = self.aModel.caichans[i];
-                    NSString *files = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imaModel.file];
-                    [bbbb addObject:files];
+//                    NSString *files = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imaModel.file];
+                    [bbbb addObject:imaModel.file];
                 }
                 _caichanArray1 = [NSMutableArray arrayWithArray:bbbb];
                 [_caichanArray1 addObject:@"upload_pictures"];
@@ -319,8 +283,8 @@
                 NSMutableArray *cccc = [NSMutableArray array];
                 for (NSInteger i=0; i<self.pModel.zhengjus.count; i++) {
                     ImageModel *imaModel = self.pModel.zhengjus[i];
-                    NSString *files = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imaModel.file];
-                    [cccc addObject:files];
+//                    NSString *files = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imaModel.file];
+                    [cccc addObject:imaModel.file];
                 }
                 _zhengjuArray1 = [NSMutableArray arrayWithArray:cccc];
                 [_zhengjuArray1 addObject:@"upload_pictures"];
@@ -332,8 +296,8 @@
                 NSMutableArray *cccc = [NSMutableArray array];
                 for (NSInteger i=0; i<self.aModel.zhengjus.count; i++) {
                     ImageModel *imaModel = self.aModel.zhengjus[i];
-                    NSString *files = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imaModel.file];
-                    [cccc addObject:files];
+//                    NSString *files = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imaModel.file];
+                    [cccc addObject:imaModel.file];
                 }
                 _zhengjuArray1 = [NSMutableArray arrayWithArray:cccc];
                 [_zhengjuArray1 addObject:@"upload_pictures"];
@@ -354,8 +318,8 @@
                 NSMutableArray *dddd = [NSMutableArray array];
                 for (NSInteger i=0; i<self.pModel.anjians.count; i++) {
                     ImageModel *imaModel = self.pModel.anjians[i];
-                    NSString *files = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imaModel.file];
-                    [dddd addObject:files];
+//                    NSString *files = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imaModel.file];
+                    [dddd addObject:imaModel.file];
                 }
                 _anjianArray1 = [NSMutableArray arrayWithArray:dddd];
                 [_anjianArray1 addObject:@"upload_pictures"];
@@ -367,8 +331,8 @@
                 NSMutableArray *dddd = [NSMutableArray array];
                 for (NSInteger i=0; i<self.aModel.anjians.count; i++) {
                     ImageModel *imaModel = self.aModel.anjians[i];
-                    NSString *files = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imaModel.file];
-                    [dddd addObject:files];
+//                    NSString *files = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imaModel.file];
+                    [dddd addObject:imaModel.file];
                 }
                 _anjianArray1 = [NSMutableArray arrayWithArray:dddd];
                 [_anjianArray1 addObject:@"upload_pictures"];
@@ -448,8 +412,15 @@
                         if (images.count > 0) {
                             NSData *iData = [[NSData alloc] initWithContentsOfFile:images[0]];
                             NSString *dataString = [NSString stringWithFormat:@"%@",iData];
-                            [weakself uploadImages:dataString andType:@"qisu" andFilePath:images[0]];
                             
+                            [weakself uploadImages:dataString andType:nil andFilePath:nil];
+                            [weakself setDidGetValidImage:^(ImageModel *imageModel) {
+                                if ([imageModel.error isEqualToString:@"0"]) {
+                                    [weakself.qisuArray addObject:imageModel.fileid];
+                                    [weakself.qisuArray1 insertObject:images[0] atIndex:0];
+                                    [weakself.powerPictureTableView reloadData];
+                                }
+                            }];
                         }
                     }];
                 }else{
@@ -466,7 +437,15 @@
                         if (images.count > 0) {
                             NSData *iData = [[NSData alloc] initWithContentsOfFile:images[0]];
                             NSString *dataString = [NSString stringWithFormat:@"%@",iData];
-                            [weakself uploadImages:dataString andType:@"caichan" andFilePath:images[0]];
+//                            [weakself uploadImages:dataString andType:@"caichan" andFilePath:images[0]];
+                            [weakself uploadImages:dataString andType:nil andFilePath:nil];
+                            [weakself setDidGetValidImage:^(ImageModel *imageModel) {
+                                if ([imageModel.error isEqualToString:@"0"]) {
+                                    [weakself.caichanArray addObject:imageModel.fileid];
+                                    [weakself.caichanArray1 insertObject:images[0] atIndex:0];
+                                    [weakself.powerPictureTableView reloadData];
+                                }
+                            }];
                         }
                     }];
                 }else{
@@ -483,8 +462,16 @@
                         if (images.count > 0) {
                             NSData *iData = [[NSData alloc] initWithContentsOfFile:images[0]];
                             NSString *dataString = [NSString stringWithFormat:@"%@",iData];
-                            [weakself uploadImages:dataString andType:@"zhengju" andFilePath:images[0]];
-                            
+//                            [weakself uploadImages:dataString andType:@"zhengju" andFilePath:images[0]];
+                            [weakself uploadImages:dataString andType:nil andFilePath:nil];
+                            [weakself setDidGetValidImage:^(ImageModel *imageModel) {
+                                if ([imageModel.error isEqualToString:@"0"]) {
+                                    [weakself.zhengjuArray addObject:imageModel.fileid];
+                                    [weakself.zhengjuArray1 insertObject:images[0] atIndex:0];
+                                    [weakself.powerPictureTableView reloadData];
+                                }
+                            }];
+
                         }
                         
                     }];
@@ -502,8 +489,17 @@
                         if (images.count > 0) {
                             NSData *iData = [[NSData alloc] initWithContentsOfFile:images[0]];
                             NSString *dataString = [NSString stringWithFormat:@"%@",iData];
-                            [weakself uploadImages:dataString andType:@"anjian" andFilePath:images[0]];
+//                            [weakself uploadImages:dataString andType:@"anjian" andFilePath:images[0]];
                             
+                            [weakself uploadImages:dataString andType:nil andFilePath:nil];
+                            [weakself setDidGetValidImage:^(ImageModel *imageModel) {
+                                if ([imageModel.error isEqualToString:@"0"]) {
+                                    [weakself.anjianArray addObject:imageModel.fileid];
+                                    [weakself.anjianArray1 insertObject:images[0] atIndex:0];
+                                    [weakself.powerPictureTableView reloadData];
+                                }
+                            }];
+
                         }
                         
                     }];
@@ -558,42 +554,77 @@
 }
 
 #pragma mark - method
-- (void)uploadImages:(NSString *)imgData andType:(NSString *)imgType andFilePath:(NSString *)filePath
+//- (void)uploadImages:(NSString *)imgData andType:(NSString *)imgType andFilePath:(NSString *)filePath
+//{
+//    NSString *uploadsString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kUploadImagesString];
+//    NSDictionary *params = @{@"filetype" : @"1",
+//                             @"extension" : @"jpg",
+//                             @"picture" : imgData
+//                             };
+//    
+//    QDFWeakSelf;
+//    [self requestDataPostWithString:uploadsString params:params successBlock:^(id responseObject) {
+//        
+//        ImageModel *imageModel = [ImageModel objectWithKeyValues:responseObject];
+//        
+//        if ([imageModel.code isEqualToString:@"0000"]) {
+//            if ([imgType isEqualToString:@"qisu"]) {//起诉书
+//                [weakself.qisuArray addObject:imageModel.fileid];
+//                [weakself.qisuArray1 insertObject:filePath atIndex:0];
+//            }else if ([imgType isEqualToString:@"caichan"]){//财产
+//                [weakself.caichanArray addObject:imageModel.fileid];
+//                [weakself.caichanArray1 insertObject:filePath atIndex:0];
+//            }else if ([imgType isEqualToString:@"zhengju"]){//证据
+//                [weakself.zhengjuArray addObject:imageModel.fileid];
+//                [weakself.zhengjuArray1 insertObject:filePath atIndex:0];
+//            }else if ([imgType isEqualToString:@"anjian"]){//案件
+//                [weakself.anjianArray addObject:imageModel.fileid];
+//                [weakself.anjianArray1 insertObject:filePath atIndex:0];
+//            }
+//            
+//            [weakself.powerPictureTableView reloadData];
+//            
+//        }else{
+//            [weakself showHint:imageModel.msg];
+//        }
+//    } andFailBlock:^(NSError *error) {
+//        
+//    }];
+//}
+
+- (void)rightItemAction
 {
-    NSString *uploadsString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kUploadImagesString];
-    NSDictionary *params = @{@"filetype" : @"1",
-                             @"extension" : @"jpg",
-                             @"picture" : imgData
-                             };
-    
-    QDFWeakSelf;
-    [self requestDataPostWithString:uploadsString params:params successBlock:^(id responseObject) {
+    if (self.exampleDic.allKeys.count == 0) {
+        NSString *viewExampleString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kViewExampleString];
+        NSDictionary *params = @{@"token" : [self getValidateToken]};
         
-        ImageModel *imageModel = [ImageModel objectWithKeyValues:responseObject];
-        
-        if ([imageModel.code isEqualToString:@"0000"]) {
-            if ([imgType isEqualToString:@"qisu"]) {//起诉书
-                [weakself.qisuArray addObject:imageModel.fileid];
-                [weakself.qisuArray1 insertObject:filePath atIndex:0];
-            }else if ([imgType isEqualToString:@"caichan"]){//财产
-                [weakself.caichanArray addObject:imageModel.fileid];
-                [weakself.caichanArray1 insertObject:filePath atIndex:0];
-            }else if ([imgType isEqualToString:@"zhengju"]){//证据
-                [weakself.zhengjuArray addObject:imageModel.fileid];
-                [weakself.zhengjuArray1 insertObject:filePath atIndex:0];
-            }else if ([imgType isEqualToString:@"anjian"]){//案件
-                [weakself.anjianArray addObject:imageModel.fileid];
-                [weakself.anjianArray1 insertObject:filePath atIndex:0];
+        QDFWeakSelf;
+        [self requestDataPostWithString:viewExampleString params:params successBlock:^(id responseObject) {
+            NSDictionary *sisis = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
+            weakself.exampleDic = sisis;
+            
+            NSArray *pArray = [NSArray arrayWithObjects:[NSURL URLWithString:sisis[@"baodan1ios"]],[NSURL URLWithString:sisis[@"baodan2ios"]],[NSURL URLWithString:sisis[@"baodan3ios"]], nil];
+            NSArray *aArray = [NSArray arrayWithObjects:[NSURL URLWithString:sisis[@"baohan1ios"]], nil];
+            
+            if (weakself.pModel) {//保权
+                [weakself showImages:pArray];
+            }else if (weakself.aModel){//保函
+                [weakself showImages:aArray];
             }
             
-            [weakself.powerPictureTableView reloadData];
+        } andFailBlock:^(NSError *error) {
             
-        }else{
-            [weakself showHint:imageModel.msg];
-        }
-    } andFailBlock:^(NSError *error) {
+        }];
+    }else{
+        NSArray *pArray = [NSArray arrayWithObjects:[NSURL URLWithString:self.exampleDic[@"baodan1ios"]],[NSURL URLWithString:self.exampleDic[@"baodan2ios"]],[NSURL URLWithString:self.exampleDic[@"baodan3ios"]], nil];
+        NSArray *aArray = [NSArray arrayWithObjects:[NSURL URLWithString:self.exampleDic[@"baohan1ios"]], nil];
         
-    }];
+        if (self.pModel) {//保权
+            [self showImages:pArray];
+        }else if (self.aModel){//保函
+            [self showImages:aArray];
+        }
+    }
 }
 
 - (void)saveAdditionalImages

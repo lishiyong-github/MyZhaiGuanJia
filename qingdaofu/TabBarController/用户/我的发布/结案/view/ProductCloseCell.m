@@ -30,7 +30,11 @@
         [self.contentView addSubview:self.signTitleLabel];
         [self.contentView addSubview:self.signTextButton];
         [self.contentView addSubview:self.sighCheckButton];
-        [self.contentView addSubview:self.signDetailScrollView];
+        
+        [self.contentView addSubview:self.signPictureButton1];
+//        [self.contentView addSubview:self.signDetailScrollView];
+        
+        
         [self.contentView addSubview:self.investLabel];
         [self.contentView addSubview:self.investCheckButton];
         [self.contentView addSubview:self.agreementLabel];
@@ -95,10 +99,16 @@
         [self.sighCheckButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
 
         //scrollview
-        [self.signDetailScrollView autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.signTextButton];
-        [self.signDetailScrollView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.signTextButton withOffset:kBigPadding];
-        [self.signDetailScrollView autoSetDimension:ALDimensionHeight toSize:60];
-        [self.signDetailScrollView autoPinEdgeToSuperviewEdge:ALEdgeRight];
+//        [self.signDetailScrollView autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.signTextButton];
+//        [self.signDetailScrollView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.signTextButton withOffset:kBigPadding];
+//        [self.signDetailScrollView autoSetDimension:ALDimensionHeight toSize:60];
+//        [self.signDetailScrollView autoPinEdgeToSuperviewEdge:ALEdgeRight];
+        [self.signPictureButton1 autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.signTextButton withOffset:kSpacePadding];
+        [self.signPictureButton1 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.signTextButton withOffset:kBigPadding];
+//        [self.signPictureButton1 autoSetDimension:ALDimensionHeight toSize:60];
+//        [self.signPictureButton1 autoPinEdgeToSuperviewEdge:ALEdgeRight];
+        [self.signPictureButton1 autoSetDimensionsToSize:CGSizeMake(60, 60)];
+        
         
         //尽职调查
         [self.investLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.signTitleLabel];
@@ -288,6 +298,14 @@
         }
     }
     return _signDetailScrollView;
+}
+
+- (UIButton *)signPictureButton1
+{
+    if (!_signPictureButton1) {
+        _signPictureButton1 = [UIButton newAutoLayoutView];
+    }
+    return _signPictureButton1;
 }
 
 - (UIButton *)sighCheckButton

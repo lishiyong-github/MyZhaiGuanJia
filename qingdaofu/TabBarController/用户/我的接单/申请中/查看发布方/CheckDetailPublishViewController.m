@@ -32,8 +32,6 @@
 @property (nonatomic,strong) UITableView *checkDetailTableView;
 @property (nonatomic,strong) BaseCommitButton *appAgreeButton;
 
-@property (nonatomic,strong) UIButton *rightBarBtn;
-
 @property (nonatomic,strong) NSMutableArray *certifiDataArray;
 @property (nonatomic,strong) NSString *userId;
 
@@ -67,22 +65,6 @@
         self.didSetupConstraints = YES;
     }
     [super updateViewConstraints];
-}
-
-- (UIButton *)rightBarBtn
-{
-    if (!_rightBarBtn) {
-        _rightBarBtn = [UIButton buttonWithType:0];
-        _rightBarBtn.bounds = CGRectMake(0, 0, 24, 24);
-        [_rightBarBtn setImage:[UIImage imageNamed:@"phone_gray"] forState:0];
-        QDFWeakSelf;
-        [_rightBarBtn addAction:^(UIButton *btn) {
-            CertificationModel *sdModel = weakself.certifiDataArray[0];
-            NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",sdModel.mobile];
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
-        }];
-    }
-    return _rightBarBtn;
 }
 
 - (UITableView *)checkDetailTableView
@@ -351,7 +333,7 @@
             
                 if ([weakself.navTitle containsString:@"申请方"]) {
                     weakself.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:weakself.rightButton];
-                    [weakself.rightButton setImage:[UIImage imageNamed:@"phone_blue"] forState:0];
+                    [weakself.rightButton setImage:[UIImage imageNamed:@"contacts_phone"] forState:0];
                 }
             }
             
