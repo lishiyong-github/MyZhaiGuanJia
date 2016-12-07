@@ -467,7 +467,7 @@
                 }else if(rowModel.applySelf){
                     [productView.applyButton setTitleColor:kLightGrayColor  forState:0];
                     productView.applyButton.layer.borderColor = kBorderColor.CGColor;
-                    if ([rowModel.status integerValue] == 10) {
+                    if ([rowModel.applySelf.status integerValue] == 10) {
                         [productView.applyButton setTitle:@"取消申请" forState:0];
                     }else{
                         [productView.applyButton setTitle:@"面谈中" forState:0];
@@ -553,29 +553,31 @@
 
 - (void)goApplyProductWithModel:(RowsModel *)rowModel andButton:(UIButton *)sender
 {
-    NSString *appString;
-    NSDictionary *params;
-    if ([sender.titleLabel.text isEqualToString:@"立即申请"]) {
-        appString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductDetailOfApply];
-        params = @{@"productid" : rowModel.productid,
-                   @"token" : [self getValidateToken]};
-    }else if ([sender.titleLabel.text isEqualToString:@"取消申请"]){
-        appString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrderDetailOfCancelApplyString];
-        params = @{@"applyid" : rowModel.applySelf.applyid,
-                   @"token" : [self getValidateToken]};
-    }
-    
-    QDFWeakSelf;
-    [self requestDataPostWithString:appString params:params successBlock:^(id responseObject) {
-        BaseModel *appModel = [BaseModel objectWithKeyValues:responseObject];
-        [weakself showHint:appModel.msg];
-        
-        if ([appModel.code isEqualToString:@"0000"]) {
-            [weakself getRecommendProductslist];
+    if ([sender.titleLabel.text isEqualToString:@"取消申请"] || [sender.titleLabel.text isEqualToString:@"立即申请"]) {
+        NSString *appString;
+        NSDictionary *params;
+        if ([sender.titleLabel.text isEqualToString:@"立即申请"]) {
+            appString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductDetailOfApply];
+            params = @{@"productid" : rowModel.productid,
+                       @"token" : [self getValidateToken]};
+        }else if ([sender.titleLabel.text isEqualToString:@"取消申请"]){
+            appString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrderDetailOfCancelApplyString];
+            params = @{@"applyid" : rowModel.applySelf.applyid,
+                       @"token" : [self getValidateToken]};
         }
-    } andFailBlock:^(NSError *error) {
         
-    }];
+        QDFWeakSelf;
+        [self requestDataPostWithString:appString params:params successBlock:^(id responseObject) {
+            BaseModel *appModel = [BaseModel objectWithKeyValues:responseObject];
+            [weakself showHint:appModel.msg];
+            
+            if ([appModel.code isEqualToString:@"0000"]) {
+                [weakself getRecommendProductslist];
+            }
+        } andFailBlock:^(NSError *error) {
+            
+        }];
+    }
 }
 
 - (void)goStoreProductWithModel:(RowsModel *)rowModel andButton:(UIButton *)sender

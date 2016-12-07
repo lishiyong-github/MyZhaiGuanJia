@@ -33,7 +33,6 @@
 @property (nonatomic,strong) BaseCommitButton *appAgreeButton;
 
 @property (nonatomic,strong) NSMutableArray *certifiDataArray;
-@property (nonatomic,strong) NSString *userId;
 
 @end
 
@@ -43,6 +42,10 @@
     [super viewDidLoad];
     self.navigationItem.title = self.navTitle;
     self.navigationItem.leftBarButtonItem = self.leftItem;
+    if ([self.isShowPhone integerValue] != 1) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightButton];
+        [self.rightButton setImage:[UIImage imageNamed:@"contacts_phone"] forState:0];
+    }
 
     [self.view addSubview:self.checkDetailTableView];
     
@@ -325,16 +328,9 @@
         
         CompleteResponse *response = [CompleteResponse objectWithKeyValues:responseObject];
         
-        weakself.userid = response.userid;
-        
         if ([response.code isEqualToString:@"0000"]) {
             if (response.certification) {
                 [weakself.certifiDataArray addObject:response.certification];
-            
-                if ([weakself.navTitle containsString:@"申请方"]) {
-                    weakself.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:weakself.rightButton];
-                    [weakself.rightButton setImage:[UIImage imageNamed:@"contacts_phone"] forState:0];
-                }
             }
             
         }else{

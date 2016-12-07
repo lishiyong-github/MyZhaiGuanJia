@@ -85,8 +85,6 @@
     [self.baseRemindImageView setHidden:YES];
     
     [self.view setNeedsUpdateConstraints];
-    
-//    [self headerRefreshWithAllProducts];
 }
 
 - (void)updateViewConstraints

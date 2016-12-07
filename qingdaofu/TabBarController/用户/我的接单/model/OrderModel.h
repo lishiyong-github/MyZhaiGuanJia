@@ -22,6 +22,7 @@
 @property (nonatomic,copy) NSString *productid;
 @property (nonatomic,copy) NSString *status;//产品状态
 @property (nonatomic,copy) NSString *validflag;
+@property (nonatomic,copy) NSString *hascertification; //接单方有无认证
 
 //显示信息
 @property (nonatomic,copy) NSString *number;  //code

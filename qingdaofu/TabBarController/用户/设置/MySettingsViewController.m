@@ -249,7 +249,7 @@
     cell.selectedBackgroundView.backgroundColor = kCellSelectedColor;
     
     [cell.oneButton setTitle:@"退出登录" forState:0];
-    [cell.oneButton setTitleColor:kBlackColor forState:0];
+    [cell.oneButton setTitleColor:kRedColor forState:0];
     cell.oneButton.userInteractionEnabled = NO;
     
     return cell;

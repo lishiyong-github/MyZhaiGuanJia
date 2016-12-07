@@ -14,6 +14,7 @@
 @class ProductOrdersClosedOrEndApplyModel;  //处理结案或终止
 @class ProductDetailModel;
 @class OrdersModel;
+@class EvaluateModel;
 
 @interface RowsModel : NSObject
 
@@ -21,6 +22,7 @@
 @property (nonatomic,copy) NSString *apply;
 @property (nonatomic,copy) NSString *applystatussss;//产品列表判断申请状态
 @property (nonatomic,copy) NSString *commentTotal;  //评论次数
+@property (nonatomic,strong) EvaluateModel *productComment;  //第一次评论model
 
 //首页产品列表
 @property (nonatomic,strong) ApplyRecordModel *collectSelf;  //收藏与否

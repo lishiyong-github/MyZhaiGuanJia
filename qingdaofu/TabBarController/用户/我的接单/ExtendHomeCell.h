@@ -14,10 +14,11 @@
 
 @property (nonatomic,strong) UIButton *nameButton;  //name //清收／诉讼
 @property (nonatomic,strong) UIImageView *typeImageView;
-@property (nonatomic,strong) UILabel *statusLabel; //发布中，处理中
+@property (nonatomic,strong) UIButton *statusButton; ////发布中，处理中
 @property (nonatomic,strong) UIButton *contentButton;  //发布详情
 @property (nonatomic,strong) UIButton *actButton2;
 
 @property (nonatomic,strong) NSLayoutConstraint *bottomContentConstraints;
+@property (nonatomic,strong) NSLayoutConstraint *topStatusButtonConstraints;
 
 @end

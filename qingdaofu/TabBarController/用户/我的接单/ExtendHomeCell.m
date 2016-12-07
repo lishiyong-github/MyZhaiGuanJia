@@ -16,12 +16,13 @@
     if (self) {
         [self.contentView addSubview:self.nameButton];
         [self.contentView addSubview:self.typeImageView];
-        [self.contentView addSubview:self.statusLabel];
         [self.contentView addSubview:self.contentButton];
+        [self.contentView addSubview:self.statusButton];
         [self.contentView addSubview:self.actButton2];
         
         self.bottomContentConstraints = [self.contentButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:42];
-        
+        self.topStatusButtonConstraints = [self.statusButton autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.typeImageView withOffset:-kSpacePadding];
+
         [self setNeedsUpdateConstraints];
     }
     return self;
@@ -38,13 +39,13 @@
         [self.typeImageView autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.nameButton];
         [self.typeImageView autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.nameButton withOffset:8];
         
-        [self.statusLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
-        [self.statusLabel autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.typeImageView];
-        
         [self.contentButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.nameButton withOffset:kBigPadding];
         [self.contentButton autoPinEdgeToSuperviewEdge:ALEdgeLeft];
         [self.contentButton autoPinEdgeToSuperviewEdge:ALEdgeRight];
-//        [self.contentButton autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.actButton2 withOffset:-kSpacePadding];
+        
+        [self.statusButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
+//        [self.statusButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.typeImageView];
+        [self.statusButton autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.typeImageView withOffset:-kSpacePadding];
         
         [self.actButton2 autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.actButton2 autoSetDimensionsToSize:CGSizeMake(75, 30)];
@@ -76,14 +77,24 @@
     return _typeImageView;
 }
 
-- (UILabel *)statusLabel
+//- (UILabel *)statusLabel
+//{
+//    if (!_statusLabel) {
+//        _statusLabel = [UILabel newAutoLayoutView];
+//        _statusLabel.textColor = kRedColor;
+//        _statusLabel.font = kSecondFont;
+//    }
+//    return _statusLabel;
+//}
+
+- (UIButton *)statusButton
 {
-    if (!_statusLabel) {
-        _statusLabel = [UILabel newAutoLayoutView];
-        _statusLabel.textColor = kRedColor;
-        _statusLabel.font = kSecondFont;
+    if (!_statusButton) {
+        _statusButton = [UIButton newAutoLayoutView];
+        [_statusButton setTitleColor:kRedColor forState:0];
+        _statusButton.titleLabel.font = kSecondFont;
     }
-    return _statusLabel;
+    return _statusButton;
 }
 
 - (UIButton *)contentButton

@@ -374,6 +374,8 @@
                 
                 cell.stateLabel1.text = @"等待面谈";
                 
+                [cell.stateButton setImage:[UIImage imageNamed:@"image_interview"] forState:0];
+                
                 cell.stateLabel2.numberOfLines = 0;
                 [cell.stateLabel2 setTextAlignment:NSTextAlignmentCenter];
                 NSString *sss1 = @"双方联系并约见面谈并确定是否由TA作为接单方";
@@ -613,13 +615,13 @@
                     //image
                     [cell.ppTypeButton setTitle:ordersLogsModel.label forState:0];
                     if ([ordersLogsModel.label isEqualToString:@"我"]) {
-                        [cell.ppTypeButton setBackgroundColor:kButtonColor];
+                        [cell.ppTypeButton setBackgroundColor:kYellowColor1];
                     }else if ([ordersLogsModel.label isEqualToString:@"经"]){
-                        [cell.ppTypeButton setBackgroundColor:kGrayColor];
+                        [cell.ppTypeButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
                     }else if ([ordersLogsModel.label isEqualToString:@"系"]){
-                        [cell.ppTypeButton setBackgroundColor:kRedColor];
+                        [cell.ppTypeButton setBackgroundColor:kBlueColor1];
                     }else if ([ordersLogsModel.label isEqualToString:@"接"]){
-                        [cell.ppTypeButton setBackgroundColor:kYellowColor];
+                        [cell.ppTypeButton setBackgroundColor:kGreenColor];
                     }
                     
                     //content
@@ -649,13 +651,13 @@
                     //image
                     [cell.ppTypeButton setTitle:ordersLogsModel.label forState:0];
                     if ([ordersLogsModel.label isEqualToString:@"我"]) {
-                        [cell.ppTypeButton setBackgroundColor:kButtonColor];
+                        [cell.ppTypeButton setBackgroundColor:kYellowColor1];
                     }else if ([ordersLogsModel.label isEqualToString:@"经"]){
-                        [cell.ppTypeButton setBackgroundColor:kGrayColor];
+                        [cell.ppTypeButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
                     }else if ([ordersLogsModel.label isEqualToString:@"系"]){
-                        [cell.ppTypeButton setBackgroundColor:kRedColor];
+                        [cell.ppTypeButton setBackgroundColor:kBlueColor1];
                     }else if ([ordersLogsModel.label isEqualToString:@"接"]){
-                        [cell.ppTypeButton setBackgroundColor:kYellowColor];
+                        [cell.ppTypeButton setBackgroundColor:kGreenColor];
                     }
                     
                     //content
@@ -684,13 +686,13 @@
                 //image
                 [cell.ppTypeButton setTitle:ordersLogsModel.label forState:0];
                 if ([ordersLogsModel.label isEqualToString:@"我"]) {
-                    [cell.ppTypeButton setBackgroundColor:kButtonColor];
+                    [cell.ppTypeButton setBackgroundColor:kYellowColor1];
                 }else if ([ordersLogsModel.label isEqualToString:@"经"]){
-                    [cell.ppTypeButton setBackgroundColor:kGrayColor];
+                    [cell.ppTypeButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
                 }else if ([ordersLogsModel.label isEqualToString:@"系"]){
-                    [cell.ppTypeButton setBackgroundColor:kRedColor];
+                    [cell.ppTypeButton setBackgroundColor:kBlueColor1];
                 }else if ([ordersLogsModel.label isEqualToString:@"接"]){
-                    [cell.ppTypeButton setBackgroundColor:kYellowColor];
+                    [cell.ppTypeButton setBackgroundColor:kGreenColor];
                 }
                 
                 //content
@@ -1103,6 +1105,12 @@
                 }
             }
             
+            //特殊情况特殊处理
+            if ([dataModel.validflag integerValue] == 0) {
+                [weakself showHint:@"该订单已被删除"];
+                [weakself back];
+            }
+            
             [weakself.releaseDetailArray addObject:response.data];
             [weakself.releaseDetailTableView reloadData];
         }
@@ -1192,6 +1200,14 @@
 - (void)showMaterialList
 {
     [self showHint:@"材料清单"];
+    UIButton *showButton1 = [UIButton newAutoLayoutView];
+    showButton1.backgroundColor = UIColorFromRGB1(0x333333, 0.3);
+    [[UIApplication sharedApplication].keyWindow addSubview:showButton1];
+    [showButton1 autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+    [showButton1 setImage:[UIImage imageNamed:@"material_list"] forState:0];
+    [showButton1 addAction:^(UIButton *btn) {
+        [btn removeFromSuperview];
+    }];
 }
 
 - (void)rightItemAction

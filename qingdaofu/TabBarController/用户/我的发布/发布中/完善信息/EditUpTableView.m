@@ -78,7 +78,7 @@
             NSString *titie = [NSString stringWithFormat:@"%@%@",self.type,self.category];
             [cell.oneButton setTitle:titie forState:0];
             
-            [cell.sureButton setImage:[UIImage imageNamed:@"deletes"] forState:0];
+            [cell.sureButton setImage:[UIImage imageNamed:@"product_box_delete"] forState:0];
             
             QDFWeakSelf;
             [cell.sureButton addAction:^(UIButton *btn) {

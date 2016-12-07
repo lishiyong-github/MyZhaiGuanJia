@@ -12,8 +12,9 @@
 
 #import "AgreementViewController.h"  //居间协议
 #import "SignProtocolViewController.h" //签约协议
-#import "AdditionalEvaluateViewController.h"  //评价
 #import "AddProgressViewController.h"  //添加进度
+#import "AdditionalEvaluateViewController.h"  //评价
+#import "EvaluateListsViewController.h"  //查看评价
 
 #import "EvaTopSwitchView.h"
 
@@ -214,14 +215,26 @@
     //code
     [cell.nameButton setTitle:rowModel.number forState:0];
     
-    //status and action
-    cell.statusLabel.text = orderModel.statusLabel;
-    
+    //status and action    
     if ([orderModel.statusLabel isEqualToString:@"申请中"]) {
+        
+        cell.topStatusButtonConstraints.constant = -kSpacePadding;
+        [cell.statusButton setTitle:orderModel.statusLabel forState:0];
+        [cell.statusButton setImage:[UIImage imageNamed:@""] forState:0];
+        
         [cell.actButton2 setTitle:@"取消申请" forState:0];
     }else if ([orderModel.statusLabel isEqualToString:@"面谈中"]){
+        cell.topStatusButtonConstraints.constant = -kSpacePadding;
+        [cell.statusButton setTitle:orderModel.statusLabel forState:0];
+        [cell.statusButton setImage:[UIImage imageNamed:@""] forState:0];
+        
         [cell.actButton2 setTitle:@"面谈详情" forState:0];
     }else if ([orderModel.statusLabel isEqualToString:@"处理中"]){
+        
+        cell.topStatusButtonConstraints.constant = -kSpacePadding;
+        [cell.statusButton setTitle:orderModel.statusLabel forState:0];
+        [cell.statusButton setImage:[UIImage imageNamed:@""] forState:0];
+
         if ([orderModel.orders.status integerValue] == 0) {
             [cell.actButton2 setTitle:@"居间协议" forState:0];
         }else if ([orderModel.orders.status integerValue] == 10){
@@ -230,12 +243,32 @@
             [cell.actButton2 setTitle:@"填写进度" forState:0];
         }
     }else if ([orderModel.statusLabel isEqualToString:@"已结案"]){
-        [cell.actButton2 setTitle:@"评价" forState:0];
+        cell.topStatusButtonConstraints.constant = -kBigPadding;
+        [cell.statusButton setTitle:@"" forState:0];
+        [cell.statusButton setImage:[UIImage imageNamed:@"close_case"] forState:0];
+        
+        if (rowModel.productComment) {
+            [cell.actButton2 setTitle:@"查看评价" forState:0];
+        }else{
+            [cell.actButton2 setTitle:@"评价" forState:0];
+        }
     }else if ([orderModel.statusLabel isEqualToString:@"申请失败"]){
+        cell.topStatusButtonConstraints.constant = -kSpacePadding;
+        [cell.statusButton setTitle:orderModel.statusLabel forState:0];
+        [cell.statusButton setImage:[UIImage imageNamed:@""] forState:0];
+
         [cell.actButton2 setTitle:@"删除" forState:0];
     }else if ([orderModel.statusLabel isEqualToString:@"面谈失败"]){
+        cell.topStatusButtonConstraints.constant = -kSpacePadding;
+        [cell.statusButton setTitle:orderModel.statusLabel forState:0];
+        [cell.statusButton setImage:[UIImage imageNamed:@""] forState:0];
+
         [cell.actButton2 setTitle:@"删除" forState:0];
     }else if ([orderModel.statusLabel isEqualToString:@"取消申请"]){
+        cell.topStatusButtonConstraints.constant = -kSpacePadding;
+        [cell.statusButton setTitle:orderModel.statusLabel forState:0];
+        [cell.statusButton setImage:[UIImage imageNamed:@""] forState:0];
+
         [cell.actButton2 setTitle:@"删除" forState:0];
     }
     
@@ -311,9 +344,7 @@
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:myOrderString params:params successBlock:^(id responseObject) {
-        
-        NSDictionary *sossosos = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        
+                
         if ([page intValue] == 1) {
             [weakself.orderDataArray removeAllObjects];
         }
@@ -408,6 +439,11 @@
         additionalEvaluateVC.evaString = @"0";
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:additionalEvaluateVC];
         [self presentViewController:nav animated:YES completion:nil];
+    }else if ([string isEqualToString:@"查看评价"]){
+        EvaluateListsViewController *evaluateListsVC = [[EvaluateListsViewController alloc] init];
+        evaluateListsVC.typeString = @"接单方";
+        evaluateListsVC.ordersid = ymodel.orders.ordersid;
+        [self.navigationController pushViewController:evaluateListsVC animated:YES];
     }else if([string isEqualToString:@"删除"]){
         NSString *deletePubString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrderDetailsOfDeleteString];
         NSDictionary *params = @{@"applyid" : ymodel.applyid,

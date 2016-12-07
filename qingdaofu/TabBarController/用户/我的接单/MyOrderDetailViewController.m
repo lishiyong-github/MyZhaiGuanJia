@@ -579,16 +579,16 @@
                         
                         //image
                         [cell.ppTypeButton setTitle:orderLogsModel.label forState:0];
-                        if ([orderLogsModel.label isEqualToString:@"我"]) {
-                            [cell.ppTypeButton setBackgroundColor:kButtonColor];
+                        if ([orderLogsModel.label isEqualToString:@"我"]) {//接单方查看显示“我”
+                            [cell.ppTypeButton setBackgroundColor:kGreenColor];
+                        }else if ([orderLogsModel.label isEqualToString:@"接"]){//经办人查看显示“接”
+                            [cell.ppTypeButton setBackgroundColor:kGreenColor];
                         }else if ([orderLogsModel.label isEqualToString:@"发"]){
-                            [cell.ppTypeButton setBackgroundColor:kYellowColor];
+                            [cell.ppTypeButton setBackgroundColor:kYellowColor1];
                         }else if ([orderLogsModel.label isEqualToString:@"系"]){
-                            [cell.ppTypeButton setBackgroundColor:kRedColor];
-                        }else if ([orderLogsModel.label isEqualToString:@"接"]){
-                            [cell.ppTypeButton setBackgroundColor:kGrayColor];
+                            [cell.ppTypeButton setBackgroundColor:kBlueColor1];
                         }else if ([orderLogsModel.label isEqualToString:@"经"]){
-                            [cell.ppTypeButton setBackgroundColor:kButtonColor];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
                         }
                         
                         //content
@@ -618,16 +618,16 @@
                         
                         //image
                         [cell.ppTypeButton setTitle:orderLogsModel.label forState:0];
-                        if ([orderLogsModel.label isEqualToString:@"我"]) {
-                            [cell.ppTypeButton setBackgroundColor:kButtonColor];
+                        if ([orderLogsModel.label isEqualToString:@"我"]) {//接单方查看显示“我”
+                            [cell.ppTypeButton setBackgroundColor:kGreenColor];
+                        }else if ([orderLogsModel.label isEqualToString:@"接"]){//经办人查看显示“接”
+                            [cell.ppTypeButton setBackgroundColor:kGreenColor];
                         }else if ([orderLogsModel.label isEqualToString:@"发"]){
-                            [cell.ppTypeButton setBackgroundColor:kYellowColor];
+                            [cell.ppTypeButton setBackgroundColor:kYellowColor1];
                         }else if ([orderLogsModel.label isEqualToString:@"系"]){
-                            [cell.ppTypeButton setBackgroundColor:kRedColor];
-                        }else if ([orderLogsModel.label isEqualToString:@"接"]){
-                            [cell.ppTypeButton setBackgroundColor:kGrayColor];
+                            [cell.ppTypeButton setBackgroundColor:kBlueColor1];
                         }else if ([orderLogsModel.label isEqualToString:@"经"]){
-                            [cell.ppTypeButton setBackgroundColor:kButtonColor];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
                         }
                         
                         //content
@@ -655,16 +655,16 @@
                         
                         //image
                         [cell.ppTypeButton setTitle:orderLogsModel.label forState:0];
-                        if ([orderLogsModel.label isEqualToString:@"我"]) {
-                            [cell.ppTypeButton setBackgroundColor:kButtonColor];
+                        if ([orderLogsModel.label isEqualToString:@"我"]) {//接单方查看显示“我”
+                            [cell.ppTypeButton setBackgroundColor:kGreenColor];
+                        }else if ([orderLogsModel.label isEqualToString:@"接"]){//经办人查看显示“接”
+                            [cell.ppTypeButton setBackgroundColor:kGreenColor];
                         }else if ([orderLogsModel.label isEqualToString:@"发"]){
-                            [cell.ppTypeButton setBackgroundColor:kYellowColor];
+                            [cell.ppTypeButton setBackgroundColor:kYellowColor1];
                         }else if ([orderLogsModel.label isEqualToString:@"系"]){
-                            [cell.ppTypeButton setBackgroundColor:kRedColor];
-                        }else if ([orderLogsModel.label isEqualToString:@"接"]){
-                            [cell.ppTypeButton setBackgroundColor:kGrayColor];
+                            [cell.ppTypeButton setBackgroundColor:kBlueColor1];
                         }else if ([orderLogsModel.label isEqualToString:@"经"]){
-                            [cell.ppTypeButton setBackgroundColor:kButtonColor];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
                         }
                         
                         //content
@@ -836,16 +836,16 @@
                         
                         //image
                         [cell.ppTypeButton setTitle:orderLogsModel.label forState:0];
-                        if ([orderLogsModel.label isEqualToString:@"我"]) {
-                            [cell.ppTypeButton setBackgroundColor:kButtonColor];
+                        if ([orderLogsModel.label isEqualToString:@"我"]) {//接单方查看显示“我”
+                            [cell.ppTypeButton setBackgroundColor:kGreenColor];
+                        }else if ([orderLogsModel.label isEqualToString:@"接"]){//经办人查看显示“接”
+                            [cell.ppTypeButton setBackgroundColor:kGreenColor];
                         }else if ([orderLogsModel.label isEqualToString:@"发"]){
-                            [cell.ppTypeButton setBackgroundColor:kYellowColor];
+                            [cell.ppTypeButton setBackgroundColor:kYellowColor1];
                         }else if ([orderLogsModel.label isEqualToString:@"系"]){
-                            [cell.ppTypeButton setBackgroundColor:kRedColor];
-                        }else if ([orderLogsModel.label isEqualToString:@"接"]){
-                            [cell.ppTypeButton setBackgroundColor:kGrayColor];
+                            [cell.ppTypeButton setBackgroundColor:kBlueColor1];
                         }else if ([orderLogsModel.label isEqualToString:@"经"]){
-                            [cell.ppTypeButton setBackgroundColor:kButtonColor];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
                         }
                         
                         //content
@@ -875,16 +875,16 @@
                         
                         //image
                         [cell.ppTypeButton setTitle:orderLogsModel.label forState:0];
-                        if ([orderLogsModel.label isEqualToString:@"我"]) {
-                            [cell.ppTypeButton setBackgroundColor:kButtonColor];
+                        if ([orderLogsModel.label isEqualToString:@"我"]) {//接单方查看显示“我”
+                            [cell.ppTypeButton setBackgroundColor:kGreenColor];
+                        }else if ([orderLogsModel.label isEqualToString:@"接"]){//经办人查看显示“接”
+                            [cell.ppTypeButton setBackgroundColor:kGreenColor];
                         }else if ([orderLogsModel.label isEqualToString:@"发"]){
-                            [cell.ppTypeButton setBackgroundColor:kYellowColor];
+                            [cell.ppTypeButton setBackgroundColor:kYellowColor1];
                         }else if ([orderLogsModel.label isEqualToString:@"系"]){
-                            [cell.ppTypeButton setBackgroundColor:kRedColor];
-                        }else if ([orderLogsModel.label isEqualToString:@"接"]){
-                            [cell.ppTypeButton setBackgroundColor:kGrayColor];
+                            [cell.ppTypeButton setBackgroundColor:kBlueColor1];
                         }else if ([orderLogsModel.label isEqualToString:@"经"]){
-                            [cell.ppTypeButton setBackgroundColor:kButtonColor];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
                         }
                         
                         //content
@@ -912,16 +912,16 @@
                         
                         //image
                         [cell.ppTypeButton setTitle:orderLogsModel.label forState:0];
-                        if ([orderLogsModel.label isEqualToString:@"我"]) {
-                            [cell.ppTypeButton setBackgroundColor:kButtonColor];
+                        if ([orderLogsModel.label isEqualToString:@"我"]) {//接单方查看显示“我”
+                            [cell.ppTypeButton setBackgroundColor:kGreenColor];
+                        }else if ([orderLogsModel.label isEqualToString:@"接"]){//经办人查看显示“接”
+                            [cell.ppTypeButton setBackgroundColor:kGreenColor];
                         }else if ([orderLogsModel.label isEqualToString:@"发"]){
-                            [cell.ppTypeButton setBackgroundColor:kYellowColor];
+                            [cell.ppTypeButton setBackgroundColor:kYellowColor1];
                         }else if ([orderLogsModel.label isEqualToString:@"系"]){
-                            [cell.ppTypeButton setBackgroundColor:kRedColor];
-                        }else if ([orderLogsModel.label isEqualToString:@"接"]){
-                            [cell.ppTypeButton setBackgroundColor:kGrayColor];
+                            [cell.ppTypeButton setBackgroundColor:kBlueColor1];
                         }else if ([orderLogsModel.label isEqualToString:@"经"]){
-                            [cell.ppTypeButton setBackgroundColor:kButtonColor];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
                         }
                         
                         //content
@@ -1150,16 +1150,16 @@
                         
                         //image
                         [cell.ppTypeButton setTitle:orderLogsModel.label forState:0];
-                        if ([orderLogsModel.label isEqualToString:@"我"]) {
-                            [cell.ppTypeButton setBackgroundColor:kButtonColor];
+                        if ([orderLogsModel.label isEqualToString:@"我"]) {//接单方查看显示“我”
+                            [cell.ppTypeButton setBackgroundColor:kGreenColor];
+                        }else if ([orderLogsModel.label isEqualToString:@"接"]){//经办人查看显示“接”
+                            [cell.ppTypeButton setBackgroundColor:kGreenColor];
                         }else if ([orderLogsModel.label isEqualToString:@"发"]){
-                            [cell.ppTypeButton setBackgroundColor:kYellowColor];
+                            [cell.ppTypeButton setBackgroundColor:kYellowColor1];
                         }else if ([orderLogsModel.label isEqualToString:@"系"]){
-                            [cell.ppTypeButton setBackgroundColor:kRedColor];
-                        }else if ([orderLogsModel.label isEqualToString:@"接"]){
-                            [cell.ppTypeButton setBackgroundColor:kGrayColor];
+                            [cell.ppTypeButton setBackgroundColor:kBlueColor1];
                         }else if ([orderLogsModel.label isEqualToString:@"经"]){
-                            [cell.ppTypeButton setBackgroundColor:kButtonColor];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
                         }
                         
                         //content
@@ -1189,16 +1189,16 @@
                         
                         //image
                         [cell.ppTypeButton setTitle:orderLogsModel.label forState:0];
-                        if ([orderLogsModel.label isEqualToString:@"我"]) {
-                            [cell.ppTypeButton setBackgroundColor:kButtonColor];
+                        if ([orderLogsModel.label isEqualToString:@"我"]) {//接单方查看显示“我”
+                            [cell.ppTypeButton setBackgroundColor:kGreenColor];
+                        }else if ([orderLogsModel.label isEqualToString:@"接"]){//经办人查看显示“接”
+                            [cell.ppTypeButton setBackgroundColor:kGreenColor];
                         }else if ([orderLogsModel.label isEqualToString:@"发"]){
-                            [cell.ppTypeButton setBackgroundColor:kYellowColor];
+                            [cell.ppTypeButton setBackgroundColor:kYellowColor1];
                         }else if ([orderLogsModel.label isEqualToString:@"系"]){
-                            [cell.ppTypeButton setBackgroundColor:kRedColor];
-                        }else if ([orderLogsModel.label isEqualToString:@"接"]){
-                            [cell.ppTypeButton setBackgroundColor:kGrayColor];
+                            [cell.ppTypeButton setBackgroundColor:kBlueColor1];
                         }else if ([orderLogsModel.label isEqualToString:@"经"]){
-                            [cell.ppTypeButton setBackgroundColor:kButtonColor];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
                         }
                         
                         //content
@@ -1226,16 +1226,16 @@
                         
                         //image
                         [cell.ppTypeButton setTitle:orderLogsModel.label forState:0];
-                        if ([orderLogsModel.label isEqualToString:@"我"]) {
-                            [cell.ppTypeButton setBackgroundColor:kButtonColor];
+                        if ([orderLogsModel.label isEqualToString:@"我"]) {//接单方查看显示“我”
+                            [cell.ppTypeButton setBackgroundColor:kGreenColor];
+                        }else if ([orderLogsModel.label isEqualToString:@"接"]){//经办人查看显示“接”
+                            [cell.ppTypeButton setBackgroundColor:kGreenColor];
                         }else if ([orderLogsModel.label isEqualToString:@"发"]){
-                            [cell.ppTypeButton setBackgroundColor:kYellowColor];
+                            [cell.ppTypeButton setBackgroundColor:kYellowColor1];
                         }else if ([orderLogsModel.label isEqualToString:@"系"]){
-                            [cell.ppTypeButton setBackgroundColor:kRedColor];
-                        }else if ([orderLogsModel.label isEqualToString:@"接"]){
-                            [cell.ppTypeButton setBackgroundColor:kGrayColor];
+                            [cell.ppTypeButton setBackgroundColor:kBlueColor1];
                         }else if ([orderLogsModel.label isEqualToString:@"经"]){
-                            [cell.ppTypeButton setBackgroundColor:kButtonColor];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
                         }
                         
                         //content
@@ -1266,7 +1266,6 @@
                 
                 if ([orderModel.status integerValue] == 10) {//申请中
                     [cell.progress1 setText:@"申请中"];
-                    
                 }else if ([orderModel.status integerValue] == 20) {//面谈中
                     [cell.progress1 setText:@"申请中"];
                     
@@ -1350,11 +1349,12 @@
             
             if ([orderModel.status integerValue] == 10) {
                 cell.stateLabel1.text = @"申请中";
+                [cell.stateButton setImage:[UIImage imageNamed:@"image_apply"] forState:0];
                 cell.stateLabel2.text = @"申请中，等待发布方同意";
                 
             }else if ([orderModel.status integerValue] == 20){
                 cell.stateLabel1.text = @"等待面谈";
-                
+                [cell.stateButton setImage:[UIImage imageNamed:@"image_interview"] forState:0];
                 cell.stateLabel2.numberOfLines = 0;
                 NSString *staetc = @"双方联系并约见面谈，面谈后由发布方确定\n是否由您来接单";
                 NSMutableAttributedString *attributeSt = [[NSMutableAttributedString alloc]initWithString:staetc];
@@ -1365,12 +1365,15 @@
                 [cell.stateLabel2 setAttributedText:attributeSt];
             }else if ([orderModel.status integerValue] == 30){
                 cell.stateLabel1.text = @"面谈失败";
+                [cell.stateButton setImage:[UIImage imageNamed:@"image_fail"] forState:0];
                 cell.stateLabel2.text = @"面谈失败";
             }else if ([orderModel.status integerValue] == 50){
                 cell.stateLabel1.text = @"取消申请";
+                [cell.stateButton setImage:[UIImage imageNamed:@"image_cancle"] forState:0];
                 cell.stateLabel2.text = @"取消申请，您可以在产品列表中再次申请";
             }else if ([orderModel.status integerValue] == 60){
                 cell.stateLabel1.text = @"申请失败";
+                [cell.stateButton setImage:[UIImage imageNamed:@"image_fail"] forState:0];
                 cell.stateLabel2.text = @"申请失败";
             }
             
@@ -1514,6 +1517,7 @@
             checkDetailPublishVC.navTitle = @"发布方详情";
             checkDetailPublishVC.productid = orderModel.productid;
             checkDetailPublishVC.userid = orderModel.product.create_by;
+            checkDetailPublishVC.isShowPhone = @"1";
             [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
         }
     }
@@ -1608,19 +1612,31 @@
             }else{//终止
                 [self.rightButton setHidden:YES];
                 [weakself.processinCommitButton setHidden:YES];
-//                [weakself.myOrderDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
             }
         }else{//处理中以前
             [weakself.processinCommitButton setHidden:YES];
-//            [weakself.myOrderDetailTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
             
             if ([orderModel.status integerValue] == 10) {//申请中
                 [self.rightButton setHidden:NO];
                 [self.rightButton setTitle:@"取消申请" forState:0];
                 [self.rightButton addTarget:self action:@selector(cancelApplyAction) forControlEvents:UIControlEventTouchUpInside];
-            }else{
+            }else {
                 [self.rightButton setHidden:YES];
             }
+        }
+        
+        //特殊情况特殊处理
+        if ([orderModel.validflag integerValue] == 0) {
+            [weakself showHint:@"该申请已删除"];
+            [weakself back];
+        }else if([orderModel.product.validflag integerValue] == 0 && [orderModel.status integerValue] == 60){
+            [weakself showHint:@"发布方已取消该笔订单的发布"];
+            [weakself back];
+        }else if (([orderModel.product.status integerValue] == 20 || [orderModel.product.status integerValue] == 30 || [orderModel.product.status integerValue] == 40) && [orderModel.status integerValue] == 60){
+            [weakself showHint:@"发布方已和其他接单方撮合"];
+            [weakself back];
+        }else if ([orderModel.status integerValue] == 20 && [orderModel.hascertification integerValue] == 0){
+            [weakself showHint:@"您还未认证，发布方无法将您设为接单方！"];
         }
         
         [weakself.myOrderDetailArray addObject:orderModel];

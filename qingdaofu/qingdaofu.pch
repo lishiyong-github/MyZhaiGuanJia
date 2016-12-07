@@ -59,7 +59,7 @@
 
 
 //文字颜色  Helvetica-Bold加粗 0da3f9  1bacff
-#define kBlueColor UIColorFromRGB(0x0065b3)  //主色调 //0065b3--0da3f9
+#define kBlueColor UIColorFromRGB(0x0065b3)  //主色调 //0065b3(发布方颜色)
 #define kButtonColor UIColorFromRGB(0x10a1ec)  //按钮颜色
 #define kTextColor  UIColorFromRGB(0x4279d6)  //文字颜色
 
@@ -74,9 +74,11 @@
 #define kLightWhiteColor  UIColorFromRGB(0xdcecff)  //浅白色
 #define kRemindTipColor UIColorFromRGB(0xff981f)//提示框的颜色//f4ae5c
 #define kWhiteColor UIColorFromRGB(0xffffff) //白色
-//背景色UIColorFromRGB1(rgbValue,alphaValue)
-//#define kNavColor UIColorFromRGB(0xffffff)  //导航栏颜色1(白色)
 #define kNavColor UIColorFromRGB1(0x242930,0.95)  //导航栏颜色1(白色)
+#define kGreenColor UIColorFromRGB(0xebad43) //接单方
+#define kYellowColor1 UIColorFromRGB(0x76d496)  //发布方
+#define kBlueColor1 UIColorFromRGB(0x0da3f9)  //发布方
+
 
 #define kNavColor1 UIColorFromRGB(0x1bacff) //导航栏颜色2（产品详情界面）42566d－1bacff
 #define kCellSelectedColor UIColorFromRGB(0xeef3f6)  //单元格选中颜色

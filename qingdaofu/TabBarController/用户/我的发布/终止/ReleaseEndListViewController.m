@@ -115,14 +115,13 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         [cell.detailTextLabel setHidden:YES];
         OrderModel *orderModel = self.releaseEndListArray[indexPath.section];
-        //    RowsModel *orderModel = self.releaseDataArray[indexPath.section];
-        //    RowsModel *product
         
         //code
         [cell.nameButton setTitle:orderModel.number forState:0];
         
         //status and action
-        cell.statusLabel.text = orderModel.statusLabel;
+//        cell.statusLabel.text = orderModel.statusLabel;
+        [cell.statusButton setImage:[UIImage imageNamed:@"termination"] forState:0];
         
         [cell.actButton2 setTitle:@"协商详情" forState:0];
         cell.actButton2.layer.borderColor = kBorderColor.CGColor;
@@ -168,7 +167,7 @@
         [cell.nameButton setTitle:rowModel.number forState:0];
         
         //status and action
-        cell.statusLabel.text = rowModel.statusLabel;
+        [cell.statusButton setImage:[UIImage imageNamed:@"termination"] forState:0];
         
         [cell.actButton2 setTitle:@"协商详情" forState:0];
         cell.actButton2.layer.borderColor = kBorderColor.CGColor;

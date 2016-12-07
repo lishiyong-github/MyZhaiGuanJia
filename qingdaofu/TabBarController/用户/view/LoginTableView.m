@@ -113,7 +113,7 @@
         [cell.button2 setImage:[UIImage imageNamed:@"order"] forState:0];
         
         [cell.button3 setTitle:@" 经办事项" forState:0];
-        [cell.button3 setImage:[UIImage imageNamed:@"order"] forState:0];
+        [cell.button3 setImage:[UIImage imageNamed:@"user_my_handing"] forState:0];
         
         QDFWeakSelf;
         [cell.button1 addAction:^(UIButton *btn) {
@@ -218,7 +218,7 @@
         cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
     
-    [cell.userNameButton setImage:[UIImage imageNamed:@"list_icon_setting"] forState:0];
+    [cell.userNameButton setImage:[UIImage imageNamed:@"user_my_help"] forState:0];
     [cell.userNameButton setTitle:@"    帮助中心" forState:0];
     [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
     

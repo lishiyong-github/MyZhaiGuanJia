@@ -38,8 +38,7 @@
     self.title = @"通讯录";
     self.navigationItem.leftBarButtonItem = self.leftItem;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightButton];
-//    [self.rightButton setTitle:@"添加" forState:0];
-    [self.rightButton setImage:[UIImage imageNamed:@""] forState:0];
+    [self.rightButton setImage:[UIImage imageNamed:@"list_add_friend"] forState:0];
     
     [self.view addSubview:self.myMailListsTableView];
     

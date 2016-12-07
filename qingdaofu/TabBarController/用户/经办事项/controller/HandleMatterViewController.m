@@ -186,7 +186,8 @@
     [cell.nameButton setTitle:rowModel.number forState:0];
     
     //status and action
-    cell.statusLabel.text = rowModel.statusLabel;
+//    cell.statusLabel.text = rowModel.statusLabel;
+    [cell.statusButton setTitle:rowModel.statusLabel forState:0];
     
     if ([rowModel.statusLabel isEqualToString:@"处理中"]){
         [cell.actButton2 setTitle:@"查看进度" forState:0];

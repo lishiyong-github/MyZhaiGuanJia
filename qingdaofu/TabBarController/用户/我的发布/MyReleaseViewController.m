@@ -188,15 +188,33 @@
     [cell.nameButton setTitle:rowModel.number forState:0];
     
     //status and action
-    cell.statusLabel.text = rowModel.statusLabel;
-    
     if ([rowModel.statusLabel isEqualToString:@"发布中"]) {
+        
+        cell.topStatusButtonConstraints.constant = -kSpacePadding;
+        [cell.statusButton setTitle:rowModel.statusLabel forState:0];
+        [cell.statusButton setImage:[UIImage imageNamed:@""] forState:0];
+        
         [cell.actButton2 setTitle:@"完善资料" forState:0];
     }else if ([rowModel.statusLabel isEqualToString:@"面谈中"]){
+        
+        cell.topStatusButtonConstraints.constant = -kSpacePadding;
+        [cell.statusButton setTitle:rowModel.statusLabel forState:0];
+        [cell.statusButton setImage:[UIImage imageNamed:@""] forState:0];
+        
         [cell.actButton2 setTitle:@"联系申请方" forState:0];
     }else if ([rowModel.statusLabel isEqualToString:@"处理中"]){
+        
+        cell.topStatusButtonConstraints.constant = -kSpacePadding;
+        [cell.statusButton setTitle:rowModel.statusLabel forState:0];
+        [cell.statusButton setImage:[UIImage imageNamed:@""] forState:0];
+        
         [cell.actButton2 setTitle:@"查看进度" forState:0];
     }else if ([rowModel.statusLabel isEqualToString:@"已结案"]){
+        
+        cell.topStatusButtonConstraints.constant = -kBigPadding;
+        [cell.statusButton setTitle:@"" forState:0];
+        [cell.statusButton setImage:[UIImage imageNamed:@"close_case"] forState:0];
+        
         if ([rowModel.commentTotal integerValue] > 0) {
             [cell.actButton2 setTitle:@"查看评价" forState:0];
         }else{
@@ -336,7 +354,6 @@
         checkDetailPublishVC.navTitle = @"申请方详情";
         checkDetailPublishVC.productid = ymodel.productid;
         checkDetailPublishVC.userid = ymodel.curapply.create_by;
-        checkDetailPublishVC.mobile = ymodel.curapply.mobile;
         [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
     }else if ([string isEqualToString:@"查看进度"]) {//处理中
         MyReleaseDetailsViewController *myReleaseDetailsVC = [[MyReleaseDetailsViewController alloc] init];

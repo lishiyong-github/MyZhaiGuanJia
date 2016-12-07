@@ -102,10 +102,6 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (self.moreMessageArray.count > 0) {
-//        RowsModel *rowModel = self.moreMessageArray[0];;
-//        if ([rowModel.statusLabel containsString:@"发布"] || [rowModel.statusLabel containsString:@"面谈"]){
-//        }
-//        return 1;
         return 1+self.productDic.allKeys.count;
     }
     return 0;
@@ -119,15 +115,51 @@
         RowsModel *rowModel = self.moreMessageArray[0];
         //房产抵押，机动车抵押，合同纠纷
         if ([rowModel.statusLabel containsString:@"发布"] || [rowModel.statusLabel containsString:@"面谈"]) {
-            if (section == 1){
-                return 1+rowModel.productMortgages1.count;
-            }else if (section == 2){
-                return 1+rowModel.productMortgages2.count;
+            if (!self.productDic[@"house"]) {//房产抵押
+                if (!self.productDic[@"car"]) {//机动车抵押
+                    if (self.productDic[@"contract"]) {//合同纠纷
+                        return 1+rowModel.productMortgages3.count;
+                    }
+                }else{
+                    if (!self.productDic[@"contract"]) {
+                        return 1+rowModel.productMortgages2.count;
+                    }else{
+                        if (section == 1) {
+                            return 1+rowModel.productMortgages2.count;
+                        }else{
+                            return 1+rowModel.productMortgages3.count;
+                        }
+                    }
+                }
             }else{
-                return 1+rowModel.productMortgages3.count;
+                if (!self.productDic[@"car"]) {
+                    if (!self.productDic[@"contract"]) {
+                        return 1+rowModel.productMortgages1.count;
+                    }else{
+                        if (section == 1) {
+                            return 1+rowModel.productMortgages1.count;
+                        }else{
+                            return 1+rowModel.productMortgages3.count;
+                        }
+                    }
+                }else{
+                    if (!self.productDic[@"contract"]) {
+                        if (section == 1) {
+                            return 1+rowModel.productMortgages1.count;
+                        }else{
+                            return 1+rowModel.productMortgages2.count;
+                        }
+                    }else{
+                        if (section == 1) {
+                            return 1+rowModel.productMortgages1.count;
+                        }else if(section == 2){
+                            return 1+rowModel.productMortgages2.count;
+                        }else{
+                            return 1+rowModel.productMortgages3.count;
+                        }
+                    }
+                }
             }
-            
-            
         }else{
             if (section == 1){
                 return rowModel.productMortgages1.count;
@@ -218,7 +250,37 @@
         RowsModel *rowModel = self.moreMessageArray[0];
         
         if ([rowModel.statusLabel containsString:@"发布"] || [rowModel.statusLabel containsString:@"面谈"]) {//可以添加
-            if (indexPath.section == 1) {//房产抵押，机动车抵押，合同纠纷
+            
+            if (!self.productDic[@"house"]) {
+                if (!self.productDic[@"car"]) {
+                    if (self.productDic[@"contract"]) {//
+                        
+                    }
+                }else{
+                    if (!self.productDic[@"contract"]) {
+                        
+                    }else{
+                        
+                    }
+                }
+            }else{
+                if (!self.productDic[@"car"]) {
+                    if (!self.productDic[@"contract"]) {
+                        
+                    }else{
+                        
+                    }
+                }else{
+                    if (!self.productDic[@"contract"]) {
+                        
+                    }else{
+                        
+                    }
+                }
+            }
+            
+            /*
+            if (self.productDic[@"house"]) {
                 if (indexPath.row == rowModel.productMortgages1.count) {
                     //最后一行，显示添加按钮
                     identifier = @"house1";
@@ -231,7 +293,7 @@
                     cell.oneButton.titleLabel.font = kSecondFont;
                     cell.oneButton.userInteractionEnabled = NO;
                     [cell.oneButton setTitle:@"添加抵押物地址信息" forState:0];
-                    
+
                     return cell;
                 }else{//剩余行，显示添加的内容
                     identifier = @"house0";
@@ -251,7 +313,9 @@
                     
                     return cell;
                 }
-            }else if (indexPath.section == 2){
+            }
+            
+            if (self.productDic[@"car"]) {
                 if (indexPath.row == rowModel.productMortgages2.count) {
                     identifier = @"car1";
                     BidOneCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -263,7 +327,7 @@
                     cell.oneButton.titleLabel.font = kSecondFont;
                     cell.oneButton.userInteractionEnabled = NO;
                     [cell.oneButton setTitle:@"添加机动车信息" forState:0];
-                    
+
                     return cell;
                 }else{
                     identifier = @"car0";
@@ -283,8 +347,9 @@
                     
                     return cell;
                 }
-                
-            }else if (indexPath.section == 3){
+            }
+            
+            if (self.productDic[@"contract"]) {
                 if (indexPath.row == rowModel.productMortgages3.count) {
                     identifier = @"contract1";
                     BidOneCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -296,7 +361,7 @@
                     cell.oneButton.titleLabel.font = kSecondFont;
                     cell.oneButton.userInteractionEnabled = NO;
                     [cell.oneButton setTitle:@"添加合同纠纷类型" forState:0];
-                    
+
                     return cell;
                 }else{
                     identifier = @"contract0";
@@ -317,6 +382,107 @@
                     return cell;
                 }
             }
+             */
+            
+//            if (indexPath.section == 1) {//房产抵押，机动车抵押，合同纠纷
+//                if (indexPath.row == rowModel.productMortgages1.count) {
+//                    //最后一行，显示添加按钮
+//                    identifier = @"house1";
+//                    BidOneCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+//                    if (!cell) {
+//                        cell = [[BidOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+//                    }
+//                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//                    [cell.oneButton setTitleColor:kLightGrayColor forState:0];
+//                    cell.oneButton.titleLabel.font = kSecondFont;
+//                    cell.oneButton.userInteractionEnabled = NO;
+//                    [cell.oneButton setTitle:@"添加抵押物地址信息" forState:0];
+//                    
+//                    return cell;
+//                }else{//剩余行，显示添加的内容
+//                    identifier = @"house0";
+//                    AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+//                    if (!cell) {
+//                        cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+//                    }
+//                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//                    cell.leftdAgentContraints.constant = 100;
+//                    cell.agentTextField.userInteractionEnabled = NO;
+//                    cell.agentLabel.text = @"抵押物地址";
+//                    cell.agentLabel.textColor = kLightGrayColor;
+//                    
+//                    MoreMessageModel *moreMeodel = [MoreMessageModel objectWithKeyValues:rowModel.productMortgages1[indexPath.row]];
+//                    cell.agentTextField.text = moreMeodel.addressLabel;
+//                    [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+//                    
+//                    return cell;
+//                }
+//            }else if (indexPath.section == 2){
+//                if (indexPath.row == rowModel.productMortgages2.count) {
+//                    identifier = @"car1";
+//                    BidOneCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+//                    if (!cell) {
+//                        cell = [[BidOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+//                    }
+//                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//                    [cell.oneButton setTitleColor:kLightGrayColor forState:0];
+//                    cell.oneButton.titleLabel.font = kSecondFont;
+//                    cell.oneButton.userInteractionEnabled = NO;
+//                    [cell.oneButton setTitle:@"添加机动车信息" forState:0];
+//                    
+//                    return cell;
+//                }else{
+//                    identifier = @"car0";
+//                    AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+//                    if (!cell) {
+//                        cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+//                    }
+//                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//                    cell.leftdAgentContraints.constant = 100;
+//                    cell.agentTextField.userInteractionEnabled = NO;
+//                    cell.agentLabel.text = @"机动车抵押";
+//                    cell.agentLabel.textColor = kLightGrayColor;
+//                    
+//                    MoreMessageModel *moreModel = [MoreMessageModel objectWithKeyValues:rowModel.productMortgages2[indexPath.row]];
+//                    cell.agentTextField.text = moreModel.brandLabel;
+//                    [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+//                    
+//                    return cell;
+//                }
+//                
+//            }else if (indexPath.section == 3){
+//                if (indexPath.row == rowModel.productMortgages3.count) {
+//                    identifier = @"contract1";
+//                    BidOneCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+//                    if (!cell) {
+//                        cell = [[BidOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+//                    }
+//                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//                    [cell.oneButton setTitleColor:kLightGrayColor forState:0];
+//                    cell.oneButton.titleLabel.font = kSecondFont;
+//                    cell.oneButton.userInteractionEnabled = NO;
+//                    [cell.oneButton setTitle:@"添加合同纠纷类型" forState:0];
+//                    
+//                    return cell;
+//                }else{
+//                    identifier = @"contract0";
+//                    AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+//                    if (!cell) {
+//                        cell = [[AgentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+//                    }
+//                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//                    cell.leftdAgentContraints.constant = 100;
+//                    cell.agentTextField.userInteractionEnabled = NO;
+//                    cell.agentLabel.text = @"合同纠纷";
+//                    cell.agentLabel.textColor = kLightGrayColor;
+//                    
+//                    MoreMessageModel *moreModel = [MoreMessageModel objectWithKeyValues:rowModel.productMortgages3[indexPath.row]];
+//                    cell.agentTextField.text = moreModel.contractLabel;
+//                    [cell.agentButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+//                    
+//                    return cell;
+//                }
+//            }
             
         }else{//无添加功能(处理终止结案)
             if (rowModel.productMortgages1.count > 0) {
@@ -351,11 +517,124 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     RowsModel *rowModel = self.moreMessageArray[0];;
-    
     if ([rowModel.statusLabel containsString:@"发布"] || [rowModel.statusLabel containsString:@"面谈"]){
         
-        QDFWeakSelf;
+    if (!self.productDic[@"house"]) {//房产抵押
+        if (!self.productDic[@"car"]) {//机动车抵押
+            if (self.productDic[@"contract"]) {//合同纠纷
+//                return 1+rowModel.productMortgages3.count;
+                if (indexPath.section == 1) {
+                    if (indexPath.row == rowModel.productMortgages3.count) {
+                        [self showHint:@"添加合同纠纷"];
+                    }else{
+                        [self showHint:@"编辑合同纠纷"];
+                    }
+                }
+            }
+        }else{
+            if (!self.productDic[@"contract"]) {
+//                return 1+rowModel.productMortgages2.count;
+                if (indexPath.section == 1) {
+                    if (indexPath.row == rowModel.productMortgages2.count) {
+                        [self showHint:@"添加机动车抵押"];
+                    }else{
+                        [self showHint:@"编辑机动车抵押"];
+                    }
+                }
+            }else{
+                if (indexPath.section == 1) {
+//                    return 1+rowModel.productMortgages2.count;
+                    if (indexPath.row == rowModel.productMortgages2.count) {
+                        [self showHint:@"添加机动车抵押"];
+                    }else{
+                        [self showHint:@"编辑机动车抵押"];
+                    }
+                }else if(indexPath.section == 2){
+//                    return 1+rowModel.productMortgages3.count;
+                    if (indexPath.row == rowModel.productMortgages3.count) {
+                        [self showHint:@"添加合同纠纷"];
+                    }else{
+                        [self showHint:@"编辑合同纠纷"];
+                    }
+                }
+            }
+        }
+    }else{
+        if (!self.productDic[@"car"]) {
+            if (!self.productDic[@"contract"]) {
+//                return 1+rowModel.productMortgages1.count;
+                if (indexPath.section == 1) {
+                    if (indexPath.row == rowModel.productMortgages1.count) {
+                        [self showHint:@"添加房产抵押"];
+                    }else{
+                        [self showHint:@"编辑房产抵押"];
+                    }
+                }
+            }else{
+                if (indexPath.section == 1) {
+//                    return 1+rowModel.productMortgages1.count;
+                    if (indexPath.row == rowModel.productMortgages1.count) {
+                        [self showHint:@"添加房产抵押"];
+                    }else{
+                        [self showHint:@"编辑房产抵押"];
+                    }
+                }else if(indexPath.section == 2){
+//                    return 1+rowModel.productMortgages3.count;
+                    if (indexPath.row == rowModel.productMortgages3.count) {
+                        [self showHint:@"添加合同纠纷"];
+                    }else{
+                        [self showHint:@"编辑合同纠纷"];
+                    }
+                }
+            }
+        }else{
+            if (!self.productDic[@"contract"]) {
+                if (indexPath.section == 1) {
+//                    return 1+rowModel.productMortgages1.count;
+                    if (indexPath.row == rowModel.productMortgages1.count) {
+                        [self showHint:@"添加房产抵押"];
+                    }else{
+                        [self showHint:@"编辑房产抵押"];
+                    }
+                }else if(indexPath.section == 2){
+//                    return 1+rowModel.productMortgages2.count;
+                    if (indexPath.row == rowModel.productMortgages2.count) {
+                        [self showHint:@"添加机动车抵押"];
+                    }else{
+                        [self showHint:@"编辑机动车抵押"];
+                    }
+
+                }
+            }else{
+                if (indexPath.section == 1) {
+//                    return 1+rowModel.productMortgages1.count;
+                    if (indexPath.row == rowModel.productMortgages1.count) {
+                        [self showHint:@"添加房产抵押"];
+                    }else{
+                        [self showHint:@"编辑房产抵押"];
+                    }
+                }else if(indexPath.section == 2){
+//                    return 1+rowModel.productMortgages2.count;
+                    if (indexPath.row == rowModel.productMortgages2.count) {
+                        [self showHint:@"添加机动车抵押"];
+                    }else{
+                        [self showHint:@"编辑机动车抵押"];
+                    }
+                }else if(indexPath.section == 3){
+//                    return 1+rowModel.productMortgages3.count;
+                    if (indexPath.row == rowModel.productMortgages3.count) {
+                        [self showHint:@"添加合同纠纷"];
+                    }else{
+                        [self showHint:@"编辑合同纠纷"];
+                    }
+
+                }
+            }
+        }
+    }
         
+        /*
+        QDFWeakSelf;
         if (indexPath.section == 1) {//房产抵押
             if (indexPath.row == rowModel.productMortgages1.count) {
                 [self showBlurInView:self.view withType:@"添加" andCategory:@"房产抵押" andModel:nil finishBlock:^(NSInteger btnTag){
@@ -373,7 +652,6 @@
                             [weakself.addMoreDic setValue:@"1" forKey:@"type"];
 
                             [weakself addMoreMessages];
-                            
                         }
                             break;
                         default:
@@ -512,8 +790,9 @@
                     }
                 }];
             }
-        }
+        }*/
     }
+         
 }
 
 #pragma mark - method
@@ -531,7 +810,7 @@
         
         PublishingResponse *response = [PublishingResponse objectWithKeyValues:responseObject];
         
-        //title
+        //navigation title
         weakself.title = response.data.number;
         
         RowsModel *rowModel = response.data;
@@ -552,6 +831,160 @@
         
     } andFailBlock:^(NSError *error) {
         
+    }];
+}
+
+- (void)showDetailBlurViewWithType:(NSString *)type andCategory:(NSString *)category  andModel:(RowsModel *)rowModel andIndexRow:(NSInteger)indexRow
+{
+    QDFWeakSelf;
+
+    //添加房产抵押
+    [self showBlurInView:self.view withType:@"添加" andCategory:@"房产抵押" andModel:nil finishBlock:^(NSInteger btnTag){
+        switch (btnTag) {
+            case 52:{//选择地区
+                HouseViewController *houseVC = [[HouseViewController alloc] init];
+                [weakself.navigationController pushViewController:houseVC animated:YES];
+            }
+                break;
+            case 53:{//保存
+                [weakself.addMoreDic setValue:@"310000" forKey:@"relation_1"];//省
+                [weakself.addMoreDic setValue:@"310100" forKey:@"relation_2"];//市
+                [weakself.addMoreDic setValue:@"310115" forKey:@"relation_3"];//区
+                [weakself.addMoreDic setValue:@"直向投资管理有限公司" forKey:@"relation_desc"];//详细地址
+                [weakself.addMoreDic setValue:@"1" forKey:@"type"];
+                
+                [weakself addMoreMessages];
+            }
+                break;
+            default:
+                break;
+        }
+    }];
+    
+    //编辑房产抵押
+    MoreMessageModel *moreModel = [MoreMessageModel objectWithKeyValues:rowModel.productMortgages1[indexRow]];
+    [self showBlurInView:self.view withType:@"编辑" andCategory:@"房产抵押" andModel:moreModel finishBlock:^(NSInteger btnTag){
+        switch (btnTag) {
+            case 52:{//选择地区
+                
+            }
+                break;
+            case 54:{//保存
+                [weakself.addMoreDic setValue:@"310000" forKey:@"relation_1"];//省
+                [weakself.addMoreDic setValue:@"310100" forKey:@"relation_2"];//市
+                [weakself.addMoreDic setValue:@"310115" forKey:@"relation_3"];//区
+                [weakself.addMoreDic setValue:@"清道夫" forKey:@"relation_desc"];//详细地址
+                [weakself.addMoreDic setValue:@"1" forKey:@"type"];
+                [weakself editMoremessagesWithModel:moreModel];
+            }
+                break;
+            case 55:{//删除
+                [weakself deleteMoreMessagesWithModel:moreModel];
+            }
+                break;
+            default:
+                break;
+        }
+    }];
+    
+    //添加机动车抵押
+    [self showBlurInView:self.view withType:@"添加" andCategory:@"房产抵押" andModel:nil finishBlock:^(NSInteger btnTag){
+        switch (btnTag) {
+            case 52:{//选择地区
+                HouseViewController *houseVC = [[HouseViewController alloc] init];
+                [weakself.navigationController pushViewController:houseVC animated:YES];
+            }
+                break;
+            case 53:{//保存
+                [weakself.addMoreDic setValue:@"310000" forKey:@"relation_1"];//省
+                [weakself.addMoreDic setValue:@"310100" forKey:@"relation_2"];//市
+                [weakself.addMoreDic setValue:@"310115" forKey:@"relation_3"];//区
+                [weakself.addMoreDic setValue:@"直向投资管理有限公司" forKey:@"relation_desc"];//详细地址
+                [weakself.addMoreDic setValue:@"1" forKey:@"type"];
+                
+                [weakself addMoreMessages];
+            }
+                break;
+            default:
+                break;
+        }
+    }];
+    
+    //编辑机动车抵押
+    MoreMessageModel *moreModel2 = [MoreMessageModel objectWithKeyValues:rowModel.productMortgages2[indexRow]];
+    
+    [self showBlurInView:nil withType:@"编辑" andCategory:@"机动车抵押" andModel:moreModel2 finishBlock:^(NSInteger btnTag){
+        switch (btnTag) {
+            case 52:{//选择机动车抵押
+                BrandsViewController *brandsVC = [[BrandsViewController alloc] init];
+                [weakself.navigationController pushViewController:brandsVC animated:YES];
+                
+                [brandsVC setDidSelectedRow:^(NSString *provinceId, NSString *provinceName, NSString *cityId, NSString *cityName, NSString *areaId, NSString *areaName) {
+                    
+                    //params
+                    [weakself.addMoreDic setValue:provinceId forKey:@"relation_1"];
+                    [weakself.addMoreDic setValue:cityId forKey:@"relation_2"];
+                    [weakself.addMoreDic setValue:areaId forKey:@"relation_3"];
+                    [weakself.addMoreDic setValue:@"2" forKey:@"type"];
+                    
+                    //                                [weakself showBlurInView:nil withType:@"添加" andCategory:@"机动车抵押" andModel:nil finishBlock:nil];
+                    
+                }];
+            }
+                break;
+            case 54:{
+                [weakself.addMoreDic setValue:@"2" forKey:@"type"];
+                [weakself editMoremessagesWithModel:moreModel2];
+            }
+                break;
+            case 55:{
+                [weakself deleteMoreMessagesWithModel:moreModel2];
+            }
+                break;
+            default:
+                break;
+        }
+    }];
+    
+    //添加合同纠纷
+    [self showBlurInView:nil withType:@"添加" andCategory:@"合同纠纷" andModel:nil finishBlock:^(NSInteger btnTag){
+            switch (btnTag) {
+                case 52:{
+
+                }
+                    break;
+                case 53:{
+                    [weakself.addMoreDic setValue:@"1" forKey:@"relation_1"];
+                    [weakself.addMoreDic setValue:@"3" forKey:@"type"];
+
+                    [weakself addMoreMessages];
+                }
+                    break;
+                default:
+                    break;
+            }
+        }];
+    
+    //编辑合同纠纷
+    MoreMessageModel *moreModel3 = [MoreMessageModel objectWithKeyValues:rowModel.productMortgages3[indexRow]];
+    [self showBlurInView:nil withType:@"编辑" andCategory:@"合同纠纷" andModel:moreModel3 finishBlock:^(NSInteger btnTag){
+        switch (btnTag) {
+            case 52:{
+                
+            }
+                break;
+            case 54:{
+                [self.addMoreDic setValue:@"3" forKey:@"type"];
+                [self editMoremessagesWithModel:moreModel3];
+            }
+                break;
+            case 55:{
+                [self deleteMoreMessagesWithModel:moreModel3];
+            }
+                break;
+            default:
+                break;
+        }
     }];
 }
 
