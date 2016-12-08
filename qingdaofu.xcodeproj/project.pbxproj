@@ -196,6 +196,7 @@
 		A187B90F1D50885400A91A16 /* HousePayingEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A187B90E1D50885400A91A16 /* HousePayingEditViewController.m */; };
 		A187B9121D508BAA00A91A16 /* HousePropertyListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A187B9111D508BAA00A91A16 /* HousePropertyListViewController.m */; };
 		A187B9151D50966100A91A16 /* PropertyListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A187B9141D50966100A91A16 /* PropertyListCell.m */; };
+		A187F76D1DF963200008F786 /* CityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A187F76C1DF963200008F786 /* CityModel.m */; };
 		A1882F511D2DF6200064BD38 /* RegisterAgreementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1882F501D2DF6200064BD38 /* RegisterAgreementViewController.m */; };
 		A1882F551D2DF9F30064BD38 /* banner2.png in Resources */ = {isa = PBXBuildFile; fileRef = A1882F531D2DF9F30064BD38 /* banner2.png */; };
 		A1882F571D2DFB230064BD38 /* banner1.png in Resources */ = {isa = PBXBuildFile; fileRef = A1882F561D2DFB230064BD38 /* banner1.png */; };
@@ -732,7 +733,6 @@
 		A1E669291DED1FE900B69927 /* MoreMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1E669281DED1FE900B69927 /* MoreMessagesViewController.m */; };
 		A1E6692C1DED208700B69927 /* EditUpTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = A1E6692B1DED208700B69927 /* EditUpTableView.m */; };
 		A1E6692F1DED20FE00B69927 /* MoreMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A1E6692E1DED20FE00B69927 /* MoreMessageModel.m */; };
-		A1E669321DED28D300B69927 /* CityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A1E669311DED28D300B69927 /* CityModel.m */; };
 		A1E669351DED54C400B69927 /* HouseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1E669341DED54C400B69927 /* HouseViewController.m */; };
 		A1E669391DED5B7400B69927 /* CityResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A1E669381DED5B7400B69927 /* CityResponse.m */; };
 		A1E6693C1DED620C00B69927 /* DistrictResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A1E6693B1DED620C00B69927 /* DistrictResponse.m */; };
@@ -1058,6 +1058,8 @@
 		A187B9111D508BAA00A91A16 /* HousePropertyListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HousePropertyListViewController.m; sourceTree = "<group>"; };
 		A187B9131D50966100A91A16 /* PropertyListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PropertyListCell.h; sourceTree = "<group>"; };
 		A187B9141D50966100A91A16 /* PropertyListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PropertyListCell.m; sourceTree = "<group>"; };
+		A187F76B1DF963200008F786 /* CityModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CityModel.h; sourceTree = "<group>"; };
+		A187F76C1DF963200008F786 /* CityModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CityModel.m; sourceTree = "<group>"; };
 		A1882F4F1D2DF6200064BD38 /* RegisterAgreementViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterAgreementViewController.h; sourceTree = "<group>"; };
 		A1882F501D2DF6200064BD38 /* RegisterAgreementViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterAgreementViewController.m; sourceTree = "<group>"; };
 		A1882F531D2DF9F30064BD38 /* banner2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = banner2.png; sourceTree = "<group>"; };
@@ -1811,8 +1813,6 @@
 		A1E6692B1DED208700B69927 /* EditUpTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditUpTableView.m; sourceTree = "<group>"; };
 		A1E6692D1DED20FE00B69927 /* MoreMessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreMessageModel.h; sourceTree = "<group>"; };
 		A1E6692E1DED20FE00B69927 /* MoreMessageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoreMessageModel.m; sourceTree = "<group>"; };
-		A1E669301DED28D300B69927 /* CityModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CityModel.h; sourceTree = "<group>"; };
-		A1E669311DED28D300B69927 /* CityModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CityModel.m; sourceTree = "<group>"; };
 		A1E669331DED54C400B69927 /* HouseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HouseViewController.h; sourceTree = "<group>"; };
 		A1E669341DED54C400B69927 /* HouseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HouseViewController.m; sourceTree = "<group>"; };
 		A1E669371DED5B7400B69927 /* CityResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CityResponse.h; sourceTree = "<group>"; };
@@ -4082,8 +4082,8 @@
 				A1E6692B1DED208700B69927 /* EditUpTableView.m */,
 				A1E6692D1DED20FE00B69927 /* MoreMessageModel.h */,
 				A1E6692E1DED20FE00B69927 /* MoreMessageModel.m */,
-				A1E669301DED28D300B69927 /* CityModel.h */,
-				A1E669311DED28D300B69927 /* CityModel.m */,
+				A187F76B1DF963200008F786 /* CityModel.h */,
+				A187F76C1DF963200008F786 /* CityModel.m */,
 			);
 			path = "完善信息";
 			sourceTree = "<group>";
@@ -4787,6 +4787,7 @@
 				9CF131751D1827FE00ADBA27 /* BrandsViewController.m in Sources */,
 				A1A0174F1C5B696A00027134 /* MJExtensionConst.m in Sources */,
 				A19441711D791ADA003CA99F /* ApplyRecordViewController.m in Sources */,
+				A187F76D1DF963200008F786 /* CityModel.m in Sources */,
 				A1A017271C5B421500027134 /* BaseViewController.m in Sources */,
 				A1AD9B961D499729001F3076 /* UIView+LBExtension.m in Sources */,
 				A1B0ED321DD047D1004A5AAA /* HandleMatterViewController.m in Sources */,
@@ -4849,7 +4850,6 @@
 				A17EE3941CD8983900ECC631 /* MyOrderViewController.m in Sources */,
 				A176913F1CD9D5CE004289DD /* MyReleaseViewController.m in Sources */,
 				A17EE3911CD8796900ECC631 /* SuggestionViewController.m in Sources */,
-				A1E669321DED28D300B69927 /* CityModel.m in Sources */,
 				A19D294E1CD1E04300DAAEA7 /* HomeCell.m in Sources */,
 				A159F9801D0D727A00A6A024 /* UIScrollView+MJRefresh.m in Sources */,
 				A16391711D20194B0051F1D0 /* FSBasicImage.m in Sources */,

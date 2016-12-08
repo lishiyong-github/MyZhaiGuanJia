@@ -16,9 +16,6 @@
 #import "PublishingResponse.h"
 #import "RowsModel.h"
 
-#import "CityResponse.h"
-#import "CityModel.h"
-
 #import "CourtProvinceResponse.h"
 #import "CourtProvinceModel.h"
 
@@ -791,6 +788,7 @@
         [weakself showHint:baseModel.msg];
         
         if ([baseModel.code isEqualToString:@"0000"]) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"headerRefresh" object:nil];
             [weakself dismissViewControllerAnimated:YES completion:nil];
         }
         

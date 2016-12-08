@@ -126,7 +126,7 @@
     
     ApplyRecordModel *recordModel = self.recordsDataArray[indexPath.row];
     
-    NSString *apply1 = [NSString stringWithFormat:@"申请人：%@",recordModel.mobile];
+    NSString *apply1 = [NSString stringWithFormat:@"申请人：%@",[NSString getValidStringFromString:recordModel.realname toString:recordModel.username]];
     NSString *apply2 = [NSDate getYMDhmFormatterTime:recordModel.create_at];
     NSString *applySrt = [NSString stringWithFormat:@"%@\n%@",apply1,apply2];
     NSMutableAttributedString *applyAttribute = [[NSMutableAttributedString alloc] initWithString:applySrt];
@@ -202,21 +202,30 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 1) {
-//        recordModel *uModel = self.recordsDataArray[indexPath.row];
-//        CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
-//        checkDetailPublishVC.typeString = @"申请人";
-//        checkDetailPublishVC.idString = self.idStr;
-//        checkDetailPublishVC.categoryString = self.categaryStr;
-//        checkDetailPublishVC.pidString = uModel.uidInner;
-//        //                checkDetailPublishVC.evaTypeString = @"launchevaluation";
-//        [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
-    }
+//    RecordModel *uModel = self.recordsDataArray[indexPath.row];
+//    CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+//    checkDetailPublishVC.typeString = @"申请人";
+//    checkDetailPublishVC.idString = self.idStr;
+//    checkDetailPublishVC.categoryString = self.categaryStr;
+//    checkDetailPublishVC.pidString = uModel.uidInner;
+//    //                checkDetailPublishVC.evaTypeString = @"launchevaluation";
+//    [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
+    
+    ApplyRecordModel *recordModel = self.recordsDataArray[indexPath.row];
+    CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+    checkDetailPublishVC.navTitle = @"申请人信息";
+    checkDetailPublishVC.productid = recordModel.productid;
+    checkDetailPublishVC.userid = recordModel.idString;
+    checkDetailPublishVC.isShowPhone = @"1";
+    [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
+    
 }
 
 #pragma mark - method
 - (void)getApplyRecordsList
 {
+    [self.recordsDataArray removeAllObjects];
+    
     NSString *listString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyReleaseOfApplyRecordsString];
     NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"productid" : self.productid

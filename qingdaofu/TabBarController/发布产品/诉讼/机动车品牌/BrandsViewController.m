@@ -37,9 +37,8 @@
     
     [self.view addSubview:self.tableView1];
     [self.view setNeedsUpdateConstraints];
-    if (!self.dataList) {
-        [self getBrandList];
-    }
+    
+    [self getBrandList];
 }
 
 - (void)updateViewConstraints

@@ -33,6 +33,11 @@
     return self;
 }
 
+- (void)reloadDatas
+{
+    [self reloadData];
+}
+
 - (NSArray *)upwardDataList
 {
     if (!_upwardDataList) {
@@ -104,6 +109,8 @@
             
             if (self.moreModel) {
                 cell.agentTextField.text = [NSString stringWithFormat:@"%@%@%@",self.moreModel.provincename.province,self.moreModel.cityname.city,self.moreModel.areaname.area];
+            }else{
+                cell.agentTextField.text = nil;
             }
             
             return cell;
@@ -122,7 +129,16 @@
             
             if (self.moreModel) {
                 cell.agentTextField.text = self.moreModel.relation_desc;
+            }else{
+                cell.agentTextField.text = nil;
             }
+            
+            QDFWeakSelf;
+            [cell setDidEndEditing:^(NSString *text) {
+                if (weakself.didEndEditting) {
+                    weakself.didEndEditting(text);
+                }
+            }];
             
             return cell;
         }
@@ -138,7 +154,7 @@
             NSString *titie = [NSString stringWithFormat:@"%@%@",self.type,self.category];
             [cell.oneButton setTitle:titie forState:0];
             
-            [cell.sureButton setImage:[UIImage imageNamed:@"deletes"] forState:0];
+            [cell.sureButton setImage:[UIImage imageNamed:@"product_box_delete"] forState:0];
             
             QDFWeakSelf;
             [cell.sureButton addAction:^(UIButton *btn) {
@@ -177,10 +193,10 @@
                 }else if ([self.category isEqualToString:@"合同纠纷"]){
                     cell.agentTextField.text = self.moreModel.contractLabel;
                 }
+            }else{
+                cell.agentTextField.text = nil;
             }
-            
             return cell;
-            
         }
     }
     

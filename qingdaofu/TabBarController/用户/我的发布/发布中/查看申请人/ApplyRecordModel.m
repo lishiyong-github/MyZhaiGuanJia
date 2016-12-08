@@ -14,7 +14,8 @@
 {
     return @{@"mobile" : @"createuser.mobile",
              @"realname" : @"createuser.realname",
-             @"username" : @"createuser.username"
+             @"username" : @"createuser.username",
+             @"idString" : @"createuser.id"
              };
 }
 

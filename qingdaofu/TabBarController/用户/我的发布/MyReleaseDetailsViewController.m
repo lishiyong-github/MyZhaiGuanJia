@@ -458,6 +458,7 @@
                     }else{
                         [cell.newsCountButton setTitle:dataModel.applyCount forState:0];
                         cell.newsCountButton.backgroundColor = kYellowColor;
+//                        cell.newsCountButton.layer.cornerRadius = 12;
                     }
                 }
                 

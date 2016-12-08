@@ -2,7 +2,7 @@
 //  CityModel.m
 //  qingdaofu
 //
-//  Created by zhixiang on 16/11/29.
+//  Created by zhixiang on 16/12/8.
 //  Copyright © 2016年 zhixiang. All rights reserved.
 //
 

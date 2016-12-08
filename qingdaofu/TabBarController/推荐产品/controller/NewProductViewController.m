@@ -583,19 +583,13 @@
 - (void)goStoreProductWithModel:(RowsModel *)rowModel andButton:(UIButton *)sender
 {
     NSString *saveString;
-    NSDictionary *params;
     if (rowModel.collectSelf) {//(取消收藏)
         saveString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductDetailOfCancelSave];
-        params = @{@"token" : [self getValidateToken],
-                   @"productid" : rowModel.productid,
-                   @"create_by" : rowModel.collectSelf.create_by
-                   };
     }else{//(收藏)
         saveString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductDetailOfSave];
-        params = @{@"token" : [self getValidateToken],
-                   @"productid" : rowModel.productid
-                   };
     }
+    NSDictionary *params = @{@"token" : [self getValidateToken],
+               @"productid" : rowModel.productid};
     
     QDFWeakSelf;
     [self requestDataPostWithString:saveString params:params successBlock:^(id responseObject) {

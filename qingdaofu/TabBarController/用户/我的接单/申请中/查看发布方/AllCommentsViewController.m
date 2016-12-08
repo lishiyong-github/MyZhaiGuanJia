@@ -98,7 +98,7 @@
     if (self.allEvaluateArray.count > 0) {
         EvaluateModel *model = self.allEvaluateArray[indexPath.section];
         if (model.filesImg.count == 0) {
-            return 80;
+            return 85;
         }else{
             return 145;
         }
@@ -117,17 +117,18 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     EvaluateModel *evaluateModel = self.allEvaluateArray[indexPath.section];
-        
-    QDFWeakSelf;
+    
+    NSString *sss = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,evaluateModel.headimg.file];
+    [cell.evaNameButton sd_setImageWithURL:[NSURL URLWithString:sss] forState:0 placeholderImage:nil];
     NSString *namee = [NSString getValidStringFromString:evaluateModel.realname toString:evaluateModel.username];
-    [cell.evaNameButton setTitle:namee forState:0];
-    [cell.evaNameButton sd_setImageWithURL:[NSURL URLWithString:evaluateModel.headimg.file] forState:0 placeholderImage:nil];
+    cell.evaNameLabel.text = namee;
     
     cell.evaTimeLabel.text = [NSDate getYMDFormatterTime:evaluateModel.action_at];
     cell.evaTextLabel.text = [NSString getValidStringFromString:evaluateModel.memo toString:@"未填写评价内容"];
     [cell.evaStarImage setCurrentIndex:[evaluateModel.assort_score integerValue]];
     
     //图片
+    QDFWeakSelf;
     if (evaluateModel.filesImg.count == 0) {
         [cell.evaProImageView1 setHidden:YES];
         [cell.evaProImageView2 setHidden:YES];

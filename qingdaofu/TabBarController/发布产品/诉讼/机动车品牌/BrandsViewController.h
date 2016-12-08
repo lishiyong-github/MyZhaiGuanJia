@@ -10,8 +10,6 @@
 
 @interface BrandsViewController : NetworkViewController
 
-@property (nonatomic,strong) NSArray *dataList;
-
 @property (nonatomic,strong) void (^didSelectedRow)(NSString *,NSString *,NSString*,NSString*,NSString*,NSString *);
 
 @end

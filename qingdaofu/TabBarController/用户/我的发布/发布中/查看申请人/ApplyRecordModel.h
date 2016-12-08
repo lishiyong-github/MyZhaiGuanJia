@@ -25,6 +25,7 @@
 @property (nonatomic,copy) NSString *mobile;
 @property (nonatomic,copy) NSString *realname;
 @property (nonatomic,copy) NSString *username;
+@property (nonatomic,copy) NSString *idString;
 
 //接单方
 @property (nonatomic,strong) OrdersModel *orders;

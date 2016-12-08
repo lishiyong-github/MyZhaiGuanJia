@@ -19,5 +19,8 @@
 @property (nonatomic,strong) MoreMessageModel *moreModel;  //编辑信息
 
 @property (nonatomic,strong) void (^didSelectedBtn)(NSInteger);
+@property (nonatomic,strong) void (^didEndEditting)(NSString *); //详细地址
+
+- (void)reloadDatas;
 
 @end
