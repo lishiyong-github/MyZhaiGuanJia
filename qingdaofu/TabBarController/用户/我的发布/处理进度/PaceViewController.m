@@ -92,17 +92,20 @@
         [cell.ppLabel setAttributedText:[self showPPLabelOfPaceWithModel:logsModel]];
         
         //image
-        [cell.ppTypeButton setTitle:logsModel.label forState:0];
-        if ([logsModel.label isEqualToString:@"系"]) {
-            [cell.ppTypeButton setBackgroundColor:kRedColor];
-        }else if ([logsModel.label isEqualToString:@"我"]){
-            [cell.ppTypeButton setBackgroundColor:kYellowColor];
-        }else if ([logsModel.label isEqualToString:@"接"]){
-            [cell.ppTypeButton setBackgroundColor:kButtonColor];
+        if ([logsModel.label isEqualToString:@"经"]) {
+            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_managers"] forState:0];
+        }else if([logsModel.label isEqualToString:@"系"]){
+            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_system"] forState:0];
         }else if ([logsModel.label isEqualToString:@"发"]){
-            [cell.ppTypeButton setBackgroundColor:kButtonColor];
-        }else if ([logsModel.label isEqualToString:@"经"]){
-            [cell.ppTypeButton setBackgroundColor:kGrayColor];
+            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_publish"] forState:0];
+        }else if ([logsModel.label isEqualToString:@"接"]){
+            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_orders"] forState:0];
+        }else if ([logsModel.label isEqualToString:@"我"]){
+            if ([self.personType integerValue] == 1) {//发布方
+                [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_my_publish"] forState:0];
+            }else if ([self.personType integerValue] == 2){//接单方
+                [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_my_orders"] forState:0];
+            }
         }
         
         //content
@@ -131,17 +134,20 @@
         [cell.ppLabel setAttributedText:[self showPPLabelOfPaceWithModel:logsModel]];
         
         //image
-        [cell.ppTypeButton setTitle:logsModel.label forState:0];
-        if ([logsModel.label isEqualToString:@"系"]) {
-            [cell.ppTypeButton setBackgroundColor:kRedColor];
-        }else if ([logsModel.label isEqualToString:@"我"]){
-            [cell.ppTypeButton setBackgroundColor:kYellowColor];
-        }else if ([logsModel.label isEqualToString:@"接"]){
-            [cell.ppTypeButton setBackgroundColor:kButtonColor];
+        if ([logsModel.label isEqualToString:@"经"]) {
+            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_managers"] forState:0];
+        }else if([logsModel.label isEqualToString:@"系"]){
+            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_system"] forState:0];
         }else if ([logsModel.label isEqualToString:@"发"]){
-            [cell.ppTypeButton setBackgroundColor:kButtonColor];
-        }else if ([logsModel.label isEqualToString:@"经"]){
-            [cell.ppTypeButton setBackgroundColor:kGrayColor];
+            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_publish"] forState:0];
+        }else if ([logsModel.label isEqualToString:@"接"]){
+            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_orders"] forState:0];
+        }else if ([logsModel.label isEqualToString:@"我"]){
+            if ([self.personType integerValue] == 1) {//发布方
+                [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_my_publish"] forState:0];
+            }else if ([self.personType integerValue] == 2){//接单方
+                [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_my_orders"] forState:0];
+            }
         }
         
         //content
@@ -169,17 +175,20 @@
     [cell.ppLabel setAttributedText:[self showPPLabelOfPaceWithModel:logsModel]];
     
     //image
-    [cell.ppTypeButton setTitle:logsModel.label forState:0];
-    if ([logsModel.label isEqualToString:@"系"]) {
-        [cell.ppTypeButton setBackgroundColor:kRedColor];
-    }else if ([logsModel.label isEqualToString:@"我"]){
-        [cell.ppTypeButton setBackgroundColor:kYellowColor];
-    }else if ([logsModel.label isEqualToString:@"接"]){
-        [cell.ppTypeButton setBackgroundColor:kButtonColor];
+    if ([logsModel.label isEqualToString:@"经"]) {
+        [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_managers"] forState:0];
+    }else if([logsModel.label isEqualToString:@"系"]){
+        [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_system"] forState:0];
     }else if ([logsModel.label isEqualToString:@"发"]){
-        [cell.ppTypeButton setBackgroundColor:kButtonColor];
-    }else if ([logsModel.label isEqualToString:@"经"]){
-        [cell.ppTypeButton setBackgroundColor:kGrayColor];
+        [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_publish"] forState:0];
+    }else if ([logsModel.label isEqualToString:@"接"]){
+        [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_orders"] forState:0];
+    }else if ([logsModel.label isEqualToString:@"我"]){
+        if ([self.personType integerValue] == 1) {//发布方
+            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_my_publish"] forState:0];
+        }else if ([self.personType integerValue] == 2){//接单方
+            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_my_orders"] forState:0];
+        }
     }
     
     //content
@@ -228,16 +237,10 @@
             [attributeMM setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(0, mm1.length)];
             [attributeMM setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(mm1.length, mm2.length)];
             [attributeMM setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kTextColor} range:NSMakeRange(mm2.length+mm1.length, mm3.length)];
-//            [cell.ppTextButton setAttributedTitle:attributeMM forState:0];
-            
-//            [cell.ppTextButton addAction:^(UIButton *btn) {
-//                NSMutableString *phone = [NSMutableString stringWithFormat:@"telprompt://%@",mm3];
-//                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phone]];
-//            }];
-            
         }else{//无电话
             NSString *tttt = [NSString stringWithFormat:@"[%@]%@",logModel.actionLabel,logModel.memoLabel];
             attributeMM = [[NSMutableAttributedString alloc] initWithString:tttt];
+            [attributeMM setAttributes:@{NSFontAttributeName:kFirstFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(0, tttt.length)];
         }
         return attributeMM;
     }else{

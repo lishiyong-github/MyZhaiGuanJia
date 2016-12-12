@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 @class MailModel;
+@class ImageModel;
 
 @interface MailResponseModel : NSObject
 
@@ -32,6 +33,6 @@
 @property (nonatomic,copy) NSString *mobile;
 @property (nonatomic,copy) NSString *realname;
 @property (nonatomic,copy) NSString *username;
-
+@property (nonatomic,strong) ImageModel *headimg;
 
 @end

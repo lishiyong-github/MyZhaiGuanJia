@@ -211,6 +211,13 @@
     [self.view endEditing:YES];
 }
 
+- (void)back
+{
+    UINavigationController *nvss = self.navigationController;
+    [nvss popViewControllerAnimated:NO];
+    [nvss popViewControllerAnimated:NO];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

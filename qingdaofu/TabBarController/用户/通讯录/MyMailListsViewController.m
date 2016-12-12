@@ -80,7 +80,7 @@
         _myMailListsTableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
         _myMailListsTableView.tableFooterView = [[UIView alloc] init];
         [_myMailListsTableView addHeaderWithTarget:self action:@selector(headerRefreshOfMyMail)];
-        [_myMailListsTableView addHeaderWithTarget:self action:@selector(footerRefreshOfMyMail)];
+        [_myMailListsTableView addFooterWithTarget:self action:@selector(footerRefreshOfMyMail)];
     }
     return _myMailListsTableView;
 }
@@ -94,10 +94,6 @@
         QDFWeakSelf;
         [_chooseOperatorView.bButton addAction:^(UIButton *btn) {
             [weakself addOperators];
-//            if (weakself.operatorArray.count > 0) {
-//            }else{
-//                [weakself showHint:@"请选择联系人"];
-//            }
         }];
     }
     return _chooseOperatorView;
@@ -257,8 +253,6 @@
     QDFWeakSelf;
     [self requestDataPostWithString:searchUserString params:params successBlock:^(id responseObject) {
         
-        NSDictionary *aoaoa = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableLeaves error:nil];
-        
         MailModel *mailModel = [MailModel objectWithKeyValues:responseObject];
         
         NSString *ssss;
@@ -370,7 +364,6 @@
     [alertControl addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
         textField.placeholder = @"请输入手机号码";
         textField.delegate = weakself;
-        //        textField.background = [UIImage imageNamed:@"list_more"];
     }];
     
     UIAlertAction *alertAct0 = [UIAlertAction actionWithTitle:@"取消" style:0 handler:nil];

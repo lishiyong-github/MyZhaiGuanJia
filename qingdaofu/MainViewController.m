@@ -23,7 +23,7 @@
 #import "ZYTabBar.h"
 #import "UIViewController+BlurView.h"
 
-@interface MainViewController ()<UINavigationControllerDelegate, UIImagePickerControllerDelegate,UIGestureRecognizerDelegate,UIActionSheetDelegate>
+@interface MainViewController ()<UINavigationControllerDelegate, UIImagePickerControllerDelegate,UIGestureRecognizerDelegate,UIActionSheetDelegate,TabBarDelegate>
 
 @property (nonatomic,strong) NSString *trackViewUrl;
 

@@ -9,6 +9,7 @@
 #import "LoginViewController.h"
 #import "RegisterViewController.h"  //注册
 #import "ForgetPassViewController.h"  //忘记密码
+#import "MineViewController.h"
 
 #import "LoginCell.h"
 #import "EvaTopSwitchView.h"
@@ -40,11 +41,6 @@
     [self.view addSubview:self.loginSwitchView];
     
     [self.view setNeedsUpdateConstraints];
-}
-
-- (void)back
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)updateViewConstraints
@@ -305,7 +301,8 @@
             [[NSUserDefaults standardUserDefaults] setObject:loginModel.token forKey:@"token"];
             [[NSUserDefaults standardUserDefaults] synchronize];
             
-            [weakself back];
+//            [weakself back];
+            [weakself dismissViewControllerAnimated:YES completion:nil];
         }
         
     } andFailBlock:^(NSError *error){
@@ -313,6 +310,13 @@
     }];
 }
 
+- (void)back
+{
+    UIWindow *window = [UIApplication sharedApplication].keyWindow;
+    UITabBarController *tabBarController = (UITabBarController *)window.rootViewController;
+    tabBarController.selectedIndex = 0;
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -23,10 +23,7 @@
 @property (nonatomic,strong) UIButton *productCheckbutton;  //查看更多
 @property (nonatomic,strong) UILabel *signTitleLabel;  //签约协议
 @property (nonatomic,strong) UIButton *signTextButton;  //签约协议详情
-
 @property (nonatomic,strong) UIButton *signPictureButton1;//签约协议图片
-
-
 @property (nonatomic,strong) UIScrollView *signDetailScrollView;  //具体签约协议
 
 

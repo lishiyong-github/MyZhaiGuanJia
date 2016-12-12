@@ -321,7 +321,8 @@
     
     NSDictionary *params = @{@"userid" : self.userid,
                              @"productid" : self.productid,
-                             @"token" : [self getValidateToken]
+                             @"token" : [self getValidateToken],
+                             @"status" : @"status"
                              };
     QDFWeakSelf;
     [self requestDataPostWithString:yyyString params:params successBlock:^(id responseObject) {

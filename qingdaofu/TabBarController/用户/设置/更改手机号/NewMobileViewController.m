@@ -103,6 +103,7 @@
         _neTextField1.delegate = self;
         _neTextField1.textAlignment = NSTextAlignmentCenter;
         _neTextField1.tag = 51;
+        _neTextField1.keyboardType = UIKeyboardTypeNumberPad;
     }
     return _neTextField1;
 }
@@ -115,6 +116,7 @@
         _neTextField2.delegate = self;
         _neTextField2.textAlignment = NSTextAlignmentCenter;
         _neTextField2.tag = 52;
+        _neTextField2.keyboardType = UIKeyboardTypeNumberPad;
     }
     return _neTextField2;
 }
@@ -127,6 +129,7 @@
         _neTextField3.delegate = self;
         _neTextField3.textAlignment = NSTextAlignmentCenter;
         _neTextField3.tag = 53;
+        _neTextField3.keyboardType = UIKeyboardTypeNumberPad;
     }
     return _neTextField3;
 }
@@ -139,6 +142,7 @@
         _neTextField4.delegate = self;
         _neTextField4.textAlignment = NSTextAlignmentCenter;
         _neTextField4.tag = 54;
+        _neTextField4.keyboardType = UIKeyboardTypeNumberPad;
     }
     return _neTextField4;
 }
@@ -199,6 +203,35 @@
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
+    if (textField.text.length > 0) {
+        switch (textField.tag) {
+            case 51:{
+                [textField resignFirstResponder];
+                [self.neTextField2 becomeFirstResponder];
+            }
+                break;
+            case 52:{
+                [textField resignFirstResponder];
+                [self.neTextField3 becomeFirstResponder];
+            }
+                break;
+            case 53:{
+                [textField resignFirstResponder];
+                [self.neTextField4 becomeFirstResponder];
+            }
+                break;
+            case 54:{
+                [textField resignFirstResponder];
+            }
+                break;
+            default:
+                break;
+        }
+    }
+    return YES;
+}
+- (BOOL)textFieldShouldClear:(UITextField *)textField
+{
     return YES;
 }
 
@@ -220,6 +253,10 @@
     [self requestDataPostWithString:oldMobileString params:params successBlock:^(id responseObject) {
         BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
         [weakself showHint:baseModel.msg];
+        
+        if ([baseModel.code isEqualToString:@"0000"]) {
+            [weakself.neTextField1 becomeFirstResponder];
+        }
 
     } andFailBlock:^(NSError *error) {
         

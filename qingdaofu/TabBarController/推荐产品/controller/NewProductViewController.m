@@ -176,7 +176,7 @@
     if (!_mainProductScrollView) {
         _mainProductScrollView = [UIScrollView newAutoLayoutView];
         _mainProductScrollView.backgroundColor = kWhiteColor;
-        _mainProductScrollView.contentSize = CGSizeMake(150*self.productsDataListArray.count+10, 200);
+        _mainProductScrollView.contentSize = CGSizeMake(170*self.productsDataListArray.count+10, 220);
         _mainProductScrollView.showsHorizontalScrollIndicator = NO;
     }
     return _mainProductScrollView;
@@ -234,8 +234,15 @@
         cell.userNameButton.titleLabel.numberOfLines = 0;
         
         NSString *all1 = @"累计交易总量\n";
-        NSString *all2 = [NSString getValidStringFromString:self.sumString toString:@"1000000"];
-        NSString *all3 = @"元";
+        NSString *all2 = self.sumString;
+        NSString *all3;
+        if (all2.length < 9) {//小于1亿
+            all3 = @"元";
+        }else{//大于1亿
+            all2 = [all2 substringToIndex:all2.length-4];
+            all2 = [self addSeparatorForString:[NSString getValidStringFromString:all2 toString:@"10000"]];
+            all3 = @"万";
+        }
         NSString *all = [NSString stringWithFormat:@"%@%@%@",all1,all2,all3];
         NSMutableAttributedString *attributeAll = [[NSMutableAttributedString alloc] initWithString:all];
         [attributeAll setAttributes:@{NSFontAttributeName : kFirstFont,NSForegroundColorAttributeName:kBlackColor} range:NSMakeRange(0, all1.length)];
@@ -362,7 +369,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     if (section == 1) {
-        return 250;
+        return 275;
     }
     return kBigPadding;
 }
@@ -370,7 +377,7 @@
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     if (section == 1) {
-        UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, kSmallPadding, kScreenWidth, 250)];
+        UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, kSmallPadding, kScreenWidth, 275)];
         footerView.backgroundColor = kBackColor;
         
         if (self.productsDataListArray.count > 0) {
@@ -389,17 +396,16 @@
             [sssButton autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:footerView withOffset:kSmallPadding];
             [sssButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:footerView];
             [sssButton autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:footerView];
-            
             [sssButton autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.mainProductScrollView];
             
             [self.mainProductScrollView autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:footerView withOffset:-kSmallPadding];
             [self.mainProductScrollView autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:footerView];
             [self.mainProductScrollView autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:footerView];
-            [self.mainProductScrollView autoSetDimension:ALDimensionHeight toSize:200];
+            [self.mainProductScrollView autoSetDimension:ALDimensionHeight toSize:220];
             
             /////////
             for (NSInteger k=0; k<self.productsDataListArray.count; k++) {
-                MainProductview *productView = [[MainProductview alloc] initWithFrame:CGRectMake(140*k + 10*(k+1), 0, 140, 190)];
+                MainProductview *productView = [[MainProductview alloc] initWithFrame:CGRectMake(160*k + 10*(k+1), 0, 160, 210)];
                 productView.backgroundColor = kBackColor;
                 [self.mainProductScrollView addSubview:productView];
                 
@@ -407,7 +413,7 @@
                 
                 //image
                 NSString *iiii = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,rowModel.fabuuser.headimg.file];
-                [productView.userImageView sd_setImageWithURL:[NSURL URLWithString:iiii]];
+                [productView.userImageView sd_setImageWithURL:[NSURL URLWithString:iiii] placeholderImage:[UIImage imageNamed:@"icon_head"]];
                 
                 //store state
                 if (!rowModel.collectSelf) {//未收藏
@@ -422,8 +428,34 @@
                 
                 //category
                 NSArray *ssssArray = [rowModel.categoryLabel componentsSeparatedByString:@","];
-                [productView.categoryLabel1 setText:@"房产抵押"];
-                
+                if (ssssArray.count == 1) {
+                    [productView.categoryLabel2 setHidden:YES];
+                    [productView.categoryLabel3 setHidden:YES];
+                    [productView.categoryLabel4 setHidden:YES];
+                    [productView.categoryLabel1 setText:ssssArray[0]];
+                }else if (ssssArray.count == 2){
+                    [productView.categoryLabel2 setHidden:NO];
+                    [productView.categoryLabel3 setHidden:YES];
+                    [productView.categoryLabel4 setHidden:YES];
+                    [productView.categoryLabel1 setText:ssssArray[0]];
+                    [productView.categoryLabel2 setText:ssssArray[1]];
+                }else if (ssssArray.count == 3){
+                    [productView.categoryLabel2 setHidden:NO];
+                    [productView.categoryLabel3 setHidden:NO];
+                    [productView.categoryLabel4 setHidden:YES];
+                    [productView.categoryLabel1 setText:ssssArray[0]];
+                    [productView.categoryLabel2 setText:ssssArray[1]];
+                    [productView.categoryLabel3 setText:ssssArray[2]];
+                }else if (ssssArray.count == 4){
+                    [productView.categoryLabel2 setHidden:NO];
+                    [productView.categoryLabel3 setHidden:NO];
+                    [productView.categoryLabel4 setHidden:NO];
+                    [productView.categoryLabel1 setText:ssssArray[0]];
+                    [productView.categoryLabel2 setText:ssssArray[1]];
+                    [productView.categoryLabel3 setText:ssssArray[2]];
+                    [productView.categoryLabel4 setText:ssssArray[3]];
+                }
+
                 //委托费用
                 NSString *ttt1 = rowModel.typenumLabel;
                 NSString *ttt2 = [NSString stringWithFormat:@"%@\n",rowModel.typeLabel];
@@ -685,6 +717,25 @@
     [alertController addAction:action1];
     [alertController addAction:action2];
     [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (NSString *)addSeparatorForString:(NSString *)sepaString
+{
+    NSMutableString *tempString = sepaString.mutableCopy;
+    NSRange range = [sepaString rangeOfString:@"."];
+    NSInteger index = 0;
+    if (range.length > 0) {
+        index = range.location;
+    }else{
+        index = sepaString.length;
+    }
+    
+    while ((index-3) > 0) {
+        index-=3;
+        [tempString insertString:@"," atIndex:index];
+    }
+    tempString = [tempString stringByReplacingOccurrencesOfString:@"." withString:@","].mutableCopy;
+    return tempString;
 }
 
 - (void)didReceiveMemoryWarning {

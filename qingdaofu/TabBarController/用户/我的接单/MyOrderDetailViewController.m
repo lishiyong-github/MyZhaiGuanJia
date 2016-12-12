@@ -356,6 +356,7 @@
                     cell = [[ProductCloseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                 }
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                cell.separatorInset = UIEdgeInsetsMake(0, kScreenWidth, 0, 0);
                 cell.backgroundColor = kBackColor;
                 
                 //codelabel
@@ -420,6 +421,7 @@
 //                            aaaa;
                             PaceViewController *paceVC = [[PaceViewController alloc] init];
                             paceVC.orderLogsArray = orderModel.orders.productOrdersLogs;
+                            paceVC.personType = @"2";
                             [weakself.navigationController pushViewController:paceVC animated:YES];
                         }
                             break;
@@ -578,17 +580,16 @@
                         [cell.ppLabel setAttributedText:[self showPPLabelOfProgressWithOrderLogModel:orderLogsModel]];
                         
                         //image
-                        [cell.ppTypeButton setTitle:orderLogsModel.label forState:0];
                         if ([orderLogsModel.label isEqualToString:@"我"]) {//接单方查看显示“我”
-                            [cell.ppTypeButton setBackgroundColor:kGreenColor];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_my_orders"] forState:0];
                         }else if ([orderLogsModel.label isEqualToString:@"接"]){//经办人查看显示“接”
-                            [cell.ppTypeButton setBackgroundColor:kGreenColor];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_orders"] forState:0];
                         }else if ([orderLogsModel.label isEqualToString:@"发"]){
-                            [cell.ppTypeButton setBackgroundColor:kYellowColor1];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_publish"] forState:0];
                         }else if ([orderLogsModel.label isEqualToString:@"系"]){
-                            [cell.ppTypeButton setBackgroundColor:kBlueColor1];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_system"] forState:0];
                         }else if ([orderLogsModel.label isEqualToString:@"经"]){
-                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_managers"] forState:0];
                         }
                         
                         //content
@@ -617,17 +618,16 @@
                         [cell.ppLabel setAttributedText:[self showPPLabelOfProgressWithOrderLogModel:orderLogsModel]];
                         
                         //image
-                        [cell.ppTypeButton setTitle:orderLogsModel.label forState:0];
                         if ([orderLogsModel.label isEqualToString:@"我"]) {//接单方查看显示“我”
-                            [cell.ppTypeButton setBackgroundColor:kGreenColor];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_my_orders"] forState:0];
                         }else if ([orderLogsModel.label isEqualToString:@"接"]){//经办人查看显示“接”
-                            [cell.ppTypeButton setBackgroundColor:kGreenColor];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_orders"] forState:0];
                         }else if ([orderLogsModel.label isEqualToString:@"发"]){
-                            [cell.ppTypeButton setBackgroundColor:kYellowColor1];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_publish"] forState:0];
                         }else if ([orderLogsModel.label isEqualToString:@"系"]){
-                            [cell.ppTypeButton setBackgroundColor:kBlueColor1];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_system"] forState:0];
                         }else if ([orderLogsModel.label isEqualToString:@"经"]){
-                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_managers"] forState:0];
                         }
                         
                         //content
@@ -654,17 +654,16 @@
                         [cell.ppLabel setAttributedText:[self showPPLabelOfProgressWithOrderLogModel:orderLogsModel]];
                         
                         //image
-                        [cell.ppTypeButton setTitle:orderLogsModel.label forState:0];
                         if ([orderLogsModel.label isEqualToString:@"我"]) {//接单方查看显示“我”
-                            [cell.ppTypeButton setBackgroundColor:kGreenColor];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_my_orders"] forState:0];
                         }else if ([orderLogsModel.label isEqualToString:@"接"]){//经办人查看显示“接”
-                            [cell.ppTypeButton setBackgroundColor:kGreenColor];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_orders"] forState:0];
                         }else if ([orderLogsModel.label isEqualToString:@"发"]){
-                            [cell.ppTypeButton setBackgroundColor:kYellowColor1];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_publish"] forState:0];
                         }else if ([orderLogsModel.label isEqualToString:@"系"]){
-                            [cell.ppTypeButton setBackgroundColor:kBlueColor1];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_system"] forState:0];
                         }else if ([orderLogsModel.label isEqualToString:@"经"]){
-                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_managers"] forState:0];
                         }
                         
                         //content
@@ -835,17 +834,16 @@
                         [cell.ppLabel setAttributedText:[self showPPLabelOfProgressWithOrderLogModel:orderLogsModel]];
                         
                         //image
-                        [cell.ppTypeButton setTitle:orderLogsModel.label forState:0];
                         if ([orderLogsModel.label isEqualToString:@"我"]) {//接单方查看显示“我”
-                            [cell.ppTypeButton setBackgroundColor:kGreenColor];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_my_orders"] forState:0];
                         }else if ([orderLogsModel.label isEqualToString:@"接"]){//经办人查看显示“接”
-                            [cell.ppTypeButton setBackgroundColor:kGreenColor];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_orders"] forState:0];
                         }else if ([orderLogsModel.label isEqualToString:@"发"]){
-                            [cell.ppTypeButton setBackgroundColor:kYellowColor1];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_publish"] forState:0];
                         }else if ([orderLogsModel.label isEqualToString:@"系"]){
-                            [cell.ppTypeButton setBackgroundColor:kBlueColor1];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_system"] forState:0];
                         }else if ([orderLogsModel.label isEqualToString:@"经"]){
-                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_managers"] forState:0];
                         }
                         
                         //content
@@ -874,17 +872,16 @@
                         [cell.ppLabel setAttributedText:[self showPPLabelOfProgressWithOrderLogModel:orderLogsModel]];
                         
                         //image
-                        [cell.ppTypeButton setTitle:orderLogsModel.label forState:0];
                         if ([orderLogsModel.label isEqualToString:@"我"]) {//接单方查看显示“我”
-                            [cell.ppTypeButton setBackgroundColor:kGreenColor];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_my_orders"] forState:0];
                         }else if ([orderLogsModel.label isEqualToString:@"接"]){//经办人查看显示“接”
-                            [cell.ppTypeButton setBackgroundColor:kGreenColor];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_orders"] forState:0];
                         }else if ([orderLogsModel.label isEqualToString:@"发"]){
-                            [cell.ppTypeButton setBackgroundColor:kYellowColor1];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_publish"] forState:0];
                         }else if ([orderLogsModel.label isEqualToString:@"系"]){
-                            [cell.ppTypeButton setBackgroundColor:kBlueColor1];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_system"] forState:0];
                         }else if ([orderLogsModel.label isEqualToString:@"经"]){
-                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_managers"] forState:0];
                         }
                         
                         //content
@@ -911,17 +908,16 @@
                         [cell.ppLabel setAttributedText:[self showPPLabelOfProgressWithOrderLogModel:orderLogsModel]];
                         
                         //image
-                        [cell.ppTypeButton setTitle:orderLogsModel.label forState:0];
                         if ([orderLogsModel.label isEqualToString:@"我"]) {//接单方查看显示“我”
-                            [cell.ppTypeButton setBackgroundColor:kGreenColor];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_my_orders"] forState:0];
                         }else if ([orderLogsModel.label isEqualToString:@"接"]){//经办人查看显示“接”
-                            [cell.ppTypeButton setBackgroundColor:kGreenColor];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_orders"] forState:0];
                         }else if ([orderLogsModel.label isEqualToString:@"发"]){
-                            [cell.ppTypeButton setBackgroundColor:kYellowColor1];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_publish"] forState:0];
                         }else if ([orderLogsModel.label isEqualToString:@"系"]){
-                            [cell.ppTypeButton setBackgroundColor:kBlueColor1];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_system"] forState:0];
                         }else if ([orderLogsModel.label isEqualToString:@"经"]){
-                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_managers"] forState:0];
                         }
                         
                         //content
@@ -1120,7 +1116,6 @@
                         
                         QDFWeakSelf;
                         [cell.userActionButton addAction:^(UIButton *btn) {
-                            [weakself showHint:@"添加进度"];
                             AddProgressViewController *addProgressVC = [[AddProgressViewController alloc] init];
                             addProgressVC.ordersid = orderModel.orders.ordersid;
                             [weakself.navigationController pushViewController:addProgressVC animated:YES];
@@ -1149,17 +1144,16 @@
                         [cell.ppLabel setAttributedText:[self showPPLabelOfProgressWithOrderLogModel:orderLogsModel]];
                         
                         //image
-                        [cell.ppTypeButton setTitle:orderLogsModel.label forState:0];
                         if ([orderLogsModel.label isEqualToString:@"我"]) {//接单方查看显示“我”
-                            [cell.ppTypeButton setBackgroundColor:kGreenColor];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_my_orders"] forState:0];
                         }else if ([orderLogsModel.label isEqualToString:@"接"]){//经办人查看显示“接”
-                            [cell.ppTypeButton setBackgroundColor:kGreenColor];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_orders"] forState:0];
                         }else if ([orderLogsModel.label isEqualToString:@"发"]){
-                            [cell.ppTypeButton setBackgroundColor:kYellowColor1];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_publish"] forState:0];
                         }else if ([orderLogsModel.label isEqualToString:@"系"]){
-                            [cell.ppTypeButton setBackgroundColor:kBlueColor1];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_system"] forState:0];
                         }else if ([orderLogsModel.label isEqualToString:@"经"]){
-                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_managers"] forState:0];
                         }
                         
                         //content
@@ -1188,17 +1182,16 @@
                         [cell.ppLabel setAttributedText:[self showPPLabelOfProgressWithOrderLogModel:orderLogsModel]];
                         
                         //image
-                        [cell.ppTypeButton setTitle:orderLogsModel.label forState:0];
                         if ([orderLogsModel.label isEqualToString:@"我"]) {//接单方查看显示“我”
-                            [cell.ppTypeButton setBackgroundColor:kGreenColor];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_my_orders"] forState:0];
                         }else if ([orderLogsModel.label isEqualToString:@"接"]){//经办人查看显示“接”
-                            [cell.ppTypeButton setBackgroundColor:kGreenColor];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_orders"] forState:0];
                         }else if ([orderLogsModel.label isEqualToString:@"发"]){
-                            [cell.ppTypeButton setBackgroundColor:kYellowColor1];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_publish"] forState:0];
                         }else if ([orderLogsModel.label isEqualToString:@"系"]){
-                            [cell.ppTypeButton setBackgroundColor:kBlueColor1];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_system"] forState:0];
                         }else if ([orderLogsModel.label isEqualToString:@"经"]){
-                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_managers"] forState:0];
                         }
                         
                         //content
@@ -1225,17 +1218,16 @@
                         [cell.ppLabel setAttributedText:[self showPPLabelOfProgressWithOrderLogModel:orderLogsModel]];
                         
                         //image
-                        [cell.ppTypeButton setTitle:orderLogsModel.label forState:0];
                         if ([orderLogsModel.label isEqualToString:@"我"]) {//接单方查看显示“我”
-                            [cell.ppTypeButton setBackgroundColor:kGreenColor];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_my_orders"] forState:0];
                         }else if ([orderLogsModel.label isEqualToString:@"接"]){//经办人查看显示“接”
-                            [cell.ppTypeButton setBackgroundColor:kGreenColor];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_orders"] forState:0];
                         }else if ([orderLogsModel.label isEqualToString:@"发"]){
-                            [cell.ppTypeButton setBackgroundColor:kYellowColor1];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_publish"] forState:0];
                         }else if ([orderLogsModel.label isEqualToString:@"系"]){
-                            [cell.ppTypeButton setBackgroundColor:kBlueColor1];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_system"] forState:0];
                         }else if ([orderLogsModel.label isEqualToString:@"经"]){
-                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+                            [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_managers"] forState:0];
                         }
                         
                         //content
@@ -1657,7 +1649,6 @@
     OrderModel *orderModel = self.myOrderDetailArray[0];
     
     if ([orderModel.status integerValue] == 10) {
-        [self showHint:@"取消申请"];
         NSString *rifhtString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrderDetailOfCancelApplyString];
         NSDictionary *params = @{@"applyid" : self.applyid,
                                  @"token" : [self getValidateToken]
@@ -1676,7 +1667,6 @@
             
         }];
     }else if([orderModel.status integerValue] == 40 && [orderModel.orders.status integerValue] == 20){
-        [self showHint:@"申请终止"];
         RequestEndViewController *requestEndVC = [[RequestEndViewController alloc] init];
         requestEndVC.ordersid = orderModel.orders.ordersid;
         [self.navigationController pushViewController:requestEndVC animated:YES];
@@ -1694,12 +1684,10 @@
         agreementVC.flagString = @"1";
         [self.navigationController pushViewController:agreementVC animated:YES];
     }else if ([actType integerValue] == 2){
-        [self showHint:@"上传签约协议"];
         SignProtocolViewController *signProtocolVC = [[SignProtocolViewController alloc] init];
         signProtocolVC.ordersid = orderModel.orders.ordersid;
         [self.navigationController pushViewController:signProtocolVC animated:YES];
     }else if([actType integerValue] == 3){
-        [self showHint:@"申请结案"];
         RequestCloseViewController *requestCloseVC = [[RequestCloseViewController alloc] init];
         requestCloseVC.orderModell = orderModel;
         [self.navigationController pushViewController:requestCloseVC animated:YES];

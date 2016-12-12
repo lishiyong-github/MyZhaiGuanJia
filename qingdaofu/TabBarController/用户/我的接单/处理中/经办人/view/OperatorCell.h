@@ -16,4 +16,6 @@
 @property (nonatomic,strong) UIButton *ccButton;
 @property (nonatomic,strong) UIButton *ddButton;
 
+@property (nonatomic,strong) NSLayoutConstraint *leftBBButtonConstraints;
+
 @end

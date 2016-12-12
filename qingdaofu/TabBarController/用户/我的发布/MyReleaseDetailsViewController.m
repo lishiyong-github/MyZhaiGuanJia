@@ -606,6 +606,7 @@
                         cell = [[ProgressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                     }
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    [cell setSeparatorInset:UIEdgeInsetsMake(0, kScreenWidth, 0, 0)];
                     [cell.ppLine1 setHidden:YES];
                     
                     OrdersLogsModel *ordersLogsModel = dataModel.productApply.orders.productOrdersLogs[indexPath.row-1];
@@ -614,15 +615,14 @@
                     [cell.ppLabel setAttributedText:[self showPPLabelOfMyReleaseDetailWithModel:ordersLogsModel]];
                     
                     //image
-                    [cell.ppTypeButton setTitle:ordersLogsModel.label forState:0];
                     if ([ordersLogsModel.label isEqualToString:@"我"]) {
-                        [cell.ppTypeButton setBackgroundColor:kYellowColor1];
+                        [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_my_publish"] forState:0];
                     }else if ([ordersLogsModel.label isEqualToString:@"经"]){
-                        [cell.ppTypeButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+                        [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_managers"] forState:0];
                     }else if ([ordersLogsModel.label isEqualToString:@"系"]){
-                        [cell.ppTypeButton setBackgroundColor:kBlueColor1];
+                        [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_system"] forState:0];
                     }else if ([ordersLogsModel.label isEqualToString:@"接"]){
-                        [cell.ppTypeButton setBackgroundColor:kGreenColor];
+                        [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_orders"] forState:0];
                     }
                     
                     //content
@@ -642,6 +642,7 @@
                         cell = [[ProgressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                     }
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    [cell setSeparatorInset:UIEdgeInsetsMake(0, kScreenWidth, 0, 0)];
                     [cell.ppLine2 setHidden:YES];
 
                     OrdersLogsModel *ordersLogsModel = dataModel.productApply.orders.productOrdersLogs[indexPath.row-1];
@@ -650,15 +651,14 @@
                     [cell.ppLabel setAttributedText:[self showPPLabelOfMyReleaseDetailWithModel:ordersLogsModel]];
                     
                     //image
-                    [cell.ppTypeButton setTitle:ordersLogsModel.label forState:0];
                     if ([ordersLogsModel.label isEqualToString:@"我"]) {
-                        [cell.ppTypeButton setBackgroundColor:kYellowColor1];
+                        [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_my_publish"] forState:0];
                     }else if ([ordersLogsModel.label isEqualToString:@"经"]){
-                        [cell.ppTypeButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+                        [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_managers"] forState:0];
                     }else if ([ordersLogsModel.label isEqualToString:@"系"]){
-                        [cell.ppTypeButton setBackgroundColor:kBlueColor1];
+                        [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_system"] forState:0];
                     }else if ([ordersLogsModel.label isEqualToString:@"接"]){
-                        [cell.ppTypeButton setBackgroundColor:kGreenColor];
+                        [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_orders"] forState:0];
                     }
                     
                     //content
@@ -678,22 +678,22 @@
                     cell = [[ProgressCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                 }
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                
+                [cell setSeparatorInset:UIEdgeInsetsMake(0, kScreenWidth, 0, 0)];
+
                 OrdersLogsModel *ordersLogsModel = dataModel.productApply.orders.productOrdersLogs[indexPath.row-1];
                 
                 //time
                 [cell.ppLabel setAttributedText:[self showPPLabelOfMyReleaseDetailWithModel:ordersLogsModel]];
                 
                 //image
-                [cell.ppTypeButton setTitle:ordersLogsModel.label forState:0];
                 if ([ordersLogsModel.label isEqualToString:@"我"]) {
-                    [cell.ppTypeButton setBackgroundColor:kYellowColor1];
+                    [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_my_publish"] forState:0];
                 }else if ([ordersLogsModel.label isEqualToString:@"经"]){
-                    [cell.ppTypeButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
+                    [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_managers"] forState:0];
                 }else if ([ordersLogsModel.label isEqualToString:@"系"]){
-                    [cell.ppTypeButton setBackgroundColor:kBlueColor1];
+                    [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_system"] forState:0];
                 }else if ([ordersLogsModel.label isEqualToString:@"接"]){
-                    [cell.ppTypeButton setBackgroundColor:kGreenColor];
+                    [cell.ppTypeButton setImage:[UIImage imageNamed:@"progress_orders"] forState:0];
                 }
                 
                 //content
@@ -838,6 +838,7 @@
                     case 333:{//查看尽职调查
                         PaceViewController *paceVC = [[PaceViewController alloc] init];
                         paceVC.orderLogsArray = dataModel.productApply.orders.productOrdersLogs;
+                        paceVC.personType = @"1";
                         [weakself.navigationController pushViewController:paceVC animated:YES];
                     }
                         break;

@@ -23,8 +23,7 @@
         
         [self.contentView addSubview:self.ppTextButton];
         
-        self.leftTextConstraints = [self.ppTextButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.ppTypeButton withOffset:kBigPadding];
-
+//        self.leftTextConstraints = [self.ppTextButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.ppTypeButton withOffset:kBigPadding];
 
         [self setNeedsUpdateConstraints];
     }
@@ -44,18 +43,19 @@
         [self.ppLine1 autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.ppTypeButton];
         [self.ppLine1 autoAlignAxis:ALAxisVertical toSameAxisOfView:self.ppTypeButton];
         
-        [self.ppTypeButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.ppLabel withOffset:kSpacePadding];
+        [self.ppTypeButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.ppLabel withOffset:kBigPadding];
         [self.ppTypeButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.ppLabel];
         [self.ppTypeButton autoSetDimensionsToSize:CGSizeMake(20, 20)];
-        
         
         [self.ppLine2 autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.ppLine1];
         [self.ppLine2 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.ppTypeButton];
         [self.ppLine2 autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.ppLine1];
         [self.ppLine2 autoPinEdgeToSuperviewEdge:ALEdgeBottom];
         
+        
         [self.ppTextButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         [self.ppTextButton autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.ppLabel];
+        [self.ppTextButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.ppTypeButton withOffset:kBigPadding];
         
         self.didSetupConstraints = YES;
     }

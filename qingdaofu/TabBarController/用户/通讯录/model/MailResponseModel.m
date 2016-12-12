@@ -15,6 +15,7 @@
     return @{@"mobile" : @"userinfo.mobile",
              @"realname" : @"userinfo.realname",
              @"username" : @"userinfo.username",
+             @"headimg" : @"userinfo.headimg",
              @"level" : @"ordersOperator.level",
              @"ordersid" : @"ordersOperator.ordersid",
              @"productid" : @"ordersOperator.productid",

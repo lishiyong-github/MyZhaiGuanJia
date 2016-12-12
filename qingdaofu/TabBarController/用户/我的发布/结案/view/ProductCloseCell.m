@@ -30,11 +30,7 @@
         [self.contentView addSubview:self.signTitleLabel];
         [self.contentView addSubview:self.signTextButton];
         [self.contentView addSubview:self.sighCheckButton];
-        
         [self.contentView addSubview:self.signPictureButton1];
-//        [self.contentView addSubview:self.signDetailScrollView];
-        
-        
         [self.contentView addSubview:self.investLabel];
         [self.contentView addSubview:self.investCheckButton];
         [self.contentView addSubview:self.agreementLabel];
@@ -173,7 +169,7 @@
 {
     if (!_topSpaceImaegView) {
         _topSpaceImaegView = [UIImageView newAutoLayoutView];
-        _topSpaceImaegView.backgroundColor = kRedColor;
+        [_topSpaceImaegView setImage:[UIImage imageNamed:@"color"]];
     }
     return _topSpaceImaegView;
 }

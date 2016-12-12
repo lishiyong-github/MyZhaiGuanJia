@@ -251,6 +251,7 @@
     
     [self.addPaceDic setValue:[self getValidateToken] forKey:@"token"];
     [self.addPaceDic setValue:self.ordersid forKey:@"ordersid"];
+    self.addPaceDic[@"type"] = self.addPaceDic[@"type"]?self.addPaceDic[@"type"]:@"";
     
     NSDictionary *params = self.addPaceDic;
     

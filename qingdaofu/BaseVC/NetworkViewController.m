@@ -10,6 +10,9 @@
 #import "MBProgressHUD.h"
 #import "ImageResponse.h"
 
+#import "LoginViewController.h"
+#import "AuthentyViewController.h"
+
 @interface NetworkViewController ()
 
 @end
@@ -35,10 +38,30 @@
     [session POST:string parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        if (successBlock) {
-            [weakself hideHud];
-            successBlock(responseObject);
+        [weakself hideHud];
+        
+        BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
+        if ([baseModel.code isEqualToString:@"3001"]) {
+            //未登录
+            [weakself showHint:baseModel.msg];
+            LoginViewController *loginVC = [[LoginViewController alloc] init];
+            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:loginVC];
+            [weakself presentViewController:nav animated:YES completion:nil];
+        }else if([baseModel.code isEqualToString:@"3002"]){
+            [weakself showHint:baseModel.msg];
+        }else if ([baseModel.code isEqualToString:@"3015"]){
+            [weakself showHint:baseModel.msg];
+            AuthentyViewController *authentyVC = [[AuthentyViewController alloc] init];
+            authentyVC.typeAuthty = @"add";
+            [weakself.navigationController pushViewController:authentyVC animated:YES];
+        }else if ([baseModel.code isEqualToString:@"0003"]){
+            [weakself showHint:baseModel.msg];
+        }else{
+            if (successBlock) {
+                successBlock(responseObject);
+            }
         }
+        
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         if (failBlock) {
             [weakself hideHud];

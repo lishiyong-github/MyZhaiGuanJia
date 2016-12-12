@@ -297,7 +297,11 @@
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.backgroundColor = UIColorFromRGB(0x0da3f8);
             
-            cell.deRateLabel.text = @"----    委托费用    ----";
+            if ([prodDetailModel.typeLabel isEqualToString:@"万"]) {
+                cell.deRateLabel.text = @"----    固定费用    ----";
+            }else if ([prodDetailModel.typeLabel isEqualToString:@"%"]){
+                cell.deRateLabel.text = @"----    风险费率    ----";
+            }
             NSString *agencyStr1 = prodDetailModel.typenumLabel;
             NSString *agencyStr2 = prodDetailModel.typeLabel;
             NSString *agencyStr = [NSString stringWithFormat:@"%@%@",agencyStr1,agencyStr2];

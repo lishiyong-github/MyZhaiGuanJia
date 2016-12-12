@@ -18,6 +18,9 @@
         [self.contentView addSubview:self.bbButton];
         [self.contentView addSubview:self.ccButton];
         [self.contentView addSubview:self.ddButton];
+        
+        self.leftBBButtonConstraints = [self.bbButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:34];
+//        [self.bbButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.aabutton withOffset:kSpacePadding];
 
         [self setNeedsUpdateConstraints];
     }
@@ -31,11 +34,10 @@
         [self.aabutton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
         [self.aabutton autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
         
-        [self.bbButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.aabutton withOffset:kSpacePadding];
         [self.bbButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.aabutton];
         [self.bbButton autoSetDimensionsToSize:CGSizeMake(24, 24)];
         
-        [self.ccButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.bbButton withOffset:kBigPadding];
+        [self.ccButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.bbButton withOffset:kSpacePadding];
         [self.ccButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.bbButton];
         
         [self.ddButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];

@@ -41,12 +41,19 @@
         [self.storeButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:2];
         [self.storeButton autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.userImageView];
         
-        [self.categoryLabel1 autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kSmallPadding];
-        [self.categoryLabel1 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.userImageView withOffset:kSmallPadding];
+        [self.categoryLabel1 autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
+        [self.categoryLabel1 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.userImageView withOffset:kBigPadding];
         
         [self.categoryLabel2 autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.categoryLabel1 withOffset:kBigPadding];
+        [self.categoryLabel2 autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.categoryLabel1];
         
-        [self.leftButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.categoryLabel1 withOffset:kBigPadding];
+        [self.categoryLabel3 autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.categoryLabel1];
+        [self.categoryLabel3 autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.categoryLabel1 withOffset:kSpacePadding];
+        
+        [self.categoryLabel4 autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.categoryLabel3];
+        [self.categoryLabel4 autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.categoryLabel2];
+        
+        [self.leftButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.categoryLabel1 withOffset:kBigPadding*2];
         [self.leftButton autoPinEdgeToSuperviewEdge:ALEdgeLeft];
         [self.leftButton autoSetDimension:ALDimensionWidth toSize:self.width/2];
         
@@ -54,7 +61,7 @@
         [self.rightButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.leftButton];
         [self.rightButton autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.leftButton];
         
-        [self.applyButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.leftButton withOffset:kBigPadding];
+        [self.applyButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.leftButton withOffset:16];
         [self.applyButton autoAlignAxisToSuperviewAxis:ALAxisVertical];
         [self.applyButton autoSetDimension:ALDimensionWidth toSize:72];
         [self.applyButton autoSetDimension:ALDimensionHeight toSize:24];

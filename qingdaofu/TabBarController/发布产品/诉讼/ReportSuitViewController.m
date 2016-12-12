@@ -799,6 +799,7 @@
 
 - (void)back
 {
+    [self.view endEditing:YES];
     if ([self.tagString integerValue] == 3) {//发布中编辑，不能保存
         [self dismissViewControllerAnimated:YES completion:nil];
     }else{
