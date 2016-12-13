@@ -77,6 +77,8 @@
     [self.view addSubview:self.mainTableView];
     
     [self.view setNeedsUpdateConstraints];
+    
+    [self performSelector:@selector(chechAppNewVersion) withObject:nil afterDelay:5];
 }
 
 - (void)updateViewConstraints
@@ -234,7 +236,7 @@
         cell.userNameButton.titleLabel.numberOfLines = 0;
         
         NSString *all1 = @"累计交易总量\n";
-        NSString *all2 = self.sumString;
+        NSString *all2 = [NSString getValidStringFromString:self.sumString toString:@"100000"];
         NSString *all3;
         if (all2.length < 9) {//小于1亿
             all3 = @"元";

@@ -12,6 +12,7 @@
 
 #import "MineUserCell.h"
 #import "OperatorCell.h"  //经办人cell
+#import "PowerCell.h"
 
 #import "OperatorResponse.h"
 #import "OperatorModel.h"
@@ -159,24 +160,18 @@
                 if (response.operators.count > 0) {//已有经办人
                     if (indexPath.section == 2){
                         identifier = @"operator22";
-                        OperatorCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+                        PowerCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
                         if (!cell) {
-                            cell = [[OperatorCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+                            cell = [[PowerCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                         }
                         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                        [cell.bbButton setHidden:YES];
-                        [cell.ddButton setHidden:YES];
-                        [cell.ccButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:cell.aabutton withOffset:kSpacePadding];
-    
-                        OrderModel *orderModel = response.orders;
+                        [cell.statusLabel setHidden:YES];
                         
+                        OrderModel *orderModel = response.orders;
                         NSString *naanna = [NSString getValidStringFromString:orderModel.realname toString:orderModel.username];
-                        [cell.aabutton setTitle:naanna forState:0];
-                        [cell.aabutton setTitleColor:kBlackColor forState:0];
-                        cell.aabutton.titleLabel.font = kBigFont;
-    
-                        [cell.ccButton setImage:[UIImage imageNamed:@"contacts_icon_mark"] forState:0];
-    
+                        [cell.orderButton setTitle:naanna forState:0];
+                        
+                        [cell.moreImageView setImage:[UIImage imageNamed:@"contacts_icon_mark"]];
                         return cell;
                     }else if(indexPath.section == 1){
                         identifier = @"operator11";
@@ -222,23 +217,18 @@
                     }
                 }else{//没有经办人
                     identifier = @"operator1";
-                    OperatorCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+                    PowerCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
                     if (!cell) {
-                        cell = [[OperatorCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+                        cell = [[PowerCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                     }
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                    [cell.bbButton setHidden:YES];
-                    [cell.ddButton setHidden:YES];
-                    [cell.ccButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:cell.aabutton withOffset:kSpacePadding];
-
+                    [cell.statusLabel setHidden:YES];
+                    
                     OrderModel *orderModel = response.orders;
-                    NSString *nanana = [NSString getValidStringFromString:orderModel.realname toString:orderModel.username];
-                    [cell.aabutton setTitle:nanana forState:0];
-                    [cell.aabutton setTitleColor:kBlackColor forState:0];
-                    cell.aabutton.titleLabel.font = kBigFont;
+                    NSString *naanna = [NSString getValidStringFromString:orderModel.realname toString:orderModel.username];
+                    [cell.orderButton setTitle:naanna forState:0];
                     
-                    [cell.ccButton setImage:[UIImage imageNamed:@"contacts_icon_mark"] forState:0];
-                    
+                    [cell.moreImageView setImage:[UIImage imageNamed:@"contacts_icon_mark"]];
                     return cell;
                 }
             }
@@ -249,46 +239,36 @@
             //没有经办人
             if (indexPath.section == 0) {//显示接单方
                 identifier = @"operator2220";
-                OperatorCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+                PowerCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
                 if (!cell) {
-                    cell = [[OperatorCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+                    cell = [[PowerCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                 }
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                [cell.bbButton setHidden:YES];
-                [cell.ddButton setHidden:YES];
-                [cell.ccButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:cell.aabutton withOffset:kSpacePadding];
-    
+                [cell.statusLabel setHidden:YES];
+                
                 OrderModel *orderModel = response.orders;
-                NSString *nanana = [NSString getValidStringFromString:orderModel.realname toString:orderModel.username];
-                [cell.aabutton setTitle:nanana forState:0];
-                [cell.aabutton setTitleColor:kBlackColor forState:0];
-                cell.aabutton.titleLabel.font = kBigFont;
-    
-                [cell.ccButton setImage:[UIImage imageNamed:@"contacts_icon_mark"] forState:0];
-    
+                NSString *naanna = [NSString getValidStringFromString:orderModel.realname toString:orderModel.username];
+                [cell.orderButton setTitle:naanna forState:0];
+                
+                [cell.moreImageView setImage:[UIImage imageNamed:@"contacts_icon_mark"]];
                 return cell;
             }
         }else{
             //有经办人
             if (indexPath.section == 1) {
                 identifier = @"operator22221";
-                OperatorCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+                PowerCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
                 if (!cell) {
-                    cell = [[OperatorCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+                    cell = [[PowerCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                 }
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                [cell.bbButton setHidden:YES];
-                [cell.ddButton setHidden:YES];
-                [cell.ccButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:cell.aabutton withOffset:kSpacePadding];
-    
+                [cell.statusLabel setHidden:YES];
+                
                 OrderModel *orderModel = response.orders;
-                NSString *nanana = [NSString getValidStringFromString:orderModel.realname toString:orderModel.username];
-                [cell.aabutton setTitle:nanana forState:0];
-                [cell.aabutton setTitleColor:kBlackColor forState:0];
-                cell.aabutton.titleLabel.font = kBigFont;
-    
-                [cell.ccButton setImage:[UIImage imageNamed:@"contacts_icon_mark"] forState:0];
-    
+                NSString *naanna = [NSString getValidStringFromString:orderModel.realname toString:orderModel.username];
+                [cell.orderButton setTitle:naanna forState:0];
+                
+                [cell.moreImageView setImage:[UIImage imageNamed:@"contacts_icon_mark"]];
                 return cell;
     
             }else{//显示经办人列表

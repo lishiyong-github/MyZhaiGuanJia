@@ -183,11 +183,6 @@
 }
 
 #pragma mark - textField delegate
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
-{
-    return YES;
-}
-
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     if (textField.tag == 51) {

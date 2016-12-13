@@ -20,10 +20,6 @@
 
 @property (nonatomic,strong) UILabel *deLineLabel;
 
-//@property (nonatomic,strong) ProDetailHeadFootView *numberButton1;
-//@property (nonatomic,strong) ProDetailHeadFootView *numberButton2;
-//@property (nonatomic,strong) ProDetailHeadFootView *numberButton3;
-
 @property (nonatomic,assign) BOOL didSetupConstraints;
 
 @end

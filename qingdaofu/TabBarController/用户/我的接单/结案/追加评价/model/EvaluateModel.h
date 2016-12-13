@@ -36,5 +36,4 @@
 @property (nonatomic,copy) NSString *picture;
 @property (nonatomic,strong) ImageModel *headimg;  //图片
 
-
 @end

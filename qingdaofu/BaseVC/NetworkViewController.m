@@ -41,18 +41,17 @@
         [weakself hideHud];
         
         BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
-        if ([baseModel.code isEqualToString:@"3001"]) {
-            //未登录
+        if ([baseModel.code isEqualToString:@"3001"]) {//未登录
             [weakself showHint:baseModel.msg];
             LoginViewController *loginVC = [[LoginViewController alloc] init];
             UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:loginVC];
             [weakself presentViewController:nav animated:YES completion:nil];
-        }else if([baseModel.code isEqualToString:@"3002"]){
+        }else if([baseModel.code isEqualToString:@"3002"]){//无权限
             [weakself showHint:baseModel.msg];
         }else if ([baseModel.code isEqualToString:@"3015"]){
             [weakself showHint:baseModel.msg];
             AuthentyViewController *authentyVC = [[AuthentyViewController alloc] init];
-            authentyVC.typeAuthty = @"add";
+            authentyVC.typeAuthty = @"0";
             [weakself.navigationController pushViewController:authentyVC animated:YES];
         }else if ([baseModel.code isEqualToString:@"0003"]){
             [weakself showHint:baseModel.msg];

@@ -35,20 +35,28 @@
     self.title = @"查询产调";
     self.navigationItem.leftBarButtonItem = self.leftItem;
     
-    [self setupForDismissKeyboard];
+//    [self setupForDismissKeyboard];
     
     [self.view addSubview:self.housePropertyTableView];
     [self.view addSubview:self.propertyFooterView];
     
     [self.view setNeedsUpdateConstraints];
     
-    [self addKeyboardObserver];
+//    [self addKeyboardObserver];
 }
 
-- (void)dealloc
+- (void)viewDidDisappear:(BOOL)animated
 {
-    [self removeKeyboardObserver];
+    [super viewDidDisappear:animated];
+    
+    [self showHint:@"产调业务暂时停止"];
+    [self.navigationController popViewControllerAnimated:YES];
 }
+
+//- (void)dealloc
+//{
+//    [self removeKeyboardObserver];
+//}
 
 - (void)updateViewConstraints
 {
@@ -183,7 +191,7 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.agentLabel.text = @"电话号码";
     cell.agentTextField.placeholder = @"请输入手机号码";
-    cell.agentTextField.text = [self getValidateMobile];
+//    cell.agentTextField.text = [self getValidateMobile];
     
     QDFWeakSelf;
     [cell setDidEndEditing:^(NSString *text) {
@@ -227,7 +235,7 @@
 {
     [self.view endEditing:YES];
     NSString *generateString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kHousePropertyOrderString];
-    self.propertyDic[@"phone"] = [NSString getValidStringFromString:self.propertyDic[@"phone"] toString:[self getValidateMobile]];
+//    self.propertyDic[@"phone"] = [NSString getValidStringFromString:self.propertyDic[@"phone"] toString:[self getValidateMobile]];
     [self.propertyDic setObject:[self getValidateToken] forKey:@"token"];
     
     NSDictionary *params = self.propertyDic;

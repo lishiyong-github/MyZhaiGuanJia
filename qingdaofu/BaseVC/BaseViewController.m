@@ -49,7 +49,6 @@
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
 }
 
-
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -64,7 +63,6 @@
 -(UIBarButtonItem *)leftItem
 {
     if (!_leftItem) {
-//        _leftItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"bar_nav_back"] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
         UIButton *sshhsh = [UIButton buttonWithType:0];
         sshhsh.frame = CGRectMake(0, 0, 22, 25);
         [sshhsh setImage:[UIImage imageNamed:@"bar_nav_back"] forState:0];
@@ -116,23 +114,16 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+- (void)rightItemAction
+{
+    
+}
+
 - (NSString *)getValidateToken
 {
     NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:@"token"];
     token = [NSString getValidStringFromString:token toString:@""];
     return token;
-}
-
-- (NSString *)getValidateMobile
-{
-    NSString *mobile = [[NSUserDefaults standardUserDefaults] objectForKey:@"mobile"];
-    return mobile;
-}
-
-- (NSString *)getValidateUserId
-{
-    NSString *userid = [[NSUserDefaults standardUserDefaults] objectForKey:@"userid"];
-    return userid;
 }
 
 - (void)didReceiveMemoryWarning {

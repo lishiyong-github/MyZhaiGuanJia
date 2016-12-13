@@ -244,7 +244,7 @@
                 [self.navigationController pushViewController:completeVC animated:YES];
             }else{
                 AuthentyViewController *authentyVC = [[AuthentyViewController alloc] init];
-                authentyVC.typeAuthty = @"1";
+                authentyVC.typeAuthty = @"0";
                 [self.navigationController pushViewController:authentyVC animated:YES];
             }
         }

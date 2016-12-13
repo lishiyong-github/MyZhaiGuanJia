@@ -249,7 +249,7 @@
                 [self.comDataDictionary setValue:text forKey:@"contact"];
             }];
         }else{//联系方式
-            cell.agentTextField.text = certificationModel.mobile?certificationModel.mobile:[self getValidateMobile];
+            cell.agentTextField.text = certificationModel.mobile;
             QDFWeak(cell);
             [cell setDidEndEditing:^(NSString *text) {
                 weakcell.agentTextField.text = text;
@@ -443,7 +443,7 @@
      */
     
     if (!self.comDataDictionary[@"mobile"]) {
-        self.comDataDictionary[@"mobile"] = self.responseModel.certification.mobile?self.responseModel.certification.mobile:[self getValidateMobile];
+        self.comDataDictionary[@"mobile"] = self.responseModel.certification.mobile;
     }
     
     self.comDataDictionary[@"name"] = self.comDataDictionary[@"name"]?self.comDataDictionary[@"name"]:self.responseModel.certification.name;

@@ -13,6 +13,8 @@
 + (NSDictionary *)replacedKeyFromPropertyName
 {
     return @{@"certification" : @"result.data.certification",
+             @"commentdata" : @"result.data.commentdata",
+             @"canContacts" : @"result.data.canContacts",
              @"idString" : @"result.data.id",
              @"isSetPassword" : @"result.data.isSetPassword",
              @"mobile" : @"result.data.mobile",

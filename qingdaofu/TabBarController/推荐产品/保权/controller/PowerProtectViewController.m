@@ -230,7 +230,7 @@
             
             if (indexPath.row == 3){//联系方式
                 [cell.agentButton setHidden:YES];
-                cell.agentTextField.text = [weakself getValidateMobile];
+//                cell.agentTextField.text = [weakself getValidateMobile];
                 
                 [cell setDidEndEditing:^(NSString *text) {
                     [weakself.powerDic setObject:text forKey:@"phone"];
@@ -492,7 +492,7 @@
     [self.view endEditing:YES];
     NSString *powerStrig = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPowerString];
     
-    self.powerDic[@"phone"] = self.powerDic[@"phone"]?self.powerDic[@"phone"]:[self getValidateMobile];
+//    self.powerDic[@"phone"] = self.powerDic[@"phone"]?self.powerDic[@"phone"]:[self getValidateMobile];
     
     [self.powerDic setObject:[self getValidateToken] forKey:@"token"];
     

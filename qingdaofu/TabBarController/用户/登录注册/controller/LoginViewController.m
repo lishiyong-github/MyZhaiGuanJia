@@ -286,10 +286,6 @@
                              @"password" : password,
                              @"logintype" : self.loginType
                              };
-    
-    //18221496879 123456 (xiaolou)
-    //13162521916 123456
-    //15000708849   123456
 
     QDFWeakSelf;
     [self requestDataPostWithString:loginString params:params successBlock:^( id responseObject){
@@ -301,7 +297,6 @@
             [[NSUserDefaults standardUserDefaults] setObject:loginModel.token forKey:@"token"];
             [[NSUserDefaults standardUserDefaults] synchronize];
             
-//            [weakself back];
             [weakself dismissViewControllerAnimated:YES completion:nil];
         }
         

@@ -9,12 +9,14 @@
 #import "BaseModel.h"
 @class CertificationModel;
 @class ImageModel;
+@class CheckEvaluateResponse;
 
 @interface CompleteResponse : BaseModel
 
 @property (nonatomic,strong) CertificationModel *certification;//认证信息
 @property (nonatomic,copy) NSString *completionRate;  //完成度
-
+@property (nonatomic,copy) NSString *canContacts;  //能否打电话
+@property (nonatomic,strong) CheckEvaluateResponse *commentdata;  //评论相关信息
 
 ///////用户信息
 @property (nonatomic,copy) NSString *idString;

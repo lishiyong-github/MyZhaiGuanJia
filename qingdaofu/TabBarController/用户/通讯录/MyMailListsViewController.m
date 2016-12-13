@@ -150,7 +150,7 @@
             [cell.userNameButton setImage:[UIImage imageNamed:@"selected_dis"] forState:0];
         }
         
-        NSString *name = [NSString stringWithFormat:@"  %@",mailResponseModel.username];
+        NSString *name = [NSString stringWithFormat:@"  %@",[NSString getValidStringFromString:mailResponseModel.realname toString:mailResponseModel.username]];
         [cell.userNameButton setTitle:name forState:0];
         
         QDFWeakSelf;
@@ -170,7 +170,8 @@
         }];
         
     }else{
-        [cell.userNameButton setTitle:mailResponseModel.username forState:0];
+        NSString *names = [NSString getValidStringFromString:mailResponseModel.realname toString:mailResponseModel.username];
+        [cell.userNameButton setTitle:names forState:0];
     }
     
     return cell;
@@ -184,12 +185,12 @@
     if (!self.ordersid) {
         params = @{@"token" : [self getValidateToken],
                     @"page" : page,
-                    @"limit" : @"6"
+                    @"limit" : @"10"
                    };
     }else{
         params = @{@"token" : [self getValidateToken],
                    @"page" : page,
-                   @"limit" : @"6",
+                   @"limit" : @"10",
                    @"ordersid" : self.ordersid
                    };
     }
@@ -257,7 +258,7 @@
         
         NSString *ssss;
         if ([mailModel.code isEqualToString:@"0000"]) {
-            NSString *name = [NSString getValidStringFromString:mailModel.username toString:mailModel.realname];
+            NSString *name = [NSString getValidStringFromString:mailModel.realname toString:mailModel.username];
             ssss = [NSString stringWithFormat:@"%@\n%@",name,mailModel.mobile];
         }else{
             ssss = mailModel.msg;

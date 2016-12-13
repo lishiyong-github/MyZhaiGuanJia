@@ -249,7 +249,7 @@
                 [weakself.lawDataDictionary setValue:text forKey:@"contact"];
             }];
         }else{//联系方式
-            cell.agentTextField.text = certificationModel.mobile?certificationModel.mobile:[self getValidateMobile];
+            cell.agentTextField.text = certificationModel.mobile;
             [cell setDidEndEditing:^(NSString *text) {
                 weakcell.agentTextField.text = text;
                 [weakself.lawDataDictionary setValue:text forKey:@"mobile"];
@@ -422,7 +422,7 @@
      */
     
     if (!self.lawDataDictionary[@"mobile"]) {
-        self.lawDataDictionary[@"mobile"] = self.responseModel.certification.mobile?self.responseModel.certification.mobile:[self getValidateMobile];
+        self.lawDataDictionary[@"mobile"] = self.responseModel.certification.mobile;
     }
     
     self.lawDataDictionary[@"name"] = self.lawDataDictionary[@"name"]?self.lawDataDictionary[@"name"]:self.responseModel.certification.name;

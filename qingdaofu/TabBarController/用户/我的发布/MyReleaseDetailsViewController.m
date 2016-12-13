@@ -340,26 +340,17 @@
                     //接单方详情
                     QDFWeakSelf;
                     [cell.checkButton addAction:^(UIButton *btn) {
-                        if ([nameStr isEqualToString:@"未认证"]) {
-                            [weakself showHint:@"申请方未认证，不能查看相关信息"];
-                        }else{
-                            CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
-                            checkDetailPublishVC.navTitle = @"申请方详情";
-                            checkDetailPublishVC.productid = dataModel.productid;
-                            checkDetailPublishVC.userid = dataModel.productApply.create_by;
-                            [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];
-                        }
-
+                        CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+                        checkDetailPublishVC.navTitle = @"申请方详情";
+                        checkDetailPublishVC.productid = dataModel.productid;
+                        checkDetailPublishVC.userid = dataModel.productApply.create_by;
+                        [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];
                     }];
                     
                     //电话
                     [cell.contactButton addAction:^(UIButton *btn) {
-                        if ([nameStr isEqualToString:@"未认证"]) {
-                            [weakself showHint:@"接单方未认证，不能打电话"];
-                        }else{
-                            NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",dataModel.productApply.mobile];
-                            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
-                        }
+                        NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",dataModel.productApply.mobile];
+                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
                     }];
                     return cell;
                 }
@@ -527,26 +518,17 @@
                 //接单方详情
                 QDFWeakSelf;
                 [cell.checkButton addAction:^(UIButton *btn) {
-                    if ([nameStr isEqualToString:@"未认证"]) {
-                        [weakself showHint:@"接单方未认证，不能查看相关信息"];
-                    }else{
-                        CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
-                        checkDetailPublishVC.navTitle = @"接单方详情";
-                        checkDetailPublishVC.productid = dataModel.productid;
-                        checkDetailPublishVC.userid = dataModel.productApply.create_by;
-                        [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];
-                    }
-                    
+                    CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+                    checkDetailPublishVC.navTitle = @"接单方详情";
+                    checkDetailPublishVC.productid = dataModel.productid;
+                    checkDetailPublishVC.userid = dataModel.productApply.create_by;
+                    [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];
                 }];
                 
                 //电话
                 [cell.contactButton addAction:^(UIButton *btn) {
-                    if ([nameStr isEqualToString:@"未认证"]) {
-                        [weakself showHint:@"接单方未认证，不能打电话"];
-                    }else{
-                        NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",dataModel.productApply.mobile];
-                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
-                    }
+                    NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",dataModel.productApply.mobile];
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
                 }];
                 return cell;
             }
@@ -747,26 +729,17 @@
                 //接单方详情
                 QDFWeakSelf;
                 [cell.checkButton addAction:^(UIButton *btn) {
-                    if ([nameStr isEqualToString:@"未认证"]) {
-                        [weakself showHint:@"接单方未认证，不能查看相关信息"];
-                    }else{
-                        CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
-                        checkDetailPublishVC.navTitle = @"接单方详情";
-                        checkDetailPublishVC.productid = dataModel.productid;
-                        checkDetailPublishVC.userid = dataModel.productApply.create_by;
-                        [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];
-                    }
-                    
+                    CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+                    checkDetailPublishVC.navTitle = @"接单方详情";
+                    checkDetailPublishVC.productid = dataModel.productid;
+                    checkDetailPublishVC.userid = dataModel.productApply.create_by;
+                    [weakself.navigationController pushViewController:checkDetailPublishVC animated:YES];
                 }];
                 
                 //电话
                 [cell.contactButton addAction:^(UIButton *btn) {
-                    if ([nameStr isEqualToString:@"未认证"]) {
-                        [weakself showHint:@"接单方未认证，不能打电话"];
-                    }else{
-                        NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",dataModel.productApply.mobile];
-                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
-                    }
+                    NSMutableString *phoneStr = [NSMutableString stringWithFormat:@"telprompt://%@",dataModel.productApply.mobile];
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneStr]];
                 }];
                 return cell;
             }
@@ -922,7 +895,6 @@
         }
     }else if ([dataModel.statusLabel isEqualToString:@"处理中"] || [dataModel.statusLabel isEqualToString:@"已终止"]){
         if (indexPath.section == 1) {
-            [self showHint:@"居间协议"];
             if ([dataModel.productApply.orders.status integerValue] > 0) {
                 AgreementViewController *agreementVC = [[AgreementViewController alloc] init];
                 agreementVC.navTitleString = @"居间协议";
@@ -1083,7 +1055,6 @@
                 if ([dataModel.commentTotal integerValue] == 0) {
                     [weakself.evaluateButton setTitle:@"评价" forState:0];
                     [weakself.evaluateButton addAction:^(UIButton *btn) {
-                        [weakself showHint:@"评价"];
                         AdditionalEvaluateViewController *additionalEvaluateVC = [[AdditionalEvaluateViewController alloc] init];
                         additionalEvaluateVC.ordersid = dataModel.productApply.orders.ordersid;
                         additionalEvaluateVC.typeString = @"发布方";
@@ -1094,7 +1065,6 @@
                 }else{
                     [weakself.evaluateButton setTitle:@"查看评价" forState:0];
                     [weakself.evaluateButton addAction:^(UIButton *btn) {
-                        [weakself showHint:@"查看评价"];
                         EvaluateListsViewController *evaluateListsVC = [[EvaluateListsViewController alloc] init];
                         evaluateListsVC.ordersid = dataModel.productApply.orders.ordersid;
                         evaluateListsVC.typeString = @"发布方";
@@ -1201,7 +1171,6 @@
 
 - (void)showMaterialList
 {
-    [self showHint:@"材料清单"];
     UIButton *showButton1 = [UIButton newAutoLayoutView];
     showButton1.backgroundColor = UIColorFromRGB1(0x333333, 0.3);
     [[UIApplication sharedApplication].keyWindow addSubview:showButton1];

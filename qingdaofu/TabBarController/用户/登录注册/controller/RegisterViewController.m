@@ -263,10 +263,6 @@
                              @"password" : password
                              };
     
-    //18221496879 123456 (xiaolou)
-    //13162521916 123456
-    //15000708849   123456
-    
     QDFWeakSelf;
     [self requestDataPostWithString:loginString params:params successBlock:^( id responseObject){
         

@@ -7,6 +7,7 @@
 //
 
 #import "AllCommentsViewController.h"
+
 #import "EvaluatePhotoCell.h"
 
 #import "EvaluateResponse.h"
@@ -119,7 +120,7 @@
     EvaluateModel *evaluateModel = self.allEvaluateArray[indexPath.section];
     
     NSString *sss = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,evaluateModel.headimg.file];
-    [cell.evaNameButton sd_setImageWithURL:[NSURL URLWithString:sss] forState:0 placeholderImage:nil];
+    [cell.evaNameButton sd_setImageWithURL:[NSURL URLWithString:sss] forState:0 placeholderImage:[UIImage imageNamed:@"icon_head"]];
     NSString *namee = [NSString getValidStringFromString:evaluateModel.realname toString:evaluateModel.username];
     cell.evaNameLabel.text = namee;
     
@@ -198,7 +199,7 @@
         
         EvaluateResponse *response = [EvaluateResponse objectWithKeyValues:responseObject];
         
-        if (response.evaluate.count == 0) {
+        if (response.Comments1.count == 0) {
             [weakself showHint:@"没有更多了"];
             _pageEva--;
         }

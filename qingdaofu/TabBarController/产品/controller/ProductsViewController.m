@@ -72,6 +72,7 @@
     [self headerRefreshWithAllProducts];
 }
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @"债权产品";
@@ -369,7 +370,7 @@
         
         //债权类型
         NSArray *ssssArray = [rowModel.categoryLabel componentsSeparatedByString:@","];
-        if (ssssArray.count <= 1) {
+        if (ssssArray.count == 1) {
             [cell.typeLabel2 setHidden:YES];
             [cell.typeLabel3 setHidden:YES];
             [cell.typeLabel4 setHidden:YES];
@@ -425,7 +426,6 @@
         [attriRR setAttributes:@{NSFontAttributeName:kSmallFont,NSForegroundColorAttributeName:kTextColor} range:NSMakeRange(rowModel.overdue.length,2)];
         [cell.rateView.label1 setAttributedText:attriRR];
 
-        
         return cell;
     }else if (tableView == self.tableView11){//省
         static NSString *identifier = @"aa";

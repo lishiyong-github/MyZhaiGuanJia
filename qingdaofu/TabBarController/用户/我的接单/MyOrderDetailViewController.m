@@ -1709,26 +1709,18 @@
 //查看发布方信息
 - (void)checkDetailsOfPublisherWithNameStr:(NSString *)nameStr andOrderModel:(OrderModel *)orderModel
 {
-    if ([nameStr isEqualToString:@"未认证"]) {
-        [self showHint:@"发布方未认证，不能查看相关信息"];
-    }else{
-        CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
-        checkDetailPublishVC.navTitle = @"发布方详情";
-        checkDetailPublishVC.productid = orderModel.productid;
-        checkDetailPublishVC.userid = orderModel.product.create_by;
-        [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
-    }
+    CheckDetailPublishViewController *checkDetailPublishVC = [[CheckDetailPublishViewController alloc] init];
+    checkDetailPublishVC.navTitle = @"发布方详情";
+    checkDetailPublishVC.productid = orderModel.productid;
+    checkDetailPublishVC.userid = orderModel.product.create_by;
+    [self.navigationController pushViewController:checkDetailPublishVC animated:YES];
 }
 
 //拨打发布方电话
 - (void)callDetailsOfPublisherWithNameStr:(NSString *)nameStr andOrderModel:(OrderModel *)orderModel
 {
-    if ([nameStr isEqualToString:@"未认证"]) {
-        [self showHint:@"发布方未认证，不能打电话"];
-    }else{
-        NSMutableString *phone = [NSMutableString stringWithFormat:@"telprompt://%@",orderModel.product.fabuuser.mobile];
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phone]];
-    }
+    NSMutableString *phone = [NSMutableString stringWithFormat:@"telprompt://%@",orderModel.product.fabuuser.mobile];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phone]];
 }
 
 #pragma mark - 显示尽职调查信息

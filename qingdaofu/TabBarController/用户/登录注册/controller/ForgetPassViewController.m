@@ -220,10 +220,6 @@
                              @"password" : password
                              };
     
-    //18221496879 123456 (xiaolou)
-    //13162521916 123456
-    //15000708849   123456
-    
     QDFWeakSelf;
     [self requestDataPostWithString:loginString params:params successBlock:^( id responseObject){
         
@@ -232,7 +228,6 @@
         
         if ([loginModel.code isEqualToString:@"0000"]) {
             [[NSUserDefaults standardUserDefaults] setObject:loginModel.token forKey:@"token"];
-            [[NSUserDefaults standardUserDefaults] setObject:weakself.forgetDictionay[@"mobile"] forKey:@"mobile"];
             [[NSUserDefaults standardUserDefaults] synchronize];
             
             UINavigationController *nav = weakself.navigationController;

@@ -35,111 +35,7 @@
     [super viewDidLoad];
     
     [self showTabBarItem];
-    
-//    [self setUpAllChildVc];
-//    [self configureZYPathButton];
 }
-
-/*
-- (void)configureZYPathButton {
-    ZYTabBar *tabBar = [ZYTabBar new];
-    tabBar.delegate = self;//select_   ／／tab_bar
-    ZYPathItemButton *itemButton_1 = [[ZYPathItemButton alloc]initWithImage:[UIImage imageNamed:@"tab_recommend"]highlightedImage:[UIImage imageNamed:@"tab_recommend_s"]backgroundImage:[UIImage imageNamed:@"tab_bars"]backgroundHighlightedImage:[UIImage imageNamed:@"tab_bars"]];
-    ZYPathItemButton *itemButton_2 = [[ZYPathItemButton alloc]initWithImage:[UIImage imageNamed:@"tab_product"]highlightedImage:[UIImage imageNamed:@"tab_product_s"]backgroundImage:[UIImage imageNamed:@"tab_bars"]backgroundHighlightedImage:[UIImage imageNamed:@"tab_bars"]];
-    
-    ZYPathItemButton *itemButton_3 = [[ZYPathItemButton alloc]initWithImage:[UIImage imageNamed:@"chooser-moment-icon-camera"]highlightedImage:[UIImage imageNamed:@"chooser-moment-icon-camera-highlighted"]backgroundImage:[UIImage imageNamed:@"tab_bars"]backgroundHighlightedImage:[UIImage imageNamed:@"tab_bars"]];
-    
-//    [itemButton_3 addAction:^(UIButton *btn) {
-//        NSLog(@"发布");
-//    }];
-    
-    [itemButton_3 addTarget:self action:@selector(ffffff) forControlEvents:UIControlEventTouchUpInside];
-    
-    ZYPathItemButton *itemButton_4 = [[ZYPathItemButton alloc]initWithImage:[UIImage imageNamed:@"news"]highlightedImage:[UIImage imageNamed:@"news_s"]backgroundImage:[UIImage imageNamed:@"tab_bars"]backgroundHighlightedImage:[UIImage imageNamed:@"tab_bars"]];
-    
-    ZYPathItemButton *itemButton_5 = [[ZYPathItemButton alloc]initWithImage:[UIImage imageNamed:@"tab_user"]highlightedImage:[UIImage imageNamed:@"tab_user_s"]backgroundImage:[UIImage imageNamed:@"tab_bars"]backgroundHighlightedImage:[UIImage imageNamed:@"tab_bars"]];
-    tabBar.pathButtonArray = @[itemButton_1 , itemButton_2 , itemButton_3, itemButton_4 , itemButton_5];
-    tabBar.delegate = self;
-    
-//    tabBar.basicDuration = 0.5;
-//    tabBar.allowSubItemRotation = YES;
-//    tabBar.bloomRadius = 100;
-//    tabBar.allowCenterButtonRotation = YES;
-//    tabBar.bloomAngel = 100;
-    
-    //kvc实质是修改了系统的_tabBar
-    [self setValue:tabBar forKeyPath:@"tabBar"];
-}
-
-- (void)setUpAllChildVc {
-    NewProductViewController *HomeVC = [[NewProductViewController alloc] init];
-    [self setUpOneChildVcWithVc:HomeVC Image:@"tab_recommend" selectedImage:@"tab_recommend_s" title:@"首页"];
-    
-    ProductsViewController *FishVC = [[ProductsViewController alloc] init];
-    [self setUpOneChildVcWithVc:FishVC Image:@"tab_product" selectedImage:@"tab_product_s" title:@"产品"];
-    
-    MessageViewController *MessageVC = [[MessageViewController alloc] init];
-    [self setUpOneChildVcWithVc:MessageVC Image:@"news" selectedImage:@"news_s" title:@"消息"];
-    
-    MineViewController *MineVC = [[MineViewController alloc] init];
-    [self setUpOneChildVcWithVc:MineVC Image:@"tab_user" selectedImage:@"tab_user_s" title:@"我的"];
-}
-#pragma mark - 初始化设置tabBar上面单个按钮的方法
-
-/**
- *  @author li bo, 16/05/10
- *
- *  设置单个tabBarButton
- *
- *  @param Vc            每一个按钮对应的控制器
- *  @param image         每一个按钮对应的普通状态下图片
- *  @param selectedImage 每一个按钮对应的选中状态下的图片
- *  @param title         每一个按钮对应的标题
- */
-/*
-- (void)setUpOneChildVcWithVc:(UIViewController *)Vc Image:(NSString *)image selectedImage:(NSString *)selectedImage title:(NSString *)title
-{
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:Vc];
-    
-//    Vc.view.backgroundColor = [self randomColor];
-    Vc.view.backgroundColor = kRedColor;
-    
-    
-    UIImage *myImage = [UIImage imageNamed:image];
-    myImage = [myImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    //tabBarItem，是系统提供模型，专门负责tabbar上按钮的文字以及图片展示
-    Vc.tabBarItem.image = myImage;
-    UIImage *mySelectedImage = [UIImage imageNamed:selectedImage];
-    mySelectedImage = [mySelectedImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    Vc.tabBarItem.selectedImage = mySelectedImage;
-    Vc.tabBarItem.title = title;
-    Vc.navigationItem.title = title;
-    [self addChildViewController:nav];
-    
-}
-- (UIColor *)randomColor
-{
-    CGFloat r = arc4random_uniform(256);
-    CGFloat g = arc4random_uniform(256);
-    CGFloat b = arc4random_uniform(256);
-    return [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:1.0];
-}
-- (void)pathButton:(ZYPathButton *)ZYPathButton clickItemButtonAtIndex:(NSUInteger)itemButtonIndex {
-    NSLog(@" 点中了第%ld个按钮" , itemButtonIndex);
-//    UINavigationController *Vc = [[UINavigationController alloc]initWithRootViewController:[ZYNewViewController new]];
-//    Vc.view.backgroundColor = [self randomColor];
-//    [self presentViewController:Vc animated:YES completion:nil];
-}
-
-
-- (void)ffffff
-{
-    
-}
-
-
-*/
-
 
 - (void)showTabBarItem
 {
@@ -199,6 +95,18 @@
     
     UIWindow *window = [UIApplication sharedApplication].keyWindow;
     window.rootViewController = tabBarController;
+    
+    
+    //去掉分割线
+    CGRect rect = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [[UIColor clearColor] CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    [tabBarController.tabBar setBackgroundImage:img];
+    [tabBarController.tabBar setShadowImage:img];
 }
 
 - (TabBarItem *)tabBarItemWithFram:(CGRect)frame title:(NSString *)title normalImageName:(NSString *)normalImageName selectedImageName:(NSString *)selectedImageName tabBarItemType:(TabBarItemType)tabBarItemType

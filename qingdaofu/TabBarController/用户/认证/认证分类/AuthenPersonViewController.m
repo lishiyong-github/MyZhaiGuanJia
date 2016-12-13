@@ -238,7 +238,7 @@
                 [weakself.perDataDictionary setValue:text forKey:@"cardno"];
             }];
         }else if (indexPath.row == 3){
-            cell.agentTextField.text = certificationModel.mobile?certificationModel.mobile:[weakself getValidateMobile];
+            cell.agentTextField.text = certificationModel.mobile;
             [cell setDidEndEditing:^(NSString *text) {
                 weakcell.agentTextField.text = text;
                 [weakself.perDataDictionary setValue:text forKey:@"mobile"];
@@ -330,6 +330,10 @@
 }
 
 #pragma mark - commit messages
+- (void)getAuthentyMessagesOdPerson
+{
+    
+}
 - (void)goToAuthenMessages
 {
     [self.view endEditing:YES];
@@ -381,7 +385,7 @@
     NSString *personAuString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kAuthenString];
     
     if (!self.perDataDictionary[@"mobile"]) {
-        self.perDataDictionary[@"mobile"] = self.respnseModel.certification.mobile?self.respnseModel.certification.mobile:[self getValidateMobile];
+//        self.perDataDictionary[@"mobile"] = self.respnseModel.certification.mobile?self.respnseModel.certification.mobile:[self getValidateMobile];
     }
     self.perDataDictionary[@"name"] = self.perDataDictionary[@"name"]?self.perDataDictionary[@"name"]:self.respnseModel.certification.name;
     self.perDataDictionary[@"cardno"] = self.perDataDictionary[@"cardno"]?self.perDataDictionary[@"cardno"]:self.respnseModel.certification.cardno;

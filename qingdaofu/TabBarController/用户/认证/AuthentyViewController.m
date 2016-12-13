@@ -11,7 +11,7 @@
 #import "AuthenLawViewController.h"
 #import "AuthenCompanyViewController.h"
 
-#import "AuthenCell.h"
+#import "MineUserCell.h"
 
 @interface AuthentyViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -94,28 +94,38 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier = @"authenty";
-    
-    AuthenCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
-        cell = [[AuthenCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.AuthenButton.userInteractionEnabled = NO;
     
-    NSArray *imageArr = @[@"personal_authentication",@"firm_certification",@"company_certification"];
-    NSArray *textArr = @[@"个人认证",@"律所认证",@"公司认证"];
-    NSArray *deArr = @[@"暂不支持代理",@"可代理诉讼、清收",@"可代理清收"];
+    NSArray *messageArray = @[@[@"personal_authentication",@"  个人认证"],@[@"firm_certification",@"  律所认证"],@[@"company_certification",@"  公司认证"]];
+    [cell.userNameButton setImage:[UIImage imageNamed:messageArray[indexPath.section][0]] forState:0];
+    [cell.userNameButton setTitle:messageArray[indexPath.section][1] forState:0];
     
-    cell.aImageView.image = [UIImage imageNamed:imageArr[indexPath.section]];
-    cell.bLabel.text = textArr[indexPath.section];
-    cell.cLabel.text = @"可发布清收、诉讼";
-    cell.dLabel.text = deArr[indexPath.section];
-    [cell.AuthenButton setTitle:@"  未认证" forState:0];
-    [cell.AuthenButton setTitleColor:kYellowColor forState:0];
-    [cell.AuthenButton setImage:[UIImage imageNamed:@"unauthorized"] forState:0];//authenticated@3x
+    [cell.userActionButton setImage:[UIImage imageNamed:@"unauthorized"] forState:0];
+    [cell.userActionButton setTitle:@"  未认证" forState:0];
+    [cell.userActionButton setTitleColor:kYellowColor forState:0];
+    [cell.userActionButton swapImage];
     
     return cell;
+//    cell.AuthenButton.userInteractionEnabled = NO;
+//    
+//    NSArray *imageArr = @[@"personal_authentication",@"firm_certification",@"company_certification"];
+//    NSArray *textArr = @[@"个人认证",@"律所认证",@"公司认证"];
+//    NSArray *deArr = @[@"暂不支持代理",@"可代理诉讼、清收",@"可代理清收"];
+//    
+//    cell.aImageView.image = [UIImage imageNamed:imageArr[indexPath.section]];
+//    cell.bLabel.text = textArr[indexPath.section];
+//    cell.cLabel.text = @"可发布清收、诉讼";
+//    cell.dLabel.text = deArr[indexPath.section];
+//    [cell.AuthenButton setTitle:@"  未认证" forState:0];
+//    [cell.AuthenButton setTitleColor:kYellowColor forState:0];
+//    [cell.AuthenButton setImage:[UIImage imageNamed:@"unauthorized"] forState:0];//authenticated@3x
+//    
+//    return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section

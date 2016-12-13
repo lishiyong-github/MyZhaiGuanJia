@@ -16,11 +16,7 @@
 #import "MineUserCell.h"
 #import "BaseCommitView.h"
 
-#import "CompleteCell.h"
-#import "CompleteLawCell.h"
-#import "CompleteCompanyTableViewCell.h"
-
-#import "CompleteResponse.h"
+#import "CompetetesResponse.h"
 #import "CertificationModel.h"
 
 #import "UIButton+WebCache.h"
@@ -136,7 +132,7 @@
 #pragma mark - tableView delegate and datasource
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CompleteResponse *response = self.completeDataArray[0];
+    CompetetesResponse *response = self.completeDataArray[0];
     
     CGSize titleSize = CGSizeMake(kScreenWidth - 137, MAXFLOAT);
     CGSize  actualsize =[response.certification.casedesc boundingRectWithSize:titleSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName :kFirstFont} context:nil].size;
@@ -160,7 +156,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (self.completeDataArray.count > 0) {
-        CompleteResponse *response = self.completeDataArray[0];
+        CompetetesResponse *response = self.completeDataArray[0];
         
         if ([response.certification.category integerValue] == 1) {
             return 4;
@@ -189,7 +185,7 @@
     [cell.userActionButton setTitleColor:kBlackColor forState:0];
     cell.userActionButton.titleLabel.font = kBigFont;
     
-    CompleteResponse *response = self.completeDataArray[0];
+    CompetetesResponse *response = self.completeDataArray[0];
     CertificationModel *model = response.certification;
     
     if ([response.certification.category integerValue] == 1) {//个人
@@ -300,14 +296,14 @@
 #pragma mark - method
 - (void)showCompleteMessages
 {
-    NSString *completeString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPersonCenterMessagesString];
+    NSString *completeString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kAuthenCompeteString];
     NSDictionary *params = @{@"token" : [self getValidateToken]};
     
     QDFWeakSelf;
     [self requestDataPostWithString:completeString params:params successBlock:^(id responseObject){
         [weakself.completeDataArray removeAllObjects];
                         
-        CompleteResponse *response = [CompleteResponse objectWithKeyValues:responseObject];
+        CompetetesResponse *response = [CompetetesResponse objectWithKeyValues:responseObject];
         
         if ([response.certification.canModify integerValue] == 0) {//canModify＝1可以修改，＝0不可修改
             [weakself.completeCommitButton.button setTitle:@"不可修改认证" forState:0];
@@ -331,7 +327,7 @@
 }
 
 //跳转
-- (void)goToEditCompleteMessagesWithResponseModel:(CompleteResponse *)response
+- (void)goToEditCompleteMessagesWithResponseModel:(CompetetesResponse *)response
 {
     if ([response.certification.category intValue] == 1) {//个人
         AuthenPersonViewController *authenPersonVC = [[AuthenPersonViewController alloc] init];
@@ -357,7 +353,7 @@
 - (void)rightItemAction
 {
     if (self.completeDataArray.count > 0) {
-        CompleteResponse *compleResponse = self.completeDataArray[0];
+        CompetetesResponse *compleResponse = self.completeDataArray[0];
         if ([compleResponse.completionRate integerValue] < 1) {
             [self goToEditCompleteMessagesWithResponseModel:compleResponse];
         }else{
