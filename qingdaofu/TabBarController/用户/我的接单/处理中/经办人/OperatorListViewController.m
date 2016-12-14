@@ -165,13 +165,20 @@
                             cell = [[PowerCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                         }
                         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                        [cell.statusLabel setHidden:YES];
                         
                         OrderModel *orderModel = response.orders;
                         NSString *naanna = [NSString getValidStringFromString:orderModel.realname toString:orderModel.username];
                         [cell.orderButton setTitle:naanna forState:0];
                         
                         [cell.moreImageView setImage:[UIImage imageNamed:@"contacts_icon_mark"]];
+                        
+                        if ([orderModel.create_by isEqualToString:response.userid]) {
+                            [cell.statusButton setHidden:YES];
+                        }else{
+                            [cell.statusButton setHidden:NO];
+                            [cell.statusButton setImage:[UIImage imageNamed:@"phoneqq"] forState:0];
+                        }
+                        
                         return cell;
                     }else if(indexPath.section == 1){
                         identifier = @"operator11";
@@ -222,13 +229,20 @@
                         cell = [[PowerCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                     }
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                    [cell.statusLabel setHidden:YES];
                     
                     OrderModel *orderModel = response.orders;
                     NSString *naanna = [NSString getValidStringFromString:orderModel.realname toString:orderModel.username];
                     [cell.orderButton setTitle:naanna forState:0];
                     
                     [cell.moreImageView setImage:[UIImage imageNamed:@"contacts_icon_mark"]];
+                    
+                    if ([orderModel.create_by isEqualToString:response.userid]) {
+                        [cell.statusButton setHidden:YES];
+                    }else{
+                        [cell.statusButton setHidden:NO];
+                        [cell.statusButton setImage:[UIImage imageNamed:@"phoneqq"] forState:0];
+                    }
+                    
                     return cell;
                 }
             }
@@ -244,13 +258,20 @@
                     cell = [[PowerCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                 }
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                [cell.statusLabel setHidden:YES];
                 
                 OrderModel *orderModel = response.orders;
                 NSString *naanna = [NSString getValidStringFromString:orderModel.realname toString:orderModel.username];
                 [cell.orderButton setTitle:naanna forState:0];
                 
                 [cell.moreImageView setImage:[UIImage imageNamed:@"contacts_icon_mark"]];
+                
+                if ([orderModel.create_by isEqualToString:response.userid]) {
+                    [cell.statusButton setHidden:YES];
+                }else{
+                    [cell.statusButton setHidden:NO];
+                    [cell.statusButton setImage:[UIImage imageNamed:@"phoneqq"] forState:0];
+                }
+                
                 return cell;
             }
         }else{
@@ -262,13 +283,20 @@
                     cell = [[PowerCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                 }
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                [cell.statusLabel setHidden:YES];
                 
                 OrderModel *orderModel = response.orders;
                 NSString *naanna = [NSString getValidStringFromString:orderModel.realname toString:orderModel.username];
                 [cell.orderButton setTitle:naanna forState:0];
                 
                 [cell.moreImageView setImage:[UIImage imageNamed:@"contacts_icon_mark"]];
+                
+                if ([orderModel.create_by isEqualToString:response.userid]) {
+                    [cell.statusButton setHidden:YES];
+                }else{
+                    [cell.statusButton setHidden:NO];
+                    [cell.statusButton setImage:[UIImage imageNamed:@"phoneqq"] forState:0];
+                }
+                
                 return cell;
     
             }else{//显示经办人列表
@@ -335,12 +363,44 @@
     if (self.operatorListArray.count > 0) {
         OperatorResponse *response = self.operatorListArray[0];
         if (response.accessOrdersADDOPERATOR && [response.orders.status integerValue] <= 20) {
-            if (indexPath.section == 0) {//从通讯录选择经办人
+            
+            //1.从通讯录选择经办人
+            if (indexPath.section == 0) {
                 MyMailListsViewController *myMailListsVC = [[MyMailListsViewController alloc] init];
                 myMailListsVC.mailType = @"2";
                 myMailListsVC.ordersid = self.ordersid;
                 [self.navigationController pushViewController:myMailListsVC animated:YES];
-            }        
+            }
+            
+            //2.接单方电话
+            if (![response.userid isEqualToString:response.orders.create_by]) {//显示电话
+                if (response.operators.count > 0) {
+                    if (indexPath.section == 2) {
+                        NSMutableString *phone = [NSMutableString stringWithFormat:@"telprompt://%@",response.orders.mobile];
+                        [[UIApplication sharedApplication]openURL:[NSURL URLWithString:phone]];
+                    }
+                }else{
+                    if (indexPath.section == 1) {
+                        NSMutableString *phone = [NSMutableString stringWithFormat:@"telprompt://%@",response.orders.mobile];
+                        [[UIApplication sharedApplication]openURL:[NSURL URLWithString:phone]];
+                    }
+                }
+            }
+        }else{
+            //2.接单方电话
+            if (![response.userid isEqualToString:response.orders.create_by]) {//显示电话
+                if (response.operators.count > 0) {
+                    if (indexPath.section == 1) {
+                        NSMutableString *phone = [NSMutableString stringWithFormat:@"telprompt://%@",response.orders.mobile];
+                        [[UIApplication sharedApplication]openURL:[NSURL URLWithString:phone]];
+                    }
+                }else{
+                    if (indexPath.section == 0) {
+                        NSMutableString *phone = [NSMutableString stringWithFormat:@"telprompt://%@",response.orders.mobile];
+                        [[UIApplication sharedApplication]openURL:[NSURL URLWithString:phone]];
+                    }
+                }
+            }
         }
     }
 }

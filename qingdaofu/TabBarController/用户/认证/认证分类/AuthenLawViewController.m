@@ -131,9 +131,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier;
-    
-    CertificationModel *certificationModel = self.responseModel.certification;
-    
+        
     QDFWeakSelf;
     if (indexPath.section == 0) {
         identifier = @"authenLaw0";
@@ -143,30 +141,8 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        if (self.responseModel.certification.img.count == 0) {
-            [cell.pictureButton1 setImage:[UIImage imageNamed:@"upload_positive_image"] forState:0];
-            [cell.pictureButton2 setImage:[UIImage imageNamed:@"upload_opposite_image"] forState:0];
-        }else if (self.responseModel.certification.img.count == 1){            NSArray *imgArray = [ImageModel objectArrayWithKeyValuesArray:self.responseModel.certification.img];
-            ImageModel *imageModel1 = imgArray[0];
-            NSString *qooqo = [NSString stringWithFormat:@"%@",imageModel1.file];
-            NSString *newimageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,qooqo];
-            NSURL *newimageUrl1 = [NSURL URLWithString:newimageStr1];
-            [cell.pictureButton1 sd_setImageWithURL:newimageUrl1 forState:0 placeholderImage:[UIImage imageNamed:@"upload_opposite_image"]];
-            [cell.pictureButton2 setImage:[UIImage imageNamed:@"upload_opposite_image"] forState:0];
-        }else if(self.responseModel.certification.img.count >= 2){
-            NSArray *imgArray1 = [ImageModel objectArrayWithKeyValuesArray:self.responseModel.certification.img];
-            ImageModel *imageModel1 = imgArray1[0];
-            NSString *newimageStr1 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imageModel1.file];
-            NSURL *newimageUrl1 = [NSURL URLWithString:newimageStr1];
-            [cell.pictureButton1 sd_setImageWithURL:newimageUrl1 forState:0 placeholderImage:[UIImage imageNamed:@"upload_opposite_image"]];
-            [cell.pictureButton2 setImage:[UIImage imageNamed:@"upload_opposite_image"] forState:0];
-            
-            NSArray *imgArray2 = [ImageModel objectArrayWithKeyValuesArray:self.responseModel.certification.img];
-            ImageModel *imageModel2 = imgArray2[1];
-            NSString *newimageStr2 = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,imageModel2.file];
-            NSURL *newimageUrl2 = [NSURL URLWithString:newimageStr2];
-            [cell.pictureButton2 sd_setImageWithURL:newimageUrl2 forState:0 placeholderImage:[UIImage imageNamed:@"upload_opposite_image"]];
-        }
+        [cell.pictureButton1 setImage:[UIImage imageNamed:@"upload_positive_image"] forState:0];
+        [cell.pictureButton2 setImage:[UIImage imageNamed:@"upload_opposite_image"] forState:0];
         
         [cell.pictureButton1 addAction:^(UIButton *btn) {//正面照
             [weakself addImageWithMaxSelection:1 andMutipleChoise:YES andFinishBlock:^(NSArray *images) {
@@ -231,25 +207,21 @@
             cell.agentLabel.textColor = kBlueColor;
             cell.agentTextField.userInteractionEnabled = NO;
         }else if (indexPath.row == 1){//律所名称
-            cell.agentTextField.text = certificationModel.name;
             [cell setDidEndEditing:^(NSString *text) {
                 weakcell.agentTextField.text = text;
                 [weakself.lawDataDictionary setValue:text forKey:@"name"];
             }];
         }else if (indexPath.row == 2){//执业证号
-            cell.agentTextField.text = certificationModel.cardno;
             [cell setDidEndEditing:^(NSString *text) {
                 weakcell.agentTextField.text = text;
                 [weakself.lawDataDictionary setValue:text forKey:@"cardno"];
             }];
         }else if (indexPath.row == 3){//联系人
-            cell.agentTextField.text = certificationModel.contact;
             [cell setDidEndEditing:^(NSString *text) {
                 weakcell.agentTextField.text = text;
                 [weakself.lawDataDictionary setValue:text forKey:@"contact"];
             }];
         }else{//联系方式
-            cell.agentTextField.text = certificationModel.mobile;
             [cell setDidEndEditing:^(NSString *text) {
                 weakcell.agentTextField.text = text;
                 [weakself.lawDataDictionary setValue:text forKey:@"mobile"];
@@ -284,7 +256,6 @@
                 NSMutableAttributedString *ttt = [cell.agentLabel setAttributeString:@"|  补充信息  " withColor:kBlueColor andSecond:@"(选填)" withColor:kGrayColor withFont:12];
                 [cell.agentLabel setAttributedText:ttt];
             }else { //邮箱
-                cell.agentTextField.text = certificationModel.email;
                 [cell setDidEndEditing:^(NSString *text) {
                     weakcell.agentTextField.text = text;
                     [weakself.lawDataDictionary setValue:text forKey:@"email"];
@@ -305,7 +276,6 @@
         cell.ediLabel.text = @"经典案例";
         cell.ediTextView.placeholder = @"请输入清收或诉讼成功案例";
         cell.ediTextView.font = kFirstFont;
-        cell.ediTextView.text = certificationModel.casedesc;
         
         QDFWeakSelf;
         [cell setTouchBeginPoint:^(CGPoint point) {
@@ -361,85 +331,16 @@
 {
     [self.view endEditing:YES];
     
-    if (self.imgFileIdString1 && self.imgFileIdString2) {//两张都修改了
-        NSString *imgFileIdStr = [NSString stringWithFormat:@"%@,%@",self.imgFileIdString1,self.imgFileIdString2];
-        [self.lawDataDictionary setObject:imgFileIdStr forKey:@"cardimgimg"];
-        NSString *imgFileUrlStr = [NSString stringWithFormat:@"'%@','%@'",self.imgFileUrlString1,self.imgFileUrlString2];
-        [self.lawDataDictionary setObject:imgFileUrlStr forKey:@"cardimg"];
-    }else if(!self.imgFileIdString1 && !self.imgFileIdString2){//两张都未修改
-        if (self.responseModel.certification.cardimgimg) {
-            [self.lawDataDictionary setObject:self.responseModel.certification.cardimgimg forKey:@"cardimgimg"];
-        }
-        if (self.responseModel.certification.cardimg) {
-            [self.lawDataDictionary setObject:self.responseModel.certification.cardimg forKey:@"cardimg"];
-        }
-    }else if (self.imgFileIdString1 && !self.imgFileIdString2){//修改第一张
-        NSArray *imgArr2 = [ImageModel objectArrayWithKeyValuesArray:self.responseModel.certification.img];
-        ImageModel *imgModel2;
-        NSString *imgFileIdStr2;
-        NSString *imgFileUrlStr2;
-        if (imgArr2.count == 2) {
-            imgModel2 = imgArr2[1];
-            imgFileIdStr2 = [NSString stringWithFormat:@"%@,%@",self.imgFileIdString1,imgModel2.idString];
-            imgFileUrlStr2 = [NSString stringWithFormat:@"'%@','%@'",self.imgFileUrlString1,imgModel2.file];
-        }else{
-            imgFileIdStr2 = [NSString stringWithFormat:@"%@",self.imgFileIdString1];
-            imgFileUrlStr2 = [NSString stringWithFormat:@"'%@'",self.imgFileUrlString1];
-        }
-        
-        [self.lawDataDictionary setObject:imgFileIdStr2 forKey:@"cardimgimg"];
-        [self.lawDataDictionary setObject:imgFileUrlStr2 forKey:@"cardimg"];
-        
-    }else if (!self.imgFileIdString1 && self.imgFileIdString2){//修改第二张
-        NSArray *imgArr1 = [ImageModel objectArrayWithKeyValuesArray:self.responseModel.certification.img];
-        ImageModel *imgModel1;
-        NSString *imgFileIdStr1;
-        NSString *imgFileUrlStr1;
-        if (imgArr1.count == 1) {
-            imgModel1 = imgArr1[0];
-            imgFileIdStr1 = [NSString stringWithFormat:@"%@,%@",imgModel1.idString,self.imgFileIdString2];
-            imgFileUrlStr1 = [NSString stringWithFormat:@"'%@','%@'",imgModel1.file,self.imgFileUrlString2];
-        }else{
-            imgFileIdStr1 = [NSString stringWithFormat:@"%@",self.imgFileIdString2];
-            imgFileUrlStr1 = [NSString stringWithFormat:@"'%@'",self.imgFileUrlString2];
-        }
-        [self.lawDataDictionary setObject:imgFileIdStr1 forKey:@"cardimgimg"];
-        [self.lawDataDictionary setObject:imgFileUrlStr1 forKey:@"cardimg"];
-    }
-
+    NSString *imgFileIdStr = [NSString stringWithFormat:@"%@,%@",self.imgFileIdString1,self.imgFileIdString2];
+    [self.lawDataDictionary setObject:imgFileIdStr forKey:@"cardimgimg"];
+    NSString *imgFileUrlStr = [NSString stringWithFormat:@"'%@','%@'",self.imgFileUrlString1,self.imgFileUrlString2];
+    [self.lawDataDictionary setObject:imgFileUrlStr forKey:@"cardimg"];
+    
     NSString *lawAuString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kAuthenString];
-    /*
-     @"category" : @"2",
-     @"name" : @"上海律所", //律所名称
-     @"cardno" : @"8888888888888",   //执业证号
-     @"contact" : @"律所律所",    //联系人
-     @"mobile" : @"13052358968",  //联系方式
-     @"email" : @"1234678@qq.com",    //邮箱
-     @"casedesc" : @"",  //案例
-     @"img" : @"",  //证件图片
-     @"type" : @"update",  //add=>’添加认证’。update=>’修改认证’。
-     @"token" : [weakself getValidateToken]
-     */
-    
-    if (!self.lawDataDictionary[@"mobile"]) {
-        self.lawDataDictionary[@"mobile"] = self.responseModel.certification.mobile;
-    }
-    
-    self.lawDataDictionary[@"name"] = self.lawDataDictionary[@"name"]?self.lawDataDictionary[@"name"]:self.responseModel.certification.name;
-    self.lawDataDictionary[@"cardno"] = self.lawDataDictionary[@"cardno"]?self.lawDataDictionary[@"cardno"]:self.responseModel.certification.cardno;
-    self.lawDataDictionary[@"contact"] = self.lawDataDictionary[@"contact"]?self.lawDataDictionary[@"contact"]:self.responseModel.certification.contact;
-    self.lawDataDictionary[@"email"] = self.lawDataDictionary[@"email"]?self.lawDataDictionary[@"email"]:self.responseModel.certification.email;
-    self.lawDataDictionary[@"casedesc"] = self.lawDataDictionary[@"casedesc"]?self.lawDataDictionary[@"casedesc"]:self.responseModel.certification.casedesc;
-    
-    self.lawDataDictionary[@"completionRate"] = self.responseModel.completionRate?self.responseModel.completionRate:@"";
     [self.lawDataDictionary setValue:@"2" forKey:@"category"];
     [self.lawDataDictionary setValue:[self getValidateToken] forKey:@"token"];
     
-    if ([self.typeAuthen integerValue] == 1) {
-        [self.lawDataDictionary setValue:@"update" forKey:@"type"];  //update为更新
-    }else{
-        [self.lawDataDictionary setValue:@"add" forKey:@"type"];  //add为修改
-    }
+    [self.lawDataDictionary setValue:@"add" forKey:@"type"];  //add为修改
     
     NSDictionary *params = self.lawDataDictionary;
     
@@ -456,8 +357,7 @@
             [lawNav popViewControllerAnimated:NO];
             
             AuthentyWaitingViewController *waitingVC = [[AuthentyWaitingViewController alloc] init];
-            waitingVC.categoryString = weakself.categoryString;
-            waitingVC.hidesBottomBarWhenPushed = YES;
+            waitingVC.backString = @"2";
             [lawNav pushViewController:waitingVC animated:NO];
         }
 
@@ -468,8 +368,6 @@
 
 - (void)back
 {
-    if (!self.responseModel && !self.lawDataDictionary) {
-
     UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:nil message:@"是否放弃保存？" preferredStyle:UIAlertControllerStyleAlert];
     
     QDFWeakSelf;
@@ -483,10 +381,6 @@
     [alertVC addAction:act2];
     
     [self presentViewController:alertVC animated:YES completion:nil];
-        
-    }else{
-        [self.navigationController popViewControllerAnimated:YES];
-    }
 }
 
 - (void)didReceiveMemoryWarning {

@@ -171,14 +171,25 @@
             }else{//发布人信息
                 if (self.certifiDataArray.count > 0) {
                     
-                    weakself.switchType = @"34";
-                    [weakself.productsDetailsTableView reloadData];
+                    CertificationModel *certificationModel = self.certifiDataArray[0];
+                    
+                    if (certificationModel.state && [certificationModel.state integerValue] == 1) {
+                        weakself.switchType = @"34";
+                        [weakself.productsDetailsTableView reloadData];
+                    }else{
+                        weakself.switchType = @"33";
+                        [weakproductSwitchView.getbutton setTitleColor:kBlueColor forState:0];
+                        [weakproductSwitchView.sendButton setTitleColor:kBlackColor forState:0];
+                        weakproductSwitchView.leftBlueConstraints.constant = 0;
+                        [weakself showHint:@"发布方未认证，不能查看相关信息"];
+                    }
                     
                 }else{
-                    [weakself showHint:@"发布方未认证，不能查看相关信息"];
+                    weakself.switchType = @"33";
                     [weakproductSwitchView.getbutton setTitleColor:kBlueColor forState:0];
                     [weakproductSwitchView.sendButton setTitleColor:kBlackColor forState:0];
                     weakproductSwitchView.leftBlueConstraints.constant = 0;
+                    [weakself showHint:@"发布方未认证，不能查看相关信息"];
                 }
             }
         }];

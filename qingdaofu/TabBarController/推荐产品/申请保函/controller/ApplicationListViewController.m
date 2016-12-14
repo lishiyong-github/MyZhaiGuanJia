@@ -197,15 +197,15 @@
         [cell.orderButton setImage:[UIImage imageNamed:@"Lette_of_guarantee"] forState:0];
         
         if ([applicationModel.status integerValue] == 1) {//审核中
-            cell.statusLabel.text = @"审核中";
+            [cell.statusButton setTitle:@"审核中" forState:0];
         }else if ([applicationModel.status integerValue] == 10) {//审核通过
-            cell.statusLabel.text = @"审核通过";
+            [cell.statusButton setTitle:@"审核通过" forState:0];
         }else if ([applicationModel.status integerValue] == 20) {//协议已签订
-            cell.statusLabel.text = @"协议已签订";
+            [cell.statusButton setTitle:@"协议已签订" forState:0];
         }else if ([applicationModel.status integerValue] == 30) {//保函已出
-            cell.statusLabel.text = @"保函已出";
+            [cell.statusButton setTitle:@"保函已出" forState:0];
         }else if ([applicationModel.status integerValue] == 40) {//完成／退保
-            cell.statusLabel.text = @"完成/退保";
+            [cell.statusButton setTitle:@"完成/退保" forState:0];
         }
         
         return cell;

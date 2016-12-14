@@ -89,7 +89,6 @@
 -(UIBarButtonItem *)leftItemAnother
 {
     if (!_leftItemAnother) {
-//        _leftItemAnother = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"close"] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
         UIButton *wwww = [UIButton buttonWithType:0];
         wwww.frame = CGRectMake(0, 0, 22, 25);
         [wwww setImage:[UIImage imageNamed:@"close"] forState:0];

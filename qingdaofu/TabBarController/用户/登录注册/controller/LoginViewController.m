@@ -307,9 +307,6 @@
 
 - (void)back
 {
-    UIWindow *window = [UIApplication sharedApplication].keyWindow;
-    UITabBarController *tabBarController = (UITabBarController *)window.rootViewController;
-    tabBarController.selectedIndex = 0;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

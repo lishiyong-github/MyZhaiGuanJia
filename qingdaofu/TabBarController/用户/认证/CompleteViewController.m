@@ -27,10 +27,8 @@
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 @property (nonatomic,strong) UITableView *completeTableView;
-@property (nonatomic,strong) UIButton *comFooterView;
-@property (nonatomic,strong) BaseCommitView *completeCommitButton;
-@property (nonatomic,strong) UIButton *navRightButton;
 
+//json
 @property (nonatomic,strong) NSMutableArray *completeDataArray;
 
 @end
@@ -46,17 +44,7 @@
     [super viewDidLoad];
     
     self.navigationItem.leftBarButtonItem = self.leftItem;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightButton];
-    self.rightButton.layer.cornerRadius = corner;
-    self.rightButton.layer.masksToBounds = YES;
-    self.rightButton.layer.borderColor = kWhiteColor.CGColor;
-    self.rightButton.layer.borderWidth = kLineWidth;
-    [self.rightButton setTitle:@"编辑资料" forState:0];
-    self.rightButton.contentHorizontalAlignment = 0;
-
-    
     [self.view addSubview:self.completeTableView];
-    [self.view addSubview:self.completeCommitButton];
     
     [self.view setNeedsUpdateConstraints];
 }
@@ -65,11 +53,7 @@
 {
     if (!self.didSetupConstraints) {
         
-        [self.completeTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
-        [self.completeTableView autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.completeCommitButton];
-        
-        [self.completeCommitButton autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [self.completeCommitButton autoSetDimension:ALDimensionHeight toSize:kCellHeight4];
+        [self.completeTableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
         
         self.didSetupConstraints = YES;
     }
@@ -88,37 +72,6 @@
         _completeTableView.separatorColor = kSeparateColor;
     }
     return _completeTableView;
-}
-
-- (BaseCommitView *)completeCommitButton
-{
-    if (!_completeCommitButton) {
-        _completeCommitButton = [BaseCommitView newAutoLayoutView];
-        [_completeCommitButton.button setTitle:@"修改认证" forState:0];
-        
-        QDFWeakSelf;
-        [_completeCommitButton addAction:^(UIButton *btn) {
-            AuthentyViewController *authentyVC = [[AuthentyViewController alloc] init];
-            authentyVC.typeAuthty = @"1";
-            [weakself.navigationController pushViewController:authentyVC animated:YES];
-        }];
-    }
-    return _completeCommitButton;
-}
-
-- (UIButton *)comFooterView
-{
-    if (!_comFooterView) {
-        _comFooterView = [UIButton buttonWithType:0];
-        _comFooterView.frame = CGRectMake(0, 0, kScreenWidth, 40);
-        [_comFooterView setTitle:@"在您未发布及未接单前，您可以根据实际需要，修改您的身份认证" forState:0];
-        [_comFooterView setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
-        [_comFooterView setTitleColor:kLightGrayColor forState:0];
-        _comFooterView.titleLabel.font = kSecondFont;
-        _comFooterView.titleLabel.numberOfLines = 0;
-        [_comFooterView setContentEdgeInsets:UIEdgeInsetsMake(kSmallPadding, kBigPadding, kBigPadding, kBigPadding)];
-    }
-    return _comFooterView;
 }
 
 - (NSMutableArray *)completeDataArray
@@ -260,11 +213,6 @@
     return 150;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return 50;
-}
-
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView *headerView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 150)];
@@ -275,22 +223,6 @@
     [headerView addSubview:imageView];
     
     return headerView;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 50)];
-    
-    UILabel *label = [UILabel newAutoLayoutView];
-    label.textColor = kLightGrayColor;
-    label.text = @"在您未发布及未接单前，您可以根据实际需要，修改您的身份认证";
-    label.font = kSmallFont;
-    label.numberOfLines = 0;
-    [footerView addSubview:label];
-    
-    [label autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(kBigPadding, kBigPadding, 0, kBigPadding) excludingEdge:ALEdgeBottom];
-    
-    return footerView;
 }
 
 #pragma mark - method
@@ -304,11 +236,6 @@
         [weakself.completeDataArray removeAllObjects];
                         
         CompetetesResponse *response = [CompetetesResponse objectWithKeyValues:responseObject];
-        
-        if ([response.certification.canModify integerValue] == 0) {//canModify＝1可以修改，＝0不可修改
-            [weakself.completeCommitButton.button setTitle:@"不可修改认证" forState:0];
-            weakself.completeCommitButton.userInteractionEnabled = NO;
-        }
         
         if ([response.certification.category integerValue] == 1) {
             self.title = @"个人认证成功";
@@ -331,34 +258,13 @@
 {
     if ([response.certification.category intValue] == 1) {//个人
         AuthenPersonViewController *authenPersonVC = [[AuthenPersonViewController alloc] init];
-        authenPersonVC.typeAuthen = @"1";
-        authenPersonVC.respnseModel = response;
-        authenPersonVC.categoryString = response.certification.category;
         [self.navigationController pushViewController:authenPersonVC animated:YES];
     }else if ([response.certification.category intValue] == 2){//律所
         AuthenLawViewController *authenLawVC = [[AuthenLawViewController alloc] init];
-        authenLawVC.responseModel = response;
-        authenLawVC.typeAuthen = @"1";
-        authenLawVC.categoryString = response.certification.category;
         [self.navigationController pushViewController:authenLawVC animated:YES];
     }else if([response.certification.category intValue] == 3){//公司
         AuthenCompanyViewController *authenCompanyVC = [[AuthenCompanyViewController alloc] init];
-        authenCompanyVC.responseModel = response;
-        authenCompanyVC.typeAuthen = @"1";
-        authenCompanyVC.categoryString = response.certification.category;
         [self.navigationController pushViewController:authenCompanyVC animated:YES];
-    }
-}
-
-- (void)rightItemAction
-{
-    if (self.completeDataArray.count > 0) {
-        CompetetesResponse *compleResponse = self.completeDataArray[0];
-        if ([compleResponse.completionRate integerValue] < 1) {
-            [self goToEditCompleteMessagesWithResponseModel:compleResponse];
-        }else{
-            [self showHint:@"认证信息已完善，不能编辑资料了"];
-        }
     }
 }
 

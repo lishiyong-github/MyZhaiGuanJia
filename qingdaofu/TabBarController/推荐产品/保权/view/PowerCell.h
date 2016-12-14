@@ -12,7 +12,7 @@
 
 @property (nonatomic,strong) UIButton *orderButton;
 @property (nonatomic,strong) UIImageView *moreImageView;
-@property (nonatomic,strong) UILabel *statusLabel;
+@property (nonatomic,strong) UIButton *statusButton;
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
 

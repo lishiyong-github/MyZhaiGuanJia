@@ -7,8 +7,6 @@
 //
 
 #import "MyStoreViewController.h"
-//#import "MyDetailStoreViewController.h"    //收藏详细
-#import "MyOrderViewController.h" //我的接单
 #import "ProductsDetailsViewController.h" //详细
 
 #import "ExtendHomeCell.h"
@@ -44,8 +42,8 @@
     [super viewDidLoad];
     self.title = @"我的收藏";
     self.navigationItem.leftBarButtonItem = self.leftItem;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightButton];
-    [self.rightButton setTitle:@"编辑" forState:0];
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightButton];
+//    [self.rightButton setTitle:@"编辑" forState:0];
     
     [self.view addSubview:self.myStoreTableView];
     [self.view addSubview:self.baseRemindImageView];
@@ -127,13 +125,18 @@
     
     //details
     //委托本金
-    NSString *orString0 = [NSString stringWithFormat:@"委托本金：%@",storeModel.accountLabel];
+    NSString *orString0 = [NSString stringWithFormat:@"委托本金：%@万",storeModel.accountLabel];
     //债权类型
     NSString *orString1 = [NSString stringWithFormat:@"债权类型：%@",storeModel.categoryLabel];
     //委托事项
     NSString *orString2 = [NSString stringWithFormat:@"委托事项：%@",storeModel.entrustLabel];
     //委托费用
-    NSString *orString3 = [NSString stringWithFormat:@"委托费用：%@%@",storeModel.typenumLabel,storeModel.typeLabel];
+    NSString *orString3;
+    if ([storeModel.typeLabel isEqualToString:@"万"]) {
+        orString3 = [NSString stringWithFormat:@"固定费用：%@%@",storeModel.typenumLabel,storeModel.typeLabel];
+    }else if ([storeModel.typeLabel isEqualToString:@"%"]){
+        orString3 = [NSString stringWithFormat:@"风险费率：%@%@",storeModel.typenumLabel,storeModel.typeLabel];
+    }
     
     //违约期限
     NSString *orString4 = [NSString stringWithFormat:@"违约期限：%@个月",storeModel.overdue];

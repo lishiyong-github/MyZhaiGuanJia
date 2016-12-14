@@ -12,8 +12,8 @@
 
 @interface AuthenCompanyViewController : NetworkViewController
 
-@property (nonatomic,strong) CompetetesResponse *responseModel;
-@property (nonatomic,strong) NSString *typeAuthen;
-@property (nonatomic,strong) NSString *categoryString;  //1:个人；2:律所；3:公司
-
+//@property (nonatomic,strong) CompetetesResponse *responseModel;
+//@property (nonatomic,strong) NSString *typeAuthen;
+//@property (nonatomic,strong) NSString *categoryString;  //1:个人；2:律所；3:公司
+//
 @end

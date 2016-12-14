@@ -10,6 +10,6 @@
 
 @interface AuthentyWaitingViewController : BaseViewController
 
-@property (nonatomic,strong) NSString *categoryString;
+@property (nonatomic,strong) NSString *backString; //1－pop一次，2-pop多次
 
 @end

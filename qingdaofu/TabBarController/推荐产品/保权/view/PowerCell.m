@@ -16,7 +16,7 @@
     if (self) {
         [self.contentView addSubview:self.orderButton];
         [self.contentView addSubview:self.moreImageView];
-        [self.contentView addSubview:self.statusLabel];
+        [self.contentView addSubview:self.statusButton];
         
         [self setNeedsUpdateConstraints];
     }
@@ -33,8 +33,8 @@
         [self.moreImageView autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.orderButton withOffset:kBigPadding];
         [self.moreImageView autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.orderButton];
         
-        [self.statusLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
-        [self.statusLabel autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.moreImageView];
+        [self.statusButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
+        [self.statusButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.moreImageView];
         
         self.didSetupConstraints = YES;
     }
@@ -60,14 +60,14 @@
     return _moreImageView;
 }
 
-- (UILabel *)statusLabel
+- (UIButton *)statusButton
 {
-    if (!_statusLabel) {
-        _statusLabel = [UILabel newAutoLayoutView];
-        _statusLabel.textColor = kRedColor;
-        _statusLabel.font = kSecondFont;
+    if (!_statusButton) {
+        _statusButton = [UIButton newAutoLayoutView];
+        [_statusButton setTitleColor:kRedColor forState:0];
+        _statusButton.titleLabel.font = kSecondFont;
     }
-    return _statusLabel;
+    return _statusButton;
 }
 
 - (void)awakeFromNib {

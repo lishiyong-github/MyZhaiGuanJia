@@ -46,15 +46,10 @@
             LoginViewController *loginVC = [[LoginViewController alloc] init];
             UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:loginVC];
             [weakself presentViewController:nav animated:YES completion:nil];
-        }else if([baseModel.code isEqualToString:@"3002"]){//无权限
-            [weakself showHint:baseModel.msg];
-        }else if ([baseModel.code isEqualToString:@"3015"]){
+        }else if ([baseModel.code isEqualToString:@"3015"]){//未认证
             [weakself showHint:baseModel.msg];
             AuthentyViewController *authentyVC = [[AuthentyViewController alloc] init];
-            authentyVC.typeAuthty = @"0";
             [weakself.navigationController pushViewController:authentyVC animated:YES];
-        }else if ([baseModel.code isEqualToString:@"0003"]){
-            [weakself showHint:baseModel.msg];
         }else{
             if (successBlock) {
                 successBlock(responseObject);

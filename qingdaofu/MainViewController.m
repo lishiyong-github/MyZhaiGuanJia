@@ -49,7 +49,6 @@
         }
     }
     
-    
     NewProductViewController *newProductVC = [[NewProductViewController alloc] init];
     UINavigationController *newproductNav = [[UINavigationController alloc] initWithRootViewController:newProductVC];
     
@@ -83,7 +82,6 @@
     TabBarItem *newProductItem = [self tabBarItemWithFram:CGRectMake(0, 0, normalButtonWidth, tabBarHeight) title:@"首页" normalImageName:@"tab_recommend" selectedImageName:@"tab_recommend_s" tabBarItemType:TabBarItemTypeNormal];
     TabBarItem *productsItem = [self tabBarItemWithFram:CGRectMake(normalButtonWidth, 0, normalButtonWidth, tabBarHeight) title:@"产品" normalImageName:@"tab_product" selectedImageName:@"tab_product_s" tabBarItemType:TabBarItemTypeNormal];
     
-//    TabBarItem *publishItem = [self tabBarItemWithFram:CGRectMake(normalButtonWidth * 2, 4.5, normalButtonWidth, tabBarHeight) title:@"" normalImageName:@"publishs" selectedImageName:@"" tabBarItemType:TabBarItemTypeRise];
     TabBarItem *publishItem = [self tabBarItemWithFram:CGRectMake(normalButtonWidth * 2, 0, normalButtonWidth, tabBarHeight) title:@"发布" normalImageName:@"center" selectedImageName:@"center" tabBarItemType:TabBarItemTypeRise];
 
     TabBarItem *messageItem = [self tabBarItemWithFram:CGRectMake(normalButtonWidth * 3, 0, normalButtonWidth, tabBarHeight) title:@"消息" normalImageName:@"news" selectedImageName:@"news_s" tabBarItemType:TabBarItemTypeNormal];

@@ -21,7 +21,7 @@
 @property (nonatomic,copy) NSString *enterprisewebsite;   //公司网址
 @property (nonatomic,copy) NSString *mobile;//联系方式
 @property (nonatomic,copy) NSString *name;      //用户名
-@property (nonatomic,copy) NSString *state;
+@property (nonatomic,copy) NSString *state; //nil-未认证，0-提交审核，1-已认证，2-认证失败
 @property (nonatomic,copy) NSString *uidInner;
 
 

@@ -42,15 +42,10 @@
     
     [self.view setNeedsUpdateConstraints];
     
-//    [self addKeyboardObserver];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    
     [self showHint:@"产调业务暂时停止"];
-    [self.navigationController popViewControllerAnimated:YES];
+    [self back];
+    
+//    [self addKeyboardObserver];
 }
 
 //- (void)dealloc

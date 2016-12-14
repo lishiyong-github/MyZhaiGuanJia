@@ -11,6 +11,7 @@
 #import "PersonCerterViewController.h" //个人中心
 #import "AuthentyViewController.h"
 #import "CompleteViewController.h"
+#import "AuthentyWaitingViewController.h" //等待审核
 #import "ModifyPassWordViewController.h"  //修改密码
 #import "NewMobileViewController.h"
 #import "ReceiptAddressViewController.h" //收货地址
@@ -161,18 +162,27 @@
         [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
         
         if (response.certification) {
-            if ([response.certification.category integerValue] == 1) {
-                [cell.userActionButton setTitle:@"已认证个人" forState:0];
-            }else if ([response.certification.category integerValue] == 2) {
-                [cell.userActionButton setTitle:@"已认证律所" forState:0];
-            }else if ([response.certification.category integerValue] == 3) {
-                [cell.userActionButton setTitle:@"已认证公司" forState:0];
+            if (!response.certification.state) {
+                [cell.userActionButton setTitle:@"未认证" forState:0];
+            }else if([response.certification.state integerValue] == 0){
+                [cell.userActionButton setTitle:@"等待客服审核" forState:0];
+            }else if ([response.certification.state integerValue] == 1){
+                if ([response.certification.category integerValue] == 1) {
+                    [cell.userActionButton setTitle:@"已认证个人" forState:0];
+                }else if ([response.certification.category integerValue] == 2) {
+                    [cell.userActionButton setTitle:@"已认证律所" forState:0];
+                }else if ([response.certification.category integerValue] == 3) {
+                    [cell.userActionButton setTitle:@"已认证公司" forState:0];
+                }
+            }else if ([response.certification.state integerValue] == 2){
+                [cell.userActionButton setTitle:@"认证失败" forState:0];
             }
         }else{
-            [cell.userActionButton setTitle:@"待认证" forState:0];
+            [cell.userActionButton setTitle:@"未认证" forState:0];
         }
-            
+        
         return cell;
+        
     }else if (indexPath.section == 2){
         if (indexPath.row == 0) {
             identifier = @"setting20";
@@ -276,11 +286,25 @@
         [self.navigationController pushViewController:personCerterVC animated:YES];
     }else if(indexPath.section == 1){//身份认证
         if (response.certification) {
-            CompleteViewController *completeVC = [[CompleteViewController alloc] init];
-            [self.navigationController pushViewController:completeVC animated:YES];
+            if (!response.certification.state) {
+                AuthentyViewController *authentyVC = [[AuthentyViewController alloc] init];
+//                authentyVC.typeAuthty = @"0";
+                [self.navigationController pushViewController:authentyVC animated:YES];
+            }else if([response.certification.state integerValue] == 0){
+                AuthentyWaitingViewController *authentyWaitingVC = [[AuthentyWaitingViewController alloc] init];
+                authentyWaitingVC.backString = @"1";
+                [self.navigationController pushViewController:authentyWaitingVC animated:YES];
+            }else if ([response.certification.state integerValue] == 1){
+                CompleteViewController *completeVC = [[CompleteViewController alloc] init];
+                [self.navigationController pushViewController:completeVC animated:YES];
+            }else if ([response.certification.state integerValue] == 2){
+                AuthentyViewController *authentyVC = [[AuthentyViewController alloc] init];
+//                authentyVC.typeAuthty = @"0";
+                [self.navigationController pushViewController:authentyVC animated:YES];
+            }
         }else{
             AuthentyViewController *authentyVC = [[AuthentyViewController alloc] init];
-            authentyVC.typeAuthty = @"0";
+//            authentyVC.typeAuthty = @"0";
             [self.navigationController pushViewController:authentyVC animated:YES];
         }
     }else if (indexPath.section == 2 && indexPath.row == 0){//设置登录密码

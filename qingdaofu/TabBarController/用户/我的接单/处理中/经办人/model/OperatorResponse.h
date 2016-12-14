@@ -11,7 +11,7 @@
 
 @interface OperatorResponse : BaseModel
 
-@property (nonatomic,assign) BOOL accessOrdersADDOPERATOR;  //添加经办人
+@property (nonatomic,assign) BOOL accessOrdersADDOPERATOR;  //添加经办人权限
 @property (nonatomic,strong) NSMutableArray *operators;  //经办人
 @property (nonatomic,strong) OrderModel *orders;  //接单方
 

@@ -189,10 +189,6 @@
 
 #define kProductsRecommendListString  @"capital/recommendlist"   //推荐产品列表
 
-#define kProvinceString @"common/province"  //产品页面获取省份
-#define kCityString @"common/city"  //产品页面获取市
-#define kDistrictString @"common/area"  //产品页面获取区
-
 #define kMySaveString @"product/preservation"    //我的保存
 #define kDeleteSaveString  @"public/deleteproduct"  //删除保存
 #define kMySavePublishString @"public/releaselist"  //我的保存里面的发布
@@ -268,7 +264,7 @@
 #define kMySettingOfConfirmNewPhone @"userinfo/changemobile"  ////设置－修改手机号－确认修改新手机号码
 #define kPersonCerterOfChangeNickString @"userinfo/nkname"  //个人中心－修改昵称
 ////////////
-#define kPersonCenterMessageString @"userinfo/detail"  //发布方信息
+#define kPersonCenterMessageString @"userinfo/detail"  //查看发布方信息
 #define kPersonCenterMessagesString @"userinfo/info"  ////用户中心基本信息（头像，昵称，手机号）
 #define kPersonCenterMessagesStringOfChangePicture @"userinfo/uploadsimg" //用户中心基本信息-修改头像
 
