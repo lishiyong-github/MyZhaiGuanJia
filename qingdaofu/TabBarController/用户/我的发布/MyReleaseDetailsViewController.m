@@ -588,7 +588,13 @@
                     }
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     [cell setSeparatorInset:UIEdgeInsetsMake(0, kScreenWidth, 0, 0)];
-                    [cell.ppLine1 setHidden:YES];
+                    
+                    if (dataModel.productApply.orders.productOrdersLogs.count > 1) {
+                        [cell.ppLine1 setHidden:YES];
+                    }else{
+                        [cell.ppLine1 setHidden:YES];
+                        [cell.ppLine2 setHidden:YES];
+                    }
                     
                     OrdersLogsModel *ordersLogsModel = dataModel.productApply.orders.productOrdersLogs[indexPath.row-1];
                     
@@ -968,8 +974,11 @@
                 }else{//发布中
                     weakself.heightCheckViewConstraints.constant = 92;
                     weakself.publishCheckView.topBtnConstraints.constant = 0;
+                    weakself.publishCheckView.comButton1.backgroundColor = kWhiteColor;
                     [weakself.publishCheckView.comButton2 setBackgroundColor:kSeparateColor];
                     weakself.publishCheckView.comButton2.userInteractionEnabled = NO;
+                    [weakself.publishCheckView.comButton2 setTitle:@"发起面谈" forState:0];
+                    [weakself.publishCheckView.comButton2 setTitleColor:kWhiteColor forState:0];
                     
                     NSString *ppp1 = @"需准备的";
                     NSString *ppp2 = @"《材料清单》";

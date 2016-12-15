@@ -9,11 +9,13 @@
 #import "LoginViewController.h"
 #import "RegisterViewController.h"  //注册
 #import "ForgetPassViewController.h"  //忘记密码
-#import "MineViewController.h"
+#import "NewProductViewController.h"
 
 #import "LoginCell.h"
 #import "EvaTopSwitchView.h"
 #import "BaseCommitButton.h"
+
+#import "UIViewController+SelectedIndex.h"
 @interface LoginViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,strong) EvaTopSwitchView *loginSwitchView;
@@ -26,12 +28,17 @@
 
 @implementation LoginViewController
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginUserAnother:) name:@"login" object:nil];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @"登录";
     self.navigationItem.leftBarButtonItem = self.leftItemAnother;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"注册" style:UIBarButtonItemStylePlain target:self action:@selector(registerNewUser)];
-    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName:kBigFont,NSForegroundColorAttributeName:kWhiteColor} forState:0];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightButton];
+    [self.rightButton setTitle:@"注册" forState:0];
     
     [self setupForDismissKeyboard];
     
@@ -230,7 +237,6 @@
     [forgrtButton autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:loginCommitButton];
     
     return footerView;
-    
 }
 
 #pragma mark - method
@@ -238,7 +244,6 @@
 {
     [self.view endEditing:YES];
     NSString *codeString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kLoginGetCodeString];
-    self.loginDictionary[@"mobile"] = self.loginDictionary[@"mobile"]?self.loginDictionary[@"mobile"]:@"";
     
     NSDictionary *params = self.loginDictionary;
     
@@ -268,7 +273,7 @@
     }];
 }
 
-- (void)registerNewUser
+- (void)rightItemAction
 {
     RegisterViewController *registerVC = [[RegisterViewController alloc] init];
     [self.navigationController pushViewController:registerVC animated:YES];
@@ -278,14 +283,52 @@
 {
     [self.view endEditing:YES];
     NSString *loginString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kLoginString];
+    NSDictionary *params = self.loginDictionary;
+
+    QDFWeakSelf;
+    [self requestDataPostWithString:loginString params:params successBlock:^( id responseObject){
+        
+        BaseModel *loginModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:loginModel.msg];
+        
+        if ([loginModel.code isEqualToString:@"0000"]) {
+            [[NSUserDefaults standardUserDefaults] setObject:loginModel.token forKey:@"token"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
+            [weakself dismissViewControllerAnimated:YES completion:nil];
+        }
+        
+    } andFailBlock:^(NSError *error){
+        
+    }];
+}
+
+- (void)loginUserAnother:(NSNotification *)notification
+{
+    [self.view endEditing:YES];
+    NSString *loginString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kLoginString];
     
-    NSString *mobile = self.loginDictionary[@"mobile"]?self.loginDictionary[@"mobile"]:@"";
-    NSString *password = self.loginDictionary[@"password"]?self.loginDictionary[@"password"]:@"";
-    
-    NSDictionary *params = @{@"mobile" : mobile,
-                             @"password" : password,
-                             @"logintype" : self.loginType
-                             };
+    NSDictionary *params;
+    if (notification.userInfo) {//从注册页面过来
+        self.loginSwitchView.leftBlueConstraints.constant = kScreenWidth/2;
+        [self.loginSwitchView.sendButton setTitleColor:kTextColor forState:0];
+        [self.loginSwitchView.getbutton setTitleColor:kBlackColor forState:0];
+        
+        //显示内容
+        LoginCell *cell0 = [self.loginTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+        [cell0.getCodebutton setHidden:YES];
+        [cell0.loginSwitch setHidden:YES];
+        cell0.loginTextField.text = notification.userInfo[@"mobile"];
+        
+        //row==1
+        LoginCell *cell1 = [self.loginTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+        [cell1.getCodebutton setHidden:YES];
+        [cell1.loginSwitch setHidden:NO];
+        cell1.loginTextField.secureTextEntry = YES;
+        cell1.loginTextField.text = notification.userInfo[@"password"];
+        
+        params = notification.userInfo;
+    }
 
     QDFWeakSelf;
     [self requestDataPostWithString:loginString params:params successBlock:^( id responseObject){
@@ -307,7 +350,20 @@
 
 - (void)back
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if ([self.backWay integerValue] == 1) {
+        UIWindow *window = [UIApplication sharedApplication].keyWindow;
+        UITabBarController *tabBarController = (UITabBarController *)window.rootViewController;
+//        tabBarController.selectedIndex = 0;
+////        [self setSelectedIndex:0];
+//        [self dismissViewControllerAnimated:YES completion:nil];
+//        [self setSelectedIndex:0];
+        tabBarController.selectedIndex = 0;
+        
+        [self dismissViewControllerAnimated:YES completion:nil];
+
+    }else{
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

@@ -168,23 +168,45 @@
     NSString *aoaoa = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPersonCenterMessagesString];
     NSDictionary *params = @{@"token" : [self getValidateToken]};
     
+    AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
+    session.responseSerializer = [AFHTTPResponseSerializer serializer];
+    session.requestSerializer = [AFHTTPRequestSerializer serializer];
+    
     QDFWeakSelf;
-    [self requestDataPostWithString:aoaoa params:params successBlock:^(id responseObject) {
-        CompleteResponse *response = [CompleteResponse objectWithKeyValues:responseObject];
+    [session POST:aoaoa parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
         
-        if ([response.code isEqualToString:@"0000"]) {
-            weakself.loginView.completeResponse = response;
-            [weakself.loginView reloadData];
-        }else if ([response.code isEqualToString:@"3001"]){//未登录
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        CompleteResponse *response = [CompleteResponse objectWithKeyValues:responseObject];
+        if ([response.code isEqualToString:@"3001"]) {
             LoginViewController *loginVC = [[LoginViewController alloc] init];
             loginVC.hidesBottomBarWhenPushed = YES;
+            loginVC.backWay = @"1";
             UINavigationController *msss = [[UINavigationController alloc] initWithRootViewController:loginVC];
             [weakself presentViewController:msss animated:YES completion:nil];
+            
+        }else{
+            weakself.loginView.completeResponse = response;
+            [weakself.loginView reloadData];
         }
-        
-    } andFailBlock:^(NSError *error) {
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
     }];
+//    [self requestDataPostWithString:aoaoa params:params successBlock:^(id responseObject) {
+//        CompleteResponse *response = [CompleteResponse objectWithKeyValues:responseObject];
+//        
+//        if ([response.code isEqualToString:@"0000"]) {
+//            weakself.loginView.completeResponse = response;
+//            [weakself.loginView reloadData];
+//        }else if ([response.code isEqualToString:@"3001"]){//未登录
+//            LoginViewController *loginVC = [[LoginViewController alloc] init];
+//            loginVC.hidesBottomBarWhenPushed = YES;
+//            UINavigationController *msss = [[UINavigationController alloc] initWithRootViewController:loginVC];
+//            [weakself presentViewController:msss animated:YES completion:nil];
+//        }
+//        
+//    } andFailBlock:^(NSError *error) {
+//        
+//    }];
 }
 
 - (void)rightItemAction

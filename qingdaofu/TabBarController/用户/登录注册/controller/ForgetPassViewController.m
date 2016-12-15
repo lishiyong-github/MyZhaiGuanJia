@@ -201,47 +201,13 @@
         [weakself showHint:forgetModel.msg];
         
         if ([forgetModel.code isEqualToString:@"0000"]) {
-            [weakself loginUser];
+            [weakself back];
         }
         
     } andFailBlock:^(NSError *error){
         
     }];
 }
-
-- (void)loginUser
-{
-    NSString *loginString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kLoginString];
-    
-    NSString *mobile = self.forgetDictionay[@"mobile"];
-    NSString *password = self.forgetDictionay[@"new_password"];
-    
-    NSDictionary *params = @{@"mobile" : mobile,
-                             @"password" : password
-                             };
-    
-    QDFWeakSelf;
-    [self requestDataPostWithString:loginString params:params successBlock:^( id responseObject){
-        
-        BaseModel *loginModel = [BaseModel objectWithKeyValues:responseObject];
-        [weakself showHint:loginModel.msg];
-        
-        if ([loginModel.code isEqualToString:@"0000"]) {
-            [[NSUserDefaults standardUserDefaults] setObject:loginModel.token forKey:@"token"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-            
-            UINavigationController *nav = weakself.navigationController;
-            [nav popViewControllerAnimated:NO];
-            [nav popViewControllerAnimated:NO];
-        }else{
-            [weakself.navigationController popViewControllerAnimated:YES];
-        }
-        
-    } andFailBlock:^(NSError *error){
-        [self.navigationController popViewControllerAnimated:YES];
-    }];
-}
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -31,7 +31,7 @@
     AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
     session.responseSerializer = [AFHTTPResponseSerializer serializer];
     session.requestSerializer = [AFHTTPRequestSerializer serializer];
-    session.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/html", nil];
+//    session.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/html", nil];
 
     
     QDFWeakSelf;

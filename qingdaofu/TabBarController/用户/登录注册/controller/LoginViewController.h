@@ -10,4 +10,6 @@
 
 @interface LoginViewController : NetworkViewController
 
+@property (nonatomic,strong) NSString *backWay; //返回方式  1-返回到首页，其他返回上一页
+
 @end

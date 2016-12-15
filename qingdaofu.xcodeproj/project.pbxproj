@@ -1903,8 +1903,7 @@
 				A1044E001DAB6B8C007F857D /* HelpCenterViewController.h */,
 				A1044E011DAB6B8C007F857D /* HelpCenterViewController.m */,
 			);
-			name = "帮助中心";
-			path = "../帮助中心";
+			path = "帮助中心";
 			sourceTree = "<group>";
 		};
 		A1044E031DAB88A7007F857D /* 个人中心 */ = {
@@ -3094,6 +3093,7 @@
 			children = (
 				A1CBAAAC1DB9F46900049E56 /* 通讯录 */,
 				A1044E031DAB88A7007F857D /* 个人中心 */,
+				A1044DFF1DAB6B67007F857D /* 帮助中心 */,
 				A1A34C2F1CE32A2F00AD454A /* 登录注册 */,
 				A19D29671CD2087F00DAAEA7 /* 设置 */,
 				A10D7B701CEAF40300422D7D /* 我的代理 */,
@@ -3709,7 +3709,6 @@
 		A1A34C2F1CE32A2F00AD454A /* 登录注册 */ = {
 			isa = PBXGroup;
 			children = (
-				A1044DFF1DAB6B67007F857D /* 帮助中心 */,
 				A16175501D1291BA001BB200 /* model */,
 				A1A34C311CE32C6200AD454A /* view */,
 				A1A34C301CE32C5800AD454A /* controller */,

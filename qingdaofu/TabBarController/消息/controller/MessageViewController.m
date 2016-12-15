@@ -13,8 +13,7 @@
 #import "MyOrderDetailViewController.h"  //接单详情
 #import "PowerDetailsViewController.h"  //保全详情
 #import "ApplicationDetailsViewController.h"   //保函详情
-#import "HouseCopyViewController.h"
-#import "HousePropertyListViewController.h"
+#import "HousePropertyListViewController.h" //产调
 
 #import "MessageTableViewCell.h"
 #import "MessageSystemView.h"
@@ -240,33 +239,64 @@
 {
     NSString *messageTypeString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMessageOfGroupString];
     
-    NSString *token = [self getValidateToken]?[self getValidateToken]:@"";
-    
-    NSDictionary *params = @{@"token" : token,
+    NSDictionary *params = @{@"token" : [self getValidateToken],
                              @"page" : page,
                              @"limit" : @"10"
                              };
     
+    AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
+    session.responseSerializer = [AFHTTPResponseSerializer serializer];
+    session.requestSerializer = [AFHTTPRequestSerializer serializer];
+    
     QDFWeakSelf;
-    [self requestDataPostWithString:messageTypeString params:params successBlock:^(id responseObject) {
+    [session POST:messageTypeString parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
         
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if ([page integerValue] == 1) {
             [weakself.messageArray removeAllObjects];
         }
         
         MessageResponse *responde = [MessageResponse objectWithKeyValues:responseObject];
         
-        [weakself.messageCountArray addObject:responde];
-        
-        for (MessagesModel *messagesModel in responde.data) {
-            [weakself.messageArray addObject:messagesModel];
+        if ([responde.code isEqualToString:@"3001"]) {//未登录
+            LoginViewController *loginVC = [[LoginViewController alloc] init];
+            loginVC.hidesBottomBarWhenPushed = YES;
+            loginVC.backWay = @"1";
+            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:loginVC];
+            [weakself presentViewController:nav animated:YES completion:nil];
+        }else{
+            [weakself.messageCountArray addObject:responde];
+            
+            for (MessagesModel *messagesModel in responde.data) {
+                [weakself.messageArray addObject:messagesModel];
+            }
+            [weakself.messageTableView reloadData];
         }
         
-        [weakself.messageTableView reloadData];
-        
-    } andFailBlock:^(NSError *error) {
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
     }];
+    
+//    QDFWeakSelf;
+//    [self requestDataPostWithString:messageTypeString params:params successBlock:^(id responseObject) {
+//        
+//        if ([page integerValue] == 1) {
+//            [weakself.messageArray removeAllObjects];
+//        }
+//        
+//        MessageResponse *responde = [MessageResponse objectWithKeyValues:responseObject];
+//        
+//        [weakself.messageCountArray addObject:responde];
+//        
+//        for (MessagesModel *messagesModel in responde.data) {
+//            [weakself.messageArray addObject:messagesModel];
+//        }
+//        
+//        [weakself.messageTableView reloadData];
+//        
+//    } andFailBlock:^(NSError *error) {
+//        
+//    }];
 }
 
 

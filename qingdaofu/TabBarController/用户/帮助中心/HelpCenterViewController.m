@@ -63,12 +63,12 @@
 #pragma mark - tableView delegate and datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 3;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == 1) {
+    if (section == 0) {
         return 4;
     }
     return 1;
@@ -82,7 +82,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier;
-    if (indexPath.section < 2) {
+    if (indexPath.section == 0) {
         identifier = @"helping0";
         
         MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -94,9 +94,9 @@
         cell.selectedBackgroundView = [[UIView alloc] init];
         cell.selectedBackgroundView.backgroundColor = kCellSelectedColor;
         
-        NSArray *textArray = @[@[@"消息提醒"],@[@"意见反馈",@"常见问答",@"联系我们",@"关于清道夫"]];
+        NSArray *textArray = @[@"意见反馈",@"常见问答",@"联系我们",@"关于清道夫"];
         
-        [cell.userNameButton setTitle:textArray[indexPath.section][indexPath.row] forState:0];
+        [cell.userNameButton setTitle:textArray[indexPath.row] forState:0];
         [cell.userActionButton setImage:[UIImage imageNamed:@"list_more"] forState:0];
         
         return cell;
@@ -132,12 +132,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    if(indexPath.section == 0){//消息提醒
-        MessageRemindViewController *messageRemindVC = [[MessageRemindViewController alloc] init];
-        [self.navigationController pushViewController:messageRemindVC animated:YES];
-        
-    }else if (indexPath.section == 1){
+    if (indexPath.section == 0){
         switch (indexPath.row) {
             case 0:{//意见反馈
                 SuggestionViewController *suggestionVC = [[SuggestionViewController alloc] init];
@@ -163,7 +158,7 @@
             default:
                 break;
         }
-    }else{
+    }else{//退出登录
         NSString *exitString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kExitString];
         NSDictionary *params = @{@"token" : [self getValidateToken]};
         

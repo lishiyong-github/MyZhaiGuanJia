@@ -98,6 +98,7 @@
     
     QDFWeakSelf;
     if (indexPath.row == 0) {
+        [cell.loginSwitch setHidden:YES];
         cell.loginTextField.keyboardType = UIKeyboardTypeNumberPad;
         [cell setFinishEditing:^(NSString *text) {
             [weakself.registerDictionary setValue:text forKey:@"mobile"];
@@ -115,6 +116,7 @@
         }];
         
     }else{
+        [cell.loginSwitch setHidden:YES];
         cell.loginTextField.secureTextEntry = YES;
         [cell.getCodebutton setHidden:YES];
         QDFWeak(cell);
@@ -199,8 +201,6 @@
 {
     [self.view endEditing:YES];
     NSString *codeString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kLoginGetCodeString];
-    self.registerDictionary[@"mobile"] = self.registerDictionary[@"mobile"]?self.registerDictionary[@"mobile"]:@"";
-//    NSDictionary *params = @{@"mobile" : self.registerDictionary[@"mobile"]};
     NSDictionary *params = self.registerDictionary;
     
     QDFWeakSelf;
@@ -232,40 +232,43 @@
 {
     [self.view endEditing:YES];
     NSString *registerString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kRegisterString];
-    self.registerDictionary[@"mobile"] = self.registerDictionary[@"mobile"]?self.registerDictionary[@"mobile"]:@"";
-    self.registerDictionary[@"validatecode"] = self.registerDictionary[@"validatecode"]?self.registerDictionary[@"validatecode"]:@"";
-    self.registerDictionary[@"password"] = self.registerDictionary[@"password"]?self.registerDictionary[@"password"]:@"";
 
     NSDictionary *params = self.registerDictionary;
     
+    AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
+    session.responseSerializer = [AFHTTPResponseSerializer serializer];
+    session.requestSerializer = [AFHTTPRequestSerializer serializer];
+    
     QDFWeakSelf;
-    [weakself requestDataPostWithString:registerString params:params successBlock:^( id responseObject){
+    [session POST:registerString parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         BaseModel *registerModel = [BaseModel objectWithKeyValues:responseObject];
         [weakself showHint:registerModel.msg];
         
         if ([registerModel.code isEqualToString:@"0000"]) {
-            [weakself loginUser];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"login" object:nil userInfo:self.registerDictionary];
+            [weakself.registerDictionary setValue:@"1" forKey:@"loginType"];
+            [weakself.registerDictionary removeObjectForKey:@"validatecode"];
+            [weakself back];
         }
-        
-    } andFailBlock:^(NSError *error){
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
     }];
 }
 
 - (void)loginUser
 {
+    [self.view endEditing:YES];
     NSString *loginString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kLoginString];
     
-    NSString *mobile = self.registerDictionary[@"mobile"];
-    NSString *password = self.registerDictionary[@"password"];
+    NSDictionary *params = self.registerDictionary;
     
-    NSDictionary *params = @{@"mobile" : mobile,
-                             @"password" : password
-                             };
+    AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
+    session.responseSerializer = [AFHTTPResponseSerializer serializer];
+    session.requestSerializer = [AFHTTPRequestSerializer serializer];
     
     QDFWeakSelf;
-    [self requestDataPostWithString:loginString params:params successBlock:^( id responseObject){
-        
+    [session POST:loginString parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         BaseModel *loginModel = [BaseModel objectWithKeyValues:responseObject];
         [weakself showHint:loginModel.msg];
         
@@ -280,7 +283,7 @@
             [weakself.navigationController popViewControllerAnimated:YES];
         }
         
-    } andFailBlock:^(NSError *error){
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         [weakself.navigationController popViewControllerAnimated:YES];
     }];
 }

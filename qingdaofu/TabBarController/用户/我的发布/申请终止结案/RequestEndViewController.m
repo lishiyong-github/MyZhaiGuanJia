@@ -71,7 +71,6 @@
         
         QDFWeakSelf;
         [_requestEndRightButton addAction:^(UIButton *btn) {
-            [weakself showHint:@"客服"];
             NSMutableString *telPhone = [NSMutableString stringWithFormat:@"telprompt://%@",@"400-855-7022"];
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:telPhone]];
         }];
@@ -106,7 +105,6 @@
         
         QDFWeakSelf;
         [_requestEndFootView.comButton1 addAction:^(UIButton *btn) {
-            [weakself showHint:@"申请终止"];
             [weakself endProduct];
         }];
         

@@ -12,13 +12,11 @@
 
 #import "SingleButton.h"
 #import "MineUserCell.h"
-//#import "UIButton.h"
 
 @interface AboutViewController ()<UITableViewDataSource,UITableViewDelegate,SKStoreProductViewControllerDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstaints;
 @property (nonatomic,strong) UITableView *aboutTableView;
-//@property (nonatomic,strong) UIButton *aboutHeaderView;
 @property (nonatomic,strong) UIButton *aboutCommitButton;
 
 @property (nonatomic,strong) SingleButton *aboutHeaderView;
@@ -133,21 +131,26 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/cn/app/wu-hao-zhang-gui/id1030735463?mt=8"]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/cn/app/qing-dao-fu-zhai-guan-jia/id1116869191?mt=8&uo=4"]];
     
-    Class isAllow = NSClassFromString(@"SKStoreProductViewController");
-    
-    if (isAllow != nil) {
-        SKStoreProductViewController *sKStoreProductViewController = [[SKStoreProductViewController alloc] init];
-        [sKStoreProductViewController.view setFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
-        [sKStoreProductViewController setDelegate:self];
-        [sKStoreProductViewController loadProductWithParameters:@{SKStoreProductParameterITunesItemIdentifier: AppID} completionBlock:^(BOOL result, NSError *error) {
-            if (result) {
-                [self presentViewController:sKStoreProductViewController animated:YES completion:nil];
-            }else{
-            }
-        }];
-    }
+//    Class isAllow = NSClassFromString(@"SKStoreProductViewController");
+//    
+//    if (isAllow != nil) {
+//        SKStoreProductViewController *sKStoreProductViewController = [[SKStoreProductViewController alloc] init];
+//        [sKStoreProductViewController.view setFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
+//        [sKStoreProductViewController setDelegate:self];
+//        [self showHudInView:self.view hint:@"请等候..."];
+//        
+//        QDFWeakSelf;
+//        [sKStoreProductViewController loadProductWithParameters:@{SKStoreProductParameterITunesItemIdentifier: AppID} completionBlock:^(BOOL result, NSError *error) {
+//            
+//            if (result) {
+//                [weakself presentViewController:sKStoreProductViewController animated:YES completion:nil];
+//            }else{
+//                
+//            }
+//        }];
+//    }
 }
 
 #pragma mark - SKStoreProductViewControllerDelegate

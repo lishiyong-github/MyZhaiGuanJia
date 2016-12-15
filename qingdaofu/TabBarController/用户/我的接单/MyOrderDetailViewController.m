@@ -574,8 +574,12 @@
                         }
                         cell.selectionStyle = UITableViewCellSelectionStyleNone;
                         cell.separatorInset = UIEdgeInsetsMake(0, kScreenWidth, 0, 0);
-                        [cell.ppLine1 setHidden:YES];
-                        
+                        if (orderModel.orders.productOrdersLogs.count > 1) {
+                            [cell.ppLine1 setHidden:YES];
+                        }else{
+                            [cell.ppLine1 setHidden:YES];
+                            [cell.ppLine2 setHidden:YES];
+                        }
                         //time
                         [cell.ppLabel setAttributedText:[self showPPLabelOfProgressWithOrderLogModel:orderLogsModel]];
                         
@@ -827,9 +831,13 @@
                         }
                         cell.selectionStyle = UITableViewCellSelectionStyleNone;
                         cell.separatorInset = UIEdgeInsetsMake(0, kScreenWidth, 0, 0);
-
-                        [cell.ppLine1 setHidden:YES];
-
+                        if (orderModel.orders.productOrdersLogs.count > 1) {
+                            [cell.ppLine1 setHidden:YES];
+                        }else{
+                            [cell.ppLine1 setHidden:YES];
+                            [cell.ppLine2 setHidden:YES];
+                        }
+                        
                         //time
                         [cell.ppLabel setAttributedText:[self showPPLabelOfProgressWithOrderLogModel:orderLogsModel]];
                         
@@ -1137,8 +1145,12 @@
                         }
                         cell.selectionStyle = UITableViewCellSelectionStyleNone;
                         cell.separatorInset = UIEdgeInsetsMake(0, kScreenWidth, 0, 0);
-
-                        [cell.ppLine1 setHidden:YES];
+                        if (orderModel.orders.productOrdersLogs.count > 1) {
+                            [cell.ppLine1 setHidden:YES];
+                        }else{
+                            [cell.ppLine1 setHidden:YES];
+                            [cell.ppLine2 setHidden:YES];
+                        }
 
                         //time
                         [cell.ppLabel setAttributedText:[self showPPLabelOfProgressWithOrderLogModel:orderLogsModel]];
@@ -1824,6 +1836,11 @@
             DealingEndViewController *dealingEndVC = [[DealingEndViewController alloc] init];
             dealingEndVC.terminationid = orderLogModel.relaid;
             [self.navigationController pushViewController:dealingEndVC animated:YES];
+        }
+    }else if ([person isEqualToString:@"经"]){
+        if (orderLogModel.memoTel.length > 0) { //有电话
+            NSMutableString *tel = [NSMutableString stringWithFormat:@"telprompt://%@",[orderLogModel.memoTel substringWithRange:NSMakeRange(orderLogModel.memoTel.length-11, 11)]];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:tel]];
         }
     }
 }

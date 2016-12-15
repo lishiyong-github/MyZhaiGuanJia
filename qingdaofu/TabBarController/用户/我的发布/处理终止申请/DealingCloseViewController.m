@@ -295,7 +295,6 @@
 }
 - (void)rightItemAction
 {
-    [self showHint:@"平台介入"];
     NSMutableString *tel = [NSMutableString stringWithFormat:@"telprompt://%@",@"400-855-7022"];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:tel]];
 }

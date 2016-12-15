@@ -104,7 +104,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier;
-//    = @"modify";
     if ([self.ifFirst integerValue] == 0) {
         identifier = @"set";
         AgentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -135,11 +134,13 @@
         
         QDFWeakSelf;
         if (indexPath.row == 0) {
+            cell.agentTextField.secureTextEntry = NO;
             [cell setDidEndEditing:^(NSString *text) {
                 [weakself.modifyDictionary setValue:text forKey:@"old_password"];
             }];
         }else if (indexPath.row == 1) {
             [cell.agentButton setTitle:@"显示密码" forState:0];
+            cell.agentTextField.secureTextEntry = YES;
             
             [cell setDidEndEditing:^(NSString *text) {
                 [weakself.modifyDictionary setValue:text forKey:@"new_password"];
@@ -149,8 +150,10 @@
             [cell.agentButton addAction:^(UIButton *btn) {
                 if (!btn.selected) {
                     weakcell.agentTextField.secureTextEntry = NO;
+                    [weakcell.agentButton setTitle:@"隐藏密码" forState:0];
                 }else{
                     weakcell.agentTextField.secureTextEntry = YES;
+                    [weakcell.agentButton setTitle:@"显示密码" forState:0];
                 }
                 btn.selected = !btn.selected;
             }];
