@@ -166,10 +166,12 @@
         _optionTextField.layer.cornerRadius = corner;
         _optionTextField.layer.borderColor = kBorderColor.CGColor;
         _optionTextField.layer.borderWidth = kLineWidth;
-        _optionTextField.placeholder = @"不超过5个字";
+        _optionTextField.placeholder = @"输入其他，不超过5个字";
         _optionTextField.font = kSecondFont;
         _optionTextField.textColor = kBlackColor;
         _optionTextField.delegate = self;
+//        [self textFieldDidChange:_optionTextField];
+        [_optionTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     }
     return _optionTextField;
 }
@@ -183,6 +185,21 @@
         self.didEndEditting(textField.text);
     }
 }
+
+- (void)textFieldDidChange:(UITextField *)textField
+{
+    if (textField.text.length > 5) {
+//　　　　　　　　UITextRange *markedRange = [textField markedTextRange];
+//        　　　if (markedRange) {
+//            　　 return;
+//            　　　 }
+        //Emoji占2个字符，如果是超出了半个Emoji，用15位置来截取会出现Emoji截为2半
+        //超出最大长度的那个字符序列(Emoji算一个字符序列)的range
+        NSRange range = [textField.text rangeOfComposedCharacterSequenceAtIndex:5];
+        textField.text = [textField.text substringToIndex:range.location];
+    }
+}
+
 
 - (void)awakeFromNib {
     [super awakeFromNib];

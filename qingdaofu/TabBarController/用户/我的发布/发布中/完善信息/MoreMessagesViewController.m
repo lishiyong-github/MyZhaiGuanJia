@@ -36,10 +36,6 @@
 //params
 @property (nonatomic,strong) NSMutableDictionary *addMoreDic;
 
-//@property (nonatomic,strong) NSString *typeStr;//添加，编辑
-//@property (nonatomic,strong) NSString *categoryStr;//房产抵押，
-@property (nonatomic,strong) NSString *typeCateString;//添加，编辑//房产抵押，
-
 @end
 
 @implementation MoreMessagesViewController

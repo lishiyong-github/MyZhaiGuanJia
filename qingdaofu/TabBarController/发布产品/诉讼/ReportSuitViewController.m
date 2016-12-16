@@ -234,8 +234,7 @@
         [cell.optionButton4 setTitle:@"其他" forState:0];
         cell.optionTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kSpacePadding, 0)];
         cell.optionTextField.leftViewMode = UITextFieldViewModeAlways;
-        
-        [self.reportDictionary setValue:@"" forKey:@"category_other"];
+        cell.optionTextField.userInteractionEnabled = NO;
         
         if ([self.reportDictionary[@"category"] containsString:@"1"]) {
             cell.optionButton1.selected = YES;
@@ -249,23 +248,15 @@
         if ([self.reportDictionary[@"category"] containsString:@"4"]) {
             cell.optionButton4.selected = YES;
             cell.optionTextField.text = self.reportDictionary[@"category_other"];
+            cell.optionTextField.userInteractionEnabled = YES;
         }
         
         QDFWeakSelf;
-        QDFWeak(cell);
-        [cell setDidBeginEditting:^(NSString *text) {
-            if (text.length > 0) {
-                weakcell.optionButton4.selected = YES;
-                [weakself.categoryDic setObject:@"4" forKey:@"4"];
-            }else{
-                weakcell.optionButton4.selected = NO;
-                [weakself.categoryDic removeObjectForKey:@"4"];
-            }
-        }];
         [cell setDidEndEditting:^(NSString *text) {
             [weakself.reportDictionary setValue:text forKey:@"category_other"];
         }];
         
+        QDFWeak(cell);
         [cell setDidSelectedButton:^(UIButton *btn) {
             btn.selected = !btn.selected;
             switch (btn.tag) {
@@ -293,14 +284,17 @@
                     }
                 }
                     break;
-                case 104:{//4
+                case 104:{//4,其他
                     if (btn.selected) {
-                        [weakcell.optionTextField becomeFirstResponder];
-                        weakcell.optionTextField.text = weakself.reportDictionary[@"category_other"];
-//                        if (![weakself.categoryArray containsObject:@"4"]) {
-//                            [weakself.categoryArray addObject:@"4"];
-//                        }
                         [weakself.categoryDic setObject:@"4" forKey:@"4"];
+                        [weakcell.optionTextField becomeFirstResponder];
+                        weakcell.optionTextField.userInteractionEnabled = YES;
+                    }else{
+                        [weakself.categoryDic removeObjectForKey:@"4"];
+                        [weakself.reportDictionary removeObjectForKey:@"category_other"];
+                        [weakcell.optionTextField resignFirstResponder];
+                        weakcell.optionTextField.userInteractionEnabled = NO;
+                        weakcell.optionTextField.text = nil;
                     }
                 }
                     break;
@@ -336,9 +330,7 @@
         [cell.optionButton4 setTitle:@"其他" forState:0];
         cell.optionTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kSpacePadding, 0)];
         cell.optionTextField.leftViewMode = UITextFieldViewModeAlways;
-        [self.reportDictionary setValue:@"" forKey:@"entrust_other"];
 
-        
         if ([self.reportDictionary[@"entrust"] containsString:@"1"]) {
             cell.optionButton1.selected = YES;
         }
@@ -351,24 +343,15 @@
         if ([self.reportDictionary[@"entrust"] containsString:@"4"]) {
             cell.optionButton4.selected = YES;
             cell.optionTextField.text = self.reportDictionary[@"entrust_other"];
+            cell.optionTextField.userInteractionEnabled = YES;
         }
         
-        
         QDFWeakSelf;
-        QDFWeak(cell);
-        [cell setDidBeginEditting:^(NSString *text) {
-            if (text.length > 0) {
-                weakcell.optionButton4.selected = YES;
-//                if (![weakself.entrustArray containsObject:@"4"]) {
-//                    [weakself.entrustArray addObject:@"4"];
-//                }
-                [weakself.entrustDic setObject:@"4" forKey:@"4"];
-            }
-        }];
         [cell setDidEndEditting:^(NSString *text) {
             [weakself.reportDictionary setValue:text forKey:@"entrust_other"];
         }];
         
+        QDFWeak(cell);
         [cell setDidSelectedButton:^(UIButton *btn) {
             btn.selected = !btn.selected;
             switch (btn.tag) {
@@ -400,16 +383,16 @@
                 }
                     break;
                 case 104:{//4
-                    
                     if (btn.selected) {
-                        [weakcell.optionTextField becomeFirstResponder];
-                         weakcell.optionTextField.text = weakself.reportDictionary[@"entrust_other"];
                         [weakself.entrustDic setObject:@"4" forKey:@"4"];
+                        [weakcell.optionTextField becomeFirstResponder];
+                        weakcell.optionTextField.userInteractionEnabled = YES;
                     }else{
-                        [weakcell.optionTextField resignFirstResponder];
-                        weakcell.optionTextField.text = @"";
-                        [weakself.reportDictionary removeObjectForKey:@"entrust_other"];
                         [weakself.entrustDic removeObjectForKey:@"4"];
+                        [weakself.reportDictionary removeObjectForKey:@"entrust_other"];
+                        [weakcell.optionTextField resignFirstResponder];
+                            weakcell.optionTextField.text = nil;
+                        weakcell.optionTextField.userInteractionEnabled = NO;
                     }
                 }
                     break;

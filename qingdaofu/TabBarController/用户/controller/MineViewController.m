@@ -117,9 +117,10 @@
                 }
                     break;
                 case 6:{//我的产调
-                    HousePropertyListViewController *housePropertyListVC = [[HousePropertyListViewController alloc] init];
-                    housePropertyListVC.hidesBottomBarWhenPushed = YES;
-                    [weakself.navigationController pushViewController:housePropertyListVC animated:YES];
+                    [weakself showHint:@"暂不支持产调"];
+//                    HousePropertyListViewController *housePropertyListVC = [[HousePropertyListViewController alloc] init];
+//                    housePropertyListVC.hidesBottomBarWhenPushed = YES;
+//                    [weakself.navigationController pushViewController:housePropertyListVC animated:YES];
                 }
                     break;
                 case 7:{//我的房产评估结果
