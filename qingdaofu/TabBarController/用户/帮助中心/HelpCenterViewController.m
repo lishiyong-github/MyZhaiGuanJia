@@ -168,10 +168,9 @@
             [weakself showHint:exitModel.msg];
             
             if ([exitModel.code isEqualToString:@"0000"]) {
-                
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"token"];
                 [[NSUserDefaults standardUserDefaults] synchronize];
-                [weakself.navigationController popViewControllerAnimated:YES];
+                [weakself.navigationController popViewControllerAnimated:NO];
             }
             
         } andFailBlock:^(NSError *error){

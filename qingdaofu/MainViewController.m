@@ -20,8 +20,10 @@
 #import "TabBar.h"
 #import "TabBarItem.h"
 
-#import "ZYTabBar.h"
 #import "UIViewController+BlurView.h"
+#import "UIViewController+SelectedIndex.h"
+
+#import "CompleteResponse.h"
 
 @interface MainViewController ()<UINavigationControllerDelegate, UIImagePickerControllerDelegate,UIGestureRecognizerDelegate,UIActionSheetDelegate,TabBarDelegate>
 
@@ -142,6 +144,37 @@
     [viewController presentViewController:nav1 animated:YES completion:nil];
 }
 
+- (void)tabbarDicSelectedCommonButton:(NSInteger)selectedIndex
+{
+    NSString *aoaoa = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPersonCenterMessagesString];
+    NSDictionary *params = @{@"token" : [self getValidateToken]};
+    
+    AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
+    session.responseSerializer = [AFHTTPResponseSerializer serializer];
+    session.requestSerializer = [AFHTTPRequestSerializer serializer];
+    
+    QDFWeakSelf;
+    [session POST:aoaoa parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        CompleteResponse *response = [CompleteResponse objectWithKeyValues:responseObject];
+        if ([response.code isEqualToString:@"3001"]) {
+            [weakself showHint:response.msg];
+            LoginViewController *loginVC = [[LoginViewController alloc] init];
+            loginVC.hidesBottomBarWhenPushed = YES;
+            UINavigationController *msss = [[UINavigationController alloc] initWithRootViewController:loginVC];
+            
+            UIWindow *window = [UIApplication sharedApplication].keyWindow;
+            UITabBarController *tabBarController = (UITabBarController *)window.rootViewController;
+            UINavigationController *viewController = tabBarController.selectedViewController;
+            [viewController presentViewController:msss animated:YES completion:nil];
+        }else{
+            [self setSelectedIndex:selectedIndex andType:@"0"];
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+    }];
+}
  
 
 - (void)didReceiveMemoryWarning {

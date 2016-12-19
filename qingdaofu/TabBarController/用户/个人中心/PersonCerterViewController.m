@@ -241,9 +241,19 @@
             break;
         case 2:{//电话
             CompleteResponse *response = self.personCenterArray[0];
-            NewMobileViewController *newMobileVC = [[NewMobileViewController alloc] init];
-            newMobileVC.mobile = response.mobile;
-            [self.navigationController pushViewController:newMobileVC animated:YES];
+            UIAlertController *newMobileAlert = [UIAlertController alertControllerWithTitle:@"确认更改绑定手机？" message:nil preferredStyle:UIAlertControllerStyleAlert];
+            
+            QDFWeakSelf;
+            UIAlertAction *newAct0 = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                NewMobileViewController *newMobileVC = [[NewMobileViewController alloc] init];
+                newMobileVC.mobile = response.mobile;
+                [weakself.navigationController pushViewController:newMobileVC animated:YES];
+            }];
+            UIAlertAction *newAct1 = [UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleDefault handler:nil];
+            [newMobileAlert addAction:newAct0];
+            [newMobileAlert addAction:newAct1];
+            [self presentViewController:newMobileAlert animated:YES completion:nil];
+            
         }
             break;
         case 4:{//认证

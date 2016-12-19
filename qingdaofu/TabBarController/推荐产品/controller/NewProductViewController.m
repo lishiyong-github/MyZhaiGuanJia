@@ -522,10 +522,8 @@
                     productsDetailVC.productid = rowModel.productid;
                     [weakself.navigationController pushViewController:productsDetailVC animated:YES];
                 }];
-                
             }
         }
-        
         return footerView;
     }
     return nil;
@@ -536,7 +534,7 @@
     if (indexPath.section == 0) {
         MarkingViewController *markingVC = [[MarkingViewController alloc] init];
         markingVC.navTitle = @"累计交易总量";
-        markingVC.markString = @"";
+        markingVC.markString = [NSString stringWithFormat:@"%@",@"http://wx.zcb2016.com/site/total-detail"];
         markingVC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:markingVC animated:YES];
     }

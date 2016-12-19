@@ -31,6 +31,7 @@
 {
     if (!self.didSetupConstraints) {
         [self.markingWebView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+
         self.didSetupConstraints = YES;
     }
     [super updateViewConstraints];
@@ -42,7 +43,10 @@
         _markingWebView = [UIWebView newAutoLayoutView];
         NSURL *markUrl = [NSURL URLWithString:self.markString];
         [_markingWebView loadRequest:[NSURLRequest requestWithURL:markUrl]];
+        [_markingWebView setScalesPageToFit:YES];//自动缩放以适应屏幕
+        _markingWebView.mediaPlaybackRequiresUserAction = YES;
     }
+
     return _markingWebView;
 }
 

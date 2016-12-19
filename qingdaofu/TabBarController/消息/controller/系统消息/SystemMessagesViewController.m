@@ -95,7 +95,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 70;
+    return 80;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -114,7 +114,7 @@
     NSMutableAttributedString *attributeTT = [[NSMutableAttributedString alloc] initWithString:messagesModel.content];
     [attributeTT setAttributes:@{NSFontAttributeName:kSecondFont,NSForegroundColorAttributeName:kLightGrayColor} range:NSMakeRange(0, messagesModel.content.length)];
     NSMutableParagraphStyle *styped = [[NSMutableParagraphStyle alloc] init];
-    [styped setLineSpacing:kSpacePadding];
+    [styped setLineSpacing:2];
     [attributeTT addAttribute:NSParagraphStyleAttributeName value:styped range:NSMakeRange(0, messagesModel.content.length)];
     [cell.contenLabel setAttributedText:attributeTT];
     

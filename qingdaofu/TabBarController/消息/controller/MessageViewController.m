@@ -244,61 +244,27 @@
                              @"limit" : @"10"
                              };
     
-    AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
-    session.responseSerializer = [AFHTTPResponseSerializer serializer];
-    session.requestSerializer = [AFHTTPRequestSerializer serializer];
-    
     QDFWeakSelf;
-    [session POST:messageTypeString parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+    [self requestDataPostWithString:messageTypeString params:params successBlock:^(id responseObject) {
         
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if ([page integerValue] == 1) {
             [weakself.messageArray removeAllObjects];
         }
         
         MessageResponse *responde = [MessageResponse objectWithKeyValues:responseObject];
         
-        if ([responde.code isEqualToString:@"3001"]) {//未登录
-            LoginViewController *loginVC = [[LoginViewController alloc] init];
-            loginVC.hidesBottomBarWhenPushed = YES;
-            loginVC.backWay = @"1";
-            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:loginVC];
-            [weakself presentViewController:nav animated:YES completion:nil];
-        }else{
-            [weakself.messageCountArray addObject:responde];
-            
-            for (MessagesModel *messagesModel in responde.data) {
-                [weakself.messageArray addObject:messagesModel];
-            }
-            [weakself.messageTableView reloadData];
+        [weakself.messageCountArray addObject:responde];
+        
+        for (MessagesModel *messagesModel in responde.data) {
+            [weakself.messageArray addObject:messagesModel];
         }
         
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        [weakself.messageTableView reloadData];
+        
+    } andFailBlock:^(NSError *error) {
         
     }];
-    
-//    QDFWeakSelf;
-//    [self requestDataPostWithString:messageTypeString params:params successBlock:^(id responseObject) {
-//        
-//        if ([page integerValue] == 1) {
-//            [weakself.messageArray removeAllObjects];
-//        }
-//        
-//        MessageResponse *responde = [MessageResponse objectWithKeyValues:responseObject];
-//        
-//        [weakself.messageCountArray addObject:responde];
-//        
-//        for (MessagesModel *messagesModel in responde.data) {
-//            [weakself.messageArray addObject:messagesModel];
-//        }
-//        
-//        [weakself.messageTableView reloadData];
-//        
-//    } andFailBlock:^(NSError *error) {
-//        
-//    }];
 }
-
 
 - (void)headerRefreshOfMessageGroup
 {

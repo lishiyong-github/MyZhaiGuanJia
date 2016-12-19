@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface UIViewController (SelectedIndex)
-- (void)setSelectedIndex:(NSInteger)index;
+- (void)setSelectedIndex:(NSInteger)index andType:(NSString *)type;
 @end

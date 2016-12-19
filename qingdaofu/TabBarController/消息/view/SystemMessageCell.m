@@ -34,7 +34,7 @@
         [self.timeLabel autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.titleLabel];
         [self.timeLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kBigPadding];
         
-        [self.contenLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.titleLabel withOffset:kSmallPadding];
+        [self.contenLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.titleLabel withOffset:kSpacePadding];
         [self.contenLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kBigPadding];
         [self.contenLabel autoPinEdgeToSuperviewEdge:ALEdgeRight];
         

@@ -7,7 +7,6 @@
 //
 
 #import "MineViewController.h"
-#import "LoginViewController.h"     //登录
 #import "PersonCerterViewController.h" //个人中心
 
 #import "MyReleaseViewController.h" //我的发布
@@ -31,6 +30,7 @@
 #import "ProductDetailResponse.h"
 #import "CompleteResponse.h"
 #import "CertificationModel.h"
+#import "UIViewController+SelectedIndex.h"
 
 @interface MineViewController ()
 
@@ -46,7 +46,6 @@
     [self getMessageOfUser];
 }
 
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @"用户";
@@ -54,6 +53,7 @@
     [self.rightButton setImage:[UIImage imageNamed:@"list_icon_setting"] forState:0];
     
     [self.view addSubview:self.loginView];
+    
     [self.view setNeedsUpdateConstraints];
 }
 
@@ -174,17 +174,10 @@
     session.requestSerializer = [AFHTTPRequestSerializer serializer];
     
     QDFWeakSelf;
-    [session POST:aoaoa parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
-        
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [session POST:aoaoa parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         CompleteResponse *response = [CompleteResponse objectWithKeyValues:responseObject];
-        if ([response.code isEqualToString:@"3001"]) {
-            LoginViewController *loginVC = [[LoginViewController alloc] init];
-            loginVC.hidesBottomBarWhenPushed = YES;
-            loginVC.backWay = @"1";
-            UINavigationController *msss = [[UINavigationController alloc] initWithRootViewController:loginVC];
-            [weakself presentViewController:msss animated:YES completion:nil];
-            
+        if ([response.code isEqualToString:@"3001"]){//未登录
+            [weakself setSelectedIndex:0 andType:@"1"];
         }else{
             weakself.loginView.completeResponse = response;
             [weakself.loginView reloadData];
@@ -192,22 +185,6 @@
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
     }];
-//    [self requestDataPostWithString:aoaoa params:params successBlock:^(id responseObject) {
-//        CompleteResponse *response = [CompleteResponse objectWithKeyValues:responseObject];
-//        
-//        if ([response.code isEqualToString:@"0000"]) {
-//            weakself.loginView.completeResponse = response;
-//            [weakself.loginView reloadData];
-//        }else if ([response.code isEqualToString:@"3001"]){//未登录
-//            LoginViewController *loginVC = [[LoginViewController alloc] init];
-//            loginVC.hidesBottomBarWhenPushed = YES;
-//            UINavigationController *msss = [[UINavigationController alloc] initWithRootViewController:loginVC];
-//            [weakself presentViewController:msss animated:YES completion:nil];
-//        }
-//        
-//    } andFailBlock:^(NSError *error) {
-//        
-//    }];
 }
 
 - (void)rightItemAction

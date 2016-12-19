@@ -68,7 +68,7 @@
             if (!cell) {
                 cell = [[MessageTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier  ];
             }
-            
+            cell.timeButton.userInteractionEnabled = NO;
             [cell.countLabel setHidden:YES];
             cell.imageButton.layer.cornerRadius = 25;
             cell.imageButton.layer.masksToBounds = YES;

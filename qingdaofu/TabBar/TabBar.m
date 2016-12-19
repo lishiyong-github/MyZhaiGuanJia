@@ -33,7 +33,7 @@
 //    self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"tab_bar"]];
     
 //    self.backgroundImage = [UIImage imageNamed:@"tab_bar"];
-    self.backgroundColor = kRedColor;
+//    self.backgroundColor = kRedColor;
 //
 //    UIImageView *topLine = [[UIImageView alloc] initWithFrame:CGRectMake(0, -1, kScreenWidth, 1)];
 ////    topLine.image = [UIImage imageNamed:@"tab_bar"];
@@ -41,7 +41,6 @@
 //    
 //    [self addSubview:topLine];
     
-
 }
 
 - (void)setSelectedIndex:(NSInteger)index
@@ -66,8 +65,17 @@
 - (void)itemSelected:(TabBarItem *)sender
 {
     if (sender.tabBarItemType != TabBarItemTypeRise) {
-        [self setSelectedIndex:sender.tag];
-    }else{
+        
+        if (sender.tag > 1){//消息，用户
+            if (self.delegate) {
+                if ([self.delegate respondsToSelector:@selector(tabbarDicSelectedCommonButton:)]) {
+                    [self.delegate tabbarDicSelectedCommonButton:sender.tag];
+                }
+            }
+        }else{
+            [self setSelectedIndex:sender.tag];
+        }
+    }else{//发布
         if (self.delegate) {
             if ([self.delegate respondsToSelector:@selector(tabBarDidSelectedRiseButton)]) {
                 [self.delegate tabBarDidSelectedRiseButton];

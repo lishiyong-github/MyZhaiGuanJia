@@ -602,9 +602,6 @@
 		A1A97E571CDC671000EDE320 /* SystemMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A97E561CDC671000EDE320 /* SystemMessagesViewController.m */; };
 		A1A97FAF1D5AC6EB00B6A55F /* ApplicationGuaranteeThirdView.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A97FAE1D5AC6EB00B6A55F /* ApplicationGuaranteeThirdView.m */; };
 		A1A97FB21D5AF36F00B6A55F /* ApplicationDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A97FB11D5AF36E00B6A55F /* ApplicationDetailsViewController.m */; };
-		A1AD9B8E1D499414001F3076 /* ZYPathButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A1AD9B891D499414001F3076 /* ZYPathButton.m */; };
-		A1AD9B8F1D499414001F3076 /* ZYPathItemButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A1AD9B8B1D499414001F3076 /* ZYPathItemButton.m */; };
-		A1AD9B901D499414001F3076 /* ZYTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = A1AD9B8D1D499414001F3076 /* ZYTabBar.m */; };
 		A1AD9B961D499729001F3076 /* UIView+LBExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = A1AD9B951D499729001F3076 /* UIView+LBExtension.m */; };
 		A1AEC97C1D3F7D870082813F /* NewsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1AEC97B1D3F7D870082813F /* NewsTableViewCell.m */; };
 		A1B028E61D1794DC00F32A09 /* NSData+ImageContentType.m in Sources */ = {isa = PBXBuildFile; fileRef = A1B028CA1D1794DC00F32A09 /* NSData+ImageContentType.m */; };
@@ -1631,12 +1628,6 @@
 		A1A97FAE1D5AC6EB00B6A55F /* ApplicationGuaranteeThirdView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplicationGuaranteeThirdView.m; sourceTree = "<group>"; };
 		A1A97FB01D5AF36E00B6A55F /* ApplicationDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationDetailsViewController.h; sourceTree = "<group>"; };
 		A1A97FB11D5AF36E00B6A55F /* ApplicationDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplicationDetailsViewController.m; sourceTree = "<group>"; };
-		A1AD9B881D499414001F3076 /* ZYPathButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZYPathButton.h; sourceTree = "<group>"; };
-		A1AD9B891D499414001F3076 /* ZYPathButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZYPathButton.m; sourceTree = "<group>"; };
-		A1AD9B8A1D499414001F3076 /* ZYPathItemButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZYPathItemButton.h; sourceTree = "<group>"; };
-		A1AD9B8B1D499414001F3076 /* ZYPathItemButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZYPathItemButton.m; sourceTree = "<group>"; };
-		A1AD9B8C1D499414001F3076 /* ZYTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZYTabBar.h; sourceTree = "<group>"; };
-		A1AD9B8D1D499414001F3076 /* ZYTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZYTabBar.m; sourceTree = "<group>"; };
 		A1AD9B941D499729001F3076 /* UIView+LBExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+LBExtension.h"; sourceTree = "<group>"; };
 		A1AD9B951D499729001F3076 /* UIView+LBExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+LBExtension.m"; sourceTree = "<group>"; };
 		A1AEC97A1D3F7D870082813F /* NewsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsTableViewCell.h; sourceTree = "<group>"; };
@@ -3031,12 +3022,6 @@
 				A19B8E271CCF447200F8EBF2 /* TabBarItem.m */,
 				A19B8E291CCF474B00F8EBF2 /* TabBar.h */,
 				A19B8E2A1CCF474B00F8EBF2 /* TabBar.m */,
-				A1AD9B881D499414001F3076 /* ZYPathButton.h */,
-				A1AD9B891D499414001F3076 /* ZYPathButton.m */,
-				A1AD9B8A1D499414001F3076 /* ZYPathItemButton.h */,
-				A1AD9B8B1D499414001F3076 /* ZYPathItemButton.m */,
-				A1AD9B8C1D499414001F3076 /* ZYTabBar.h */,
-				A1AD9B8D1D499414001F3076 /* ZYTabBar.m */,
 			);
 			path = TabBar;
 			sourceTree = "<group>";
@@ -4675,7 +4660,6 @@
 				A1B028EC1D1794DC00F32A09 /* SDWebImageManager.m in Sources */,
 				A1A7020A1DC1A80200DA4CFB /* OrdersLogsModel.m in Sources */,
 				A1A0B1131D753B34009B1DB4 /* ApplicationModel.m in Sources */,
-				A1AD9B8F1D499414001F3076 /* ZYPathItemButton.m in Sources */,
 				A17691461CD9E42A004289DD /* AdditionalEvaluateViewController.m in Sources */,
 				A1B028E81D1794DC00F32A09 /* SDWebImageCompat.m in Sources */,
 				A1A39BB71DB06F2700B84B1A /* RequestEndViewController.m in Sources */,
@@ -4830,7 +4814,6 @@
 				A1B6FD501D4EFA040059690B /* ApplicationListViewController.m in Sources */,
 				A1A016A71C5A0C0300027134 /* AppDelegate.m in Sources */,
 				A1CBAAA41DB9E3C400049E56 /* AddProgressViewController.m in Sources */,
-				A1AD9B8E1D499414001F3076 /* ZYPathButton.m in Sources */,
 				A1EBC27D1D82672B005B29A0 /* NewProductResponse.m in Sources */,
 				A1B0292D1D17CE6F00F32A09 /* AFURLRequestSerialization.m in Sources */,
 				A1B8E2AC1DE2914400A2923C /* ProgressCell.m in Sources */,
@@ -4948,7 +4931,6 @@
 				A17EE3891CD86B3E00ECC631 /* AboutViewController.m in Sources */,
 				A1882F511D2DF6200064BD38 /* RegisterAgreementViewController.m in Sources */,
 				A1E669351DED54C400B69927 /* HouseViewController.m in Sources */,
-				A1AD9B901D499414001F3076 /* ZYTabBar.m in Sources */,
 				A1A017551C5B696A00027134 /* NSObject+MJCoding.m in Sources */,
 				A1B6FD4D1D4EEDDD0059690B /* ApplicationSuccessCell.m in Sources */,
 				A1B028F21D1794DC00F32A09 /* UIImageView+WebCache.m in Sources */,

@@ -20,5 +20,5 @@
 @protocol TabBarDelegate <NSObject>
 
 - (void)tabBarDidSelectedRiseButton;
-
+- (void)tabbarDicSelectedCommonButton:(NSInteger )selectedIndex;
 @end

@@ -351,15 +351,20 @@
 - (void)back
 {
     if ([self.backWay integerValue] == 1) {
-        UIWindow *window = [UIApplication sharedApplication].keyWindow;
-        UITabBarController *tabBarController = (UITabBarController *)window.rootViewController;
-//        tabBarController.selectedIndex = 0;
-////        [self setSelectedIndex:0];
+//        UIWindow *window = [UIApplication sharedApplication].keyWindow;
+//        UITabBarController *tabBarController = (UITabBarController *)window.rootViewController;
+//        [tabBarController setSelectedIndex:0];
+//                tabBarController.selectedIndex = 0;
 //        [self dismissViewControllerAnimated:YES completion:nil];
 //        [self setSelectedIndex:0];
-        tabBarController.selectedIndex = 0;
+//        tabBarController.selectedIndex = 0;
         
-        [self dismissViewControllerAnimated:YES completion:nil];
+        UITabBarController *tabBarController = (UITabBarController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+        tabBarController.selectedViewController = tabBarController.viewControllers[0];
+        UINavigationController *viewController = tabBarController.selectedViewController;
+        [viewController dismissViewControllerAnimated:YES completion:nil];
+        
+        [self setSelectedIndex:0 andType:@"1"];
 
     }else{
         [self dismissViewControllerAnimated:YES completion:nil];
