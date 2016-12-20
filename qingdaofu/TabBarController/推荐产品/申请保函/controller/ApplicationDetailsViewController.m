@@ -198,7 +198,6 @@
         cell.userActionButton.titleLabel.font = kFirstFont;
         [cell.userActionButton setTitleColor:kGrayColor forState:0];
         
-        
         NSArray *additionArray;
         if ([appliModel.type integerValue] == 1) {
             additionArray = @[@"保函金额",@"管辖法院",@"案件类型",@"案        号",@"联系方式",@"取函方式",@"取函地址"];
@@ -214,7 +213,8 @@
         }else if (indexPath.row == 2){
             [cell.userActionButton setTitle:appliModel.fayuan_name forState:0];
         }else if (indexPath.row == 3){
-            [cell.userActionButton setTitle:appliModel.category forState:0];
+            NSArray *cateArray =  @[@"借贷纠纷",@"房产土地",@"劳动纠纷",@"婚姻家庭",@" 合同纠纷",@"公司治理",@"知识产权",@"其他民事纠纷"];
+            [cell.userActionButton setTitle:cateArray[[appliModel.category integerValue] - 1] forState:0];
         }else if (indexPath.row == 4){
             [cell.userActionButton setTitle:appliModel.anhao forState:0];
         }else if (indexPath.row == 5){
