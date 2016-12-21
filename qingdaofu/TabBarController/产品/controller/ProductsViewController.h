@@ -10,6 +10,4 @@
 
 @interface ProductsViewController : NetworkViewController
 
-@property (nonatomic,strong) NSLayoutConstraint *widthConstraints;  //tableView的宽度
-
 @end

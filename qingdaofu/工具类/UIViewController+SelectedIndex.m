@@ -25,7 +25,6 @@
             for (UIView *subView in view.subviews) {
             if ([subView isKindOfClass:[TabBarItem class]]) {
                 TabBarItem *item = (TabBarItem *)subView;
-                
                 if ([type integerValue] == 0) {
                     if ([item isEqual:view.subviews[index+1]]) {
                         item.selected = YES;

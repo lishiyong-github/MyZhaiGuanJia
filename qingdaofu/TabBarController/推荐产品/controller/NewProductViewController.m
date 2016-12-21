@@ -561,24 +561,31 @@
     NSDictionary *params = @{@"page" : @"1",
                              @"limit" : @"10",
                              @"showtype" : @"1"};
+    
+    AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
+    session.responseSerializer = [AFHTTPResponseSerializer serializer];
+    session.requestSerializer = [AFHTTPRequestSerializer serializer];
+    
     QDFWeakSelf;
-    [self requestDataPostWithString:allProString params:params successBlock:^(id responseObject) {
+    [session POST:allProString parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         [weakself.productsDataListArray removeAllObjects];
-        
+    
         ReleaseResponse *response = [ReleaseResponse objectWithKeyValues:responseObject];
-        
+
         for (RowsModel *rowModel in response.data) {
             [weakself.productsDataListArray addObject:rowModel];
         }
-        
+
         weakself.sumString = response.sum;
-        
+
         [weakself.mainTableView reloadData];
-        
-        [weakself getPropagandaChar];
-        
-    } andFailBlock:^(NSError *error) {
+
+        if (weakself.propagandaArray.count == 0) {
+            [weakself getPropagandaChar];
+        }
+
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
     }];
 }

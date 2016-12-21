@@ -42,11 +42,6 @@
 
 @implementation MessageViewController
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [self headerRefreshOfMessageGroup];
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @"消息";
@@ -54,6 +49,8 @@
     [self.view addSubview:self.messageTableView];
     
     [self.view setNeedsUpdateConstraints];
+    
+    [self headerRefreshOfMessageGroup];
 }
 
 - (void)updateViewConstraints

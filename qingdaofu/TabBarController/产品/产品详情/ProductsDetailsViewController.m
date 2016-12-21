@@ -66,7 +66,6 @@
 {
     [super viewWillAppear:animated];
     
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:kWhiteColor,NSFontAttributeName:kNavFont}];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:UIColorFromRGB(0x0da3f8)] forBarMetrics:UIBarMetricsDefault];
     
     self.shadowImage = self.navigationController.navigationBar.shadowImage;
@@ -381,22 +380,30 @@
         [cell.userNameButton setTitle:arr1[indexPath.row] forState:0];
         
         if (indexPath.row == 0) {
+            [cell.userNameButton setTitleColor:kBlackColor forState:0];
+            cell.userNameButton.titleLabel.font = kBigFont;
             [cell.userActionButton setTitle:@"" forState:0];
-        }else if (indexPath.row == 1){
-            [cell.userActionButton setTitle:prodDetailModel.categoryLabel forState:0];
-        }else if (indexPath.row == 2){
-            [cell.userActionButton setTitle:prodDetailModel.entrustLabel forState:0];
-        }else if (indexPath.row == 3){
-            NSString *account = [NSString stringWithFormat:@"%@万",prodDetailModel.accountLabel];
-            [cell.userActionButton setTitle:account forState:0];
-        }else if (indexPath.row == 4){
-            NSString *typenum = [NSString stringWithFormat:@"%@%@",prodDetailModel.typenumLabel,prodDetailModel.typeLabel];
-            [cell.userActionButton setTitle:typenum forState:0];
-        }else if (indexPath.row == 5){
-            NSString *overdue = [NSString stringWithFormat:@"%@个月",prodDetailModel.overdue];
-            [cell.userActionButton setTitle:overdue forState:0];
-        }else if (indexPath.row == 6){
-            [cell.userActionButton setTitle:prodDetailModel.addressLabel forState:0];
+        }else{
+            [cell.userNameButton setTitleColor:kLightGrayColor forState:0];
+            cell.userNameButton.titleLabel.font = kFirstFont;
+            [cell.userActionButton setTitleColor:kGrayColor forState:0];
+            cell.userActionButton.titleLabel.font = kFirstFont;
+            if (indexPath.row == 1){
+                [cell.userActionButton setTitle:prodDetailModel.categoryLabel forState:0];
+            }else if (indexPath.row == 2){
+                [cell.userActionButton setTitle:prodDetailModel.entrustLabel forState:0];
+            }else if (indexPath.row == 3){
+                NSString *account = [NSString stringWithFormat:@"%@万",prodDetailModel.accountLabel];
+                [cell.userActionButton setTitle:account forState:0];
+            }else if (indexPath.row == 4){
+                NSString *typenum = [NSString stringWithFormat:@"%@%@",prodDetailModel.typenumLabel,prodDetailModel.typeLabel];
+                [cell.userActionButton setTitle:typenum forState:0];
+            }else if (indexPath.row == 5){
+                NSString *overdue = [NSString stringWithFormat:@"%@个月",prodDetailModel.overdue];
+                [cell.userActionButton setTitle:overdue forState:0];
+            }else if (indexPath.row == 6){
+                [cell.userActionButton setTitle:prodDetailModel.addressLabel forState:0];
+            }
         }
         
         

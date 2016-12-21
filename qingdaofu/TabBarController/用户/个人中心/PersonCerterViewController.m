@@ -236,7 +236,9 @@
         }
             break;
         case 1:{//昵称
-            [self showNickAlert];
+            CompleteResponse *response = self.personCenterArray[0];
+            NSString *nickname = response.realname?response.realname:@"请输入新的昵称";
+            [self showNickAlert:@"修改昵称" andPlaceHolder:nickname];
         }
             break;
         case 2:{//电话
@@ -354,13 +356,13 @@
     }];
 }
 
-- (void)showNickAlert
+- (void)showNickAlert:(NSString *)showTitle andPlaceHolder:(NSString *)placeholders
 {
-    UIAlertController *nickAlert = [UIAlertController alertControllerWithTitle:@"修改昵称" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *nickAlert = [UIAlertController alertControllerWithTitle:showTitle message:@"" preferredStyle:UIAlertControllerStyleAlert];
     
     QDFWeakSelf;
     [nickAlert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-        textField.placeholder = @"请输入新的昵称";
+        textField.placeholder = placeholders;
         textField.delegate = weakself;
     }];
     

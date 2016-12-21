@@ -97,7 +97,7 @@
             return cell;
         }
         
-        //row==1(我的发布，我的接单)
+        //row==1(我的发布，我的接单，经办事项)
         identifier = @"MineUserCell01";
         UserPublishCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         
@@ -113,8 +113,11 @@
         [cell.button2 setImage:[UIImage imageNamed:@"order"] forState:0];
         
         [cell.button3 setTitle:@" 经办事项" forState:0];
-        [cell.button3 setImage:[UIImage imageNamed:@"user_my_handing"] forState:0];
-        
+        if ([self.completeResponse.operatorDo integerValue] > 0) {
+            [cell.button3 setImage:[UIImage imageNamed:@"user_my_handing_point"] forState:0];
+        }else{
+            [cell.button3 setImage:[UIImage imageNamed:@"user_my_handing"] forState:0];
+        }
         QDFWeakSelf;
         [cell.button1 addAction:^(UIButton *btn) {
             if (weakself.didSelectedButton) {

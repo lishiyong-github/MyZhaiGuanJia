@@ -39,11 +39,9 @@
 @property (nonatomic,strong) UITableView *tableView11;
 @property (nonatomic,strong) UITableView *tableView12;
 @property (nonatomic,strong) UITableView *tableView13;
+@property (nonatomic,strong) NSLayoutConstraint *widthConstraints;  //tableView的宽度
 
 //json解析
-//@property (nonatomic,strong) NSDictionary *provinceDictionary;
-//@property (nonatomic,strong) NSDictionary *cityDcitionary;
-//@property (nonatomic,strong) NSDictionary *districtDictionary;
 @property (nonatomic,strong) NSMutableArray *provinceArray;
 @property (nonatomic,strong) NSMutableArray *cityArray;
 @property (nonatomic,strong) NSMutableArray *districtArray;
@@ -66,9 +64,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:kWhiteColor,NSFontAttributeName:kNavFont}];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:kNavColor] forBarMetrics:UIBarMetricsDefault];
-        
+    
     [self headerRefreshWithAllProducts];
 }
 
@@ -675,24 +672,27 @@
     
     NSDictionary *params = self.paramsDictionary;
     
+    AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
+    session.responseSerializer = [AFHTTPResponseSerializer serializer];
+    session.requestSerializer = [AFHTTPRequestSerializer serializer];
+    
     QDFWeakSelf;
-    [self requestDataPostWithString:allProString params:params successBlock:^(id responseObject) {
-        
+    [session POST:allProString parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if ([page intValue] == 1) {
             [weakself.allDataList removeAllObjects];
         }
-        
+
         ReleaseResponse *response = [ReleaseResponse objectWithKeyValues:responseObject];
-        
+
         if (response.data.count == 0) {
             [weakself showHint:@"没有更多了"];
             _page--;
         }
-        
+
         for (RowsModel *rowModel in response.data) {
             [weakself.allDataList addObject:rowModel];
         }
-        
+
         if (weakself.allDataList.count == 0) {
             [weakself.baseRemindImageView setHidden:NO];
         }else{
@@ -700,10 +700,39 @@
         }
         
         [weakself.productsTableView reloadData];
-        
-    } andFailBlock:^(NSError *error) {
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
     }];
+    
+//    QDFWeakSelf;
+//    [self requestDataPostWithString:allProString params:params successBlock:^(id responseObject) {
+//        
+//        if ([page intValue] == 1) {
+//            [weakself.allDataList removeAllObjects];
+//        }
+//        
+//        ReleaseResponse *response = [ReleaseResponse objectWithKeyValues:responseObject];
+//        
+//        if (response.data.count == 0) {
+//            [weakself showHint:@"没有更多了"];
+//            _page--;
+//        }
+//        
+//        for (RowsModel *rowModel in response.data) {
+//            [weakself.allDataList addObject:rowModel];
+//        }
+//        
+//        if (weakself.allDataList.count == 0) {
+//            [weakself.baseRemindImageView setHidden:NO];
+//        }else{
+//            [weakself.baseRemindImageView setHidden:YES];
+//        }
+//        
+//        [weakself.productsTableView reloadData];
+//        
+//    } andFailBlock:^(NSError *error) {
+//        
+//    }];
 }
 
 - (void)headerRefreshWithAllProducts
