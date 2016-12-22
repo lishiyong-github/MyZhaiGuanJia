@@ -492,8 +492,6 @@
     [self.view endEditing:YES];
     NSString *powerStrig = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPowerString];
     
-//    self.powerDic[@"phone"] = self.powerDic[@"phone"]?self.powerDic[@"phone"]:[self getValidateMobile];
-    
     [self.powerDic setObject:[self getValidateToken] forKey:@"token"];
     
     NSDictionary *params = self.powerDic;

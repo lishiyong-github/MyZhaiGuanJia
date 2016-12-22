@@ -173,7 +173,8 @@
                     [weakself showBlurInView:weakself.view withArray:array11 andTitle:@"选择案件类型" finishBlock:^(NSString *text, NSInteger row) {
                         AgentCell *cell = [weakself.guaranteeFirstView.tableViewa cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]];
                         cell.agentTextField.text = text;
-                        [weakself.applicationDic setObject:text forKey:@"category"];
+                        NSString *gygyg = [NSString stringWithFormat:@"%ld",(long)row];
+                        [weakself.applicationDic setObject:gygyg forKey:@"category"];
                     }];
                 }
                     break;

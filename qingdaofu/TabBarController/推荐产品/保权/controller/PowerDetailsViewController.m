@@ -211,7 +211,7 @@
             [cell.userActionButton setTitle:powerModel.fayuan_name forState:0];
         }else if (indexPath.row == 3){
             NSArray *cateArray =  @[@"借贷纠纷",@"房产土地",@"劳动纠纷",@"婚姻家庭",@" 合同纠纷",@"公司治理",@"知识产权",@"其他民事纠纷"];
-            NSString *cateStr = cateArray[[powerModel.category integerValue] -1];
+            NSString *cateStr = cateArray[[powerModel.category integerValue]-1];
             [cell.userActionButton setTitle:cateStr forState:0];
         }else if (indexPath.row == 4){
             [cell.userActionButton setTitle:powerModel.phone forState:0];

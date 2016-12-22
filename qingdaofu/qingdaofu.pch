@@ -249,11 +249,10 @@
 #define kPublishproductOfCity @"product/city"  //市
 #define kPublishproductOfArea @"product/district"  //区
 
-
+#define kMessageOfNoReadString @"message/noread"  //未读消息数目
 #define kMessageOfGroupString @"message/group-list"  //分组消息
 #define kMessageOfSystemString @"message/system-list"  //系统消息
 #define kMessageIsReadString @"message/read" //消息未读变已读
-
 
 #define kMyMailListString @"contacts/index"  //我的通讯录
 #define kMyMailOfSearchUserString @"contacts/search"  //搜索联系人

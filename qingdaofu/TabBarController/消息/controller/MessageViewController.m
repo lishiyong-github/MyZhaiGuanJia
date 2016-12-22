@@ -27,7 +27,6 @@
 
 #import "UIButton+WebCache.h"
 
-
 @interface MessageViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
@@ -41,6 +40,11 @@
 @end
 
 @implementation MessageViewController
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self checkMessagesOfNoRead];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -301,6 +305,29 @@
             [weakself showHint:baseModel.msg];
         }
     } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+
+- (void)checkMessagesOfNoRead
+{
+    NSString *noReadString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMessageOfNoReadString];
+    NSDictionary *params = @{@"token" : [self getValidateToken]};
+    
+    AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
+    session.responseSerializer = [AFHTTPResponseSerializer serializer];
+    session.requestSerializer = [AFHTTPRequestSerializer serializer];
+    
+    QDFWeakSelf;
+    [session POST:noReadString parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
+        UITabBarController *tabBarController = (UITabBarController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+        if ([baseModel.code isEqualToString:@"0000"]) {
+            [tabBarController.tabBar showBadgeOnItemIndex:3];
+        }else{
+            [tabBarController.tabBar hideBadgeOnItemIndex:3];
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
     }];
 }

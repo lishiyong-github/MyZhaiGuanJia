@@ -24,42 +24,6 @@
     // Do any additional setup after loading the view.
 }
 
-- (void)postOfRequestDataWithString:(NSString *)string params:(NSDictionary *)params successBlock:(void (^)(id responseObject))successBlock andFailBlock:(void (^)(NSError *error))failBlock
-{
-    AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
-    session.responseSerializer = [AFHTTPResponseSerializer serializer];
-    session.requestSerializer = [AFHTTPRequestSerializer serializer];
-    //    session.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/html", nil];
-    
-    //设置超时时间
-    [session.requestSerializer willChangeValueForKey:@"timeoutInterval"];
-    session.requestSerializer.timeoutInterval = 5.f;
-    [session.requestSerializer didChangeValueForKey:@"timeoutInterval"];
-    
-    QDFWeakSelf;
-    [session POST:string parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
-        
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        [weakself hideHud];
-        
-        BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
-        if ([baseModel.code isEqualToString:@"3001"]) {//未登录
-            [weakself showHint:baseModel.msg];
-            LoginViewController *loginVC = [[LoginViewController alloc] init];
-            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:loginVC];
-            [weakself presentViewController:nav animated:YES completion:nil];
-        }else{
-            if (successBlock) {
-                successBlock(responseObject);
-            }
-        }
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        if (failBlock) {
-            [weakself showHint:@"网络错误"];
-        }
-    }];
-}
-
 - (void)requestDataPostWithString:(NSString *)string params:(NSDictionary *)params successBlock:(void (^)(id responseObject))successBlock andFailBlock:(void (^)(NSError *error))failBlock
 {
     [self showHudInView:self.view hint:@"正在加载"];
