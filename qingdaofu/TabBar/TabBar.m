@@ -24,7 +24,7 @@
 #pragma mark - private method
 - (void)config
 {
-//    [self setImage:[UIImage imageNamed:@"tab_bar"] forState:0];
+//    [self setImage:[UIImage imageNamed:@"color"] forState:0];
     
 //    [self setBackgroundImage:[UIImage imageNamed:@"tab_bar"] forState:0];
     
@@ -35,11 +35,11 @@
 //    self.backgroundImage = [UIImage imageNamed:@"tab_bar"];
 //    self.backgroundColor = kRedColor;
 //
-//    UIImageView *topLine = [[UIImageView alloc] initWithFrame:CGRectMake(0, -1, kScreenWidth, 1)];
-////    topLine.image = [UIImage imageNamed:@"tab_bar"];
-//    topLine.backgroundColor = kSelectedColor;
-//    
-//    [self addSubview:topLine];
+    UIImageView *topLine = [[UIImageView alloc] initWithFrame:CGRectMake(0, -1, kScreenWidth, 1)];
+    topLine.image = [UIImage imageNamed:@"line"];
+    topLine.backgroundColor = kSelectedColor;
+
+    [self addSubview:topLine];
     
 }
 

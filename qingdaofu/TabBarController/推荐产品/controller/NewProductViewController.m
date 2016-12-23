@@ -62,7 +62,6 @@
     
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     
-    [self getRecommendProductslist];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -78,6 +77,8 @@
     [self.view addSubview:self.mainTableView];
     
     [self.view setNeedsUpdateConstraints];
+    
+    [self getRecommendProductslist];
     
     [self performSelector:@selector(chechAppNewVersion) withObject:nil afterDelay:5];
 }
@@ -557,6 +558,8 @@
 #pragma mark - method
 - (void)getRecommendProductslist
 {
+    [self showHudInView:self.mainProductScrollView hint:@"正在加载"];
+    
     NSString *allProString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductListsString];
     
     NSDictionary *params = @{@"page" : @"1",
@@ -569,6 +572,7 @@
     
     QDFWeakSelf;
     [session POST:allProString parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [weakself hideHud];
         
         [weakself.productsDataListArray removeAllObjects];
     
@@ -587,7 +591,7 @@
         }
 
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
+
     }];
 }
 
@@ -613,6 +617,8 @@
             
             if ([appModel.code isEqualToString:@"0000"]) {
                 [weakself getRecommendProductslist];
+            }else if ([appModel.code isEqualToString:@"0003"]){
+                [weakself getRecommendProductslist];
             }
         } andFailBlock:^(NSError *error) {
             
@@ -636,6 +642,8 @@
         BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
         [weakself showHint:baseModel.msg];
         if ([baseModel.code isEqualToString:@"0000"]) {
+            [weakself getRecommendProductslist];
+        }else if ([baseModel.code isEqualToString:@"0003"]){
             [weakself getRecommendProductslist];
         }
         

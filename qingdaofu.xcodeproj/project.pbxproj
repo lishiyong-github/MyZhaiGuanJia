@@ -289,6 +289,7 @@
 		A1982B331CFFD5D4001770A7 /* logo@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1982B311CFFD5D4001770A7 /* logo@3x.png */; };
 		A1982B361CFFD730001770A7 /* CompanyWebSiteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1982B351CFFD730001770A7 /* CompanyWebSiteViewController.m */; };
 		A1982B381CFFF484001770A7 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1982B371CFFF484001770A7 /* StoreKit.framework */; };
+		A1988A9A1E0CB912002A5C13 /* line.png in Resources */ = {isa = PBXBuildFile; fileRef = A1988A991E0CB912002A5C13 /* line.png */; };
 		A19985151CE02B7A0055A572 /* ModifyPassWordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A19985141CE02B7A0055A572 /* ModifyPassWordViewController.m */; };
 		A19985191CE02BFC0055A572 /* ModifyView.m in Sources */ = {isa = PBXBuildFile; fileRef = A19985181CE02BFC0055A572 /* ModifyView.m */; };
 		A199851D1CE0360B0055A572 /* MessageRemindViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A199851C1CE0360B0055A572 /* MessageRemindViewController.m */; };
@@ -1192,6 +1193,7 @@
 		A1982B341CFFD730001770A7 /* CompanyWebSiteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompanyWebSiteViewController.h; sourceTree = "<group>"; };
 		A1982B351CFFD730001770A7 /* CompanyWebSiteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompanyWebSiteViewController.m; sourceTree = "<group>"; };
 		A1982B371CFFF484001770A7 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		A1988A991E0CB912002A5C13 /* line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = line.png; sourceTree = "<group>"; };
 		A19985131CE02B7A0055A572 /* ModifyPassWordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModifyPassWordViewController.h; sourceTree = "<group>"; };
 		A19985141CE02B7A0055A572 /* ModifyPassWordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModifyPassWordViewController.m; sourceTree = "<group>"; };
 		A19985171CE02BFC0055A572 /* ModifyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModifyView.h; sourceTree = "<group>"; };
@@ -2504,6 +2506,7 @@
 		A192B4BC1CDB45EB0053FC4C /* images */ = {
 			isa = PBXGroup;
 			children = (
+				A1988A991E0CB912002A5C13 /* line.png */,
 				A163080E1E0A882500B122BA /* user_my_handing_point@2x.png */,
 				A163080F1E0A882500B122BA /* user_my_handing_point@3x.png */,
 				A137D1E91DFFEC260054928B /* center@2x.png */,
@@ -4222,6 +4225,7 @@
 				A1B158C81DFEA97D000FF2B4 /* icon_head@2x.png in Resources */,
 				A145B28F1CEEAE02003A93B7 /* conserve_wait_icon@2x.png in Resources */,
 				A17B80161D221C3A0071405F /* list_collection_nor@3x.png in Resources */,
+				A1988A9A1E0CB912002A5C13 /* line.png in Resources */,
 				A1A5C7421D374ED200173533 /* conserve_loan_icon@2x.png in Resources */,
 				A1A69DC31D62B7DE0053FFED /* unauthorized@3x.png in Resources */,
 				A1A702361DC20A3C00DA4CFB /* contacts_icon_mark@3x.png in Resources */,

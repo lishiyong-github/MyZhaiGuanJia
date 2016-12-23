@@ -18,7 +18,7 @@
     }else if ([type integerValue] == 1){
         tabBarController.selectedViewController = tabBarController.viewControllers.firstObject;
     }
-
+    
     UITabBar *tabBar = tabBarController.tabBar;
     for (UIView *view in tabBar.subviews) {
         if ([view isKindOfClass:[TabBar class]]) {
@@ -26,14 +26,13 @@
             if ([subView isKindOfClass:[TabBarItem class]]) {
                 TabBarItem *item = (TabBarItem *)subView;
                 if ([type integerValue] == 0) {
-                    if ([item isEqual:view.subviews[index+1]]) {
+                    if ([item isEqual:view.subviews[index+2]]) {
                         item.selected = YES;
                     }else{
                         item.selected = NO;
                     }
-                    
                 }else if ([type integerValue] == 1){
-                    if ([item isEqual:view.subviews[index]]) {
+                    if ([item isEqual:view.subviews[index+1]]) {
                         item.selected = YES;
                     }else{
                         item.selected = NO;

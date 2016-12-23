@@ -47,7 +47,7 @@
 //    [NSThread sleepForTimeInterval:0.1];//设置启动页面时间
 
     [WXApi registerApp:WXAppID withDescription:@"demo 2.0"];
-
+    
     return YES;
 }
 

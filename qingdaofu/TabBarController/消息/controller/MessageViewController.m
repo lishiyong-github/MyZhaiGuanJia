@@ -318,7 +318,6 @@
     session.responseSerializer = [AFHTTPResponseSerializer serializer];
     session.requestSerializer = [AFHTTPRequestSerializer serializer];
     
-    QDFWeakSelf;
     [session POST:noReadString parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
         UITabBarController *tabBarController = (UITabBarController *)[UIApplication sharedApplication].keyWindow.rootViewController;

@@ -25,6 +25,11 @@
     [self setUpMessage];
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
+
+
 - (void)setUpMessage
 {
     self.view.backgroundColor = kBackColor;

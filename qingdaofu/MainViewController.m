@@ -22,6 +22,7 @@
 
 #import "UIViewController+BlurView.h"
 #import "UIViewController+SelectedIndex.h"
+#import "UITabBar+Badge.h"
 
 #import "CompleteResponse.h"
 
@@ -170,6 +171,28 @@
             [viewController presentViewController:msss animated:YES completion:nil];
         }else{
             [self setSelectedIndex:selectedIndex andType:@"0"];
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+    }];
+}
+
+- (void)checkMessagesOfNoRead
+{
+    NSString *noReadString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMessageOfNoReadString];
+    NSDictionary *params = @{@"token" : [self getValidateToken]};
+    
+    AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
+    session.responseSerializer = [AFHTTPResponseSerializer serializer];
+    session.requestSerializer = [AFHTTPRequestSerializer serializer];
+    
+    [session POST:noReadString parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
+        UITabBarController *tabBarController = (UITabBarController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+        if ([baseModel.code isEqualToString:@"0000"]) {
+            [tabBarController.tabBar showBadgeOnItemIndex:3];
+        }else{
+            [tabBarController.tabBar hideBadgeOnItemIndex:3];
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
