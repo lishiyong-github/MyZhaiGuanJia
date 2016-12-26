@@ -12,6 +12,11 @@
 
 #import "MainViewController.h"
 #import "IntroduceViewController.h"
+#import "LaunchViewController.h" //启动图
+
+#import "UIImageView+WebCache.h"
+#import "BannerResponse.h"
+#import "ImageModel.h"
 
 @interface AppDelegate () <WXApiDelegate>
 
@@ -29,7 +34,6 @@
     NSUserDefaults *settings = [NSUserDefaults standardUserDefaults];
     NSString *key = [NSString stringWithFormat:@"first"];
     NSString *value = [settings objectForKey:key];
-
     if (!value) {//首次登录
         IntroduceViewController *introVC = [[IntroduceViewController alloc] init];
         self.window.rootViewController = introVC;
@@ -38,17 +42,46 @@
         MainViewController *mainVC = [[MainViewController alloc] init];
         UINavigationController *mainNav = [[UINavigationController alloc] initWithRootViewController:mainVC];
         self.window.rootViewController = mainNav;
+        
+        [self loadImageView];
     }
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [[MBResourceManager sharedInstance] removeUnusedResource];
     });
 
-//    [NSThread sleepForTimeInterval:0.1];//设置启动页面时间
+    [NSThread sleepForTimeInterval:2];//设置启动页面时间
 
-    [WXApi registerApp:WXAppID withDescription:@"demo 2.0"];
+//    [WXApi registerApp:WXAppID withDescription:@"demo 2.0"];
     
     return YES;
+}
+
+- (void)loadImageView
+{
+    NSString *aaString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kLaunchImageString];
+    AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
+    session.responseSerializer = [AFHTTPResponseSerializer serializer];
+    session.requestSerializer = [AFHTTPRequestSerializer serializer];
+    
+    [session POST:aaString parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        BannerResponse *response = [BannerResponse objectWithKeyValues:responseObject];
+        if (response.ad.count > 0) {
+            LaunchViewController *launchVC = [[LaunchViewController alloc] init];
+            launchVC.ad = response.ad;
+            launchVC.adDurtion = response.duration;
+            UINavigationController *launchNav = [[UINavigationController alloc] initWithRootViewController:launchVC];
+            
+            self.window.rootViewController = launchNav;
+        }else{
+            MainViewController *mainVC = [[MainViewController alloc] init];
+            UINavigationController *mainNav = [[UINavigationController alloc] initWithRootViewController:mainVC];
+            self.window.rootViewController = mainNav;
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+    }];
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {

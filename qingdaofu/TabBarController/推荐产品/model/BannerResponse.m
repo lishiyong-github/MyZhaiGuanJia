@@ -12,12 +12,16 @@
 
 + (NSDictionary *)replacedKeyFromPropertyName
 {
-    return @{@"banner" : @"result.banner"};
+    return @{@"banner" : @"result.banner",
+             @"ad" : @"result.ad",
+             @"duration" : @"result.duration"
+             };
 }
 
 + (NSDictionary *)objectClassInArray
 {
-    return @{@"banner" : @"ImageModel"};
+    return @{@"banner" : @"ImageModel",
+             @"ad" : @"ImageModel"};
 }
 
 @end

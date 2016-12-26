@@ -10,6 +10,9 @@
 
 @interface BannerResponse : BaseModel
 
-@property (nonatomic,strong) NSMutableArray *banner;
+@property (nonatomic,strong) NSMutableArray *banner;//banner图
+
+@property (nonatomic,strong) NSMutableArray *ad; //启动页的图片
+@property (nonatomic,copy) NSString *duration;  //启动图间隔时间
 
 @end

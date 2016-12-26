@@ -427,7 +427,7 @@
                 }
                 QDFWeakSelf;
                 [productView.storeButton addAction:^(UIButton *btn) {
-                    [weakself goStoreProductWithModel:rowModel andButton:btn];
+                    [weakself goToStoreProductWithModel:rowModel andButton:btn];
                 }];
                 
                 //category
@@ -514,7 +514,7 @@
                     productView.applyButton.layer.borderColor = kButtonColor.CGColor;
                 }
                 [productView.applyButton addAction:^(UIButton *btn) {
-                    [weakself goApplyProductWithModel:rowModel andButton:btn];
+                    [weakself goToApplyProductWithModel:rowModel andButton:btn];
                 }];
                 
                 //check details
@@ -591,11 +591,47 @@
         }
 
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-
+        [weakself hideHud];
     }];
 }
 
-- (void)goApplyProductWithModel:(RowsModel *)rowModel andButton:(UIButton *)sender
+//轮播图
+- (void)getPropagandaChar
+{
+    NSString *propagandaString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPropagandasString];
+    
+    AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
+    session.responseSerializer = [AFHTTPResponseSerializer serializer];
+    session.requestSerializer = [AFHTTPRequestSerializer serializer];
+
+    QDFWeakSelf;
+    [session POST:propagandaString parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        BannerResponse *response = [BannerResponse objectWithKeyValues:responseObject];
+
+        for (ImageModel *nannerModel in response.banner) {
+            [weakself.propagandaArray addObject:nannerModel];
+        }
+
+        weakself.mainTableView.tableHeaderView = weakself.mainHeaderView;
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+    }];
+    
+//    [self requestDataPostWithString:propagandaString params:nil successBlock:^(id responseObject) {
+//        BannerResponse *response = [BannerResponse objectWithKeyValues:responseObject];
+//        
+//        for (ImageModel *nannerModel in response.banner) {
+//            [weakself.propagandaArray addObject:nannerModel];
+//        }
+//        
+//        weakself.mainTableView.tableHeaderView = weakself.mainHeaderView;
+//        
+//    } andFailBlock:^(NSError *error) {
+//        
+//    }];
+}
+
+- (void)goToApplyProductWithModel:(RowsModel *)rowModel andButton:(UIButton *)sender
 {
     if ([sender.titleLabel.text isEqualToString:@"取消申请"] || [sender.titleLabel.text isEqualToString:@"立即申请"]) {
         NSString *appString;
@@ -611,22 +647,41 @@
         }
         
         QDFWeakSelf;
-        [self requestDataPostWithString:appString params:params successBlock:^(id responseObject) {
+        
+        AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
+        session.responseSerializer = [AFHTTPResponseSerializer serializer];
+        session.requestSerializer = [AFHTTPRequestSerializer serializer];
+        
+        [session POST:appString parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             BaseModel *appModel = [BaseModel objectWithKeyValues:responseObject];
-            [weakself showHint:appModel.msg];
-            
-            if ([appModel.code isEqualToString:@"0000"]) {
-                [weakself getRecommendProductslist];
-            }else if ([appModel.code isEqualToString:@"0003"]){
+
+            if ([appModel.code isEqualToString:@"3001"]) {
+                [weakself showHint:appModel.msg];
+                LoginViewController *loginVC = [[LoginViewController alloc] init];
+                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:loginVC];
+                [weakself presentViewController:nav animated:YES completion:nil];
+            }else{
                 [weakself getRecommendProductslist];
             }
-        } andFailBlock:^(NSError *error) {
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             
         }];
+//        [self requestDataPostWithString:appString params:params successBlock:^(id responseObject) {
+//            BaseModel *appModel = [BaseModel objectWithKeyValues:responseObject];
+//            [weakself showHint:appModel.msg];
+//            
+//            if ([appModel.code isEqualToString:@"0000"]) {
+//                [weakself getRecommendProductslist];
+//            }else if ([appModel.code isEqualToString:@"0003"]){
+//                [weakself getRecommendProductslist];
+//            }
+//        } andFailBlock:^(NSError *error) {
+//            
+//        }];
     }
 }
 
-- (void)goStoreProductWithModel:(RowsModel *)rowModel andButton:(UIButton *)sender
+- (void)goToStoreProductWithModel:(RowsModel *)rowModel andButton:(UIButton *)sender
 {
     NSString *saveString;
     if (rowModel.collectSelf) {//(取消收藏)
@@ -646,25 +701,6 @@
         }else if ([baseModel.code isEqualToString:@"0003"]){
             [weakself getRecommendProductslist];
         }
-        
-    } andFailBlock:^(NSError *error) {
-        
-    }];
-}
-
-//轮播图
-- (void)getPropagandaChar
-{
-    NSString *propagandaString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPropagandasString];
-    QDFWeakSelf;
-    [self requestDataPostWithString:propagandaString params:nil successBlock:^(id responseObject) {
-        BannerResponse *response = [BannerResponse objectWithKeyValues:responseObject];
-        
-        for (ImageModel *nannerModel in response.banner) {
-            [weakself.propagandaArray addObject:nannerModel];
-        }
-        
-        weakself.mainTableView.tableHeaderView = weakself.mainHeaderView;
         
     } andFailBlock:^(NSError *error) {
         
