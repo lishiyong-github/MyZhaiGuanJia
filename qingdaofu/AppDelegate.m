@@ -43,14 +43,14 @@
         UINavigationController *mainNav = [[UINavigationController alloc] initWithRootViewController:mainVC];
         self.window.rootViewController = mainNav;
         
-        [self loadImageView];
+//        [self loadImageView];
     }
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [[MBResourceManager sharedInstance] removeUnusedResource];
     });
 
-    [NSThread sleepForTimeInterval:2];//设置启动页面时间
+    [NSThread sleepForTimeInterval:1];//设置启动页面时间
 
 //    [WXApi registerApp:WXAppID withDescription:@"demo 2.0"];
     
@@ -74,15 +74,13 @@
             UINavigationController *launchNav = [[UINavigationController alloc] initWithRootViewController:launchVC];
             
             self.window.rootViewController = launchNav;
-        }else{
-            MainViewController *mainVC = [[MainViewController alloc] init];
-            UINavigationController *mainNav = [[UINavigationController alloc] initWithRootViewController:mainVC];
-            self.window.rootViewController = mainNav;
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
     }];
 }
+
+
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     return [WXApi handleOpenURL:url delegate:[WXApiManager sharedManager]];

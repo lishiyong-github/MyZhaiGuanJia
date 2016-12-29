@@ -740,6 +740,8 @@
 		A1CBAAC51DBA158700049E56 /* OperatorResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A1CBAAC41DBA158700049E56 /* OperatorResponse.m */; };
 		A1D2C4C61DE697B000C67E15 /* AllCommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1D2C4C51DE697B000C67E15 /* AllCommentsViewController.m */; };
 		A1D7832A1DEE814C0099F834 /* MainProductview.m in Sources */ = {isa = PBXBuildFile; fileRef = A1D783291DEE814C0099F834 /* MainProductview.m */; };
+		A1D7F3CB1E14AEB500B17CD3 /* FourProductView.m in Sources */ = {isa = PBXBuildFile; fileRef = A1D7F3CA1E14AEB500B17CD3 /* FourProductView.m */; };
+		A1D7F3CE1E14BE6700B17CD3 /* AllNumberButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A1D7F3CD1E14BE6700B17CD3 /* AllNumberButton.m */; };
 		A1E4AFB71CD0C674001A5E9E /* SingleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A1E4AFB61CD0C674001A5E9E /* SingleButton.m */; };
 		A1E669291DED1FE900B69927 /* MoreMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1E669281DED1FE900B69927 /* MoreMessagesViewController.m */; };
 		A1E6692C1DED208700B69927 /* EditUpTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = A1E6692B1DED208700B69927 /* EditUpTableView.m */; };
@@ -1820,6 +1822,10 @@
 		A1D2C4C51DE697B000C67E15 /* AllCommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllCommentsViewController.m; sourceTree = "<group>"; };
 		A1D783281DEE814C0099F834 /* MainProductview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainProductview.h; sourceTree = "<group>"; };
 		A1D783291DEE814C0099F834 /* MainProductview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainProductview.m; sourceTree = "<group>"; };
+		A1D7F3C91E14AEB500B17CD3 /* FourProductView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FourProductView.h; sourceTree = "<group>"; };
+		A1D7F3CA1E14AEB500B17CD3 /* FourProductView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FourProductView.m; sourceTree = "<group>"; };
+		A1D7F3CC1E14BE6700B17CD3 /* AllNumberButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllNumberButton.h; sourceTree = "<group>"; };
+		A1D7F3CD1E14BE6700B17CD3 /* AllNumberButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllNumberButton.m; sourceTree = "<group>"; };
 		A1E4AFB51CD0C674001A5E9E /* SingleButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SingleButton.h; sourceTree = "<group>"; };
 		A1E4AFB61CD0C674001A5E9E /* SingleButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SingleButton.m; sourceTree = "<group>"; };
 		A1E669271DED1FE900B69927 /* MoreMessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreMessagesViewController.h; sourceTree = "<group>"; };
@@ -4063,6 +4069,10 @@
 				A17F7BF41CE5C52700E882A3 /* NewPublishCell.m */,
 				A1D783281DEE814C0099F834 /* MainProductview.h */,
 				A1D783291DEE814C0099F834 /* MainProductview.m */,
+				A1D7F3C91E14AEB500B17CD3 /* FourProductView.h */,
+				A1D7F3CA1E14AEB500B17CD3 /* FourProductView.m */,
+				A1D7F3CC1E14BE6700B17CD3 /* AllNumberButton.h */,
+				A1D7F3CD1E14BE6700B17CD3 /* AllNumberButton.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -4724,6 +4734,7 @@
 				A159F97D1D0D727A00A6A024 /* MJRefreshFooterView.m in Sources */,
 				A19F88651D51D3D300D4EC92 /* PowerProtectPictureViewController.m in Sources */,
 				A154B8F51CE1C14100884CA4 /* ReportSuitViewController.m in Sources */,
+				A1D7F3CE1E14BE6700B17CD3 /* AllNumberButton.m in Sources */,
 				A1A0C8CA1D4B21FF00BC63C6 /* HouseChooseViewController.m in Sources */,
 				A1B0292B1D17CE6F00F32A09 /* AFNetworkReachabilityManager.m in Sources */,
 				A1B028E71D1794DC00F32A09 /* SDImageCache.m in Sources */,
@@ -4784,6 +4795,7 @@
 				A19D29741CD2158100DAAEA7 /* AuthenPersonViewController.m in Sources */,
 				A19657271D78273C00F846D4 /* BaseRemindButton.m in Sources */,
 				A1A34C021CE2F8F900AD454A /* MineUserCell.m in Sources */,
+				A1D7F3CB1E14AEB500B17CD3 /* FourProductView.m in Sources */,
 				A185A73A1D61B0ED00542579 /* HouseAssessListViewController.m in Sources */,
 				A168567B1CE992C4006A0887 /* ProductsDetailsViewController.m in Sources */,
 				A1B8E2B31DE2BEBD00A2923C /* DialogBoxView.m in Sources */,

@@ -38,6 +38,8 @@
     [super viewDidLoad];
     
     [self showTabBarItem];
+    
+    [self checkMessagesOfNoRead];
 }
 
 - (void)showTabBarItem

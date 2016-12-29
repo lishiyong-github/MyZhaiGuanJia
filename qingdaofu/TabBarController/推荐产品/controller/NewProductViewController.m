@@ -19,6 +19,8 @@
 #import "MineUserCell.h"
 #import "NewPublishCell.h"  //诉讼保全
 #import "HomesCell.h"
+#import "AllNumberButton.h"
+#import "FourProductView.h"  //四大产品
 #import "MainProductview.h"
 
 #import "ReleaseResponse.h"
@@ -38,6 +40,24 @@
 @interface NewProductViewController ()<UITableViewDataSource,UITableViewDelegate,UIScrollViewDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate,UIGestureRecognizerDelegate>
 
 @property (nonatomic,assign) BOOL didSetupConstraints;
+/*
+@property (nonatomic,strong) UIScrollView *backScrollView;
+@property (nonatomic,strong) UIScrollView *mainHeaderScrollView;//banner
+@property (nonatomic,strong) AllNumberButton *allNumberView; //累计交易总量
+@property (nonatomic,strong) FourProductView *forProductView;  //四大产品
+@property (nonatomic,strong) UITableView *mainProductTableView;
+@property (nonatomic,strong) UIScrollView *mainProductScrollView;//产品列表
+
+@property (nonatomic,strong) NSLayoutConstraint *heightHeaderConstraints;//banner高度
+
+//json解析
+@property (nonatomic,strong) NSMutableArray *productsDataListArray;
+@property (nonatomic,strong) NSMutableDictionary *propagandaDic;
+@property (nonatomic,strong) NSMutableArray *propagandaArray; //轮播图
+@property (nonatomic,strong) NSString *sumString; //累计交易总量
+ */
+
+
 @property (nonatomic,strong) UITableView *mainTableView;
 ////////轮播图
 @property (nonatomic,strong) UIView *mainHeaderView;
@@ -51,6 +71,7 @@
 @property (nonatomic,strong) NSMutableDictionary *propagandaDic;
 @property (nonatomic,strong) NSMutableArray *propagandaArray; //轮播图
 @property (nonatomic,strong) NSString *sumString; //累计交易总量
+ 
 
 @end
 
@@ -70,6 +91,568 @@
     
     [self.navigationController setNavigationBarHidden:NO animated:NO];
 }
+
+/*
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    [self.view addSubview:self.backScrollView];
+    [self.view addSubview:self.mainHeaderScrollView];
+    [self.view addSubview:self.allNumberView];
+    [self.view addSubview:self.forProductView];
+    [self.view addSubview:self.mainProductTableView];
+    
+    self.heightHeaderConstraints = [self.mainHeaderScrollView autoSetDimension:ALDimensionHeight toSize:0];
+    
+    [self.view setNeedsUpdateConstraints];
+    
+    [self getRecommendProductslist];
+}
+
+- (void)updateViewConstraints
+{
+    if (!self.didSetupConstraints) {
+        
+        [self.backScrollView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+        
+        [self.mainHeaderScrollView autoPinEdgeToSuperviewEdge:ALEdgeLeft];
+        [self.mainHeaderScrollView autoPinEdgeToSuperviewEdge:ALEdgeRight];
+        [self.mainHeaderScrollView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:20];
+        
+        [self.allNumberView autoPinEdgeToSuperviewEdge:ALEdgeLeft];
+        [self.allNumberView autoPinEdgeToSuperviewEdge:ALEdgeRight];
+        [self.allNumberView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.mainHeaderScrollView];
+        [self.allNumberView autoSetDimension:ALDimensionHeight toSize:90];
+        
+        [self.forProductView autoPinEdgeToSuperviewEdge:ALEdgeLeft];
+        [self.forProductView autoPinEdgeToSuperviewEdge:ALEdgeRight];
+        [self.forProductView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.allNumberView withOffset:kBigPadding];
+        [self.forProductView autoSetDimension:ALDimensionHeight toSize:90];
+        
+        [self.mainProductTableView autoPinEdgeToSuperviewEdge:ALEdgeLeft];
+        [self.mainProductTableView autoPinEdgeToSuperviewEdge:ALEdgeRight];
+        [self.mainProductTableView autoPinEdgeToSuperviewEdge:ALEdgeBottom];
+        [self.mainProductTableView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.forProductView withOffset:kBigPadding];
+//        [self.mainProductTableView autoSetDimension:ALDimensionHeight toSize:122+kCellHeight2];
+        
+        self.didSetupConstraints = YES;
+    }
+    [super updateViewConstraints];
+}
+
+- (UIScrollView *)backScrollView
+{
+    if (!_backScrollView) {
+        _backScrollView = [UIScrollView newAutoLayoutView];
+        _backScrollView.contentSize = CGSizeMake(kScreenWidth, kScreenHeight*2);
+        _backScrollView.backgroundColor = kBackColor;
+        
+//        [_backScrollView addSubview:self.mainHeaderScrollView];
+//        [_backScrollView addSubview:self.allNumberView];
+        
+        
+        
+//        [self.allNumberView autoPinEdgeToSuperviewEdge:ALEdgeLeft];
+//        [self.allNumberView autoPinEdgeToSuperviewEdge:ALEdgeRight];
+//        [self.allNumberView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.mainHeaderScrollView];
+    }
+    return _backScrollView;
+}
+
+- (UIScrollView *)mainHeaderScrollView
+{
+    if (!_mainHeaderScrollView) {
+        _mainHeaderScrollView = [UIScrollView newAutoLayoutView];
+        _mainHeaderScrollView.backgroundColor = kRedColor;
+        _mainHeaderScrollView.contentSize = CGSizeMake(kScreenWidth*self.propagandaArray.count, 110);
+        _mainHeaderScrollView.pagingEnabled = YES;
+        _mainHeaderScrollView.showsHorizontalScrollIndicator = NO;
+    }
+    return _mainHeaderScrollView;
+}
+
+- (AllNumberButton *)allNumberView
+{
+    if (!_allNumberView) {
+        _allNumberView = [AllNumberButton newAutoLayoutView];
+        _allNumberView.backgroundColor = kWhiteColor;
+        
+    }
+    return _allNumberView;
+}
+
+- (FourProductView *)forProductView
+{
+    if (!_forProductView) {
+        _forProductView = [FourProductView newAutoLayoutView];
+        _forProductView.backgroundColor = kWhiteColor;
+        
+        QDFWeakSelf;
+        [_forProductView setDidSelectedItem:^(NSInteger tag) {
+            if (tag == 11){//保全
+                PowerProtectViewController *powerProtectVC = [[PowerProtectViewController alloc] init];
+                powerProtectVC.hidesBottomBarWhenPushed = YES;
+                [weakself.navigationController pushViewController:powerProtectVC animated:YES];
+            }else if (tag == 12){//保函
+                ApplicationGuaranteeViewController *applicationGuaranteeVC = [[ApplicationGuaranteeViewController alloc] init];
+                applicationGuaranteeVC.hidesBottomBarWhenPushed = YES;
+                [weakself.navigationController pushViewController:applicationGuaranteeVC animated:YES];
+            }else if (tag == 13) {//房产评估
+                HouseAssessViewController *houseAssessVC = [[HouseAssessViewController alloc] init];
+                houseAssessVC.hidesBottomBarWhenPushed = YES;
+                [weakself.navigationController pushViewController:houseAssessVC animated:YES];
+            }else if (tag == 14){//产调
+                HousePropertyViewController *housePropertyVC = [[HousePropertyViewController alloc] init];
+                housePropertyVC.hidesBottomBarWhenPushed = YES;
+                [weakself.navigationController pushViewController:housePropertyVC animated:YES];
+            }
+        }];
+    }
+    return _forProductView;
+}
+
+
+- (UITableView *)mainProductTableView
+{
+    if (!_mainProductTableView) {
+        _mainProductTableView.translatesAutoresizingMaskIntoConstraints = NO;
+        _mainProductTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+        _mainProductTableView.backgroundColor = kBackColor;
+        _mainProductTableView.delegate = self;
+        _mainProductTableView.dataSource = self;
+        _mainProductTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kBigPadding)];
+    }
+    return _mainProductTableView;
+}
+
+- (UIScrollView *)mainProductScrollView
+{
+    if (!_mainProductScrollView) {
+        _mainProductScrollView = [UIScrollView newAutoLayoutView];
+        _mainProductScrollView.backgroundColor = kWhiteColor;
+        _mainProductScrollView.contentSize = CGSizeMake(170*self.productsDataListArray.count+10, 220);
+        _mainProductScrollView.showsHorizontalScrollIndicator = NO;
+    }
+    return _mainProductScrollView;
+}
+
+- (NSMutableArray *)productsDataListArray
+{
+    if (!_productsDataListArray) {
+        _productsDataListArray = [NSMutableArray array];
+    }
+    return _productsDataListArray;
+}
+
+- (NSMutableArray *)propagandaArray
+{
+    if (!_propagandaArray) {
+        _propagandaArray = [NSMutableArray array];
+    }
+    return _propagandaArray;
+}
+
+#pragma mark - tableView delelagte and datasource
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 0;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return kCellHeight2;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return nil;
+//    static NSString *identifier;
+//    identifier = @"main0";//精选列表
+//    MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+//    if (!cell) {
+//        cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+//    }
+//    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//    [cell.userNameButton setTitle:@"推荐产品" forState:0];
+//    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 0.1;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 275;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, kSmallPadding, kScreenWidth, 275)];
+    footerView.backgroundColor = kBackColor;
+    
+    if (self.productsDataListArray.count > 0) {
+        //推荐产品
+        UIButton *sssButton = [UIButton newAutoLayoutView];
+        [sssButton setTitle:@"推荐产品" forState:0];
+        [sssButton setTitleColor:kBlackColor forState:0];
+        sssButton.titleLabel.font = kFirstFont;
+        [sssButton setBackgroundColor:kWhiteColor];
+        [sssButton setContentHorizontalAlignment:1];
+        [sssButton setContentEdgeInsets:UIEdgeInsetsMake(0, kSmallPadding, 0, 0)];
+        
+        [footerView addSubview:sssButton];
+        [footerView addSubview:self.mainProductScrollView];
+        
+        [sssButton autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:footerView];
+        [sssButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:footerView];
+        [sssButton autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:footerView];
+        [sssButton autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.mainProductScrollView];
+        
+        [self.mainProductScrollView autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:footerView withOffset:-kSmallPadding];
+        [self.mainProductScrollView autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:footerView];
+        [self.mainProductScrollView autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:footerView];
+        [self.mainProductScrollView autoSetDimension:ALDimensionHeight toSize:220];
+        
+        /////////
+        for (NSInteger k=0; k<self.productsDataListArray.count; k++) {
+            MainProductview *productView = [[MainProductview alloc] initWithFrame:CGRectMake(160*k + 10*(k+1), 0, 160, 210)];
+            productView.backgroundColor = kBackColor;
+            [self.mainProductScrollView addSubview:productView];
+            
+            RowsModel *rowModel = self.productsDataListArray[k];
+            
+            //image
+            NSString *iiii = [NSString stringWithFormat:@"%@%@",kQDFTestImageString,rowModel.fabuuser.headimg.file];
+            [productView.userImageView sd_setImageWithURL:[NSURL URLWithString:iiii] placeholderImage:[UIImage imageNamed:@"icon_head"]];
+            
+            //store state
+            if (!rowModel.collectSelf) {//未收藏
+                [productView.storeButton setImage:[UIImage imageNamed:@"nav_collection"] forState:0];
+            }else{
+                [productView.storeButton setImage:[UIImage imageNamed:@"nav_collection_s"] forState:0];
+            }
+            QDFWeakSelf;
+            [productView.storeButton addAction:^(UIButton *btn) {
+                [weakself goToStoreProductWithModel:rowModel andButton:btn];
+            }];
+            
+            //category
+            NSArray *ssssArray = [rowModel.categoryLabel componentsSeparatedByString:@","];
+            if (ssssArray.count == 1) {
+                [productView.categoryLabel2 setHidden:YES];
+                [productView.categoryLabel3 setHidden:YES];
+                [productView.categoryLabel4 setHidden:YES];
+                [productView.categoryLabel1 setText:ssssArray[0]];
+            }else if (ssssArray.count == 2){
+                [productView.categoryLabel2 setHidden:NO];
+                [productView.categoryLabel3 setHidden:YES];
+                [productView.categoryLabel4 setHidden:YES];
+                [productView.categoryLabel1 setText:ssssArray[0]];
+                [productView.categoryLabel2 setText:ssssArray[1]];
+            }else if (ssssArray.count == 3){
+                [productView.categoryLabel2 setHidden:NO];
+                [productView.categoryLabel3 setHidden:NO];
+                [productView.categoryLabel4 setHidden:YES];
+                [productView.categoryLabel1 setText:ssssArray[0]];
+                [productView.categoryLabel2 setText:ssssArray[1]];
+                [productView.categoryLabel3 setText:ssssArray[2]];
+            }else if (ssssArray.count == 4){
+                [productView.categoryLabel2 setHidden:NO];
+                [productView.categoryLabel3 setHidden:NO];
+                [productView.categoryLabel4 setHidden:NO];
+                [productView.categoryLabel1 setText:ssssArray[0]];
+                [productView.categoryLabel2 setText:ssssArray[1]];
+                [productView.categoryLabel3 setText:ssssArray[2]];
+                [productView.categoryLabel4 setText:ssssArray[3]];
+            }
+            
+            //委托费用
+            NSString *ttt1 = rowModel.typenumLabel;
+            NSString *ttt2 = [NSString stringWithFormat:@"%@\n",rowModel.typeLabel];
+            NSString *ttt3;
+            if ([rowModel.typeLabel isEqualToString:@"%"]) {
+                ttt3 = @"风险费率";
+            }else if ([rowModel.typeLabel isEqualToString:@"万"]){
+                ttt3 = @"固定费用";
+            }
+            NSString *tttt = [NSString stringWithFormat:@"%@%@%@",ttt1,ttt2,ttt3];
+            NSMutableAttributedString *attriTT = [[NSMutableAttributedString alloc] initWithString:tttt];
+            [attriTT setAttributes:@{NSFontAttributeName:kBoldFont1,NSForegroundColorAttributeName:kRedColor} range:NSMakeRange(0,ttt1.length)];
+            [attriTT setAttributes:@{NSFontAttributeName:kFont10,NSForegroundColorAttributeName:kRedColor} range:NSMakeRange(ttt1.length,ttt2.length)];
+            [attriTT setAttributes:@{NSFontAttributeName:kTabBarFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(ttt1.length+ttt2.length,ttt3.length)];
+            NSMutableParagraphStyle *stylrr = [[NSMutableParagraphStyle alloc] init];
+            [stylrr setLineSpacing:4];
+            stylrr.alignment = 1;
+            [attriTT addAttribute:NSParagraphStyleAttributeName value:stylrr range:NSMakeRange(0, tttt.length)];
+            [productView.leftButton setAttributedTitle:attriTT forState:0];
+            
+            //委托金额
+            NSString *mmm1 = rowModel.accountLabel;
+            NSString *mmm2 = [NSString stringWithFormat:@"万\n"];
+            NSString *mmm3 = @"委托金额";
+            NSString *mmmm = [NSString stringWithFormat:@"%@%@%@",mmm1,mmm2,mmm3];
+            NSMutableAttributedString *attriMMM = [[NSMutableAttributedString alloc] initWithString:mmmm];
+            [attriMMM setAttributes:@{NSFontAttributeName:kBoldFont1,NSForegroundColorAttributeName:kRedColor} range:NSMakeRange(0,mmm1.length)];
+            [attriMMM setAttributes:@{NSFontAttributeName:kFont10,NSForegroundColorAttributeName:kRedColor} range:NSMakeRange(mmm1.length,mmm2.length)];
+            [attriMMM setAttributes:@{NSFontAttributeName:kTabBarFont,NSForegroundColorAttributeName:kGrayColor} range:NSMakeRange(mmm1.length+mmm2.length,mmm3.length)];
+            NSMutableParagraphStyle *styler = [[NSMutableParagraphStyle alloc] init];
+            [styler setLineSpacing:4];
+            styler.alignment = 1;
+            [attriMMM addAttribute:NSParagraphStyleAttributeName value:styler range:NSMakeRange(0, mmmm.length)];
+            [productView.rightButton setAttributedTitle:attriMMM forState:0];
+            
+            //立即申请
+            if ([rowModel.status integerValue] > 10) {
+                [productView.applyButton setTitle:@"已撮合" forState:0];
+                [productView.applyButton setTitleColor:kLightGrayColor  forState:0];
+                productView.applyButton.layer.borderColor = kBorderColor.CGColor;
+            }else if(rowModel.applySelf){
+                [productView.applyButton setTitleColor:kLightGrayColor  forState:0];
+                productView.applyButton.layer.borderColor = kBorderColor.CGColor;
+                if ([rowModel.applySelf.status integerValue] == 10) {
+                    [productView.applyButton setTitle:@"取消申请" forState:0];
+                }else{
+                    [productView.applyButton setTitle:@"面谈中" forState:0];
+                }
+            }else{
+                [productView.applyButton setTitle:@"立即申请" forState:0];
+                [productView.applyButton setTitleColor:kTextColor forState:0];
+                productView.applyButton.layer.borderColor = kButtonColor.CGColor;
+            }
+            [productView.applyButton addAction:^(UIButton *btn) {
+                [weakself goToApplyProductWithModel:rowModel andButton:btn];
+            }];
+            
+            //check details
+            [productView addAction:^(UIButton *btn) {
+                ProductsDetailsViewController *productsDetailVC = [[ProductsDetailsViewController alloc] init];
+                productsDetailVC.hidesBottomBarWhenPushed = YES;
+                productsDetailVC.productid = rowModel.productid;
+                [weakself.navigationController pushViewController:productsDetailVC animated:YES];
+            }];
+        }
+    }
+    return footerView;
+}
+
+#pragma mark - method
+- (void)getRecommendProductslist
+{
+    [self showHudInView:self.mainProductTableView hint:@"正在加载"];
+    
+    NSString *allProString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductListsString];
+    
+    NSDictionary *params = @{@"page" : @"1",
+                             @"limit" : @"10",
+                             @"showtype" : @"1"};
+    
+    AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
+    session.responseSerializer = [AFHTTPResponseSerializer serializer];
+    session.requestSerializer = [AFHTTPRequestSerializer serializer];
+    
+    QDFWeakSelf;
+    [session POST:allProString parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [weakself hideHud];
+        
+        [weakself.productsDataListArray removeAllObjects];
+        
+        ReleaseResponse *response = [ReleaseResponse objectWithKeyValues:responseObject];
+        
+        for (RowsModel *rowModel in response.data) {
+            [weakself.productsDataListArray addObject:rowModel];
+        }
+        
+        //累计总量
+        NSString *all1 = @"累计交易总量\n";
+        NSString *all2 = [NSString getValidStringFromString:self.sumString toString:@"100000"];
+        NSString *all3;
+        if (all2.length < 9) {//小于1亿
+            all3 = @"元";
+        }else{//大于1亿
+            all2 = [all2 substringToIndex:all2.length-4];
+            all2 = [self addSeparatorForString:[NSString getValidStringFromString:all2 toString:@"10000"]];
+            all3 = @"万";
+        }
+        NSString *all = [NSString stringWithFormat:@"%@%@%@",all1,all2,all3];
+        NSMutableAttributedString *attributeAll = [[NSMutableAttributedString alloc] initWithString:all];
+        [attributeAll setAttributes:@{NSFontAttributeName : kFirstFont,NSForegroundColorAttributeName:kBlackColor} range:NSMakeRange(0, all1.length)];
+        [attributeAll setAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:30],NSForegroundColorAttributeName:kTextColor} range:NSMakeRange(all1.length, all2.length)];
+        [attributeAll setAttributes:@{NSFontAttributeName : kNavFont,NSForegroundColorAttributeName:kTextColor} range:NSMakeRange(all1.length  + all2.length,all3.length)];
+        
+        NSMutableParagraphStyle *styleAll = [[NSMutableParagraphStyle alloc] init];
+        [styleAll setLineSpacing:kSmallPadding];
+        styleAll.alignment = 0;
+        [attributeAll addAttribute:NSParagraphStyleAttributeName value:styleAll range:NSMakeRange(0, all.length)];
+        [weakself.allNumberView setAttributedTitle:attributeAll forState:0];
+        
+        weakself.sumString = response.sum;
+        
+        [weakself.mainProductTableView reloadData];
+        
+        if (weakself.propagandaArray.count == 0) {
+            [weakself getPropagandaChar];
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        [weakself hideHud];
+    }];
+}
+
+- (NSString *)addSeparatorForString:(NSString *)sepaString
+{
+    NSMutableString *tempString = sepaString.mutableCopy;
+    NSRange range = [sepaString rangeOfString:@"."];
+    NSInteger index = 0;
+    if (range.length > 0) {
+        index = range.location;
+    }else{
+        index = sepaString.length;
+    }
+    
+    while ((index-3) > 0) {
+        index-=3;
+        [tempString insertString:@"," atIndex:index];
+    }
+    tempString = [tempString stringByReplacingOccurrencesOfString:@"." withString:@","].mutableCopy;
+    return tempString;
+}
+
+//轮播图
+- (void)getPropagandaChar
+{
+    NSString *propagandaString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kPropagandasString];
+    
+    AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
+    session.responseSerializer = [AFHTTPResponseSerializer serializer];
+    session.requestSerializer = [AFHTTPRequestSerializer serializer];
+    
+    QDFWeakSelf;
+    [session POST:propagandaString parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        BannerResponse *response = [BannerResponse objectWithKeyValues:responseObject];
+        
+        for (ImageModel *nannerModel in response.banner) {
+            [weakself.propagandaArray addObject:nannerModel];
+        }
+        
+//        weakself.mainTableView.tableHeaderView = weakself.mainHeaderView;
+        weakself.heightHeaderConstraints.constant = 110;
+        for (NSInteger t=0; t<self.propagandaArray.count; t++) {
+            
+            ImageModel *bannerModel = self.propagandaArray[t];
+            
+            UIButton *imageButton = [[UIButton alloc] initWithFrame:CGRectMake(kScreenWidth*t, 0, kScreenWidth, 110)];
+            [imageButton sd_setBackgroundImageWithURL:[NSURL URLWithString:bannerModel.file] forState:0 placeholderImage:[UIImage imageNamed:@"banner_account_bitmap"]];
+            [self.mainHeaderScrollView addSubview:imageButton];
+            
+            QDFWeakSelf;
+            [imageButton addAction:^(UIButton *btn) {
+                MarkingViewController *markingVC = [[MarkingViewController alloc] init];
+                markingVC.hidesBottomBarWhenPushed = YES;
+                markingVC.markString = bannerModel.url;
+                markingVC.navTitle = bannerModel.title;
+                [weakself.navigationController pushViewController:markingVC animated:YES];
+            }];
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+    }];
+    
+    //    [self requestDataPostWithString:propagandaString params:nil successBlock:^(id responseObject) {
+    //        BannerResponse *response = [BannerResponse objectWithKeyValues:responseObject];
+    //
+    //        for (ImageModel *nannerModel in response.banner) {
+    //            [weakself.propagandaArray addObject:nannerModel];
+    //        }
+    //
+    //        weakself.mainTableView.tableHeaderView = weakself.mainHeaderView;
+    //
+    //    } andFailBlock:^(NSError *error) {
+    //
+    //    }];
+}
+
+- (void)goToApplyProductWithModel:(RowsModel *)rowModel andButton:(UIButton *)sender
+{
+    if ([sender.titleLabel.text isEqualToString:@"取消申请"] || [sender.titleLabel.text isEqualToString:@"立即申请"]) {
+        NSString *appString;
+        NSDictionary *params;
+        if ([sender.titleLabel.text isEqualToString:@"立即申请"]) {
+            appString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductDetailOfApply];
+            params = @{@"productid" : rowModel.productid,
+                       @"token" : [self getValidateToken]};
+        }else if ([sender.titleLabel.text isEqualToString:@"取消申请"]){
+            appString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kMyOrderDetailOfCancelApplyString];
+            params = @{@"applyid" : rowModel.applySelf.applyid,
+                       @"token" : [self getValidateToken]};
+        }
+        
+        QDFWeakSelf;
+        
+        AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
+        session.responseSerializer = [AFHTTPResponseSerializer serializer];
+        session.requestSerializer = [AFHTTPRequestSerializer serializer];
+        
+        [session POST:appString parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            BaseModel *appModel = [BaseModel objectWithKeyValues:responseObject];
+            
+            if ([appModel.code isEqualToString:@"3001"]) {
+                [weakself showHint:appModel.msg];
+                LoginViewController *loginVC = [[LoginViewController alloc] init];
+                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:loginVC];
+                [weakself presentViewController:nav animated:YES completion:nil];
+            }else{
+                [weakself getRecommendProductslist];
+            }
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            
+        }];
+        //        [self requestDataPostWithString:appString params:params successBlock:^(id responseObject) {
+        //            BaseModel *appModel = [BaseModel objectWithKeyValues:responseObject];
+        //            [weakself showHint:appModel.msg];
+        //
+        //            if ([appModel.code isEqualToString:@"0000"]) {
+        //                [weakself getRecommendProductslist];
+        //            }else if ([appModel.code isEqualToString:@"0003"]){
+        //                [weakself getRecommendProductslist];
+        //            }
+        //        } andFailBlock:^(NSError *error) {
+        //
+        //        }];
+    }
+}
+
+- (void)goToStoreProductWithModel:(RowsModel *)rowModel andButton:(UIButton *)sender
+{
+    NSString *saveString;
+    if (rowModel.collectSelf) {//(取消收藏)
+        saveString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductDetailOfCancelSave];
+    }else{//(收藏)
+        saveString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductDetailOfSave];
+    }
+    NSDictionary *params = @{@"token" : [self getValidateToken],
+                             @"productid" : rowModel.productid};
+    
+    QDFWeakSelf;
+    [self requestDataPostWithString:saveString params:params successBlock:^(id responseObject) {
+        BaseModel *baseModel = [BaseModel objectWithKeyValues:responseObject];
+        [weakself showHint:baseModel.msg];
+        if ([baseModel.code isEqualToString:@"0000"]) {
+            [weakself getRecommendProductslist];
+        }else if ([baseModel.code isEqualToString:@"0003"]){
+            [weakself getRecommendProductslist];
+        }
+        
+    } andFailBlock:^(NSError *error) {
+        
+    }];
+}
+*/
+
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -227,7 +810,7 @@
 {
     static NSString *identifier;
     if (indexPath.section == 0) {//累计交易总量
-        identifier = @"main1";
+        identifier = @"main0";
         MineUserCell *cell = [tableView dequeueReusableCellWithIdentifier: identifier];
         if (!cell) {
             cell = [[MineUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
@@ -558,7 +1141,7 @@
 #pragma mark - method
 - (void)getRecommendProductslist
 {
-    [self showHudInView:self.mainProductScrollView hint:@"正在加载"];
+    [self showHudInView:self.view hint:@"正在加载"];
     
     NSString *allProString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kProductListsString];
     
@@ -616,19 +1199,6 @@
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
     }];
-    
-//    [self requestDataPostWithString:propagandaString params:nil successBlock:^(id responseObject) {
-//        BannerResponse *response = [BannerResponse objectWithKeyValues:responseObject];
-//        
-//        for (ImageModel *nannerModel in response.banner) {
-//            [weakself.propagandaArray addObject:nannerModel];
-//        }
-//        
-//        weakself.mainTableView.tableHeaderView = weakself.mainHeaderView;
-//        
-//    } andFailBlock:^(NSError *error) {
-//        
-//    }];
 }
 
 - (void)goToApplyProductWithModel:(RowsModel *)rowModel andButton:(UIButton *)sender
@@ -789,6 +1359,7 @@
     tempString = [tempString stringByReplacingOccurrencesOfString:@"." withString:@","].mutableCopy;
     return tempString;
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

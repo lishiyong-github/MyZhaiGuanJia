@@ -204,7 +204,7 @@
 #define kMyAgentModifyString @"certification/modifyagent"  //修改代理
 
 #define kPropagandasString @"capital/banner"  //最新轮播图
-#define kLaunchImageString @"capital/appstart"  //启动图
+#define kLaunchImageString @"capital/appstart-img"  //启动图
 
 //新增四大模块
 #define kHouseAssessString @"producedata/estate" //房产评估

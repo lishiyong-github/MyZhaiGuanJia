@@ -45,7 +45,7 @@
     [self.view setNeedsUpdateConstraints];
     
 //    NSTimeInterval time = [nsti]
-    [self performSelector:@selector(toMainView) withObject:nil afterDelay:2];
+    [self performSelector:@selector(toMainView) withObject:nil afterDelay:5];
 }
 
 - (void)toMainView
@@ -73,7 +73,9 @@
         _launchImageButton = [UIButton newAutoLayoutView];
         
         ImageModel *imlModel = self.ad[0];
-        [_launchImageButton sd_setImageWithURL:[NSURL URLWithString:imlModel.file] forState:0];
+//        [_launchImageButton sd_setImageWithURL:[NSURL URLWithString:imlModel.file] forState:0];
+        NSString *launchString = [NSString stringWithFormat:@"%@%@",kQDFTestUrlString,kLaunchImageString];
+        [_launchImageButton sd_setImageWithURL:[NSURL URLWithString:launchString] forState:0];
     }
     return _launchImageButton;
 }
