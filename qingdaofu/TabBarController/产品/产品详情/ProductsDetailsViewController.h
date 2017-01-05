@@ -10,7 +10,7 @@
 
 @interface ProductsDetailsViewController : NetworkViewController
 
-//////////
+@property (nonatomic,strong) void (^didRefreshNewProduct)(BOOL);
 @property (nonatomic,strong) NSString *productid;
 
 @end

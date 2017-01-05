@@ -44,7 +44,6 @@
 
 - (void)showTabBarItem
 {
-    
     for (UIView *view in self.tabBarController.tabBar.subviews) {
         
         if ([view isKindOfClass:[UIImageView class]] && view.bounds.size.height <= 1) {

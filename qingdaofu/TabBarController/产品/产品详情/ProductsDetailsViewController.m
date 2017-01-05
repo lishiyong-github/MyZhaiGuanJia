@@ -757,6 +757,7 @@
         
         if ([appModel.code isEqualToString:@"0000"]) {
             [weakself getDetailMessageOfProduct];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshNewProduct" object:nil];
         }
         
     } andFailBlock:^(NSError *error) {
@@ -777,6 +778,9 @@
         
         if ([appModel.code isEqualToString:@"0000"]) {
             [weakself getDetailMessageOfProduct];
+            if (weakself.didRefreshNewProduct) {
+                weakself.didRefreshNewProduct(YES);
+            }
         }
         
     } andFailBlock:^(NSError *error) {
@@ -814,6 +818,9 @@
             }else{
                 [weakself.rightButton setImage:[UIImage imageNamed:@"nav_collection_s"] forState:0];
                 weakself.typetString = @"1";
+            }
+            if (weakself.didRefreshNewProduct) {
+                weakself.didRefreshNewProduct(YES);
             }
         }
     

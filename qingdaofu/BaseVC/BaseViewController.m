@@ -25,9 +25,9 @@
     [self setUpMessage];
 }
 
-- (UIStatusBarStyle)preferredStatusBarStyle{
-    return UIStatusBarStyleLightContent;
-}
+//- (UIStatusBarStyle)preferredStatusBarStyle{
+//    return UIStatusBarStyleLightContent;
+//}
 
 
 - (void)setUpMessage
